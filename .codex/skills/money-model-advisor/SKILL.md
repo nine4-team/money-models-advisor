@@ -1,17 +1,19 @@
 ---
 name: money-model-advisor
-description: Operate the Money Model Advisor CLI using advisor state saved in the invocation folder. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without provider-key model calls.
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
 ---
 
 # Money Model Advisor
 
-Use this skill to operate the Money Model Advisor CLI with advisor state read from and written to the folder where the skill is invoked.
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
 
 ## Core Rule
 
-Reason conversationally first. Do not route by shallow keywords. Use tools only when they help clarify, calculate, retrieve source material, update state, or inspect prior turns.
+Reason conversationally first. Do not route by shallow keywords. Use CLI tools only when they help clarify, calculate, search source material, update state, or inspect prior turns.
 
-Do not use provider-key model calls.
+Do not call external model services.
 
 ## Path Resolution
 
@@ -21,6 +23,20 @@ The user should not have to understand path plumbing. Resolve paths this way:
 - `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
 
 Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
 
 ## Operating Flow
 
@@ -41,11 +57,11 @@ Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--busi
 
 4. If important context is missing, ask the next useful question in plain English. Do not ask the user to paste JSON.
 5. Save clear user-provided facts with `snapshot set`.
-6. If enough context exists, run an advisor turn with the user's actual request:
+6. If enough context exists, run an advisor turn with the human's actual request:
 
    ```bash
    cd /Users/benjaminmackenzie/Dev/money-model-architect
-   PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir "$CONTEXT_DIR" --message "the user's request"
+   PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir "$CONTEXT_DIR" --message "$USER_REQUEST"
    ```
 
 7. Return the advisor answer in plain English. Mention saved state or logs only when useful.

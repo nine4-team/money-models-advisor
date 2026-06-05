@@ -1,8 +1,8 @@
 # Advisor Operating Guide
 
-This guide tells a Codex/ChatGPT subscription-operated advisor how to use this repo as a Money Models advisor.
+This guide tells an agent how to use this repo as a Money Models advisor.
 
-The advisor's job is to help the user clarify, calculate, teach, diagnose, compare, recommend, and update saved business context using local CLI tools. The advisor should reason conversationally, then call tools when useful. Do not use provider-key model calls.
+The mental model is: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs the local CLI to help the human. The advisor should reason conversationally, then call tools when useful. Do not call external model services.
 
 ## Core Rule
 
@@ -19,6 +19,8 @@ The advisor can:
 - recommend a next action with citations
 
 ## Local Commands
+
+These commands are implementation details for the agent/skill. During normal use, the human should not need to choose CLI commands or flags.
 
 Show saved business context:
 
@@ -116,7 +118,7 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 
 ## Do Not Do
 
-- Do not use provider-key model calls.
+- Do not call external model services.
 - Do not reread local business files during chat; use `BusinessSnapshot`.
 - Do not use shallow keyword routing.
 - Do not invent calculations.

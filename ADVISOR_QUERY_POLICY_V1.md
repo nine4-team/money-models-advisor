@@ -1,8 +1,8 @@
 # Advisor Query Policy v1
 
-This policy defines how retrieval queries are built when the advisor decides that source evidence is needed for the current turn.
+This policy defines how local corpus-search queries are built when the advisor decides that source material is needed for the current turn.
 
-The advisor should not use shallow keyword matching over the raw user message as the router. V1 should use an LLM-led advisor loop: the advisor reads the conversation, the `BusinessSnapshot`, and available tools, then decides whether to clarify, calculate, diagnose, teach, compare, recommend, retrieve evidence, update the snapshot, or decline. Retrieval query construction happens only when that advisor loop chooses to retrieve evidence.
+The advisor should not use shallow keyword matching over the raw user message as the router. V1 should use the agent conversation as the advisor loop: the agent reads the conversation, the `BusinessSnapshot`, and available tools, then decides whether to clarify, calculate, diagnose, teach, compare, recommend, search source material, update the snapshot, or decline. Query construction happens only when that advisor loop chooses to search source material.
 
 Deterministic rules are allowed only where the justification is strong:
 
@@ -11,14 +11,14 @@ Deterministic rules are allowed only where the justification is strong:
 - schema/readiness checks, such as whether required snapshot fields exist
 - query assembly from accepted snapshot facts and advisor-selected focus terms
 
-Deterministic rules should not decide broad conversational intent, such as whether a user wants teaching versus diagnosis. That belongs to the LLM-led advisor turn.
+Deterministic rules should not decide broad conversational intent, such as whether a user wants teaching versus diagnosis. That belongs to the agent-led advisor turn.
 
 ## Inputs
 
 - `BusinessSnapshot`
 - `advisor_state.advisory_status`
 - `problem.diagnosed_constraints`
-- advisor-selected tool intent and focus terms, when retrieval is needed
+- advisor-selected tool intent and focus terms, when source search is needed
 - current money-model stack shape
 
 ## Output Shape
@@ -28,7 +28,7 @@ Deterministic rules should not decide broad conversational intent, such as wheth
   "intent": "diagnostic_evidence",
   "layer": "unit-economics",
   "query": "CAC first 30 day gross profit payback period client financed acquisition coaching business implementation program",
-  "reason": "Snapshot is diagnosable; retrieve unit-economics evidence before explaining the diagnosis."
+  "reason": "Snapshot is diagnosable; search unit-economics source material before explaining the diagnosis."
 }
 ```
 
@@ -36,10 +36,10 @@ Deterministic rules should not decide broad conversational intent, such as wheth
 
 | Intent | Purpose | Typical layer |
 |---|---|---|
-| `diagnostic_evidence` | Retrieve source material that explains how to interpret the business economics. | `unit-economics` |
-| `recommendation_evidence` | Retrieve source material for the likely fix after the constraint is diagnosed. | `upsells`, `continuity`, `offers`, `downsells` |
-| `teaching_evidence` | Retrieve source material for a concept the advisor chose to teach. | advisor-selected |
-| `comparison_evidence` | Retrieve source material for concepts the advisor chose to compare. | advisor-selected |
+| `diagnostic_evidence` | Search for source material that explains how to interpret the business economics. | `unit-economics` |
+| `recommendation_evidence` | Search for source material for the likely fix after the constraint is diagnosed. | `upsells`, `continuity`, `offers`, `downsells` |
+| `teaching_evidence` | Search for source material for a concept the advisor chose to teach. | advisor-selected |
+| `comparison_evidence` | Search for source material for concepts the advisor chose to compare. | advisor-selected |
 
 Retrieval evidence is saved in the session trace. It is not a `BusinessSnapshot` status.
 
@@ -47,7 +47,7 @@ Retrieval evidence is saved in the session trace. It is not a `BusinessSnapshot`
 
 ### `insufficient_context`
 
-Do not retrieve by default. Ask for the next missing field.
+Do not search by default. Ask for the next missing field.
 
 Exception: if the advisor chooses to teach or compare and needs source evidence, build `teaching_evidence` or `comparison_evidence` from the advisor-selected focus terms and layer.
 
@@ -77,7 +77,7 @@ Add context terms when available:
 
 Build one or more `recommendation_evidence` queries from `problem.diagnosed_constraints` and the current money-model stack.
 
-The goal is to retrieve fix evidence, not re-diagnose the economics.
+The goal is to search for fix support, not re-diagnose the economics.
 
 ### `recommendable`
 

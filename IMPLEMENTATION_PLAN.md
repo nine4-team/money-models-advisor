@@ -18,16 +18,16 @@ The goal is not to build every sophisticated component immediately. The goal is 
 
 ## Current product direction
 
-The next real product slice is CLI-first with two modes:
+The next real product slice is agent-first and CLI-backed. A human talks to an agent, the agent follows the project skill's guidance, and the agent runs two core CLI modes:
 
 ```bash
 money-model-advisor setup --business-dir /path/to/company
 money-model-advisor chat --business-dir /path/to/company
 ```
 
-`setup` builds the initial `BusinessSnapshot` from setup/intake and optional local files. `chat` uses the saved snapshot only. If the user provides missing information during chat, the advisor saves that fact back into the snapshot with source metadata. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
+`setup` builds the initial `BusinessSnapshot` from setup/intake and optional local files. `chat` uses the saved snapshot only. If the human provides missing information during chat, the advisor saves that fact back into the snapshot with source metadata. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
 
-The v1 advisor loop is subscription-operated through Codex/ChatGPT using local CLI tools and saved state. Active work should not require provider keys.
+The v1 advisor loop is operated by the agent using local CLI tools and saved state. Active work should not require external model-service keys.
 
 The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
@@ -43,7 +43,7 @@ flowchart TD
 
   C --> D["RUN CHAT<br/>money-model-advisor chat --business-dir /company"]
   D --> E["USER MESSAGE<br/>current turn"]
-  C --> F["LLM ADVISOR TURN<br/>use saved snapshot + available tools"]
+  C --> F["AGENT ADVISOR TURN<br/>use saved snapshot + available tools"]
   E --> F
 
   F --> G{"ENOUGH CONTEXT?"}
@@ -54,8 +54,8 @@ flowchart TD
 
   G -- "Yes" --> I["CHOOSE NEXT TOOL OR ANSWER<br/>based on conversation + BusinessSnapshot"]
   I --> J["CALCULATE ECONOMICS<br/>deterministic formulas only"]
-  I --> K["DIAGNOSE / TEACH / COMPARE / RECOMMEND<br/>LLM-led reasoning over snapshot + conversation"]
-  I --> M["RETRIEVE SOURCE EVIDENCE<br/>query Money Models corpus for cited chunks"]
+  I --> K["DIAGNOSE / TEACH / COMPARE / RECOMMEND<br/>agent reasoning over snapshot + conversation"]
+  I --> M["SEARCH SOURCE MATERIAL<br/>query Money Models corpus for cited chunks"]
   I --> S
 
   J --> K
@@ -71,7 +71,7 @@ flowchart TD
   R --> E
 ```
 
-In this diagram, **retrieve** means: search the Money Models source corpus for chunks that can support the advisor's answer with citations. It does not mean rereading the user's local business files, searching the web, or deciding the user's intent. The advisor may retrieve when it needs evidence to teach a concept, compare options, explain a diagnosis, or support a recommendation.
+In this diagram, **search source material** means: search the Money Models source corpus for chunks that can support the advisor's answer with citations. It does not mean rereading the user's local context files, searching the web, or deciding the user's intent. The advisor may search source material when it needs support to teach a concept, compare options, explain a diagnosis, or support a recommendation.
 
 The other tools are separate:
 
@@ -178,7 +178,7 @@ Report:
 
 ## Phase 3 — Local Retrieval Guardrails
 
-Objective: keep retrieval evaluation honest without introducing provider-key calls.
+Objective: keep retrieval evaluation honest without introducing external model-service calls.
 
 Current active checks:
 
@@ -194,7 +194,7 @@ Metrics:
 
 Decision rule:
 
-Keep retrieval local and simple until the advisor loop and label methodology justify more complexity. Do not add provider-key-dependent retrieval to the active build.
+Keep retrieval local and simple until the advisor loop and label methodology justify more complexity. Do not add external-service-dependent retrieval to the active build.
 
 Current result:
 
@@ -210,7 +210,7 @@ Report:
 
 ## Phase 4 — Robust Local Evaluation Methodology
 
-Objective: define an evaluation method that is strong enough to improve the advisor without provider-key-dependent labeling.
+Objective: define an evaluation method that is strong enough to improve the advisor without external-service-dependent labeling.
 
 Build:
 
@@ -221,7 +221,7 @@ Build:
 - Include query types: exact framework names, paraphrases, business situations, diagnostic numeric scenarios, confusable near-neighbor questions, and noisy/vague user phrasing.
 - Audit queries for lexical overlap with chapter titles and framework names so BM25 is not accidentally advantaged.
 - For each eval query or advisor trace, collect the retrieved chunks and final answer.
-- Review retrieved chunks and answers through local review UI or subscription-operated review.
+- Review retrieved chunks and answers through local review UI or agent-assisted human review.
 - Keep required-claim labels as answer-readiness checks, not exhaustive relevance labels.
 
 Metrics:
@@ -243,7 +243,7 @@ Reports:
 
 ## Phase 5 — Advisor Behavior Evals
 
-Objective: evaluate the subscription-operated advisor loop by behavior, not by provider model comparison.
+Objective: evaluate the agent-operated advisor loop by behavior, not by model-service comparison.
 
 Scenarios:
 
@@ -284,7 +284,7 @@ Build:
 - A business-context manifest that records files read, hashes, parse status, and extracted snippets. **Started: hashes, size, mtime, parse status.**
 - A persisted `BusinessSnapshot` stored under `.money-model-advisor/` in the target directory. **Done.**
 - Snapshot update from setup answers and the user's chat message. **Started for setup answers and obvious user-message facts.**
-- An LLM-led advisor turn that can clarify, calculate, diagnose, retrieve, critique, draft, compare, teach, recommend, and update saved context. **Not yet implemented as an LLM loop; current skeleton covers clarify/payback diagnosis and `advisory_status` tracks `insufficient_context`, `diagnosable`, `diagnosed`, and `recommendable`.**
+- An agent-led advisor turn that can clarify, calculate, diagnose, search source material, critique, draft, compare, teach, recommend, and update saved context. **Not yet implemented as a full agent loop inside the CLI; current skeleton covers clarify/payback diagnosis and `advisory_status` tracks `insufficient_context`, `diagnosable`, `diagnosed`, and `recommendable`.**
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
 - Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Started for the payback/recommendation path.**
 - Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started: message, actions, snapshot, planned queries, retrieved evidence, answer.**
@@ -337,7 +337,7 @@ Report:
 
 ## Phase 8 — Local Advisor Quality Gate
 
-Objective: decide whether the subscription-operated advisor loop is useful enough to move beyond the CLI.
+Objective: decide whether the agent-operated advisor loop is useful enough to move beyond the CLI.
 
 Compare:
 

@@ -2,21 +2,23 @@
 
 A portfolio RAG and diagnostic advisor for Alex Hormozi's *$100M Money Models*.
 
-The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an applied ML paper, with hypotheses, variants, metrics, results, and decisions. [ARCHITECTURE.md](ARCHITECTURE.md) is the technical reference and JD-to-file map. [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md) defines the advisor's lean state schema. [ADVISOR_QUERY_POLICY_V1.md](ADVISOR_QUERY_POLICY_V1.md) defines runtime retrieval query construction. [ADVISOR_OPERATING_GUIDE.md](ADVISOR_OPERATING_GUIDE.md) tells a subscription-operated advisor how to use the local CLI tools. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) is the build order. [TOOLING_SHORTLIST.md](TOOLING_SHORTLIST.md) records the shortcut stack. `evals/reports/` contains the evidence tables behind the narrative.
+The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an applied ML paper, with hypotheses, variants, metrics, results, and decisions. [ARCHITECTURE.md](ARCHITECTURE.md) is the technical reference and JD-to-file map. [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md) defines the advisor's lean state schema. [ADVISOR_QUERY_POLICY_V1.md](ADVISOR_QUERY_POLICY_V1.md) defines runtime retrieval query construction. [ADVISOR_OPERATING_GUIDE.md](ADVISOR_OPERATING_GUIDE.md) tells an agent how to use the local CLI tools. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) is the build order. [TOOLING_SHORTLIST.md](TOOLING_SHORTLIST.md) records the shortcut stack. `evals/reports/` contains the evidence tables behind the narrative.
 
-This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no provider keys.
+This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
 
-The next product surface is CLI-first and subscription-operated: run setup/intake to build a `BusinessSnapshot`, then use Codex/ChatGPT subscription context to operate the advisor over CLI tools and saved local state. The active project direction does not use provider-key model calls.
+The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI tools against saved local state. The active project direction does not call external model services.
 
 If the user provides missing information during chat, the advisor saves it back into the snapshot. The web app can wait until that loop is actually good.
 
 ## Advisor skill
 
-Advisor operation instructions live in the project skill at `.codex/skills/money-model-advisor/SKILL.md`. Invoke that skill from the folder where advisor context should be saved.
+Advisor operation instructions live in the project skill at `.codex/skills/money-model-advisor/SKILL.md`. Invoke that skill from the folder where advisor context should be saved, then ask the agent naturally. The skill tells the agent how to handle the CLI path plumbing.
 
 ## Local proof harness
 
-Set up advisor state for a business directory:
+These commands are for development and verification. During normal use, the human talks to an agent and the agent follows the skill's guidance to run these commands.
+
+Set up advisor state for a context directory:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli setup \

@@ -198,7 +198,7 @@ Descriptions and prices for existing stack positions improve advice, but the fir
 
 ## Persistence
 
-For a business directory at `/company`, store advisor state under:
+For a context directory at `/company`, store advisor state under:
 
 ```text
 /company

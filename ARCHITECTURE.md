@@ -1,8 +1,8 @@
 # Architecture
 
-This is the active technical reference for the local, subscription-operated Money Model Advisor.
+This is the active technical reference for the local, agent-operated Money Model Advisor.
 
-The v1 system is not a provider-key model agent. It is a CLI-first local tool surface that a Codex/ChatGPT subscription context can operate.
+The v1 system is not an external model-service agent. A human talks to an agent; the agent follows the project skill's guidance; the agent runs a local CLI tool surface.
 
 ## Runtime Shape
 
@@ -30,7 +30,7 @@ money-model-advisor logs --business-dir /company
 → show saved advisor session turns
 ```
 
-The advisor reasoning happens in the subscription context. The repo supplies durable state and local tools.
+The advisor reasoning happens in the agent conversation. The repo supplies the skill instructions, durable state, and local tools.
 
 ## Core Components
 
@@ -69,7 +69,7 @@ Retrieval means local search over the Money Models source corpus. It returns cit
 Retrieval does not mean:
 
 - web search
-- provider-key calls
+- external model-service calls
 - rereading local business files
 - intent routing
 
@@ -112,7 +112,7 @@ Active local evals:
 | Query realism audit | `PYTHONPATH=src python3 scripts/audit_query_realism.py` |
 | Required-claim support | `PYTHONPATH=src python3 scripts/score_obligation_support.py` |
 
-Archived provider-backed experiments are not active architecture.
+Archived external-service experiments are not active architecture.
 
 ## JD Mapping
 
@@ -129,9 +129,9 @@ Archived provider-backed experiments are not active architecture.
 
 ## Deliberately Out Of Scope For V1
 
-- provider-key model integration
+- external model-service integration
 - external embedding calls
-- provider-key management
+- external model-service key management
 - hosted vector databases
 - web UI
 - multi-agent orchestration

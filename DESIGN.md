@@ -2,7 +2,7 @@
 
 This is the canonical narrative for the current project direction.
 
-The product is a CLI-first advisor for Alex Hormozi's *$100M Money Models*. It helps a founder diagnose unit economics, understand the money-model stack, compare concepts, and choose the next practical change to test. The advisor is operated through Codex/ChatGPT subscription context over local CLI tools and saved local state. The active design does not use provider-key model calls.
+The product is an agent-operated advisor for Alex Hormozi's *$100M Money Models*. It helps a founder diagnose unit economics, understand the money-model stack, compare concepts, and choose the next practical change to test. A human talks to an agent; the agent follows the project skill's guidance; the agent runs the local CLI against saved local state. The active design does not call external model services.
 
 ## Corrected Product Frame
 
@@ -14,18 +14,18 @@ The advisor is not a one-shot retrieval bot. A realistic user starts with a conv
 - "What should I add after the first sale?"
 - "Explain rollover upsells in my situation."
 
-Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`, ask for missing context when needed, run deterministic calculations where appropriate, retrieve source evidence from the Money Models corpus when citations are needed, and then answer.
+Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`, ask for missing context when needed, run deterministic calculations where appropriate, search the Money Models corpus when source support is needed, and then answer.
 
 The v1 runtime is:
 
 ```text
-setup local business snapshot
-→ chat through Codex/ChatGPT subscription context
-→ use local CLI tools for snapshot, calculation, retrieval, and trace logging
-→ answer with cited source chunks when evidence is needed
+human asks agent for advice
+→ agent follows Money Model Advisor skill guidance
+→ agent runs local CLI tools for snapshot, calculation, source search, and trace logging
+→ agent answers with cited source chunks when support is needed
 ```
 
-No provider-key model call is part of the active advisor runtime.
+No external model-service call is part of the active advisor runtime.
 
 ## Corpus And State
 
@@ -65,7 +65,7 @@ It does not mean:
 - searching the web
 - rereading local business files
 - deciding the user's intent
-- making provider-key calls
+- calling external model services
 
 The current local baseline uses BM25-style scoring and the five-layer taxonomy. It is intentionally simple because the advisor loop, state model, and evaluation method need to be clear before adding retrieval complexity.
 
@@ -79,7 +79,7 @@ Report: `evals/reports/local_retrieval_baseline.md`.
 
 ## Evaluation Philosophy
 
-The project is still experiment-first, but all active experiments must run locally or through subscription-operated review. The point is to demonstrate clear engineering judgment, not to accumulate fragile experiments.
+The project is still experiment-first, but all active experiments must run locally or through agent-assisted human review. The point is to demonstrate clear engineering judgment, not to accumulate fragile experiments.
 
 Active eval assets:
 
@@ -99,7 +99,7 @@ Archived provider-backed experiments live under `archive/provider-backed-experim
 
 ## Advisor Loop
 
-The advisor should be LLM-led through the subscription context, with deterministic code only where the justification is strong:
+The advisor should be agent-led in conversation, with deterministic code only where the justification is strong:
 
 - arithmetic and formulas
 - snapshot persistence
@@ -124,7 +124,7 @@ The operating rules for using those tools live in `ADVISOR_OPERATING_GUIDE.md`. 
 
 ## Current Decision
 
-The next implementation work is not model-provider integration. It is making the subscription-operated CLI advisor easier to use:
+The next implementation work is not external model-service integration. It is making the skill-guided CLI advisor easier to use:
 
 1. add small behavior evals for clarify/calculate/teach/diagnose/retrieve/recommend turns;
 2. expand visible answer synthesis beyond the first payback/recommendation path;
