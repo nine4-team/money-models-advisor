@@ -6,6 +6,8 @@ The mental model is: a human talks to an agent, the agent follows the project sk
 
 Invariant: for any human-facing advisory answer, run `chat` first so the turn is persisted. Other commands are adjuncts, not substitutes.
 
+Voice invariant: speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. Say "I need CAC next," not "The advisor's first question is CAC."
+
 ## Core Rule
 
 Use the conversation and saved `BusinessSnapshot` to decide the next advisory move. Do not route by shallow keyword matching.

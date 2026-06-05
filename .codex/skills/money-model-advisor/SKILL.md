@@ -15,6 +15,8 @@ Reason conversationally first. Do not route by shallow keywords.
 
 Every human-facing advisory answer should be preceded by the agent running the CLI `chat` command so the turn is persisted. Use other CLI commands when they help clarify, calculate, search source material, update state, or inspect prior turns.
 
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
 Do not call external model services.
 
 ## Path Resolution
@@ -35,7 +37,7 @@ human asks agent for advice
 -> agent follows this skill's guidance
 -> agent runs local CLI commands
 -> CLI reads/writes .money-model-advisor/ in context_dir
--> agent answers the human in plain English
+-> agent answers the human in first person, in plain English
 ```
 
 The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
@@ -74,7 +76,7 @@ The folder where the skill is invoked is the context directory. It is where advi
 
    The `chat` tool persists the turn. If context is missing, it should return the next useful clarifying question and save the trace.
 
-7. Return the advisor answer in plain English. Mention saved state or logs only when useful.
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
 8. If the human provides a clear fact outside a `chat` turn, save it with `update_snapshot`. If the same human message also asks for advice, run `chat` after `update_snapshot` before answering. Only pure fact-update or admin turns may skip `chat`.
 
 ## Advisor Operations
