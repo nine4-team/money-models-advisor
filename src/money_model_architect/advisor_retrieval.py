@@ -66,4 +66,3 @@ def execute_advisor_queries(
             )
         )
     return evidence
-

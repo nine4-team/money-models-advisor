@@ -1,15 +1,24 @@
 # Advisor Query Policy v1
 
-This policy defines how the advisor builds retrieval queries from `BusinessSnapshot`, `advisory_status`, diagnosed constraints, and the current user turn.
+This policy defines how retrieval queries are built when the advisor decides that source evidence is needed for the current turn.
 
-The advisor should not use the raw user message as the main retrieval query for diagnosis. Runtime queries are built from accepted snapshot state and the advisor's current intent.
+The advisor should not use shallow keyword matching over the raw user message as the router. V1 should use an LLM-led advisor loop: the advisor reads the conversation, the `BusinessSnapshot`, and available tools, then decides whether to clarify, calculate, diagnose, teach, compare, recommend, retrieve evidence, update the snapshot, or decline. Retrieval query construction happens only when that advisor loop chooses to retrieve evidence.
+
+Deterministic rules are allowed only where the justification is strong:
+
+- arithmetic and formulas, such as CAC payback and gross profit calculations
+- narrow validated extraction, such as obvious dollar amounts
+- schema/readiness checks, such as whether required snapshot fields exist
+- query assembly from accepted snapshot facts and advisor-selected focus terms
+
+Deterministic rules should not decide broad conversational intent, such as whether a user wants teaching versus diagnosis. That belongs to the LLM-led advisor turn.
 
 ## Inputs
 
 - `BusinessSnapshot`
 - `advisor_state.advisory_status`
 - `problem.diagnosed_constraints`
-- current user message
+- advisor-selected tool intent and focus terms, when retrieval is needed
 - current money-model stack shape
 
 ## Output Shape
@@ -29,8 +38,8 @@ The advisor should not use the raw user message as the main retrieval query for 
 |---|---|---|
 | `diagnostic_evidence` | Retrieve source material that explains how to interpret the business economics. | `unit-economics` |
 | `recommendation_evidence` | Retrieve source material for the likely fix after the constraint is diagnosed. | `upsells`, `continuity`, `offers`, `downsells` |
-| `framework_explanation` | Explain a named framework or concept. | inferred from framework |
-| `framework_comparison` | Compare two named frameworks. | inferred from frameworks |
+| `teaching_evidence` | Retrieve source material for a concept the advisor chose to teach. | advisor-selected |
+| `comparison_evidence` | Retrieve source material for concepts the advisor chose to compare. | advisor-selected |
 
 Retrieval evidence is saved in the session trace. It is not a `BusinessSnapshot` status.
 
@@ -40,7 +49,7 @@ Retrieval evidence is saved in the session trace. It is not a `BusinessSnapshot`
 
 Do not retrieve by default. Ask for the next missing field.
 
-Exception: if the current user message is clearly a teach/compare request, build `framework_explanation` or `framework_comparison` queries from the message.
+Exception: if the advisor chooses to teach or compare and needs source evidence, build `teaching_evidence` or `comparison_evidence` from the advisor-selected focus terms and layer.
 
 ### `diagnosable`
 
@@ -68,7 +77,7 @@ Add context terms when available:
 
 Build one or more `recommendation_evidence` queries from `problem.diagnosed_constraints` and the current money-model stack.
 
-The goal is to retrieve fix frameworks, not re-diagnose the economics.
+The goal is to retrieve fix evidence, not re-diagnose the economics.
 
 ### `recommendable`
 
@@ -93,30 +102,24 @@ If no constraint-specific rule matches, build a fallback `recommendation_evidenc
 - layer: first `likely_retrieval_layers` value, or `unit-economics`
 - query: diagnosed constraints + business type + core offer + user goal
 
-## Framework Requests
+## Teaching and Comparison
 
-If the user asks to explain a named framework, build `framework_explanation`.
+Teaching and comparison are valid advisor actions. They are not selected by keyword matching.
 
-Examples:
+When the advisor chooses to teach with retrieval, the retrieval tool call should include:
 
-| User language | Layer | Query |
-|---|---|---|
-| rollover upsell | `upsells` | rollover upsell |
-| classic upsell | `upsells` | classic upsell |
-| anchor upsell | `upsells` | anchor upsell |
-| payment plan | `downsells` | payment plans |
-| continuity bonus | `continuity` | continuity bonus |
-| attraction offer | `offers` | attraction offer |
-| client financed acquisition / CFA | `unit-economics` | client financed acquisition CFA |
+- selected corpus `layer`
+- `focus_terms`, such as the framework or concept to teach
+- `reason`, explaining why teaching is the right next action
 
-If the user asks to compare two frameworks, build one `framework_comparison` query per framework.
+When the advisor chooses to compare with retrieval, the retrieval tool call should include the same fields for each concept or a combined query. Query construction then turns those focus terms into `teaching_evidence` or `comparison_evidence`.
 
 ## Query Construction Rules
 
 - Prefer accepted snapshot state over raw user wording.
 - Include business type and core offer only as context terms, not as the center of the query.
-- Keep query strings short enough to preserve the framework terms.
+- Keep query strings short enough to preserve the advisor-selected focus terms.
 - Do not include unknown fields.
 - Deduplicate terms.
 - Emit multiple queries when one diagnosis suggests multiple fix paths.
-
+- Do not infer advisor action from keyword hits in the message.

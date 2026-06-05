@@ -41,7 +41,7 @@ flowchart TD
 
   C --> D["RUN CHAT<br/><small>money-model-advisor chat --business-dir /company</small>"]
   D --> E["USER MESSAGE<br/><small>current turn</small>"]
-  C --> F["PLAN NEXT TURN<br/><small>use saved snapshot</small>"]
+  C --> F["LLM ADVISOR TURN<br/><small>use saved snapshot + available tools</small>"]
   E --> F
 
   F --> G{"ENOUGH CONTEXT?"}
@@ -50,14 +50,13 @@ flowchart TD
   E --> S["SAVE NEW FACTS<br/><small>update BusinessSnapshot when user provides missing info</small>"]
   S --> C
 
-  G -- "Yes" --> I{"TASK TYPE"}
-  I -- "Calculate" --> J["DETERMINISTIC CALCULATOR<br/><small>unit-economics formulas</small>"]
-  I -- "Diagnose / critique / design" --> K["DIAGNOSE CONSTRAINT<br/><small>from snapshot and calculations</small>"]
-  I -- "Teach / compare" --> L["DIRECT RETRIEVAL<br/><small>framework explanation or comparison</small>"]
+  G -- "Yes" --> I["CHOOSE TOOL USE<br/><small>calculate, retrieve, update snapshot, or answer</small>"]
+  I --> J["DETERMINISTIC CALCULATOR<br/><small>unit-economics formulas only</small>"]
+  I --> K["DIAGNOSE / TEACH / COMPARE / RECOMMEND<br/><small>LLM-led reasoning over snapshot + conversation</small>"]
+  I --> M["BUILD RETRIEVAL QUERY<br/><small>only when evidence is needed</small>"]
 
   J --> K
-  K --> M["SELECT CORPUS LAYER<br/><small>namespace for current constraint</small>"]
-  L --> M
+  K --> M
 
   M --> N["RETRIEVAL STACK<br/><small>BM25 / dense / hybrid as appropriate</small>"]
   N --> O["RERANKER<br/><small>optional precision pass</small>"]
@@ -287,7 +286,7 @@ Build:
 - A business-context manifest that records files read, hashes, parse status, and extracted snippets. **Started: hashes, size, mtime, parse status.**
 - A persisted `BusinessSnapshot` stored under `.money-model-advisor/` in the target directory. **Done.**
 - Snapshot update from setup answers and the user's chat message. **Started for setup answers and obvious user-message facts.**
-- A next-turn planner that chooses between clarify, calculate, diagnose, retrieve, critique, draft, compare, and teach. **Started for clarify/payback diagnosis; `advisory_status` tracks `insufficient_context`, `diagnosable`, `diagnosed`, and `recommendable`.**
+- An LLM-led advisor turn that can clarify, calculate, diagnose, retrieve, critique, draft, compare, teach, recommend, and update saved context. **Not yet implemented as an LLM loop; current skeleton covers clarify/payback diagnosis and `advisory_status` tracks `insufficient_context`, `diagnosable`, `diagnosed`, and `recommendable`.**
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
 - Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started: message, actions, snapshot, planned queries, retrieved evidence, answer.**
 

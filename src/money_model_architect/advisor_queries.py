@@ -18,31 +18,8 @@ class AdvisorQuery:
         return asdict(self)
 
 
-FRAMEWORK_LAYER_HINTS: dict[str, tuple[str, str]] = {
-    "rollover upsell": ("upsells", "rollover upsell"),
-    "classic upsell": ("upsells", "classic upsell"),
-    "anchor upsell": ("upsells", "anchor upsell"),
-    "menu upsell": ("upsells", "menu upsell"),
-    "payment plan": ("downsells", "payment plans"),
-    "payment plans": ("downsells", "payment plans"),
-    "continuity bonus": ("continuity", "continuity bonus"),
-    "continuity discount": ("continuity", "continuity discount"),
-    "attraction offer": ("offers", "attraction offer"),
-    "free trial": ("offers", "free trial"),
-    "free giveaway": ("offers", "free giveaway"),
-    "client financed acquisition": ("unit-economics", "client financed acquisition CFA"),
-    "cfa": ("unit-economics", "client financed acquisition CFA"),
-    "gross profit": ("unit-economics", "gross profit"),
-    "payback period": ("unit-economics", "payback period"),
-}
-
-
-def build_advisor_queries(snapshot: BusinessSnapshot, user_message: str = "") -> list[AdvisorQuery]:
+def build_advisor_queries(snapshot: BusinessSnapshot) -> list[AdvisorQuery]:
     snapshot.refresh()
-    framework_queries = _framework_queries(user_message)
-    if framework_queries:
-        return framework_queries
-
     status = snapshot.advisor_state.advisory_status
     if status == "insufficient_context":
         return []
@@ -175,33 +152,6 @@ def _recommendation_queries(snapshot: BusinessSnapshot) -> list[AdvisorQuery]:
         )
     ]
 
-
-def _framework_queries(user_message: str) -> list[AdvisorQuery]:
-    lower = user_message.lower()
-    matches = []
-    for phrase, (layer, query) in FRAMEWORK_LAYER_HINTS.items():
-        if phrase in lower:
-            matches.append(
-                AdvisorQuery(
-                    intent="framework_explanation",
-                    layer=layer,
-                    query=query,
-                    reason=f"User mentioned framework term: {phrase}.",
-                )
-            )
-    if "compare" in lower and len(matches) > 1:
-        return [
-            AdvisorQuery(
-                intent="framework_comparison",
-                layer=query.layer,
-                query=query.query,
-                reason=query.reason.replace("User mentioned", "Comparison includes"),
-            )
-            for query in matches
-        ]
-    return _dedupe_queries(matches)
-
-
 def _join_terms(terms: list[str | None]) -> str:
     return " ".join(_dedupe([term.strip() for term in terms if term and term.strip()]))
 
@@ -228,4 +178,3 @@ def _dedupe_queries(queries: list[AdvisorQuery]) -> list[AdvisorQuery]:
         seen.add(key)
         deduped.append(query)
     return deduped
-

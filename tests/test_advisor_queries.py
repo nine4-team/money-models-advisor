@@ -28,7 +28,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
     def test_insufficient_context_does_not_query_by_default(self):
         snapshot = BusinessSnapshot()
 
-        queries = build_advisor_queries(snapshot, "What should I fix?")
+        queries = build_advisor_queries(snapshot)
 
         self.assertEqual(queries, [])
 
@@ -60,14 +60,12 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         self.assertIn("upsell after first sale", queries[0].query)
         self.assertIn("continuity recurring gross profit", queries[1].query)
 
-    def test_framework_comparison_builds_one_query_per_framework(self):
+    def test_query_builder_does_not_route_teaching_by_keyword(self):
         snapshot = BusinessSnapshot()
 
-        queries = build_advisor_queries(snapshot, "Compare rollover upsell and classic upsell")
+        queries = build_advisor_queries(snapshot)
 
-        self.assertEqual(len(queries), 2)
-        self.assertTrue(all(query.intent == "framework_comparison" for query in queries))
-        self.assertEqual([query.query for query in queries], ["rollover upsell", "classic upsell"])
+        self.assertEqual(queries, [])
 
     def test_diagnostic_query_retrieves_local_evidence(self):
         snapshot = diagnosable_snapshot()

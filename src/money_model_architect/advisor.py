@@ -1,4 +1,4 @@
-"""First deterministic advisor loop over BusinessSnapshot v1."""
+"""First stateful advisor skeleton over BusinessSnapshot v1."""
 
 from __future__ import annotations
 
@@ -67,7 +67,7 @@ def run_single_turn(business_dir: Path, message: str, transcript_dir: Path | Non
     actions = update_snapshot_from_message(snapshot, message)
     snapshot.refresh()
 
-    advisor_queries = build_advisor_queries(snapshot, message)
+    advisor_queries = build_advisor_queries(snapshot)
     retrieval_queries = [query.to_dict() for query in advisor_queries]
     evidence = []
     if advisor_queries:
@@ -157,12 +157,12 @@ def next_advisor_message(snapshot: BusinessSnapshot) -> str:
         payback = snapshot.economics.payback_period_months
         if payback is None:
             return "I have enough for a first payback diagnosis. CAC is not paid back from first-30-day gross profit, and no recurring gross profit is known, so payback is currently undefined/infinite. Next I should inspect the offer stack before recommending a fix."
-        return f"I have enough for a first payback diagnosis. Estimated payback is {payback:.2f} month(s). Next I should inspect the offer stack and retrieve the relevant Money Models framework."
+        return f"I have enough for a first payback diagnosis. Estimated payback is {payback:.2f} month(s). Next I should inspect the offer stack and retrieve source evidence before recommending a fix."
 
     missing = _prioritized_missing(snapshot)
     if missing:
         return FIELD_QUESTIONS.get(missing[0], f"I need {missing[0]} before I can diagnose this cleanly.")
-    return "I have enough basic context. Next I should retrieve the relevant Money Models framework and produce a cited recommendation."
+    return "I have enough basic context. Next I should retrieve source evidence and produce a cited recommendation."
 
 
 def save_session_turn(sessions_dir: Path, turn: AdvisorTurn) -> Path:
