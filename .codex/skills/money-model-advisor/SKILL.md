@@ -55,16 +55,17 @@ The folder where the skill is invoked is the context directory. It is where advi
    PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
    ```
 
-4. If important context is missing, ask the next useful question in plain English. Do not ask the user to paste JSON.
-5. Save clear user-provided facts with `snapshot set`.
-6. If enough context exists, run an advisor turn with the human's actual request:
+4. Run an advisor turn with the human's actual request, even if the snapshot is incomplete:
 
    ```bash
    cd /Users/benjaminmackenzie/Dev/money-model-architect
    PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir "$CONTEXT_DIR" --message "$USER_REQUEST"
    ```
 
-7. Return the advisor answer in plain English. Mention saved state or logs only when useful.
+   The `chat` command persists the turn. If context is missing, it should return the next useful clarifying question and save the trace.
+
+5. Return the advisor answer in plain English. Mention saved state or logs only when useful.
+6. If the human provides a clear fact outside a `chat` turn, save it with `snapshot set`, then run `chat` for the next advisory request.
 
 ## Commands
 
@@ -106,12 +107,13 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEX
 ## Workflow
 
 1. Load `snapshot` before business-specific advice.
-2. Ask for missing context when the snapshot is insufficient.
-3. Save clear user-provided facts with `snapshot set`.
-4. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
-5. Use `search` when teaching, comparing, diagnosing, or recommending needs source support.
-6. Cite inspected chunks inline, such as `[payback-period:0]`.
-7. Use `logs` to inspect prior session turns.
+2. Run `chat` for the human's advisory request so the turn is persisted.
+3. Let `chat` ask for missing context when the snapshot is insufficient.
+4. Save clear user-provided facts with `snapshot set` when they are provided outside a `chat` turn.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` when teaching, comparing, diagnosing, or recommending needs source support.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Use `logs` to inspect prior session turns.
 
 ## Guardrails
 

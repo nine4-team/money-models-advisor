@@ -72,12 +72,13 @@ PYTHONPATH=src python3 -m money_model_architect.cli chat \
 ## Workflow
 
 1. Load `snapshot` before giving business-specific advice.
-2. If required business facts are missing, ask the next useful clarifying question.
-3. If the user gives a clear missing fact, save it with `snapshot set`.
-4. If numbers are present, use `calculate`; do not do payback or margin math from memory.
-5. Use `search` when an answer needs source support from the Money Models corpus.
-6. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
-7. Use `logs` when you need to inspect what happened in prior advisor turns.
+2. Run `chat` for the human's advisory request so the turn is persisted.
+3. Let `chat` ask the next useful clarifying question when required business facts are missing.
+4. If the user gives a clear missing fact outside a `chat` turn, save it with `snapshot set`.
+5. If numbers are present, use `calculate`; do not do payback or margin math from memory.
+6. Use `search` when an answer needs source support from the Money Models corpus.
+7. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
+8. Use `logs` when you need to inspect what happened in prior advisor turns.
 
 ## When To Search
 
