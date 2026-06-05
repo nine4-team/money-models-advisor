@@ -127,7 +127,7 @@ The operating rules for using those tools live in `ADVISOR_OPERATING_GUIDE.md`. 
 The next implementation work is not model-provider integration. It is making the subscription-operated CLI advisor easier to use:
 
 1. add small behavior evals for clarify/calculate/teach/diagnose/retrieve/recommend turns;
-2. improve visible recommendation synthesis from retrieved chunks;
+2. expand visible answer synthesis beyond the first payback/recommendation path;
 3. keep all active work local and auditable.
 
 This keeps the project aligned with the actual product use case and avoids premature infrastructure.

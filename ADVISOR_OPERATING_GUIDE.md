@@ -125,4 +125,4 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 
 ## Next Development Target
 
-The current CLI tool surface exists. The next product improvement is making `chat` compose visible answers from retrieved source material instead of only saving evidence in session logs.
+The current CLI tool surface exists and `chat` now starts composing visible answers from snapshot state, deterministic math, source chunks, and next actions. The next product improvement is a local behavior eval set that checks clarify, calculate, teach, diagnose, retrieve, and recommend turns.

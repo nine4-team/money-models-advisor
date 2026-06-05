@@ -167,6 +167,36 @@ class BusinessContextTest(unittest.TestCase):
             self.assertIn("payback", turn.assistant_message.lower())
             self.assertNotIn("What is your CAC?", turn.assistant_message)
 
+    def test_chat_synthesizes_cited_recommendation_from_snapshot_and_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            business_dir = Path(tmp)
+            run_setup(
+                business_dir,
+                answers={
+                    "business.business_type": "coaching business",
+                    "business.icp": "gym owners",
+                    "money_model.core_offer.description": "implementation program",
+                    "money_model.attraction_offer.exists": True,
+                    "money_model.upsell.exists": False,
+                    "money_model.downsell.exists": True,
+                    "money_model.continuity.exists": False,
+                    "economics.cac": 350,
+                    "economics.first_30_day_gross_profit": 120,
+                    "problem.user_goal": "diagnose cash payback",
+                },
+            )
+
+            turn = run_single_turn(business_dir, "What should I fix first?")
+
+            self.assertIn("Diagnosis:", turn.assistant_message)
+            self.assertIn("CAC is $350", turn.assistant_message)
+            self.assertIn("first sale leaves $230", turn.assistant_message)
+            self.assertIn("Recommended next move:", turn.assistant_message)
+            self.assertIn("Source support:", turn.assistant_message)
+            self.assertRegex(turn.assistant_message, r"\[[a-z0-9-]+:\d+\]")
+            self.assertIn("Next action:", turn.assistant_message)
+            self.assertEqual([query["layer"] for query in turn.retrieval_queries], ["upsells", "continuity"])
+
 
 if __name__ == "__main__":
     unittest.main()

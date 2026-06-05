@@ -135,12 +135,13 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup`, `chat`, `search`, `snapshot`, and `logs` CLI commands.
+- Visible `chat` answer synthesis started: diagnosis, key math, recommendation, source chunk IDs, and next action.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 
 ## What remains planned
 
-- Recommendation synthesis that uses captured evidence chunks in the visible advisor answer.
+- Broader answer synthesis for teach/compare/clarify/recommendation cases.
 - Setup/intake fact collection from user answers and optional local files.
 - Snapshot extraction and next-action eval reports.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
-- Local-only richer evals, CI gates, trace inspection, and advisor operating instructions.
+- Local-only richer evals, CI gates, and trace inspection.

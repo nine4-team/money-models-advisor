@@ -66,6 +66,7 @@ def run_single_turn(business_dir: Path, message: str, transcript_dir: Path | Non
     snapshot = BusinessSnapshot.load(paths.snapshot)
     actions = update_snapshot_from_message(snapshot, message)
     snapshot.refresh()
+    actions.extend(diagnose_snapshot_constraints(snapshot))
 
     advisor_queries = build_advisor_queries(snapshot)
     retrieval_queries = [query.to_dict() for query in advisor_queries]
@@ -78,8 +79,7 @@ def run_single_turn(business_dir: Path, message: str, transcript_dir: Path | Non
                 transcript_dir=transcript_dir or _default_transcript_dir(),
             )
         ]
-    assistant_message = next_advisor_message(snapshot)
-    actions.extend(diagnose_snapshot_constraints(snapshot))
+    assistant_message = synthesize_advisor_message(snapshot, evidence)
     snapshot.save(paths.snapshot)
 
     turn = AdvisorTurn(
@@ -151,18 +151,125 @@ def update_snapshot_from_message(snapshot: BusinessSnapshot, message: str) -> li
     return actions
 
 
-def next_advisor_message(snapshot: BusinessSnapshot) -> str:
+def synthesize_advisor_message(snapshot: BusinessSnapshot, evidence: list[dict[str, Any]] | None = None) -> str:
+    """Compose the visible v1 advisor answer from state, calculations, and source chunks."""
     snapshot.refresh()
+    evidence = evidence or []
+    missing = _prioritized_missing(snapshot)
+
+    if snapshot.problem.diagnosed_constraints:
+        return _diagnostic_or_recommendation_message(snapshot, evidence, missing)
+
     if snapshot.advisor_state.ready_for_payback_diagnosis:
         payback = snapshot.economics.payback_period_months
         if payback is None:
-            return "I have enough for a first payback diagnosis. CAC is not paid back from first-30-day gross profit, and no recurring gross profit is known, so payback is currently undefined/infinite. Next I should inspect the offer stack before recommending a fix."
-        return f"I have enough for a first payback diagnosis. Estimated payback is {payback:.2f} month(s). Next I should inspect the offer stack and retrieve source evidence before recommending a fix."
+            return _join_answer_parts(
+                [
+                    "Diagnosis: CAC is not paid back by first-30-day gross profit, and no recurring gross profit is saved yet, so payback is currently unrecovered from the known facts.",
+                    _source_sentence(evidence),
+                    _next_context_sentence(missing),
+                ]
+            )
+        return _join_answer_parts(
+            [
+                f"Diagnosis: estimated payback is {payback:.2f} month(s).",
+                _source_sentence(evidence),
+                _next_context_sentence(missing),
+            ]
+        )
 
-    missing = _prioritized_missing(snapshot)
     if missing:
         return FIELD_QUESTIONS.get(missing[0], f"I need {missing[0]} before I can diagnose this cleanly.")
     return "I have enough basic context. Next I should retrieve source evidence and produce a cited recommendation."
+
+
+def next_advisor_message(snapshot: BusinessSnapshot) -> str:
+    return synthesize_advisor_message(snapshot)
+
+
+def _diagnostic_or_recommendation_message(
+    snapshot: BusinessSnapshot,
+    evidence: list[dict[str, Any]],
+    missing: list[str],
+) -> str:
+    econ = snapshot.economics
+    parts: list[str] = []
+
+    if "payback_not_recovered_without_recurring_gp" in snapshot.problem.diagnosed_constraints:
+        if econ.cac is not None and econ.first_30_day_gross_profit is not None:
+            gap = econ.cac - econ.first_30_day_gross_profit
+            parts.append(
+                "Diagnosis: the current bottleneck is first-30-day gross profit. "
+                f"CAC is {_money(econ.cac)} and first-30-day gross profit is {_money(econ.first_30_day_gross_profit)}, "
+                f"so the first sale leaves {_money(max(gap, 0.0))} of CAC unrecovered."
+            )
+        else:
+            parts.append("Diagnosis: the current bottleneck appears to be first-30-day gross profit.")
+        parts.append(
+            "Because no monthly recurring gross profit is saved, the advisor cannot calculate a finite payback period from the current snapshot."
+        )
+    elif econ.payback_period_months is not None:
+        parts.append(f"Diagnosis: estimated payback is {econ.payback_period_months:.2f} month(s).")
+    else:
+        parts.append("Diagnosis: the snapshot is far enough along for a first constraint read, but the payback math is incomplete.")
+
+    recommendation = _recommendation_sentence(snapshot)
+    if recommendation:
+        parts.append(recommendation)
+
+    parts.append(_source_sentence(evidence))
+    parts.append(_next_context_sentence(missing))
+    return _join_answer_parts(parts)
+
+
+def _recommendation_sentence(snapshot: BusinessSnapshot) -> str | None:
+    stack = snapshot.money_model
+    constraints = set(snapshot.problem.diagnosed_constraints)
+    if "payback_not_recovered_without_recurring_gp" not in constraints and "slow_payback" not in constraints:
+        return None
+
+    if stack.upsell.exists is False and stack.continuity.exists is False:
+        return "Recommended next move: test the smallest credible post-sale profit layer first, either an upsell that raises first-sale gross profit or a continuity offer that adds recurring gross profit."
+    if stack.upsell.exists is False:
+        return "Recommended next move: test an upsell after the first sale so the first customer contributes more gross profit before payback drags out."
+    if stack.continuity.exists is False:
+        return "Recommended next move: test a continuity offer so each acquired customer can create recurring gross profit after the first sale."
+    return "Recommended next move: inspect the current upsell and continuity economics before adding another offer layer."
+
+
+def _source_sentence(evidence: list[dict[str, Any]]) -> str | None:
+    source_ids = _source_chunk_ids(evidence)
+    if not source_ids:
+        return None
+    citations = " ".join(f"[{chunk_id}]" for chunk_id in source_ids[:3])
+    return f"Source support: {citations}."
+
+
+def _source_chunk_ids(evidence: list[dict[str, Any]]) -> list[str]:
+    source_ids: list[str] = []
+    for item in evidence:
+        for chunk in item.get("chunks", []):
+            chunk_id = chunk.get("id")
+            if chunk_id and chunk_id not in source_ids:
+                source_ids.append(chunk_id)
+    return source_ids
+
+
+def _next_context_sentence(missing: list[str]) -> str | None:
+    if not missing:
+        return "Next action: run the smallest offer-stack test that improves payback, then update the snapshot with the result."
+    question = FIELD_QUESTIONS.get(missing[0], f"I need {missing[0]} before I can diagnose this cleanly.")
+    return f"Next missing context: {question}"
+
+
+def _join_answer_parts(parts: list[str | None]) -> str:
+    return "\n\n".join(part for part in parts if part)
+
+
+def _money(value: float) -> str:
+    if value == int(value):
+        return f"${int(value):,}"
+    return f"${value:,.2f}"
 
 
 def save_session_turn(sessions_dir: Path, turn: AdvisorTurn) -> Path:
