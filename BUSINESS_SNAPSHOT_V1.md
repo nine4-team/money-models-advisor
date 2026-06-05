@@ -203,7 +203,6 @@ For a context directory at `/company`, store advisor state under:
 ```text
 /company
   .money-model-advisor/
-    context_manifest.json
     business_snapshot.json
     sessions/
       2026-06-05T120000Z.json
@@ -211,7 +210,6 @@ For a context directory at `/company`, store advisor state under:
 
 Recommended file roles:
 
-- `context_manifest.json` — optional setup files, file hashes, mtimes, parse status, and errors.
 - `business_snapshot.json` — current merged snapshot.
 - `sessions/*.json` — message history, tool calls, retrieved chunks, calculations, answer, and final snapshot.
 
@@ -219,21 +217,11 @@ Recommended file roles:
 
 `BusinessSnapshot` is the main cache for accepted business facts.
 
-Setup can inspect optional local files and ask the user for missing information. Chat should use `business_snapshot.json` rather than searching local files on every turn. If the user provides new missing information during chat, the advisor saves that value to `business_snapshot.json` with source metadata.
+The agent may inspect local business docs as needed before saving accepted facts. Chat should use `business_snapshot.json` rather than searching local files on every turn. If the user provides new missing information during chat, the advisor saves that value to `business_snapshot.json` with source metadata.
 
-Cache source-linked facts by source hash, not by time.
+Cache accepted facts in `BusinessSnapshot`; do not use a CLI file crawl as a substitute for agent judgment.
 
-If a setup file hash has not changed:
-
-- do not reread it during setup unless explicitly forced;
-- do not re-embed unchanged text chunks.
-
-If one file changes:
-
-- preserve accepted snapshot facts, but mark any field whose `source_hash` came from that file as stale until setup/intake confirms or updates it;
-- re-embed only changed snippets.
-
-Conversation-derived facts stay valid until overwritten by a later conversation turn or contradicted by higher-confidence file data.
+Conversation-derived facts stay valid until overwritten by a later conversation turn or contradicted by higher-confidence inspected source evidence.
 
 Calculated fields are recomputed whenever their inputs change.
 
@@ -271,7 +259,7 @@ Source types:
 
 Source confidence:
 
-- `high` — explicit value found in file, user stated directly, or deterministic calculation.
+- `high` — explicit value found in inspected source evidence, user stated directly, or deterministic calculation.
 - `medium` — inferred from nearby context.
 - `low` — weak inference that should be confirmed before important advice.
 
@@ -279,8 +267,8 @@ Source confidence:
 
 When multiple sources provide the same field:
 
-1. prefer explicit file data over inferred file data;
-2. prefer direct user statements over weak file inferences;
+1. prefer explicit inspected source evidence over inferred source evidence;
+2. prefer direct user statements over weak source inferences;
 3. prefer newer direct user statements over older direct user statements;
 4. recompute calculated fields from the current merged inputs;
 5. preserve conflicts in the session trace instead of silently discarding them.

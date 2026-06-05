@@ -51,9 +51,6 @@ def _build_parser() -> argparse.ArgumentParser:
     setup.add_argument("--answers", help="JSON object or path to JSON file with setup answers")
     setup.add_argument("--interactive", action="store_true", help="Prompt for missing setup fields")
 
-    sync = subparsers.add_parser("sync", help="Alias for setup")
-    sync.add_argument("--business-dir", required=True, help="Directory containing local business context")
-
     chat = subparsers.add_parser("chat", help="Run the first stateful advisor chat loop")
     chat.add_argument("--business-dir", required=True, help="Directory containing advisor state")
     chat.add_argument("--message", help="Single user message. If omitted, starts a simple interactive loop.")
@@ -117,7 +114,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({"metric": metric, "value": value}, indent=2))
         return 0
 
-    if args.command in {"setup", "sync"}:
+    if args.command == "setup":
         answers = load_answers(args.answers) if getattr(args, "answers", None) else None
         snapshot, summary = run_setup(
             Path(args.business_dir),
@@ -128,7 +125,6 @@ def main(argv: list[str] | None = None) -> int:
         payload = {
             "business_dir": str(paths.business_dir),
             "state_dir": str(paths.state_dir),
-            "manifest": str(paths.context_manifest),
             "snapshot": str(paths.snapshot),
             "summary": summary,
             "advisory_status": snapshot.advisor_state.advisory_status,

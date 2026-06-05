@@ -18,16 +18,21 @@ The goal is not to build every sophisticated component immediately. The goal is 
 
 ## Current product direction
 
-The next real product slice is agent-first and CLI-backed. A human talks to an agent, the agent follows the project skill's guidance, and the agent runs two core CLI modes:
+The next real product slice is agent-first and CLI-backed. A human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI commands:
 
-```bash
-money-model-advisor setup --business-dir /path/to/company
-money-model-advisor chat --business-dir /path/to/company
-```
+| Operation | Current CLI command |
+|---|---|
+| `setup_state` | `money-model-advisor setup --business-dir /path/to/company` |
+| `read_snapshot` | `money-model-advisor snapshot --business-dir /path/to/company` |
+| `update_snapshot` | `money-model-advisor snapshot set --business-dir /path/to/company field=value` |
+| `chat` | `money-model-advisor chat --business-dir /path/to/company --message ...` |
+| `calculate` | `money-model-advisor calculate ...` |
+| `search_source_material` | `money-model-advisor search ...` |
+| `logs` | `money-model-advisor logs --business-dir /path/to/company` |
 
-`setup` builds the initial `BusinessSnapshot` from setup/intake and optional local files. `chat` uses the saved snapshot only. If the human provides missing information during chat, the advisor saves that fact back into the snapshot with source metadata. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
+`setup_state` initializes local advisor state and an empty `BusinessSnapshot`. The agent inspects local business docs as needed, saves accepted facts through `update_snapshot`, then runs `chat`. `chat` uses the saved snapshot only. If the human provides missing information during chat, the advisor saves that fact back into the snapshot with source metadata. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
 
-The v1 advisor loop is operated by the agent using local CLI tools and saved state. Active work should not require external model-service keys.
+The v1 advisor loop is operated by the agent using local CLI commands and saved state. Humans can still run the same commands directly for development, debugging, or manual control. Active work should not require external model-service keys.
 
 The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
@@ -37,9 +42,8 @@ Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.
 
 ```mermaid
 flowchart TD
-  A["RUN SETUP<br/>money-model-advisor setup --business-dir /company"] --> B["OPTIONAL LOCAL FILES<br/>notes, metrics, offers, funnel docs"]
-  A --> C["BUILD BUSINESS SNAPSHOT<br/>accepted facts + source metadata"]
-  B --> C
+  A["RUN SETUP<br/>money-model-advisor setup --business-dir /company"] --> C["INITIALIZE BUSINESS SNAPSHOT<br/>empty state + sessions directory"]
+  X["AGENT INSPECTS LOCAL DOCS<br/>only as needed"] --> S["SAVE ACCEPTED FACTS<br/>update BusinessSnapshot with source notes"]
 
   C --> D["RUN CHAT<br/>money-model-advisor chat --business-dir /company"]
   D --> E["USER MESSAGE<br/>current turn"]
@@ -49,7 +53,8 @@ flowchart TD
   F --> G{"ENOUGH CONTEXT?"}
   G -- "No" --> H["ASK CLARIFYING QUESTION<br/>only the next needed field"]
   H --> E
-  E --> S["SAVE NEW FACTS<br/>update BusinessSnapshot when user provides missing info"]
+  E --> U["SAVE NEW FACTS<br/>update BusinessSnapshot when user provides missing info"]
+  U --> C
   S --> C
 
   G -- "Yes" --> I["CHOOSE NEXT TOOL OR ANSWER<br/>based on conversation + BusinessSnapshot"]
@@ -71,7 +76,7 @@ flowchart TD
   R --> E
 ```
 
-In this diagram, **search source material** means: search the Money Models source corpus for chunks that can support the advisor's answer with citations. It does not mean rereading the user's local context files, searching the web, or deciding the user's intent. The advisor may search source material when it needs support to teach a concept, compare options, explain a diagnosis, or support a recommendation.
+In this diagram, **search source material** means: search the Money Models source corpus for chunks that can support the advisor's answer with citations. It does not mean rereading the user's local context files, searching the web, or deciding the user's intent. The agent may inspect local business docs before saving accepted facts, but the CLI `chat` path uses the snapshot. The advisor may search source material when it needs support to teach a concept, compare options, explain a diagnosis, or support a recommendation.
 
 The other tools are separate:
 
@@ -94,12 +99,12 @@ Implemented:
 - Local required-claim review UI in `scripts/review_obligations.py`.
 - Required-claim support scorer in `scripts/score_obligation_support.py`.
 - `BusinessSnapshot v1` schema and JSON persistence in `src/money_model_architect/snapshot.py`.
-- Setup/intake state directory and manifest hashing in `src/money_model_architect/business_context.py`.
+- Setup/intake state directory in `src/money_model_architect/business_context.py`.
 - Setup/intake answer collection in `src/money_model_architect/setup_intake.py`.
 - Advisor query policy in `ADVISOR_QUERY_POLICY_V1.md` and `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and evidence capture in `src/money_model_architect/advisor_retrieval.py`.
 - First stateful advisor turn in `src/money_model_architect/advisor.py`.
-- `setup` and `chat` CLI commands. `sync` remains an alias for `setup`.
+- `setup` and `chat` CLI commands.
 - Visible `chat` answer synthesis for first payback/recommendation path.
 - Advisor operating guide in `ADVISOR_OPERATING_GUIDE.md` and project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 - Framework-aware chunking candidate implemented, but not adopted as default.
@@ -275,13 +280,13 @@ Objective: build the smallest useful advisor loop around real local business con
 
 Build:
 
-- `money-model-advisor setup --business-dir <path>`. **Started as `setup`; supports `--interactive` and `--answers`; `sync` remains an alias.**
+- `money-model-advisor setup --business-dir <path>`. **Started as `setup`; supports `--interactive` and `--answers`.**
 - `money-model-advisor chat --business-dir <path>`. **Started as `chat`; console-script alias added.**
 - `money-model-advisor search`. **Done: returns citation-ready local Money Models source chunks.**
 - `money-model-advisor snapshot` and `snapshot set`. **Done: show/update saved `BusinessSnapshot`.**
 - `money-model-advisor logs`. **Done: show saved advisor session turns.**
 - Advisor operating guide / project-local skill. **Done.**
-- A business-context manifest that records files read, hashes, parse status, and extracted snippets. **Started: hashes, size, mtime, parse status.**
+- Agent-led local doc inspection before snapshot updates. **Documented in the skill; not a CLI crawler.**
 - A persisted `BusinessSnapshot` stored under `.money-model-advisor/` in the target directory. **Done.**
 - Snapshot update from setup answers and the user's chat message. **Started for setup answers and obvious user-message facts.**
 - An agent-led advisor turn that can clarify, calculate, diagnose, search source material, critique, draft, compare, teach, recommend, and update saved context. **Not yet implemented as a full agent loop inside the CLI; current skeleton covers clarify/payback diagnosis and `advisory_status` tracks `insufficient_context`, `diagnosable`, `diagnosed`, and `recommendable`.**

@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any, Callable
 
-from .business_context import advisor_paths, ensure_advisor_state, sync_business_context, utc_now
+from .business_context import advisor_paths, ensure_advisor_state, utc_now
 from .snapshot import BusinessSnapshot
 
 SETUP_FIELDS: tuple[tuple[str, str, str], ...] = (
@@ -31,11 +31,11 @@ def run_setup(
     interactive: bool = False,
     input_fn: Callable[[str], str] = input,
 ) -> tuple[BusinessSnapshot, dict[str, int]]:
-    """Initialize state, record optional files, and update the snapshot."""
+    """Initialize state and update the snapshot from explicit answers."""
     paths = advisor_paths(business_dir)
     ensure_advisor_state(paths)
-    _manifest, summary = sync_business_context(paths.business_dir)
     snapshot = BusinessSnapshot.load(paths.snapshot)
+    summary = {"changed": 0, "removed": 0, "unchanged": 0, "total": 0}
 
     if answers:
         apply_setup_answers(snapshot, answers, source_type="setup")
@@ -151,4 +151,3 @@ def _set_field(snapshot: BusinessSnapshot, field_name: str, value: Any) -> None:
 
 def _source_record(source_type: str) -> dict[str, str]:
     return {"source_type": source_type, "confidence": "high", "updated_at": utc_now()}
-

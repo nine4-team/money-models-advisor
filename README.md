@@ -6,7 +6,7 @@ The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an a
 
 This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
 
-The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI tools against saved local state. The active project direction does not call external model services.
+The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI commands against saved local state. The active project direction does not call external model services.
 
 If the user provides missing information during chat, the advisor saves it back into the snapshot. The web app can wait until that loop is actually good.
 
@@ -16,7 +16,7 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 ## Local proof harness
 
-These commands are for development and verification. During normal use, the human talks to an agent and the agent follows the skill's guidance to run these commands.
+These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `chat`, `calculate`, `search_source_material`, and `logs`.
 
 Set up advisor state for a context directory:
 
@@ -26,7 +26,7 @@ PYTHONPATH=src python3 -m money_model_architect.cli setup \
   --interactive
 ```
 
-Or provide repeatable setup answers as JSON:
+For proof-harness tests, setup can accept repeatable answers as JSON. In normal use, the agent should save accepted facts with `update_snapshot` after inspecting docs or talking with the human:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli setup \
@@ -136,7 +136,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - A required-claim support scorer in `scripts/score_obligation_support.py`; accepted-label BM25 heading-aware coverage is currently 87.69%.
 - A corrected architecture direction for setup/intake plus snapshot-backed chat.
 - `BusinessSnapshot v1` implemented in `src/money_model_architect/snapshot.py`.
-- Setup/intake state directory and manifest hashing implemented in `src/money_model_architect/business_context.py`.
+- Setup/intake state directory implemented in `src/money_model_architect/business_context.py`.
 - Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
 - Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
@@ -147,7 +147,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Broader answer synthesis for teach/compare/clarify/recommendation cases.
-- Setup/intake fact collection from user answers and optional local files.
+- Agent-led local doc inspection before snapshot updates.
 - Snapshot extraction and next-action eval reports.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

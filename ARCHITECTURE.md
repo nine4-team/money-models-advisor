@@ -2,35 +2,35 @@
 
 This is the active technical reference for the local, agent-operated Money Model Advisor.
 
-The v1 system is not an external model-service agent. A human talks to an agent; the agent follows the project skill's guidance; the agent runs a local CLI tool surface.
+The v1 system is not an external model-service agent. A human talks to an agent; the agent follows the project skill's guidance; the agent runs local CLI commands against saved advisor state.
 
-## Runtime Shape
+## CLI Operation Shape
 
 ```text
-money-model-advisor setup --business-dir /company
-→ create/update .money-model-advisor/business_snapshot.json
+setup_state
+→ create .money-model-advisor/business_snapshot.json
 
-money-model-advisor chat --business-dir /company --message "..."
+read_snapshot
+→ show saved BusinessSnapshot
+
+update_snapshot
+→ update accepted snapshot fields
+
+chat
 → load saved BusinessSnapshot
 → update accepted facts when obvious
 → run deterministic calculations when fields are present
 → retrieve local Money Models source chunks when evidence is needed
 → persist session trace
 
-money-model-advisor search "CAC payback period" --layer unit-economics
+search_source_material
 → return citation-ready Money Models source chunks
 
-money-model-advisor snapshot --business-dir /company
-→ show saved BusinessSnapshot
-
-money-model-advisor snapshot set --business-dir /company economics.cac=350
-→ update accepted snapshot fields
-
-money-model-advisor logs --business-dir /company
+logs
 → show saved advisor session turns
 ```
 
-The advisor reasoning happens in the agent conversation. The repo supplies the skill instructions, durable state, and local tools.
+The advisor reasoning happens in the agent conversation. The repo supplies the skill instructions, durable state, and local CLI implementation. Humans can run the same CLI commands directly for development, debugging, or manual control.
 
 ## Core Components
 
@@ -38,7 +38,7 @@ The advisor reasoning happens in the agent conversation. The repo supplies the s
 |---|---|
 | Business snapshot schema | `src/money_model_architect/snapshot.py` |
 | Setup/intake state | `src/money_model_architect/setup_intake.py` |
-| Business directory manifest | `src/money_model_architect/business_context.py` |
+| Advisor state paths | `src/money_model_architect/business_context.py` |
 | Deterministic formulas | `src/money_model_architect/calculator.py` |
 | Unit-economics diagnosis helpers | `src/money_model_architect/diagnose.py` |
 | Corpus layers | `src/money_model_architect/namespaces.py` |
@@ -60,7 +60,7 @@ The advisor reasoning happens in the agent conversation. The repo supplies the s
 - missing fields and advisory status
 - field source metadata
 
-Setup can inspect optional local files and ask for missing information. Runtime chat should use the saved snapshot. If the user provides a missing fact in chat, the advisor saves it to the snapshot.
+The agent can inspect local business docs as needed before updating the snapshot. Runtime `chat` should use the saved snapshot. If the user provides a missing fact in chat, the advisor saves it to the snapshot.
 
 ## Retrieval Contract
 

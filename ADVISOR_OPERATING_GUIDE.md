@@ -2,9 +2,9 @@
 
 This guide tells an agent how to use this repo as a Money Models advisor.
 
-The mental model is: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs the local CLI to help the human. The advisor should reason conversationally, then call tools when useful. Do not call external model services.
+The mental model is: a human talks to an agent, the agent follows the project skill's guidance, and the agent uses local CLI commands to help the human. The advisor should reason conversationally, then run commands when useful. Do not call external model services.
 
-Invariant: for any human-facing advisory answer, run the CLI `chat` command first so the turn is persisted. Other commands are adjuncts, not substitutes.
+Invariant: for any human-facing advisory answer, run `chat` first so the turn is persisted. Other commands are adjuncts, not substitutes.
 
 ## Core Rule
 
@@ -20,9 +20,23 @@ The advisor can:
 - diagnose a money-model constraint
 - recommend a next action with citations
 
-## Local Commands
+## Advisor Operations
 
-These commands are implementation details for the agent/skill. During normal use, the human should not need to choose CLI commands or flags.
+During normal use, the human should not need to choose commands or flags; the skill tells the agent how to run the CLI. Humans can still run these commands directly for development, debugging, or manual control.
+
+| Operation | Purpose | Current CLI command |
+|---|---|---|
+| `setup_state` | create/load local advisor state | `setup --business-dir <context_dir>` |
+| `read_snapshot` | inspect saved business facts | `snapshot --business-dir <context_dir>` |
+| `update_snapshot` | save accepted facts | `snapshot set --business-dir <context_dir> field=value` |
+| `calculate` | run deterministic math | `calculate ...` |
+| `search_source_material` | search Money Models corpus | `search ...` |
+| `chat` | persist one advisory turn and produce CLI-backed answer | `chat --business-dir <context_dir> --message ...` |
+| `logs` | inspect saved traces | `logs --business-dir <context_dir>` |
+
+## Command Implementations
+
+These commands are the CLI interface. In normal use, the skill guides the agent through them; in development, a human can run them directly.
 
 Show saved business context:
 
@@ -80,13 +94,15 @@ Use the quoted heredoc when the request contains dollar amounts. Do not put a li
 ## Workflow
 
 1. Load `snapshot` before giving business-specific advice.
-2. Run `chat` for the human's advisory request so the turn is persisted.
-3. Let `chat` ask the next useful clarifying question when required business facts are missing.
-4. If the user gives a clear missing fact outside a `chat` turn, save it with `snapshot set`. If the same user message also asks for advice, run `chat` after `snapshot set` before answering. Only pure fact-update or admin turns may skip `chat`.
-5. If numbers are present, use `calculate`; do not do payback or margin math from memory.
-6. Use `search` when an answer needs source support from the Money Models corpus.
-7. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
-8. Use `logs` when you need to inspect what happened in prior advisor turns.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the user.
+3. Save clear inspected facts with `update_snapshot`.
+4. Run `chat` for the human's advisory request so the turn is persisted.
+5. Let `chat` ask the next useful clarifying question when the snapshot and inspected docs are still insufficient.
+6. If the user gives a clear missing fact outside a `chat` turn, save it with `update_snapshot`. If the same user message also asks for advice, run `chat` after `update_snapshot` before answering. Only pure fact-update or admin turns may skip `chat`.
+7. If numbers are present, use `calculate`; do not do payback or margin math from memory.
+8. Use `search` when an answer needs source support from the Money Models corpus.
+9. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
+10. Use `logs` when you need to inspect what happened in prior advisor turns.
 
 ## When To Search
 
@@ -105,6 +121,7 @@ Do not search merely because a user mentioned a framework word. First understand
 Save only accepted facts:
 
 - facts the user stated directly
+- facts discovered by the agent from inspected local docs
 - setup/intake answers
 - deterministic calculation outputs
 
@@ -128,7 +145,8 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 ## Do Not Do
 
 - Do not call external model services.
-- Do not reread local business files during chat; use `BusinessSnapshot`.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not reread local business files inside the CLI `chat` path; use `BusinessSnapshot`.
 - Do not use shallow keyword routing.
 - Do not invent calculations.
 - Do not cite source chunks you did not inspect.

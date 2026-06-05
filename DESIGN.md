@@ -14,14 +14,16 @@ The advisor is not a one-shot retrieval bot. A realistic user starts with a conv
 - "What should I add after the first sale?"
 - "Explain rollover upsells in my situation."
 
-Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`. Advisory turns should go through `chat`, which persists the trace, asks for missing context when needed, runs deterministic calculations where appropriate, searches the Money Models corpus when source support is needed, and returns the answer for the agent to relay.
+Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`. The agent inspects local business docs as needed, saves accepted facts to the snapshot, then runs `chat`. Advisory turns should go through `chat`, which persists the trace, uses the saved snapshot, runs deterministic calculations where appropriate, searches the Money Models corpus when source support is needed, and returns the answer for the agent to relay.
 
 The v1 runtime is:
 
 ```text
 human asks agent for advice
 → agent follows Money Model Advisor skill guidance
-→ agent runs local CLI tools for snapshot, calculation, source search, and trace logging
+→ agent inspects local docs if snapshot context is missing
+→ agent saves accepted facts to BusinessSnapshot
+→ agent runs local CLI commands for calculation, source search, and trace logging
 → agent answers with cited source chunks when support is needed
 ```
 
@@ -39,7 +41,7 @@ The source corpus is transcribed into `corpus/transcripts/`, one lesson per file
 | `downsells` | save offers, payment plans, lower-friction alternatives |
 | `continuity` | recurring offers, retention, discounts, continuity bonuses |
 
-The key runtime object is `BusinessSnapshot`, defined in `BUSINESS_SNAPSHOT_V1.md`. It stores accepted business facts, source metadata, calculated economics, missing fields, and advisory status. It is the cache for business context. Chat should use the snapshot, not reread every local business file on every turn.
+The key runtime object is `BusinessSnapshot`, defined in `BUSINESS_SNAPSHOT_V1.md`. It stores accepted business facts, source metadata, calculated economics, missing fields, and advisory status. It is the cache for business context. The agent may inspect local docs before updating the snapshot. `chat` should use the snapshot, not crawl local business files.
 
 ## Chunking Decision
 
@@ -107,18 +109,18 @@ The advisor should be agent-led in conversation, with deterministic code only wh
 
 The advisor can teach, compare, diagnose, calculate, recommend, clarify, or update saved context. That choice should come from conversational reasoning, not a brittle keyword router.
 
-The local tool surface should expose:
+The CLI should expose operations the agent can use:
 
-- `setup`: build/update `.money-model-advisor/business_snapshot.json`
-- `chat`: run one stateful advisor turn from saved snapshot
+- `setup_state`: create/load `.money-model-advisor/business_snapshot.json`
+- `read_snapshot`: inspect saved business facts
+- `update_snapshot`: persist accepted facts from the human or inspected docs
+- `chat`: run one stateful advisor turn from saved snapshot and persist the trace
 - `calculate`: deterministic formulas
 - `diagnose`: deterministic unit-economics diagnosis helpers
-- `search`: local Money Models corpus retrieval
-- `snapshot`: show the saved business snapshot
-- `snapshot set`: update accepted snapshot fields from the CLI
+- `search_source_material`: local Money Models corpus retrieval
 - `logs`: inspect saved advisor session turns
 
-The operating rules for using those tools live in `ADVISOR_OPERATING_GUIDE.md`. A project-local skill version lives at `.codex/skills/money-model-advisor/SKILL.md`.
+The operating rules for using those commands live in `ADVISOR_OPERATING_GUIDE.md`. A project-local skill version lives at `.codex/skills/money-model-advisor/SKILL.md`. Humans may run the same CLI commands directly for development, debugging, and manual control.
 
 ## Current Decision
 

@@ -7,7 +7,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from money_model_architect.advisor import run_single_turn
-from money_model_architect.business_context import advisor_paths, sync_business_context
+from money_model_architect.business_context import advisor_paths
 from money_model_architect.snapshot import BusinessSnapshot
 from money_model_architect.setup_intake import run_setup
 
@@ -70,23 +70,18 @@ class BusinessSnapshotTest(unittest.TestCase):
 
 
 class BusinessContextTest(unittest.TestCase):
-    def test_sync_creates_state_and_hash_manifest(self):
+    def test_setup_initializes_state_without_crawling_business_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             business_dir = Path(tmp)
             (business_dir / "offer.md").write_text("# Offer\nCore offer notes\n", encoding="utf-8")
 
-            manifest, summary = sync_business_context(business_dir)
+            snapshot, summary = run_setup(business_dir)
             paths = advisor_paths(business_dir)
 
-            self.assertTrue(paths.context_manifest.exists())
             self.assertTrue(paths.snapshot.exists())
-            self.assertEqual(summary["total"], 1)
-            self.assertEqual(summary["changed"], 1)
-            self.assertEqual(manifest.files[0].path, "offer.md")
-
-            _, second_summary = sync_business_context(business_dir)
-            self.assertEqual(second_summary["unchanged"], 1)
-            self.assertEqual(second_summary["changed"], 0)
+            self.assertTrue(paths.sessions_dir.exists())
+            self.assertEqual(summary["total"], 0)
+            self.assertIsNone(snapshot.money_model.core_offer.description)
 
     def test_single_chat_turn_updates_snapshot_and_persists_session(self):
         with tempfile.TemporaryDirectory() as tmp:
