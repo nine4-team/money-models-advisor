@@ -1,18 +1,11 @@
 ---
 name: money-model-advisor
-description: Operate the Money Model Advisor CLI against the user's current or specified folder. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without provider-key model calls.
+description: Operate the Money Model Advisor CLI from the folder where the skill is invoked. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without provider-key model calls.
 ---
 
 # Money Model Advisor
 
-Use this skill to operate the Money Model Advisor CLI from wherever the user invokes it.
-
-Natural user requests can look like:
-
-```text
-Use the Money Model Advisor on this folder.
-Use the Money Model Advisor on /path/to/folder.
-```
+Use this skill to operate the Money Model Advisor CLI for the folder where the skill is invoked.
 
 ## Core Rule
 
@@ -22,12 +15,10 @@ Do not use provider-key model calls.
 
 ## Path Resolution
 
-The user should not have to understand repo path plumbing.
-
-Use:
+The user should not have to understand path plumbing. Resolve paths this way:
 
 - `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
-- `context_dir`: the explicit folder named by the user, otherwise the current working directory
+- `context_dir`: the current working directory when the skill is invoked
 
 Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
 
