@@ -1,9 +1,4 @@
-"""Small local retrieval engine over the transcript corpus.
-
-This is not a replacement for the planned hybrid Pinecone/BM25/rerank stack.
-It is the runnable proof that the namespace taxonomy, chunk provenance, and
-retrieval evals can exist before external services are introduced.
-"""
+"""Small local retrieval engine over the transcript corpus."""
 
 from __future__ import annotations
 

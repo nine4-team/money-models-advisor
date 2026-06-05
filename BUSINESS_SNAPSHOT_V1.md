@@ -205,7 +205,6 @@ For a business directory at `/company`, store advisor state under:
   .money-model-advisor/
     context_manifest.json
     business_snapshot.json
-    embeddings.sqlite3
     sessions/
       2026-06-05T120000Z.json
 ```
@@ -214,7 +213,6 @@ Recommended file roles:
 
 - `context_manifest.json` — optional setup files, file hashes, mtimes, parse status, and errors.
 - `business_snapshot.json` — current merged snapshot.
-- `embeddings.sqlite3` — cached embeddings for business-context snippets and retrieval queries.
 - `sessions/*.json` — message history, tool calls, retrieved chunks, calculations, answer, and final snapshot.
 
 ## Cache Rules

@@ -1,8 +1,4 @@
-"""Namespace taxonomy for the local proof harness.
-
-The hosted architecture plans Pinecone namespaces. This local module keeps the
-same modeling decision executable without requiring external credentials.
-"""
+"""Layer taxonomy for the local proof harness."""
 
 from __future__ import annotations
 
@@ -60,4 +56,3 @@ LAYERS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
 
 def route_for_chapter(chapter: str) -> ChapterRoute:
     return CHAPTER_ROUTES.get(chapter, ChapterRoute(chapter, "offers"))
-

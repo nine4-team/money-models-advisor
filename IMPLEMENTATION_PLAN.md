@@ -27,7 +27,7 @@ money-model-advisor chat --business-dir /path/to/company
 
 `setup` builds the initial `BusinessSnapshot` from setup/intake and optional local files. `chat` uses the saved snapshot only. If the user provides missing information during chat, the advisor saves that fact back into the snapshot with source metadata. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
 
-The v1 advisor loop is subscription-operated through Codex/ChatGPT using local CLI tools and saved state. It is not an OpenAI API agent loop. API-backed embedding calls are allowed for offline retrieval experiments when explicitly run, but the main advisor conversation should be driven by the user's subscription context and the repo's local commands.
+The v1 advisor loop is subscription-operated through Codex/ChatGPT using local CLI tools and saved state. Active work should not require provider keys.
 
 The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
@@ -90,12 +90,9 @@ Implemented:
 - 32-query retrieval eval in `evals/golden.jsonl`.
 - Local retrieval baseline report in `evals/reports/local_retrieval_baseline.md`.
 - Chunking comparison report in `evals/reports/chunking_comparison.md`.
-- API-backed retrieval ablation in `evals/reports/retrieval_ablation.md`.
 - Reviewed required-claim support labels in `evals/obligations.jsonl`.
 - Local required-claim review UI in `scripts/review_obligations.py`.
 - Required-claim support scorer in `scripts/score_obligation_support.py`.
-- Required-claim retrieval ablation in `evals/reports/retrieval_required_claim_ablation.md`.
-- SQLite embedding cache in `.cache/embeddings.sqlite3`, implemented by `src/money_model_architect/embeddings.py`, so API-backed eval reruns do not re-embed unchanged corpus/query text.
 - `BusinessSnapshot v1` schema and JSON persistence in `src/money_model_architect/snapshot.py`.
 - Setup/intake state directory and manifest hashing in `src/money_model_architect/business_context.py`.
 - Setup/intake answer collection in `src/money_model_architect/setup_intake.py`.
@@ -112,8 +109,6 @@ Run checks:
 PYTHONPATH=src python3 scripts/eval_smoke.py
 PYTHONPATH=src python3 scripts/eval_retrieval.py
 PYTHONPATH=src python3 scripts/compare_chunking.py
-PYTHONPATH=src python3 scripts/retrieval_ablation.py
-PYTHONPATH=src python3 scripts/retrieval_required_claim_ablation.py
 PYTHONPATH=src python3 scripts/score_obligation_support.py --include-proposed
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business --answers '{"business":{"business_type":"coaching business","icp":"gym owners"},"money_model":{"core_offer":{"description":"implementation program","price":5000},"attraction_offer":{"exists":true},"upsell":{"exists":false},"downsell":{"exists":true},"continuity":{"exists":false}},"economics":{"cac":350,"first_30_day_gross_profit":120},"problem":{"user_goal":"diagnose cash payback"}}'
@@ -175,50 +170,41 @@ Report:
 
 - `evals/reports/chunking_comparison.md`
 
-## Phase 3 — Retrieval Ablation
+## Phase 3 — Local Retrieval Guardrails
 
-Objective: prove whether hybrid retrieval is worth its cost and complexity.
+Objective: keep retrieval evaluation honest without introducing provider-key calls.
 
-Compare:
+Current active checks:
 
-- BM25-only. **Done.**
-- Dense-only. **Done with OpenAI `text-embedding-3-small`.**
-- Dense + BM25 with reciprocal rank fusion. **Done as a candidate.**
-- Dense + BM25 with score-sum fusion, if scores can be calibrated cleanly.
+- BM25 heading-aware retrieval over the local corpus. **Done.**
+- Required-claim support coverage over reviewed labels. **Done.**
+- Query realism audit to prevent framework-name-heavy evals from overstating quality. **Done.**
 
 Metrics:
 
-- hit@1. **Done.**
-- hit@5. **Done.**
-- MRR. **Done.**
-- p50 / p95 retrieval latency. **Done.**
-- exact-term recall for named frameworks
-- required-claim support guardrail. **Done.**
+- hit@1, hit@5, and MRR for local retrieval. **Done.**
+- required-claim support coverage. **Done.**
+- lexical-overlap audit for query realism. **Done.**
 
 Decision rule:
 
-Adopt hybrid retrieval only if it improves named-framework and paraphrase retrieval enough to justify latency and implementation complexity.
+Keep retrieval local and simple until the advisor loop and label methodology justify more complexity. Do not add provider-key-dependent retrieval to the active build.
 
 Current result:
 
 - `bm25`: Hit@1 81.25%, Hit@5 100%, MRR 0.8917.
-- `dense-openai`: Hit@1 81.25%, Hit@5 100%, MRR 0.8958.
-- `hybrid-rrf`: Hit@1 87.50%, Hit@5 100%, MRR 0.9375.
-- `hybrid-rrf-lexical-anchor`: Hit@1 87.50%, Hit@5 100%, MRR 0.9375.
-- Warm embedding-cache reruns report 0 API tokens and cache hits for unchanged embeddings, which keeps real API-backed experiments cheap enough to run repeatedly.
 - Required-claim review status: 65 accepted labels, none needing attention.
 - Accepted-label BM25 heading-aware required-claim support coverage: 87.69%, with 8 unsupported claims.
-- Accepted-label retrieval ablation: `dense-openai` support coverage 90.77%, `hybrid-rrf` 89.23%, `bm25` 87.69%, and `hybrid-rrf-lexical-anchor` 87.69%.
-- Decision: treat these as pilot results, not final retrieval-selection evidence. The harness can compare retrievers repeatably, but the pilot queries are too framework-vocabulary-heavy, chapter-level rank metrics are too coarse, and required-claim support labels are not exhaustive. The next methodology must start with realistic query design, then judge retrieved chunks directly before choosing among dense, hybrid, fusion, or rerank variants.
+- Decision: use these as local guardrails, not final product-quality proof. The next methodology should focus on realistic advisor behavior and human/subscription-reviewed answer quality.
 
 Report:
 
-- `evals/reports/retrieval_ablation.md`
-- `evals/reports/retrieval_required_claim_ablation.md`
+- `evals/reports/local_retrieval_baseline.md`
+- `evals/reports/obligation_support_coverage.md`
 
-## Phase 4 — Robust Retrieval Evaluation Methodology
+## Phase 4 — Robust Local Evaluation Methodology
 
-Objective: define a chunk-level evaluation method that is strong enough to select among close retrieval approaches without overbuilding the label process.
+Objective: define an evaluation method that is strong enough to improve the advisor without provider-key-dependent labeling.
 
 Build:
 
@@ -228,63 +214,54 @@ Build:
 - Audit script: `scripts/audit_query_realism.py`.
 - Include query types: exact framework names, paraphrases, business situations, diagnostic numeric scenarios, confusable near-neighbor questions, and noisy/vague user phrasing.
 - Audit queries for lexical overlap with chapter titles and framework names so BM25 is not accidentally advantaged.
-- For each eval query, collect top chunks from the candidate retrievers being compared.
-- Pool builder: `scripts/build_chunk_relevance_pool.py`, outputting `evals/chunk_relevance_pool.jsonl`.
-- Dedupe by chunk ID and avoid showing the reviewer which retriever proposed each chunk.
-- Label each query/chunk pair as `0` not relevant, `1` partially useful, or `2` directly useful/supporting.
-- Review UI: `scripts/review_chunk_relevance.py`.
-- Scorer: `scripts/score_chunk_relevance.py`, outputting `evals/reports/pooled_relevance.md`.
+- For each eval query or advisor trace, collect the retrieved chunks and final answer.
+- Review retrieved chunks and answers through local review UI or subscription-operated review.
 - Keep required-claim labels as answer-readiness checks, not exhaustive relevance labels.
 
 Metrics:
 
-- nDCG@5 / nDCG@10
-- precision@5
-- recall@5 against the pooled judged set
-- p95 latency and embedding cache usage
+- next-action correctness
+- answer usefulness
+- citation/support correctness
+- deterministic calculation correctness
+- user turns to useful recommendation
 
 Decision rule:
 
-Use pooled judgments when choosing between close retrieval or rerank variants. If pooled judgments agree with the cheaper existing metrics, keep the simpler metric for future smoke checks.
+Use local human/subscription-reviewed traces to decide whether the advisor is improving. Keep simple retrieval metrics as smoke checks only.
 
 Reports:
 
 - `evals/reports/query_realism.md`
-- `evals/reports/pooled_relevance.md`
+- future `evals/reports/advisor_behavior_eval.md`
 
-## Phase 5 — Embedding And Rerank Experiments
+## Phase 5 — Advisor Behavior Evals
 
-Objective: select model components by quality/cost frontier.
+Objective: evaluate the subscription-operated advisor loop by behavior, not by provider model comparison.
 
-Compare embeddings:
+Scenarios:
 
-- `text-embedding-3-large`
-- `text-embedding-3-small`
-- Cohere embed
-- local BGE, if practical
-
-Compare rerankers:
-
-- No reranker.
-- Cohere rerank.
-- local BGE reranker, if practical
+- missing context -> asks the next useful question
+- numeric facts present -> calculates correctly
+- concept question -> teaches with source evidence when needed
+- sufficient snapshot -> diagnoses the binding constraint
+- recommendation -> cites retrieved chunks and gives a next action
 
 Metrics:
 
-- nDCG@5 / nDCG@10 on pooled judgments
-- precision@5
-- required-claim support coverage
-- p95 latency
-- cost per query
+- next-action correctness
+- calculation correctness
+- support/citation correctness
+- answer usefulness
+- trace completeness
 
 Decision rule:
 
-Use the cheapest model stack within the acceptable quality delta of the best-performing stack. Keep rerank only if it improves pooled relevance or required-claim support enough to justify latency and cost.
+Improve prompts, tool surfaces, and snapshot fields only when behavior evals show a concrete failure pattern.
 
 Reports:
 
-- `evals/reports/embedding_comparison.md`
-- `evals/reports/rerank_ablation.md`
+- `evals/reports/advisor_behavior_eval.md`
 
 ## Phase 6 — CLI Stateful Advisor Slice
 

@@ -118,7 +118,7 @@ def write_report(run: dict[str, Any], path: Path) -> None:
         "",
         "## Hypothesis",
         "",
-        "A lightweight local BM25-style retriever over heading-aware transcript chunks should provide a runnable baseline for the five-layer namespace taxonomy before dense embeddings, Pinecone, hybrid retrieval, or reranking are introduced.",
+        "A lightweight local BM25-style retriever over heading-aware transcript chunks should provide a runnable baseline for the five-layer taxonomy.",
         "",
         "## Variant",
         "",

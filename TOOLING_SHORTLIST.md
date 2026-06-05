@@ -1,17 +1,16 @@
 # Tooling Shortlist
 
-Current recommendation for the next build pass: keep the product CLI-first, use setup/intake to build a `BusinessSnapshot`, and avoid building a web app until the advisor loop is useful. For v1, the advisor loop should be operated through Codex/ChatGPT subscription context over local CLI tools, not implemented as an OpenAI API agent loop.
+Current recommendation for the next build pass: keep the product CLI-first, use setup/intake to build a `BusinessSnapshot`, and avoid building a web app until the advisor loop is useful. For v1, the advisor loop should be operated through Codex/ChatGPT subscription context over local CLI tools, with no provider-key model calls.
 
 ## Recommended stack
 
 | Need | Recommended tool | Why it helps this project | Source |
 |---|---|---|---|
-| Stateful advisor orchestration | LangGraph | The product is a multi-turn advisor with explicit state, conditional steps, and tool calls. LangGraph is built for long-running, stateful agent workflows with durable execution and memory. | https://github.com/langchain-ai/langgraph |
-| Local model/operator workflow | Codex CLI / Codex environment | A CLI product can be developed and operated inside Codex. Codex CLI can run locally, read files, modify code, and use a ChatGPT sign-in flow. Treat this as the v1 advisor runtime. For deployed use, keep a model-provider interface so credentials can switch to normal API billing later. | https://help.openai.com/en/articles/11096431, https://help.openai.com/en/articles/11381614-api-codex-cli-and-sign-in-with-chatgpt |
+| Stateful advisor orchestration | Simple CLI state loop first; LangGraph only if the loop earns it | The product is multi-turn, but the v1 should prove the state and tool boundaries before adding orchestration machinery. | Local architecture decision |
+| Local model/operator workflow | Codex CLI / Codex environment | A CLI product can be developed and operated inside Codex. Codex CLI can run locally, read files, modify code, and use a ChatGPT sign-in flow. Treat this as the v1 advisor runtime. | https://help.openai.com/en/articles/11096431, https://help.openai.com/en/articles/11381614-api-codex-cli-and-sign-in-with-chatgpt |
 | Setup/intake input | Plain local directory + Markdown/JSON/YAML readers | Optional setup input can come from local notes, offers, metrics, docs, and prior sessions. Runtime chat should use the saved snapshot. | Local architecture decision |
-| Local session and snapshot store | SQLite | Good enough for `BusinessSnapshot`, sessions, context manifests, eval runs, embedding cache, and traces. Already used for embedding cache. | Local implementation |
-| Local vector store | Qdrant | Useful if BM25 plus cached embeddings stops being enough locally. It can run locally and supports vector search through Python/JS clients. | https://qdrant.tech/documentation/ |
-| JD-aligned production vector store | Pinecone | The JD specifically names Pinecone and multiple namespaces. Keep Pinecone as the deployable target, but do not block the CLI on it. | https://docs.pinecone.io/guides/indexes/use-namespaces |
+| Local session and snapshot store | JSON now; SQLite later only if traces become unwieldy | JSON files are enough for `BusinessSnapshot`, context manifests, and sessions in v1. | Local implementation |
+| Local retrieval | Standard-library BM25-style search | Keeps the advisor runnable without provider keys or hosted infrastructure. | Local implementation |
 | Eval and trace visibility | Arize Phoenix | Open-source observability/evaluation tool for LLM apps; useful once the CLI has multi-step traces that are hard to inspect by logs alone. | https://arize.com/docs/phoenix/, https://github.com/Arize-ai/phoenix |
 | Future web/chat UI | Vercel AI SDK + assistant-ui | Only after the CLI loop works. Vercel AI SDK handles streaming/tool calls; assistant-ui provides React chat components that work with Vercel AI SDK. | https://vercel.com/docs/agents, https://github.com/assistant-ui/assistant-ui |
 
@@ -19,9 +18,10 @@ Current recommendation for the next build pass: keep the product CLI-first, use 
 
 - A full web app before the CLI advisor loop works.
 - Multi-agent orchestration beyond a simple state graph.
-- Pinecone-only infrastructure that prevents local iteration.
 - A brittle regex diagnostic router as the production brain.
 - A custom chat UI from scratch.
+- Provider-key model calls.
+- Provider-key-dependent retrieval or labeling.
 
 ## Immediate shortcut
 
