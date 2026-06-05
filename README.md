@@ -12,7 +12,7 @@ If the user provides missing information during chat, the advisor saves it back 
 
 ## Advisor skill
 
-Advisor operation instructions live in the project skill at `.codex/skills/money-model-advisor/SKILL.md`. Invoke that skill from the folder you want the advisor to analyze.
+Advisor operation instructions live in the project skill at `.codex/skills/money-model-advisor/SKILL.md`. Invoke that skill from the folder where advisor context should be saved.
 
 ## Local proof harness
 
