@@ -5,7 +5,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from money_model_architect.advisor_queries import build_advisor_queries
+from money_model_architect.advisor_retrieval import execute_advisor_queries
 from money_model_architect.snapshot import BusinessSnapshot
+
+
+TRANSCRIPT_DIR = Path(__file__).resolve().parents[1] / "corpus" / "transcripts"
 
 
 def diagnosable_snapshot() -> BusinessSnapshot:
@@ -65,7 +69,32 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         self.assertTrue(all(query.intent == "framework_comparison" for query in queries))
         self.assertEqual([query.query for query in queries], ["rollover upsell", "classic upsell"])
 
+    def test_diagnostic_query_retrieves_local_evidence(self):
+        snapshot = diagnosable_snapshot()
+        queries = build_advisor_queries(snapshot)
+
+        evidence = execute_advisor_queries(queries, TRANSCRIPT_DIR, top_k=3)
+
+        self.assertEqual(len(evidence), 1)
+        self.assertEqual(evidence[0].intent, "diagnostic_evidence")
+        self.assertTrue(evidence[0].chunks)
+        self.assertTrue(all("unit-economics" in chunk.layers for chunk in evidence[0].chunks))
+
+    def test_recommendation_queries_retrieve_local_evidence(self):
+        snapshot = diagnosable_snapshot()
+        snapshot.problem.diagnosed_constraints.append("payback_not_recovered_without_recurring_gp")
+        snapshot.money_model.attraction_offer.exists = True
+        snapshot.money_model.upsell.exists = False
+        snapshot.money_model.downsell.exists = True
+        snapshot.money_model.continuity.exists = False
+        snapshot.refresh()
+        queries = build_advisor_queries(snapshot)
+
+        evidence = execute_advisor_queries(queries, TRANSCRIPT_DIR, top_k=2)
+
+        self.assertEqual([item.layer for item in evidence], ["upsells", "continuity"])
+        self.assertTrue(all(item.chunks for item in evidence))
+
 
 if __name__ == "__main__":
     unittest.main()
-

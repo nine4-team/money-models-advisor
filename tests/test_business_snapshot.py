@@ -107,6 +107,8 @@ class BusinessContextTest(unittest.TestCase):
             self.assertEqual(saved_snapshot["economics"]["cac"], 350)
             self.assertEqual(saved_snapshot["economics"]["first_30_day_gross_profit"], 120)
             self.assertTrue(sessions)
+            self.assertTrue(turn.evidence)
+            self.assertTrue(turn.evidence[0]["chunks"])
 
     def test_setup_answers_populate_snapshot(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .advisor_queries import build_advisor_queries
+from .advisor_retrieval import execute_advisor_queries
 from .business_context import advisor_paths, ensure_advisor_state, utc_now
 from .snapshot import BusinessSnapshot
 
@@ -54,10 +55,11 @@ class AdvisorTurn:
     snapshot: dict[str, Any]
     actions: list[str] = field(default_factory=list)
     retrieval_queries: list[dict[str, str]] = field(default_factory=list)
+    evidence: list[dict[str, Any]] = field(default_factory=list)
     created_at: str = field(default_factory=utc_now)
 
 
-def run_single_turn(business_dir: Path, message: str) -> AdvisorTurn:
+def run_single_turn(business_dir: Path, message: str, transcript_dir: Path | None = None) -> AdvisorTurn:
     paths = advisor_paths(business_dir)
     ensure_advisor_state(paths)
 
@@ -65,7 +67,17 @@ def run_single_turn(business_dir: Path, message: str) -> AdvisorTurn:
     actions = update_snapshot_from_message(snapshot, message)
     snapshot.refresh()
 
-    retrieval_queries = [query.to_dict() for query in build_advisor_queries(snapshot, message)]
+    advisor_queries = build_advisor_queries(snapshot, message)
+    retrieval_queries = [query.to_dict() for query in advisor_queries]
+    evidence = []
+    if advisor_queries:
+        evidence = [
+            query_evidence.to_dict()
+            for query_evidence in execute_advisor_queries(
+                advisor_queries,
+                transcript_dir=transcript_dir or _default_transcript_dir(),
+            )
+        ]
     assistant_message = next_advisor_message(snapshot)
     actions.extend(diagnose_snapshot_constraints(snapshot))
     snapshot.save(paths.snapshot)
@@ -76,6 +88,7 @@ def run_single_turn(business_dir: Path, message: str) -> AdvisorTurn:
         snapshot=snapshot.to_dict(),
         actions=actions,
         retrieval_queries=retrieval_queries,
+        evidence=evidence,
     )
     save_session_turn(paths.sessions_dir, turn)
     return turn
@@ -237,3 +250,7 @@ def _set_field(snapshot: BusinessSnapshot, field_name: str, value: Any) -> None:
 
 def _conversation_source(confidence: str) -> dict[str, str]:
     return {"source_type": "conversation", "confidence": confidence, "updated_at": utc_now()}
+
+
+def _default_transcript_dir() -> Path:
+    return Path(__file__).resolve().parents[2] / "corpus" / "transcripts"

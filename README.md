@@ -131,11 +131,12 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Setup/intake state directory and manifest hashing implemented in `src/money_model_architect/business_context.py`.
 - Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
 - Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
+- Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup` and `chat` CLI commands.
 
 ## What remains planned
 
-- Retrieval execution inside the advisor loop using `ADVISOR_QUERY_POLICY_V1.md`.
+- Recommendation synthesis that uses captured evidence chunks in the visible advisor answer.
 - Setup/intake fact collection from user answers and optional local files.
 - Snapshot extraction and next-action eval reports.
 - Dense + sparse hybrid retrieval with RRF and reranking where chunk-level relevance evaluation shows it earns the complexity.

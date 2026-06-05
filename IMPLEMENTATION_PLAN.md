@@ -90,6 +90,7 @@ Implemented:
 - Setup/intake state directory and manifest hashing in `src/money_model_architect/business_context.py`.
 - Setup/intake answer collection in `src/money_model_architect/setup_intake.py`.
 - Advisor query policy in `ADVISOR_QUERY_POLICY_V1.md` and `src/money_model_architect/advisor_queries.py`.
+- Advisor query execution and evidence capture in `src/money_model_architect/advisor_retrieval.py`.
 - First stateful advisor turn in `src/money_model_architect/advisor.py`.
 - `setup` and `chat` CLI commands. `sync` remains an alias for `setup`.
 - Framework-aware chunking candidate implemented, but not adopted as default.
@@ -288,7 +289,7 @@ Build:
 - Snapshot update from setup answers and the user's chat message. **Started for setup answers and obvious user-message facts.**
 - A next-turn planner that chooses between clarify, calculate, diagnose, retrieve, critique, draft, compare, and teach. **Started for clarify/payback diagnosis; `advisory_status` tracks `insufficient_context`, `diagnosable`, `diagnosed`, and `recommendable`.**
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
-- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started: message, actions, snapshot, answer.**
+- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started: message, actions, snapshot, planned queries, retrieved evidence, answer.**
 
 Metrics:
 
