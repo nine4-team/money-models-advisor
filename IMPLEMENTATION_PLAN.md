@@ -27,6 +27,8 @@ money-model-advisor chat --business-dir /path/to/company
 
 `setup` builds the initial `BusinessSnapshot` from setup/intake and optional local files. `chat` uses the saved snapshot only. If the user provides missing information during chat, the advisor saves that fact back into the snapshot with source metadata. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
 
+The v1 advisor loop is subscription-operated through Codex/ChatGPT using local CLI tools and saved state. It is not an OpenAI API agent loop. API-backed embedding calls are allowed for offline retrieval experiments when explicitly run, but the main advisor conversation should be driven by the user's subscription context and the repo's local commands.
+
 The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
 Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.

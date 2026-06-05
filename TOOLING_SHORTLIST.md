@@ -1,13 +1,13 @@
 # Tooling Shortlist
 
-Current recommendation for the next build pass: keep the product CLI-first, use setup/intake to build a `BusinessSnapshot`, and avoid building a web app until the advisor loop is useful.
+Current recommendation for the next build pass: keep the product CLI-first, use setup/intake to build a `BusinessSnapshot`, and avoid building a web app until the advisor loop is useful. For v1, the advisor loop should be operated through Codex/ChatGPT subscription context over local CLI tools, not implemented as an OpenAI API agent loop.
 
 ## Recommended stack
 
 | Need | Recommended tool | Why it helps this project | Source |
 |---|---|---|---|
 | Stateful advisor orchestration | LangGraph | The product is a multi-turn advisor with explicit state, conditional steps, and tool calls. LangGraph is built for long-running, stateful agent workflows with durable execution and memory. | https://github.com/langchain-ai/langgraph |
-| Local model/operator workflow | Codex CLI / Codex environment | A CLI product can be developed and operated inside Codex. Codex CLI can run locally, read files, modify code, and use a ChatGPT sign-in flow; for deployed use, keep a model-provider interface so credentials can switch to normal API billing. | https://help.openai.com/en/articles/11096431, https://help.openai.com/en/articles/11381614-api-codex-cli-and-sign-in-with-chatgpt |
+| Local model/operator workflow | Codex CLI / Codex environment | A CLI product can be developed and operated inside Codex. Codex CLI can run locally, read files, modify code, and use a ChatGPT sign-in flow. Treat this as the v1 advisor runtime. For deployed use, keep a model-provider interface so credentials can switch to normal API billing later. | https://help.openai.com/en/articles/11096431, https://help.openai.com/en/articles/11381614-api-codex-cli-and-sign-in-with-chatgpt |
 | Setup/intake input | Plain local directory + Markdown/JSON/YAML readers | Optional setup input can come from local notes, offers, metrics, docs, and prior sessions. Runtime chat should use the saved snapshot. | Local architecture decision |
 | Local session and snapshot store | SQLite | Good enough for `BusinessSnapshot`, sessions, context manifests, eval runs, embedding cache, and traces. Already used for embedding cache. | Local implementation |
 | Local vector store | Qdrant | Useful if BM25 plus cached embeddings stops being enough locally. It can run locally and supports vector search through Python/JS clients. | https://qdrant.tech/documentation/ |
@@ -45,5 +45,5 @@ Chat should:
 2. ask targeted missing-context questions when needed;
 3. save any new user-provided facts back to the snapshot;
 4. run deterministic economics when fields are present;
-5. retrieve Hormozi frameworks for the diagnosed/design constraint;
+5. retrieve source evidence from the Money Models corpus when the advisor needs citations;
 6. write session traces back to `.money-model-advisor/`.

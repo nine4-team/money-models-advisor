@@ -6,7 +6,9 @@ The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an a
 
 This repo also includes a small local proof harness so the core modeling decisions can be run without Pinecone or a web service. API-backed embedding experiments use OpenAI embeddings when `OPENAI_API_KEY` is present, and cache results locally to avoid paying for the same corpus/query embeddings repeatedly.
 
-The next product surface is CLI-first: run setup/intake to build a `BusinessSnapshot`, then chat from the saved snapshot. If the user provides missing information during chat, the advisor saves it back into the snapshot. The web app can wait until that loop is actually good.
+The next product surface is CLI-first and subscription-operated: run setup/intake to build a `BusinessSnapshot`, then use Codex/ChatGPT subscription context to operate the advisor over CLI tools and saved local state. The advisor runtime is not planned as an OpenAI API agent loop for v1. API calls remain optional for offline retrieval experiments, not for the main advisor conversation.
+
+If the user provides missing information during chat, the advisor saves it back into the snapshot. The web app can wait until that loop is actually good.
 
 ## Local proof harness
 
