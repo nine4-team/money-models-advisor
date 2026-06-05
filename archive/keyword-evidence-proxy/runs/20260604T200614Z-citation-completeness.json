@@ -1,0 +1,913 @@
+{
+  "run_id": "20260604T200614Z",
+  "experiment": "citation-completeness",
+  "dataset": "evals/golden.jsonl",
+  "top_k": 5,
+  "variants": [
+    {
+      "strategy": "heading-aware",
+      "chunks": 202,
+      "avg_chunk_words": 513.5,
+      "metrics": {
+        "total": 16,
+        "avg_coverage": 0.9062,
+        "full_coverage_rate": 0.6875,
+        "min_coverage": 0.5
+      },
+      "queries": [
+        {
+          "id": "payback_definition",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "evidence_chunk": "payback-period:2",
+          "evidence_chapter": "payback-period",
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "payback-period",
+            "cfa",
+            "payback-period",
+            "payback-period"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "first 30 days",
+            "upsell",
+            "payback period",
+            "gross profit"
+          ],
+          "missing": [],
+          "latency_ms": 1.147
+        },
+        {
+          "id": "rollover_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "evidence_chunk": "rollover-upsell:1",
+          "evidence_chapter": "rollover-upsell",
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "upsell-offers",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "rollover",
+            "credit",
+            "old customers",
+            "competitor"
+          ],
+          "missing": [],
+          "latency_ms": 0.292
+        },
+        {
+          "id": "continuity_churn",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "evidence_chunk": "continuity-discounts:11",
+          "evidence_chapter": "continuity-discounts",
+          "retrieved_chapters": [
+            "continuity-offers",
+            "ten-years-ten-minutes",
+            "waived-fee",
+            "continuity-offers",
+            "continuity-discounts"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "churn",
+            "lifetime discount",
+            "month",
+            "cancel"
+          ],
+          "missing": [],
+          "latency_ms": 0.332
+        },
+        {
+          "id": "feature_downsell",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "evidence_chunk": "feature-downsells:4",
+          "evidence_chapter": "feature-downsells",
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "feature-downsells",
+            "pay-less-now",
+            "feature-downsells"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "remove",
+            "feature",
+            "lower price",
+            "guarantee"
+          ],
+          "missing": [],
+          "latency_ms": 0.246
+        },
+        {
+          "id": "free_offer_cac",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "evidence_chunk": "cac:2",
+          "evidence_chapter": "cac",
+          "retrieved_chapters": [
+            "cac",
+            "how-businesses-make-money",
+            "context",
+            "cac",
+            "ten-years-ten-minutes"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "free",
+            "leads",
+            "CAC"
+          ],
+          "missing": [
+            "friction"
+          ],
+          "latency_ms": 0.686
+        },
+        {
+          "id": "cac_fully_loaded",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "evidence_chunk": "cac:0",
+          "evidence_chapter": "cac",
+          "retrieved_chapters": [
+            "cac",
+            "cfa",
+            "context",
+            "how-businesses-make-money",
+            "context"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "advertising",
+            "payroll",
+            "software",
+            "commissions"
+          ],
+          "missing": [],
+          "latency_ms": 0.23
+        },
+        {
+          "id": "gross_profit_service_margin",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "gross-profit"
+          ],
+          "evidence_chunk": "gross-profit:3",
+          "evidence_chapter": "gross-profit",
+          "retrieved_chapters": [
+            "gross-profit",
+            "gross-profit",
+            "how-businesses-make-money",
+            "context",
+            "cfa"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "gross profit",
+            "80",
+            "service"
+          ],
+          "missing": [
+            "cost of goods"
+          ],
+          "latency_ms": 0.187
+        },
+        {
+          "id": "ltgp_cac_viability",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "how-businesses-make-money"
+          ],
+          "evidence_chunk": "how-businesses-make-money:1",
+          "evidence_chapter": "how-businesses-make-money",
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "gross-profit",
+            "context",
+            "gross-profit",
+            "cfa"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "lifetime gross profit",
+            "CAC",
+            "3",
+            "revenue"
+          ],
+          "missing": [],
+          "latency_ms": 0.366
+        },
+        {
+          "id": "cfa_levels",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cfa"
+          ],
+          "evidence_chunk": "cfa:0",
+          "evidence_chapter": "cfa",
+          "retrieved_chapters": [
+            "cfa",
+            "ride-along-apprenticeship",
+            "context",
+            "gross-profit",
+            "cfa"
+          ],
+          "terms_total": 4,
+          "terms_present": 2,
+          "coverage": 0.5,
+          "present": [
+            "level 2",
+            "30-day"
+          ],
+          "missing": [
+            "level 1",
+            "level 3"
+          ],
+          "latency_ms": 0.22
+        },
+        {
+          "id": "payback_gross_profit_not_revenue",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "evidence_chunk": "payback-period:2",
+          "evidence_chapter": "payback-period",
+          "retrieved_chapters": [
+            "payback-period",
+            "how-businesses-make-money",
+            "payback-period",
+            "payback-period",
+            "how-businesses-make-money"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "gross profit",
+            "revenue",
+            "cost of goods",
+            "break even"
+          ],
+          "missing": [],
+          "latency_ms": 0.2
+        },
+        {
+          "id": "anchor_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "anchor-upsell"
+          ],
+          "evidence_chunk": "anchor-upsell:7",
+          "evidence_chapter": "anchor-upsell",
+          "retrieved_chapters": [
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "five to ten",
+            "gasp",
+            "secondary features",
+            "premium"
+          ],
+          "missing": [],
+          "latency_ms": 0.388
+        },
+        {
+          "id": "payment_plans",
+          "layer": "downsells",
+          "expected_chapters": [
+            "payment-plans"
+          ],
+          "evidence_chunk": "payment-plans:10",
+          "evidence_chapter": "payment-plans",
+          "retrieved_chapters": [
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "today",
+            "payment plan",
+            "third-party financing"
+          ],
+          "missing": [
+            "afford"
+          ],
+          "latency_ms": 0.272
+        },
+        {
+          "id": "continuity_bonus",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-bonus"
+          ],
+          "evidence_chunk": "continuity-bonus:2",
+          "evidence_chapter": "continuity-bonus",
+          "retrieved_chapters": [
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "bonus",
+            "subscription",
+            "continuity"
+          ],
+          "missing": [
+            "first month"
+          ],
+          "latency_ms": 0.272
+        },
+        {
+          "id": "continuity_discount",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "evidence_chunk": "continuity-discounts:7",
+          "evidence_chapter": "continuity-discounts",
+          "retrieved_chapters": [
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-offers",
+            "continuity-offers"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "lifetime discount",
+            "churn",
+            "cancel",
+            "ACH"
+          ],
+          "missing": [],
+          "latency_ms": 0.316
+        },
+        {
+          "id": "waived_fee",
+          "layer": "continuity",
+          "expected_chapters": [
+            "waived-fee"
+          ],
+          "evidence_chunk": "waived-fee:2",
+          "evidence_chapter": "waived-fee",
+          "retrieved_chapters": [
+            "waived-fee",
+            "waived-fee",
+            "ten-years-ten-minutes",
+            "ten-years-ten-minutes",
+            "waived-fee"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "startup fee",
+            "waive",
+            "commitment",
+            "cancel"
+          ],
+          "missing": [],
+          "latency_ms": 0.528
+        },
+        {
+          "id": "money_model_stack",
+          "layer": "offers",
+          "expected_chapters": [
+            "money-models-offer-stacks",
+            "offer-types"
+          ],
+          "evidence_chunk": "offer-types:4",
+          "evidence_chapter": "offer-types",
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "make-your-money-model",
+            "offer-types",
+            "money-models-offer-stacks",
+            "ten-years-ten-minutes"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "attraction",
+            "upsell",
+            "downsell",
+            "continuity"
+          ],
+          "missing": [],
+          "latency_ms": 0.716
+        }
+      ]
+    },
+    {
+      "strategy": "framework-aware",
+      "chunks": 204,
+      "avg_chunk_words": 496.9,
+      "metrics": {
+        "total": 16,
+        "avg_coverage": 0.8594,
+        "full_coverage_rate": 0.5,
+        "min_coverage": 0.5
+      },
+      "queries": [
+        {
+          "id": "payback_definition",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "evidence_chunk": "payback-period:2",
+          "evidence_chapter": "payback-period",
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "payback-period",
+            "cfa",
+            "payback-period",
+            "payback-period"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "first 30 days",
+            "upsell",
+            "payback period",
+            "gross profit"
+          ],
+          "missing": [],
+          "latency_ms": 0.297
+        },
+        {
+          "id": "rollover_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "evidence_chunk": "rollover-upsell:6",
+          "evidence_chapter": "rollover-upsell",
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "upsell-offers",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "rollover",
+            "credit",
+            "old customers"
+          ],
+          "missing": [
+            "competitor"
+          ],
+          "latency_ms": 0.227
+        },
+        {
+          "id": "continuity_churn",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "evidence_chunk": "continuity-discounts:10",
+          "evidence_chapter": "continuity-discounts",
+          "retrieved_chapters": [
+            "continuity-offers",
+            "ten-years-ten-minutes",
+            "continuity-discounts",
+            "continuity-offers",
+            "waived-fee"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "churn",
+            "lifetime discount",
+            "month",
+            "cancel"
+          ],
+          "missing": [],
+          "latency_ms": 0.609
+        },
+        {
+          "id": "feature_downsell",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "evidence_chunk": "feature-downsells:6",
+          "evidence_chapter": "feature-downsells",
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "free-trials",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "remove",
+            "feature",
+            "lower price",
+            "guarantee"
+          ],
+          "missing": [],
+          "latency_ms": 0.577
+        },
+        {
+          "id": "free_offer_cac",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "evidence_chunk": "cac:1",
+          "evidence_chapter": "cac",
+          "retrieved_chapters": [
+            "cac",
+            "how-businesses-make-money",
+            "context",
+            "ten-years-ten-minutes",
+            "cac"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "free",
+            "leads",
+            "CAC"
+          ],
+          "missing": [
+            "friction"
+          ],
+          "latency_ms": 0.71
+        },
+        {
+          "id": "cac_fully_loaded",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "evidence_chunk": "cac:0",
+          "evidence_chapter": "cac",
+          "retrieved_chapters": [
+            "cac",
+            "cfa",
+            "context",
+            "how-businesses-make-money",
+            "how-businesses-make-money"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "advertising",
+            "payroll",
+            "software",
+            "commissions"
+          ],
+          "missing": [],
+          "latency_ms": 1.076
+        },
+        {
+          "id": "gross_profit_service_margin",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "gross-profit"
+          ],
+          "evidence_chunk": "gross-profit:2",
+          "evidence_chapter": "gross-profit",
+          "retrieved_chapters": [
+            "gross-profit",
+            "how-businesses-make-money",
+            "context",
+            "cfa",
+            "gross-profit"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "gross profit",
+            "80",
+            "service"
+          ],
+          "missing": [
+            "cost of goods"
+          ],
+          "latency_ms": 0.179
+        },
+        {
+          "id": "ltgp_cac_viability",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "how-businesses-make-money"
+          ],
+          "evidence_chunk": "how-businesses-make-money:1",
+          "evidence_chapter": "how-businesses-make-money",
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "context",
+            "gross-profit",
+            "gross-profit",
+            "cfa"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "lifetime gross profit",
+            "CAC",
+            "3",
+            "revenue"
+          ],
+          "missing": [],
+          "latency_ms": 0.269
+        },
+        {
+          "id": "cfa_levels",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cfa"
+          ],
+          "evidence_chunk": "cfa:0",
+          "evidence_chapter": "cfa",
+          "retrieved_chapters": [
+            "cfa",
+            "ride-along-apprenticeship",
+            "context",
+            "gross-profit",
+            "gross-profit"
+          ],
+          "terms_total": 4,
+          "terms_present": 2,
+          "coverage": 0.5,
+          "present": [
+            "level 2",
+            "30-day"
+          ],
+          "missing": [
+            "level 1",
+            "level 3"
+          ],
+          "latency_ms": 0.177
+        },
+        {
+          "id": "payback_gross_profit_not_revenue",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "evidence_chunk": "payback-period:1",
+          "evidence_chapter": "payback-period",
+          "retrieved_chapters": [
+            "payback-period",
+            "how-businesses-make-money",
+            "how-businesses-make-money",
+            "payback-period",
+            "cfa"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "gross profit",
+            "cost of goods",
+            "break even"
+          ],
+          "missing": [
+            "revenue"
+          ],
+          "latency_ms": 0.172
+        },
+        {
+          "id": "anchor_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "anchor-upsell"
+          ],
+          "evidence_chunk": "anchor-upsell:8",
+          "evidence_chapter": "anchor-upsell",
+          "retrieved_chapters": [
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "five to ten",
+            "gasp",
+            "secondary features",
+            "premium"
+          ],
+          "missing": [],
+          "latency_ms": 0.663
+        },
+        {
+          "id": "payment_plans",
+          "layer": "downsells",
+          "expected_chapters": [
+            "payment-plans"
+          ],
+          "evidence_chunk": "payment-plans:8",
+          "evidence_chapter": "payment-plans",
+          "retrieved_chapters": [
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "today",
+            "payment plan",
+            "afford"
+          ],
+          "missing": [
+            "third-party financing"
+          ],
+          "latency_ms": 0.311
+        },
+        {
+          "id": "continuity_bonus",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-bonus"
+          ],
+          "evidence_chunk": "continuity-bonus:3",
+          "evidence_chapter": "continuity-bonus",
+          "retrieved_chapters": [
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-offers",
+            "offer-types"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "bonus",
+            "first month",
+            "continuity"
+          ],
+          "missing": [
+            "subscription"
+          ],
+          "latency_ms": 0.25
+        },
+        {
+          "id": "continuity_discount",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "evidence_chunk": "continuity-discounts:10",
+          "evidence_chapter": "continuity-discounts",
+          "retrieved_chapters": [
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-offers",
+            "continuity-discounts",
+            "waived-fee"
+          ],
+          "terms_total": 4,
+          "terms_present": 3,
+          "coverage": 0.75,
+          "present": [
+            "lifetime discount",
+            "churn",
+            "cancel"
+          ],
+          "missing": [
+            "ACH"
+          ],
+          "latency_ms": 0.272
+        },
+        {
+          "id": "waived_fee",
+          "layer": "continuity",
+          "expected_chapters": [
+            "waived-fee"
+          ],
+          "evidence_chunk": "waived-fee:2",
+          "evidence_chapter": "waived-fee",
+          "retrieved_chapters": [
+            "waived-fee",
+            "waived-fee",
+            "waived-fee",
+            "waived-fee",
+            "ten-years-ten-minutes"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "startup fee",
+            "waive",
+            "commitment",
+            "cancel"
+          ],
+          "missing": [],
+          "latency_ms": 0.234
+        },
+        {
+          "id": "money_model_stack",
+          "layer": "offers",
+          "expected_chapters": [
+            "money-models-offer-stacks",
+            "offer-types"
+          ],
+          "evidence_chunk": "offer-types:4",
+          "evidence_chapter": "offer-types",
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "make-your-money-model",
+            "offer-types",
+            "money-models-offer-stacks",
+            "ten-years-ten-minutes"
+          ],
+          "terms_total": 4,
+          "terms_present": 4,
+          "coverage": 1.0,
+          "present": [
+            "attraction",
+            "upsell",
+            "downsell",
+            "continuity"
+          ],
+          "missing": [],
+          "latency_ms": 0.442
+        }
+      ]
+    }
+  ]
+}

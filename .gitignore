@@ -1,0 +1,6 @@
+.cache/
+.money-model-advisor/
+.env
+.env.local
+__pycache__/
+*.pyc

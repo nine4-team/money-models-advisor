@@ -1,0 +1,239 @@
+"""First deterministic advisor loop over BusinessSnapshot v1."""
+
+from __future__ import annotations
+
+import json
+import re
+from dataclasses import asdict, dataclass, field
+from pathlib import Path
+from typing import Any
+
+from .advisor_queries import build_advisor_queries
+from .business_context import advisor_paths, ensure_advisor_state, utc_now
+from .snapshot import BusinessSnapshot
+
+MONEY_RE = re.compile(r"\$?\s*([0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)")
+
+FIELD_QUESTIONS: dict[str, str] = {
+    "problem.user_goal": "What do you want the advisor to help you decide or improve?",
+    "business.business_type": "What kind of business is this?",
+    "business.icp": "Who is the ICP or customer segment?",
+    "money_model.core_offer.description": "What is the core offer you sell first?",
+    "money_model.attraction_offer.exists": "Do you currently have an attraction offer before the core sale?",
+    "money_model.upsell.exists": "Do you currently have an upsell after the core sale?",
+    "money_model.downsell.exists": "Do you currently have a downsell or payment-plan/save option?",
+    "money_model.continuity.exists": "Do you currently have a continuity or recurring offer?",
+    "economics.cac": "What is your CAC?",
+    "economics.first_30_day_gross_profit": "What is the first-30-day gross profit from the first sale?",
+}
+
+PAYBACK_PRIORITY = (
+    "problem.user_goal",
+    "business.business_type",
+    "money_model.core_offer.description",
+    "economics.cac",
+    "economics.first_30_day_gross_profit",
+)
+
+STACK_PRIORITY = (
+    "problem.user_goal",
+    "business.business_type",
+    "business.icp",
+    "money_model.core_offer.description",
+    "money_model.attraction_offer.exists",
+    "money_model.upsell.exists",
+    "money_model.downsell.exists",
+    "money_model.continuity.exists",
+)
+
+
+@dataclass
+class AdvisorTurn:
+    user_message: str
+    assistant_message: str
+    snapshot: dict[str, Any]
+    actions: list[str] = field(default_factory=list)
+    retrieval_queries: list[dict[str, str]] = field(default_factory=list)
+    created_at: str = field(default_factory=utc_now)
+
+
+def run_single_turn(business_dir: Path, message: str) -> AdvisorTurn:
+    paths = advisor_paths(business_dir)
+    ensure_advisor_state(paths)
+
+    snapshot = BusinessSnapshot.load(paths.snapshot)
+    actions = update_snapshot_from_message(snapshot, message)
+    snapshot.refresh()
+
+    retrieval_queries = [query.to_dict() for query in build_advisor_queries(snapshot, message)]
+    assistant_message = next_advisor_message(snapshot)
+    actions.extend(diagnose_snapshot_constraints(snapshot))
+    snapshot.save(paths.snapshot)
+
+    turn = AdvisorTurn(
+        user_message=message,
+        assistant_message=assistant_message,
+        snapshot=snapshot.to_dict(),
+        actions=actions,
+        retrieval_queries=retrieval_queries,
+    )
+    save_session_turn(paths.sessions_dir, turn)
+    return turn
+
+
+def diagnose_snapshot_constraints(snapshot: BusinessSnapshot) -> list[str]:
+    """Set deterministic diagnosis outputs that can be derived from the snapshot."""
+    actions: list[str] = []
+    if not snapshot.advisor_state.ready_for_payback_diagnosis:
+        return actions
+    if (
+        snapshot.economics.payback_period_months is None
+        and "payback_not_recovered_without_recurring_gp" not in snapshot.problem.diagnosed_constraints
+    ):
+        snapshot.problem.diagnosed_constraints.append("payback_not_recovered_without_recurring_gp")
+        actions.append("set problem.diagnosed_constraints.payback_not_recovered_without_recurring_gp")
+    snapshot.refresh()
+    return actions
+
+
+def update_snapshot_from_message(snapshot: BusinessSnapshot, message: str) -> list[str]:
+    """Extract only obvious facts from a user message.
+
+    This is a deterministic v1 skeleton, not the final extraction strategy. It
+    updates direct, low-risk fields and leaves ambiguous facts for clarification.
+    """
+    actions: list[str] = []
+    text = message.strip()
+    lower = text.lower()
+
+    if text and snapshot.problem.user_goal is None:
+        snapshot.problem.user_goal = text
+        snapshot.field_sources["problem.user_goal"] = _conversation_source("high")
+        actions.append("set problem.user_goal")
+    elif text and text not in snapshot.problem.reported_symptoms:
+        snapshot.problem.reported_symptoms.append(text)
+        actions.append("append problem.reported_symptoms")
+
+    extracted_numbers = _extract_numeric_fields(lower)
+    for field_name, value in extracted_numbers.items():
+        _set_field(snapshot, field_name, value)
+        snapshot.field_sources[field_name] = _conversation_source("high")
+        actions.append(f"set {field_name}")
+
+    business_type = _extract_after_patterns(lower, ("business is ", "we run a ", "we are a ", "it's a "))
+    if business_type and snapshot.business.business_type is None:
+        snapshot.business.business_type = business_type
+        snapshot.field_sources["business.business_type"] = _conversation_source("medium")
+        actions.append("set business.business_type")
+
+    core_offer = _extract_after_patterns(lower, ("core offer is ", "main offer is ", "we sell ", "offer is "))
+    if core_offer and snapshot.money_model.core_offer.description is None:
+        snapshot.money_model.core_offer.exists = True
+        snapshot.money_model.core_offer.description = core_offer
+        snapshot.field_sources["money_model.core_offer.description"] = _conversation_source("medium")
+        snapshot.field_sources["money_model.core_offer.exists"] = _conversation_source("medium")
+        actions.append("set money_model.core_offer")
+
+    _update_stack_existence(snapshot, lower, actions)
+    return actions
+
+
+def next_advisor_message(snapshot: BusinessSnapshot) -> str:
+    snapshot.refresh()
+    if snapshot.advisor_state.ready_for_payback_diagnosis:
+        payback = snapshot.economics.payback_period_months
+        if payback is None:
+            return "I have enough for a first payback diagnosis. CAC is not paid back from first-30-day gross profit, and no recurring gross profit is known, so payback is currently undefined/infinite. Next I should inspect the offer stack before recommending a fix."
+        return f"I have enough for a first payback diagnosis. Estimated payback is {payback:.2f} month(s). Next I should inspect the offer stack and retrieve the relevant Money Models framework."
+
+    missing = _prioritized_missing(snapshot)
+    if missing:
+        return FIELD_QUESTIONS.get(missing[0], f"I need {missing[0]} before I can diagnose this cleanly.")
+    return "I have enough basic context. Next I should retrieve the relevant Money Models framework and produce a cited recommendation."
+
+
+def save_session_turn(sessions_dir: Path, turn: AdvisorTurn) -> Path:
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+    path = sessions_dir / f"{turn.created_at.replace(':', '').replace('-', '')}.json"
+    path.write_text(json.dumps(asdict(turn), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
+def _prioritized_missing(snapshot: BusinessSnapshot) -> list[str]:
+    missing = set(snapshot.advisor_state.missing_fields)
+    priority = PAYBACK_PRIORITY if _looks_like_payback_problem(snapshot) else STACK_PRIORITY
+    ordered = [field_name for field_name in priority if field_name in missing]
+    ordered.extend(field_name for field_name in snapshot.advisor_state.missing_fields if field_name not in ordered)
+    return ordered
+
+
+def _looks_like_payback_problem(snapshot: BusinessSnapshot) -> bool:
+    text = " ".join([snapshot.problem.user_goal or "", *snapshot.problem.reported_symptoms]).lower()
+    return any(term in text for term in ("cac", "payback", "cash", "gross profit", "margin", "ltv", "first 30"))
+
+
+def _extract_numeric_fields(lower: str) -> dict[str, float]:
+    fields: dict[str, float] = {}
+    patterns = {
+        "economics.cac": (r"\bcac\s*(?:is|=|:)?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)",),
+        "economics.first_30_day_gross_profit": (
+            r"first[- ]?30[- ]?day gross profit\s*(?:is|=|:)?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)",
+            r"month[- ]?one gross profit\s*(?:is|=|:)?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)",
+        ),
+        "economics.monthly_recurring_gross_profit": (
+            r"monthly recurring gross profit\s*(?:is|=|:)?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)",
+            r"recurring gross profit\s*(?:is|=|:)?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)",
+        ),
+        "economics.gross_margin": (r"gross margin\s*(?:is|=|:)?\s*([0-9]+(?:\.[0-9]+)?)\s*%?",),
+        "economics.lifetime_gross_profit": (
+            r"lifetime gross profit\s*(?:is|=|:)?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)",
+            r"\bltgp\s*(?:is|=|:)?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)",
+        ),
+    }
+    for field_name, field_patterns in patterns.items():
+        for pattern in field_patterns:
+            match = re.search(pattern, lower)
+            if not match:
+                continue
+            value = float(match.group(1).replace(",", ""))
+            if field_name == "economics.gross_margin" and value > 1:
+                value = value / 100
+            fields[field_name] = value
+            break
+    return fields
+
+
+def _extract_after_patterns(lower: str, patterns: tuple[str, ...]) -> str | None:
+    for pattern in patterns:
+        if pattern not in lower:
+            continue
+        value = lower.split(pattern, 1)[1].strip(" .")
+        value = re.split(r"[.;\n]", value, maxsplit=1)[0].strip(" .")
+        return value[:140] if value else None
+    return None
+
+
+def _update_stack_existence(snapshot: BusinessSnapshot, lower: str, actions: list[str]) -> None:
+    for position in ("attraction_offer", "upsell", "downsell", "continuity"):
+        stack_position = getattr(snapshot.money_model, position)
+        readable = position.replace("_", " ")
+        if f"no {readable}" in lower or f"without {readable}" in lower:
+            stack_position.exists = False
+            snapshot.field_sources[f"money_model.{position}.exists"] = _conversation_source("high")
+            actions.append(f"set money_model.{position}.exists")
+        elif f"have {readable}" in lower or f"has {readable}" in lower or f"we use {readable}" in lower:
+            stack_position.exists = True
+            snapshot.field_sources[f"money_model.{position}.exists"] = _conversation_source("high")
+            actions.append(f"set money_model.{position}.exists")
+
+
+def _set_field(snapshot: BusinessSnapshot, field_name: str, value: Any) -> None:
+    target: Any = snapshot
+    parts = field_name.split(".")
+    for part in parts[:-1]:
+        target = getattr(target, part)
+    setattr(target, parts[-1], value)
+
+
+def _conversation_source(confidence: str) -> dict[str, str]:
+    return {"source_type": "conversation", "confidence": confidence, "updated_at": utc_now()}

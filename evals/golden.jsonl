@@ -1,0 +1,32 @@
+{"id":"payback_definition","query":"How do I shorten payback period with upsells in the first 30 days?","layer":"unit-economics","must_chapters":["payback-period"]}
+{"id":"rollover_upsell","query":"When should I use a rollover upsell?","layer":"upsells","must_chapters":["rollover-upsell"]}
+{"id":"continuity_churn","query":"What continuity offer helps when churn spikes at a known month?","layer":"continuity","must_chapters":["continuity-discounts"]}
+{"id":"feature_downsell","query":"How should I lower price without discounting the same offer?","layer":"downsells","must_chapters":["feature-downsells"]}
+{"id":"free_offer_cac","query":"Why do free offers lower CAC and what should I watch out for?","layer":"unit-economics","must_chapters":["cac"]}
+{"id":"cac_fully_loaded","query":"What costs should I include in fully loaded CAC?","layer":"unit-economics","must_chapters":["cac"]}
+{"id":"gross_profit_service_margin","query":"What gross margin should a service business target?","layer":"unit-economics","must_chapters":["gross-profit"]}
+{"id":"ltgp_cac_viability","query":"How do I know if lifetime gross profit is high enough compared to CAC?","layer":"unit-economics","must_chapters":["how-businesses-make-money"]}
+{"id":"cfa_levels","query":"What are the three levels of client financed acquisition?","layer":"unit-economics","must_chapters":["cfa"]}
+{"id":"payback_gross_profit_not_revenue","query":"Why is payback period calculated from gross profit instead of revenue?","layer":"unit-economics","must_chapters":["payback-period"]}
+{"id":"offer_types_four","query":"What are the four types of offers in a money model?","layer":"offers","must_chapters":["offer-types"]}
+{"id":"attraction_liquidate_cac","query":"What is the objective of an attraction offer?","layer":"offers","must_chapters":["attraction-offers","offer-types"]}
+{"id":"win_your_money_back","query":"How does a win your money back offer work for a transformation business?","layer":"offers","must_chapters":["win-your-money-back"]}
+{"id":"free_giveaway_structure","query":"How should a free giveaway use a grand prize and participation offer?","layer":"offers","must_chapters":["free-giveaways"]}
+{"id":"decoy_offer","query":"When should I advertise a cheap decoy offer before presenting the premium option?","layer":"offers","must_chapters":["decoy-offers"]}
+{"id":"free_with_consumption","query":"When should I use free content or a challenge before selling a high ticket offer?","layer":"offers","must_chapters":["free-with-consumption"]}
+{"id":"buy_x_get_y","query":"Why does buy six get twelve free feel stronger than a percentage discount?","layer":"offers","must_chapters":["buy-x-get-y"]}
+{"id":"upsell_overview","query":"Why do upsells often create most of the profit after the first sale?","layer":"upsells","must_chapters":["upsell-offers"]}
+{"id":"classic_upsell","query":"What is the you cannot have X without Y upsell?","layer":"upsells","must_chapters":["classic-upsell"]}
+{"id":"menu_upsell","query":"How does the menu upsell use unsell prescribe preference and card on file?","layer":"upsells","must_chapters":["menu-upsell"]}
+{"id":"anchor_upsell","query":"When should I present a premium anchor at five to ten times the main price?","layer":"upsells","must_chapters":["anchor-upsell"]}
+{"id":"rollover_competitor","query":"How can I use rollover credit to win back old customers or steal competitor customers?","layer":"upsells","must_chapters":["rollover-upsell"]}
+{"id":"downsells_overview","query":"What is the rule about lowering price in a downsell?","layer":"downsells","must_chapters":["downsells","feature-downsells"]}
+{"id":"payment_plans","query":"How should payment plans handle customers who cannot afford the offer today?","layer":"downsells","must_chapters":["payment-plans"]}
+{"id":"free_trial_penalty","query":"How does a free trial with terms work for a recurring service?","layer":"downsells","must_chapters":["free-trials"]}
+{"id":"feature_downsell_guarantee","query":"Why remove the guarantee instead of just discounting the same service?","layer":"downsells","must_chapters":["feature-downsells"]}
+{"id":"pay_less_now","query":"When does pay less now and pay more later work for a physical product?","layer":"downsells","must_chapters":["pay-less-now"]}
+{"id":"continuity_overview","query":"Why does recurring revenue increase lifetime value and enterprise value?","layer":"continuity","must_chapters":["continuity-offers"]}
+{"id":"continuity_bonus","query":"Why advertise the bonus instead of the subscription?","layer":"continuity","must_chapters":["continuity-bonus"]}
+{"id":"continuity_discount","query":"How do lifetime discounts reduce churn at a known cancellation point?","layer":"continuity","must_chapters":["continuity-discounts"]}
+{"id":"waived_fee","query":"How does waiving a startup fee create commitment to continuity?","layer":"continuity","must_chapters":["waived-fee"]}
+{"id":"money_model_stack","query":"How do attraction upsell downsell and continuity offers stack together in the first 30 days?","layer":"offers","must_chapters":["money-models-offer-stacks","offer-types"]}

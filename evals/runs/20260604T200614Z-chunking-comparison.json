@@ -1,0 +1,3143 @@
+{
+  "run_id": "20260604T200614Z",
+  "experiment": "chunking-comparison",
+  "dataset": "evals/golden.jsonl",
+  "top_k": 5,
+  "variants": [
+    {
+      "strategy": "fixed-300",
+      "chunks": 360,
+      "avg_chunk_words": 308.1,
+      "index_ms": 39.449,
+      "metrics": {
+        "total": 32,
+        "hit_at_1": 0.6562,
+        "hit_at_5": 1.0,
+        "mrr": 0.8099,
+        "p50_latency_ms": 0.728,
+        "p95_latency_ms": 2.311
+      },
+      "queries": [
+        {
+          "id": "payback_definition",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "payback-period",
+            "cfa",
+            "payback-period",
+            "payback-period"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.605
+        },
+        {
+          "id": "rollover_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "upsell-offers",
+            "rollover-upsell",
+            "make-your-money-model",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.799
+        },
+        {
+          "id": "continuity_churn",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "continuity-offers",
+            "waived-fee",
+            "continuity-discounts",
+            "continuity-offers"
+          ],
+          "rank": 4,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.25,
+          "latency_ms": 0.983
+        },
+        {
+          "id": "feature_downsell",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.986
+        },
+        {
+          "id": "free_offer_cac",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "context",
+            "context",
+            "cac",
+            "payback-period",
+            "gross-profit"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 3.087
+        },
+        {
+          "id": "cac_fully_loaded",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "context",
+            "cfa",
+            "how-businesses-make-money",
+            "payback-period"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.715
+        },
+        {
+          "id": "gross_profit_service_margin",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "gross-profit"
+          ],
+          "retrieved_chapters": [
+            "gross-profit",
+            "gross-profit",
+            "how-businesses-make-money",
+            "cfa",
+            "gross-profit"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 2.557
+        },
+        {
+          "id": "ltgp_cac_viability",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "how-businesses-make-money"
+          ],
+          "retrieved_chapters": [
+            "gross-profit",
+            "how-businesses-make-money",
+            "gross-profit",
+            "how-businesses-make-money",
+            "context"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.939
+        },
+        {
+          "id": "cfa_levels",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cfa"
+          ],
+          "retrieved_chapters": [
+            "cfa",
+            "ride-along-apprenticeship",
+            "context",
+            "gross-profit",
+            "cfa"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.659
+        },
+        {
+          "id": "payback_gross_profit_not_revenue",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "payback-period",
+            "how-businesses-make-money",
+            "payback-period",
+            "how-businesses-make-money",
+            "cfa"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.668
+        },
+        {
+          "id": "offer_types_four",
+          "layer": "offers",
+          "expected_chapters": [
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "offer-types",
+            "offer-types",
+            "ten-years-ten-minutes",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 1.561
+        },
+        {
+          "id": "attraction_liquidate_cac",
+          "layer": "offers",
+          "expected_chapters": [
+            "attraction-offers",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "offer-types",
+            "attraction-offers",
+            "cac",
+            "make-your-money-model"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 1.418
+        },
+        {
+          "id": "win_your_money_back",
+          "layer": "offers",
+          "expected_chapters": [
+            "win-your-money-back"
+          ],
+          "retrieved_chapters": [
+            "decoy-offers",
+            "win-your-money-back",
+            "decoy-offers",
+            "free-giveaways",
+            "attraction-offers"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 1.016
+        },
+        {
+          "id": "free_giveaway_structure",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-giveaways"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.648
+        },
+        {
+          "id": "decoy_offer",
+          "layer": "offers",
+          "expected_chapters": [
+            "decoy-offers"
+          ],
+          "retrieved_chapters": [
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.668
+        },
+        {
+          "id": "free_with_consumption",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-with-consumption"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "buy-x-get-y",
+            "free-with-consumption",
+            "free-trials",
+            "free-with-consumption"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 0.64
+        },
+        {
+          "id": "buy_x_get_y",
+          "layer": "offers",
+          "expected_chapters": [
+            "buy-x-get-y"
+          ],
+          "retrieved_chapters": [
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "free-giveaways",
+            "buy-x-get-y"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.603
+        },
+        {
+          "id": "upsell_overview",
+          "layer": "upsells",
+          "expected_chapters": [
+            "upsell-offers"
+          ],
+          "retrieved_chapters": [
+            "upsell-offers",
+            "upsell-offers",
+            "payback-period",
+            "payback-period",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.5
+        },
+        {
+          "id": "classic_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "classic-upsell"
+          ],
+          "retrieved_chapters": [
+            "classic-upsell",
+            "classic-upsell",
+            "ten-years-ten-minutes",
+            "classic-upsell",
+            "buy-x-get-y"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.583
+        },
+        {
+          "id": "menu_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "menu-upsell"
+          ],
+          "retrieved_chapters": [
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.442
+        },
+        {
+          "id": "anchor_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "anchor-upsell"
+          ],
+          "retrieved_chapters": [
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.504
+        },
+        {
+          "id": "rollover_competitor",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.575
+        },
+        {
+          "id": "downsells_overview",
+          "layer": "downsells",
+          "expected_chapters": [
+            "downsells",
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "downsells",
+            "feature-downsells",
+            "downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 2.111
+        },
+        {
+          "id": "payment_plans",
+          "layer": "downsells",
+          "expected_chapters": [
+            "payment-plans"
+          ],
+          "retrieved_chapters": [
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "pay-less-now",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.458
+        },
+        {
+          "id": "free_trial_penalty",
+          "layer": "downsells",
+          "expected_chapters": [
+            "free-trials"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "pay-less-now",
+            "free-trials",
+            "free-trials",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.428
+        },
+        {
+          "id": "feature_downsell_guarantee",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.467
+        },
+        {
+          "id": "pay_less_now",
+          "layer": "downsells",
+          "expected_chapters": [
+            "pay-less-now"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "pay-less-now",
+            "pay-less-now",
+            "pay-less-now",
+            "pay-less-now"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.905
+        },
+        {
+          "id": "continuity_overview",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-offers"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "continuity-offers",
+            "continuity-offers",
+            "money-models-offer-stacks",
+            "continuity-discounts"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.762
+        },
+        {
+          "id": "continuity_bonus",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-bonus"
+          ],
+          "retrieved_chapters": [
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.741
+        },
+        {
+          "id": "continuity_discount",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-offers",
+            "continuity-offers"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.924
+        },
+        {
+          "id": "waived_fee",
+          "layer": "continuity",
+          "expected_chapters": [
+            "waived-fee"
+          ],
+          "retrieved_chapters": [
+            "waived-fee",
+            "waived-fee",
+            "waived-fee",
+            "ten-years-ten-minutes",
+            "waived-fee"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.942
+        },
+        {
+          "id": "money_model_stack",
+          "layer": "offers",
+          "expected_chapters": [
+            "money-models-offer-stacks",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "offer-types",
+            "make-your-money-model",
+            "make-your-money-model",
+            "make-your-money-model"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 1.704
+        }
+      ]
+    },
+    {
+      "strategy": "fixed-512",
+      "chunks": 215,
+      "avg_chunk_words": 507.1,
+      "index_ms": 34.47,
+      "metrics": {
+        "total": 32,
+        "hit_at_1": 0.7188,
+        "hit_at_5": 1.0,
+        "mrr": 0.8448,
+        "p50_latency_ms": 0.287,
+        "p95_latency_ms": 0.52
+      },
+      "queries": [
+        {
+          "id": "payback_definition",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "payback-period",
+            "how-businesses-make-money",
+            "cfa",
+            "payback-period",
+            "how-businesses-make-money"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.275
+        },
+        {
+          "id": "rollover_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "upsell-offers",
+            "make-your-money-model"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.228
+        },
+        {
+          "id": "continuity_churn",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "ten-years-ten-minutes",
+            "ten-years-ten-minutes",
+            "waived-fee",
+            "continuity-discounts"
+          ],
+          "rank": 5,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.2,
+          "latency_ms": 0.29
+        },
+        {
+          "id": "feature_downsell",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.263
+        },
+        {
+          "id": "free_offer_cac",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "how-businesses-make-money",
+            "context",
+            "ten-years-ten-minutes",
+            "cac"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.259
+        },
+        {
+          "id": "cac_fully_loaded",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "cfa",
+            "how-businesses-make-money",
+            "context",
+            "context"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.174
+        },
+        {
+          "id": "gross_profit_service_margin",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "gross-profit"
+          ],
+          "retrieved_chapters": [
+            "gross-profit",
+            "gross-profit",
+            "how-businesses-make-money",
+            "cfa",
+            "gross-profit"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.16
+        },
+        {
+          "id": "ltgp_cac_viability",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "how-businesses-make-money"
+          ],
+          "retrieved_chapters": [
+            "gross-profit",
+            "how-businesses-make-money",
+            "how-businesses-make-money",
+            "gross-profit",
+            "how-businesses-make-money"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.257
+        },
+        {
+          "id": "cfa_levels",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cfa"
+          ],
+          "retrieved_chapters": [
+            "cfa",
+            "ride-along-apprenticeship",
+            "context",
+            "final-words",
+            "gross-profit"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.185
+        },
+        {
+          "id": "payback_gross_profit_not_revenue",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "payback-period",
+            "payback-period",
+            "how-businesses-make-money",
+            "how-businesses-make-money"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.184
+        },
+        {
+          "id": "offer_types_four",
+          "layer": "offers",
+          "expected_chapters": [
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "ten-years-ten-minutes",
+            "offer-types",
+            "offer-types",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.449
+        },
+        {
+          "id": "attraction_liquidate_cac",
+          "layer": "offers",
+          "expected_chapters": [
+            "attraction-offers",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "offer-types",
+            "attraction-offers",
+            "offer-types",
+            "cac"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.355
+        },
+        {
+          "id": "win_your_money_back",
+          "layer": "offers",
+          "expected_chapters": [
+            "win-your-money-back"
+          ],
+          "retrieved_chapters": [
+            "decoy-offers",
+            "win-your-money-back",
+            "free-giveaways",
+            "attraction-offers",
+            "free-giveaways"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.562
+        },
+        {
+          "id": "free_giveaway_structure",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-giveaways"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.398
+        },
+        {
+          "id": "decoy_offer",
+          "layer": "offers",
+          "expected_chapters": [
+            "decoy-offers"
+          ],
+          "retrieved_chapters": [
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.53
+        },
+        {
+          "id": "free_with_consumption",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-with-consumption"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "free-with-consumption",
+            "buy-x-get-y",
+            "free-with-consumption",
+            "cac"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.436
+        },
+        {
+          "id": "buy_x_get_y",
+          "layer": "offers",
+          "expected_chapters": [
+            "buy-x-get-y"
+          ],
+          "retrieved_chapters": [
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "free-giveaways",
+            "buy-x-get-y",
+            "buy-x-get-y"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.511
+        },
+        {
+          "id": "upsell_overview",
+          "layer": "upsells",
+          "expected_chapters": [
+            "upsell-offers"
+          ],
+          "retrieved_chapters": [
+            "upsell-offers",
+            "payback-period",
+            "upsell-offers",
+            "ten-years-ten-minutes",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.353
+        },
+        {
+          "id": "classic_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "classic-upsell"
+          ],
+          "retrieved_chapters": [
+            "classic-upsell",
+            "classic-upsell",
+            "ten-years-ten-minutes",
+            "classic-upsell",
+            "classic-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.476
+        },
+        {
+          "id": "menu_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "menu-upsell"
+          ],
+          "retrieved_chapters": [
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.35
+        },
+        {
+          "id": "anchor_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "anchor-upsell"
+          ],
+          "retrieved_chapters": [
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.329
+        },
+        {
+          "id": "rollover_competitor",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.295
+        },
+        {
+          "id": "downsells_overview",
+          "layer": "downsells",
+          "expected_chapters": [
+            "downsells",
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.314
+        },
+        {
+          "id": "payment_plans",
+          "layer": "downsells",
+          "expected_chapters": [
+            "payment-plans"
+          ],
+          "retrieved_chapters": [
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.264
+        },
+        {
+          "id": "free_trial_penalty",
+          "layer": "downsells",
+          "expected_chapters": [
+            "free-trials"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "pay-less-now",
+            "free-trials",
+            "free-trials",
+            "payment-plans"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.283
+        },
+        {
+          "id": "feature_downsell_guarantee",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.243
+        },
+        {
+          "id": "pay_less_now",
+          "layer": "downsells",
+          "expected_chapters": [
+            "pay-less-now"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "pay-less-now",
+            "pay-less-now",
+            "pay-less-now",
+            "pay-less-now"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.32
+        },
+        {
+          "id": "continuity_overview",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-offers"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "continuity-offers",
+            "continuity-offers",
+            "continuity-bonus",
+            "continuity-discounts"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.227
+        },
+        {
+          "id": "continuity_bonus",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-bonus"
+          ],
+          "retrieved_chapters": [
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.196
+        },
+        {
+          "id": "continuity_discount",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-offers",
+            "waived-fee"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.259
+        },
+        {
+          "id": "waived_fee",
+          "layer": "continuity",
+          "expected_chapters": [
+            "waived-fee"
+          ],
+          "retrieved_chapters": [
+            "waived-fee",
+            "waived-fee",
+            "ten-years-ten-minutes",
+            "waived-fee",
+            "waived-fee"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.237
+        },
+        {
+          "id": "money_model_stack",
+          "layer": "offers",
+          "expected_chapters": [
+            "money-models-offer-stacks",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "make-your-money-model",
+            "money-models-offer-stacks",
+            "offer-types",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 0.49
+        }
+      ]
+    },
+    {
+      "strategy": "fixed-800",
+      "chunks": 141,
+      "avg_chunk_words": 761.4,
+      "index_ms": 23.692,
+      "metrics": {
+        "total": 32,
+        "hit_at_1": 0.75,
+        "hit_at_5": 1.0,
+        "mrr": 0.8552,
+        "p50_latency_ms": 0.2,
+        "p95_latency_ms": 0.367
+      },
+      "queries": [
+        {
+          "id": "payback_definition",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "payback-period",
+            "payback-period",
+            "how-businesses-make-money",
+            "cfa",
+            "payback-period"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.198
+        },
+        {
+          "id": "rollover_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "rollover-upsell",
+            "upsell-offers",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.168
+        },
+        {
+          "id": "continuity_churn",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "continuity-offers",
+            "continuity-offers",
+            "waived-fee",
+            "continuity-discounts"
+          ],
+          "rank": 5,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.2,
+          "latency_ms": 0.209
+        },
+        {
+          "id": "feature_downsell",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "pay-less-now"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.175
+        },
+        {
+          "id": "free_offer_cac",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "how-businesses-make-money",
+            "payback-period",
+            "context",
+            "cac"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.174
+        },
+        {
+          "id": "cac_fully_loaded",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "context",
+            "cfa",
+            "cfa",
+            "how-businesses-make-money"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.12
+        },
+        {
+          "id": "gross_profit_service_margin",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "gross-profit"
+          ],
+          "retrieved_chapters": [
+            "gross-profit",
+            "gross-profit",
+            "how-businesses-make-money",
+            "context",
+            "payback-period"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.11
+        },
+        {
+          "id": "ltgp_cac_viability",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "how-businesses-make-money"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "how-businesses-make-money",
+            "gross-profit",
+            "cfa",
+            "context"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.171
+        },
+        {
+          "id": "cfa_levels",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cfa"
+          ],
+          "retrieved_chapters": [
+            "cfa",
+            "ride-along-apprenticeship",
+            "context",
+            "context",
+            "final-words"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.129
+        },
+        {
+          "id": "payback_gross_profit_not_revenue",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "payback-period",
+            "payback-period",
+            "how-businesses-make-money",
+            "cfa"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.129
+        },
+        {
+          "id": "offer_types_four",
+          "layer": "offers",
+          "expected_chapters": [
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "offer-types",
+            "ten-years-ten-minutes",
+            "offer-types",
+            "make-your-money-model"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.296
+        },
+        {
+          "id": "attraction_liquidate_cac",
+          "layer": "offers",
+          "expected_chapters": [
+            "attraction-offers",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "offer-types",
+            "attraction-offers",
+            "make-your-money-model",
+            "cac"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.241
+        },
+        {
+          "id": "win_your_money_back",
+          "layer": "offers",
+          "expected_chapters": [
+            "win-your-money-back"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "decoy-offers",
+            "win-your-money-back",
+            "decoy-offers",
+            "attraction-offers"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 0.4
+        },
+        {
+          "id": "free_giveaway_structure",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-giveaways"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.266
+        },
+        {
+          "id": "decoy_offer",
+          "layer": "offers",
+          "expected_chapters": [
+            "decoy-offers"
+          ],
+          "retrieved_chapters": [
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.271
+        },
+        {
+          "id": "free_with_consumption",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-with-consumption"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "free-with-consumption",
+            "cac",
+            "cac",
+            "money-models-offer-stacks"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.285
+        },
+        {
+          "id": "buy_x_get_y",
+          "layer": "offers",
+          "expected_chapters": [
+            "buy-x-get-y"
+          ],
+          "retrieved_chapters": [
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "free-giveaways",
+            "cac",
+            "free-giveaways"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.265
+        },
+        {
+          "id": "upsell_overview",
+          "layer": "upsells",
+          "expected_chapters": [
+            "upsell-offers"
+          ],
+          "retrieved_chapters": [
+            "upsell-offers",
+            "payback-period",
+            "payback-period",
+            "ten-years-ten-minutes",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.198
+        },
+        {
+          "id": "classic_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "classic-upsell"
+          ],
+          "retrieved_chapters": [
+            "classic-upsell",
+            "classic-upsell",
+            "classic-upsell",
+            "ten-years-ten-minutes",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.183
+        },
+        {
+          "id": "menu_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "menu-upsell"
+          ],
+          "retrieved_chapters": [
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.184
+        },
+        {
+          "id": "anchor_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "anchor-upsell"
+          ],
+          "retrieved_chapters": [
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.211
+        },
+        {
+          "id": "rollover_competitor",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.203
+        },
+        {
+          "id": "downsells_overview",
+          "layer": "downsells",
+          "expected_chapters": [
+            "downsells",
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.194
+        },
+        {
+          "id": "payment_plans",
+          "layer": "downsells",
+          "expected_chapters": [
+            "payment-plans"
+          ],
+          "retrieved_chapters": [
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "feature-downsells",
+            "payment-plans"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.183
+        },
+        {
+          "id": "free_trial_penalty",
+          "layer": "downsells",
+          "expected_chapters": [
+            "free-trials"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "payment-plans",
+            "free-trials",
+            "pay-less-now",
+            "free-trials"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.19
+        },
+        {
+          "id": "feature_downsell_guarantee",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "free-trials",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.167
+        },
+        {
+          "id": "pay_less_now",
+          "layer": "downsells",
+          "expected_chapters": [
+            "pay-less-now"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "pay-less-now",
+            "pay-less-now",
+            "pay-less-now",
+            "pay-less-now"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.215
+        },
+        {
+          "id": "continuity_overview",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-offers"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "continuity-offers",
+            "continuity-discounts",
+            "continuity-bonus",
+            "final-words"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.313
+        },
+        {
+          "id": "continuity_bonus",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-bonus"
+          ],
+          "retrieved_chapters": [
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-discounts",
+            "continuity-bonus",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.326
+        },
+        {
+          "id": "continuity_discount",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-offers",
+            "waived-fee",
+            "continuity-discounts"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.379
+        },
+        {
+          "id": "waived_fee",
+          "layer": "continuity",
+          "expected_chapters": [
+            "waived-fee"
+          ],
+          "retrieved_chapters": [
+            "waived-fee",
+            "waived-fee",
+            "waived-fee",
+            "ten-years-ten-minutes",
+            "waived-fee"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.231
+        },
+        {
+          "id": "money_model_stack",
+          "layer": "offers",
+          "expected_chapters": [
+            "money-models-offer-stacks",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "make-your-money-model",
+            "offer-types",
+            "money-models-offer-stacks",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 0.356
+        }
+      ]
+    },
+    {
+      "strategy": "heading-aware",
+      "chunks": 202,
+      "avg_chunk_words": 513.5,
+      "index_ms": 31.1,
+      "metrics": {
+        "total": 32,
+        "hit_at_1": 0.8125,
+        "hit_at_5": 1.0,
+        "mrr": 0.8917,
+        "p50_latency_ms": 0.335,
+        "p95_latency_ms": 0.712
+      },
+      "queries": [
+        {
+          "id": "payback_definition",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "payback-period",
+            "cfa",
+            "payback-period",
+            "payback-period"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.354
+        },
+        {
+          "id": "rollover_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "upsell-offers",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.209
+        },
+        {
+          "id": "continuity_churn",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "ten-years-ten-minutes",
+            "waived-fee",
+            "continuity-offers",
+            "continuity-discounts"
+          ],
+          "rank": 5,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.2,
+          "latency_ms": 0.336
+        },
+        {
+          "id": "feature_downsell",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "feature-downsells",
+            "pay-less-now",
+            "feature-downsells"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.232
+        },
+        {
+          "id": "free_offer_cac",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "how-businesses-make-money",
+            "context",
+            "cac",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.254
+        },
+        {
+          "id": "cac_fully_loaded",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "cfa",
+            "context",
+            "how-businesses-make-money",
+            "context"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.166
+        },
+        {
+          "id": "gross_profit_service_margin",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "gross-profit"
+          ],
+          "retrieved_chapters": [
+            "gross-profit",
+            "gross-profit",
+            "how-businesses-make-money",
+            "context",
+            "cfa"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.151
+        },
+        {
+          "id": "ltgp_cac_viability",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "how-businesses-make-money"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "gross-profit",
+            "context",
+            "gross-profit",
+            "cfa"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.241
+        },
+        {
+          "id": "cfa_levels",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cfa"
+          ],
+          "retrieved_chapters": [
+            "cfa",
+            "ride-along-apprenticeship",
+            "context",
+            "gross-profit",
+            "cfa"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.175
+        },
+        {
+          "id": "payback_gross_profit_not_revenue",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "payback-period",
+            "how-businesses-make-money",
+            "payback-period",
+            "payback-period",
+            "how-businesses-make-money"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.174
+        },
+        {
+          "id": "offer_types_four",
+          "layer": "offers",
+          "expected_chapters": [
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "ten-years-ten-minutes",
+            "offer-types",
+            "offer-types",
+            "make-your-money-model"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.38
+        },
+        {
+          "id": "attraction_liquidate_cac",
+          "layer": "offers",
+          "expected_chapters": [
+            "attraction-offers",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "make-your-money-model",
+            "cac",
+            "attraction-offers",
+            "make-your-money-model"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.302
+        },
+        {
+          "id": "win_your_money_back",
+          "layer": "offers",
+          "expected_chapters": [
+            "win-your-money-back"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "win-your-money-back",
+            "win-your-money-back",
+            "decoy-offers",
+            "attraction-offers"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.377
+        },
+        {
+          "id": "free_giveaway_structure",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-giveaways"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.32
+        },
+        {
+          "id": "decoy_offer",
+          "layer": "offers",
+          "expected_chapters": [
+            "decoy-offers"
+          ],
+          "retrieved_chapters": [
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.331
+        },
+        {
+          "id": "free_with_consumption",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-with-consumption"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "free-with-consumption",
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "cac"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.618
+        },
+        {
+          "id": "buy_x_get_y",
+          "layer": "offers",
+          "expected_chapters": [
+            "buy-x-get-y"
+          ],
+          "retrieved_chapters": [
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "free-giveaways",
+            "buy-x-get-y"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.343
+        },
+        {
+          "id": "upsell_overview",
+          "layer": "upsells",
+          "expected_chapters": [
+            "upsell-offers"
+          ],
+          "retrieved_chapters": [
+            "upsell-offers",
+            "payback-period",
+            "upsell-offers",
+            "ten-years-ten-minutes",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.27
+        },
+        {
+          "id": "classic_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "classic-upsell"
+          ],
+          "retrieved_chapters": [
+            "classic-upsell",
+            "classic-upsell",
+            "ten-years-ten-minutes",
+            "classic-upsell",
+            "buy-x-get-y"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.361
+        },
+        {
+          "id": "menu_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "menu-upsell"
+          ],
+          "retrieved_chapters": [
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.262
+        },
+        {
+          "id": "anchor_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "anchor-upsell"
+          ],
+          "retrieved_chapters": [
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.716
+        },
+        {
+          "id": "rollover_competitor",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.709
+        },
+        {
+          "id": "downsells_overview",
+          "layer": "downsells",
+          "expected_chapters": [
+            "downsells",
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "downsells",
+            "downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.486
+        },
+        {
+          "id": "payment_plans",
+          "layer": "downsells",
+          "expected_chapters": [
+            "payment-plans"
+          ],
+          "retrieved_chapters": [
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.533
+        },
+        {
+          "id": "free_trial_penalty",
+          "layer": "downsells",
+          "expected_chapters": [
+            "free-trials"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "free-trials",
+            "offer-types",
+            "pay-less-now",
+            "payment-plans"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 2.113
+        },
+        {
+          "id": "feature_downsell_guarantee",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.508
+        },
+        {
+          "id": "pay_less_now",
+          "layer": "downsells",
+          "expected_chapters": [
+            "pay-less-now"
+          ],
+          "retrieved_chapters": [
+            "pay-less-now",
+            "pay-less-now",
+            "free-trials",
+            "pay-less-now",
+            "pay-less-now"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.678
+        },
+        {
+          "id": "continuity_overview",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-offers"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "continuity-offers",
+            "continuity-offers",
+            "final-words",
+            "continuity-discounts"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.346
+        },
+        {
+          "id": "continuity_bonus",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-bonus"
+          ],
+          "retrieved_chapters": [
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.3
+        },
+        {
+          "id": "continuity_discount",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-offers",
+            "continuity-offers"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.333
+        },
+        {
+          "id": "waived_fee",
+          "layer": "continuity",
+          "expected_chapters": [
+            "waived-fee"
+          ],
+          "retrieved_chapters": [
+            "waived-fee",
+            "waived-fee",
+            "ten-years-ten-minutes",
+            "ten-years-ten-minutes",
+            "waived-fee"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.239
+        },
+        {
+          "id": "money_model_stack",
+          "layer": "offers",
+          "expected_chapters": [
+            "money-models-offer-stacks",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "make-your-money-model",
+            "offer-types",
+            "money-models-offer-stacks",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 0.485
+        }
+      ]
+    },
+    {
+      "strategy": "framework-aware",
+      "chunks": 204,
+      "avg_chunk_words": 496.9,
+      "index_ms": 41.865,
+      "metrics": {
+        "total": 32,
+        "hit_at_1": 0.8125,
+        "hit_at_5": 1.0,
+        "mrr": 0.8958,
+        "p50_latency_ms": 0.229,
+        "p95_latency_ms": 0.363
+      },
+      "queries": [
+        {
+          "id": "payback_definition",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "payback-period",
+            "cfa",
+            "payback-period",
+            "payback-period"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.221
+        },
+        {
+          "id": "rollover_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "upsell-offers",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.191
+        },
+        {
+          "id": "continuity_churn",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "ten-years-ten-minutes",
+            "continuity-discounts",
+            "continuity-offers",
+            "waived-fee"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 0.238
+        },
+        {
+          "id": "feature_downsell",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "ten-years-ten-minutes",
+            "feature-downsells",
+            "free-trials",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.216
+        },
+        {
+          "id": "free_offer_cac",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "how-businesses-make-money",
+            "context",
+            "ten-years-ten-minutes",
+            "cac"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.219
+        },
+        {
+          "id": "cac_fully_loaded",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cac"
+          ],
+          "retrieved_chapters": [
+            "cac",
+            "cfa",
+            "context",
+            "how-businesses-make-money",
+            "how-businesses-make-money"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.15
+        },
+        {
+          "id": "gross_profit_service_margin",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "gross-profit"
+          ],
+          "retrieved_chapters": [
+            "gross-profit",
+            "how-businesses-make-money",
+            "context",
+            "cfa",
+            "gross-profit"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.135
+        },
+        {
+          "id": "ltgp_cac_viability",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "how-businesses-make-money"
+          ],
+          "retrieved_chapters": [
+            "how-businesses-make-money",
+            "context",
+            "gross-profit",
+            "gross-profit",
+            "cfa"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.212
+        },
+        {
+          "id": "cfa_levels",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "cfa"
+          ],
+          "retrieved_chapters": [
+            "cfa",
+            "ride-along-apprenticeship",
+            "context",
+            "gross-profit",
+            "gross-profit"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.154
+        },
+        {
+          "id": "payback_gross_profit_not_revenue",
+          "layer": "unit-economics",
+          "expected_chapters": [
+            "payback-period"
+          ],
+          "retrieved_chapters": [
+            "payback-period",
+            "how-businesses-make-money",
+            "how-businesses-make-money",
+            "payback-period",
+            "cfa"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.155
+        },
+        {
+          "id": "offer_types_four",
+          "layer": "offers",
+          "expected_chapters": [
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "offer-types",
+            "ten-years-ten-minutes",
+            "offer-types",
+            "make-your-money-model"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.358
+        },
+        {
+          "id": "attraction_liquidate_cac",
+          "layer": "offers",
+          "expected_chapters": [
+            "attraction-offers",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "make-your-money-model",
+            "cac",
+            "attraction-offers",
+            "make-your-money-model"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.291
+        },
+        {
+          "id": "win_your_money_back",
+          "layer": "offers",
+          "expected_chapters": [
+            "win-your-money-back"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "win-your-money-back",
+            "decoy-offers",
+            "attraction-offers",
+            "free-giveaways"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.349
+        },
+        {
+          "id": "free_giveaway_structure",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-giveaways"
+          ],
+          "retrieved_chapters": [
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways",
+            "free-giveaways"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.338
+        },
+        {
+          "id": "decoy_offer",
+          "layer": "offers",
+          "expected_chapters": [
+            "decoy-offers"
+          ],
+          "retrieved_chapters": [
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers",
+            "decoy-offers"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.345
+        },
+        {
+          "id": "free_with_consumption",
+          "layer": "offers",
+          "expected_chapters": [
+            "free-with-consumption"
+          ],
+          "retrieved_chapters": [
+            "offer-types",
+            "free-with-consumption",
+            "money-models-offer-stacks",
+            "buy-x-get-y",
+            "buy-x-get-y"
+          ],
+          "rank": 2,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.5,
+          "latency_ms": 0.37
+        },
+        {
+          "id": "buy_x_get_y",
+          "layer": "offers",
+          "expected_chapters": [
+            "buy-x-get-y"
+          ],
+          "retrieved_chapters": [
+            "buy-x-get-y",
+            "buy-x-get-y",
+            "free-giveaways",
+            "buy-x-get-y",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.311
+        },
+        {
+          "id": "upsell_overview",
+          "layer": "upsells",
+          "expected_chapters": [
+            "upsell-offers"
+          ],
+          "retrieved_chapters": [
+            "upsell-offers",
+            "payback-period",
+            "ten-years-ten-minutes",
+            "payback-period",
+            "payback-period"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.239
+        },
+        {
+          "id": "classic_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "classic-upsell"
+          ],
+          "retrieved_chapters": [
+            "classic-upsell",
+            "classic-upsell",
+            "classic-upsell",
+            "ten-years-ten-minutes",
+            "buy-x-get-y"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.231
+        },
+        {
+          "id": "menu_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "menu-upsell"
+          ],
+          "retrieved_chapters": [
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell",
+            "menu-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.228
+        },
+        {
+          "id": "anchor_upsell",
+          "layer": "upsells",
+          "expected_chapters": [
+            "anchor-upsell"
+          ],
+          "retrieved_chapters": [
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell",
+            "anchor-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.267
+        },
+        {
+          "id": "rollover_competitor",
+          "layer": "upsells",
+          "expected_chapters": [
+            "rollover-upsell"
+          ],
+          "retrieved_chapters": [
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell",
+            "rollover-upsell"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.25
+        },
+        {
+          "id": "downsells_overview",
+          "layer": "downsells",
+          "expected_chapters": [
+            "downsells",
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "downsells",
+            "downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.244
+        },
+        {
+          "id": "payment_plans",
+          "layer": "downsells",
+          "expected_chapters": [
+            "payment-plans"
+          ],
+          "retrieved_chapters": [
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans",
+            "payment-plans"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.22
+        },
+        {
+          "id": "free_trial_penalty",
+          "layer": "downsells",
+          "expected_chapters": [
+            "free-trials"
+          ],
+          "retrieved_chapters": [
+            "free-trials",
+            "payment-plans",
+            "free-trials",
+            "offer-types",
+            "free-trials"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.232
+        },
+        {
+          "id": "feature_downsell_guarantee",
+          "layer": "downsells",
+          "expected_chapters": [
+            "feature-downsells"
+          ],
+          "retrieved_chapters": [
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells",
+            "feature-downsells"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.209
+        },
+        {
+          "id": "pay_less_now",
+          "layer": "downsells",
+          "expected_chapters": [
+            "pay-less-now"
+          ],
+          "retrieved_chapters": [
+            "pay-less-now",
+            "free-trials",
+            "pay-less-now",
+            "pay-less-now",
+            "pay-less-now"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.265
+        },
+        {
+          "id": "continuity_overview",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-offers"
+          ],
+          "retrieved_chapters": [
+            "continuity-offers",
+            "continuity-offers",
+            "continuity-bonus",
+            "continuity-discounts",
+            "continuity-discounts"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.188
+        },
+        {
+          "id": "continuity_bonus",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-bonus"
+          ],
+          "retrieved_chapters": [
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-bonus",
+            "continuity-offers",
+            "offer-types"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.172
+        },
+        {
+          "id": "continuity_discount",
+          "layer": "continuity",
+          "expected_chapters": [
+            "continuity-discounts"
+          ],
+          "retrieved_chapters": [
+            "continuity-discounts",
+            "continuity-discounts",
+            "continuity-offers",
+            "continuity-discounts",
+            "waived-fee"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.217
+        },
+        {
+          "id": "waived_fee",
+          "layer": "continuity",
+          "expected_chapters": [
+            "waived-fee"
+          ],
+          "retrieved_chapters": [
+            "waived-fee",
+            "waived-fee",
+            "waived-fee",
+            "waived-fee",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 1,
+          "hit_at_1": true,
+          "hit_at_5": true,
+          "reciprocal_rank": 1.0,
+          "latency_ms": 0.204
+        },
+        {
+          "id": "money_model_stack",
+          "layer": "offers",
+          "expected_chapters": [
+            "money-models-offer-stacks",
+            "offer-types"
+          ],
+          "retrieved_chapters": [
+            "make-your-money-model",
+            "make-your-money-model",
+            "offer-types",
+            "money-models-offer-stacks",
+            "ten-years-ten-minutes"
+          ],
+          "rank": 3,
+          "hit_at_1": false,
+          "hit_at_5": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "latency_ms": 0.378
+        }
+      ]
+    }
+  ]
+}

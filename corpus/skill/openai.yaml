@@ -1,0 +1,8 @@
+interface:
+  display_name: "Hormozi Money Models"
+  short_description: "Diagnose CAC, gross profit, and payback"
+  brand_color: "#0F172A"
+  default_prompt: "Use $alex-hormozi-money-models to diagnose this business model's CAC, gross profit, payback period, and offer stack."
+
+policy:
+  allow_implicit_invocation: true

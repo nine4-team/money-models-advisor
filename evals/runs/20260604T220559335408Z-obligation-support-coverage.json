@@ -1,0 +1,1451 @@
+{
+  "run_id": "20260604T220559335408Z",
+  "experiment": "obligation-support-coverage",
+  "dataset": "evals/obligations.jsonl",
+  "label_status": "accepted",
+  "strategy": "bm25-heading-aware",
+  "metrics": {
+    "total": 65,
+    "obligation_support_coverage": 0.8769,
+    "unsupported": 8,
+    "p50_latency_ms": 0.224
+  },
+  "obligations": [
+    {
+      "id": "payback_definition:def",
+      "record_id": "payback_definition",
+      "claim": "Payback period is how long it takes until gross profit is greater than CAC, i.e. until the acquisition cost breaks even.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payback-period:0"
+      ],
+      "retrieved_chunk_ids": [
+        "how-businesses-make-money:2",
+        "payback-period:6",
+        "cfa:0",
+        "payback-period:2",
+        "payback-period:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "payback-period:0"
+      ],
+      "latency_ms": 0.238
+    },
+    {
+      "id": "payback_definition:first_30_days",
+      "record_id": "payback_definition",
+      "claim": "To shorten payback period, make more, better, or new offers in the first 30 days, especially upsells timed to the buyer's active buying cycle.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payback-period:2",
+        "payback-period:3",
+        "payback-period:4"
+      ],
+      "retrieved_chunk_ids": [
+        "how-businesses-make-money:2",
+        "payback-period:6",
+        "cfa:0",
+        "payback-period:2",
+        "payback-period:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "payback-period:2"
+      ],
+      "latency_ms": 0.207
+    },
+    {
+      "id": "payback_definition:front_load_fees",
+      "record_id": "payback_definition",
+      "claim": "Front-loading gross-profit fees, such as first-and-last-month, initiation, onboarding, enrollment, or activation fees, can pull cash forward and reduce payback time.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payback-period:5",
+        "payback-period:6"
+      ],
+      "retrieved_chunk_ids": [
+        "how-businesses-make-money:2",
+        "payback-period:6",
+        "cfa:0",
+        "payback-period:2",
+        "payback-period:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "payback-period:6"
+      ],
+      "latency_ms": 0.204
+    },
+    {
+      "id": "cac_fully_loaded:costs",
+      "record_id": "cac_fully_loaded",
+      "claim": "Fully loaded CAC should include all costs required to sell a new customer: ad spend, media buyer or creative payroll, software, sales commissions, salaries, managers, and related acquisition team costs.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cac:0"
+      ],
+      "retrieved_chunk_ids": [
+        "cac:0",
+        "cfa:3",
+        "context:1",
+        "how-businesses-make-money:0",
+        "context:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "cac:0"
+      ],
+      "latency_ms": 0.149
+    },
+    {
+      "id": "cac_fully_loaded:media_vs_loaded",
+      "record_id": "cac_fully_loaded",
+      "claim": "It is acceptable, and useful, to separate media CAC from fully loaded CAC, but the full business answer should still account for every acquisition cost divided by new customers acquired.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cac:0",
+        "cac:1"
+      ],
+      "retrieved_chunk_ids": [
+        "cac:0",
+        "cfa:3",
+        "context:1",
+        "how-businesses-make-money:0",
+        "context:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "cac:0"
+      ],
+      "latency_ms": 0.146
+    },
+    {
+      "id": "gross_profit_service_margin:definition",
+      "record_id": "gross_profit_service_margin",
+      "claim": "Gross profit is price minus cost of goods sold, where COGS means the cost to deliver the thing sold.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "gross-profit:0",
+        "gross-profit:3"
+      ],
+      "retrieved_chunk_ids": [
+        "gross-profit:3",
+        "gross-profit:4",
+        "how-businesses-make-money:1",
+        "context:1",
+        "cfa:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "gross-profit:3"
+      ],
+      "latency_ms": 0.138
+    },
+    {
+      "id": "gross_profit_service_margin:target",
+      "record_id": "gross_profit_service_margin",
+      "claim": "A service business should target at least an 80% gross profit margin; below that, scaling service delivery is unlikely to work well.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "gross-profit:3"
+      ],
+      "retrieved_chunk_ids": [
+        "gross-profit:3",
+        "gross-profit:4",
+        "how-businesses-make-money:1",
+        "context:1",
+        "cfa:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "gross-profit:3"
+      ],
+      "latency_ms": 0.134
+    },
+    {
+      "id": "gross_profit_service_margin:gross_not_net",
+      "record_id": "gross_profit_service_margin",
+      "claim": "The 80% target is gross margin, not net margin; rent, admin, insurance, utilities, and other fixed operating costs are paid after gross profit.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "gross-profit:3",
+        "gross-profit:4"
+      ],
+      "retrieved_chunk_ids": [
+        "gross-profit:3",
+        "gross-profit:4",
+        "how-businesses-make-money:1",
+        "context:1",
+        "cfa:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "gross-profit:3",
+        "gross-profit:4"
+      ],
+      "latency_ms": 0.134
+    },
+    {
+      "id": "ltgp_cac_viability:ltgp_gt_cac",
+      "record_id": "ltgp_cac_viability",
+      "claim": "The basic viability rule is that lifetime gross profit must exceed CAC; otherwise the business spends more acquiring customers than those customers return.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "how-businesses-make-money:0"
+      ],
+      "retrieved_chunk_ids": [
+        "how-businesses-make-money:1",
+        "gross-profit:2",
+        "context:1",
+        "gross-profit:0",
+        "cfa:0"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.214
+    },
+    {
+      "id": "ltgp_cac_viability:three_to_one",
+      "record_id": "ltgp_cac_viability",
+      "claim": "A practical minimum benchmark is lifetime gross profit to CAC over 3:1, measured in gross profit, not revenue; 3:1 is a floor, not an ideal target.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "how-businesses-make-money:1"
+      ],
+      "retrieved_chunk_ids": [
+        "how-businesses-make-money:1",
+        "gross-profit:2",
+        "context:1",
+        "gross-profit:0",
+        "cfa:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "how-businesses-make-money:1"
+      ],
+      "latency_ms": 0.216
+    },
+    {
+      "id": "ltgp_cac_viability:revenue_trap",
+      "record_id": "ltgp_cac_viability",
+      "claim": "Revenue can make CAC look viable when gross margin makes it nonviable; the meals example shows $500 lifetime revenue at 20% margin equals only $100 lifetime gross profit against $100 CAC.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "how-businesses-make-money:1"
+      ],
+      "retrieved_chunk_ids": [
+        "how-businesses-make-money:1",
+        "gross-profit:2",
+        "context:1",
+        "gross-profit:0",
+        "cfa:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "how-businesses-make-money:1"
+      ],
+      "latency_ms": 0.21
+    },
+    {
+      "id": "cfa_levels:level_1",
+      "record_id": "cfa_levels",
+      "claim": "CFA level 1 is lifetime gross profit greater than CAC, ideally at least three times CAC.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cfa:0"
+      ],
+      "retrieved_chunk_ids": [
+        "cfa:0",
+        "ride-along-apprenticeship:0",
+        "context:1",
+        "gross-profit:3",
+        "cfa:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "cfa:0"
+      ],
+      "latency_ms": 0.159
+    },
+    {
+      "id": "cfa_levels:level_2",
+      "record_id": "cfa_levels",
+      "claim": "CFA level 2 is 30-day gross profit greater than CAC, allowing the business to repay acquisition spend within the first month and avoid using its own growth capital.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cfa:0",
+        "cfa:1"
+      ],
+      "retrieved_chunk_ids": [
+        "cfa:0",
+        "ride-along-apprenticeship:0",
+        "context:1",
+        "gross-profit:3",
+        "cfa:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "cfa:0"
+      ],
+      "latency_ms": 0.167
+    },
+    {
+      "id": "cfa_levels:level_3",
+      "record_id": "cfa_levels",
+      "claim": "CFA level 3 is 30-day gross profit greater than 2x CAC, so one customer repays the acquisition cost and funds the next customer.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cfa:1",
+        "cfa:2"
+      ],
+      "retrieved_chunk_ids": [
+        "cfa:0",
+        "ride-along-apprenticeship:0",
+        "context:1",
+        "gross-profit:3",
+        "cfa:4"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.157
+    },
+    {
+      "id": "payback_gross_profit_not_revenue:gross_profit_basis",
+      "record_id": "payback_gross_profit_not_revenue",
+      "claim": "Payback period must be calculated from gross profit because delivery costs must be removed before deciding whether CAC has been recovered.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payback-period:1",
+        "payback-period:2"
+      ],
+      "retrieved_chunk_ids": [
+        "payback-period:0",
+        "how-businesses-make-money:2",
+        "payback-period:2",
+        "payback-period:1",
+        "how-businesses-make-money:1"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "payback-period:2",
+        "payback-period:1"
+      ],
+      "latency_ms": 0.163
+    },
+    {
+      "id": "payback_gross_profit_not_revenue:revenue_false_shortcut",
+      "record_id": "payback_gross_profit_not_revenue",
+      "claim": "Using revenue falsely shortens payback; in the example, $160 CAC is paid back in two months from $80 monthly gross profit, not one-and-a-half months from $100 revenue.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payback-period:2"
+      ],
+      "retrieved_chunk_ids": [
+        "payback-period:0",
+        "how-businesses-make-money:2",
+        "payback-period:2",
+        "payback-period:1",
+        "how-businesses-make-money:1"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "payback-period:2"
+      ],
+      "latency_ms": 0.16
+    },
+    {
+      "id": "rollover_upsell:when_to_use",
+      "record_id": "rollover_upsell",
+      "claim": "Use a rollover upsell when you can turn prior spend, unused value, dissatisfaction, or remaining competitor commitments into credit toward a higher-priced next offer.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "rollover-upsell:1",
+        "rollover-upsell:4",
+        "rollover-upsell:7"
+      ],
+      "retrieved_chunk_ids": [
+        "rollover-upsell:6",
+        "upsell-offers:2",
+        "rollover-upsell:0",
+        "rollover-upsell:1",
+        "rollover-upsell:7"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "rollover-upsell:1",
+        "rollover-upsell:7"
+      ],
+      "latency_ms": 0.188
+    },
+    {
+      "id": "rollover_upsell:profit_after_credit",
+      "record_id": "rollover_upsell",
+      "claim": "The credit should roll into something more expensive, ideally leaving profit after the discount rather than merely refunding or discounting the same thing.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "rollover-upsell:2",
+        "rollover-upsell:5",
+        "rollover-upsell:7"
+      ],
+      "retrieved_chunk_ids": [
+        "rollover-upsell:6",
+        "upsell-offers:2",
+        "rollover-upsell:0",
+        "rollover-upsell:1",
+        "rollover-upsell:7"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "rollover-upsell:7"
+      ],
+      "latency_ms": 0.178
+    },
+    {
+      "id": "anchor_upsell:premium_anchor",
+      "record_id": "anchor_upsell",
+      "claim": "Present a premium anchor first when you have a high-value version that is five to ten times the main offer and differs mostly by secondary features.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "anchor-upsell:2",
+        "anchor-upsell:3"
+      ],
+      "retrieved_chunk_ids": [
+        "anchor-upsell:7",
+        "anchor-upsell:3",
+        "anchor-upsell:2",
+        "anchor-upsell:6",
+        "anchor-upsell:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "anchor-upsell:3",
+        "anchor-upsell:2"
+      ],
+      "latency_ms": 0.277
+    },
+    {
+      "id": "anchor_upsell:rescue_main_offer",
+      "record_id": "anchor_upsell",
+      "claim": "After the customer reacts to the premium price, rescue them with the main offer so it feels comparatively reasonable while preserving the same core function.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "anchor-upsell:2",
+        "anchor-upsell:3",
+        "anchor-upsell:4"
+      ],
+      "retrieved_chunk_ids": [
+        "anchor-upsell:7",
+        "anchor-upsell:3",
+        "anchor-upsell:2",
+        "anchor-upsell:6",
+        "anchor-upsell:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "anchor-upsell:3",
+        "anchor-upsell:2",
+        "anchor-upsell:4"
+      ],
+      "latency_ms": 0.264
+    },
+    {
+      "id": "payment_plans:timing_not_price",
+      "record_id": "payment_plans",
+      "claim": "For customers who cannot pay today, keep the offer price intact and change timing: less now, full price or more over time.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payment-plans:0",
+        "payment-plans:1",
+        "payment-plans:10"
+      ],
+      "retrieved_chunk_ids": [
+        "payment-plans:10",
+        "payment-plans:8",
+        "payment-plans:9",
+        "payment-plans:0",
+        "payment-plans:11"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "payment-plans:10",
+        "payment-plans:0"
+      ],
+      "latency_ms": 0.191
+    },
+    {
+      "id": "payment_plans:sequence",
+      "record_id": "payment_plans",
+      "claim": "Use a sequence: reward paid-in-full, offer third-party financing, then in-house options like half-now/half-later, three payments, paycheck-aligned payments, or evenly spread payments.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payment-plans:1",
+        "payment-plans:2",
+        "payment-plans:5",
+        "payment-plans:6",
+        "payment-plans:10"
+      ],
+      "retrieved_chunk_ids": [
+        "payment-plans:10",
+        "payment-plans:8",
+        "payment-plans:9",
+        "payment-plans:0",
+        "payment-plans:11"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "payment-plans:10"
+      ],
+      "latency_ms": 0.185
+    },
+    {
+      "id": "payment_plans:check_desire",
+      "record_id": "payment_plans",
+      "claim": "Before extending more terms, confirm the customer still wants the thing; no payment plan solves lack of desire.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "payment-plans:6"
+      ],
+      "retrieved_chunk_ids": [
+        "payment-plans:10",
+        "payment-plans:8",
+        "payment-plans:9",
+        "payment-plans:0",
+        "payment-plans:11"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.185
+    },
+    {
+      "id": "feature_downsell:change_offer",
+      "record_id": "feature_downsell",
+      "claim": "Lower price by changing what the customer gets, not by discounting the same unchanged offer.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "feature-downsells:1",
+        "feature-downsells:2"
+      ],
+      "retrieved_chunk_ids": [
+        "ten-years-ten-minutes:2",
+        "feature-downsells:5",
+        "feature-downsells:2",
+        "pay-less-now:8",
+        "feature-downsells:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "feature-downsells:2"
+      ],
+      "latency_ms": 0.179
+    },
+    {
+      "id": "feature_downsell:remove_guarantee",
+      "record_id": "feature_downsell",
+      "claim": "A strong first move is removing a valuable feature, such as a guarantee, with only a small price drop so the original offer looks better.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "feature-downsells:1",
+        "feature-downsells:4"
+      ],
+      "retrieved_chunk_ids": [
+        "ten-years-ten-minutes:2",
+        "feature-downsells:5",
+        "feature-downsells:2",
+        "pay-less-now:8",
+        "feature-downsells:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "feature-downsells:4"
+      ],
+      "latency_ms": 0.184
+    },
+    {
+      "id": "feature_downsell:iterate_features",
+      "record_id": "feature_downsell",
+      "claim": "If the buyer still says no, continue removing features or quality dimensions and lowering price until there is a fit.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "feature-downsells:2",
+        "feature-downsells:3",
+        "feature-downsells:4"
+      ],
+      "retrieved_chunk_ids": [
+        "ten-years-ten-minutes:2",
+        "feature-downsells:5",
+        "feature-downsells:2",
+        "pay-less-now:8",
+        "feature-downsells:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "feature-downsells:2",
+        "feature-downsells:4"
+      ],
+      "latency_ms": 0.176
+    },
+    {
+      "id": "continuity_churn:earned_discount",
+      "record_id": "continuity_churn",
+      "claim": "When churn predictably spikes at a known month, place an earned lifetime discount just after that point so customers have a reason to stay through it.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-discounts:7",
+        "continuity-discounts:11"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-offers:5",
+        "ten-years-ten-minutes:3",
+        "waived-fee:0",
+        "continuity-offers:3",
+        "continuity-discounts:11"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "continuity-discounts:11"
+      ],
+      "latency_ms": 0.244
+    },
+    {
+      "id": "continuity_churn:reminders",
+      "record_id": "continuity_churn",
+      "claim": "Remind customers as they approach the earn point so the coming discount continues to motivate retention.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-discounts:8"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-offers:5",
+        "ten-years-ten-minutes:3",
+        "waived-fee:0",
+        "continuity-offers:3",
+        "continuity-discounts:11"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.241
+    },
+    {
+      "id": "continuity_bonus:advertise_bonus",
+      "record_id": "continuity_bonus",
+      "claim": "Advertise the bonus, not the subscription, because customers want the valuable thing now while continuity is the mechanism for receiving it.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-bonus:2",
+        "continuity-bonus:4",
+        "continuity-bonus:12"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-bonus:4",
+        "continuity-bonus:2",
+        "continuity-bonus:11",
+        "continuity-bonus:12",
+        "continuity-bonus:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "continuity-bonus:4",
+        "continuity-bonus:2",
+        "continuity-bonus:12"
+      ],
+      "latency_ms": 0.184
+    },
+    {
+      "id": "continuity_bonus:bonus_value",
+      "record_id": "continuity_bonus",
+      "claim": "The bonus should be related to the core offer and usually worth more than the first continuity payment.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-bonus:2",
+        "continuity-bonus:5",
+        "continuity-bonus:12"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-bonus:4",
+        "continuity-bonus:2",
+        "continuity-bonus:11",
+        "continuity-bonus:12",
+        "continuity-bonus:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "continuity-bonus:2",
+        "continuity-bonus:12",
+        "continuity-bonus:5"
+      ],
+      "latency_ms": 0.174
+    },
+    {
+      "id": "continuity_bonus:sell_bonus_first",
+      "record_id": "continuity_bonus",
+      "claim": "Sell the bonus as a standalone valuable offer before revealing it can be free with continuity.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-bonus:8",
+        "continuity-bonus:12"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-bonus:4",
+        "continuity-bonus:2",
+        "continuity-bonus:11",
+        "continuity-bonus:12",
+        "continuity-bonus:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "continuity-bonus:12"
+      ],
+      "latency_ms": 0.175
+    },
+    {
+      "id": "continuity_discount:earned_lower_rate",
+      "record_id": "continuity_discount",
+      "claim": "Lifetime discounts reduce churn by making customers earn a lower rate after the month where customers commonly drop off.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-discounts:7",
+        "continuity-discounts:11"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-discounts:11",
+        "continuity-discounts:7",
+        "continuity-discounts:6",
+        "continuity-offers:2",
+        "continuity-offers:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "continuity-discounts:11",
+        "continuity-discounts:7"
+      ],
+      "latency_ms": 0.237
+    },
+    {
+      "id": "continuity_discount:terms_tradeoff",
+      "record_id": "continuity_discount",
+      "claim": "Discount structure and cancellation terms should be explicit because lighter terms increase signups but can increase churn, while stricter terms improve stick.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-discounts:8",
+        "continuity-discounts:9",
+        "continuity-discounts:11"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-discounts:11",
+        "continuity-discounts:7",
+        "continuity-discounts:6",
+        "continuity-offers:2",
+        "continuity-offers:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "continuity-discounts:11"
+      ],
+      "latency_ms": 0.224
+    },
+    {
+      "id": "continuity_discount:ach_separate",
+      "record_id": "continuity_discount",
+      "claim": "ACH and backup payment methods are separate churn-reduction tactics for involuntary churn, not the core lifetime-discount mechanism.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "continuity-discounts:4",
+        "continuity-discounts:5",
+        "continuity-discounts:7"
+      ],
+      "retrieved_chunk_ids": [
+        "continuity-discounts:11",
+        "continuity-discounts:7",
+        "continuity-discounts:6",
+        "continuity-offers:2",
+        "continuity-offers:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "continuity-discounts:7"
+      ],
+      "latency_ms": 0.233
+    },
+    {
+      "id": "waived_fee:structure",
+      "record_id": "waived_fee",
+      "claim": "Waived-fee continuity presents a month-to-month option with a startup fee, then waives that fee when the customer commits to a longer term.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "waived-fee:1",
+        "waived-fee:2",
+        "waived-fee:5"
+      ],
+      "retrieved_chunk_ids": [
+        "waived-fee:2",
+        "waived-fee:1",
+        "ten-years-ten-minutes:3",
+        "ten-years-ten-minutes:2",
+        "waived-fee:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "waived-fee:2",
+        "waived-fee:1",
+        "waived-fee:5"
+      ],
+      "latency_ms": 0.214
+    },
+    {
+      "id": "waived_fee:commitment",
+      "record_id": "waived_fee",
+      "claim": "The waived fee creates commitment because canceling early means paying the fee they avoided at signup.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "waived-fee:0",
+        "waived-fee:1",
+        "waived-fee:3",
+        "waived-fee:4"
+      ],
+      "retrieved_chunk_ids": [
+        "waived-fee:2",
+        "waived-fee:1",
+        "ten-years-ten-minutes:3",
+        "ten-years-ten-minutes:2",
+        "waived-fee:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "waived-fee:1"
+      ],
+      "latency_ms": 0.211
+    },
+    {
+      "id": "waived_fee:fairness",
+      "record_id": "waived_fee",
+      "claim": "The obligation should include fairness: if the customer completes the commitment, the fee goes away.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "waived-fee:2",
+        "waived-fee:5"
+      ],
+      "retrieved_chunk_ids": [
+        "waived-fee:2",
+        "waived-fee:1",
+        "ten-years-ten-minutes:3",
+        "ten-years-ten-minutes:2",
+        "waived-fee:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "waived-fee:2",
+        "waived-fee:5"
+      ],
+      "latency_ms": 0.21
+    },
+    {
+      "id": "free_offer_cac:lower_cac",
+      "record_id": "free_offer_cac",
+      "claim": "Free offers lower CAC by increasing response, conversion, and lead flow; the goal is more sales for fewer ad dollars.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cac:2",
+        "cac:4"
+      ],
+      "retrieved_chunk_ids": [
+        "cac:2",
+        "how-businesses-make-money:1",
+        "context:1",
+        "cac:12",
+        "ten-years-ten-minutes:2"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "cac:2"
+      ],
+      "latency_ms": 0.217
+    },
+    {
+      "id": "free_offer_cac:watchouts",
+      "record_id": "free_offer_cac",
+      "claim": "Watchouts: free can create more volume than the team can handle and attract people with no intent to buy.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cac:4",
+        "cac:5"
+      ],
+      "retrieved_chunk_ids": [
+        "cac:2",
+        "how-businesses-make-money:1",
+        "context:1",
+        "cac:12",
+        "ten-years-ten-minutes:2"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.206
+    },
+    {
+      "id": "free_offer_cac:add_friction",
+      "record_id": "free_offer_cac",
+      "claim": "The recommended control is to create flow first, monetize it, then add friction with qualifications, steps, targeting, required consumption, or longer ads.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "cac:5",
+        "cac:6",
+        "cac:7"
+      ],
+      "retrieved_chunk_ids": [
+        "cac:2",
+        "how-businesses-make-money:1",
+        "context:1",
+        "cac:12",
+        "ten-years-ten-minutes:2"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.205
+    },
+    {
+      "id": "money_model_stack:definition",
+      "record_id": "money_model_stack",
+      "claim": "A money model is a deliberate sequence of offers designed to minimize CAC, maximize gross profit, and collect it in the first 30 days.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "money-models-offer-stacks:0"
+      ],
+      "retrieved_chunk_ids": [
+        "make-your-money-model:1",
+        "make-your-money-model:0",
+        "offer-types:4",
+        "money-models-offer-stacks:0",
+        "ten-years-ten-minutes:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "money-models-offer-stacks:0"
+      ],
+      "latency_ms": 0.37
+    },
+    {
+      "id": "money_model_stack:four_roles",
+      "record_id": "money_model_stack",
+      "claim": "The stack typically combines attraction, upsell, downsell, and continuity offers, each with a different job.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "offer-types:4"
+      ],
+      "retrieved_chunk_ids": [
+        "make-your-money-model:1",
+        "make-your-money-model:0",
+        "offer-types:4",
+        "money-models-offer-stacks:0",
+        "ten-years-ten-minutes:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "offer-types:4"
+      ],
+      "latency_ms": 0.35
+    },
+    {
+      "id": "money_model_stack:layer_over_time",
+      "record_id": "money_model_stack",
+      "claim": "Do not imply every business must launch all four at once; the corpus says to layer offers over time and keep the system as simple as possible.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "offer-types:4",
+        "offer-types:5"
+      ],
+      "retrieved_chunk_ids": [
+        "make-your-money-model:1",
+        "make-your-money-model:0",
+        "offer-types:4",
+        "money-models-offer-stacks:0",
+        "ten-years-ten-minutes:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "offer-types:4"
+      ],
+      "latency_ms": 0.355
+    },
+    {
+      "id": "offer_types_four:names",
+      "record_id": "offer_types_four",
+      "claim": "The four offer types are attraction, upsell, downsell, and continuity.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "offer-types:4"
+      ],
+      "retrieved_chunk_ids": [
+        "offer-types:0",
+        "ten-years-ten-minutes:0",
+        "offer-types:4",
+        "offer-types:5",
+        "make-your-money-model:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "offer-types:4"
+      ],
+      "latency_ms": 0.351
+    },
+    {
+      "id": "offer_types_four:objectives",
+      "record_id": "offer_types_four",
+      "claim": "Their objectives are respectively to liquidate CAC, maximize profit, maximize conversion, and stabilize cash flow.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "offer-types:4"
+      ],
+      "retrieved_chunk_ids": [
+        "offer-types:0",
+        "ten-years-ten-minutes:0",
+        "offer-types:4",
+        "offer-types:5",
+        "make-your-money-model:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "offer-types:4"
+      ],
+      "latency_ms": 0.407
+    },
+    {
+      "id": "attraction_liquidate_cac:def",
+      "record_id": "attraction_liquidate_cac",
+      "claim": "An attraction offer generates leads and converts strangers into customers by offering something free or discounted.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "attraction-offers:0"
+      ],
+      "retrieved_chunk_ids": [
+        "offer-types:4",
+        "make-your-money-model:2",
+        "cac:12",
+        "attraction-offers:0",
+        "make-your-money-model:1"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "attraction-offers:0"
+      ],
+      "latency_ms": 0.307
+    },
+    {
+      "id": "attraction_liquidate_cac:objective",
+      "record_id": "attraction_liquidate_cac",
+      "claim": "Its money-model objective is to liquidate, or offset, the cost to acquire a customer.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "offer-types:4",
+        "attraction-offers:0"
+      ],
+      "retrieved_chunk_ids": [
+        "offer-types:4",
+        "make-your-money-model:2",
+        "cac:12",
+        "attraction-offers:0",
+        "make-your-money-model:1"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "offer-types:4",
+        "attraction-offers:0"
+      ],
+      "latency_ms": 0.287
+    },
+    {
+      "id": "win_your_money_back:def",
+      "record_id": "win_your_money_back",
+      "claim": "A win-your-money-back offer sets a customer goal, tells them how to reach it, and refunds money or gives store credit if they hit the goal.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "win-your-money-back:1"
+      ],
+      "retrieved_chunk_ids": [
+        "free-giveaways:0",
+        "win-your-money-back:0",
+        "win-your-money-back:1",
+        "decoy-offers:2",
+        "attraction-offers:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "win-your-money-back:1"
+      ],
+      "latency_ms": 0.358
+    },
+    {
+      "id": "win_your_money_back:proof",
+      "record_id": "win_your_money_back",
+      "claim": "For transformation businesses, the structure trades refund risk for proof/results that can be advertised afterward.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "win-your-money-back:0"
+      ],
+      "retrieved_chunk_ids": [
+        "free-giveaways:0",
+        "win-your-money-back:0",
+        "win-your-money-back:1",
+        "decoy-offers:2",
+        "attraction-offers:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "win-your-money-back:0"
+      ],
+      "latency_ms": 0.33
+    },
+    {
+      "id": "free_giveaway_structure:grand_prize",
+      "record_id": "free_giveaway_structure",
+      "claim": "A giveaway advertises a chance to win a grand prize in exchange for contact information, then offers non-winners a discounted participation/promo offer.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "free-giveaways:1"
+      ],
+      "retrieved_chunk_ids": [
+        "free-giveaways:1",
+        "free-giveaways:4",
+        "free-giveaways:3",
+        "free-giveaways:2",
+        "free-giveaways:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "free-giveaways:1"
+      ],
+      "latency_ms": 0.304
+    },
+    {
+      "id": "free_giveaway_structure:execution",
+      "record_id": "free_giveaway_structure",
+      "claim": "The giveaway should include eligibility criteria, urgency/deadlines, winner announcement, delivery of the grand prize, and follow-up to everyone else.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "free-giveaways:1",
+        "free-giveaways:2"
+      ],
+      "retrieved_chunk_ids": [
+        "free-giveaways:1",
+        "free-giveaways:4",
+        "free-giveaways:3",
+        "free-giveaways:2",
+        "free-giveaways:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "free-giveaways:1",
+        "free-giveaways:2"
+      ],
+      "latency_ms": 0.284
+    },
+    {
+      "id": "free_giveaway_structure:promo_math",
+      "record_id": "free_giveaway_structure",
+      "claim": "The promotional offer should be framed against the value of the grand prize and usually sit around 10-30% of gross margin.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "free-giveaways:3"
+      ],
+      "retrieved_chunk_ids": [
+        "free-giveaways:1",
+        "free-giveaways:4",
+        "free-giveaways:3",
+        "free-giveaways:2",
+        "free-giveaways:0"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "free-giveaways:3"
+      ],
+      "latency_ms": 0.284
+    },
+    {
+      "id": "decoy_offer:def",
+      "record_id": "decoy_offer",
+      "claim": "A decoy offer advertises something free or discounted, then presents a more valuable premium offer when the lead asks to learn more.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "decoy-offers:2",
+        "decoy-offers:8"
+      ],
+      "retrieved_chunk_ids": [
+        "decoy-offers:3",
+        "decoy-offers:8",
+        "decoy-offers:2",
+        "decoy-offers:6",
+        "decoy-offers:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "decoy-offers:8",
+        "decoy-offers:2"
+      ],
+      "latency_ms": 0.31
+    },
+    {
+      "id": "decoy_offer:contrast",
+      "record_id": "decoy_offer",
+      "claim": "Use it when the premium option can be made obviously better; if too many people take the decoy, the free offer is too good or the paid offer is not strong enough.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "decoy-offers:5",
+        "decoy-offers:8"
+      ],
+      "retrieved_chunk_ids": [
+        "decoy-offers:3",
+        "decoy-offers:8",
+        "decoy-offers:2",
+        "decoy-offers:6",
+        "decoy-offers:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "decoy-offers:8"
+      ],
+      "latency_ms": 0.298
+    },
+    {
+      "id": "decoy_offer:ethical_boundary",
+      "record_id": "decoy_offer",
+      "claim": "Ethical constraint: still deliver the advertised decoy/free promise, and only contrast it with the premium offer rather than bait-and-switching.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "decoy-offers:2"
+      ],
+      "retrieved_chunk_ids": [
+        "decoy-offers:3",
+        "decoy-offers:8",
+        "decoy-offers:2",
+        "decoy-offers:6",
+        "decoy-offers:4"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "decoy-offers:2"
+      ],
+      "latency_ms": 0.298
+    },
+    {
+      "id": "free_with_consumption:def",
+      "record_id": "free_with_consumption",
+      "claim": "Free-with-consumption gives away educational content or an experience that provides value, breaks beliefs, builds trust, and leads to the next offer or CTA.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "free-with-consumption:0",
+        "free-with-consumption:1",
+        "free-with-consumption:2"
+      ],
+      "retrieved_chunk_ids": [
+        "offer-types:3",
+        "free-with-consumption:4",
+        "buy-x-get-y:0",
+        "buy-x-get-y:2",
+        "cac:1"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.336
+    },
+    {
+      "id": "free_with_consumption:more_time_for_risk",
+      "record_id": "free_with_consumption",
+      "claim": "Use more consumption time as price, coldness, or perceived buying risk increases; high-ticket offers may need events, challenges, workshops, or calls.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "free-with-consumption:2",
+        "free-with-consumption:3",
+        "free-with-consumption:4"
+      ],
+      "retrieved_chunk_ids": [
+        "offer-types:3",
+        "free-with-consumption:4",
+        "buy-x-get-y:0",
+        "buy-x-get-y:2",
+        "cac:1"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "free-with-consumption:4"
+      ],
+      "latency_ms": 0.322
+    },
+    {
+      "id": "buy_x_get_y:reframe",
+      "record_id": "buy_x_get_y",
+      "claim": "Buy X get Y free reframes a discount as free added value, often feeling stronger than an equivalent percentage discount.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "buy-x-get-y:2",
+        "buy-x-get-y:3"
+      ],
+      "retrieved_chunk_ids": [
+        "buy-x-get-y:2",
+        "buy-x-get-y:4",
+        "buy-x-get-y:1",
+        "free-giveaways:4",
+        "buy-x-get-y:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "buy-x-get-y:2",
+        "buy-x-get-y:3"
+      ],
+      "latency_ms": 0.304
+    },
+    {
+      "id": "buy_x_get_y:fit",
+      "record_id": "buy_x_get_y",
+      "claim": "It works best when customers can reasonably buy more units or longer access, but requires careful cash management and fulfillment discipline.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "buy-x-get-y:5",
+        "buy-x-get-y:7"
+      ],
+      "retrieved_chunk_ids": [
+        "buy-x-get-y:2",
+        "buy-x-get-y:4",
+        "buy-x-get-y:1",
+        "free-giveaways:4",
+        "buy-x-get-y:3"
+      ],
+      "supported": false,
+      "matched_chunk_ids": [],
+      "latency_ms": 0.29
+    },
+    {
+      "id": "upsell_overview:role",
+      "record_id": "upsell_overview",
+      "claim": "Upsells are the next offer after the first sale and are used to maximize 30-day profit after attraction offers create customers and cash.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "upsell-offers:0"
+      ],
+      "retrieved_chunk_ids": [
+        "upsell-offers:0",
+        "payback-period:3",
+        "upsell-offers:1",
+        "ten-years-ten-minutes:0",
+        "offer-types:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "upsell-offers:0"
+      ],
+      "latency_ms": 0.252
+    },
+    {
+      "id": "upsell_overview:profit",
+      "record_id": "upsell_overview",
+      "claim": "Upsells can create most of the profit even if the front-end offer sells more units.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "upsell-offers:0",
+        "upsell-offers:1"
+      ],
+      "retrieved_chunk_ids": [
+        "upsell-offers:0",
+        "payback-period:3",
+        "upsell-offers:1",
+        "ten-years-ten-minutes:0",
+        "offer-types:5"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "upsell-offers:0",
+        "upsell-offers:1"
+      ],
+      "latency_ms": 0.233
+    },
+    {
+      "id": "classic_upsell:pattern",
+      "record_id": "classic_upsell",
+      "claim": "The classic upsell is the 'you cannot have X without Y' pattern: give or sell the first thing, then offer the next natural thing needed for the best result.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "classic-upsell:1",
+        "classic-upsell:4"
+      ],
+      "retrieved_chunk_ids": [
+        "classic-upsell:0",
+        "classic-upsell:1",
+        "ten-years-ten-minutes:1",
+        "classic-upsell:4",
+        "buy-x-get-y:6"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "classic-upsell:1",
+        "classic-upsell:4"
+      ],
+      "latency_ms": 0.239
+    },
+    {
+      "id": "classic_upsell:ethical_boundary",
+      "record_id": "classic_upsell",
+      "claim": "The upsell should feel essential and helpful, but not be falsely required; the free/advertised item must still be deliverable.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "classic-upsell:4"
+      ],
+      "retrieved_chunk_ids": [
+        "classic-upsell:0",
+        "classic-upsell:1",
+        "ten-years-ten-minutes:1",
+        "classic-upsell:4",
+        "buy-x-get-y:6"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "classic-upsell:4"
+      ],
+      "latency_ms": 0.226
+    },
+    {
+      "id": "menu_upsell:steps",
+      "record_id": "menu_upsell",
+      "claim": "The menu upsell has four steps: unsell what they do not need, prescribe what they do need, ask preference A/B, then make payment easy.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "menu-upsell:5",
+        "menu-upsell:6"
+      ],
+      "retrieved_chunk_ids": [
+        "menu-upsell:6",
+        "menu-upsell:5",
+        "menu-upsell:0",
+        "menu-upsell:2",
+        "menu-upsell:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "menu-upsell:6",
+        "menu-upsell:5"
+      ],
+      "latency_ms": 0.237
+    },
+    {
+      "id": "menu_upsell:rationale",
+      "record_id": "menu_upsell",
+      "claim": "Unselling builds trust, prescription explains personalized use, A/B preference avoids a yes/no buying frame, and card-on-file lowers purchase friction.",
+      "status": "accepted",
+      "supporting_chunk_ids": [
+        "menu-upsell:5",
+        "menu-upsell:6",
+        "menu-upsell:7"
+      ],
+      "retrieved_chunk_ids": [
+        "menu-upsell:6",
+        "menu-upsell:5",
+        "menu-upsell:0",
+        "menu-upsell:2",
+        "menu-upsell:3"
+      ],
+      "supported": true,
+      "matched_chunk_ids": [
+        "menu-upsell:6",
+        "menu-upsell:5"
+      ],
+      "latency_ms": 0.226
+    }
+  ]
+}

@@ -1,0 +1,663 @@
+{
+  "run_id": "20260604T200614Z",
+  "variant": "local-bm25-heading-aware",
+  "dataset": "evals/golden.jsonl",
+  "top_k": 5,
+  "index": {
+    "chunks": 202,
+    "index_ms": 42.229
+  },
+  "metrics": {
+    "total": 32,
+    "hit_at_1": 0.8125,
+    "hit_at_5": 1.0,
+    "mrr": 0.8917,
+    "p50_latency_ms": 0.495,
+    "p95_latency_ms": 1.726
+  },
+  "queries": [
+    {
+      "id": "payback_definition",
+      "query": "How do I shorten payback period with upsells in the first 30 days?",
+      "layer": "unit-economics",
+      "expected_chapters": [
+        "payback-period"
+      ],
+      "retrieved_chapters": [
+        "how-businesses-make-money",
+        "payback-period",
+        "cfa",
+        "payback-period",
+        "payback-period"
+      ],
+      "rank": 2,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 2.018
+    },
+    {
+      "id": "rollover_upsell",
+      "query": "When should I use a rollover upsell?",
+      "layer": "upsells",
+      "expected_chapters": [
+        "rollover-upsell"
+      ],
+      "retrieved_chapters": [
+        "rollover-upsell",
+        "upsell-offers",
+        "rollover-upsell",
+        "rollover-upsell",
+        "rollover-upsell"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.464
+    },
+    {
+      "id": "continuity_churn",
+      "query": "What continuity offer helps when churn spikes at a known month?",
+      "layer": "continuity",
+      "expected_chapters": [
+        "continuity-discounts"
+      ],
+      "retrieved_chapters": [
+        "continuity-offers",
+        "ten-years-ten-minutes",
+        "waived-fee",
+        "continuity-offers",
+        "continuity-discounts"
+      ],
+      "rank": 5,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "reciprocal_rank": 0.2,
+      "latency_ms": 0.626
+    },
+    {
+      "id": "feature_downsell",
+      "query": "How should I lower price without discounting the same offer?",
+      "layer": "downsells",
+      "expected_chapters": [
+        "feature-downsells"
+      ],
+      "retrieved_chapters": [
+        "ten-years-ten-minutes",
+        "feature-downsells",
+        "feature-downsells",
+        "pay-less-now",
+        "feature-downsells"
+      ],
+      "rank": 2,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 0.267
+    },
+    {
+      "id": "free_offer_cac",
+      "query": "Why do free offers lower CAC and what should I watch out for?",
+      "layer": "unit-economics",
+      "expected_chapters": [
+        "cac"
+      ],
+      "retrieved_chapters": [
+        "cac",
+        "how-businesses-make-money",
+        "context",
+        "cac",
+        "ten-years-ten-minutes"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.43
+    },
+    {
+      "id": "cac_fully_loaded",
+      "query": "What costs should I include in fully loaded CAC?",
+      "layer": "unit-economics",
+      "expected_chapters": [
+        "cac"
+      ],
+      "retrieved_chapters": [
+        "cac",
+        "cfa",
+        "context",
+        "how-businesses-make-money",
+        "context"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.44
+    },
+    {
+      "id": "gross_profit_service_margin",
+      "query": "What gross margin should a service business target?",
+      "layer": "unit-economics",
+      "expected_chapters": [
+        "gross-profit"
+      ],
+      "retrieved_chapters": [
+        "gross-profit",
+        "gross-profit",
+        "how-businesses-make-money",
+        "context",
+        "cfa"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.482
+    },
+    {
+      "id": "ltgp_cac_viability",
+      "query": "How do I know if lifetime gross profit is high enough compared to CAC?",
+      "layer": "unit-economics",
+      "expected_chapters": [
+        "how-businesses-make-money"
+      ],
+      "retrieved_chapters": [
+        "how-businesses-make-money",
+        "gross-profit",
+        "context",
+        "gross-profit",
+        "cfa"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.611
+    },
+    {
+      "id": "cfa_levels",
+      "query": "What are the three levels of client financed acquisition?",
+      "layer": "unit-economics",
+      "expected_chapters": [
+        "cfa"
+      ],
+      "retrieved_chapters": [
+        "cfa",
+        "ride-along-apprenticeship",
+        "context",
+        "gross-profit",
+        "cfa"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.446
+    },
+    {
+      "id": "payback_gross_profit_not_revenue",
+      "query": "Why is payback period calculated from gross profit instead of revenue?",
+      "layer": "unit-economics",
+      "expected_chapters": [
+        "payback-period"
+      ],
+      "retrieved_chapters": [
+        "payback-period",
+        "how-businesses-make-money",
+        "payback-period",
+        "payback-period",
+        "how-businesses-make-money"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.449
+    },
+    {
+      "id": "offer_types_four",
+      "query": "What are the four types of offers in a money model?",
+      "layer": "offers",
+      "expected_chapters": [
+        "offer-types"
+      ],
+      "retrieved_chapters": [
+        "offer-types",
+        "ten-years-ten-minutes",
+        "offer-types",
+        "offer-types",
+        "make-your-money-model"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.958
+    },
+    {
+      "id": "attraction_liquidate_cac",
+      "query": "What is the objective of an attraction offer?",
+      "layer": "offers",
+      "expected_chapters": [
+        "attraction-offers",
+        "offer-types"
+      ],
+      "retrieved_chapters": [
+        "offer-types",
+        "make-your-money-model",
+        "cac",
+        "attraction-offers",
+        "make-your-money-model"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.729
+    },
+    {
+      "id": "win_your_money_back",
+      "query": "How does a win your money back offer work for a transformation business?",
+      "layer": "offers",
+      "expected_chapters": [
+        "win-your-money-back"
+      ],
+      "retrieved_chapters": [
+        "free-giveaways",
+        "win-your-money-back",
+        "win-your-money-back",
+        "decoy-offers",
+        "attraction-offers"
+      ],
+      "rank": 2,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 1.487
+    },
+    {
+      "id": "free_giveaway_structure",
+      "query": "How should a free giveaway use a grand prize and participation offer?",
+      "layer": "offers",
+      "expected_chapters": [
+        "free-giveaways"
+      ],
+      "retrieved_chapters": [
+        "free-giveaways",
+        "free-giveaways",
+        "free-giveaways",
+        "free-giveaways",
+        "free-giveaways"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1.004
+    },
+    {
+      "id": "decoy_offer",
+      "query": "When should I advertise a cheap decoy offer before presenting the premium option?",
+      "layer": "offers",
+      "expected_chapters": [
+        "decoy-offers"
+      ],
+      "retrieved_chapters": [
+        "decoy-offers",
+        "decoy-offers",
+        "decoy-offers",
+        "decoy-offers",
+        "decoy-offers"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.724
+    },
+    {
+      "id": "free_with_consumption",
+      "query": "When should I use free content or a challenge before selling a high ticket offer?",
+      "layer": "offers",
+      "expected_chapters": [
+        "free-with-consumption"
+      ],
+      "retrieved_chapters": [
+        "offer-types",
+        "free-with-consumption",
+        "buy-x-get-y",
+        "buy-x-get-y",
+        "cac"
+      ],
+      "rank": 2,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 0.409
+    },
+    {
+      "id": "buy_x_get_y",
+      "query": "Why does buy six get twelve free feel stronger than a percentage discount?",
+      "layer": "offers",
+      "expected_chapters": [
+        "buy-x-get-y"
+      ],
+      "retrieved_chapters": [
+        "buy-x-get-y",
+        "buy-x-get-y",
+        "buy-x-get-y",
+        "free-giveaways",
+        "buy-x-get-y"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.364
+    },
+    {
+      "id": "upsell_overview",
+      "query": "Why do upsells often create most of the profit after the first sale?",
+      "layer": "upsells",
+      "expected_chapters": [
+        "upsell-offers"
+      ],
+      "retrieved_chapters": [
+        "upsell-offers",
+        "payback-period",
+        "upsell-offers",
+        "ten-years-ten-minutes",
+        "offer-types"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.081
+    },
+    {
+      "id": "classic_upsell",
+      "query": "What is the you cannot have X without Y upsell?",
+      "layer": "upsells",
+      "expected_chapters": [
+        "classic-upsell"
+      ],
+      "retrieved_chapters": [
+        "classic-upsell",
+        "classic-upsell",
+        "ten-years-ten-minutes",
+        "classic-upsell",
+        "buy-x-get-y"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.656
+    },
+    {
+      "id": "menu_upsell",
+      "query": "How does the menu upsell use unsell prescribe preference and card on file?",
+      "layer": "upsells",
+      "expected_chapters": [
+        "menu-upsell"
+      ],
+      "retrieved_chapters": [
+        "menu-upsell",
+        "menu-upsell",
+        "menu-upsell",
+        "menu-upsell",
+        "menu-upsell"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.62
+    },
+    {
+      "id": "anchor_upsell",
+      "query": "When should I present a premium anchor at five to ten times the main price?",
+      "layer": "upsells",
+      "expected_chapters": [
+        "anchor-upsell"
+      ],
+      "retrieved_chapters": [
+        "anchor-upsell",
+        "anchor-upsell",
+        "anchor-upsell",
+        "anchor-upsell",
+        "anchor-upsell"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.709
+    },
+    {
+      "id": "rollover_competitor",
+      "query": "How can I use rollover credit to win back old customers or steal competitor customers?",
+      "layer": "upsells",
+      "expected_chapters": [
+        "rollover-upsell"
+      ],
+      "retrieved_chapters": [
+        "rollover-upsell",
+        "rollover-upsell",
+        "rollover-upsell",
+        "rollover-upsell",
+        "rollover-upsell"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.745
+    },
+    {
+      "id": "downsells_overview",
+      "query": "What is the rule about lowering price in a downsell?",
+      "layer": "downsells",
+      "expected_chapters": [
+        "downsells",
+        "feature-downsells"
+      ],
+      "retrieved_chapters": [
+        "downsells",
+        "downsells",
+        "feature-downsells",
+        "feature-downsells",
+        "feature-downsells"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.602
+    },
+    {
+      "id": "payment_plans",
+      "query": "How should payment plans handle customers who cannot afford the offer today?",
+      "layer": "downsells",
+      "expected_chapters": [
+        "payment-plans"
+      ],
+      "retrieved_chapters": [
+        "payment-plans",
+        "payment-plans",
+        "payment-plans",
+        "payment-plans",
+        "payment-plans"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.269
+    },
+    {
+      "id": "free_trial_penalty",
+      "query": "How does a free trial with terms work for a recurring service?",
+      "layer": "downsells",
+      "expected_chapters": [
+        "free-trials"
+      ],
+      "retrieved_chapters": [
+        "free-trials",
+        "free-trials",
+        "offer-types",
+        "pay-less-now",
+        "payment-plans"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.252
+    },
+    {
+      "id": "feature_downsell_guarantee",
+      "query": "Why remove the guarantee instead of just discounting the same service?",
+      "layer": "downsells",
+      "expected_chapters": [
+        "feature-downsells"
+      ],
+      "retrieved_chapters": [
+        "feature-downsells",
+        "feature-downsells",
+        "feature-downsells",
+        "feature-downsells",
+        "downsells"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.508
+    },
+    {
+      "id": "pay_less_now",
+      "query": "When does pay less now and pay more later work for a physical product?",
+      "layer": "downsells",
+      "expected_chapters": [
+        "pay-less-now"
+      ],
+      "retrieved_chapters": [
+        "pay-less-now",
+        "pay-less-now",
+        "free-trials",
+        "pay-less-now",
+        "pay-less-now"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.722
+    },
+    {
+      "id": "continuity_overview",
+      "query": "Why does recurring revenue increase lifetime value and enterprise value?",
+      "layer": "continuity",
+      "expected_chapters": [
+        "continuity-offers"
+      ],
+      "retrieved_chapters": [
+        "continuity-offers",
+        "continuity-offers",
+        "continuity-offers",
+        "final-words",
+        "continuity-discounts"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.328
+    },
+    {
+      "id": "continuity_bonus",
+      "query": "Why advertise the bonus instead of the subscription?",
+      "layer": "continuity",
+      "expected_chapters": [
+        "continuity-bonus"
+      ],
+      "retrieved_chapters": [
+        "continuity-bonus",
+        "continuity-bonus",
+        "continuity-bonus",
+        "continuity-bonus",
+        "continuity-bonus"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.274
+    },
+    {
+      "id": "continuity_discount",
+      "query": "How do lifetime discounts reduce churn at a known cancellation point?",
+      "layer": "continuity",
+      "expected_chapters": [
+        "continuity-discounts"
+      ],
+      "retrieved_chapters": [
+        "continuity-discounts",
+        "continuity-discounts",
+        "continuity-discounts",
+        "continuity-offers",
+        "continuity-offers"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.294
+    },
+    {
+      "id": "waived_fee",
+      "query": "How does waiving a startup fee create commitment to continuity?",
+      "layer": "continuity",
+      "expected_chapters": [
+        "waived-fee"
+      ],
+      "retrieved_chapters": [
+        "waived-fee",
+        "waived-fee",
+        "ten-years-ten-minutes",
+        "ten-years-ten-minutes",
+        "waived-fee"
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 0.257
+    },
+    {
+      "id": "money_model_stack",
+      "query": "How do attraction upsell downsell and continuity offers stack together in the first 30 days?",
+      "layer": "offers",
+      "expected_chapters": [
+        "money-models-offer-stacks",
+        "offer-types"
+      ],
+      "retrieved_chapters": [
+        "make-your-money-model",
+        "make-your-money-model",
+        "offer-types",
+        "money-models-offer-stacks",
+        "ten-years-ten-minutes"
+      ],
+      "rank": 3,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 0.48
+    }
+  ]
+}
