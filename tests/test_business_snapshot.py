@@ -162,6 +162,34 @@ class BusinessContextTest(unittest.TestCase):
             self.assertIn("payback", turn.assistant_message.lower())
             self.assertNotIn("What is your CAC?", turn.assistant_message)
 
+    def test_chat_summarizes_known_offer_stack_before_economics_question(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            business_dir = Path(tmp)
+            run_setup(
+                business_dir,
+                answers={
+                    "business.business_type": "premium interior design firm",
+                    "business.icp": "STR owners",
+                    "money_model.core_offer.description": "full-service design",
+                    "money_model.attraction_offer.exists": True,
+                    "money_model.attraction_offer.description": "STR Design Diagnostic",
+                    "money_model.upsell.exists": True,
+                    "money_model.upsell.description": "room packages",
+                    "money_model.downsell.exists": False,
+                    "money_model.continuity.exists": False,
+                    "problem.user_goal": "let's talk about money models",
+                },
+            )
+
+            turn = run_single_turn(business_dir, "let's talk about money models")
+
+            self.assertIn("business context loaded", turn.assistant_message)
+            self.assertIn("premium interior design firm", turn.assistant_message)
+            self.assertIn("offer stack", turn.assistant_message)
+            self.assertIn("What is your CAC?", turn.assistant_message)
+            self.assertEqual(turn.evidence, [])
+            self.assertEqual(turn.retrieval_queries, [])
+
     def test_chat_synthesizes_cited_recommendation_from_snapshot_and_evidence(self):
         with tempfile.TemporaryDirectory() as tmp:
             business_dir = Path(tmp)
