@@ -61,8 +61,14 @@ The folder where the skill is invoked is the context directory. It is where advi
 
    ```bash
    cd /Users/benjaminmackenzie/Dev/money-model-architect
+   USER_REQUEST=$(cat <<'EOF'
+   the human's exact request
+   EOF
+   )
    PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir "$CONTEXT_DIR" --message "$USER_REQUEST"
    ```
+
+   Use the quoted heredoc exactly as shown when the request contains dollar amounts. Do not put a literal money-containing request in double quotes, because the shell can expand values like `$500`.
 
    The `chat` command persists the turn. If context is missing, it should return the next useful clarifying question and save the trace.
 

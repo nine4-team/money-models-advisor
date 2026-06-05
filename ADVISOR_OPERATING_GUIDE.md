@@ -66,10 +66,16 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs \
 Run a simple advisor turn:
 
 ```bash
+USER_REQUEST=$(cat <<'EOF'
+...
+EOF
+)
 PYTHONPATH=src python3 -m money_model_architect.cli chat \
   --business-dir /path/to/company \
-  --message "..."
+  --message "$USER_REQUEST"
 ```
+
+Use the quoted heredoc when the request contains dollar amounts. Do not put a literal money-containing request in double quotes, because the shell can expand values like `$500`.
 
 ## Workflow
 
