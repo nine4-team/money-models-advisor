@@ -11,7 +11,9 @@ The human should experience this as a normal conversation, not as a CLI workflow
 
 ## Core Rule
 
-Reason conversationally first. Do not route by shallow keywords. Use CLI tools only when they help clarify, calculate, search source material, update state, or inspect prior turns.
+Reason conversationally first. Do not route by shallow keywords.
+
+Every human advisory request must run the CLI `chat` command before the final answer so the turn is persisted. Use additional CLI tools only when they help clarify, calculate, search source material, update state, or inspect prior turns.
 
 Do not call external model services.
 
@@ -65,7 +67,7 @@ The folder where the skill is invoked is the context directory. It is where advi
    The `chat` command persists the turn. If context is missing, it should return the next useful clarifying question and save the trace.
 
 5. Return the advisor answer in plain English. Mention saved state or logs only when useful.
-6. If the human provides a clear fact outside a `chat` turn, save it with `snapshot set`, then run `chat` for the next advisory request.
+6. If the human provides a clear fact outside a `chat` turn, save it with `snapshot set`. If the same human message also asks for advice, run `chat` after `snapshot set` before answering. Only pure fact-update or admin turns may skip `chat`.
 
 ## Commands
 

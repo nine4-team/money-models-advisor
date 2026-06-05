@@ -4,6 +4,8 @@ This guide tells an agent how to use this repo as a Money Models advisor.
 
 The mental model is: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs the local CLI to help the human. The advisor should reason conversationally, then call tools when useful. Do not call external model services.
 
+Invariant: for any human-facing advisory answer, run the CLI `chat` command first so the turn is persisted. Other commands are adjuncts, not substitutes.
+
 ## Core Rule
 
 Use the conversation and saved `BusinessSnapshot` to decide the next advisory move. Do not route by shallow keyword matching.
@@ -74,7 +76,7 @@ PYTHONPATH=src python3 -m money_model_architect.cli chat \
 1. Load `snapshot` before giving business-specific advice.
 2. Run `chat` for the human's advisory request so the turn is persisted.
 3. Let `chat` ask the next useful clarifying question when required business facts are missing.
-4. If the user gives a clear missing fact outside a `chat` turn, save it with `snapshot set`.
+4. If the user gives a clear missing fact outside a `chat` turn, save it with `snapshot set`. If the same user message also asks for advice, run `chat` after `snapshot set` before answering. Only pure fact-update or admin turns may skip `chat`.
 5. If numbers are present, use `calculate`; do not do payback or margin math from memory.
 6. Use `search` when an answer needs source support from the Money Models corpus.
 7. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.

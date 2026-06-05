@@ -14,7 +14,7 @@ The advisor is not a one-shot retrieval bot. A realistic user starts with a conv
 - "What should I add after the first sale?"
 - "Explain rollover upsells in my situation."
 
-Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`, ask for missing context when needed, run deterministic calculations where appropriate, search the Money Models corpus when source support is needed, and then answer.
+Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`. Advisory turns should go through `chat`, which persists the trace, asks for missing context when needed, runs deterministic calculations where appropriate, searches the Money Models corpus when source support is needed, and returns the answer for the agent to relay.
 
 The v1 runtime is:
 

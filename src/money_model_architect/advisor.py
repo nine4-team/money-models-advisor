@@ -133,7 +133,10 @@ def update_snapshot_from_message(snapshot: BusinessSnapshot, message: str) -> li
         snapshot.field_sources[field_name] = _conversation_source("high")
         actions.append(f"set {field_name}")
 
-    business_type = _extract_after_patterns(lower, ("business is ", "we run a ", "we are a ", "it's a "))
+    business_type = _extract_after_patterns(
+        lower,
+        ("business is ", "i run a ", "i run an ", "we run a ", "we run an ", "we are a ", "it's a "),
+    )
     if business_type and snapshot.business.business_type is None:
         snapshot.business.business_type = business_type
         snapshot.field_sources["business.business_type"] = _conversation_source("medium")
