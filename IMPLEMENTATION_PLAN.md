@@ -35,38 +35,47 @@ Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.
 
 ```mermaid
 flowchart TD
-  A["RUN SETUP<br/><small>money-model-advisor setup --business-dir /company</small>"] --> B["OPTIONAL LOCAL FILES<br/><small>notes, metrics, offers, funnel docs</small>"]
-  A --> C["BUILD BUSINESS SNAPSHOT<br/><small>accepted facts + source metadata</small>"]
+  A["RUN SETUP<br/>money-model-advisor setup --business-dir /company"] --> B["OPTIONAL LOCAL FILES<br/>notes, metrics, offers, funnel docs"]
+  A --> C["BUILD BUSINESS SNAPSHOT<br/>accepted facts + source metadata"]
   B --> C
 
-  C --> D["RUN CHAT<br/><small>money-model-advisor chat --business-dir /company</small>"]
-  D --> E["USER MESSAGE<br/><small>current turn</small>"]
-  C --> F["LLM ADVISOR TURN<br/><small>use saved snapshot + available tools</small>"]
+  C --> D["RUN CHAT<br/>money-model-advisor chat --business-dir /company"]
+  D --> E["USER MESSAGE<br/>current turn"]
+  C --> F["LLM ADVISOR TURN<br/>use saved snapshot + available tools"]
   E --> F
 
   F --> G{"ENOUGH CONTEXT?"}
-  G -- "No" --> H["ASK CLARIFYING QUESTION<br/><small>only the next needed field</small>"]
+  G -- "No" --> H["ASK CLARIFYING QUESTION<br/>only the next needed field"]
   H --> E
-  E --> S["SAVE NEW FACTS<br/><small>update BusinessSnapshot when user provides missing info</small>"]
+  E --> S["SAVE NEW FACTS<br/>update BusinessSnapshot when user provides missing info"]
   S --> C
 
-  G -- "Yes" --> I["CHOOSE TOOL USE<br/><small>calculate, retrieve, update snapshot, or answer</small>"]
-  I --> J["DETERMINISTIC CALCULATOR<br/><small>unit-economics formulas only</small>"]
-  I --> K["DIAGNOSE / TEACH / COMPARE / RECOMMEND<br/><small>LLM-led reasoning over snapshot + conversation</small>"]
-  I --> M["BUILD RETRIEVAL QUERY<br/><small>only when evidence is needed</small>"]
+  G -- "Yes" --> I["CHOOSE NEXT TOOL OR ANSWER<br/>based on conversation + BusinessSnapshot"]
+  I --> J["CALCULATE ECONOMICS<br/>deterministic formulas only"]
+  I --> K["DIAGNOSE / TEACH / COMPARE / RECOMMEND<br/>LLM-led reasoning over snapshot + conversation"]
+  I --> M["RETRIEVE SOURCE EVIDENCE<br/>query Money Models corpus for cited chunks"]
+  I --> S
 
   J --> K
   K --> M
 
-  M --> N["RETRIEVAL STACK<br/><small>BM25 / dense / hybrid as appropriate</small>"]
-  N --> O["RERANKER<br/><small>optional precision pass</small>"]
-  O --> P["TOP CITED CHUNKS<br/><small>source excerpts for answer</small>"]
+  M --> N["CORPUS RETRIEVAL STACK<br/>BM25 / dense / hybrid as appropriate"]
+  N --> O["RERANKER<br/>optional precision pass"]
+  O --> P["TOP CITED CHUNKS<br/>source excerpts for answer"]
 
-  P --> Q["ADVISOR ANSWER<br/><small>recommendation, citations, next action</small>"]
+  P --> Q["ADVISOR ANSWER<br/>recommendation, citations, next action"]
   J --> Q
-  Q --> R["PERSIST SESSION TRACE<br/><small>snapshot, tool calls, chunks, answer</small>"]
+  Q --> R["PERSIST SESSION TRACE<br/>snapshot, tool calls, chunks, answer"]
   R --> E
 ```
+
+In this diagram, **retrieve** means: search the Money Models source corpus for chunks that can support the advisor's answer with citations. It does not mean rereading the user's local business files, searching the web, or deciding the user's intent. The advisor may retrieve when it needs evidence to teach a concept, compare options, explain a diagnosis, or support a recommendation.
+
+The other tools are separate:
+
+- **Calculate economics:** run deterministic formulas such as CAC payback.
+- **Update snapshot:** persist accepted business facts the user provides.
+- **Answer:** compose the advisor response from the conversation, `BusinessSnapshot`, calculations, and any retrieved source chunks.
 
 ## Current baseline
 
