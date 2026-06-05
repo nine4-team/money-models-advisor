@@ -38,6 +38,8 @@ The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
 Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.
 
+Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That document captures the 1584 Design trace review, the critique of the current query planner, and the next retrieval-planning work.
+
 **CLI setup and advisor loop:**
 
 ```mermaid
@@ -109,6 +111,10 @@ Implemented:
 - Advisor operating guide in `ADVISOR_OPERATING_GUIDE.md` and project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 - Framework-aware chunking candidate implemented, but not adopted as default.
 - Unit test for the calculator.
+
+Current retrieval limitation:
+
+- The session trace now records exact retrieval queries and returned chunks, but the v1 query planner is too state-triggered. Once a snapshot becomes diagnosable, later turns can repeat the same diagnostic query even when the current turn needs business-doc lookup, saved-state/provenance lookup, calculation, teaching, or an ad-spend-specific source query. See `ADVISOR_RETRIEVAL_HANDOFF.md`.
 
 Run checks:
 

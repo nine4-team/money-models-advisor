@@ -2,6 +2,8 @@
 
 This policy defines how local corpus-search queries are built when the advisor decides that source material is needed for the current turn.
 
+Current handoff note: the v1 implementation is still too blunt. The 1584 Design trace review in `ADVISOR_RETRIEVAL_HANDOFF.md` shows that retrieval is currently triggered more by snapshot readiness than by the specific current turn. Treat the policy below as the target direction, not proof that the implementation is finished.
+
 The advisor should not use shallow keyword matching over the raw user message as the router. V1 should use the agent conversation as the advisor loop: the agent reads the conversation, the `BusinessSnapshot`, and available tools, then decides whether to clarify, calculate, diagnose, teach, compare, recommend, search source material, update the snapshot, or decline. Query construction happens only when that advisor loop chooses to search source material.
 
 Deterministic rules are allowed only where the justification is strong:
