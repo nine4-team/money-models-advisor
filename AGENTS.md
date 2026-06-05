@@ -10,7 +10,7 @@ The user should be able to give a natural-language request such as:
 Use ../1584-design as the business directory and tell me what to fix first.
 ```
 
-When the user names a business directory, treat that directory as the source of business context and the place where advisor state should be saved. Do not create a demo directory unless the user explicitly asks for one.
+When the user names a business directory, treat that directory as the source of business context and the place where advisor state should be saved.
 
 ## Required Workflow
 
