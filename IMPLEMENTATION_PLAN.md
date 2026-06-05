@@ -100,6 +100,7 @@ Implemented:
 - Advisor query execution and evidence capture in `src/money_model_architect/advisor_retrieval.py`.
 - First stateful advisor turn in `src/money_model_architect/advisor.py`.
 - `setup` and `chat` CLI commands. `sync` remains an alias for `setup`.
+- Advisor operating guide in `ADVISOR_OPERATING_GUIDE.md` and project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 - Framework-aware chunking candidate implemented, but not adopted as default.
 - Unit test for the calculator.
 
@@ -278,6 +279,7 @@ Build:
 - `money-model-advisor search`. **Done: returns citation-ready local Money Models source chunks.**
 - `money-model-advisor snapshot` and `snapshot set`. **Done: show/update saved `BusinessSnapshot`.**
 - `money-model-advisor logs`. **Done: show saved advisor session turns.**
+- Advisor operating guide / project-local skill. **Done.**
 - A business-context manifest that records files read, hashes, parse status, and extracted snippets. **Started: hashes, size, mtime, parse status.**
 - A persisted `BusinessSnapshot` stored under `.money-model-advisor/` in the target directory. **Done.**
 - Snapshot update from setup answers and the user's chat message. **Started for setup answers and obvious user-message facts.**
@@ -331,31 +333,33 @@ Report:
 
 - `evals/reports/tool_surface.md`
 
-## Phase 8 — Model Routing
+## Phase 8 — Local Advisor Quality Gate
 
-Objective: demonstrate model-switching decisions based on data.
+Objective: decide whether the subscription-operated advisor loop is useful enough to move beyond the CLI.
 
 Compare:
 
-- Default model for all tasks.
-- Cheap model for snapshot extraction and conversation-mode planning.
-- Cheap judge with escalation threshold sweep.
+- Current `chat` skeleton.
+- `chat` with stronger visible answer synthesis from source chunks.
+- `chat` with clearer snapshot update behavior.
+- `chat` with an optional trace review step for confusing turns.
 
 Metrics:
 
-- extraction accuracy
-- next-action accuracy
-- answer quality
-- cost per successful answer
-- escalation precision
+- next-action correctness
+- answer usefulness
+- citation/support correctness
+- deterministic calculation correctness
+- saved-fact correctness
+- trace completeness
 
 Decision rule:
 
-Route to cheaper models when quality is statistically similar and cost improves materially. Escalate only where judge confidence predicts a quality gain.
+Do not add a web UI, orchestration framework, or richer retrieval stack until the local advisor loop produces useful, cited, auditable answers on realistic scenarios.
 
 Report:
 
-- `evals/reports/routing_decisions.md`
+- `evals/reports/advisor_quality_gate.md`
 
 ## Non-goals for now
 

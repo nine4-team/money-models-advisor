@@ -120,13 +120,14 @@ The local tool surface should expose:
 - `snapshot set`: update accepted snapshot fields from the CLI
 - `logs`: inspect saved advisor session turns
 
+The operating rules for using those tools live in `ADVISOR_OPERATING_GUIDE.md`. A project-local skill version lives at `.codex/skills/money-model-advisor/SKILL.md`.
+
 ## Current Decision
 
 The next implementation work is not model-provider integration. It is making the subscription-operated CLI advisor easier to use:
 
-1. write advisor operating instructions for Codex/ChatGPT subscription context;
-2. add small behavior evals for clarify/calculate/teach/diagnose/retrieve/recommend turns;
-3. improve visible recommendation synthesis from retrieved chunks;
-4. keep all active work local and auditable.
+1. add small behavior evals for clarify/calculate/teach/diagnose/retrieve/recommend turns;
+2. improve visible recommendation synthesis from retrieved chunks;
+3. keep all active work local and auditable.
 
 This keeps the project aligned with the actual product use case and avoids premature infrastructure.

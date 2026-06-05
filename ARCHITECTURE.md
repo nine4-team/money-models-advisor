@@ -47,6 +47,7 @@ The advisor reasoning happens in the subscription context. The repo supplies dur
 | Advisor query construction from snapshot state | `src/money_model_architect/advisor_queries.py` |
 | First stateful advisor skeleton | `src/money_model_architect/advisor.py` |
 | CLI commands | `src/money_model_architect/cli.py` |
+| Advisor operating instructions | `ADVISOR_OPERATING_GUIDE.md`, `.codex/skills/money-model-advisor/SKILL.md` |
 
 ## State Contract
 

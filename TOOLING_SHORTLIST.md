@@ -7,7 +7,7 @@ Current recommendation for the next build pass: keep the product CLI-first, use 
 | Need | Recommended tool | Why it helps this project | Source |
 |---|---|---|---|
 | Stateful advisor orchestration | Simple CLI state loop first; LangGraph only if the loop earns it | The product is multi-turn, but the v1 should prove the state and tool boundaries before adding orchestration machinery. | Local architecture decision |
-| Local model/operator workflow | Codex CLI / Codex environment | A CLI product can be developed and operated inside Codex. Codex CLI can run locally, read files, modify code, and use a ChatGPT sign-in flow. Treat this as the v1 advisor runtime. | https://help.openai.com/en/articles/11096431, https://help.openai.com/en/articles/11381614-api-codex-cli-and-sign-in-with-chatgpt |
+| Local model/operator workflow | Codex CLI / Codex environment | A CLI product can be developed and operated inside Codex. Codex CLI can run locally, read files, modify code, and use a ChatGPT sign-in flow. Treat this as the v1 advisor runtime. | Local architecture decision |
 | Setup/intake input | Plain local directory + Markdown/JSON/YAML readers | Optional setup input can come from local notes, offers, metrics, docs, and prior sessions. Runtime chat should use the saved snapshot. | Local architecture decision |
 | Local session and snapshot store | JSON now; SQLite later only if traces become unwieldy | JSON files are enough for `BusinessSnapshot`, context manifests, and sessions in v1. | Local implementation |
 | Local retrieval | Standard-library BM25-style search | Keeps the advisor runnable without provider keys or hosted infrastructure. | Local implementation |
