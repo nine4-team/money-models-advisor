@@ -10,6 +10,16 @@ The next product surface is CLI-first and subscription-operated: run setup/intak
 
 If the user provides missing information during chat, the advisor saves it back into the snapshot. The web app can wait until that loop is actually good.
 
+## Agent quickstart
+
+For a natural-language agent run, open this repo and point the agent at the real business directory:
+
+```text
+Use ../1584-design as the business directory and tell me what to fix first.
+```
+
+The root `AGENTS.md` tells the agent to initialize or refresh `.money-model-advisor/` in that business directory, inspect the saved `BusinessSnapshot`, ask for missing facts in plain English, and run the local `chat` command when enough context exists.
+
 ## Local proof harness
 
 Set up advisor state for a business directory:
