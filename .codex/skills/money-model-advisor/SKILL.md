@@ -1,16 +1,17 @@
 ---
 name: money-model-advisor
-description: Operate the local Money Model Advisor repo through CLI tools and saved BusinessSnapshot state. Use when advising on Money Models, running the advisor CLI, updating business snapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without provider-key model calls.
+description: Operate the Money Model Advisor CLI against the user's current or specified folder. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without provider-key model calls.
 ---
 
 # Money Model Advisor
 
-Use this skill to operate the repo as a local, subscription-operated Money Models advisor.
+Use this skill to operate the Money Model Advisor CLI from wherever the user invokes it.
 
-Use when the user wants to advise on a real business directory, for example:
+Natural user requests can look like:
 
 ```text
-Use /path/to/business as the business directory.
+Use the Money Model Advisor on this folder.
+Use the Money Model Advisor on /path/to/folder.
 ```
 
 ## Core Rule
@@ -19,62 +20,80 @@ Reason conversationally first. Do not route by shallow keywords. Use tools only 
 
 Do not use provider-key model calls.
 
-## Business Directory Flow
+## Path Resolution
 
-When the user names a business directory, use that directory as the source of business context and the place where advisor state is saved.
+The user should not have to understand repo path plumbing.
 
-1. Resolve the business directory path.
+Use:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the explicit folder named by the user, otherwise the current working directory
+
+Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
 2. Initialize or refresh local advisor state:
 
    ```bash
-   PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /path/to/business
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir "$CONTEXT_DIR"
    ```
 
 3. Inspect the saved snapshot:
 
    ```bash
-   PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /path/to/business
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
    ```
 
 4. If important context is missing, ask the next useful question in plain English. Do not ask the user to paste JSON.
-5. If enough context exists, run an advisor turn with the user's actual request:
+5. Save clear user-provided facts with `snapshot set`.
+6. If enough context exists, run an advisor turn with the user's actual request:
 
    ```bash
-   PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /path/to/business --message "the user's request"
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir "$CONTEXT_DIR" --message "the user's request"
    ```
 
-6. Return the advisor answer in plain English. Mention saved state or logs only when useful.
+7. Return the advisor answer in plain English. Mention saved state or logs only when useful.
 
 ## Commands
 
 Show saved state:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /path/to/company
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
 ```
 
 Update accepted facts:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /path/to/company economics.cac=350
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
 ```
 
 Run deterministic math:
 
 ```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
 PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
 ```
 
 Search local source material:
 
 ```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
 PYTHONPATH=src python3 -m money_model_architect.cli search "CAC payback period" --layer unit-economics --top-k 5
 ```
 
 Inspect saved turns:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /path/to/company
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
 ```
 
 ## Workflow

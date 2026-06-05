@@ -12,7 +12,7 @@ If the user provides missing information during chat, the advisor saves it back 
 
 ## Advisor skill
 
-Advisor-runtime instructions live in the project skill at `.codex/skills/money-model-advisor/SKILL.md`. Use that skill when operating the CLI against a real business directory; keep normal repo work in ordinary development mode.
+Advisor operation instructions live in the project skill at `.codex/skills/money-model-advisor/SKILL.md`. Use that skill to run the CLI against the current folder or another folder you specify.
 
 ## Local proof harness
 
