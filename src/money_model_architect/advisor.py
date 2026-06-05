@@ -182,7 +182,7 @@ def synthesize_advisor_message(snapshot: BusinessSnapshot, evidence: list[dict[s
         )
 
     if missing:
-        return FIELD_QUESTIONS.get(missing[0], f"I need {missing[0]} before I can diagnose this cleanly.")
+        return _clarifying_message(snapshot, missing)
     return "I have enough basic context. Next I should retrieve source evidence and produce a cited recommendation."
 
 
@@ -263,6 +263,56 @@ def _next_context_sentence(missing: list[str]) -> str | None:
         return "Next action: run the smallest offer-stack test that improves payback, then update the snapshot with the result."
     question = FIELD_QUESTIONS.get(missing[0], f"I need {missing[0]} before I can diagnose this cleanly.")
     return f"Next missing context: {question}"
+
+
+def _clarifying_message(snapshot: BusinessSnapshot, missing: list[str]) -> str:
+    question = FIELD_QUESTIONS.get(missing[0], f"I need {missing[0]} before I can diagnose this cleanly.")
+    summary = _known_context_summary(snapshot)
+    if not summary:
+        return question
+
+    if missing[0].startswith("economics."):
+        return _join_answer_parts(
+            [
+                f"I have the business context loaded: {summary}.",
+                f"The next Money Models question is: {question}",
+            ]
+        )
+
+    return _join_answer_parts(
+        [
+            f"I have this context so far: {summary}.",
+            f"Next missing context: {question}",
+        ]
+    )
+
+
+def _known_context_summary(snapshot: BusinessSnapshot) -> str | None:
+    parts: list[str] = []
+    if snapshot.business.business_type:
+        parts.append(snapshot.business.business_type)
+    if snapshot.money_model.core_offer.description:
+        parts.append(f"core offer: {snapshot.money_model.core_offer.description}")
+
+    stack_parts: list[str] = []
+    for position in ("attraction_offer", "upsell", "downsell", "continuity"):
+        stack_position = getattr(snapshot.money_model, position)
+        if stack_position.exists is None:
+            continue
+        readable = position.replace("_", " ")
+        if stack_position.exists:
+            label = readable
+            if stack_position.description:
+                label = f"{label}: {stack_position.description}"
+            stack_parts.append(label)
+        else:
+            stack_parts.append(f"no {readable}")
+    if stack_parts:
+        parts.append("offer stack: " + "; ".join(stack_parts))
+
+    if not parts:
+        return None
+    return "; ".join(parts)
 
 
 def _join_answer_parts(parts: list[str | None]) -> str:
