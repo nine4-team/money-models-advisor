@@ -95,8 +95,6 @@ Active eval assets:
 | `scripts/review_obligations.py` | local review UI for required-claim labels |
 | `scripts/score_obligation_support.py` | required-claim support scorer |
 
-Archived provider-backed experiments live under `archive/provider-backed-experiments/` and are not part of the active design.
-
 ## Advisor Loop
 
 The advisor should be agent-led in conversation, with deterministic code only where the justification is strong:
