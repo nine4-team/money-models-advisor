@@ -7,11 +7,43 @@ description: Operate the local Money Model Advisor repo through CLI tools and sa
 
 Use this skill to operate the repo as a local, subscription-operated Money Models advisor.
 
+Use when the user wants to advise on a real business directory, for example:
+
+```text
+Use /path/to/business as the business directory.
+```
+
 ## Core Rule
 
 Reason conversationally first. Do not route by shallow keywords. Use tools only when they help clarify, calculate, retrieve source material, update state, or inspect prior turns.
 
 Do not use provider-key model calls.
+
+## Business Directory Flow
+
+When the user names a business directory, use that directory as the source of business context and the place where advisor state is saved.
+
+1. Resolve the business directory path.
+2. Initialize or refresh local advisor state:
+
+   ```bash
+   PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /path/to/business
+   ```
+
+3. Inspect the saved snapshot:
+
+   ```bash
+   PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /path/to/business
+   ```
+
+4. If important context is missing, ask the next useful question in plain English. Do not ask the user to paste JSON.
+5. If enough context exists, run an advisor turn with the user's actual request:
+
+   ```bash
+   PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /path/to/business --message "the user's request"
+   ```
+
+6. Return the advisor answer in plain English. Mention saved state or logs only when useful.
 
 ## Commands
 
