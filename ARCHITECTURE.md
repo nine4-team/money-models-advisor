@@ -16,6 +16,18 @@ money-model-advisor chat --business-dir /company --message "..."
 → run deterministic calculations when fields are present
 → retrieve local Money Models source chunks when evidence is needed
 → persist session trace
+
+money-model-advisor search "CAC payback period" --layer unit-economics
+→ return citation-ready Money Models source chunks
+
+money-model-advisor snapshot --business-dir /company
+→ show saved BusinessSnapshot
+
+money-model-advisor snapshot set --business-dir /company economics.cac=350
+→ update accepted snapshot fields
+
+money-model-advisor logs --business-dir /company
+→ show saved advisor session turns
 ```
 
 The advisor reasoning happens in the subscription context. The repo supplies durable state and local tools.

@@ -113,6 +113,10 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py --include-proposed
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business --answers '{"business":{"business_type":"coaching business","icp":"gym owners"},"money_model":{"core_offer":{"description":"implementation program","price":5000},"attraction_offer":{"exists":true},"upsell":{"exists":false},"downsell":{"exists":true},"continuity":{"exists":false}},"economics":{"cac":350,"first_30_day_gross_profit":120},"problem":{"user_goal":"diagnose cash payback"}}'
 PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /tmp/mma-demo-business --message "We are a coaching business. Core offer is implementation program. CAC is $350 and first-30-day gross profit is $120. I want to diagnose cash payback."
+PYTHONPATH=src python3 -m money_model_architect.cli search "CAC payback period" --layer unit-economics
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /tmp/mma-demo-business
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /tmp/mma-demo-business economics.cac=350
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /tmp/mma-demo-business
 python3 -m unittest discover -s tests -v
 ```
 
@@ -271,6 +275,9 @@ Build:
 
 - `money-model-advisor setup --business-dir <path>`. **Started as `setup`; supports `--interactive` and `--answers`; `sync` remains an alias.**
 - `money-model-advisor chat --business-dir <path>`. **Started as `chat`; console-script alias added.**
+- `money-model-advisor search`. **Done: returns citation-ready local Money Models source chunks.**
+- `money-model-advisor snapshot` and `snapshot set`. **Done: show/update saved `BusinessSnapshot`.**
+- `money-model-advisor logs`. **Done: show saved advisor session turns.**
 - A business-context manifest that records files read, hashes, parse status, and extracted snippets. **Started: hashes, size, mtime, parse status.**
 - A persisted `BusinessSnapshot` stored under `.money-model-advisor/` in the target directory. **Done.**
 - Snapshot update from setup answers and the user's chat message. **Started for setup answers and obvious user-message facts.**

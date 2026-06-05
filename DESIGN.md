@@ -116,15 +116,17 @@ The local tool surface should expose:
 - `calculate`: deterministic formulas
 - `diagnose`: deterministic unit-economics diagnosis helpers
 - `search`: local Money Models corpus retrieval
-- session trace commands once the tool surface is expanded
+- `snapshot`: show the saved business snapshot
+- `snapshot set`: update accepted snapshot fields from the CLI
+- `logs`: inspect saved advisor session turns
 
 ## Current Decision
 
 The next implementation work is not model-provider integration. It is making the subscription-operated CLI advisor easier to use:
 
-1. expose clearer local tool commands for snapshot, calculation, retrieval, and traces;
-2. write advisor operating instructions for Codex/ChatGPT subscription context;
-3. add small behavior evals for clarify/calculate/teach/diagnose/retrieve/recommend turns;
+1. write advisor operating instructions for Codex/ChatGPT subscription context;
+2. add small behavior evals for clarify/calculate/teach/diagnose/retrieve/recommend turns;
+3. improve visible recommendation synthesis from retrieved chunks;
 4. keep all active work local and auditable.
 
 This keeps the project aligned with the actual product use case and avoids premature infrastructure.

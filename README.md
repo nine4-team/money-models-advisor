@@ -59,6 +59,25 @@ PYTHONPATH=src python3 -m money_model_architect.cli search \
   "When should I use a rollover upsell?" --layer upsells
 ```
 
+Show or update the saved business snapshot:
+
+```bash
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot \
+  --business-dir /path/to/company
+
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
+  --business-dir /path/to/company \
+  economics.cac=350 \
+  money_model.upsell.exists=false
+```
+
+Inspect saved advisor logs:
+
+```bash
+PYTHONPATH=src python3 -m money_model_architect.cli logs \
+  --business-dir /path/to/company
+```
+
 Run the smoke eval:
 
 ```bash
@@ -115,7 +134,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
 - Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
-- First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup` and `chat` CLI commands.
+- First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup`, `chat`, `search`, `snapshot`, and `logs` CLI commands.
 
 ## What remains planned
 
