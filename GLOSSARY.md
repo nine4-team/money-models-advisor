@@ -265,12 +265,31 @@ They help answer "what went wrong?" but they are not the main claim.
 Examples:
 
 - trace directness rate
+- trace parse rate
 - inferred-action count
 - failures by turn type
 - stale-query reuse count
 - unlogged-action count
 
 Diagnostic metrics are still valuable. They just should not be presented as the headline result.
+
+## Trace Parse Rate
+
+Trace parse rate is the percent of eval cases where the evaluator can extract an action trace at all.
+
+If the trace cannot be parsed, the report cannot confidently say what the agent did.
+
+## Trace Directness Rate
+
+Trace directness rate is the percent of actual actions supported by direct evidence.
+
+Example direct evidence:
+
+- a CLI command in `run.json`
+- a `retrieval_queries` entry in a session file
+- a snapshot update event
+
+A low trace directness rate means the evaluator is relying too much on inference.
 
 ## Label
 
@@ -305,10 +324,33 @@ Examples:
 - false search
 - missed search
 - wrong state tool
+- missed state lookup
 - premature clarify
 - premature recommendation
+- missed calculation
+- missed diagnosis
 - stale query reuse
+- forbidden action
 - unlogged action
 - correct action but wrong first action
+- state contamination
 
 This makes eval reports more useful than a single accuracy number.
+
+Common failure types:
+
+| Failure type | Meaning |
+|---|---|
+| `false_search` | The agent searched source material when search was forbidden. |
+| `missed_search` | Source-material search was required but absent. |
+| `wrong_state_tool` | The agent used the wrong state source, such as local docs instead of snapshot/logs. |
+| `missed_state_lookup` | The case required saved-state lookup, but the agent did not inspect saved state. |
+| `premature_clarify` | The agent asked a question even though the needed fact was available. |
+| `premature_recommendation` | The agent recommended before required facts, calculation, or source support were available. |
+| `missed_calculation` | Calculation was required but absent. |
+| `missed_diagnosis` | Diagnosis was required but absent. |
+| `stale_query_reuse` | The agent reused a generic or previous search query that did not match the current turn. |
+| `forbidden_action` | Any action listed as forbidden happened. |
+| `wrong_first_action` | The first action was wrong or materially harmful, even if later actions recovered. |
+| `unlogged_action` | The action may have happened, but the trace does not prove it. |
+| `state_contamination` | The result depends on state not present in the fixture. |

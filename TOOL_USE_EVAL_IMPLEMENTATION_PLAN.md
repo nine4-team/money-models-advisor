@@ -428,6 +428,94 @@ Use the `ambiguity` field to avoid fake precision:
 
 High-ambiguity cases can be useful for design discussion, but they should not drive the headline score.
 
+## Labeling Guide
+
+Labels are policy-conformance labels. They answer: under the documented Money Model Advisor design, what next action should the skill-guided agent choose?
+
+General rules:
+
+1. Do not label source-material search as required unless the answer needs Money Models source support.
+2. Do not label saved business facts as prompt context. If the fact should be remembered, put it in the snapshot or prior-session fixture.
+3. Use `required_actions` for actions that must happen.
+4. Use `allowed_actions` for reasonable supporting actions.
+5. Use `forbidden_actions` for harmful or misleading actions, especially false source searches.
+6. Prefer low-ambiguity cases for headline metrics.
+7. Mark high-ambiguity cases as analysis cases, not headline scoring cases.
+
+Boundary examples:
+
+| Boundary | Labeling rule |
+|---|---|
+| `clarify` vs `answer_without_tool` | Use `clarify` when a needed business fact is missing or ambiguous. Use `answer_without_tool` only when the agent can answer without saved state, calculation, diagnosis, mutation, or retrieval. |
+| `calculate` vs `diagnose` | Use `calculate` for explicit deterministic math or creating a numeric field. Use `diagnose` when interpreting numbers into a constraint, advisory status, or business implication. |
+| `read_snapshot` vs `compose_answer_from_state` | Use `read_snapshot` when the agent must inspect saved business facts. Use `compose_answer_from_state` when the relevant state is already available from prior allowed actions in the same run. |
+| `search_source_material` required vs allowed | Required when source support is necessary to teach, explain, compare, or justify. Allowed when citations would be helpful but not necessary. Forbidden when the user is asking about saved business context, local docs, or calculations. |
+| `inspect_local_docs` vs `read_snapshot` | Use `inspect_local_docs` when the fact is expected to exist in local business documents but has not been accepted into the snapshot. Use `read_snapshot` when the fact should already be saved. |
+
+Ambiguity examples:
+
+| Ambiguity | Example | Handling |
+|---|---|---|
+| `low` | "What did I say CAC was?" with CAC in snapshot fixture | Require `read_snapshot`; forbid `search_source_material`. |
+| `medium` | "Where does this leave us?" after numbers are complete | Allow `calculate`, `diagnose`, and `compose_answer_from_state`; require only the action needed by the case rationale. |
+| `high` | "What should I do?" with unclear goal and partial context | Exclude from headline metrics; use qualitatively. |
+
+Materially harmful first actions:
+
+- searching source material when search is forbidden
+- recommending before required facts are known
+- calculating from missing or stale values
+- updating snapshot with an unconfirmed or contradicted fact
+- inspecting local docs when the answer should come from saved state or logs
+
+## Failure Taxonomy
+
+Use these failure types in reports:
+
+| Failure type | Meaning |
+|---|---|
+| `false_search` | `search_source_material` happened when it was forbidden. |
+| `missed_search` | `search_source_material` was required but absent. |
+| `wrong_state_tool` | The agent used the wrong state source, such as local docs instead of snapshot/logs. |
+| `missed_state_lookup` | The case required `read_snapshot` or `read_logs`, but the agent did not inspect saved state. |
+| `premature_clarify` | The agent asked a question even though the needed fact was available in fixture state. |
+| `premature_recommendation` | The agent recommended before required facts, calculations, or source support were available. |
+| `missed_calculation` | `calculate` was required but absent. |
+| `missed_diagnosis` | `diagnose` was required but absent. |
+| `stale_query_reuse` | The agent reused a generic or previous search query that did not match the current turn. |
+| `forbidden_action` | Any action listed in `forbidden_actions` occurred. |
+| `wrong_first_action` | The first action was incorrect or materially harmful, even if later actions recovered. |
+| `unlogged_action` | The action may have happened, but the trace does not provide enough evidence. |
+| `state_contamination` | The case result depends on state not present in the fixture. |
+
+Regression cases should overweight the known failure mode: once a snapshot is diagnosable, the system can repeat generic source search on turns that need saved-state lookup, calculation, local-doc inspection, or composition from state.
+
+## Trace Metrics
+
+Add these diagnostics to the report:
+
+| Metric | Meaning |
+|---|---|
+| `trace_parse_rate` | Percent of cases where the evaluator can extract an action trace at all. |
+| `trace_directness_rate` | Percent of actual actions supported by direct evidence. |
+| `inferred_action_count` | Number of actions scored as inferred rather than direct. |
+| `missing_trace_count` | Number of expected or claimed actions with missing evidence. |
+
+Trace metrics are diagnostic metrics. They explain how trustworthy the eval evidence is; they should not be confused with next-action classification quality.
+
+## Label Review Note
+
+The first v1 labels can be project-authored by Codex from the documented advisor policy. The report should state this plainly.
+
+Before final publication, record:
+
+- how many labels were project-authored
+- how many labels were reviewed by the user or a second reviewer
+- which labels were marked medium or high ambiguity
+- which labels were excluded from headline metrics
+
+This is enough for the hiring artifact. Production use would require broader reviewer coverage.
+
 ## Baseline And Improvement Loop
 
 1. Build the eval cases and scorer.
@@ -495,12 +583,12 @@ These items improve scoring quality and make the report easier to trust.
 
 | Priority | Item | Status | Why it matters |
 |---|---|---|---|
-| P1 | Add labeling guide | open | Labels should be reproducible and should include examples for low, medium, and high ambiguity. |
-| P1 | Add failure taxonomy | open | Failure types make the report more useful than a raw accuracy number. |
-| P1 | Make regression set risk-weighted | open | Regression should overweight the known bug: repeated source search after diagnosable state. |
-| P1 | Add trace parse/directness metrics | open | Distinguishes "we can parse something" from "the system directly logged the intended action." |
+| P1 | Add labeling guide | planned | Labels should be reproducible and should include examples for low, medium, and high ambiguity. |
+| P1 | Add failure taxonomy | planned | Failure types make the report more useful than a raw accuracy number. |
+| P1 | Make regression set risk-weighted | planned | Regression should overweight the known bug: repeated source search after diagnosable state. |
+| P1 | Add trace parse/directness metrics | planned | Distinguishes "we can parse something" from "the system directly logged the intended action." |
 | P1 | Add control cases | planned | Include cases where search is clearly wrong and clearly required. |
-| P1 | Add label review note | open | Project-authored labels are fine for v1, but the report should identify any double-reviewed or user-reviewed labels. |
+| P1 | Add label review note | planned | Project-authored labels are fine for v1, but the report should identify any double-reviewed or user-reviewed labels. |
 
 ### P2 — Future Production-Scale Notes
 
