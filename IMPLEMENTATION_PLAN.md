@@ -47,6 +47,11 @@ Current dev requirement:
 
 This keeps retrieval evaluation from punishing or rewarding queries that should never have been generated.
 
+Progress trackers:
+
+- `TOOL_USE_JUDGMENT_PROGRESS.md`
+- `SEARCH_QUERY_QUALITY_PROGRESS.md`
+
 Improvement strategy:
 
 - Tool-use judgment improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong tool choices, and revise the skill instructions or CLI affordances.
