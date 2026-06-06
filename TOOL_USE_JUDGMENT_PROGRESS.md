@@ -2,7 +2,7 @@
 
 This tracker is for one problem only: whether the agent correctly classifies the next action for a user turn.
 
-It is separate from search-query quality. A bad search query is not the same failure as choosing `search_source_material` when the correct next action was to read saved state, inspect local docs, calculate, clarify, update the snapshot, or answer directly.
+It is separate from search-query quality. A bad search query is not the same failure as choosing `search_source_material` when the correct next action was to read saved state, inspect local docs, calculate, clarify, update the snapshot, compose from state, or answer without a tool.
 
 ## Current Status
 
@@ -88,7 +88,7 @@ The report should be transparent that initial labels were project-authored and v
 For the first v1 pass:
 
 - at least 15 realistic turns labeled
-- includes clarify, calculate, source search, snapshot/log lookup, local-doc inspection, update snapshot, and direct answer cases
+- includes clarify, calculate, diagnose, source search, snapshot/log lookup, local-doc inspection, update snapshot, compose-from-state, and answer-without-tool cases
 - no repeated generic source search on turns where source search is not the right action
 - session logs make the chosen action inspectable
 

@@ -42,7 +42,7 @@ Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That doc
 
 Current dev requirement:
 
-1. Evaluate next-action classification first: for each realistic turn, should the next action be source-material search, snapshot/log read, local-doc inspection, calculation, clarification, saved-context update, or direct answer?
+1. Evaluate next-action classification first: for each realistic turn, should the next action be source-material search, snapshot/log read, local-doc inspection, calculation, diagnosis, clarification, saved-context update, compose-from-state, or answer-without-tool?
 2. Evaluate search-query quality second: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
 
 This keeps retrieval evaluation from punishing or rewarding queries that should never have been generated.

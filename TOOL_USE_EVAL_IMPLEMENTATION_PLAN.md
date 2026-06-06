@@ -18,6 +18,23 @@ This plan does not evaluate source-search query quality. Query generation is eva
 
 The labels test conformance to the documented Money Model Advisor policy. They are not a claim about the one universally correct way every assistant should behave.
 
+## Evaluated System Boundary
+
+V1 evaluates the skill-guided agent planner, not the deterministic internals of `money-model-advisor chat`.
+
+The evaluated behavior is:
+
+```text
+case context + saved fixture state + available CLI tools
+→ agent chooses the next action label or action sequence
+→ agent runs CLI commands when needed
+→ evaluator captures the observable command/session trace
+```
+
+This boundary matches the product architecture: a human talks to an agent, and the agent uses the skill to operate the CLI. The CLI is the tool surface, state store, calculator, search endpoint, and trace writer. It is not the full planner being evaluated in this v1.
+
+This means actions such as `read_snapshot`, `read_logs`, and `inspect_local_docs` are evaluated as agent-level actions. They should be evidenced by captured CLI commands or file-inspection steps, not by assuming that `chat` internally loaded state.
+
 ## Scope
 
 V1 artifact scale:
@@ -152,13 +169,16 @@ Each row should use this shape:
   "scenario_id": "1584_design",
   "turn_type": "saved_fact_lookup",
   "conversation_context": "The user previously said referral partners cost about $1k per client.",
-  "snapshot_state": "Snapshot has CAC=$1k and first-30-day gross profit=$10k.",
+  "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json",
+  "local_docs_fixture_path": null,
+  "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_referral_partner_context.json",
   "user_turn": "what happened to the $1k we pay to referral partners?",
   "required_actions": ["read_snapshot"],
   "allowed_actions": ["read_logs", "compose_answer_from_state"],
   "forbidden_actions": ["search_source_material"],
   "expected_first_action": "read_snapshot",
   "search_allowed": false,
+  "expected_mutation": "none",
   "label_rationale": "The user is asking about saved business context, not Money Models source material.",
   "ambiguity": "low",
   "severity_if_wrong": "high"
@@ -170,6 +190,20 @@ Design choice:
 - score required, allowed, and forbidden actions instead of a single `expected_action`
 - this handles valid multi-step turns such as `read_snapshot -> calculate -> compose_answer_from_state`
 - keep `expected_first_action` because the first action choice is often where bad behavior starts
+- use fixture paths instead of prose `snapshot_state`, so cases are repeatable
+
+## Fixture Schema
+
+Each case should reference structured fixtures instead of relying on prose setup.
+
+| Field | Required | Meaning |
+|---|---|---|
+| `snapshot_fixture_path` | yes | JSON fixture copied into the case's eval business directory as the starting `BusinessSnapshot`. |
+| `local_docs_fixture_path` | no | Directory or file fixture copied into the eval business directory when the expected action may inspect local business docs. |
+| `prior_sessions_fixture_path` | no | Session/log fixture copied into `.money-model-advisor/sessions/` when the expected action may read prior turns. |
+| `expected_mutation` | yes | Expected state mutation policy: `none`, `snapshot_update`, or `session_only`. |
+
+The fixture loader should record starting and ending snapshot hashes in `run.json`.
 
 ## Case Balance
 
@@ -248,6 +282,107 @@ V1 thresholds:
 - required-action recall on dev/regression: at least 80%
 - `scenario_holdout` results are reported descriptively and are not used for a strong generalization claim
 
+## Run Protocol
+
+Each eval case runs in an isolated generated directory:
+
+```text
+evals/runs/next_action/{phase}/{case_id}/business_dir
+```
+
+The runner should:
+
+1. Create a fresh run directory for the case.
+2. Copy the snapshot fixture into `business_dir/.money-model-advisor/business_snapshot.json`.
+3. Copy local-doc and prior-session fixtures when the case references them.
+4. Record the starting snapshot hash.
+5. Execute the agent-planner workflow for the case.
+6. Capture CLI commands, file-inspection steps, stdout/stderr, session paths, and final answer.
+7. Record the ending snapshot hash.
+8. Write `run.json`.
+
+Never run eval cases against `/Users/benjaminmackenzie/1584_design/.money-model-advisor`.
+
+## `run.json` Schema
+
+Every case run should produce a structured artifact:
+
+```json
+{
+  "case_id": "tooluse_v1_001",
+  "split": "dev",
+  "phase": "baseline",
+  "business_dir": "evals/runs/next_action/baseline/tooluse_v1_001/business_dir",
+  "fixtures": {
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json",
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_referral_partner_context.json"
+  },
+  "snapshot_hash": {
+    "start": "sha256:...",
+    "end": "sha256:..."
+  },
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "cli_command",
+      "command": "money-model-advisor snapshot --business-dir ...",
+      "stdout_path": "stdout/000_snapshot.txt",
+      "stderr_path": "stderr/000_snapshot.txt",
+      "exit_code": 0
+    }
+  ],
+  "session_paths": [
+    "business_dir/.money-model-advisor/sessions/....json"
+  ],
+  "actual_actions": [
+    {
+      "index": 0,
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_type": "cli_command",
+      "evidence_ref": "workflow_steps[0]"
+    }
+  ],
+  "final_answer_path": "final_answer.txt"
+}
+```
+
+## Normalized Action Trace
+
+Each `actual_actions[]` item should use this shape:
+
+```json
+{
+  "index": 0,
+  "action": "search_source_material",
+  "confidence": "direct",
+  "evidence_type": "session.retrieval_queries",
+  "evidence_ref": "business_dir/.money-model-advisor/sessions/....json:retrieval_queries[0]"
+}
+```
+
+Allowed confidence values:
+
+- `direct`: explicit command, file-inspection step, session field, or structured run event
+- `inferred`: implied by prose, side effect, or final answer but not explicitly logged
+- `missing`: expected evidence is absent or unclassifiable
+
+Headline metrics should require direct evidence for tool-like actions:
+
+- `read_snapshot`
+- `read_logs`
+- `inspect_local_docs`
+- `update_snapshot`
+- `calculate`
+- `diagnose`
+- `search_source_material`
+
+Answer-like actions can be reported separately as response classification when they are inferred from the final answer:
+
+- `compose_answer_from_state`
+- `answer_without_tool`
+
 ## Actual Action Extraction
 
 Define actual actions from the session trace and command history, not from subjective answer quality. The eval report must include the case ID, expected actions, actual actions, trace path or run ID, and failure rationale for every failed case.
@@ -265,6 +400,21 @@ Mapping:
 - assistant answers without any state read, calculation, mutation, diagnosis, or retrieval -> `answer_without_tool`
 
 If a trace cannot be classified, mark trace completeness as failed and record the case for logging improvement.
+
+## Observability By Action
+
+| Action | V1 observability | Direct evidence examples |
+|---|---|---|
+| `clarify` | inferred | final answer asks for a missing field and no stronger tool-like action occurs |
+| `update_snapshot` | direct | `snapshot set` command, snapshot diff, or session action showing field update |
+| `read_snapshot` | direct | `snapshot` CLI command in `workflow_steps` |
+| `read_logs` | direct | `logs` CLI command in `workflow_steps` |
+| `inspect_local_docs` | direct | recorded file-inspection step under the eval business dir |
+| `calculate` | direct | `calculate` command or structured calculator event |
+| `diagnose` | direct or inferred | `diagnose` command, structured diagnosis event, or diagnosis fields added to snapshot |
+| `search_source_material` | direct | `search` command, `retrieval_queries`, or `evidence` |
+| `compose_answer_from_state` | inferred | final answer uses existing context after allowed state/calculation actions |
+| `answer_without_tool` | inferred | final answer with no state read, calculation, mutation, diagnosis, or retrieval |
 
 ## Ambiguity Handling
 

@@ -182,6 +182,7 @@ It should specify:
 - what command or agent workflow runs
 - where raw outputs and session logs are saved
 - how the run maps back to the case ID
+- what action trace was recorded
 
 The run protocol prevents eval cases from becoming impossible to reproduce.
 
