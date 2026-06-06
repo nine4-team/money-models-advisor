@@ -241,6 +241,36 @@ A missed search happens when source-material search was required but the agent d
 
 Example: the user asks for a source-grounded explanation of client-financed acquisition, and the agent answers without retrieving source material.
 
+## Headline Metrics
+
+Headline metrics are the main numbers we would put in the project write-up or summary table.
+
+They are the scores we are comfortable using to support the core claim.
+
+Example:
+
+```text
+Next-action classification false-search rate fell from 40% to 0% on regression cases.
+```
+
+For this project, headline metrics should be based on direct trace evidence whenever possible. If an action is only inferred from prose, it can still be useful, but it should not quietly drive the main score.
+
+## Diagnostic Metrics
+
+Diagnostic metrics are supporting numbers used to understand failures.
+
+They help answer "what went wrong?" but they are not the main claim.
+
+Examples:
+
+- trace directness rate
+- inferred-action count
+- failures by turn type
+- stale-query reuse count
+- unlogged-action count
+
+Diagnostic metrics are still valuable. They just should not be presented as the headline result.
+
 ## Label
 
 A label is the expected classification for an eval case.
