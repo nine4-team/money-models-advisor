@@ -60,8 +60,13 @@ Example labels:
 - `diagnose`
 - `search_source_material`
 - `compose_answer_from_state`
+- `answer_without_tool`
 
 This is separate from query generation. First decide whether search is the right next action. Only then generate a search query.
+
+`compose_answer_from_state` means the answer is synthesized from already-available conversation, snapshot, calculation, or diagnosis state.
+
+`answer_without_tool` means no state read, calculation, mutation, diagnosis, or retrieval is needed.
 
 ## Query Generation
 
