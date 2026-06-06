@@ -1,17 +1,24 @@
 # Advisor Query Policy v1
 
-This policy defines how local corpus-search queries are built when the advisor decides that source material is needed for the current turn.
+This policy defines how local corpus-search queries are built when the advisor decides that Money Models source material is needed for the current turn.
 
 Current handoff note: the v1 implementation is still too blunt. The 1584 Design trace review in `ADVISOR_RETRIEVAL_HANDOFF.md` shows that retrieval is currently triggered more by snapshot readiness than by the specific current turn. Treat the policy below as the target direction, not proof that the implementation is finished.
 
 The advisor should not use shallow keyword matching over the raw user message as the router. V1 should use the agent conversation as the advisor loop: the agent reads the conversation, the `BusinessSnapshot`, and available tools, then decides whether to clarify, calculate, diagnose, teach, compare, recommend, search source material, update the snapshot, or decline. Query construction happens only when that advisor loop chooses to search source material.
+
+The two capabilities must be evaluated separately:
+
+1. Tool-use judgment: does the agent correctly decide whether this turn needs source-material search at all?
+2. Search-query quality: when source-material search is appropriate, does the query retrieve useful Money Models chunks?
+
+Search queries are not the bridge from every conversation turn to every action. They are only inputs to the `search_source_material` tool. Saved context lookup, conversation recall, snapshot updates, business-doc inspection, and deterministic calculations should use their own tools or agent reasoning without fabricating a corpus-search query.
 
 Deterministic rules are allowed only where the justification is strong:
 
 - arithmetic and formulas, such as CAC payback and gross profit calculations
 - narrow validated extraction, such as obvious dollar amounts
 - schema/readiness checks, such as whether required snapshot fields exist
-- query assembly from accepted snapshot facts and advisor-selected focus terms
+- query assembly after the advisor has already selected source-material search
 
 Deterministic rules should not decide broad conversational intent, such as whether a user wants teaching versus diagnosis. That belongs to the agent-led advisor turn.
 
@@ -20,7 +27,8 @@ Deterministic rules should not decide broad conversational intent, such as wheth
 - `BusinessSnapshot`
 - `advisor_state.advisory_status`
 - `problem.diagnosed_constraints`
-- advisor-selected tool intent and focus terms, when source search is needed
+- advisor-selected tool/action need
+- advisor-selected focus terms, when source search is needed
 - current money-model stack shape
 
 ## Output Shape
@@ -29,10 +37,26 @@ Deterministic rules should not decide broad conversational intent, such as wheth
 {
   "intent": "diagnostic_evidence",
   "layer": "unit-economics",
-  "query": "CAC first 30 day gross profit payback period client financed acquisition coaching business implementation program",
-  "reason": "Snapshot is diagnosable; search unit-economics source material before explaining the diagnosis."
+  "query": "client financed acquisition CAC payback first 30 day gross profit",
+  "reason": "The current turn asks for source-supported unit-economics explanation, so search Money Models source material."
 }
 ```
+
+## Tool-Use Decision
+
+Before any query is built, the agent should decide the next action for the turn:
+
+| Advisor need | Correct tool/action |
+|---|---|
+| Missing business fact | Ask the user or inspect local business docs before updating snapshot |
+| Business-doc lookup | Agent file inspection, then `update_snapshot` for accepted facts |
+| Saved fact or prior-turn lookup | `read_snapshot` or `logs` |
+| Calculation | `calculate` or deterministic snapshot math |
+| Concept teaching with source support | `search_source_material` |
+| Diagnostic explanation with source support | `search_source_material` plus calculation |
+| Recommendation support | `search_source_material` focused on the proposed fix |
+
+Only the last three rows require a corpus-search query.
 
 ## Retrieval Intents
 
@@ -49,13 +73,15 @@ Retrieval evidence is saved in the session trace. It is not a `BusinessSnapshot`
 
 ### `insufficient_context`
 
-Do not search by default. Ask for the next missing field.
+Do not search by default. Ask for the next missing field or inspect local business docs when the agent has a clear reason to believe the missing fact is available there.
 
 Exception: if the advisor chooses to teach or compare and needs source evidence, build `teaching_evidence` or `comparison_evidence` from the advisor-selected focus terms and layer.
 
 ### `diagnosable`
 
-Build one `diagnostic_evidence` query.
+Do not automatically build a query just because the snapshot is diagnosable. First decide the current advisor need.
+
+Build a `diagnostic_evidence` query only when the current turn needs source support for explaining the diagnosis, teaching the unit-economics frame, or grounding a recommendation.
 
 Layer:
 

@@ -71,6 +71,13 @@ It does not mean:
 
 The current local baseline uses BM25-style scoring and the five-layer taxonomy. It is intentionally simple because the advisor loop, state model, and evaluation method need to be clear before adding retrieval complexity.
 
+The next retrieval work is not just "write better queries." The advisor must pass two gates:
+
+1. Tool-use judgment: decide whether the current turn needs source-material search at all, versus snapshot/log lookup, local business-doc inspection, calculation, clarification, or direct answer synthesis.
+2. Search-query quality: when source-material search is the right tool, build a focused query that retrieves useful Money Models chunks.
+
+Query quality should be evaluated only on turns where source-material search is actually the right action.
+
 Local baseline:
 
 | Retriever | Hit@1 | Hit@5 | MRR |
@@ -126,7 +133,7 @@ The operating rules for using those commands live in `ADVISOR_OPERATING_GUIDE.md
 
 The next implementation work is not external model-service integration. It is making the skill-guided CLI advisor easier to use:
 
-1. add small behavior evals for clarify/calculate/teach/diagnose/retrieve/recommend turns;
+1. add small behavior evals for tool-use judgment and source-search query quality;
 2. expand visible answer synthesis beyond the first payback/recommendation path;
 3. keep all active work local and auditable.
 

@@ -18,6 +18,8 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `chat`, `calculate`, `search_source_material`, and `logs`.
 
+Current dev focus: evaluate two capabilities separately. First, tool-use judgment: should the agent search source material, read saved state, inspect local business docs, calculate, clarify, update saved context, or answer directly? Second, search-query quality: when source-material search is actually appropriate, did the query retrieve useful Money Models chunks?
+
 Set up advisor state for a context directory:
 
 ```bash

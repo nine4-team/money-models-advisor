@@ -75,6 +75,13 @@ Retrieval does not mean:
 
 The active retriever is a BM25-style local baseline over heading-aware transcript chunks. More complex retrieval is not active unless it can be evaluated locally and earns the added complexity.
 
+The active architecture must evaluate two separate capabilities before retriever selection:
+
+1. Tool-use judgment: whether the agent should search source material, read saved state, inspect business docs, calculate, clarify, update the snapshot, or answer directly.
+2. Search-query quality: when source-material search is appropriate, whether the query retrieves useful Money Models chunks.
+
+Do not use corpus-search query metrics to judge turns where the correct action was not source-material search.
+
 ## Corpus Layers
 
 | Layer | Chapters |
@@ -113,6 +120,10 @@ Active local evals:
 | Required-claim support | `PYTHONPATH=src python3 scripts/score_obligation_support.py` |
 
 Archived external-service experiments are not active architecture.
+
+Next required eval:
+
+- turn-level advisor tool-use judgment and source-search query quality, starting from the 1584 Design conversation traces in `ADVISOR_RETRIEVAL_HANDOFF.md`
 
 ## JD Mapping
 

@@ -38,7 +38,19 @@ The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
 Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.
 
-Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That document captures the 1584 Design trace review, the critique of the current query planner, and the next retrieval-planning work.
+Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That document captures the 1584 Design trace review, the critique of the current tool-use and query-generation behavior, and the next planner-eval work.
+
+Current dev requirement:
+
+1. Evaluate tool-use judgment first: for each realistic turn, should the agent search source material, read snapshot/logs, inspect local business docs, calculate, clarify, update saved context, or answer directly?
+2. Evaluate search-query quality second: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
+
+This keeps retrieval evaluation from punishing or rewarding queries that should never have been generated.
+
+Improvement strategy:
+
+- Tool-use judgment improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong tool choices, and revise the skill instructions or CLI affordances.
+- Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
 
 **CLI setup and advisor loop:**
 
@@ -114,7 +126,7 @@ Implemented:
 
 Current retrieval limitation:
 
-- The session trace now records exact retrieval queries and returned chunks, but the v1 query planner is too state-triggered. Once a snapshot becomes diagnosable, later turns can repeat the same diagnostic query even when the current turn needs business-doc lookup, saved-state/provenance lookup, calculation, teaching, or an ad-spend-specific source query. See `ADVISOR_RETRIEVAL_HANDOFF.md`.
+- The session trace now records exact retrieval queries and returned chunks, but the v1 tool-choice logic and query generator are too state-triggered. Once a snapshot becomes diagnosable, later turns can repeat the same diagnostic query even when the current turn needs business-doc lookup, saved-state/provenance lookup, calculation, teaching, direct answer synthesis, or an ad-spend-specific source query. See `ADVISOR_RETRIEVAL_HANDOFF.md`.
 
 Run checks:
 
@@ -266,6 +278,8 @@ Scenarios:
 
 Metrics:
 
+- tool-use judgment correctness
+- source-search query quality on search-appropriate turns
 - next-action correctness
 - calculation correctness
 - support/citation correctness
