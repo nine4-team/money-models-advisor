@@ -223,8 +223,59 @@ The strength of the artifact is the thinking: precise problem decomposition, non
 
 ## Next Steps
 
-1. Create `evals/advisor_tool_use_cases.jsonl`.
-2. Write `scripts/eval_tool_use_judgment.py`.
-3. Generate the first baseline report.
-4. Improve the skill/tool guidance from dev/regression failures.
-5. Re-run and record before/after results.
+Before creating cases or writing the scorer, work through the senior-review backlog below.
+
+## Senior Review Backlog
+
+Status legend:
+
+- `open`: not yet addressed
+- `planned`: accepted and reflected in this plan
+- `done`: implemented in code or eval artifacts
+
+### P0 — Must Fix Before Implementation
+
+These items determine whether the eval is auditable and trustworthy.
+
+| Priority | Item | Status | Why it matters |
+|---|---|---|---|
+| P0 | Define run protocol | open | Each case needs a reproducible mapping from `case_id` to business dir, run ID, session path, trace file, and baseline/post-change status. |
+| P0 | Add structured action trace target | open | Current logs do not directly expose all next-action labels, so the eval needs a structured action record instead of brittle inference. |
+| P0 | Tighten action taxonomy | open | `answer_directly` and `calculate` are currently too fuzzy to score reproducibly. |
+| P0 | Separate direct vs inferred trace evidence | open | The report should show whether an action was directly logged, inferred, or missing. |
+| P0 | Prevent per-case state contamination | open | Cases need fresh or explicitly prepared state so prior runs do not affect later labels. |
+
+### P1 — Should Fix For A Strong First Report
+
+These items improve scoring quality and make the report easier to trust.
+
+| Priority | Item | Status | Why it matters |
+|---|---|---|---|
+| P1 | Add labeling guide | open | Labels should be reproducible and should include examples for low, medium, and high ambiguity. |
+| P1 | Add failure taxonomy | open | Failure types make the report more useful than a raw accuracy number. |
+| P1 | Make regression set risk-weighted | open | Regression should overweight the known bug: repeated source search after diagnosable state. |
+| P1 | Add trace parse/directness metrics | open | Distinguishes "we can parse something" from "the system directly logged the intended action." |
+| P1 | Add control cases | planned | Include cases where search is clearly wrong and clearly required. |
+| P1 | Add label review note | open | Project-authored labels are fine for v1, but the report should identify any double-reviewed or user-reviewed labels. |
+
+### P2 — Future Production-Scale Notes
+
+These items are not required for the small hiring artifact, but should be acknowledged in the final narrative.
+
+| Priority | Item | Status | Why it matters |
+|---|---|---|---|
+| P2 | Rename holdout framing to scenario holdout | open | Current holdout is same-scenario, not cross-business generalization. |
+| P2 | Add future cross-business holdout note | open | Clarifies how this would scale beyond the 1584 Design proof. |
+| P2 | Expand case count and reviewers for production | planned | Production eval would need more businesses, more cases, and stronger reviewer coverage. |
+
+## Revised Immediate Order
+
+1. Define the run protocol.
+2. Define the structured action trace target.
+3. Tighten the action taxonomy.
+4. Add the labeling guide and failure taxonomy.
+5. Create `evals/advisor_tool_use_cases.jsonl`.
+6. Write `scripts/eval_tool_use_judgment.py`.
+7. Generate the first baseline report.
+8. Improve the skill/tool guidance from dev/regression failures.
+9. Re-run and record before/after results.

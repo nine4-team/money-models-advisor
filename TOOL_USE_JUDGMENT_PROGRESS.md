@@ -96,10 +96,10 @@ For the first v1 pass:
 
 Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
-Immediate implementation steps:
+Immediate planning steps:
 
-1. Create `evals/advisor_tool_use_cases.jsonl` from the 1584 Design conversation and realistic synthetic follow-ups.
-2. Use required/allowed/forbidden action labels instead of one expected action.
-3. Add a small `dev` / `regression` / `holdout` split.
+1. Work through the P0 senior-review backlog: run protocol, structured action trace, action taxonomy, trace confidence, and per-case state isolation.
+2. Work through the P1 backlog: labeling guide, failure taxonomy, risk-weighted regression cases, trace metrics, controls, and label review note.
+3. Then create `evals/advisor_tool_use_cases.jsonl`.
 4. Write `scripts/eval_tool_use_judgment.py`.
 5. Generate `evals/reports/advisor_tool_use_judgment.md`.
