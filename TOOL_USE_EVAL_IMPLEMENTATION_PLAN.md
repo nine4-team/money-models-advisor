@@ -42,6 +42,8 @@ Decision: eval cases should not put full saved business facts into the prompt. S
 
 Reason: the eval should match the product's information architecture. If the prompt already contains the saved fact, the agent does not need to classify `read_snapshot` as the next action. To test whether the agent uses saved memory correctly, saved facts must live in the saved state.
 
+Explanation: saved facts are business facts the advisor is supposed to remember, such as CAC, first-30-day gross profit, ICP, core offer, pricing, or something the user said earlier. A snapshot fixture is a test-only `BusinessSnapshot` file used to set up a repeatable case. Prompt text is the written context handed to the agent when the test starts. If that text already says "CAC is $1,000," the agent does not need to read saved state. "Live in" simply means "be stored in." So this decision means remembered business facts should be stored in the test snapshot file, not pasted into the text shown to the agent.
+
 ### Fresh Eval Directory Per Case
 
 Decision: each case/run gets a fresh isolated eval business directory, such as:
@@ -52,17 +54,23 @@ evals/runs/next_action/{phase}/{case_id}/business_dir
 
 Reason: mutable state can contaminate the eval. If one case writes CAC into the snapshot and another case accidentally reads it, the second case is measuring test order rather than next-action classification.
 
+Explanation: each test case should get its own temporary folder with its own `.money-model-advisor` state. The advisor writes to disk during a run. If two cases share a folder, the second case might pass only because the first case left data behind. A fresh eval directory prevents that.
+
 ### No Mutation Of Real Business State
 
 Decision: eval runs must never mutate `/Users/benjaminmackenzie/1584_design/.money-model-advisor`.
 
 Reason: the real 1584 directory is working business context, not an eval fixture. Reproducible evals should use copied fixtures and generated run directories.
 
+Explanation: `/Users/benjaminmackenzie/1584_design` is real working context. Eval runs should not write to its advisor memory because that could pollute future real conversations. Tests should copy only the needed facts into disposable fixtures and run somewhere generated for the eval.
+
 ### Structured Run Artifact
 
 Decision: every case run should write a structured `run.json` with the case ID, run phase, fixture paths, commands or workflow steps, session paths, starting snapshot hash, ending snapshot hash, and actual action trace.
 
 Reason: if a reviewer cannot reconstruct what happened, we do not have an eval. We have a story. The run artifact turns before/after claims into inspectable evidence.
+
+Explanation: a run artifact is a saved file, usually `run.json`, that records what happened during one test case. It should capture which case ran, which fixture was loaded, which commands ran, where logs were saved, what the starting and ending snapshots looked like, and what actions were detected. This lets us point to evidence instead of saying "I think the agent did X."
 
 ### Structured Action Trace With Confidence
 
@@ -79,11 +87,15 @@ Decision: actual actions should be recorded as structured objects:
 
 Reason: current logs do not directly expose every next-action label. Direct evidence, inferred evidence, and missing evidence need to be separated so the report does not hide weak observability.
 
+Explanation: the action trace is the part of the run artifact that lists what actions happened. Confidence explains how strong the evidence is. `direct` means we saw a command or log event. `inferred` means the action is guessed from the answer or a side effect. `missing` means the run does not give enough evidence to classify the action.
+
 ### Headline Metrics Prefer Direct Evidence
 
 Decision: direct evidence should anchor headline metrics. Inferred actions can be reported as debugging evidence or trace observability debt, but should not silently drive strict pass/fail.
 
 Reason: inferred actions can turn the evaluator's interpretation into the measured behavior. Direct evidence is more auditable.
+
+Explanation: headline metrics are the main numbers we would put in the write-up. Those numbers should be based on what the trace directly shows whenever possible. If an answer only sounds like it searched, that is useful debugging information, but it should not quietly count as a real search in the main score.
 
 ### Refined Action Taxonomy
 
@@ -100,11 +112,15 @@ Keep `decline_or_scope` deferred unless off-topic cases are added.
 
 Reason: vague labels create fake disagreement. These labels separate behaviors that imply different system design choices.
 
+Explanation: an action taxonomy is the list of labels we use for what the agent did next. `answer_directly` was too broad because it could mean answering from saved state, answering after calculation, or answering without any tool. The refined labels separate those behaviors so scoring is cleaner.
+
 ### Scenario Holdout, Not General Holdout
 
 Decision: call the v1 untouched split `scenario_holdout`.
 
 Reason: the v1 holdout is still based on the 1584 Design scenario. It is useful as an untouched sanity check, but it does not prove cross-business generalization.
+
+Explanation: a holdout is a set of test cases we do not use while improving the system. We run it later as a sanity check. Because this v1 holdout is still based on the same 1584 Design scenario, `scenario_holdout` is the more honest name. It says the cases were untouched, but it does not pretend to prove the advisor works across every business.
 
 ## Action Taxonomy
 
