@@ -50,6 +50,7 @@ This keeps retrieval evaluation from punishing or rewarding queries that should 
 Progress trackers:
 
 - `TOOL_USE_JUDGMENT_PROGRESS.md`
+- `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`
 - `SEARCH_QUERY_QUALITY_PROGRESS.md`
 
 Improvement strategy:

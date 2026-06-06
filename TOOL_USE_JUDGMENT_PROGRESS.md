@@ -94,4 +94,12 @@ For the first v1 pass:
 
 ## Next Work
 
-Create `evals/advisor_tool_use_cases.jsonl` from the 1584 Design conversation and add a lightweight report in `evals/reports/advisor_tool_use_judgment.md`.
+Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
+
+Immediate implementation steps:
+
+1. Create `evals/advisor_tool_use_cases.jsonl` from the 1584 Design conversation and realistic synthetic follow-ups.
+2. Use required/allowed/forbidden action labels instead of one expected action.
+3. Add a small `dev` / `regression` / `holdout` split.
+4. Write `scripts/eval_tool_use_judgment.py`.
+5. Generate `evals/reports/advisor_tool_use_judgment.md`.
