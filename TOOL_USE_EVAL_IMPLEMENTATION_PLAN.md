@@ -1,8 +1,22 @@
-# Tool-Use Eval Implementation Plan
+# Next-Action Classification Eval Implementation Plan
 
-This plan upgrades the tool-use judgment eval from a useful debugging loop into a small but methodologically sound hiring-artifact eval.
+This plan upgrades the next-action classification eval from a useful debugging loop into a small but methodologically sound hiring-artifact eval.
 
-The goal is not to build a production-scale benchmark. The goal is to demonstrate senior AI engineering judgment: separate tool selection from retrieval quality, avoid circular overclaiming, support multi-tool turns, measure failure modes, and show a clear before/after improvement path.
+The goal is not to build a production-scale benchmark. The goal is to demonstrate senior AI engineering judgment: separate next-action classification from source-search query generation, avoid circular overclaiming, support multi-action turns, measure failure modes, and show a clear before/after improvement path.
+
+## Eval Subject
+
+This plan evaluates one thing: next-action classification.
+
+Question:
+
+```text
+Given the conversation context and saved snapshot state, did the agent choose the correct next action label or action sequence for the current turn?
+```
+
+This plan does not evaluate source-search query quality. Query generation is evaluated separately in `SEARCH_QUERY_QUALITY_PROGRESS.md`, and only for cases where the correct next action is `search_source_material`.
+
+The labels test conformance to the documented Money Model Advisor policy. They are not a claim about the one universally correct way every assistant should behave.
 
 ## Scope
 
@@ -63,7 +77,26 @@ Design choice:
 
 - score required, allowed, and forbidden actions instead of a single `expected_action`
 - this handles valid multi-step turns such as `read_snapshot -> calculate -> answer_directly`
-- keep `expected_first_action` because the first tool choice is often where bad behavior starts
+- keep `expected_first_action` because the first action choice is often where bad behavior starts
+
+## Case Balance
+
+The first v1 case set should include at least two cases for each major action class:
+
+| Action class | Minimum v1 cases |
+|---|---:|
+| `clarify` | 2 |
+| `update_snapshot` | 2 |
+| `read_snapshot` or `read_logs` | 2 |
+| `inspect_local_docs` | 2 |
+| `calculate` | 2 |
+| `search_source_material` | 2 |
+| `answer_directly` | 2 |
+
+Include control cases:
+
+- at least two negative controls where `search_source_material` is clearly wrong
+- at least two positive controls where `search_source_material` is clearly required
 
 ## Split Strategy
 
@@ -114,9 +147,17 @@ Definitions:
 - full-sequence pass: all required actions present and no forbidden actions present
 - trace completeness: actual actions can be recovered from logs without guessing
 
+V1 thresholds:
+
+- regression false-search rate on cases where search is forbidden: 0
+- forbidden source search on saved-context lookup cases: 0
+- trace completeness: at least 95%
+- required-action recall on dev/regression: at least 80%
+- holdout results are reported descriptively and are not used for a strong generalization claim
+
 ## Actual Action Extraction
 
-Define actual actions from the session trace and command history, not from subjective answer quality.
+Define actual actions from the session trace and command history, not from subjective answer quality. The eval report must include the case ID, expected actions, actual actions, trace path or run ID, and failure rationale for every failed case.
 
 Mapping:
 
@@ -130,6 +171,18 @@ Mapping:
 - assistant answers from available context without tool use -> `answer_directly`
 
 If a trace cannot be classified, mark trace completeness as failed and record the case for logging improvement.
+
+## Ambiguity Handling
+
+Use the `ambiguity` field to avoid fake precision:
+
+| Ambiguity | Scoring rule |
+|---|---|
+| `low` | Include in headline metrics. Score normally. |
+| `medium` | Include in headline metrics, but use `allowed_actions` to avoid penalizing reasonable alternate paths. Do not penalize first action unless it is materially harmful or forbidden. |
+| `high` | Exclude from headline metrics. Report qualitatively as an analysis case. |
+
+High-ambiguity cases can be useful for design discussion, but they should not drive the headline score.
 
 ## Baseline And Improvement Loop
 
@@ -148,10 +201,11 @@ Do not tune directly on holdout failures. If a holdout failure reveals a new cla
 V1 is successful if it shows:
 
 - repeated generic source search is reduced or eliminated on non-search turns
-- false-search rate drops from baseline
-- required actions are present for most dev/regression cases
-- holdout results are at least directionally consistent with dev/regression results
-- traces are clear enough to audit actual tool choice
+- regression false-search rate on search-forbidden cases reaches 0
+- no forbidden source search on saved-context lookup cases
+- required-action recall is at least 80% on dev/regression cases
+- trace completeness is at least 95%
+- holdout results are reported descriptively and do not immediately contradict the dev/regression improvement
 
 V1 is not required to prove production robustness.
 
@@ -159,7 +213,7 @@ V1 is not required to prove production robustness.
 
 In the final narrative, describe this as:
 
-> a small-scale behavior eval that demonstrates the methodology for agent tool-use judgment, with a clear path to production scaling.
+> a small-scale next-action classification eval, with source-search query generation evaluated separately and a clear path to production scaling.
 
 Do not describe it as:
 

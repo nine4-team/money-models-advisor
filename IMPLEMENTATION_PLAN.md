@@ -38,11 +38,11 @@ The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
 Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.
 
-Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That document captures the 1584 Design trace review, the critique of the current tool-use and query-generation behavior, and the next planner-eval work.
+Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That document captures the 1584 Design trace review, the critique of the current next-action classification and query-generation behavior, and the next planner-eval work.
 
 Current dev requirement:
 
-1. Evaluate tool-use judgment first: for each realistic turn, should the agent search source material, read snapshot/logs, inspect local business docs, calculate, clarify, update saved context, or answer directly?
+1. Evaluate next-action classification first: for each realistic turn, should the next action be source-material search, snapshot/log read, local-doc inspection, calculation, clarification, saved-context update, or direct answer?
 2. Evaluate search-query quality second: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
 
 This keeps retrieval evaluation from punishing or rewarding queries that should never have been generated.
@@ -55,10 +55,10 @@ Progress trackers:
 
 Improvement strategy:
 
-- Tool-use judgment improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong tool choices, and revise the skill instructions or CLI affordances.
+- Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
 
-For the first tool-use judgment pass, Codex should create and label the eval cases without requiring user labeling. Use the existing 1584 Design logs, the current snapshot, realistic synthetic follow-ups, and the documented tool-use policy. The user review point is the generated report and ambiguous labels, not raw eval construction.
+For the first next-action classification pass, Codex should create and label the eval cases without requiring user labeling. Use the existing 1584 Design logs, the current snapshot, realistic synthetic follow-ups, and the documented advisor policy. The user review point is the generated report and ambiguous labels, not raw eval construction.
 
 **CLI setup and advisor loop:**
 
@@ -274,7 +274,7 @@ Reports:
 
 ## Phase 5 — Advisor Behavior Evals
 
-Objective: evaluate the agent-operated advisor loop by behavior, not by model-service comparison.
+Objective: evaluate next-action classification and source-search query quality by behavior, not by model-service comparison.
 
 Scenarios:
 
@@ -286,7 +286,7 @@ Scenarios:
 
 Metrics:
 
-- tool-use judgment correctness
+- next-action classification correctness
 - source-search query quality on search-appropriate turns
 - next-action correctness
 - calculation correctness

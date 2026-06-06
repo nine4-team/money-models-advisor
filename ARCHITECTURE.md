@@ -123,7 +123,7 @@ Archived external-service experiments are not active architecture.
 
 Next required eval:
 
-- turn-level advisor tool-use judgment and source-search query quality, starting from the 1584 Design conversation traces in `ADVISOR_RETRIEVAL_HANDOFF.md`
+- turn-level next-action classification and source-search query quality, starting from the 1584 Design conversation traces in `ADVISOR_RETRIEVAL_HANDOFF.md`
 
 ## JD Mapping
 

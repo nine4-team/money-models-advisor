@@ -2,7 +2,7 @@
 
 This tracker is for one problem only: when source-material search is the correct tool, whether the generated query retrieves useful Money Models chunks.
 
-It is separate from tool-use judgment. Query quality should not be evaluated on turns where the agent should not have searched in the first place.
+It is separate from next-action classification. Query quality should not be evaluated on turns where the agent should not have searched in the first place.
 
 ## Current Status
 

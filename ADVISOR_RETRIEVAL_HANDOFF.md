@@ -9,7 +9,7 @@ The project is a hiring artifact for an AI engineering role. BM25-only retrieval
 The final write-up should show:
 
 - traceable source-grounded advisor turns
-- tool-use judgment from conversational state
+- next-action classification from conversational state
 - search-query construction only after the agent chooses source-material search
 - cached business context in `BusinessSnapshot`
 - cached corpus embeddings or a local vector index for semantic retrieval
@@ -18,12 +18,12 @@ The final write-up should show:
 
 The immediate dev requirement is to improve two separate capabilities:
 
-1. Tool-use judgment: the agent should decide whether the current turn needs source-material search, saved snapshot/log lookup, local business-doc inspection, deterministic calculation, clarification, or direct answer synthesis.
+1. Next-action classification: the agent should classify whether the current turn needs source-material search, saved snapshot/log lookup, local business-doc inspection, deterministic calculation, clarification, or direct answer synthesis.
 2. Search-query quality: only when source-material search is the right action, the agent should build a focused query that retrieves useful Money Models chunks.
 
 Do not evaluate query quality on turns where source-material search should not have happened.
 
-Tool-use judgment should be improved through iterative skill and tool-surface testing: write clearer skill instructions, run realistic conversations, inspect logs, identify wrong tool choices, and revise the skill or CLI affordance that caused the mistake. The target is not a deterministic keyword router.
+Next-action classification should be improved through iterative skill and tool-surface testing: write clearer skill instructions, run realistic conversations, inspect logs, identify wrong action labels, and revise the skill or CLI affordance that caused the mistake. The target is not a deterministic keyword router.
 
 Search-query quality needs its own improvement loop:
 
@@ -102,11 +102,11 @@ Returned chunks:
 | `money-models-offer-stacks:0` | `offers` plus cross-tags | broad money model / offer stack overview |
 | `how-businesses-make-money:2` | `unit-economics` | the three numbers: CAC, gross profit, payback period |
 
-These chunks are directionally reasonable for CAC/payback explanation. The issue is not the chunks themselves; it is the tool-use and query policy.
+These chunks are directionally reasonable for CAC/payback explanation. The issue is not the chunks themselves; it is the next-action and query policy.
 
 ## Senior Critique
 
-The current retrieval trace is useful, but the tool-use classifier and query generator are immature.
+The current retrieval trace is useful, but the next-action classifier and query generator are immature.
 
 Main failure mode:
 
@@ -126,7 +126,7 @@ Concrete problems:
 - The turn "what happened to the $1k we pay to referral partners" should primarily inspect saved snapshot/provenance, not repeat corpus retrieval.
 - The ad-spend turn should generate an advertising/CFA query, not reuse the generic payback query.
 
-Vector retrieval will not fix this by itself. Bad tool selection and bad query planning remain bad with a vector DB.
+Vector retrieval will not fix this by itself. Bad next-action classification and bad query planning remain bad with a vector DB.
 
 ## Desired Tool Planner
 
@@ -186,11 +186,11 @@ Vector DB note:
 
 ## Next Implementation Step
 
-Build a small tool-planner and query-quality eval before adding dense retrieval:
+Build a small next-action classification eval and query-quality eval before adding dense retrieval:
 
 1. Create a turn-level eval set from the 1584 conversation.
 2. Label expected action per turn: no retrieval, business-doc lookup, snapshot/provenance lookup, calculate, clarify, direct answer, or source-material search.
-3. Score tool-use judgment first: did the agent choose the right kind of action?
+3. Score next-action classification first: did the agent choose the right kind of action?
 4. For source-material turns only, label expected query intent/layer/focus terms.
 5. Score search-query quality second: did the query retrieve useful source chunks?
 6. Update the skill/CLI planner behavior so retrieval is chosen by advisor need, not only snapshot readiness.

@@ -1,8 +1,8 @@
-# Tool-Use Judgment Progress
+# Next-Action Classification Progress
 
-This tracker is for one problem only: whether the agent chooses the right action for a user turn.
+This tracker is for one problem only: whether the agent correctly classifies the next action for a user turn.
 
-It is separate from search-query quality. A bad search query is not the same failure as searching when the agent should have read saved state, inspected local docs, calculated, clarified, updated the snapshot, or answered directly.
+It is separate from search-query quality. A bad search query is not the same failure as choosing `search_source_material` when the correct next action was to read saved state, inspect local docs, calculate, clarify, update the snapshot, or answer directly.
 
 ## Current Status
 
@@ -16,7 +16,7 @@ The current CLI and skill provide the needed tool surface:
 - `search_source_material`
 - `logs`
 
-The current weakness is behavioral: the agent/CLI path can still over-trigger source-material search once the snapshot is diagnosable. That makes later turns look like retrieval problems when the real problem is tool choice.
+The current weakness is next-action classification: the agent/CLI path can still over-trigger source-material search once the snapshot is diagnosable. That makes later turns look like retrieval problems when the real problem is the next-action label.
 
 ## Known Failure Modes
 
@@ -44,7 +44,7 @@ Build a small turn-level eval set from realistic conversations. Each row should 
 
 Primary metric:
 
-- tool-use judgment accuracy
+- next-action classification accuracy
 
 Secondary diagnostics:
 
@@ -57,7 +57,7 @@ Secondary diagnostics:
 
 1. Create the first eval set without requiring user labeling.
 2. Use existing 1584 Design logs, current snapshot state, and realistic synthetic follow-up turns from the same scenario.
-3. Label expected actions from the documented tool-use policy.
+3. Label expected actions from the documented advisor policy.
 4. Run the current skill/CLI behavior against the cases.
 5. Inspect session logs and command history.
 6. Label the actual action for each turn.
@@ -65,7 +65,7 @@ Secondary diagnostics:
 8. If wrong, revise the skill instructions or CLI affordance that caused the mistake.
 9. Re-run the same case before adding new cases.
 
-The target is not a deterministic keyword router. The target is a skill-guided agent that makes the right tool choice and leaves an auditable trace.
+The target is not a deterministic keyword router. The target is a skill-guided agent that classifies the next action correctly and leaves an auditable trace.
 
 The human reviewer should not need to label the first pass. The handoff point is the generated report: once the eval set, scorer, and first iteration are complete, ask the human to review the failure patterns and any ambiguous expected-action labels.
 

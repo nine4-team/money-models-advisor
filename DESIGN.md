@@ -133,7 +133,7 @@ The operating rules for using those commands live in `ADVISOR_OPERATING_GUIDE.md
 
 The next implementation work is not external model-service integration. It is making the skill-guided CLI advisor easier to use:
 
-1. add small behavior evals for tool-use judgment and source-search query quality;
+1. add small behavior evals for next-action classification and source-search query quality;
 2. expand visible answer synthesis beyond the first payback/recommendation path;
 3. keep all active work local and auditable.
 

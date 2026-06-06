@@ -8,7 +8,7 @@ The advisor should not use shallow keyword matching over the raw user message as
 
 The two capabilities must be evaluated separately:
 
-1. Tool-use judgment: does the agent correctly decide whether this turn needs source-material search at all?
+1. Next-action classification: does the agent correctly classify whether this turn needs source-material search at all?
 2. Search-query quality: when source-material search is appropriate, does the query retrieve useful Money Models chunks?
 
 Search queries are not the bridge from every conversation turn to every action. They are only inputs to the `search_source_material` tool. Saved context lookup, conversation recall, snapshot updates, business-doc inspection, and deterministic calculations should use their own tools or agent reasoning without fabricating a corpus-search query.
@@ -42,7 +42,7 @@ Deterministic rules should not decide broad conversational intent, such as wheth
 }
 ```
 
-## Tool-Use Decision
+## Next-Action Decision
 
 Before any query is built, the agent should decide the next action for the turn:
 
