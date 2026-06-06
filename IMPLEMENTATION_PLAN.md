@@ -57,6 +57,8 @@ Improvement strategy:
 - Tool-use judgment improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong tool choices, and revise the skill instructions or CLI affordances.
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
 
+For the first tool-use judgment pass, Codex should create and label the eval cases without requiring user labeling. Use the existing 1584 Design logs, the current snapshot, realistic synthetic follow-ups, and the documented tool-use policy. The user review point is the generated report and ambiguous labels, not raw eval construction.
+
 **CLI setup and advisor loop:**
 
 ```mermaid

@@ -55,14 +55,33 @@ Secondary diagnostics:
 
 ## Improvement Loop
 
-1. Run a realistic conversation.
-2. Inspect session logs and command history.
-3. Label the agent's action for each turn.
-4. Compare against expected action.
-5. If wrong, revise the skill instructions or CLI affordance that caused the mistake.
-6. Re-run the same case before adding new cases.
+1. Create the first eval set without requiring user labeling.
+2. Use existing 1584 Design logs, current snapshot state, and realistic synthetic follow-up turns from the same scenario.
+3. Label expected actions from the documented tool-use policy.
+4. Run the current skill/CLI behavior against the cases.
+5. Inspect session logs and command history.
+6. Label the actual action for each turn.
+7. Compare expected versus actual.
+8. If wrong, revise the skill instructions or CLI affordance that caused the mistake.
+9. Re-run the same case before adding new cases.
 
 The target is not a deterministic keyword router. The target is a skill-guided agent that makes the right tool choice and leaves an auditable trace.
+
+The human reviewer should not need to label the first pass. The handoff point is the generated report: once the eval set, scorer, and first iteration are complete, ask the human to review the failure patterns and any ambiguous expected-action labels.
+
+## No-User-Loop First Pass
+
+Codex should handle the first pass end to end:
+
+1. Create `evals/advisor_tool_use_cases.jsonl` with roughly 20 cases.
+2. Include cases from the 1584 Design conversation plus realistic synthetic follow-ups.
+3. Label expected actions using the project docs, not external model-service calls.
+4. Write a lightweight scorer/report generator.
+5. Run the current behavior and document failure patterns.
+6. Iterate on the skill/tool guidance until the repeated generic-search failure is materially reduced.
+7. Bring the user the report for review, not raw labeling work.
+
+The report should be transparent that initial labels were project-authored and validated by trace inspection.
 
 ## Done Criteria
 
