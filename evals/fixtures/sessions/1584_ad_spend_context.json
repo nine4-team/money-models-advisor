@@ -1,0 +1,15 @@
+{
+  "fixture_id": "1584_ad_spend_context",
+  "turns": [
+    {
+      "assistant_message": "CAC is currently represented as roughly $1,000 from referral partners, not paid ads.",
+      "timestamp": "2026-06-05T22:46:39Z",
+      "user_message": "referral partner CAC / Google Business Profile"
+    },
+    {
+      "assistant_message": "With $10,000 first-30-day gross profit and $1,000 CAC, there is room to test paid acquisition carefully.",
+      "timestamp": "2026-06-05T22:52:01Z",
+      "user_message": "ok, so where does this leave us"
+    }
+  ]
+}
