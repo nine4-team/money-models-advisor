@@ -18,6 +18,14 @@ The current CLI and skill provide the needed tool surface:
 
 The current weakness is next-action classification: the agent/CLI path can still over-trigger source-material search once the snapshot is diagnosable. That makes later turns look like retrieval problems when the real problem is the next-action label.
 
+The v1 case set and scorer now exist:
+
+- `evals/advisor_tool_use_cases.jsonl`
+- `scripts/eval_tool_use_judgment.py`
+- `evals/reports/advisor_tool_use_judgment.md`
+
+The current report is intentionally case inventory only because no `run.json` traces have been captured yet. The next missing piece is a trace-capture workflow that runs or records the skill-guided agent behavior in isolated eval directories.
+
 ## Known Failure Modes
 
 From the 1584 Design trace review:
@@ -96,10 +104,10 @@ For the first v1 pass:
 
 Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
-Immediate planning steps:
+Immediate implementation steps:
 
-1. Work through the P0 senior-review backlog: run protocol, structured action trace, action taxonomy, trace confidence, and per-case state isolation.
-2. Work through the P1 backlog: labeling guide, failure taxonomy, risk-weighted regression cases, trace metrics, controls, and label review note.
-3. Then create `evals/advisor_tool_use_cases.jsonl`.
-4. Write `scripts/eval_tool_use_judgment.py`.
-5. Generate `evals/reports/advisor_tool_use_judgment.md`.
+1. Build or capture isolated `run.json` traces for the existing cases.
+2. Re-run `python3 scripts/eval_tool_use_judgment.py`.
+3. Use the generated report as the baseline.
+4. Improve skill/tool guidance from dev/regression failures.
+5. Re-run dev/regression, then run `scenario_holdout` after the improvement pass.

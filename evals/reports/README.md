@@ -51,5 +51,13 @@ PYTHONPATH=src python3 scripts/eval_retrieval.py
 PYTHONPATH=src python3 scripts/score_obligation_support.py
 ```
 
+For active next-action classification checks, use:
+
+```bash
+python3 scripts/eval_tool_use_judgment.py
+```
+
+This validates `evals/advisor_tool_use_cases.jsonl` and scores any saved `run.json` traces under `evals/runs/next_action/`. If no traces exist yet, the report is case inventory only, not behavior results.
+
 Old keyword evidence-term experiments are archived under `archive/keyword-evidence-proxy/` and are not part of the active design.
 Old provider-backed experiments are archived under `archive/provider-backed-experiments/` and are not part of the active design.
