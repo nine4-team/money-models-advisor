@@ -33,6 +33,57 @@ Example:
 
 A trace is not the same thing as the final answer. The final answer is only one output inside the trace.
 
+## Trace Recorder
+
+A trace recorder is the eval tool or workflow that captures what happened during a case and writes it into a structured artifact such as `run.json`.
+
+For this project, the trace recorder should:
+
+- set up the isolated eval directory
+- copy fixtures into place
+- capture commands, file reads, logs, stdout, stderr, snapshot hashes, and final answer text
+- record observable action evidence in `actual_actions[]`
+
+The trace recorder should not decide which advisor action to take. If it chooses actions from the expected label, it becomes a deterministic planner and stops measuring the agent's judgment.
+
+## Deterministic Planner
+
+A deterministic planner is code that chooses the next action from fixed rules or case labels.
+
+Example:
+
+```text
+if required_actions contains read_snapshot:
+    run snapshot command
+```
+
+That can be useful in some systems, but it is wrong for the v1 next-action eval because the thing being evaluated is whether the skill-guided agent chooses the right next action.
+
+## Acting Agent
+
+The acting agent is the agent being evaluated. It receives the case context, uses the skill and CLI, and decides what to do next.
+
+The acting agent should not see the expected labels for the case.
+
+## Trace Extractor
+
+The trace extractor maps observable evidence into `actual_actions[]`.
+
+Example:
+
+```text
+snapshot CLI command -> read_snapshot
+search command or retrieval_queries entry -> search_source_material
+```
+
+The extractor should mark weak evidence as `inferred` or `missing` instead of pretending it is direct.
+
+## Scorer
+
+The scorer compares the extracted `actual_actions[]` against the case labels.
+
+In this repo, that is `scripts/eval_tool_use_judgment.py`.
+
 ## Trace Confidence
 
 Trace confidence describes how clearly the trace proves that an action happened.

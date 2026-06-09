@@ -94,6 +94,26 @@ Reason: the real 1584 directory is working business context, not an eval fixture
 
 Explanation: `/Users/benjaminmackenzie/1584_design` is real working context. Eval runs should not write to its advisor memory because that could pollute future real conversations. Tests should copy only the needed facts into disposable fixtures and run somewhere generated for the eval.
 
+### Trace Recorder, Not Deterministic Planner
+
+Decision: the next-action eval should use a trace recorder, not a deterministic script that decides which advisor action to take.
+
+Reason: the eval subject is the skill-guided agent's judgment. If the runner deterministically chooses `read_snapshot`, `search_source_material`, `calculate`, or another action from the case label, the runner replaces the behavior we are trying to measure. That would test the runner's hard-coded policy, not the agent's next-action classification.
+
+Explanation: a trace recorder sets up the case, captures what the agent actually did, and writes evidence into `run.json`. It may record commands, file reads, session paths, stdout, stderr, final answer text, snapshot hashes, and observed action evidence. It should not decide the correct next action for the agent. The case label is for the evaluator, not for the acting agent.
+
+### Separate Actor, Trace Extraction, And Scoring
+
+Decision: keep three roles separate:
+
+- the acting agent performs the case using the skill and CLI
+- the trace extractor maps observable steps into `actual_actions[]`
+- the scorer compares `actual_actions[]` against the case label
+
+Reason: if the acting agent labels its own behavior without observable evidence, the metric can become self-report. Separating the roles keeps the report auditable and makes weak evidence visible.
+
+Explanation: the acting agent can say what it did, but the eval should prefer commands, logs, file-inspection records, session fields, and snapshot diffs. When an action is not directly visible, the extractor can mark it `inferred` or `missing`. The scorer should not silently convert a plausible story into a hard pass.
+
 ### Structured Run Artifact
 
 Decision: every case run should write a structured `run.json` with the case ID, run phase, fixture paths, commands or workflow steps, session paths, starting snapshot hash, ending snapshot hash, and actual action trace.
@@ -309,12 +329,15 @@ The runner should:
 2. Copy the snapshot fixture into `business_dir/.money-model-advisor/business_snapshot.json`.
 3. Copy local-doc and prior-session fixtures when the case references them.
 4. Record the starting snapshot hash.
-5. Execute the agent-planner workflow for the case.
+5. Present the case to the skill-guided acting agent without exposing expected labels.
 6. Capture CLI commands, file-inspection steps, stdout/stderr, session paths, and final answer.
-7. Record the ending snapshot hash.
-8. Write `run.json`.
+7. Extract `actual_actions[]` from observable trace evidence.
+8. Record the ending snapshot hash.
+9. Write `run.json`.
 
 Never run eval cases against `/Users/benjaminmackenzie/1584_design/.money-model-advisor`.
+
+The trace recorder may automate setup and capture, but it must not use the case's expected actions to choose commands for the acting agent.
 
 ## `run.json` Schema
 
@@ -586,6 +609,8 @@ These items determine whether the eval is auditable and trustworthy.
 |---|---|---|---|
 | P0 | Define run protocol | planned | Each case needs a reproducible mapping from `case_id` to business dir, run ID, session path, trace file, and baseline/post-change status. |
 | P0 | Add structured action trace target | planned | Current logs do not directly expose all next-action labels, so the eval needs a structured action record instead of brittle inference. |
+| P0 | Use trace recorder, not deterministic planner | planned | The runner must capture the agent's choices, not replace them with hard-coded case-label behavior. |
+| P0 | Separate actor, trace extraction, and scoring | planned | Prevents self-report from becoming the metric and keeps weak evidence visible. |
 | P0 | Tighten action taxonomy | planned | `answer_directly` and `calculate` were too fuzzy to score reproducibly; the plan now uses `compose_answer_from_state`, `answer_without_tool`, `calculate`, and `diagnose`. |
 | P0 | Separate direct vs inferred trace evidence | planned | The report should show whether an action was directly logged, inferred, or missing. |
 | P0 | Prevent per-case state contamination | planned | Cases need fresh or explicitly prepared state so prior runs do not affect later labels. |

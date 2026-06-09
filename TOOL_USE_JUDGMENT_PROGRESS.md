@@ -24,7 +24,9 @@ The v1 case set and scorer now exist:
 - `scripts/eval_tool_use_judgment.py`
 - `evals/reports/advisor_tool_use_judgment.md`
 
-The current report is intentionally case inventory only because no `run.json` traces have been captured yet. The next missing piece is a trace-capture workflow that runs or records the skill-guided agent behavior in isolated eval directories.
+The current report is intentionally case inventory only because no `run.json` traces have been captured yet. The next missing piece is a trace recorder that captures skill-guided agent behavior in isolated eval directories.
+
+Key design choice: build a trace recorder, not a deterministic planner. The recorder should set up fixtures, capture commands and files, extract observable `actual_actions[]`, and write `run.json`. It should not choose the next action from the case label. The actor, trace extractor, and scorer should remain separate so the eval measures agent judgment rather than a hard-coded runner or self-report.
 
 ## Known Failure Modes
 
@@ -66,9 +68,9 @@ Secondary diagnostics:
 1. Create the first eval set without requiring user labeling.
 2. Use existing 1584 Design logs, current snapshot state, and realistic synthetic follow-up turns from the same scenario.
 3. Label expected actions from the documented advisor policy.
-4. Run the current skill/CLI behavior against the cases.
-5. Inspect session logs and command history.
-6. Label the actual action for each turn.
+4. Run the current skill-guided agent behavior against the cases without exposing expected labels.
+5. Record observable commands, file reads, session logs, snapshot hashes, and final answers.
+6. Extract the actual action trace for each turn from evidence.
 7. Compare expected versus actual.
 8. If wrong, revise the skill instructions or CLI affordance that caused the mistake.
 9. Re-run the same case before adding new cases.
@@ -106,7 +108,7 @@ Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
 Immediate implementation steps:
 
-1. Build or capture isolated `run.json` traces for the existing cases.
+1. Build the trace recorder for isolated `run.json` traces.
 2. Re-run `python3 scripts/eval_tool_use_judgment.py`.
 3. Use the generated report as the baseline.
 4. Improve skill/tool guidance from dev/regression failures.
