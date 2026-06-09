@@ -1,0 +1,1 @@
+Saved: CAC is now $1,000, based on referral partner payments. The next missing economics input is first-30-day gross profit, so we can test payback once that is known.

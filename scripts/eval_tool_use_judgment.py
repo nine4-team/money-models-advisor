@@ -385,6 +385,13 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             ]
         )
     else:
+        if scored_count < len(cases):
+            lines.extend(
+                [
+                    f"This is a partial trace set: {scored_count} of {len(cases)} cases have completed `run.json` artifacts.",
+                    "",
+                ]
+            )
         lines.extend(
             [
                 f"- Scored cases: {scored_count}",
@@ -412,15 +419,34 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             "",
             "## Decision",
             "",
-            "Use this report as the next-action classification backbone. It is ready to score captured traces, but it should not be presented as behavior results until run artifacts exist.",
+        ]
+    )
+
+    if scored_count == 0:
+        lines.append("Use this report as the next-action classification backbone. It is ready to score captured traces, but it should not be presented as behavior results until run artifacts exist.")
+        failure_text = "Failure analysis is deferred until scored traces exist."
+        next_text = "Build or capture isolated `run.json` traces for the current cases, then use this scorer to generate baseline metrics before changing the skill/tool guidance."
+    elif scored_count < len(cases):
+        lines.append("Use these results as a trace-recorder pilot, not as the full next-action baseline. The trace format is working when completed artifacts validate and score cleanly.")
+        failures = [reason for result in results for reason in result.failure_reasons if result.status == "scored"]
+        failure_text = "No scored pilot-trace failures were detected." if not failures else f"Pilot failures: {dict(Counter(failures))}"
+        next_text = "Expand trace capture to the remaining dev/regression cases, then use the completed report as the baseline before changing skill/tool guidance."
+    else:
+        lines.append("Use these results as the current next-action classification baseline for the captured case set.")
+        failures = [reason for result in results for reason in result.failure_reasons]
+        failure_text = "No scored failures were detected." if not failures else f"Failures: {dict(Counter(failures))}"
+        next_text = "Improve skill/tool guidance from dev/regression failures, then re-run dev/regression before running `scenario_holdout`."
+
+    lines.extend(
+        [
             "",
             "## Failure Analysis",
             "",
-            "Failure analysis is deferred until scored traces exist.",
+            failure_text,
             "",
             "## Next Experiment",
             "",
-            "Build or capture isolated `run.json` traces for the current cases, then use this scorer to generate baseline metrics before changing the skill/tool guidance.",
+            next_text,
             "",
         ]
     )

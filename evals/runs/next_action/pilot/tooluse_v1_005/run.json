@@ -1,0 +1,83 @@
+{
+  "acting_prompt_path": "evals/runs/next_action/pilot/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "file_read",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "completed_at": "2026-06-09T23:45:10Z",
+  "created_at": "2026-06-09T23:44:05Z",
+  "final_answer_path": "evals/runs/next_action/pilot/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "pilot",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:5054832b8ba7442e4a20f4f086d09cadac0a22f88ddf6ad47b0f945d64cd7104",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "exit_code": 0,
+      "index": 0,
+      "kind": "file_list",
+      "path": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir",
+      "stderr_path": "evals/runs/next_action/pilot/tooluse_v1_005/stderr/000.txt",
+      "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_005/stdout/000.txt"
+    },
+    {
+      "exit_code": 0,
+      "index": 1,
+      "kind": "file_read",
+      "path": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir/business-profile.md",
+      "stderr_path": "evals/runs/next_action/pilot/tooluse_v1_005/stderr/001.txt",
+      "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_005/stdout/001.txt"
+    },
+    {
+      "exit_code": 0,
+      "index": 2,
+      "kind": "file_read",
+      "path": "evals/runs/next_action/pilot/tooluse_v1_005/business_dir/services-and-pricing.md",
+      "stderr_path": "evals/runs/next_action/pilot/tooluse_v1_005/stderr/002.txt",
+      "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_005/stdout/002.txt"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/pilot/tooluse_v1_005/business_dir business.business_type='Premium full-service interior design firm for STR and second-home projects' business.icp='Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity' money_model.core_offer.exists=true money_model.core_offer.description='Full-service STR and second-home design covering planning, procurement, and installation'",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/pilot/tooluse_v1_005/stderr/003.txt",
+      "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_005/stdout/003.txt"
+    }
+  ]
+}

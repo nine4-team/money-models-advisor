@@ -1,0 +1,111 @@
+{
+  "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/pilot/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+  "updated": [
+    {
+      "field": "business.business_type",
+      "value": "Premium full-service interior design firm for STR and second-home projects"
+    },
+    {
+      "field": "business.icp",
+      "value": "Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity"
+    },
+    {
+      "field": "money_model.core_offer.exists",
+      "value": true
+    },
+    {
+      "field": "money_model.core_offer.description",
+      "value": "Full-service STR and second-home design covering planning, procurement, and installation"
+    }
+  ],
+  "state": {
+    "schema_version": "business_snapshot.v1",
+    "business": {
+      "business_type": "Premium full-service interior design firm for STR and second-home projects",
+      "icp": "Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity",
+      "delivery_model": null
+    },
+    "money_model": {
+      "attraction_offer": {
+        "exists": null,
+        "description": null,
+        "price": null
+      },
+      "core_offer": {
+        "exists": true,
+        "description": "Full-service STR and second-home design covering planning, procurement, and installation",
+        "price": null
+      },
+      "upsell": {
+        "exists": null,
+        "description": null,
+        "price": null
+      },
+      "downsell": {
+        "exists": null,
+        "description": null,
+        "price": null
+      },
+      "continuity": {
+        "exists": null,
+        "description": null,
+        "price": null
+      }
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "payback_period_months": null
+    },
+    "problem": {
+      "user_goal": null,
+      "reported_symptoms": [],
+      "diagnosed_constraints": []
+    },
+    "advisor_state": {
+      "advisory_status": "insufficient_context",
+      "missing_fields": [
+        "problem.user_goal",
+        "money_model.attraction_offer.exists",
+        "money_model.upsell.exists",
+        "money_model.downsell.exists",
+        "money_model.continuity.exists",
+        "economics.cac",
+        "economics.first_30_day_gross_profit"
+      ],
+      "ready_for_payback_diagnosis": false,
+      "ready_for_offer_stack_diagnosis": false,
+      "likely_retrieval_layers": [],
+      "retrieval_query_terms": [
+        "Premium full-service interior design firm for STR and second-home projects",
+        "Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity",
+        "Full-service STR and second-home design covering planning, procurement, and installation"
+      ]
+    },
+    "field_sources": {
+      "business.business_type": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-06-09T23:45:10Z"
+      },
+      "business.icp": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-06-09T23:45:10Z"
+      },
+      "money_model.core_offer.exists": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-06-09T23:45:10Z"
+      },
+      "money_model.core_offer.description": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-06-09T23:45:10Z"
+      }
+    }
+  }
+}

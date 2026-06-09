@@ -28,23 +28,30 @@ These are product-behavior cases. Harness/operability questions about eval termi
 
 ## Results
 
-No `run.json` artifacts were found, so this report currently covers case inventory and validation only.
+This is a partial trace set: 5 of 24 cases have completed `run.json` artifacts.
 
-Next step: run the skill-guided agent workflow for each case in isolated eval directories and write `run.json` traces under `evals/runs/next_action/`.
+- Scored cases: 5
+- First-action accuracy: 100.0%
+- Average required-action recall: 1.000
+- Full-sequence pass rate: 100.0%
+- Forbidden-action violation rate: 0.0%
+- False-search rate: 0.0%
+- Missed-search rate: 0.0%
+- Trace completeness: 100.0%
 
 ## Case Table
 
 | Case | Split | Turn Type | Status | Actual Actions | Failures |
 |---|---|---|---|---|---|
-| `tooluse_v1_001` | `dev` | `saved_fact_lookup` | not_run | - | - |
+| `tooluse_v1_001` | `dev` | `saved_fact_lookup` | scored (evals/runs/next_action/pilot/tooluse_v1_001/run.json) | read_snapshot, read_logs, compose_answer_from_state | - |
 | `tooluse_v1_002` | `dev` | `missing_fact_clarification` | not_run | - | - |
-| `tooluse_v1_003` | `dev` | `business_fact_update` | not_run | - | - |
+| `tooluse_v1_003` | `dev` | `business_fact_update` | scored (evals/runs/next_action/pilot/tooluse_v1_003/run.json) | update_snapshot, compose_answer_from_state | - |
 | `tooluse_v1_004` | `dev` | `business_fact_update` | not_run | - | - |
-| `tooluse_v1_005` | `dev` | `local_doc_lookup` | not_run | - | - |
+| `tooluse_v1_005` | `dev` | `local_doc_lookup` | scored (evals/runs/next_action/pilot/tooluse_v1_005/run.json) | inspect_local_docs, update_snapshot, compose_answer_from_state | - |
 | `tooluse_v1_006` | `dev` | `local_doc_lookup` | not_run | - | - |
-| `tooluse_v1_007` | `dev` | `calculation` | not_run | - | - |
+| `tooluse_v1_007` | `dev` | `calculation` | scored (evals/runs/next_action/pilot/tooluse_v1_007/run.json) | read_snapshot, calculate, compose_answer_from_state | - |
 | `tooluse_v1_008` | `dev` | `diagnosis` | not_run | - | - |
-| `tooluse_v1_009` | `dev` | `source_required_concept` | not_run | - | - |
+| `tooluse_v1_009` | `dev` | `source_required_concept` | scored (evals/runs/next_action/pilot/tooluse_v1_009/run.json) | read_snapshot, search_source_material, compose_answer_from_state | - |
 | `tooluse_v1_010` | `dev` | `source_required_recommendation` | not_run | - | - |
 | `tooluse_v1_011` | `dev` | `compose_from_state` | not_run | - | - |
 | `tooluse_v1_012` | `dev` | `simple_definition` | not_run | - | - |
@@ -63,12 +70,12 @@ Next step: run the skill-guided agent workflow for each case in isolated eval di
 
 ## Decision
 
-Use this report as the next-action classification backbone. It is ready to score captured traces, but it should not be presented as behavior results until run artifacts exist.
+Use these results as a trace-recorder pilot, not as the full next-action baseline. The trace format is working when completed artifacts validate and score cleanly.
 
 ## Failure Analysis
 
-Failure analysis is deferred until scored traces exist.
+No scored pilot-trace failures were detected.
 
 ## Next Experiment
 
-Build or capture isolated `run.json` traces for the current cases, then use this scorer to generate baseline metrics before changing the skill/tool guidance.
+Expand trace capture to the remaining dev/regression cases, then use the completed report as the baseline before changing skill/tool guidance.

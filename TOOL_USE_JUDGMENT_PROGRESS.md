@@ -25,7 +25,17 @@ The v1 case set and scorer now exist:
 - `scripts/eval_tool_use_judgment.py`
 - `evals/reports/advisor_tool_use_judgment.md`
 
-The current report is intentionally case inventory only because no completed `run.json` traces have been captured yet. The trace recorder now exists, so the next missing piece is piloting it on a small dev subset and then scoring completed traces.
+The trace recorder has been piloted on five dev cases:
+
+- `tooluse_v1_001`: saved fact lookup
+- `tooluse_v1_003`: business fact update
+- `tooluse_v1_005`: local doc lookup
+- `tooluse_v1_007`: calculation
+- `tooluse_v1_009`: source-material search
+
+All five completed traces validate and score cleanly in `evals/reports/advisor_tool_use_judgment.md`.
+
+Important caveat: this is a trace-recorder pilot, not the full next-action baseline. The pilot was captured in-thread by Codex to verify the recorder, schema, evidence refs, and scorer. It should not be overclaimed as contamination-free agent-performance evidence. The next missing piece is expanding trace capture to the remaining dev/regression cases and then treating that completed report as the baseline.
 
 Key design choice: build a trace recorder, not a deterministic planner. The recorder should set up fixtures, capture commands and files, extract observable `actual_actions[]`, and write `run.json`. It should not choose the next action from the case label. The actor, trace extractor, and scorer should remain separate so the eval measures agent judgment rather than a hard-coded runner or self-report.
 
@@ -109,9 +119,8 @@ Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
 Immediate implementation steps:
 
-1. Pilot `scripts/capture_tool_use_trace.py` on 3-5 dev cases.
-2. Complete those traces into `run.json` artifacts.
-3. Re-run `python3 scripts/eval_tool_use_judgment.py`.
-4. Use the generated report as the baseline.
-5. Improve skill/tool guidance from dev/regression failures.
-6. Re-run dev/regression, then run `scenario_holdout` after the improvement pass.
+1. Expand trace capture to the remaining dev/regression cases.
+2. Re-run `python3 scripts/eval_tool_use_judgment.py`.
+3. Use the completed dev/regression report as the baseline.
+4. Improve skill/tool guidance from dev/regression failures.
+5. Re-run dev/regression, then run `scenario_holdout` after the improvement pass.

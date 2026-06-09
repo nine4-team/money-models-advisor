@@ -1,0 +1,90 @@
+{
+  "advisor_state": {
+    "advisory_status": "insufficient_context",
+    "likely_retrieval_layers": [],
+    "missing_fields": [
+      "problem.user_goal",
+      "money_model.attraction_offer.exists",
+      "money_model.upsell.exists",
+      "money_model.downsell.exists",
+      "money_model.continuity.exists",
+      "economics.cac",
+      "economics.first_30_day_gross_profit"
+    ],
+    "ready_for_offer_stack_diagnosis": false,
+    "ready_for_payback_diagnosis": false,
+    "retrieval_query_terms": [
+      "Premium full-service interior design firm for STR and second-home projects",
+      "Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity",
+      "Full-service STR and second-home design covering planning, procurement, and installation"
+    ]
+  },
+  "business": {
+    "business_type": "Premium full-service interior design firm for STR and second-home projects",
+    "delivery_model": null,
+    "icp": "Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity"
+  },
+  "economics": {
+    "cac": null,
+    "first_30_day_gross_profit": null,
+    "gross_margin": null,
+    "lifetime_gross_profit": null,
+    "monthly_recurring_gross_profit": null,
+    "payback_period_months": null
+  },
+  "field_sources": {
+    "business.business_type": {
+      "confidence": "high",
+      "source_type": "cli",
+      "updated_at": "2026-06-09T23:45:10Z"
+    },
+    "business.icp": {
+      "confidence": "high",
+      "source_type": "cli",
+      "updated_at": "2026-06-09T23:45:10Z"
+    },
+    "money_model.core_offer.description": {
+      "confidence": "high",
+      "source_type": "cli",
+      "updated_at": "2026-06-09T23:45:10Z"
+    },
+    "money_model.core_offer.exists": {
+      "confidence": "high",
+      "source_type": "cli",
+      "updated_at": "2026-06-09T23:45:10Z"
+    }
+  },
+  "money_model": {
+    "attraction_offer": {
+      "description": null,
+      "exists": null,
+      "price": null
+    },
+    "continuity": {
+      "description": null,
+      "exists": null,
+      "price": null
+    },
+    "core_offer": {
+      "description": "Full-service STR and second-home design covering planning, procurement, and installation",
+      "exists": true,
+      "price": null
+    },
+    "downsell": {
+      "description": null,
+      "exists": null,
+      "price": null
+    },
+    "upsell": {
+      "description": null,
+      "exists": null,
+      "price": null
+    }
+  },
+  "problem": {
+    "diagnosed_constraints": [],
+    "reported_symptoms": [],
+    "user_goal": null
+  },
+  "schema_version": "business_snapshot.v1"
+}

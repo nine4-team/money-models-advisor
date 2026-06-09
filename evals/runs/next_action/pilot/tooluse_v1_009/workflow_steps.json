@@ -1,0 +1,18 @@
+[
+  {
+    "index": 0,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/pilot/tooluse_v1_009/business_dir",
+    "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_009/stdout/000.txt",
+    "stderr_path": "evals/runs/next_action/pilot/tooluse_v1_009/stderr/000.txt",
+    "exit_code": 0
+  },
+  {
+    "index": 1,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli search 'fulfillment cost CAC payback first 30 day gross profit acquisition ads' --layer unit-economics --top-k 5",
+    "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_009/stdout/001.txt",
+    "stderr_path": "evals/runs/next_action/pilot/tooluse_v1_009/stderr/001.txt",
+    "exit_code": 0
+  }
+]

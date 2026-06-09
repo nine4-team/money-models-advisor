@@ -1,0 +1,23 @@
+[
+  {
+    "index": 0,
+    "action": "read_snapshot",
+    "confidence": "direct",
+    "evidence_type": "cli_command",
+    "evidence_ref": "workflow_steps[0]"
+  },
+  {
+    "index": 1,
+    "action": "search_source_material",
+    "confidence": "direct",
+    "evidence_type": "cli_command",
+    "evidence_ref": "workflow_steps[1]"
+  },
+  {
+    "index": 2,
+    "action": "compose_answer_from_state",
+    "confidence": "inferred",
+    "evidence_type": "final_answer",
+    "evidence_ref": "final_answer.txt"
+  }
+]
