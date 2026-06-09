@@ -103,6 +103,19 @@ Active eval assets:
 | `scripts/audit_query_realism.py` | lexical-overlap audit for query realism |
 | `scripts/review_obligations.py` | local review UI for required-claim labels |
 | `scripts/score_obligation_support.py` | required-claim support scorer |
+| `evals/advisor_tool_use_cases.jsonl` | product-behavior cases for next-action classification |
+| `scripts/capture_tool_use_trace.py` | strict trace recorder for isolated next-action eval runs |
+| `scripts/eval_tool_use_judgment.py` | next-action classification scorer and report generator |
+
+For next-action classification, the project uses a trace recorder rather than a deterministic planner. The recorder prepares isolated eval directories, copies fixtures, hides expected labels from the acting agent, captures observable workflow evidence, and writes `run.json`. It does not choose the advisor's next action. That separation matters because the eval subject is the skill-guided agent's judgment, not a hard-coded runner.
+
+The trace design separates three roles:
+
+- the acting agent performs the case using the skill and local CLI
+- the trace extractor maps commands, logs, file reads, session fields, and snapshot diffs into `actual_actions[]`
+- the scorer compares `actual_actions[]` against the case labels
+
+This prevents self-report from becoming the metric and keeps weak evidence visible as `inferred` or `missing`.
 
 ## Advisor Loop
 

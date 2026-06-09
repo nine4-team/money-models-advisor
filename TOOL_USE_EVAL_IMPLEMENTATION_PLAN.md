@@ -607,13 +607,13 @@ These items determine whether the eval is auditable and trustworthy.
 
 | Priority | Item | Status | Why it matters |
 |---|---|---|---|
-| P0 | Define run protocol | planned | Each case needs a reproducible mapping from `case_id` to business dir, run ID, session path, trace file, and baseline/post-change status. |
-| P0 | Add structured action trace target | planned | Current logs do not directly expose all next-action labels, so the eval needs a structured action record instead of brittle inference. |
-| P0 | Use trace recorder, not deterministic planner | planned | The runner must capture the agent's choices, not replace them with hard-coded case-label behavior. |
-| P0 | Separate actor, trace extraction, and scoring | planned | Prevents self-report from becoming the metric and keeps weak evidence visible. |
-| P0 | Tighten action taxonomy | planned | `answer_directly` and `calculate` were too fuzzy to score reproducibly; the plan now uses `compose_answer_from_state`, `answer_without_tool`, `calculate`, and `diagnose`. |
-| P0 | Separate direct vs inferred trace evidence | planned | The report should show whether an action was directly logged, inferred, or missing. |
-| P0 | Prevent per-case state contamination | planned | Cases need fresh or explicitly prepared state so prior runs do not affect later labels. |
+| P0 | Define run protocol | done | Each case needs a reproducible mapping from `case_id` to business dir, run ID, session path, trace file, and baseline/post-change status. |
+| P0 | Add structured action trace target | done | Current logs do not directly expose all next-action labels, so the eval needs a structured action record instead of brittle inference. |
+| P0 | Use trace recorder, not deterministic planner | done | The runner must capture the agent's choices, not replace them with hard-coded case-label behavior. |
+| P0 | Separate actor, trace extraction, and scoring | done | Prevents self-report from becoming the metric and keeps weak evidence visible. |
+| P0 | Tighten action taxonomy | done | `answer_directly` and `calculate` were too fuzzy to score reproducibly; the plan now uses `compose_answer_from_state`, `answer_without_tool`, `calculate`, and `diagnose`. |
+| P0 | Separate direct vs inferred trace evidence | done | The report should show whether an action was directly logged, inferred, or missing. |
+| P0 | Prevent per-case state contamination | done | Cases need fresh or explicitly prepared state so prior runs do not affect later labels. |
 
 ### P1 — Should Fix For A Strong First Report
 
@@ -621,11 +621,11 @@ These items improve scoring quality and make the report easier to trust.
 
 | Priority | Item | Status | Why it matters |
 |---|---|---|---|
-| P1 | Add labeling guide | planned | Labels should be reproducible and should include examples for low, medium, and high ambiguity. |
-| P1 | Add failure taxonomy | planned | Failure types make the report more useful than a raw accuracy number. |
-| P1 | Make regression set risk-weighted | planned | Regression should overweight the known bug: repeated source search after diagnosable state. |
-| P1 | Add trace parse/directness metrics | planned | Distinguishes "we can parse something" from "the system directly logged the intended action." |
-| P1 | Add control cases | planned | Include cases where search is clearly wrong and clearly required. |
+| P1 | Add labeling guide | done | Labels should be reproducible and should include examples for low, medium, and high ambiguity. |
+| P1 | Add failure taxonomy | done | Failure types make the report more useful than a raw accuracy number. |
+| P1 | Make regression set risk-weighted | done | Regression should overweight the known bug: repeated source search after diagnosable state. |
+| P1 | Add trace parse/directness metrics | done | Distinguishes "we can parse something" from "the system directly logged the intended action." |
+| P1 | Add control cases | done | Include cases where search is clearly wrong and clearly required. |
 | P1 | Add label review note | planned | Project-authored labels are fine for v1, but the report should identify any double-reviewed or user-reviewed labels. |
 
 ### P2 — Future Production-Scale Notes
@@ -646,7 +646,9 @@ These items are not required for the small hiring artifact, but should be acknow
 3. Tighten the action taxonomy.
 4. Add the labeling guide and failure taxonomy.
 5. Create `evals/advisor_tool_use_cases.jsonl`.
-6. Write `scripts/eval_tool_use_judgment.py`.
-7. Generate the first baseline report.
-8. Improve the skill/tool guidance from dev/regression failures.
-9. Re-run and record before/after results.
+6. Write `scripts/capture_tool_use_trace.py`.
+7. Write `scripts/eval_tool_use_judgment.py`.
+8. Generate the first case-inventory report.
+9. Pilot trace capture on 3-5 dev cases.
+10. Improve the skill/tool guidance from dev/regression failures.
+11. Re-run and record before/after results.

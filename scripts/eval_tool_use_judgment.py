@@ -35,6 +35,16 @@ ACTION_TAXONOMY = {
 
 CONFIDENCE_VALUES = {"direct", "inferred", "missing"}
 
+TOOL_LIKE_ACTIONS = {
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+}
+
 REQUIRED_CASE_FIELDS = {
     "case_id",
     "split",
@@ -204,6 +214,14 @@ def extract_actual_actions(run: dict[str, Any]) -> tuple[list[str], list[str], b
         elif confidence == "missing":
             failures.append(f"missing_evidence:{action}")
             trace_complete = False
+
+        if confidence == "direct" and action in TOOL_LIKE_ACTIONS:
+            if not item.get("evidence_type"):
+                failures.append(f"missing_evidence_type:{action}")
+                trace_complete = False
+            if not item.get("evidence_ref"):
+                failures.append(f"missing_evidence_ref:{action}")
+                trace_complete = False
 
         actions.append(action)
 

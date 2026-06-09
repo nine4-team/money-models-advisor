@@ -21,10 +21,11 @@ The current weakness is next-action classification: the agent/CLI path can still
 The v1 case set and scorer now exist:
 
 - `evals/advisor_tool_use_cases.jsonl`
+- `scripts/capture_tool_use_trace.py`
 - `scripts/eval_tool_use_judgment.py`
 - `evals/reports/advisor_tool_use_judgment.md`
 
-The current report is intentionally case inventory only because no `run.json` traces have been captured yet. The next missing piece is a trace recorder that captures skill-guided agent behavior in isolated eval directories.
+The current report is intentionally case inventory only because no completed `run.json` traces have been captured yet. The trace recorder now exists, so the next missing piece is piloting it on a small dev subset and then scoring completed traces.
 
 Key design choice: build a trace recorder, not a deterministic planner. The recorder should set up fixtures, capture commands and files, extract observable `actual_actions[]`, and write `run.json`. It should not choose the next action from the case label. The actor, trace extractor, and scorer should remain separate so the eval measures agent judgment rather than a hard-coded runner or self-report.
 
@@ -108,8 +109,9 @@ Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
 Immediate implementation steps:
 
-1. Build the trace recorder for isolated `run.json` traces.
-2. Re-run `python3 scripts/eval_tool_use_judgment.py`.
-3. Use the generated report as the baseline.
-4. Improve skill/tool guidance from dev/regression failures.
-5. Re-run dev/regression, then run `scenario_holdout` after the improvement pass.
+1. Pilot `scripts/capture_tool_use_trace.py` on 3-5 dev cases.
+2. Complete those traces into `run.json` artifacts.
+3. Re-run `python3 scripts/eval_tool_use_judgment.py`.
+4. Use the generated report as the baseline.
+5. Improve skill/tool guidance from dev/regression failures.
+6. Re-run dev/regression, then run `scenario_holdout` after the improvement pass.

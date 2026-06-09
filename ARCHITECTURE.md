@@ -118,12 +118,21 @@ Active local evals:
 | Chunking comparison | `PYTHONPATH=src python3 scripts/compare_chunking.py` |
 | Query realism audit | `PYTHONPATH=src python3 scripts/audit_query_realism.py` |
 | Required-claim support | `PYTHONPATH=src python3 scripts/score_obligation_support.py` |
+| Next-action trace capture | `python3 scripts/capture_tool_use_trace.py prepare <case_id>` |
+| Next-action judgment scorer | `python3 scripts/eval_tool_use_judgment.py` |
 
 Archived external-service experiments are not active architecture.
 
-Next required eval:
+Next-action classification eval:
 
-- turn-level next-action classification and source-search query quality, starting from the 1584 Design conversation traces in `ADVISOR_RETRIEVAL_HANDOFF.md`
+- cases live in `evals/advisor_tool_use_cases.jsonl`
+- isolated traces live under `evals/runs/next_action/{phase}/{case_id}/`
+- `prepare` writes `run_draft.json` and `acting_prompt.md`
+- `complete` validates recorded workflow evidence and writes `run.json`
+- the acting prompt excludes expected labels so the runner does not replace the agent's judgment
+- `scripts/eval_tool_use_judgment.py` scores only completed `run.json` artifacts
+
+Source-search query quality remains a separate eval and should only be scored for turns where `search_source_material` was the correct next action.
 
 ## JD Mapping
 
