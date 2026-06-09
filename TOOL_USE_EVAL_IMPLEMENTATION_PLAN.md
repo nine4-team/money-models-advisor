@@ -49,6 +49,19 @@ Production scale note:
 - a production eval would expand to more businesses, more reviewers, more adversarial cases, and a larger frozen holdout
 - the portfolio write-up should state this explicitly instead of pretending the small eval is a production benchmark
 
+## Product Cases Vs Harness Checks
+
+The main next-action classification eval should contain product-behavior cases: realistic turns a user might say while using the advisor. These cases test whether the skill-guided agent chooses the right next action for the product workflow.
+
+Harness or operability checks are different. They test whether the evaluation machinery, developer terminology, and reports are understandable and internally consistent. Examples include:
+
+- "what does false search mean?"
+- "what does scenario_holdout mean?"
+- "what is a trace?"
+- "what does direct evidence mean?"
+
+Those are useful checks, but they should not be mixed into the product-behavior eval or included in headline advisor-quality metrics. If we want them, put them in a separate future file such as `evals/harness_operability_cases.jsonl` and report them as harness checks, not as user-realism evidence.
+
 ## P0 Design Decisions And Reasons
 
 These decisions are the foundation for the v1 next-action classification eval.
@@ -599,6 +612,7 @@ These items are not required for the small hiring artifact, but should be acknow
 | P2 | Rename holdout framing to scenario holdout | planned | Current holdout is same-scenario, not cross-business generalization. |
 | P2 | Add future cross-business holdout note | planned | Clarifies how this would scale beyond the 1584 Design proof. |
 | P2 | Expand case count and reviewers for production | planned | Production eval would need more businesses, more cases, and stronger reviewer coverage. |
+| P2 | Add separate harness/operability checks | planned | Eval/procedure-vocabulary checks are useful for developer confidence, but should not be mixed into product-behavior metrics. |
 
 ## Revised Immediate Order
 
