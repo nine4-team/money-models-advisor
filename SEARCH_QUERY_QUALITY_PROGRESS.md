@@ -14,14 +14,14 @@ The local source-material search stack exists and is auditable:
 - `search_source_material` CLI command
 - session logs with `retrieval_queries` and returned `evidence`
 
-The current weakness is query construction. The 1584 Design trace showed repeated generic diagnostic queries after the snapshot became diagnosable, even when later turns needed a different source focus or no source search at all.
+The 1584 Design trace showed repeated generic diagnostic queries after the snapshot became diagnosable, even when later turns needed a different source focus or no source search at all. That exposed two separate problems: the agent must select the right source need, and the query builder must turn that source need into a compact corpus query.
 
-First seed baseline: `evals/advisor_search_query_cases.jsonl` now contains 10 search-appropriate turns, and `scripts/eval_search_query_quality.py` can score either reviewer-authored reference queries or runtime-generated queries.
+First seed baseline: `evals/advisor_search_query_cases.jsonl` now contains 10 search-appropriate turns, and `scripts/eval_search_query_quality.py` can score either reviewer-authored reference queries or source-need-driven runtime-generated queries.
 
 - Reference mode: `evals/reports/advisor_search_query_quality.md` shows 100.0% known-useful Hit@3/Hit@5.
-- Generated mode: `evals/reports/advisor_search_query_quality_generated.md` shows 50.0% known-useful Hit@3/Hit@5, 0.220 average focus-term recall, and repeated reuse of the broad diagnostic query.
+- Generated mode: `evals/reports/advisor_search_query_quality_generated.md` shows 100.0% known-useful Hit@3/Hit@5, 1.000 average focus-term recall, and no duplicate query reuse after adding explicit `SourceNeed` input.
 
-Treat these as query-development baselines with non-exhaustive known-useful chunk labels, not as production IR benchmarks. The important finding is the gap between source-specific reference queries and current runtime-generated queries.
+Treat these as query-development baselines with non-exhaustive known-useful chunk labels, not as production IR benchmarks. The important finding is that the query builder works when the advisor-selected source need is explicit; the next risk is source-need selection by the acting agent.
 
 ## Known Failure Modes
 
@@ -78,10 +78,10 @@ For the first v1 pass:
 
 - at least 10 search-appropriate turns labeled **Done**
 - each has expected purpose, layer, and focus terms **Done**
-- generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it **Not yet; generated mode shows this failure**
+- generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it **Done when `SourceNeed` is supplied**
 - top retrieved chunks are useful enough to cite for most cases **Done on seed known-useful labels**
 - BM25 remains the baseline; dense/hybrid comparison waits until the query set is stable **Still active**
 
 ## Next Work
 
-Update `src/money_model_architect/advisor_queries.py` so generated queries are driven by the current advisor-selected source need, not snapshot status alone.
+Test and tighten the acting-agent guidance so it selects the right source need before calling source-material search.

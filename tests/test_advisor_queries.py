@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from money_model_architect.advisor_queries import build_advisor_queries
+from money_model_architect.advisor_queries import SourceNeed, build_advisor_queries
 from money_model_architect.advisor_retrieval import execute_advisor_queries
 from money_model_architect.snapshot import BusinessSnapshot
 
@@ -92,6 +92,48 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
 
         self.assertEqual([item.layer for item in evidence], ["upsells", "continuity"])
         self.assertTrue(all(item.chunks for item in evidence))
+
+    def test_source_need_overrides_snapshot_status(self):
+        snapshot = diagnosable_snapshot()
+        source_need = SourceNeed(
+            intent="recommendation_evidence",
+            layers=("downsells",),
+            focus_terms=("payment plan", "downsell", "pay less now", "payment terms"),
+            user_turn="if cash is tight today, how should we think about payment plans?",
+        )
+
+        queries = build_advisor_queries(snapshot, source_need=source_need)
+
+        self.assertEqual(len(queries), 1)
+        self.assertEqual(queries[0].intent, "recommendation_evidence")
+        self.assertEqual(queries[0].layer, "downsells")
+        self.assertIn("payment plan", queries[0].query)
+        self.assertIn("downsell", queries[0].query)
+        self.assertNotIn("client financed acquisition", queries[0].query)
+
+    def test_same_snapshot_can_generate_different_source_need_queries(self):
+        snapshot = diagnosable_snapshot()
+        teaching_need = SourceNeed(
+            intent="teaching_evidence",
+            layers=("unit-economics",),
+            focus_terms=("gross profit", "fulfillment cost", "CAC", "payback period"),
+            user_turn="why do we need fulfillment cost?",
+        )
+        comparison_need = SourceNeed(
+            intent="comparison_evidence",
+            layers=("offers", "upsells"),
+            focus_terms=("attraction offer", "upsell", "front end", "after first sale"),
+            user_turn="what is the difference between an attraction offer and an upsell?",
+        )
+
+        teaching_query = build_advisor_queries(snapshot, source_need=teaching_need)[0]
+        comparison_query = build_advisor_queries(snapshot, source_need=comparison_need)[0]
+
+        self.assertNotEqual(teaching_query.query, comparison_query.query)
+        self.assertEqual(teaching_query.layer, "unit-economics")
+        self.assertIsNone(comparison_query.layer)
+        self.assertIn("gross profit", teaching_query.query)
+        self.assertIn("attraction offer", comparison_query.query)
 
 
 if __name__ == "__main__":

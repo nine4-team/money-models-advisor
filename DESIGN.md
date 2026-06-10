@@ -123,7 +123,7 @@ This prevents self-report from becoming the metric and keeps weak evidence visib
 
 Current next-action result: all 24 cases have completed trace artifacts. Dev/regression traces were captured in-thread by Codex; scenario holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. After adjudicating one overly strict first-action label, the current report shows 100.0% first-action accuracy, 1.000 required-action recall, 100.0% full-sequence pass rate, 0% false-search rate, 0% missed-search rate, and 100% trace completeness. The adjudicated holdout case originally required logs as the literal first action for prior-conversation recall, but senior review concluded that reading snapshot first was harmless context-loading because logs were still read before the answer. The case label records this adjudication explicitly.
 
-Current source-query result: the first seed query-quality eval covers 10 search-appropriate turns. Reference mode, which uses reviewer-authored source-specific queries, reports 100.0% known-useful Hit@3/Hit@5. Generated mode, which uses the current runtime query builder from snapshot fixtures, reports 50.0% known-useful Hit@3/Hit@5 and repeats a broad diagnostic query across multiple cases. This is the useful gap: source-specific reference queries show the local corpus can return citeable chunks, while generated-mode failures show the runtime query builder still needs to use the current source need rather than snapshot status alone. The known-useful chunk labels are non-exhaustive seed labels, so this is a query-development baseline, not a production IR benchmark.
+Current source-query result: the first seed query-quality eval covers 10 search-appropriate turns. Reference mode, which uses reviewer-authored source-specific queries, reports 100.0% known-useful Hit@3/Hit@5. Generated mode now passes an explicit advisor-selected `SourceNeed` into the runtime query builder and also reports 100.0% known-useful Hit@3/Hit@5, with no duplicate query reuse. This fixes the earlier snapshot-only failure where generated mode scored 50.0% and repeated a broad diagnostic query. The known-useful chunk labels are non-exhaustive seed labels, so this is a query-development baseline, not a production IR benchmark. The remaining gate is whether the acting agent reliably selects the right source need before calling search.
 
 ## Advisor Loop
 
@@ -155,7 +155,7 @@ The operating rules for using those commands live in `ADVISOR_OPERATING_GUIDE.md
 The next implementation work is not external model-service integration. The settled path is:
 
 1. treat the current next-action classification eval as the local baseline for tool-use judgment;
-2. update the query builder so generated advisor queries are driven by the current source need rather than snapshot status alone;
+2. test whether the acting agent reliably selects the right source need before calling source-material search;
 3. expand visible answer synthesis beyond the first payback/recommendation path;
 4. keep all active work local and auditable.
 

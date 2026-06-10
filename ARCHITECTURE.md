@@ -134,7 +134,7 @@ Next-action classification eval:
 - the acting prompt excludes expected labels so the runner does not replace the agent's judgment
 - `scripts/eval_tool_use_judgment.py` scores only completed `run.json` artifacts
 
-Source-search query quality remains a separate eval and should only be scored for turns where `search_source_material` was the correct next action. Reference mode is the seed baseline for source-specific query examples; generated mode is the product-behavior check for the runtime query builder.
+Source-search query quality remains a separate eval and should only be scored for turns where `search_source_material` was the correct next action. Reference mode is the seed baseline for source-specific query examples; generated mode is the product-behavior check for the runtime query builder after an advisor-selected source need is supplied.
 
 ## JD Mapping
 

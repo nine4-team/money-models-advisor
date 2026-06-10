@@ -10,15 +10,28 @@ from .snapshot import BusinessSnapshot
 @dataclass(frozen=True)
 class AdvisorQuery:
     intent: str
-    layer: str
+    layer: str | None
     query: str
     reason: str
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, str | None]:
         return asdict(self)
 
 
-def build_advisor_queries(snapshot: BusinessSnapshot) -> list[AdvisorQuery]:
+@dataclass(frozen=True)
+class SourceNeed:
+    """Planner-selected source support needed for the current advisor turn."""
+
+    intent: str
+    layers: tuple[str, ...]
+    focus_terms: tuple[str, ...]
+    user_turn: str = ""
+
+
+def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SourceNeed | None = None) -> list[AdvisorQuery]:
+    if source_need is not None:
+        return _source_need_queries(snapshot, source_need)
+
     snapshot.refresh()
     status = snapshot.advisor_state.advisory_status
     if status == "insufficient_context":
@@ -28,6 +41,23 @@ def build_advisor_queries(snapshot: BusinessSnapshot) -> list[AdvisorQuery]:
     if status in {"diagnosed", "recommendable"}:
         return _recommendation_queries(snapshot)
     return []
+
+
+def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -> list[AdvisorQuery]:
+    terms = [*source_need.focus_terms, *_compact_context_terms(snapshot)]
+    query_text = _join_terms(terms)
+    if not query_text:
+        return []
+
+    layer = source_need.layers[0] if len(source_need.layers) == 1 else None
+    return [
+        AdvisorQuery(
+            intent=source_need.intent,
+            layer=layer,
+            query=query_text,
+            reason="Source need was selected for the current turn; retrieve source-specific Money Models support.",
+        )
+    ]
 
 
 def _diagnostic_query(snapshot: BusinessSnapshot) -> AdvisorQuery:
@@ -151,6 +181,35 @@ def _recommendation_queries(snapshot: BusinessSnapshot) -> list[AdvisorQuery]:
             reason="No constraint-specific query rule matched; using snapshot fallback terms.",
         )
     ]
+
+
+def _compact_context_terms(snapshot: BusinessSnapshot) -> list[str]:
+    terms: list[str] = []
+    business_type = snapshot.business.business_type or ""
+    core_offer = snapshot.money_model.core_offer.description or ""
+    for phrase in (
+        _shorten_business_context(business_type),
+        _shorten_business_context(core_offer),
+    ):
+        if phrase:
+            terms.append(phrase)
+    return terms
+
+
+def _shorten_business_context(value: str) -> str | None:
+    lowered = value.lower()
+    if "interior design" in lowered:
+        return "interior design"
+    if "short-term rental" in lowered or "str" in lowered:
+        return "STR"
+    if "coaching" in lowered:
+        return "coaching"
+    words = [word.strip(" ,.;:()[]") for word in value.split()]
+    words = [word for word in words if word]
+    if not words:
+        return None
+    return " ".join(words[:3])
+
 
 def _join_terms(terms: list[str | None]) -> str:
     return " ".join(_dedupe([term.strip() for term in terms if term and term.strip()]))

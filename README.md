@@ -111,7 +111,7 @@ Audit query realism before final retriever selection:
 PYTHONPATH=src python3 scripts/audit_query_realism.py
 ```
 
-Score source-search query quality on search-appropriate turns. Reference mode scores reviewer-authored source-specific queries; generated mode scores the current runtime query builder against the same cases:
+Score source-search query quality on search-appropriate turns. Reference mode scores reviewer-authored source-specific queries; generated mode scores the current runtime query builder using the same cases and their advisor-selected source needs:
 
 ```bash
 python3 scripts/eval_search_query_quality.py --query-source reference \
@@ -161,6 +161,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 
 - Broader answer synthesis for teach/compare/clarify/recommendation cases.
 - Agent-led local doc inspection before snapshot updates.
-- Query-builder changes that make generated advisor queries depend on the current source need, not snapshot status alone.
+- Acting-agent source-need selection checks before retrieval-model comparisons.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

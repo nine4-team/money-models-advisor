@@ -13,6 +13,8 @@ The two capabilities must be evaluated separately:
 
 Search queries are not the bridge from every conversation turn to every action. They are only inputs to the `search_source_material` tool. Saved context lookup, conversation recall, snapshot updates, business-doc inspection, and deterministic calculations should use their own tools or agent reasoning without fabricating a corpus-search query.
 
+When source-material search is appropriate, the agent should first select a source need: the retrieval purpose, expected corpus layer or layers, and short focus terms for the current answer. The runtime query builder turns that `SourceNeed` into the final corpus-search query.
+
 Deterministic rules are allowed only where the justification is strong:
 
 - arithmetic and formulas, such as CAC payback and gross profit calculations

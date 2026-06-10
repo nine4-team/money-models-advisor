@@ -25,7 +25,7 @@ class EvidenceChunk:
 @dataclass(frozen=True)
 class QueryEvidence:
     intent: str
-    layer: str
+    layer: str | None
     query: str
     reason: str
     chunks: list[EvidenceChunk]

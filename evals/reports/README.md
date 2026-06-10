@@ -72,7 +72,7 @@ python3 scripts/eval_search_query_quality.py --query-source generated \
   --report evals/reports/advisor_search_query_quality_generated.md
 ```
 
-`eval_search_query_quality.py` validates `evals/advisor_search_query_cases.jsonl` and runs local BM25 search over heading-aware chunks. Reference mode asks whether reviewer-authored, source-specific queries can retrieve useful chunks. Generated mode asks whether the current runtime query builder can do the same from snapshot fixtures. Known-useful chunk labels are seed labels for query development, not exhaustive relevance judgments.
+`eval_search_query_quality.py` validates `evals/advisor_search_query_cases.jsonl` and runs local BM25 search over heading-aware chunks. Reference mode asks whether reviewer-authored, source-specific queries can retrieve useful chunks. Generated mode asks whether the current runtime query builder can do the same from snapshot fixtures plus advisor-selected source needs. Known-useful chunk labels are seed labels for query development, not exhaustive relevance judgments.
 
 Old keyword evidence-term experiments are archived under `archive/keyword-evidence-proxy/` and are not part of the active design.
 Old provider-backed experiments are archived under `archive/provider-backed-experiments/` and are not part of the active design.

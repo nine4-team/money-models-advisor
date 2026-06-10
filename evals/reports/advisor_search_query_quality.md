@@ -6,7 +6,7 @@ This eval covers only turns where source-material search is the correct next act
 
 Query source: `reference` (hand-authored reference queries from the eval cases).
 
-Reference mode is a reviewer-written seed baseline: it asks whether source-specific queries can retrieve citeable chunks. Generated mode is the product-behavior check: it asks whether the current runtime query builder generates useful queries from saved state.
+Reference mode is a reviewer-written seed baseline: it asks whether source-specific queries can retrieve citeable chunks. Generated mode is the product-behavior check for the query builder after the advisor has selected a source need.
 
 The known-useful chunk labels are seed relevance labels, not exhaustive relevance judgments. A miss means the query did not retrieve one of the labeled citeable chunks, not that every returned chunk is useless.
 
@@ -46,8 +46,8 @@ The known-useful chunk labels are seed relevance labels, not exhaustive relevanc
 
 ## Decision
 
-Use reference mode as the source-specific query seed baseline. Use generated mode as the runtime query-generation baseline. Do not compare dense or hybrid retrieval until generated queries are good enough that retrieval-model differences are interpretable.
+Use reference mode as the source-specific query seed baseline. Use generated mode as the source-need-driven runtime query-generation baseline. Do not compare dense or hybrid retrieval until generated queries are good enough that retrieval-model differences are interpretable.
 
 ## Next Work
 
-Review generated-mode misses, broad queries, and duplicate query reuse. Then update `ADVISOR_QUERY_POLICY_V1.md` and the query builder so generated queries are driven by the current source need rather than snapshot status alone.
+Use generated-mode regressions to catch broad queries or duplicate query reuse. The next product eval is whether the acting agent selects the right source need before search.

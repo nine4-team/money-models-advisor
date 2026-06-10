@@ -54,7 +54,7 @@ class AdvisorTurn:
     assistant_message: str
     snapshot: dict[str, Any]
     actions: list[str] = field(default_factory=list)
-    retrieval_queries: list[dict[str, str]] = field(default_factory=list)
+    retrieval_queries: list[dict[str, str | None]] = field(default_factory=list)
     evidence: list[dict[str, Any]] = field(default_factory=list)
     created_at: str = field(default_factory=utc_now)
 
