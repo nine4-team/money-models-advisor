@@ -120,6 +120,8 @@ Active local evals:
 | Required-claim support | `PYTHONPATH=src python3 scripts/score_obligation_support.py` |
 | Next-action trace capture | `python3 scripts/capture_tool_use_trace.py prepare <case_id>` |
 | Next-action judgment scorer | `python3 scripts/eval_tool_use_judgment.py` |
+| Source-need trace capture | `python3 scripts/capture_source_need_trace.py prepare <case_id>` |
+| Source-need generation scorer | `python3 scripts/eval_source_need_generation.py` |
 | Source-query quality scorer, reference queries | `python3 scripts/eval_search_query_quality.py --query-source reference --report evals/reports/advisor_search_query_quality.md` |
 | Source-query quality scorer, generated queries | `python3 scripts/eval_search_query_quality.py --query-source generated --report evals/reports/advisor_search_query_quality_generated.md` |
 
@@ -134,6 +136,16 @@ Next-action classification eval:
 - the acting prompt excludes expected labels so the runner does not replace the agent's judgment
 - `scripts/eval_tool_use_judgment.py` scores only completed `run.json` artifacts
 
+Source-need generation is the bridge between next-action classification and query construction. It should be scored before retrieval-model comparisons because the agent can choose to search for the wrong kind of support even when the query builder itself works.
+
+Source-need generation eval:
+
+- cases live in `evals/advisor_source_need_cases.jsonl`
+- isolated traces live under `evals/runs/source_need/{phase}/{case_id}/`
+- `prepare` writes `run_draft.json` and `acting_prompt.md`
+- `complete` writes the acting agent's `source_search_decision` and `source_need` into `run.json`
+- `scripts/eval_source_need_generation.py` scores only completed `run.json` artifacts
+
 Source-search query quality remains a separate eval and should only be scored for turns where `search_source_material` was the correct next action. Reference mode is the seed baseline for source-specific query examples; generated mode is the product-behavior check for the runtime query builder after an advisor-selected source need is supplied.
 
 ## JD Mapping
@@ -142,7 +154,7 @@ Source-search query quality remains a separate eval and should only be scored fo
 |---|---|
 | Chunking strategy | `src/money_model_architect/retrieval.py`, `evals/reports/chunking_comparison.md` |
 | Namespaces / corpus layering | `src/money_model_architect/namespaces.py` |
-| Golden datasets | `evals/golden.jsonl`, `evals/realistic_queries.jsonl`, `evals/obligations.jsonl` |
+| Golden datasets | `evals/golden.jsonl`, `evals/realistic_queries.jsonl`, `evals/obligations.jsonl`, `evals/advisor_source_need_cases.jsonl` |
 | Retrieval metrics | `scripts/eval_retrieval.py` |
 | Tool use / agentic workflow | CLI commands plus `BusinessSnapshot` state |
 | Deterministic calculations | `src/money_model_architect/calculator.py` |

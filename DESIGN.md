@@ -125,6 +125,8 @@ Current next-action result: all 24 cases have completed trace artifacts. Dev/reg
 
 Current source-query result: the first seed query-quality eval covers 10 search-appropriate turns. Reference mode, which uses reviewer-authored source-specific queries, reports 100.0% known-useful Hit@3/Hit@5. Generated mode now passes an explicit advisor-selected `SourceNeed` into the runtime query builder and also reports 100.0% known-useful Hit@3/Hit@5, with no duplicate query reuse. This fixes the earlier snapshot-only failure where generated mode scored 50.0% and repeated a broad diagnostic query. The known-useful chunk labels are non-exhaustive seed labels, so this is a query-development baseline, not a production IR benchmark. The remaining gate is whether the acting agent reliably selects the right source need before calling search.
 
+Current source-need result: `evals/advisor_source_need_cases.jsonl` defines 14 seed cases, including 10 source-search cases and 4 no-search controls. `scripts/eval_source_need_generation.py` validates the labels and writes `evals/reports/advisor_source_need_generation.md`. The current report is inventory-only because no acting-agent source-need traces have been captured yet. This is intentional: the harness is ready, but it does not pretend deterministic labels are behavior results.
+
 ## Advisor Loop
 
 The advisor should be agent-led in conversation, with deterministic code only where the justification is strong:
@@ -155,7 +157,7 @@ The operating rules for using those commands live in `ADVISOR_OPERATING_GUIDE.md
 The next implementation work is not external model-service integration. The settled path is:
 
 1. treat the current next-action classification eval as the local baseline for tool-use judgment;
-2. test whether the acting agent reliably selects the right source need before calling source-material search;
+2. run the source-need generation eval with acting-agent traces;
 3. expand visible answer synthesis beyond the first payback/recommendation path;
 4. keep all active work local and auditable.
 

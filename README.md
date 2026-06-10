@@ -2,7 +2,7 @@
 
 A portfolio RAG and diagnostic advisor for Alex Hormozi's *$100M Money Models*.
 
-The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an applied ML paper, with hypotheses, variants, metrics, results, and decisions. [ARCHITECTURE.md](ARCHITECTURE.md) is the technical reference and JD-to-file map. [GLOSSARY.md](GLOSSARY.md) defines common project terms. [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md) defines the advisor's lean state schema. [ADVISOR_QUERY_POLICY_V1.md](ADVISOR_QUERY_POLICY_V1.md) defines runtime retrieval query construction. [TOOL_USE_JUDGMENT_PROGRESS.md](TOOL_USE_JUDGMENT_PROGRESS.md) tracks next-action classification, and [TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md](TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md) defines the concrete eval upgrade. [SEARCH_QUERY_QUALITY_PROGRESS.md](SEARCH_QUERY_QUALITY_PROGRESS.md) tracks whether source-search queries retrieve useful chunks. [ADVISOR_RETRIEVAL_HANDOFF.md](ADVISOR_RETRIEVAL_HANDOFF.md) captures the current retrieval trace review and next planner work. [ADVISOR_OPERATING_GUIDE.md](ADVISOR_OPERATING_GUIDE.md) tells an agent how to use the local CLI tools. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) is the build order. [TOOLING_SHORTLIST.md](TOOLING_SHORTLIST.md) records the shortcut stack. `evals/reports/` contains the evidence tables behind the narrative.
+The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an applied ML paper, with hypotheses, variants, metrics, results, and decisions. [ARCHITECTURE.md](ARCHITECTURE.md) is the technical reference and JD-to-file map. [GLOSSARY.md](GLOSSARY.md) defines common project terms. [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md) defines the advisor's lean state schema. [ADVISOR_QUERY_POLICY_V1.md](ADVISOR_QUERY_POLICY_V1.md) defines runtime retrieval query construction. [TOOL_USE_JUDGMENT_PROGRESS.md](TOOL_USE_JUDGMENT_PROGRESS.md) tracks next-action classification, [SOURCE_NEED_GENERATION_PROGRESS.md](SOURCE_NEED_GENERATION_PROGRESS.md) tracks source-need generation, and [SEARCH_QUERY_QUALITY_PROGRESS.md](SEARCH_QUERY_QUALITY_PROGRESS.md) tracks whether source-search queries retrieve useful chunks. [TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md](TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md) defines the concrete eval upgrade. [ADVISOR_RETRIEVAL_HANDOFF.md](ADVISOR_RETRIEVAL_HANDOFF.md) captures the current retrieval trace review and next planner work. [ADVISOR_OPERATING_GUIDE.md](ADVISOR_OPERATING_GUIDE.md) tells an agent how to use the local CLI tools. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) is the build order. [TOOLING_SHORTLIST.md](TOOLING_SHORTLIST.md) records the shortcut stack. `evals/reports/` contains the evidence tables behind the narrative.
 
 This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
 
@@ -18,7 +18,7 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `chat`, `calculate`, `search_source_material`, and `logs`.
 
-Current dev focus: evaluate source-search query quality now that the first next-action classification pass is complete. The project still keeps the two capabilities separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, search-query quality asks whether source-material search retrieves useful Money Models chunks when search is actually appropriate.
+Current dev focus: evaluate source-need generation now that next-action classification and source-need-driven query construction have seed baselines. The project keeps the ladder separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, source-need generation asks what source support is needed when search is appropriate. Third, search-query quality asks whether that source need retrieves useful Money Models chunks.
 
 Set up advisor state for a context directory:
 
@@ -121,6 +121,17 @@ python3 scripts/eval_search_query_quality.py --query-source generated \
   --report evals/reports/advisor_search_query_quality_generated.md
 ```
 
+Score source-need generation traces:
+
+```bash
+python3 scripts/capture_source_need_trace.py prepare sourceneed_v1_001
+python3 scripts/capture_source_need_trace.py complete \
+  evals/runs/source_need/pilot/sourceneed_v1_001 \
+  --source-search-decision true \
+  --source-need '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["gross profit","fulfillment cost","CAC","payback period"]}'
+python3 scripts/eval_source_need_generation.py
+```
+
 Review human-auditable required-claim labels:
 
 ```bash
@@ -153,6 +164,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
+- Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
 - First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup`, `chat`, `search`, `snapshot`, and `logs` CLI commands.
 - Visible `chat` answer synthesis started: diagnosis, key math, recommendation, source chunk IDs, and next action.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
@@ -161,6 +173,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 
 - Broader answer synthesis for teach/compare/clarify/recommendation cases.
 - Agent-led local doc inspection before snapshot updates.
-- Acting-agent source-need selection checks before retrieval-model comparisons.
+- Acting-agent source-need generation runs before retrieval-model comparisons.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

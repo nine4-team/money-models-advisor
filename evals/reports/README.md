@@ -74,5 +74,18 @@ python3 scripts/eval_search_query_quality.py --query-source generated \
 
 `eval_search_query_quality.py` validates `evals/advisor_search_query_cases.jsonl` and runs local BM25 search over heading-aware chunks. Reference mode asks whether reviewer-authored, source-specific queries can retrieve useful chunks. Generated mode asks whether the current runtime query builder can do the same from snapshot fixtures plus advisor-selected source needs. Known-useful chunk labels are seed labels for query development, not exhaustive relevance judgments.
 
+For active source-need generation checks, use:
+
+```bash
+python3 scripts/capture_source_need_trace.py prepare sourceneed_v1_001
+python3 scripts/capture_source_need_trace.py complete \
+  evals/runs/source_need/pilot/sourceneed_v1_001 \
+  --source-search-decision true \
+  --source-need '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["gross profit","fulfillment cost","CAC","payback period"]}'
+python3 scripts/eval_source_need_generation.py
+```
+
+`capture_source_need_trace.py prepare` creates an isolated eval directory plus an acting prompt that hides expected labels. `complete` records the acting agent's source-search decision and generated source need. `eval_source_need_generation.py` validates `evals/advisor_source_need_cases.jsonl` and scores saved acting-agent `run.json` artifacts under `evals/runs/source_need/`. It tests whether the acting agent decides if source search is needed and, when it is, generates intent, layer, and focus-term structure before query construction.
+
 Old keyword evidence-term experiments are archived under `archive/keyword-evidence-proxy/` and are not part of the active design.
 Old provider-backed experiments are archived under `archive/provider-backed-experiments/` and are not part of the active design.

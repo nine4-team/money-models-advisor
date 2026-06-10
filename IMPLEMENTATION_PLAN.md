@@ -51,6 +51,7 @@ Progress trackers:
 
 - `TOOL_USE_JUDGMENT_PROGRESS.md`
 - `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`
+- `SOURCE_NEED_GENERATION_PROGRESS.md`
 - `SEARCH_QUERY_QUALITY_PROGRESS.md`
 
 Improvement strategy:
@@ -58,7 +59,7 @@ Improvement strategy:
 - Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
 
-The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the seed set. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work is testing whether the acting agent reliably selects the right source need before search.
+The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the seed set. The source-need generation eval case set and scorer now exist; the current report is inventory-only until acting-agent traces are captured. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work is running source-need generation traces.
 
 **CLI setup and advisor loop:**
 
