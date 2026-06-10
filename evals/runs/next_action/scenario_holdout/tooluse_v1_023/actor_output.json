@@ -1,0 +1,11 @@
+{
+  "case_id": "tooluse_v1_023",
+  "commands_run": [
+    "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+    "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_023/business_dir",
+    "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_023/business_dir --full",
+    "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_023/business_dir --message 'what did we already say about ads earlier?'"
+  ],
+  "final_answer": "Earlier, we said CAC is currently represented as about $1,000 from referral partners, not paid ads. We also said that with about $10,000 in first-30-day gross profit and a 1-month payback, there is room to test paid acquisition carefully.",
+  "notes": "Used the money-model-advisor skill as requested. I inspected the snapshot for current economics, used logs because the user asked what had been said earlier, and ran chat to persist the current advisory turn. No files were edited."
+}

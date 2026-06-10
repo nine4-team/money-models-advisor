@@ -1,0 +1,9 @@
+{
+  "case_id": "tooluse_v1_020",
+  "commands_run": [
+    "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+    "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir --message 'what does gross profit mean in plain English?'"
+  ],
+  "final_answer": "Gross profit is the money left after you subtract the direct cost of making or delivering what you sold. In plain English: if you sell something for $100 and it costs you $40 to provide it, your gross profit is $60. It does not include overhead like rent, admin salaries, software, or taxes.",
+  "notes": "Used the money-model-advisor skill as requested and ran the local chat command to persist the turn. I did not inspect snapshot, logs, docs, calculate, or search because the visible context says this is a simple vocabulary question that does not require saved business state or corpus support."
+}

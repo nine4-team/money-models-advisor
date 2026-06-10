@@ -1,0 +1,1 @@
+Used the money-model-advisor skill as requested and ran the local chat command to persist the turn. I did not inspect snapshot, logs, docs, calculate, or search because the visible context says this is a simple vocabulary question that does not require saved business state or corpus support.

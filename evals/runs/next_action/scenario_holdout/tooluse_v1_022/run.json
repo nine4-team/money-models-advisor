@@ -1,0 +1,88 @@
+{
+  "acting_prompt_path": "evals/runs/next_action/scenario_holdout/tooluse_v1_022/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "actor_reported_command",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "actor_reported_command",
+      "index": 1
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "actor_reported_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir",
+  "case_id": "tooluse_v1_022",
+  "completed_at": "2026-06-10T00:19:48Z",
+  "created_at": "2026-06-10T00:16:22Z",
+  "final_answer_path": "evals/runs/next_action/scenario_holdout/tooluse_v1_022/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir",
+    "sessions_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir/.money-model-advisor"
+  },
+  "phase": "scenario_holdout",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:c480781ebc1b3706827fca4aa22258fe737651d9969fee4f4f16f64517a06941",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+      "index": 0,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir",
+      "index": 1,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir --full",
+      "index": 2,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search \"attraction offer upsell offer stack\" --top-k 5",
+      "index": 3,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir --message \"what's the difference between an attraction offer and an upsell in this situation?\"",
+      "index": 4,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    }
+  ]
+}

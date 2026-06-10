@@ -1,0 +1,11 @@
+{
+  "case_id": "tooluse_v1_024",
+  "commands_run": [
+    "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+    "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_024/business_dir",
+    "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_024/business_dir --full",
+    "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_024/business_dir --message 'should we start running ads next month?'"
+  ],
+  "final_answer": "Not yet. I would not start paid ads next month until we know the unit economics. I have the offer stack context, but I’m missing the two numbers that determine whether ads are likely to work: CAC and first-30-day gross profit. My next question is: what is your expected or historical CAC?",
+  "notes": "Used the money-model-advisor skill as required. Ran snapshot to confirm saved context and missing economics, logs to inspect prior turns, and chat to persist the advisory turn. Did not edit files or infer hidden labels."
+}

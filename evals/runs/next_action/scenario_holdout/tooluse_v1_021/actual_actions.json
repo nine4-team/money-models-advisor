@@ -1,0 +1,23 @@
+[
+  {
+    "index": 0,
+    "action": "read_snapshot",
+    "confidence": "direct",
+    "evidence_type": "actor_reported_command",
+    "evidence_ref": "workflow_steps[1]"
+  },
+  {
+    "index": 1,
+    "action": "diagnose",
+    "confidence": "inferred",
+    "evidence_type": "final_answer",
+    "evidence_ref": "final_answer.txt"
+  },
+  {
+    "index": 2,
+    "action": "compose_answer_from_state",
+    "confidence": "inferred",
+    "evidence_type": "final_answer",
+    "evidence_ref": "final_answer.txt"
+  }
+]

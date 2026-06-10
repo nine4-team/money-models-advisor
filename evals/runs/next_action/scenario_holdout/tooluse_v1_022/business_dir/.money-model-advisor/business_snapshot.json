@@ -1,7 +1,10 @@
 {
   "advisor_state": {
     "advisory_status": "insufficient_context",
-    "likely_retrieval_layers": [],
+    "likely_retrieval_layers": [
+      "offers",
+      "upsells"
+    ],
     "missing_fields": [
       "economics.cac",
       "economics.first_30_day_gross_profit"
@@ -12,7 +15,8 @@
       "premium full-service interior design firm for short-term rental and second-home projects",
       "STR and second-home owners with $80K-$200K+ project capacity",
       "full-service STR and second-home design",
-      "talk through the money model"
+      "talk through the money model",
+      "what's the difference between an attraction offer and an upsell in this situation?"
     ]
   },
   "business": {
@@ -71,7 +75,9 @@
   },
   "problem": {
     "diagnosed_constraints": [],
-    "reported_symptoms": [],
+    "reported_symptoms": [
+      "what's the difference between an attraction offer and an upsell in this situation?"
+    ],
     "user_goal": "talk through the money model"
   },
   "schema_version": "business_snapshot.v1"

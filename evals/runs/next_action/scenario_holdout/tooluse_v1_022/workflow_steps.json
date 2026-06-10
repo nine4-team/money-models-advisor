@@ -1,0 +1,32 @@
+[
+  {
+    "index": 0,
+    "kind": "actor_reported_command",
+    "command": "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 1,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 2,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir --full",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 3,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli search \"attraction offer upsell offer stack\" --top-k 5",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 4,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir --message \"what's the difference between an attraction offer and an upsell in this situation?\"",
+    "source": "actor_output.json"
+  }
+]

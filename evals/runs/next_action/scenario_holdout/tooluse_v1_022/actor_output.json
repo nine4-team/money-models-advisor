@@ -1,0 +1,12 @@
+{
+  "case_id": "tooluse_v1_022",
+  "commands_run": [
+    "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+    "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir",
+    "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir --full",
+    "PYTHONPATH=src python3 -m money_model_architect.cli search \"attraction offer upsell offer stack\" --top-k 5",
+    "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_022/business_dir --message \"what's the difference between an attraction offer and an upsell in this situation?\""
+  ],
+  "final_answer": "In this situation, the attraction offer is the front-end reason a cold STR or second-home owner engages with you: the $597 STR Design Diagnostic with listing/photo audit and priority summary. Its job is to create trust, surface the owner’s design/revenue problems, and turn interest into a buyer conversation. The upsell is what you offer after that engagement or sale to increase the customer value: the $5,000 pre-designed room packages sold per room or bundle. So the diagnostic answers, “Should I trust Lisa and what needs fixing?” The upsell answers, “Now that we know what needs fixing, do you want a faster/more packaged implementation path?” The core $15,000 full-service design offer sits between/around those as the main transformation. To judge whether this stack works financially, my next missing number is CAC.",
+  "notes": "Used the money-model-advisor skill, loaded the saved snapshot because the question depended on the specific offer stack, checked logs for prior context, searched local Money Models source material for the concept distinction, and ran chat to persist the advisory turn. Did not edit files or infer hidden labels."
+}

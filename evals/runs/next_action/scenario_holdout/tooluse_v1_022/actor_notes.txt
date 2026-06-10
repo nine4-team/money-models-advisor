@@ -1,0 +1,1 @@
+Used the money-model-advisor skill, loaded the saved snapshot because the question depended on the specific offer stack, checked logs for prior context, searched local Money Models source material for the concept distinction, and ran chat to persist the advisory turn. Did not edit files or infer hidden labels.

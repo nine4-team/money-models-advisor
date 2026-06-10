@@ -1,0 +1,1 @@
+Used the money-model-advisor skill as required. Ran snapshot to confirm saved context and missing economics, logs to inspect prior turns, and chat to persist the advisory turn. Did not edit files or infer hidden labels.

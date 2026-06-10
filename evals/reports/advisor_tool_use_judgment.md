@@ -28,14 +28,14 @@ These are product-behavior cases. Harness/operability questions about eval termi
 
 ## Results
 
-This is a partial trace set: 19 of 24 cases have completed `run.json` artifacts.
+All cases have completed `run.json` artifacts.
 
-- Scored by split: {'dev': {'total': 14, 'scored': 14}, 'regression': {'total': 5, 'scored': 5}, 'scenario_holdout': {'total': 5, 'scored': 0}}
+- Scored by split: {'dev': {'total': 14, 'scored': 14}, 'regression': {'total': 5, 'scored': 5}, 'scenario_holdout': {'total': 5, 'scored': 5}}
 
-Trace-capture note: these artifacts are auditable workflow traces, not a contamination-free blind benchmark. Use them to validate the recorder, evidence shape, and dev/regression policy conformance; use `scenario_holdout` only after guidance is stable.
+Trace-capture note: these artifacts are auditable workflow traces. Dev/regression traces were captured in-thread by Codex; scenario_holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. This is stronger than the dev/regression traces, but still not a production-grade independent benchmark.
 
-- Scored cases: 19
-- First-action accuracy: 100.0%
+- Scored cases: 24
+- First-action accuracy: 95.8%
 - Average required-action recall: 1.000
 - Full-sequence pass rate: 100.0%
 - Forbidden-action violation rate: 0.0%
@@ -66,20 +66,20 @@ Trace-capture note: these artifacts are auditable workflow traces, not a contami
 | `tooluse_v1_017` | `regression` | `compose_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_017/run.json) | read_snapshot, compose_answer_from_state | - |
 | `tooluse_v1_018` | `regression` | `local_doc_lookup_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_018/run.json) | inspect_local_docs, update_snapshot, compose_answer_from_state | - |
 | `tooluse_v1_019` | `regression` | `source_required_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_019/run.json) | read_snapshot, search_source_material, compose_answer_from_state | - |
-| `tooluse_v1_020` | `scenario_holdout` | `simple_definition` | not_run | - | - |
-| `tooluse_v1_021` | `scenario_holdout` | `diagnosis` | not_run | - | - |
-| `tooluse_v1_022` | `scenario_holdout` | `source_required_compare` | not_run | - | - |
-| `tooluse_v1_023` | `scenario_holdout` | `read_logs` | not_run | - | - |
-| `tooluse_v1_024` | `scenario_holdout` | `clarify` | not_run | - | - |
+| `tooluse_v1_020` | `scenario_holdout` | `simple_definition` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_020/run.json) | answer_without_tool | - |
+| `tooluse_v1_021` | `scenario_holdout` | `diagnosis` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_021/run.json) | read_snapshot, diagnose, compose_answer_from_state | - |
+| `tooluse_v1_022` | `scenario_holdout` | `source_required_compare` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_022/run.json) | read_snapshot, read_logs, search_source_material, compose_answer_from_state | - |
+| `tooluse_v1_023` | `scenario_holdout` | `read_logs` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_023/run.json) | read_snapshot, read_logs, compose_answer_from_state | wrong_first_action |
+| `tooluse_v1_024` | `scenario_holdout` | `clarify` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_024/run.json) | read_snapshot, read_logs, clarify | - |
 
 ## Decision
 
-Use these results as the completed dev/regression trace set. The scenario_holdout split remains intentionally untouched.
+Use these results as the current next-action classification baseline for the captured case set.
 
 ## Failure Analysis
 
-No scored dev/regression trace failures were detected.
+Failures: {'wrong_first_action': 1}
 
 ## Next Experiment
 
-Use dev/regression findings for any guidance changes. Run `scenario_holdout` only after deciding the guidance is stable.
+Review the scenario_holdout failure, especially whether prior-conversation recall should require `read_logs` as the first action or merely before final answer. If guidance changes, re-run dev/regression before any new holdout.

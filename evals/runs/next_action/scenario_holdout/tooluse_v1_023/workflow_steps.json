@@ -1,0 +1,26 @@
+[
+  {
+    "index": 0,
+    "kind": "actor_reported_command",
+    "command": "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 1,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_023/business_dir",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 2,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_023/business_dir --full",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 3,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_023/business_dir --message 'what did we already say about ads earlier?'",
+    "source": "actor_output.json"
+  }
+]

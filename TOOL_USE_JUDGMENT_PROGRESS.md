@@ -35,17 +35,24 @@ The trace recorder has been piloted on five dev cases:
 
 All five completed traces validate and score cleanly in `evals/reports/advisor_tool_use_judgment.md`.
 
-The remaining dev/regression traces have also been captured. Current report status:
+The remaining dev/regression traces have also been captured. Scenario holdout was then run after freezing generated prompts, using separate acting agents that saw only `acting_prompt.md` content and not expected labels.
+
+Current report status:
 
 - dev: 14/14 scored
 - regression: 5/5 scored
-- scenario_holdout: 0/5 scored and intentionally untouched
-- first-action accuracy on captured dev/regression traces: 100%
-- required-action recall on captured dev/regression traces: 1.000
-- false-search rate on captured dev/regression traces: 0%
-- trace completeness on captured dev/regression traces: 100%
+- scenario_holdout: 5/5 scored
+- first-action accuracy across all captured traces: 95.8%
+- required-action recall across all captured traces: 1.000
+- false-search rate across all captured traces: 0%
+- missed-search rate across all captured traces: 0%
+- trace completeness across all captured traces: 100%
 
-Important caveat: these are agent-assisted traces captured in-thread by Codex to verify the recorder, schema, evidence refs, and policy-conformance scoring. They should not be overclaimed as contamination-free agent-performance evidence. Use them as the completed dev/regression trace set and leave `scenario_holdout` untouched until guidance is stable.
+Important caveat: dev/regression traces were captured in-thread by Codex to verify the recorder, schema, evidence refs, and policy-conformance scoring. Scenario holdout is stronger because prompts were frozen before execution and separate actors saw only acting prompts, but it is still not a production-grade independent benchmark.
+
+Observed holdout failure:
+
+- `tooluse_v1_023`: wrong first action. The actor read the snapshot before reading logs on a prior-conversation recall question. It still read logs before answering, so required-action recall passed; the failure is about first-action priority.
 
 Key design choice: build a trace recorder, not a deterministic planner. The recorder should set up fixtures, capture commands and files, extract observable `actual_actions[]`, and write `run.json`. It should not choose the next action from the case label. The actor, trace extractor, and scorer should remain separate so the eval measures agent judgment rather than a hard-coded runner or self-report.
 
@@ -129,7 +136,7 @@ Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
 Immediate implementation steps:
 
-1. Review the completed dev/regression trace set for any methodology or labeling concerns.
-2. Decide whether any skill/tool guidance changes are still needed.
-3. If guidance changes, re-run dev/regression traces.
-4. Run `scenario_holdout` only after the guidance is stable.
+1. Decide whether `tooluse_v1_023` is a true guidance failure or an overly strict first-action label.
+2. If guidance changes, update the skill/operating guide and re-run dev/regression before creating a fresh holdout.
+3. If the label changes, mark the original holdout case as adjudicated rather than silently rewriting history.
+4. Update the narrative with the final baseline and caveat.

@@ -117,6 +117,8 @@ The trace design separates three roles:
 
 This prevents self-report from becoming the metric and keeps weak evidence visible as `inferred` or `missing`.
 
+Current next-action result: all 24 cases have completed trace artifacts. Dev/regression traces were captured in-thread by Codex; scenario holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. The current report shows 95.8% first-action accuracy, 1.000 required-action recall, 0% false-search rate, 0% missed-search rate, and 100% trace completeness. The one holdout failure is a prior-conversation recall case where the actor read snapshot before logs; it still read logs before answering, so the issue is first-action priority rather than missing evidence.
+
 ## Advisor Loop
 
 The advisor should be agent-led in conversation, with deterministic code only where the justification is strong:

@@ -1,0 +1,151 @@
+{
+  "actions": [
+    "append problem.reported_symptoms"
+  ],
+  "assistant_message": "Diagnosis: estimated payback is 1.00 month(s).\n\nSource support: [context:3] [how-businesses-make-money:2] [payback-period:0].\n\nNext action: run the smallest offer-stack test that improves payback, then update the snapshot with the result.",
+  "created_at": "2026-06-10T00:18:15Z",
+  "evidence": [
+    {
+      "chunks": [
+        {
+          "chapter": "context",
+          "id": "context:3",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "preview": "## [\u00a71.1.d] Scaling to Gym Launch (5,000+ locations, 4:1 first-30-day ROAS)  So I eventually took that multi-step money model and licensed everything about it to 5,000 plus locations. And that's what became Gym Launch. And the average return on ad spend in the first 30 days across all those gyms, all right, not including memberships to this day is four to on",
+          "score": 13.985
+        },
+        {
+          "chapter": "how-businesses-make-money",
+          "id": "how-businesses-make-money:2",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "preview": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period  Which then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math",
+          "score": 12.22
+        },
+        {
+          "chapter": "payback-period",
+          "id": "payback-period:0",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ],
+          "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A",
+          "score": 11.175
+        }
+      ],
+      "intent": "recommendation_evidence",
+      "layer": "unit-economics",
+      "query": "high_first_sale_margin can_test_paid_acquisition premium full-service interior design firm for short-term rental and second-home projects STR and second-home owners with $80K-$200K+ project capacity full-service STR and second-home design diagnose cash payback",
+      "reason": "No constraint-specific query rule matched; using snapshot fallback terms."
+    }
+  ],
+  "retrieval_queries": [
+    {
+      "intent": "recommendation_evidence",
+      "layer": "unit-economics",
+      "query": "high_first_sale_margin can_test_paid_acquisition premium full-service interior design firm for short-term rental and second-home projects STR and second-home owners with $80K-$200K+ project capacity full-service STR and second-home design diagnose cash payback",
+      "reason": "No constraint-specific query rule matched; using snapshot fallback terms."
+    }
+  ],
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "recommendable",
+      "likely_retrieval_layers": [
+        "unit-economics",
+        "offers"
+      ],
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true,
+      "retrieval_query_terms": [
+        "premium full-service interior design firm for short-term rental and second-home projects",
+        "STR and second-home owners with $80K-$200K+ project capacity",
+        "full-service STR and second-home design",
+        "diagnose cash payback",
+        "wants to understand how much can be spent on acquisition",
+        "what did we already say about ads earlier?",
+        "high_first_sale_margin",
+        "can_test_paid_acquisition",
+        "CAC",
+        "first 30 day gross profit",
+        "payback period"
+      ]
+    },
+    "business": {
+      "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+      "delivery_model": "Lisa-led full-service design planning, procurement, and installation",
+      "icp": "STR and second-home owners with $80K-$200K+ project capacity"
+    },
+    "economics": {
+      "cac": 1000,
+      "first_30_day_gross_profit": 10000,
+      "gross_margin": 0.769,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": 0,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.cac": {
+        "confidence": "medium",
+        "source_type": "user_chat",
+        "value_note": "Referral partner cost averaged to about $1k per client."
+      },
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+        "exists": true,
+        "price": 597
+      },
+      "continuity": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "core_offer": {
+        "description": "full-service STR and second-home design",
+        "exists": true,
+        "price": 15000
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "pre-designed room packages sold per room or bundle",
+        "exists": true,
+        "price": 5000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [
+        "high_first_sale_margin",
+        "can_test_paid_acquisition"
+      ],
+      "reported_symptoms": [
+        "wants to understand how much can be spent on acquisition",
+        "what did we already say about ads earlier?"
+      ],
+      "user_goal": "diagnose cash payback"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "user_message": "what did we already say about ads earlier?"
+}

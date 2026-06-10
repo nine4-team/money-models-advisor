@@ -1,0 +1,14 @@
+[
+  {
+    "index": 0,
+    "kind": "actor_reported_command",
+    "command": "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+    "source": "actor_output.json"
+  },
+  {
+    "index": 1,
+    "kind": "actor_reported_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir --message 'what does gross profit mean in plain English?'",
+    "source": "actor_output.json"
+  }
+]

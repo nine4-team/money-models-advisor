@@ -13,7 +13,10 @@
       "STR and second-home owners with $80K-$200K+ project capacity",
       "full-service STR and second-home design",
       "diagnose cash payback",
+      "wants to understand how much can be spent on acquisition",
+      "what did we already say about ads earlier?",
       "high_first_sale_margin",
+      "can_test_paid_acquisition",
       "CAC",
       "first 30 day gross profit",
       "payback period"
@@ -30,7 +33,7 @@
     "gross_margin": 0.769,
     "lifetime_gross_profit": null,
     "monthly_recurring_gross_profit": 0,
-    "payback_period_months": 0.1
+    "payback_period_months": 1.0
   },
   "field_sources": {
     "economics.cac": {
@@ -40,6 +43,11 @@
     },
     "economics.payback_period_months": {
       "confidence": "high",
+      "inputs": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit",
+        "economics.monthly_recurring_gross_profit"
+      ],
       "source_type": "calculated"
     }
   },
@@ -76,7 +84,8 @@
       "can_test_paid_acquisition"
     ],
     "reported_symptoms": [
-      "wants to understand how much can be spent on acquisition"
+      "wants to understand how much can be spent on acquisition",
+      "what did we already say about ads earlier?"
     ],
     "user_goal": "diagnose cash payback"
   },

@@ -1,0 +1,69 @@
+{
+  "acting_prompt_path": "evals/runs/next_action/scenario_holdout/tooluse_v1_021/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "actor_reported_command",
+      "index": 0
+    },
+    {
+      "action": "diagnose",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_021/business_dir",
+  "case_id": "tooluse_v1_021",
+  "completed_at": "2026-06-10T00:19:48Z",
+  "created_at": "2026-06-10T00:16:22Z",
+  "final_answer_path": "evals/runs/next_action/scenario_holdout/tooluse_v1_021/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_021/business_dir",
+    "sessions_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_021/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/next_action/scenario_holdout/tooluse_v1_021/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_021/business_dir/.money-model-advisor"
+  },
+  "phase": "scenario_holdout",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:9933af466fefe1ec7aaf858355f952a4cf61fe238cf0c6c4a7b7915f53bddf18",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+      "index": 0,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_021/business_dir",
+      "index": 1,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_021/business_dir --message 'does this mean acquisition is probably not the bottleneck?'",
+      "index": 2,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    }
+  ]
+}

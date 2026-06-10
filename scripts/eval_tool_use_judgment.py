@@ -411,13 +411,20 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
                 [
                     f"This is a partial trace set: {scored_count} of {len(cases)} cases have completed `run.json` artifacts.",
                     "",
-                    f"- Scored by split: {counts_by_split}",
+                ]
+            )
+        else:
+            lines.extend(
+                [
+                    "All cases have completed `run.json` artifacts.",
                     "",
                 ]
             )
         lines.extend(
             [
-                "Trace-capture note: these artifacts are auditable workflow traces, not a contamination-free blind benchmark. Use them to validate the recorder, evidence shape, and dev/regression policy conformance; use `scenario_holdout` only after guidance is stable.",
+                f"- Scored by split: {counts_by_split}",
+                "",
+                "Trace-capture note: these artifacts are auditable workflow traces. Dev/regression traces were captured in-thread by Codex; scenario_holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. This is stronger than the dev/regression traces, but still not a production-grade independent benchmark.",
                 "",
             ]
         )
@@ -469,7 +476,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         lines.append("Use these results as the current next-action classification baseline for the captured case set.")
         failures = [reason for result in results for reason in result.failure_reasons]
         failure_text = "No scored failures were detected." if not failures else f"Failures: {dict(Counter(failures))}"
-        next_text = "Improve skill/tool guidance from dev/regression failures, then re-run dev/regression before running `scenario_holdout`."
+        next_text = "Review the scenario_holdout failure, especially whether prior-conversation recall should require `read_logs` as the first action or merely before final answer. If guidance changes, re-run dev/regression before any new holdout."
 
     lines.extend(
         [

@@ -1,0 +1,9 @@
+[
+  {
+    "index": 0,
+    "action": "answer_without_tool",
+    "confidence": "inferred",
+    "evidence_type": "final_answer",
+    "evidence_ref": "final_answer.txt"
+  }
+]

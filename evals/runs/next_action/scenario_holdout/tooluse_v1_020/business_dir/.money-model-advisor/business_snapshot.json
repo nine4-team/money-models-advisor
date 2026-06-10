@@ -1,9 +1,10 @@
 {
   "advisor_state": {
     "advisory_status": "insufficient_context",
-    "likely_retrieval_layers": [],
+    "likely_retrieval_layers": [
+      "unit-economics"
+    ],
     "missing_fields": [
-      "problem.user_goal",
       "business.business_type",
       "business.icp",
       "money_model.core_offer.description",
@@ -16,7 +17,9 @@
     ],
     "ready_for_offer_stack_diagnosis": false,
     "ready_for_payback_diagnosis": false,
-    "retrieval_query_terms": []
+    "retrieval_query_terms": [
+      "what does gross profit mean in plain English?"
+    ]
   },
   "business": {
     "business_type": null,
@@ -31,7 +34,13 @@
     "monthly_recurring_gross_profit": null,
     "payback_period_months": null
   },
-  "field_sources": {},
+  "field_sources": {
+    "problem.user_goal": {
+      "confidence": "high",
+      "source_type": "conversation",
+      "updated_at": "2026-06-10T00:17:31Z"
+    }
+  },
   "money_model": {
     "attraction_offer": {
       "description": null,
@@ -62,7 +71,7 @@
   "problem": {
     "diagnosed_constraints": [],
     "reported_symptoms": [],
-    "user_goal": null
+    "user_goal": "what does gross profit mean in plain English?"
   },
   "schema_version": "business_snapshot.v1"
 }
