@@ -383,7 +383,7 @@ Examples:
 - stale query reuse
 - forbidden action
 - unlogged action
-- correct action but wrong first action
+- materially wrong first action
 - state contamination
 
 This makes eval reports more useful than a single accuracy number.
@@ -402,6 +402,6 @@ Common failure types:
 | `missed_diagnosis` | Diagnosis was required but absent. |
 | `stale_query_reuse` | The agent reused a generic or previous search query that did not match the current turn. |
 | `forbidden_action` | Any action listed as forbidden happened. |
-| `wrong_first_action` | The first action was wrong or materially harmful, even if later actions recovered. |
+| `wrong_first_action` | The first action was wrong or materially harmful, even if later actions recovered. Harmless context-loading before the required action should be adjudicated, not automatically counted as this failure. |
 | `unlogged_action` | The action may have happened, but the trace does not prove it. |
 | `state_contamination` | The result depends on state not present in the fixture. |

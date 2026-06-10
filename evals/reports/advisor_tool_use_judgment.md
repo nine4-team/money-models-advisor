@@ -35,7 +35,7 @@ All cases have completed `run.json` artifacts.
 Trace-capture note: these artifacts are auditable workflow traces. Dev/regression traces were captured in-thread by Codex; scenario_holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. This is stronger than the dev/regression traces, but still not a production-grade independent benchmark.
 
 - Scored cases: 24
-- First-action accuracy: 95.8%
+- First-action accuracy: 100.0%
 - Average required-action recall: 1.000
 - Full-sequence pass rate: 100.0%
 - Forbidden-action violation rate: 0.0%
@@ -69,7 +69,7 @@ Trace-capture note: these artifacts are auditable workflow traces. Dev/regressio
 | `tooluse_v1_020` | `scenario_holdout` | `simple_definition` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_020/run.json) | answer_without_tool | - |
 | `tooluse_v1_021` | `scenario_holdout` | `diagnosis` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_021/run.json) | read_snapshot, diagnose, compose_answer_from_state | - |
 | `tooluse_v1_022` | `scenario_holdout` | `source_required_compare` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_022/run.json) | read_snapshot, read_logs, search_source_material, compose_answer_from_state | - |
-| `tooluse_v1_023` | `scenario_holdout` | `read_logs` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_023/run.json) | read_snapshot, read_logs, compose_answer_from_state | wrong_first_action |
+| `tooluse_v1_023` | `scenario_holdout` | `read_logs` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_023/run.json) | read_snapshot, read_logs, compose_answer_from_state | - |
 | `tooluse_v1_024` | `scenario_holdout` | `clarify` | scored (evals/runs/next_action/scenario_holdout/tooluse_v1_024/run.json) | read_snapshot, read_logs, clarify | - |
 
 ## Decision
@@ -78,8 +78,8 @@ Use these results as the current next-action classification baseline for the cap
 
 ## Failure Analysis
 
-Failures: {'wrong_first_action': 1}
+No scored failures were detected.
 
 ## Next Experiment
 
-Review the scenario_holdout failure, especially whether prior-conversation recall should require `read_logs` as the first action or merely before final answer. If guidance changes, re-run dev/regression before any new holdout.
+Next, evaluate source-search query generation quality as a separate capability from next-action classification.

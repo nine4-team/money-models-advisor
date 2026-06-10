@@ -476,7 +476,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         lines.append("Use these results as the current next-action classification baseline for the captured case set.")
         failures = [reason for result in results for reason in result.failure_reasons]
         failure_text = "No scored failures were detected." if not failures else f"Failures: {dict(Counter(failures))}"
-        next_text = "Review the scenario_holdout failure, especially whether prior-conversation recall should require `read_logs` as the first action or merely before final answer. If guidance changes, re-run dev/regression before any new holdout."
+        next_text = "Next, evaluate source-search query generation quality as a separate capability from next-action classification."
 
     lines.extend(
         [

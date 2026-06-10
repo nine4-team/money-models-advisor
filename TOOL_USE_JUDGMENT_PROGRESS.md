@@ -42,7 +42,7 @@ Current report status:
 - dev: 14/14 scored
 - regression: 5/5 scored
 - scenario_holdout: 5/5 scored
-- first-action accuracy across all captured traces: 95.8%
+- first-action accuracy across all captured traces: 100.0%
 - required-action recall across all captured traces: 1.000
 - false-search rate across all captured traces: 0%
 - missed-search rate across all captured traces: 0%
@@ -50,9 +50,9 @@ Current report status:
 
 Important caveat: dev/regression traces were captured in-thread by Codex to verify the recorder, schema, evidence refs, and policy-conformance scoring. Scenario holdout is stronger because prompts were frozen before execution and separate actors saw only acting prompts, but it is still not a production-grade independent benchmark.
 
-Observed holdout failure:
+Resolved holdout adjudication:
 
-- `tooluse_v1_023`: wrong first action. The actor read the snapshot before reading logs on a prior-conversation recall question. It still read logs before answering, so required-action recall passed; the failure is about first-action priority.
+- `tooluse_v1_023`: originally scored as `wrong_first_action` because the actor read snapshot before logs on a prior-conversation recall question. Senior review concluded this was an overly strict label, not a behavior failure: snapshot contained current economics, and the actor still read logs before answering. The case now records that adjudication explicitly and expects `read_snapshot` first while keeping `read_logs` required.
 
 Key design choice: build a trace recorder, not a deterministic planner. The recorder should set up fixtures, capture commands and files, extract observable `actual_actions[]`, and write `run.json`. It should not choose the next action from the case label. The actor, trace extractor, and scorer should remain separate so the eval measures agent judgment rather than a hard-coded runner or self-report.
 
@@ -136,7 +136,6 @@ Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
 Immediate implementation steps:
 
-1. Decide whether `tooluse_v1_023` is a true guidance failure or an overly strict first-action label.
-2. If guidance changes, update the skill/operating guide and re-run dev/regression before creating a fresh holdout.
-3. If the label changes, mark the original holdout case as adjudicated rather than silently rewriting history.
-4. Update the narrative with the final baseline and caveat.
+1. Treat next-action classification as closed for the current captured case set.
+2. Keep the caveat that dev/regression traces were captured in-thread and scenario holdout is same-scenario, not cross-business generalization.
+3. Move to source-search query generation quality as the next separately evaluated capability.

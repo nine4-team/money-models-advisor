@@ -222,7 +222,7 @@ Design choice:
 
 - score required, allowed, and forbidden actions instead of a single `expected_action`
 - this handles valid multi-step turns such as `read_snapshot -> calculate -> compose_answer_from_state`
-- keep `expected_first_action` because the first action choice is often where bad behavior starts
+- keep `expected_first_action` because the first action choice is often where bad behavior starts, but adjudicate labels when a different first action is harmless and all required actions still happen before the answer
 - use fixture paths instead of prose `snapshot_state`, so cases are repeatable
 
 ## Fixture Schema
@@ -520,7 +520,7 @@ Use these failure types in reports:
 | `missed_diagnosis` | `diagnose` was required but absent. |
 | `stale_query_reuse` | The agent reused a generic or previous search query that did not match the current turn. |
 | `forbidden_action` | Any action listed in `forbidden_actions` occurred. |
-| `wrong_first_action` | The first action was incorrect or materially harmful, even if later actions recovered. |
+| `wrong_first_action` | The first action was incorrect or materially harmful, even if later actions recovered. Do not use this when the first action is harmless context-loading and required actions still happen before the answer. |
 | `unlogged_action` | The action may have happened, but the trace does not provide enough evidence. |
 | `state_contamination` | The case result depends on state not present in the fixture. |
 
