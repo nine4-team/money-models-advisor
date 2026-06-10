@@ -111,10 +111,14 @@ Audit query realism before final retriever selection:
 PYTHONPATH=src python3 scripts/audit_query_realism.py
 ```
 
-Score source-search query quality on search-appropriate turns:
+Score source-search query quality on search-appropriate turns. Reference mode scores reviewer-authored source-specific queries; generated mode scores the current runtime query builder against the same cases:
 
 ```bash
-python3 scripts/eval_search_query_quality.py
+python3 scripts/eval_search_query_quality.py --query-source reference \
+  --report evals/reports/advisor_search_query_quality.md
+
+python3 scripts/eval_search_query_quality.py --query-source generated \
+  --report evals/reports/advisor_search_query_quality_generated.md
 ```
 
 Review human-auditable required-claim labels:
@@ -148,7 +152,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
 - Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
-- Source-search query quality seed eval implemented in `evals/advisor_search_query_cases.jsonl`, with report generation in `scripts/eval_search_query_quality.py`.
+- Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
 - First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup`, `chat`, `search`, `snapshot`, and `logs` CLI commands.
 - Visible `chat` answer synthesis started: diagnosis, key math, recommendation, source chunk IDs, and next action.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.

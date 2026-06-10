@@ -20,7 +20,9 @@ import sys
 
 sys.path.insert(0, str(ROOT / "src"))
 
+from money_model_architect.advisor_queries import build_advisor_queries  # noqa: E402
 from money_model_architect.retrieval import CorpusIndex  # noqa: E402
+from money_model_architect.snapshot import BusinessSnapshot  # noqa: E402
 
 
 REQUIRED_FIELDS = {
@@ -32,10 +34,11 @@ REQUIRED_FIELDS = {
     "retrieval_purpose",
     "expected_layers",
     "focus_terms",
-    "query",
+    "reference_query",
     "query_rationale",
     "known_useful_chunk_ids",
     "label_note",
+    "snapshot_fixture_path",
 }
 
 PURPOSES = {
@@ -53,7 +56,9 @@ class QueryResult:
     case_id: str
     split: str
     purpose: str
-    query: str
+    query_source: str
+    queries: tuple[str, ...]
+    query_layers: tuple[str | None, ...]
     expected_layers: tuple[str, ...]
     returned_ids: tuple[str, ...]
     known_useful_rank: int | None
@@ -106,8 +111,14 @@ def validate_cases(cases: list[dict[str, Any]]) -> list[str]:
             if not isinstance(case.get(field), list):
                 errors.append(f"{ref}: {field} must be a list")
 
-        if not isinstance(case.get("query"), str) or not case.get("query", "").strip():
-            errors.append(f"{ref}: query must be a non-empty string")
+        if not isinstance(case.get("reference_query"), str) or not case.get("reference_query", "").strip():
+            errors.append(f"{ref}: reference_query must be a non-empty string")
+
+        snapshot_fixture = case.get("snapshot_fixture_path")
+        if not isinstance(snapshot_fixture, str) or not snapshot_fixture.strip():
+            errors.append(f"{ref}: snapshot_fixture_path must be a non-empty string")
+        elif not (ROOT / snapshot_fixture).exists():
+            errors.append(f"{ref}: snapshot fixture does not exist: {snapshot_fixture}")
 
     return errors
 
@@ -120,16 +131,34 @@ def focus_term_recall(query: str, focus_terms: list[str]) -> float:
     return hits / len(focus_terms)
 
 
-def score_cases(cases: list[dict[str, Any]], top_k: int) -> list[QueryResult]:
+def query_specs_for_case(case: dict[str, Any], query_source: str) -> list[tuple[str | None, str]]:
+    if query_source == "reference":
+        expected_layers = case["expected_layers"]
+        layer = expected_layers[0] if len(expected_layers) == 1 else None
+        return [(layer, case["reference_query"])]
+
+    snapshot = BusinessSnapshot.load(ROOT / case["snapshot_fixture_path"])
+    return [(query.layer, query.query) for query in build_advisor_queries(snapshot)]
+
+
+def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str) -> list[QueryResult]:
     index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
     results: list[QueryResult] = []
 
     for case in cases:
         expected_layers = tuple(case["expected_layers"])
-        layer = expected_layers[0] if len(expected_layers) == 1 else None
-        search_results = index.search(case["query"], layer=layer, top_k=top_k)
-        returned_ids = tuple(result.chunk.id for result in search_results)
-        returned_layers = [set(result.chunk.layers) for result in search_results]
+        query_specs = query_specs_for_case(case, query_source)
+        search_results = []
+        seen_chunk_ids = set()
+        for layer, query in query_specs:
+            for result in index.search(query, layer=layer, top_k=top_k):
+                if result.chunk.id in seen_chunk_ids:
+                    continue
+                seen_chunk_ids.add(result.chunk.id)
+                search_results.append(result)
+
+        returned_ids = tuple(result.chunk.id for result in search_results[:top_k])
+        returned_layers = [set(result.chunk.layers) for result in search_results[:top_k]]
         known_useful = set(case["known_useful_chunk_ids"])
 
         known_useful_rank = None
@@ -144,7 +173,9 @@ def score_cases(cases: list[dict[str, Any]], top_k: int) -> list[QueryResult]:
                 case_id=case["case_id"],
                 split=case["split"],
                 purpose=case["retrieval_purpose"],
-                query=case["query"],
+                query_source=query_source,
+                queries=tuple(query for _layer, query in query_specs),
+                query_layers=tuple(layer for layer, _query in query_specs),
                 expected_layers=expected_layers,
                 returned_ids=returned_ids,
                 known_useful_rank=known_useful_rank,
@@ -152,7 +183,7 @@ def score_cases(cases: list[dict[str, Any]], top_k: int) -> list[QueryResult]:
                 useful_at_5=known_useful_rank is not None and known_useful_rank <= 5,
                 top1_layer_match=bool(returned_layers) and bool(returned_layers[0] & expected_layer_set),
                 any_layer_match_at_5=any(layers & expected_layer_set for layers in returned_layers[:5]),
-                focus_term_recall=focus_term_recall(case["query"], case["focus_terms"]),
+                focus_term_recall=focus_term_recall(" ".join(query for _layer, query in query_specs), case["focus_terms"]),
             )
         )
 
@@ -165,13 +196,22 @@ def pct(count: int, total: int) -> str:
     return f"{(count / total) * 100:.1f}%"
 
 
-def render_report(cases: list[dict[str, Any]], results: list[QueryResult], validation_errors: list[str]) -> str:
+def render_report(cases: list[dict[str, Any]], results: list[QueryResult], validation_errors: list[str], query_source: str) -> str:
+    source_description = (
+        "hand-authored reference queries from the eval cases"
+        if query_source == "reference"
+        else "queries generated by the current runtime query builder from each snapshot fixture"
+    )
     lines = [
         "# Advisor Search-Query Quality Eval",
         "",
         "## Scope",
         "",
         "This eval covers only turns where source-material search is the correct next action. It does not evaluate whether the agent should search in the first place; that is covered by the next-action classification eval.",
+        "",
+        f"Query source: `{query_source}` ({source_description}).",
+        "",
+        "Reference mode is a reviewer-written seed baseline: it asks whether source-specific queries can retrieve citeable chunks. Generated mode is the product-behavior check: it asks whether the current runtime query builder generates useful queries from saved state.",
         "",
         "The known-useful chunk labels are seed relevance labels, not exhaustive relevance judgments. A miss means the query did not retrieve one of the labeled citeable chunks, not that every returned chunk is useless.",
         "",
@@ -194,9 +234,8 @@ def render_report(cases: list[dict[str, Any]], results: list[QueryResult], valid
 
     total = len(results)
     avg_focus = sum(result.focus_term_recall for result in results) / total if total else 0.0
-    duplicate_queries = {
-        query: count for query, count in Counter(result.query.lower() for result in results).items() if count > 1
-    }
+    query_counter = Counter(query.lower() for result in results for query in result.queries)
+    duplicate_queries = {query: count for query, count in query_counter.items() if count > 1}
 
     lines.extend(
         [
@@ -212,8 +251,8 @@ def render_report(cases: list[dict[str, Any]], results: list[QueryResult], valid
             "",
             "## Case Table",
             "",
-            "| Case | Split | Purpose | Expected Layers | Query | Top Chunks | Known Useful Rank | Focus Recall |",
-            "|---|---|---|---|---|---|---:|---:|",
+            "| Case | Split | Purpose | Expected Layers | Query Layers | Queries | Top Chunks | Known Useful Rank | Focus Recall |",
+            "|---|---|---|---|---|---|---|---:|---:|",
         ]
     )
 
@@ -222,7 +261,9 @@ def render_report(cases: list[dict[str, Any]], results: list[QueryResult], valid
         lines.append(
             "| "
             f"`{result.case_id}` | `{result.split}` | `{result.purpose}` | "
-            f"{', '.join(result.expected_layers)} | {result.query} | "
+            f"{', '.join(result.expected_layers)} | "
+            f"{', '.join(layer or 'none' for layer in result.query_layers) or '-'} | "
+            f"{'<br>'.join(result.queries) or '-'} | "
             f"{', '.join(f'`{chunk_id}`' for chunk_id in result.returned_ids) or '-'} | "
             f"{rank} | {result.focus_term_recall:.2f} |"
         )
@@ -232,11 +273,11 @@ def render_report(cases: list[dict[str, Any]], results: list[QueryResult], valid
             "",
             "## Decision",
             "",
-            "Use this as the first source-search query-quality baseline. Do not compare dense or hybrid retrieval until the query cases and seed labels are reviewed, because retrieval-model differences are hard to interpret when the query formulation itself is unstable.",
+            "Use reference mode as the source-specific query seed baseline. Use generated mode as the runtime query-generation baseline. Do not compare dense or hybrid retrieval until generated queries are good enough that retrieval-model differences are interpretable.",
             "",
             "## Next Work",
             "",
-            "Review broad or low-focus queries, then update `ADVISOR_QUERY_POLICY_V1.md` and the query builder so generated queries are driven by the current source need rather than snapshot status alone.",
+            "Review generated-mode misses, broad queries, and duplicate query reuse. Then update `ADVISOR_QUERY_POLICY_V1.md` and the query builder so generated queries are driven by the current source need rather than snapshot status alone.",
             "",
         ]
     )
@@ -249,14 +290,20 @@ def main() -> int:
     parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_search_query_cases.jsonl")
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "advisor_search_query_quality.md")
     parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument(
+        "--query-source",
+        choices=("reference", "generated"),
+        default="reference",
+        help="Use hand-authored reference queries or runtime-generated advisor queries.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(args.cases)
     validation_errors = validate_cases(cases)
-    results = [] if validation_errors else score_cases(cases, top_k=args.top_k)
+    results = [] if validation_errors else score_cases(cases, top_k=args.top_k, query_source=args.query_source)
 
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(render_report(cases, results, validation_errors), encoding="utf-8")
+    args.report.write_text(render_report(cases, results, validation_errors, query_source=args.query_source), encoding="utf-8")
 
     print(
         json.dumps(
@@ -264,7 +311,8 @@ def main() -> int:
                 "cases": len(cases),
                 "validation_errors": len(validation_errors),
                 "scored_cases": len(results),
-                "report": str(args.report.relative_to(ROOT)),
+                "query_source": args.query_source,
+                "report": str(args.report.resolve().relative_to(ROOT)),
             },
             indent=2,
         )

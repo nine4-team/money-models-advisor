@@ -58,7 +58,7 @@ Improvement strategy:
 - Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
 
-The first next-action classification pass has been captured and scored. The first source-query quality seed eval has also been created and scored. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work is making runtime query generation follow the current source need rather than snapshot status alone.
+The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder. The current result shows the corpus can retrieve useful chunks when the query is source-specific, but generated queries still reuse broad diagnostic language too often. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work is making runtime query generation follow the current source need rather than snapshot status alone.
 
 **CLI setup and advisor loop:**
 

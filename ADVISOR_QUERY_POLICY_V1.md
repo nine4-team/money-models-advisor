@@ -54,7 +54,7 @@ Before any query is built, the agent should decide the next action for the turn:
 | Calculation | `calculate` or deterministic snapshot math |
 | Concept teaching with source support | `search_source_material` |
 | Diagnostic explanation with source support | `search_source_material` plus calculation |
-| Recommendation support | `search_source_material` focused on the proposed fix |
+| Recommendation support | `search_source_material` with a source-specific query for the proposed fix |
 
 Only the last three rows require a corpus-search query.
 

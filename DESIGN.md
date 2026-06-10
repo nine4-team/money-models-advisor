@@ -74,9 +74,11 @@ The current local baseline uses BM25-style scoring and the five-layer taxonomy. 
 The next retrieval work is not just "write better queries." The advisor must pass two gates:
 
 1. Tool-use judgment: decide whether the current turn needs source-material search at all, versus snapshot/log lookup, local business-doc inspection, calculation, clarification, or direct answer synthesis.
-2. Search-query quality: when source-material search is the right tool, build a focused query that retrieves useful Money Models chunks.
+2. Search-query quality: when source-material search is the right tool, build a source-specific query that retrieves useful Money Models chunks.
 
 Query quality should be evaluated only on turns where source-material search is actually the right action.
+
+This order matters. First we need to prove the agent can decide when to search and generate source-specific search requests. Then retrieval-model comparisons become meaningful. If the agent searches on the wrong turns or sends generic/stale queries, BM25, dense, hybrid, or reranking comparisons mostly measure noise from bad tool use rather than retrieval architecture quality.
 
 Local baseline:
 
@@ -121,7 +123,7 @@ This prevents self-report from becoming the metric and keeps weak evidence visib
 
 Current next-action result: all 24 cases have completed trace artifacts. Dev/regression traces were captured in-thread by Codex; scenario holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. After adjudicating one overly strict first-action label, the current report shows 100.0% first-action accuracy, 1.000 required-action recall, 100.0% full-sequence pass rate, 0% false-search rate, 0% missed-search rate, and 100% trace completeness. The adjudicated holdout case originally required logs as the literal first action for prior-conversation recall, but senior review concluded that reading snapshot first was harmless context-loading because logs were still read before the answer. The case label records this adjudication explicitly.
 
-Current source-query result: the first seed query-quality eval covers 10 search-appropriate turns and reports 100.0% known-useful Hit@3/Hit@5 with 100.0% top-1 layer match. This is a query-development baseline, not a production IR benchmark: the known-useful chunk labels are non-exhaustive seed labels, and the next engineering step is to make generated advisor queries come from the current source need rather than snapshot status alone.
+Current source-query result: the first seed query-quality eval covers 10 search-appropriate turns. Reference mode, which uses reviewer-authored source-specific queries, reports 100.0% known-useful Hit@3/Hit@5. Generated mode, which uses the current runtime query builder from snapshot fixtures, reports 50.0% known-useful Hit@3/Hit@5 and repeats a broad diagnostic query across multiple cases. This is the useful gap: source-specific reference queries show the local corpus can return citeable chunks, while generated-mode failures show the runtime query builder still needs to use the current source need rather than snapshot status alone. The known-useful chunk labels are non-exhaustive seed labels, so this is a query-development baseline, not a production IR benchmark.
 
 ## Advisor Loop
 

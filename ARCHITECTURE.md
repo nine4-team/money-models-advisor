@@ -120,7 +120,8 @@ Active local evals:
 | Required-claim support | `PYTHONPATH=src python3 scripts/score_obligation_support.py` |
 | Next-action trace capture | `python3 scripts/capture_tool_use_trace.py prepare <case_id>` |
 | Next-action judgment scorer | `python3 scripts/eval_tool_use_judgment.py` |
-| Source-query quality scorer | `python3 scripts/eval_search_query_quality.py` |
+| Source-query quality scorer, reference queries | `python3 scripts/eval_search_query_quality.py --query-source reference --report evals/reports/advisor_search_query_quality.md` |
+| Source-query quality scorer, generated queries | `python3 scripts/eval_search_query_quality.py --query-source generated --report evals/reports/advisor_search_query_quality_generated.md` |
 
 Archived external-service experiments are not active architecture.
 
@@ -133,7 +134,7 @@ Next-action classification eval:
 - the acting prompt excludes expected labels so the runner does not replace the agent's judgment
 - `scripts/eval_tool_use_judgment.py` scores only completed `run.json` artifacts
 
-Source-search query quality remains a separate eval and should only be scored for turns where `search_source_material` was the correct next action.
+Source-search query quality remains a separate eval and should only be scored for turns where `search_source_material` was the correct next action. Reference mode is the seed baseline for source-specific query examples; generated mode is the product-behavior check for the runtime query builder.
 
 ## JD Mapping
 

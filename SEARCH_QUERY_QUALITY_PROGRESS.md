@@ -16,7 +16,12 @@ The local source-material search stack exists and is auditable:
 
 The current weakness is query construction. The 1584 Design trace showed repeated generic diagnostic queries after the snapshot became diagnosable, even when later turns needed a different source focus or no source search at all.
 
-First seed baseline: `evals/advisor_search_query_cases.jsonl` now contains 10 search-appropriate turns, and `scripts/eval_search_query_quality.py` generates `evals/reports/advisor_search_query_quality.md`. The current seed report shows 100.0% known-useful Hit@3/Hit@5 and 100.0% top-1 layer match. Treat this as a query-development baseline with non-exhaustive known-useful chunk labels, not as a production IR benchmark.
+First seed baseline: `evals/advisor_search_query_cases.jsonl` now contains 10 search-appropriate turns, and `scripts/eval_search_query_quality.py` can score either reviewer-authored reference queries or runtime-generated queries.
+
+- Reference mode: `evals/reports/advisor_search_query_quality.md` shows 100.0% known-useful Hit@3/Hit@5.
+- Generated mode: `evals/reports/advisor_search_query_quality_generated.md` shows 50.0% known-useful Hit@3/Hit@5, 0.220 average focus-term recall, and repeated reuse of the broad diagnostic query.
+
+Treat these as query-development baselines with non-exhaustive known-useful chunk labels, not as production IR benchmarks. The important finding is the gap between source-specific reference queries and current runtime-generated queries.
 
 ## Known Failure Modes
 
@@ -65,13 +70,15 @@ Secondary diagnostics:
 
 The target is not exact-query matching. The target is source material that can support the advisor's answer with citations.
 
+First prove that the agent can decide when to search and generate source-specific search requests. Then retrieval-model comparisons become meaningful.
+
 ## Done Criteria
 
 For the first v1 pass:
 
 - at least 10 search-appropriate turns labeled **Done**
 - each has expected purpose, layer, and focus terms **Done**
-- generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it **Done in seed cases; not yet enforced in runtime query generation**
+- generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it **Not yet; generated mode shows this failure**
 - top retrieved chunks are useful enough to cite for most cases **Done on seed known-useful labels**
 - BM25 remains the baseline; dense/hybrid comparison waits until the query set is stable **Still active**
 

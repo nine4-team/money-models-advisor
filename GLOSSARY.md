@@ -84,6 +84,38 @@ The scorer compares the extracted `actual_actions[]` against the case labels.
 
 In this repo, that is `scripts/eval_tool_use_judgment.py`.
 
+## Source Need
+
+The source need is the specific kind of Money Models source support the advisor needs for the current answer.
+
+It is narrower than the user's whole business situation. For example, if the user asks, "why do we need fulfillment cost to know whether ads can work?", the source need is not "1584 Design, STR owners, diagnostics, pricing, and ads." The source need is "explain gross profit, CAC, and payback period."
+
+The source need is used only after the advisor has already decided that source-material search is the right tool.
+
+## Source-Specific Query
+
+A source-specific query is a local corpus-search query centered on the current source need.
+
+Good example:
+
+```text
+gross profit CAC payback fulfillment cost first 30 days
+```
+
+Bad example:
+
+```text
+premium interior design STR owner diagnostic CAC payback attraction offer upsell
+```
+
+The bad example is too broad because it stuffs business context and unrelated Money Models concepts into one search. That can retrieve plausible chunks while missing the material the advisor actually needs to cite.
+
+## Focus Terms
+
+Focus terms are the few concepts that should be preserved in a source-specific query.
+
+They are not exact keyword labels that the final answer must contain. They are a lightweight way to check whether the query is aimed at the right source need.
+
 ## Trace Confidence
 
 Trace confidence describes how clearly the trace proves that an action happened.

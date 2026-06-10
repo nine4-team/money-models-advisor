@@ -19,7 +19,7 @@ The final write-up should show:
 The immediate dev requirement is to improve two separate capabilities:
 
 1. Next-action classification: the agent should classify whether the current turn needs source-material search, saved snapshot/log lookup, local business-doc inspection, deterministic calculation, clarification, or direct answer synthesis.
-2. Search-query quality: only when source-material search is the right action, the agent should build a focused query that retrieves useful Money Models chunks.
+2. Search-query quality: only when source-material search is the right action, the agent should build a source-specific query that retrieves useful Money Models chunks.
 
 Do not evaluate query quality on turns where source-material search should not have happened.
 
@@ -140,7 +140,7 @@ Separate the advisor's next action before constructing retrieval queries:
 | Calculation | `calculate` or deterministic snapshot math |
 | Concept teaching | Money Models source search |
 | Diagnostic explanation | Money Models source search plus calculation |
-| Recommendation support | Money Models source search focused on the proposed fix |
+| Recommendation support | Money Models source search with a source-specific query for the proposed fix |
 
 Then build source-material queries from:
 
