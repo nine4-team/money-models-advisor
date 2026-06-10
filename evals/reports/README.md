@@ -62,5 +62,13 @@ python3 scripts/eval_tool_use_judgment.py
 
 `eval_tool_use_judgment.py` validates `evals/advisor_tool_use_cases.jsonl` and scores any saved `run.json` traces under `evals/runs/next_action/`. If no traces exist yet, the report is case inventory only, not behavior results.
 
+For active source-search query-quality checks, use:
+
+```bash
+python3 scripts/eval_search_query_quality.py
+```
+
+`eval_search_query_quality.py` validates `evals/advisor_search_query_cases.jsonl`, runs local BM25 search over heading-aware chunks, and writes `evals/reports/advisor_search_query_quality.md`. Its known-useful chunk labels are seed labels for query development, not exhaustive relevance judgments.
+
 Old keyword evidence-term experiments are archived under `archive/keyword-evidence-proxy/` and are not part of the active design.
 Old provider-backed experiments are archived under `archive/provider-backed-experiments/` and are not part of the active design.

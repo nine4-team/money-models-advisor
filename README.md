@@ -111,6 +111,12 @@ Audit query realism before final retriever selection:
 PYTHONPATH=src python3 scripts/audit_query_realism.py
 ```
 
+Score source-search query quality on search-appropriate turns:
+
+```bash
+python3 scripts/eval_search_query_quality.py
+```
+
 Review human-auditable required-claim labels:
 
 ```bash
@@ -142,6 +148,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
 - Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
+- Source-search query quality seed eval implemented in `evals/advisor_search_query_cases.jsonl`, with report generation in `scripts/eval_search_query_quality.py`.
 - First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup`, `chat`, `search`, `snapshot`, and `logs` CLI commands.
 - Visible `chat` answer synthesis started: diagnosis, key math, recommendation, source chunk IDs, and next action.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
@@ -150,6 +157,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 
 - Broader answer synthesis for teach/compare/clarify/recommendation cases.
 - Agent-led local doc inspection before snapshot updates.
-- Source-search query quality cases and report.
+- Query-builder changes that make generated advisor queries depend on the current source need, not snapshot status alone.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

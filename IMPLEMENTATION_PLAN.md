@@ -43,7 +43,7 @@ Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That doc
 Current dev requirement:
 
 1. Treat the current next-action classification eval as the local baseline for tool-use judgment: for each realistic turn, should the next action be source-material search, snapshot/log read, local-doc inspection, calculation, diagnosis, clarification, saved-context update, compose-from-state, or answer-without-tool?
-2. Evaluate search-query quality next: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
+2. Use the source-query quality eval next: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
 
 This keeps retrieval evaluation from punishing or rewarding queries that should never have been generated.
 
@@ -58,7 +58,7 @@ Improvement strategy:
 - Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
 
-The first next-action classification pass has been captured and scored. Future next-action work should revise the eval only when new behavior classes appear; the immediate active eval work is source-search query quality.
+The first next-action classification pass has been captured and scored. The first source-query quality seed eval has also been created and scored. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work is making runtime query generation follow the current source need rather than snapshot status alone.
 
 **CLI setup and advisor loop:**
 
@@ -271,7 +271,7 @@ Reports:
 
 - `evals/reports/query_realism.md`
 - `evals/reports/advisor_tool_use_judgment.md`
-- planned: `evals/reports/advisor_search_query_quality.md`
+- `evals/reports/advisor_search_query_quality.md`
 
 ## Phase 5 — Advisor Behavior Evals
 
@@ -304,7 +304,7 @@ Reports:
 - `evals/reports/local_retrieval_baseline.md`
 - `evals/reports/chunking_comparison.md`
 - `evals/reports/advisor_tool_use_judgment.md`
-- planned: `evals/reports/advisor_search_query_quality.md`
+- `evals/reports/advisor_search_query_quality.md`
 
 ## Phase 6 — CLI Stateful Advisor Slice
 

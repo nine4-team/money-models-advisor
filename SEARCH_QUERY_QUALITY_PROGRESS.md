@@ -16,6 +16,8 @@ The local source-material search stack exists and is auditable:
 
 The current weakness is query construction. The 1584 Design trace showed repeated generic diagnostic queries after the snapshot became diagnosable, even when later turns needed a different source focus or no source search at all.
 
+First seed baseline: `evals/advisor_search_query_cases.jsonl` now contains 10 search-appropriate turns, and `scripts/eval_search_query_quality.py` generates `evals/reports/advisor_search_query_quality.md`. The current seed report shows 100.0% known-useful Hit@3/Hit@5 and 100.0% top-1 layer match. Treat this as a query-development baseline with non-exhaustive known-useful chunk labels, not as a production IR benchmark.
+
 ## Known Failure Modes
 
 | Failure | Example | Why it matters |
@@ -67,12 +69,12 @@ The target is not exact-query matching. The target is source material that can s
 
 For the first v1 pass:
 
-- at least 10 search-appropriate turns labeled
-- each has expected purpose, layer, and focus terms
-- generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it
-- top retrieved chunks are useful enough to cite for most cases
-- BM25 remains the baseline; dense/hybrid comparison waits until the query set is stable
+- at least 10 search-appropriate turns labeled **Done**
+- each has expected purpose, layer, and focus terms **Done**
+- generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it **Done in seed cases; not yet enforced in runtime query generation**
+- top retrieved chunks are useful enough to cite for most cases **Done on seed known-useful labels**
+- BM25 remains the baseline; dense/hybrid comparison waits until the query set is stable **Still active**
 
 ## Next Work
 
-Create `evals/advisor_search_query_cases.jsonl` and a report in `evals/reports/advisor_search_query_quality.md`.
+Update `src/money_model_architect/advisor_queries.py` so generated queries are driven by the current advisor-selected source need, not snapshot status alone.

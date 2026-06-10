@@ -106,6 +106,8 @@ Active eval assets:
 | `evals/advisor_tool_use_cases.jsonl` | product-behavior cases for next-action classification |
 | `scripts/capture_tool_use_trace.py` | strict trace recorder for isolated next-action eval runs |
 | `scripts/eval_tool_use_judgment.py` | next-action classification scorer and report generator |
+| `evals/advisor_search_query_cases.jsonl` | search-appropriate turns for source-query quality |
+| `scripts/eval_search_query_quality.py` | source-query quality scorer and report generator |
 
 For next-action classification, the project uses a trace recorder rather than a deterministic planner. The recorder prepares isolated eval directories, copies fixtures, hides expected labels from the acting agent, captures observable workflow evidence, and writes `run.json`. It does not choose the advisor's next action. That separation matters because the eval subject is the skill-guided agent's judgment, not a hard-coded runner.
 
@@ -118,6 +120,8 @@ The trace design separates three roles:
 This prevents self-report from becoming the metric and keeps weak evidence visible as `inferred` or `missing`.
 
 Current next-action result: all 24 cases have completed trace artifacts. Dev/regression traces were captured in-thread by Codex; scenario holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. After adjudicating one overly strict first-action label, the current report shows 100.0% first-action accuracy, 1.000 required-action recall, 100.0% full-sequence pass rate, 0% false-search rate, 0% missed-search rate, and 100% trace completeness. The adjudicated holdout case originally required logs as the literal first action for prior-conversation recall, but senior review concluded that reading snapshot first was harmless context-loading because logs were still read before the answer. The case label records this adjudication explicitly.
+
+Current source-query result: the first seed query-quality eval covers 10 search-appropriate turns and reports 100.0% known-useful Hit@3/Hit@5 with 100.0% top-1 layer match. This is a query-development baseline, not a production IR benchmark: the known-useful chunk labels are non-exhaustive seed labels, and the next engineering step is to make generated advisor queries come from the current source need rather than snapshot status alone.
 
 ## Advisor Loop
 
@@ -149,7 +153,7 @@ The operating rules for using those commands live in `ADVISOR_OPERATING_GUIDE.md
 The next implementation work is not external model-service integration. The settled path is:
 
 1. treat the current next-action classification eval as the local baseline for tool-use judgment;
-2. build the source-search query quality eval for search-appropriate turns;
+2. update the query builder so generated advisor queries are driven by the current source need rather than snapshot status alone;
 3. expand visible answer synthesis beyond the first payback/recommendation path;
 4. keep all active work local and auditable.
 

@@ -120,6 +120,7 @@ Active local evals:
 | Required-claim support | `PYTHONPATH=src python3 scripts/score_obligation_support.py` |
 | Next-action trace capture | `python3 scripts/capture_tool_use_trace.py prepare <case_id>` |
 | Next-action judgment scorer | `python3 scripts/eval_tool_use_judgment.py` |
+| Source-query quality scorer | `python3 scripts/eval_search_query_quality.py` |
 
 Archived external-service experiments are not active architecture.
 
