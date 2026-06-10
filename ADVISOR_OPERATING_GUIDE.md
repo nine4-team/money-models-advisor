@@ -158,4 +158,4 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 
 ## Next Development Target
 
-The current CLI tool surface exists and `chat` now starts composing visible answers from snapshot state, deterministic math, source chunks, and next actions. The next product improvement is a local behavior eval set that checks clarify, calculate, teach, diagnose, retrieve, and recommend turns.
+The current CLI tool surface exists and `chat` now starts composing visible answers from snapshot state, deterministic math, source chunks, and next actions. The first next-action classification eval is captured and scored. The next product improvement is a source-search query quality eval that checks whether search-appropriate turns produce focused queries and citeable Money Models chunks.

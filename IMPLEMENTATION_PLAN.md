@@ -42,8 +42,8 @@ Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That doc
 
 Current dev requirement:
 
-1. Evaluate next-action classification first: for each realistic turn, should the next action be source-material search, snapshot/log read, local-doc inspection, calculation, diagnosis, clarification, saved-context update, compose-from-state, or answer-without-tool?
-2. Evaluate search-query quality second: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
+1. Treat the current next-action classification eval as the local baseline for tool-use judgment: for each realistic turn, should the next action be source-material search, snapshot/log read, local-doc inspection, calculation, diagnosis, clarification, saved-context update, compose-from-state, or answer-without-tool?
+2. Evaluate search-query quality next: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
 
 This keeps retrieval evaluation from punishing or rewarding queries that should never have been generated.
 
@@ -58,7 +58,7 @@ Improvement strategy:
 - Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
 
-For the first next-action classification pass, Codex should create and label the eval cases without requiring user labeling. Use the existing 1584 Design logs, the current snapshot, realistic synthetic follow-ups, and the documented advisor policy. The user review point is the generated report and ambiguous labels, not raw eval construction.
+The first next-action classification pass has been captured and scored. Future next-action work should revise the eval only when new behavior classes appear; the immediate active eval work is source-search query quality.
 
 **CLI setup and advisor loop:**
 
@@ -270,7 +270,8 @@ Use local human/subscription-reviewed traces to decide whether the advisor is im
 Reports:
 
 - `evals/reports/query_realism.md`
-- future `evals/reports/advisor_behavior_eval.md`
+- `evals/reports/advisor_tool_use_judgment.md`
+- planned: `evals/reports/advisor_search_query_quality.md`
 
 ## Phase 5 — Advisor Behavior Evals
 
@@ -300,7 +301,10 @@ Improve prompts, tool surfaces, and snapshot fields only when behavior evals sho
 
 Reports:
 
-- `evals/reports/advisor_behavior_eval.md`
+- `evals/reports/local_retrieval_baseline.md`
+- `evals/reports/chunking_comparison.md`
+- `evals/reports/advisor_tool_use_judgment.md`
+- planned: `evals/reports/advisor_search_query_quality.md`
 
 ## Phase 6 — CLI Stateful Advisor Slice
 

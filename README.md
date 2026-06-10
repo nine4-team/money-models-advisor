@@ -18,7 +18,7 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `chat`, `calculate`, `search_source_material`, and `logs`.
 
-Current dev focus: evaluate two capabilities separately. First, next-action classification: should the next action be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer? Second, search-query quality: when source-material search is actually appropriate, did the query retrieve useful Money Models chunks?
+Current dev focus: evaluate source-search query quality now that the first next-action classification pass is complete. The project still keeps the two capabilities separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, search-query quality asks whether source-material search retrieves useful Money Models chunks when search is actually appropriate.
 
 Set up advisor state for a context directory:
 
@@ -150,6 +150,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 
 - Broader answer synthesis for teach/compare/clarify/recommendation cases.
 - Agent-led local doc inspection before snapshot updates.
-- Snapshot extraction and next-action eval reports.
+- Source-search query quality cases and report.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.
