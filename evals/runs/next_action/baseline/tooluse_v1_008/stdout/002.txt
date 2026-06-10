@@ -1,0 +1,19 @@
+{
+  "constraint": "scale-ready",
+  "tree": "Tree E - What to Add Next",
+  "prescribed_sections": [
+    "1.6 CFA",
+    "6.1 Continuity Offers Overview"
+  ],
+  "reason": "First-30-day gross profit is at least 2x CAC, so acquisition is client-financed at Level 3.",
+  "success_metric": "Protect conversion and churn while scaling spend.",
+  "metrics": {
+    "cac": 1000,
+    "first_30_day_gross_profit": 10000,
+    "monthly_recurring_gross_profit": 0,
+    "lifetime_gross_profit": null,
+    "gross_margin": null,
+    "cfa_level": 3,
+    "payback_period_months": 1.0
+  }
+}

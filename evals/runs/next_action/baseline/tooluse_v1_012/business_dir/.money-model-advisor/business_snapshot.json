@@ -1,0 +1,68 @@
+{
+  "advisor_state": {
+    "advisory_status": "insufficient_context",
+    "likely_retrieval_layers": [],
+    "missing_fields": [
+      "problem.user_goal",
+      "business.business_type",
+      "business.icp",
+      "money_model.core_offer.description",
+      "money_model.attraction_offer.exists",
+      "money_model.upsell.exists",
+      "money_model.downsell.exists",
+      "money_model.continuity.exists",
+      "economics.cac",
+      "economics.first_30_day_gross_profit"
+    ],
+    "ready_for_offer_stack_diagnosis": false,
+    "ready_for_payback_diagnosis": false,
+    "retrieval_query_terms": []
+  },
+  "business": {
+    "business_type": null,
+    "delivery_model": null,
+    "icp": null
+  },
+  "economics": {
+    "cac": null,
+    "first_30_day_gross_profit": null,
+    "gross_margin": null,
+    "lifetime_gross_profit": null,
+    "monthly_recurring_gross_profit": null,
+    "payback_period_months": null
+  },
+  "field_sources": {},
+  "money_model": {
+    "attraction_offer": {
+      "description": null,
+      "exists": null,
+      "price": null
+    },
+    "continuity": {
+      "description": null,
+      "exists": null,
+      "price": null
+    },
+    "core_offer": {
+      "description": null,
+      "exists": null,
+      "price": null
+    },
+    "downsell": {
+      "description": null,
+      "exists": null,
+      "price": null
+    },
+    "upsell": {
+      "description": null,
+      "exists": null,
+      "price": null
+    }
+  },
+  "problem": {
+    "diagnosed_constraints": [],
+    "reported_symptoms": [],
+    "user_goal": null
+  },
+  "schema_version": "business_snapshot.v1"
+}

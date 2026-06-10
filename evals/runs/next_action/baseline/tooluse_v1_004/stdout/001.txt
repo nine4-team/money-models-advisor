@@ -1,0 +1,4 @@
+{
+  "metric": "gross-profit",
+  "value": 10000
+}

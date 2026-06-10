@@ -1,0 +1,18 @@
+[
+  {
+    "index": 0,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_015/business_dir",
+    "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_015/stdout/000.txt",
+    "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_015/stderr/000.txt",
+    "exit_code": 0
+  },
+  {
+    "index": 1,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_015/business_dir --full",
+    "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_015/stdout/001.txt",
+    "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_015/stderr/001.txt",
+    "exit_code": 0
+  }
+]

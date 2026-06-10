@@ -1,0 +1,97 @@
+{
+  "acting_prompt_path": "evals/runs/next_action/baseline/tooluse_v1_010/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_command",
+      "index": 3
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/next_action/baseline/tooluse_v1_010/business_dir",
+  "case_id": "tooluse_v1_010",
+  "completed_at": "2026-06-10T00:04:09Z",
+  "created_at": "2026-06-10T00:02:32Z",
+  "final_answer_path": "evals/runs/next_action/baseline/tooluse_v1_010/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/next_action/baseline/tooluse_v1_010/business_dir",
+    "sessions_dir": "evals/runs/next_action/baseline/tooluse_v1_010/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/next_action/baseline/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/next_action/baseline/tooluse_v1_010/business_dir/.money-model-advisor"
+  },
+  "phase": "baseline",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:3291568b46d4e68fba4fcf0179bb5ae54919fe90d53077459c1c76416a46b3cd",
+    "start": "sha256:3291568b46d4e68fba4fcf0179bb5ae54919fe90d53077459c1c76416a46b3cd"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_010/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/000.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/000.txt"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\": 1000, \"month_one_gp\": 10000, \"monthly_recurring_gp\": 0}'",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/001.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/001.txt"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_010/business_dir --full",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/002.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/002.txt"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search 'CAC payback acquisition spend ads first 30 day gross profit client financed acquisition' --layer unit-economics --top-k 5",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/003.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/003.txt"
+    }
+  ]
+}

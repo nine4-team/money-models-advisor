@@ -28,9 +28,13 @@ These are product-behavior cases. Harness/operability questions about eval termi
 
 ## Results
 
-This is a partial trace set: 5 of 24 cases have completed `run.json` artifacts.
+This is a partial trace set: 19 of 24 cases have completed `run.json` artifacts.
 
-- Scored cases: 5
+- Scored by split: {'dev': {'total': 14, 'scored': 14}, 'regression': {'total': 5, 'scored': 5}, 'scenario_holdout': {'total': 5, 'scored': 0}}
+
+Trace-capture note: these artifacts are auditable workflow traces, not a contamination-free blind benchmark. Use them to validate the recorder, evidence shape, and dev/regression policy conformance; use `scenario_holdout` only after guidance is stable.
+
+- Scored cases: 19
 - First-action accuracy: 100.0%
 - Average required-action recall: 1.000
 - Full-sequence pass rate: 100.0%
@@ -44,24 +48,24 @@ This is a partial trace set: 5 of 24 cases have completed `run.json` artifacts.
 | Case | Split | Turn Type | Status | Actual Actions | Failures |
 |---|---|---|---|---|---|
 | `tooluse_v1_001` | `dev` | `saved_fact_lookup` | scored (evals/runs/next_action/pilot/tooluse_v1_001/run.json) | read_snapshot, read_logs, compose_answer_from_state | - |
-| `tooluse_v1_002` | `dev` | `missing_fact_clarification` | not_run | - | - |
+| `tooluse_v1_002` | `dev` | `missing_fact_clarification` | scored (evals/runs/next_action/baseline/tooluse_v1_002/run.json) | read_snapshot, clarify | - |
 | `tooluse_v1_003` | `dev` | `business_fact_update` | scored (evals/runs/next_action/pilot/tooluse_v1_003/run.json) | update_snapshot, compose_answer_from_state | - |
-| `tooluse_v1_004` | `dev` | `business_fact_update` | not_run | - | - |
+| `tooluse_v1_004` | `dev` | `business_fact_update` | scored (evals/runs/next_action/baseline/tooluse_v1_004/run.json) | update_snapshot, calculate, compose_answer_from_state | - |
 | `tooluse_v1_005` | `dev` | `local_doc_lookup` | scored (evals/runs/next_action/pilot/tooluse_v1_005/run.json) | inspect_local_docs, update_snapshot, compose_answer_from_state | - |
-| `tooluse_v1_006` | `dev` | `local_doc_lookup` | not_run | - | - |
+| `tooluse_v1_006` | `dev` | `local_doc_lookup` | scored (evals/runs/next_action/baseline/tooluse_v1_006/run.json) | inspect_local_docs, update_snapshot, compose_answer_from_state | - |
 | `tooluse_v1_007` | `dev` | `calculation` | scored (evals/runs/next_action/pilot/tooluse_v1_007/run.json) | read_snapshot, calculate, compose_answer_from_state | - |
-| `tooluse_v1_008` | `dev` | `diagnosis` | not_run | - | - |
+| `tooluse_v1_008` | `dev` | `diagnosis` | scored (evals/runs/next_action/baseline/tooluse_v1_008/run.json) | read_snapshot, calculate, diagnose, compose_answer_from_state | - |
 | `tooluse_v1_009` | `dev` | `source_required_concept` | scored (evals/runs/next_action/pilot/tooluse_v1_009/run.json) | read_snapshot, search_source_material, compose_answer_from_state | - |
-| `tooluse_v1_010` | `dev` | `source_required_recommendation` | not_run | - | - |
-| `tooluse_v1_011` | `dev` | `compose_from_state` | not_run | - | - |
-| `tooluse_v1_012` | `dev` | `simple_definition` | not_run | - | - |
-| `tooluse_v1_013` | `dev` | `read_logs` | not_run | - | - |
-| `tooluse_v1_014` | `dev` | `clarify` | not_run | - | - |
-| `tooluse_v1_015` | `regression` | `saved_fact_lookup_after_diagnosable` | not_run | - | - |
-| `tooluse_v1_016` | `regression` | `calculation_after_diagnosable` | not_run | - | - |
-| `tooluse_v1_017` | `regression` | `compose_after_diagnosable` | not_run | - | - |
-| `tooluse_v1_018` | `regression` | `local_doc_lookup_after_diagnosable` | not_run | - | - |
-| `tooluse_v1_019` | `regression` | `source_required_after_diagnosable` | not_run | - | - |
+| `tooluse_v1_010` | `dev` | `source_required_recommendation` | scored (evals/runs/next_action/baseline/tooluse_v1_010/run.json) | read_snapshot, calculate, read_logs, search_source_material, compose_answer_from_state | - |
+| `tooluse_v1_011` | `dev` | `compose_from_state` | scored (evals/runs/next_action/baseline/tooluse_v1_011/run.json) | read_snapshot, compose_answer_from_state | - |
+| `tooluse_v1_012` | `dev` | `simple_definition` | scored (evals/runs/next_action/baseline/tooluse_v1_012/run.json) | answer_without_tool | - |
+| `tooluse_v1_013` | `dev` | `read_logs` | scored (evals/runs/next_action/baseline/tooluse_v1_013/run.json) | read_logs, compose_answer_from_state | - |
+| `tooluse_v1_014` | `dev` | `clarify` | scored (evals/runs/next_action/baseline/tooluse_v1_014/run.json) | clarify | - |
+| `tooluse_v1_015` | `regression` | `saved_fact_lookup_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_015/run.json) | read_snapshot, read_logs, compose_answer_from_state | - |
+| `tooluse_v1_016` | `regression` | `calculation_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_016/run.json) | read_snapshot, calculate, compose_answer_from_state | - |
+| `tooluse_v1_017` | `regression` | `compose_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_017/run.json) | read_snapshot, compose_answer_from_state | - |
+| `tooluse_v1_018` | `regression` | `local_doc_lookup_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_018/run.json) | inspect_local_docs, update_snapshot, compose_answer_from_state | - |
+| `tooluse_v1_019` | `regression` | `source_required_after_diagnosable` | scored (evals/runs/next_action/baseline/tooluse_v1_019/run.json) | read_snapshot, search_source_material, compose_answer_from_state | - |
 | `tooluse_v1_020` | `scenario_holdout` | `simple_definition` | not_run | - | - |
 | `tooluse_v1_021` | `scenario_holdout` | `diagnosis` | not_run | - | - |
 | `tooluse_v1_022` | `scenario_holdout` | `source_required_compare` | not_run | - | - |
@@ -70,12 +74,12 @@ This is a partial trace set: 5 of 24 cases have completed `run.json` artifacts.
 
 ## Decision
 
-Use these results as a trace-recorder pilot, not as the full next-action baseline. The trace format is working when completed artifacts validate and score cleanly.
+Use these results as the completed dev/regression trace set. The scenario_holdout split remains intentionally untouched.
 
 ## Failure Analysis
 
-No scored pilot-trace failures were detected.
+No scored dev/regression trace failures were detected.
 
 ## Next Experiment
 
-Expand trace capture to the remaining dev/regression cases, then use the completed report as the baseline before changing skill/tool guidance.
+Use dev/regression findings for any guidance changes. Run `scenario_holdout` only after deciding the guidance is stable.

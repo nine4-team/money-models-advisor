@@ -1,0 +1,9 @@
+{
+  "actions": [],
+  "assistant_message": "The snapshot now has CAC at $1,000 and first-30-day gross profit at $10,000.",
+  "created_at": "2026-06-05T22:51:02Z",
+  "evidence": [],
+  "fixture_id": "1584_referral_partner_context",
+  "retrieval_queries": [],
+  "user_message": "let's call fulfillment cost $3k"
+}

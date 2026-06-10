@@ -328,7 +328,28 @@ def summarize_scored(results: list[CaseResult]) -> dict[str, Any]:
     }
 
 
+def split_counts(cases: list[dict[str, Any]], results: list[CaseResult]) -> dict[str, dict[str, int]]:
+    counts: dict[str, dict[str, int]] = {}
+    scored_by_case = {result.case_id for result in results if result.status == "scored"}
+    for case in cases:
+        split = case["split"]
+        counts.setdefault(split, {"total": 0, "scored": 0})
+        counts[split]["total"] += 1
+        if case["case_id"] in scored_by_case:
+            counts[split]["scored"] += 1
+    return counts
+
+
+def dev_regression_complete(cases: list[dict[str, Any]], results: list[CaseResult]) -> bool:
+    counts = split_counts(cases, results)
+    for split in ("dev", "regression"):
+        if counts.get(split, {}).get("scored", 0) != counts.get(split, {}).get("total", 0):
+            return False
+    return True
+
+
 def render_report(cases: list[dict[str, Any]], results: list[CaseResult], validation_errors: list[str]) -> str:
+    counts_by_split = split_counts(cases, results)
     lines: list[str] = [
         "# Advisor Tool-Use Judgment Eval",
         "",
@@ -390,8 +411,16 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
                 [
                     f"This is a partial trace set: {scored_count} of {len(cases)} cases have completed `run.json` artifacts.",
                     "",
+                    f"- Scored by split: {counts_by_split}",
+                    "",
                 ]
             )
+        lines.extend(
+            [
+                "Trace-capture note: these artifacts are auditable workflow traces, not a contamination-free blind benchmark. Use them to validate the recorder, evidence shape, and dev/regression policy conformance; use `scenario_holdout` only after guidance is stable.",
+                "",
+            ]
+        )
         lines.extend(
             [
                 f"- Scored cases: {scored_count}",
@@ -426,6 +455,11 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         lines.append("Use this report as the next-action classification backbone. It is ready to score captured traces, but it should not be presented as behavior results until run artifacts exist.")
         failure_text = "Failure analysis is deferred until scored traces exist."
         next_text = "Build or capture isolated `run.json` traces for the current cases, then use this scorer to generate baseline metrics before changing the skill/tool guidance."
+    elif scored_count < len(cases) and dev_regression_complete(cases, results):
+        lines.append("Use these results as the completed dev/regression trace set. The scenario_holdout split remains intentionally untouched.")
+        failures = [reason for result in results for reason in result.failure_reasons if result.status == "scored"]
+        failure_text = "No scored dev/regression trace failures were detected." if not failures else f"Dev/regression failures: {dict(Counter(failures))}"
+        next_text = "Use dev/regression findings for any guidance changes. Run `scenario_holdout` only after deciding the guidance is stable."
     elif scored_count < len(cases):
         lines.append("Use these results as a trace-recorder pilot, not as the full next-action baseline. The trace format is working when completed artifacts validate and score cleanly.")
         failures = [reason for result in results for reason in result.failure_reasons if result.status == "scored"]

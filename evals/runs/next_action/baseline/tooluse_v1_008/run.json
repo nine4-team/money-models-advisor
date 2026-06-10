@@ -1,0 +1,82 @@
+{
+  "acting_prompt_path": "evals/runs/next_action/baseline/tooluse_v1_008/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/next_action/baseline/tooluse_v1_008/business_dir",
+  "case_id": "tooluse_v1_008",
+  "completed_at": "2026-06-10T00:04:09Z",
+  "created_at": "2026-06-10T00:02:32Z",
+  "final_answer_path": "evals/runs/next_action/baseline/tooluse_v1_008/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/next_action/baseline/tooluse_v1_008/business_dir",
+    "sessions_dir": "evals/runs/next_action/baseline/tooluse_v1_008/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/next_action/baseline/tooluse_v1_008/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/next_action/baseline/tooluse_v1_008/business_dir/.money-model-advisor"
+  },
+  "phase": "baseline",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_008/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_008/stderr/000.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_008/stdout/000.txt"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\": 1000, \"month_one_gp\": 10000, \"monthly_recurring_gp\": 0}'",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_008/stderr/001.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_008/stdout/001.txt"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot '{\"cac\": 1000, \"first_30_day_gross_profit\": 10000, \"monthly_recurring_gross_profit\": 0, \"service_business\": true}'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_008/stderr/002.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_008/stdout/002.txt"
+    }
+  ]
+}

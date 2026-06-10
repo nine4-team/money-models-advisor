@@ -1,0 +1,34 @@
+[
+  {
+    "index": 0,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_010/business_dir",
+    "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/000.txt",
+    "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/000.txt",
+    "exit_code": 0
+  },
+  {
+    "index": 1,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\": 1000, \"month_one_gp\": 10000, \"monthly_recurring_gp\": 0}'",
+    "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/001.txt",
+    "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/001.txt",
+    "exit_code": 0
+  },
+  {
+    "index": 2,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_010/business_dir --full",
+    "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/002.txt",
+    "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/002.txt",
+    "exit_code": 0
+  },
+  {
+    "index": 3,
+    "kind": "cli_command",
+    "command": "PYTHONPATH=src python3 -m money_model_architect.cli search 'CAC payback acquisition spend ads first 30 day gross profit client financed acquisition' --layer unit-economics --top-k 5",
+    "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_010/stdout/003.txt",
+    "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_010/stderr/003.txt",
+    "exit_code": 0
+  }
+]

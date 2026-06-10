@@ -1,0 +1,23 @@
+[
+  {
+    "index": 0,
+    "action": "inspect_local_docs",
+    "confidence": "direct",
+    "evidence_type": "file_read",
+    "evidence_ref": "workflow_steps[1]"
+  },
+  {
+    "index": 1,
+    "action": "update_snapshot",
+    "confidence": "direct",
+    "evidence_type": "cli_command",
+    "evidence_ref": "workflow_steps[2]"
+  },
+  {
+    "index": 2,
+    "action": "compose_answer_from_state",
+    "confidence": "inferred",
+    "evidence_type": "final_answer",
+    "evidence_ref": "final_answer.txt"
+  }
+]

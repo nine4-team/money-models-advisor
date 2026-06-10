@@ -1,0 +1,103 @@
+{
+  "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_018/business_dir/.money-model-advisor/business_snapshot.json",
+  "updated": [
+    {
+      "field": "money_model.core_offer.price",
+      "value": "$15K-$60K design fee, with typical total project budgets $80K-$160K and ideal $150K-$200K+"
+    }
+  ],
+  "state": {
+    "schema_version": "business_snapshot.v1",
+    "business": {
+      "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+      "icp": "STR and second-home owners with $80K-$200K+ project capacity",
+      "delivery_model": "Lisa-led full-service design planning, procurement, and installation"
+    },
+    "money_model": {
+      "attraction_offer": {
+        "exists": true,
+        "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+        "price": 597
+      },
+      "core_offer": {
+        "exists": true,
+        "description": "full-service STR and second-home design",
+        "price": "$15K-$60K design fee, with typical total project budgets $80K-$160K and ideal $150K-$200K+"
+      },
+      "upsell": {
+        "exists": true,
+        "description": "pre-designed room packages sold per room or bundle",
+        "price": 5000
+      },
+      "downsell": {
+        "exists": false,
+        "description": null,
+        "price": null
+      },
+      "continuity": {
+        "exists": false,
+        "description": null,
+        "price": null
+      }
+    },
+    "economics": {
+      "cac": 1000,
+      "first_30_day_gross_profit": 10000,
+      "monthly_recurring_gross_profit": 0,
+      "gross_margin": 0.769,
+      "lifetime_gross_profit": null,
+      "payback_period_months": 1.0
+    },
+    "problem": {
+      "user_goal": "diagnose cash payback",
+      "reported_symptoms": [
+        "wants to understand how much can be spent on acquisition"
+      ],
+      "diagnosed_constraints": []
+    },
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_payback_diagnosis": true,
+      "ready_for_offer_stack_diagnosis": true,
+      "likely_retrieval_layers": [
+        "unit-economics"
+      ],
+      "retrieval_query_terms": [
+        "premium full-service interior design firm for short-term rental and second-home projects",
+        "STR and second-home owners with $80K-$200K+ project capacity",
+        "full-service STR and second-home design",
+        "diagnose cash payback",
+        "wants to understand how much can be spent on acquisition",
+        "CAC",
+        "first 30 day gross profit",
+        "payback period"
+      ]
+    },
+    "field_sources": {
+      "economics.cac": {
+        "confidence": "medium",
+        "source_type": "user_chat",
+        "value_note": "Referral partner cost averaged to about $1k per client."
+      },
+      "economics.first_30_day_gross_profit": {
+        "confidence": "medium",
+        "source_type": "user_chat"
+      },
+      "economics.payback_period_months": {
+        "source_type": "calculated",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "confidence": "high"
+      },
+      "money_model.core_offer.price": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-06-10T00:04:10Z"
+      }
+    }
+  }
+}

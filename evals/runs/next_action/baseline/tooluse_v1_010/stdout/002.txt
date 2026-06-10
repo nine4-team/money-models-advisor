@@ -1,0 +1,25 @@
+{
+  "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_010/business_dir",
+  "logs": [
+    {
+      "path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_010/business_dir/.money-model-advisor/sessions/1584_ad_spend_context_02.json",
+      "actions": [],
+      "assistant_message": "With $10,000 first-30-day gross profit and $1,000 CAC, there is room to test paid acquisition carefully.",
+      "created_at": "2026-06-05T22:52:01Z",
+      "evidence": [],
+      "fixture_id": "1584_ad_spend_context",
+      "retrieval_queries": [],
+      "user_message": "ok, so where does this leave us"
+    },
+    {
+      "path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_010/business_dir/.money-model-advisor/sessions/1584_ad_spend_context_01.json",
+      "actions": [],
+      "assistant_message": "CAC is currently represented as roughly $1,000 from referral partners, not paid ads.",
+      "created_at": "2026-06-05T22:46:39Z",
+      "evidence": [],
+      "fixture_id": "1584_ad_spend_context",
+      "retrieval_queries": [],
+      "user_message": "referral partner CAC / Google Business Profile"
+    }
+  ]
+}

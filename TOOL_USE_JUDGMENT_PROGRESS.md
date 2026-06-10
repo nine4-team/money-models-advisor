@@ -35,7 +35,17 @@ The trace recorder has been piloted on five dev cases:
 
 All five completed traces validate and score cleanly in `evals/reports/advisor_tool_use_judgment.md`.
 
-Important caveat: this is a trace-recorder pilot, not the full next-action baseline. The pilot was captured in-thread by Codex to verify the recorder, schema, evidence refs, and scorer. It should not be overclaimed as contamination-free agent-performance evidence. The next missing piece is expanding trace capture to the remaining dev/regression cases and then treating that completed report as the baseline.
+The remaining dev/regression traces have also been captured. Current report status:
+
+- dev: 14/14 scored
+- regression: 5/5 scored
+- scenario_holdout: 0/5 scored and intentionally untouched
+- first-action accuracy on captured dev/regression traces: 100%
+- required-action recall on captured dev/regression traces: 1.000
+- false-search rate on captured dev/regression traces: 0%
+- trace completeness on captured dev/regression traces: 100%
+
+Important caveat: these are agent-assisted traces captured in-thread by Codex to verify the recorder, schema, evidence refs, and policy-conformance scoring. They should not be overclaimed as contamination-free agent-performance evidence. Use them as the completed dev/regression trace set and leave `scenario_holdout` untouched until guidance is stable.
 
 Key design choice: build a trace recorder, not a deterministic planner. The recorder should set up fixtures, capture commands and files, extract observable `actual_actions[]`, and write `run.json`. It should not choose the next action from the case label. The actor, trace extractor, and scorer should remain separate so the eval measures agent judgment rather than a hard-coded runner or self-report.
 
@@ -119,8 +129,7 @@ Follow `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`.
 
 Immediate implementation steps:
 
-1. Expand trace capture to the remaining dev/regression cases.
-2. Re-run `python3 scripts/eval_tool_use_judgment.py`.
-3. Use the completed dev/regression report as the baseline.
-4. Improve skill/tool guidance from dev/regression failures.
-5. Re-run dev/regression, then run `scenario_holdout` after the improvement pass.
+1. Review the completed dev/regression trace set for any methodology or labeling concerns.
+2. Decide whether any skill/tool guidance changes are still needed.
+3. If guidance changes, re-run dev/regression traces.
+4. Run `scenario_holdout` only after the guidance is stable.

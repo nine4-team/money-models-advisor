@@ -1,0 +1,75 @@
+{
+  "acting_prompt_path": "evals/runs/next_action/baseline/tooluse_v1_018/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "file_read",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/next_action/baseline/tooluse_v1_018/business_dir",
+  "case_id": "tooluse_v1_018",
+  "completed_at": "2026-06-10T00:04:10Z",
+  "created_at": "2026-06-10T00:02:33Z",
+  "final_answer_path": "evals/runs/next_action/baseline/tooluse_v1_018/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/next_action/baseline/tooluse_v1_018/business_dir",
+    "sessions_dir": "evals/runs/next_action/baseline/tooluse_v1_018/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/next_action/baseline/tooluse_v1_018/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/next_action/baseline/tooluse_v1_018/business_dir/.money-model-advisor"
+  },
+  "phase": "baseline",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:b7cd001afc8ca7efd0cd3365181eb73ab3294a9ba850e15b3a762bd63ae4fdbc",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "exit_code": 0,
+      "index": 0,
+      "kind": "file_list",
+      "path": "evals/runs/next_action/baseline/tooluse_v1_018/business_dir",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_018/stderr/000.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_018/stdout/000.txt"
+    },
+    {
+      "exit_code": 0,
+      "index": 1,
+      "kind": "file_read",
+      "path": "evals/runs/next_action/baseline/tooluse_v1_018/business_dir/services-and-pricing.md",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_018/stderr/001.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_018/stdout/001.txt"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_018/business_dir money_model.core_offer.price='$15K-$60K design fee, with typical total project budgets $80K-$160K and ideal $150K-$200K+'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "stderr_path": "evals/runs/next_action/baseline/tooluse_v1_018/stderr/002.txt",
+      "stdout_path": "evals/runs/next_action/baseline/tooluse_v1_018/stdout/002.txt"
+    }
+  ]
+}
