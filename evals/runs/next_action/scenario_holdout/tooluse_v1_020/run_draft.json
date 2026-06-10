@@ -1,0 +1,28 @@
+{
+  "acting_prompt_path": "evals/runs/next_action/scenario_holdout/tooluse_v1_020/acting_prompt.md",
+  "actual_actions": [],
+  "business_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir",
+  "case_id": "tooluse_v1_020",
+  "created_at": "2026-06-10T00:16:22Z",
+  "final_answer_path": null,
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir",
+    "sessions_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir/.money-model-advisor"
+  },
+  "phase": "scenario_holdout",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": null,
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "scenario_holdout",
+  "status": "prepared",
+  "workflow_steps": []
+}
