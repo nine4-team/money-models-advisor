@@ -30,7 +30,7 @@
     "gross_margin": 0.769,
     "lifetime_gross_profit": null,
     "monthly_recurring_gross_profit": 0,
-    "payback_period_months": 0.1
+    "payback_period_months": 1.0
   },
   "field_sources": {
     "economics.cac": {

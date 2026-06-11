@@ -420,7 +420,7 @@ First acting-agent check:
 Second acting-agent check:
 
 - A post-hardening 1584 offer-sequencing turn completed a valid trace at `/Users/benjaminmackenzie/1584_design/.money-model-advisor/sessions/20260611T195850.json`.
-- The trace used `session_start`, `search_source_material`, `calculate`, `answer`, and `session_finish`, with three source events for attraction/diagnostic offer, room-package upsell, and continuity support.
+- The trace used `session_start`, `search_source_material`, `calculate`, `answer`, and `session_finish`, with three source events for attraction/front-end offer, room-package upsell, and continuity support.
 - The session started with the correct `business_dir`.
 - The run exposed two product issues: the first search pass omitted agent-written query variants and fell back to deterministic queries, and `diagnose` was awkward because it expected raw JSON rather than the saved advisor state.
 - Resulting design hardening: the skill now requires 2-4 agent-generated `query_variants` for source searches, and `diagnose --business-dir <path>` reads the saved `BusinessSnapshot` directly while preserving `--snapshot <json-or-path>` as a debug form.
