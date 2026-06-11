@@ -104,6 +104,15 @@ class CliTest(unittest.TestCase):
                     },
                     "query": "CAC payback period coaching business",
                     "chunks": [{"id": "payback-period:0", "score": 2.3}],
+                },
+                {
+                    "source_need": {
+                        "intent": "recommendation_evidence",
+                        "layers": ["upsells"],
+                        "focus_terms": ["upsell", "first 30 day gross profit"],
+                    },
+                    "query": "upsell first 30 day gross profit coaching business",
+                    "chunks": [{"id": "upsells:0", "score": 1.7}],
                 }
             ]
             record_output = run_cli(
@@ -121,7 +130,7 @@ class CliTest(unittest.TestCase):
                     "--source-events-json",
                     json.dumps(source_events),
                     "--cited-chunk-ids-json",
-                    json.dumps(["payback-period:0"]),
+                    json.dumps(["payback-period:0", "upsells:0"]),
                 ]
             )
             record = json.loads(record_output)
@@ -131,10 +140,10 @@ class CliTest(unittest.TestCase):
             full_logs = json.loads(full_output)
 
             self.assertTrue(record["recorded"])
-            self.assertEqual(record["source_event_count"], 1)
+            self.assertEqual(record["source_event_count"], 2)
             self.assertEqual(len(logs["logs"]), 1)
             self.assertEqual(logs["logs"][0]["actions"], ["read_snapshot", "search"])
-            self.assertEqual(logs["logs"][0]["source_chunk_ids"], ["payback-period:0"])
+            self.assertEqual(logs["logs"][0]["source_chunk_ids"], ["payback-period:0", "upsells:0"])
             self.assertEqual(full_logs["logs"][0]["source_events"], source_events)
 
 
