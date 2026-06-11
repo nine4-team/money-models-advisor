@@ -95,6 +95,105 @@ class SourceEventTraceEvalTest(unittest.TestCase):
         self.assertFalse(result.all_expected_events_matched)
         self.assertIn("missing_intent:diagnostic_evidence", result.failure_reasons)
 
+    def test_inspected_chunks_count_as_chunk_evidence(self):
+        case = {
+            "case_id": "case",
+            "split": "dev",
+            "expected_source_events": [
+                {
+                    "intent": "diagnostic_evidence",
+                    "layers": ["unit-economics"],
+                    "focus_terms": ["CAC", "payback period"],
+                }
+            ],
+        }
+        run = {
+            "source_events": [
+                {
+                    "source_need": {
+                        "intent": "diagnostic_evidence",
+                        "layers": ["unit-economics"],
+                        "focus_terms": ["CAC", "payback period"],
+                    },
+                    "inspected_chunks": [{"id": "payback-period:0"}],
+                }
+            ]
+        }
+
+        with TemporaryDirectory() as tmpdir:
+            result = source_event_eval.score_case(case, write_run(tmpdir, run))
+
+        self.assertEqual(result.status, "passed")
+
+    def test_focus_matching_normalizes_punctuation(self):
+        case = {
+            "case_id": "case",
+            "split": "dev",
+            "expected_source_events": [
+                {
+                    "intent": "recommendation_evidence",
+                    "layers": ["offers"],
+                    "focus_terms": ["front-end offer", "paid acquisition"],
+                }
+            ],
+        }
+        run = {
+            "source_events": [
+                {
+                    "source_need": {
+                        "intent": "recommendation_evidence",
+                        "layers": ["offers"],
+                        "focus_terms": ["front end offer", "paid acquisition test"],
+                    },
+                    "chunks": [{"id": "make-your-money-model:0"}],
+                }
+            ]
+        }
+
+        with TemporaryDirectory() as tmpdir:
+            result = source_event_eval.score_case(case, write_run(tmpdir, run))
+
+        self.assertEqual(result.status, "passed")
+
+    def test_extra_source_events_are_warnings_not_failures(self):
+        case = {
+            "case_id": "case",
+            "split": "dev",
+            "expected_source_events": [
+                {
+                    "intent": "diagnostic_evidence",
+                    "layers": ["unit-economics"],
+                    "focus_terms": ["CAC", "payback period"],
+                }
+            ],
+        }
+        run = {
+            "source_events": [
+                {
+                    "source_need": {
+                        "intent": "diagnostic_evidence",
+                        "layers": ["unit-economics"],
+                        "focus_terms": ["CAC", "payback period"],
+                    },
+                    "chunks": [{"id": "payback-period:0"}],
+                },
+                {
+                    "source_need": {
+                        "intent": "recommendation_evidence",
+                        "layers": ["offers"],
+                        "focus_terms": ["front end offer"],
+                    },
+                    "chunks": [{"id": "make-your-money-model:0"}],
+                },
+            ]
+        }
+
+        with TemporaryDirectory() as tmpdir:
+            result = source_event_eval.score_case(case, write_run(tmpdir, run))
+
+        self.assertEqual(result.status, "passed")
+        self.assertEqual(result.warning_reasons, ("extra_events:1",))
+
     def test_validate_cases_requires_expected_source_events(self):
         errors = source_event_eval.validate_cases(
             [

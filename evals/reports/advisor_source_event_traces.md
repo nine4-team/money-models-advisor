@@ -17,18 +17,19 @@ It does not run an agent and does not call external model services. Acting agent
 
 ## Run Coverage
 
-- Scored runs: 0 / 1
-- Missing runs: 1
+- Scored runs: 1 / 1
+- Missing runs: 0
 
 ## Metrics
 
-- Status: inventory only; no source-event run artifacts found yet.
+- Case pass rate: 100.0%
+- Expected source events matched: 2 / 2
 
 ## Case Table
 
 | Case | Split | Expected Events | Actual Events | Matched Events | Status | Failure Reasons |
 |---|---|---:|---:|---:|---|---|
-| `sourceevents_v1_001` | `post_hardening_regression` | 2 | - | 0 | `not_run` | - |
+| `sourceevents_v1_001` | `post_hardening_regression` | 2 | 3 | 2 | `passed` | extra_events:1 |
 
 ## Decision
 

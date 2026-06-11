@@ -1,0 +1,126 @@
+{
+  "actions": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening/sourceevents_v1_001/business",
+      "type": "setup_state"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening/sourceevents_v1_001/business",
+      "type": "read_snapshot"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening/sourceevents_v1_001/business",
+      "type": "logs"
+    },
+    {
+      "source_need": {
+        "focus_terms": [
+          "CAC",
+          "first 30 day gross profit",
+          "payback period",
+          "paid acquisition capacity"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "user_turn": "what should we fix first?"
+      },
+      "type": "search_source_material"
+    },
+    {
+      "inputs": {
+        "cac": 1000,
+        "month_one_gp": 10000,
+        "monthly_recurring_gp": 0
+      },
+      "metric": "payback",
+      "result": {
+        "metric": "payback",
+        "value": 1.0
+      },
+      "type": "calculate"
+    },
+    {
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening/sourceevents_v1_001/business/.money-model-advisor/sessions/20260611T040917.json",
+      "type": "turn_record"
+    }
+  ],
+  "case_id": "sourceevents_v1_001",
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "payback-period:0",
+    "cfa:0"
+  ],
+  "completed_at": "2026-06-11T04:09:39Z",
+  "created_at": "2026-06-11T04:06:02Z",
+  "notes": "Answered naturally from visible case context, snapshot, prior logs, one unit-economics recommendation search, and deterministic payback calculation.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening/sourceevents_v1_001/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening/sourceevents_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening/sourceevents_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [
+    {
+      "inspected_chunks": [
+        {
+          "chapter": "how-businesses-make-money",
+          "id": "how-businesses-make-money:2",
+          "layer": "unit-economics",
+          "score": 24.206
+        },
+        {
+          "chapter": "payback-period",
+          "id": "payback-period:0",
+          "layer": "unit-economics",
+          "score": 22.784
+        },
+        {
+          "chapter": "context",
+          "id": "context:1",
+          "layer": "unit-economics",
+          "score": 20.438
+        },
+        {
+          "chapter": "cfa",
+          "id": "cfa:0",
+          "layer": "unit-economics",
+          "score": 20.411
+        },
+        {
+          "chapter": "payback-period",
+          "id": "payback-period:1",
+          "layer": "unit-economics",
+          "score": 18.504
+        }
+      ],
+      "queries": [
+        {
+          "intent": "recommendation_evidence",
+          "layer": "unit-economics",
+          "query": "CAC first 30 day gross profit payback period paid acquisition capacity interior design STR",
+          "reason": "Source need was selected for the current turn; retrieve source-specific Money Models support."
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "CAC",
+          "first 30 day gross profit",
+          "payback period",
+          "paid acquisition capacity"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "user_turn": "what should we fix first?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_001",
+    "conversation_context": "The snapshot is recommendable for 1584 Design. Prior context includes referral-partner CAC and paid-acquisition capacity discussion. The user asks for the next priority.",
+    "scenario_id": "1584_design",
+    "user_turn": "what should we fix first?"
+  }
+}

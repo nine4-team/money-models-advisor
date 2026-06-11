@@ -54,7 +54,7 @@ Post-refactor manual 1584 test note: a recommendation turn that mixed unit-econo
 
 Senior review of the post-refactor batch: the agent/CLI boundary is sound and portfolio-positive, but the multi-source hardening is not behavior-validated yet. The current test proves `turn record` can persist multiple `source_events`; it does not prove that an acting agent will choose multiple SourceNeeds after the guidance change. The next best evidence is a post-hardening acting-agent regression for the 1584 "what should we fix first?" scenario that expects two searches: a diagnostic `unit-economics` SourceNeed and a recommendation SourceNeed for the specific fix layer. This is higher-priority hiring evidence than adding embeddings right now.
 
-Implementation status: the source-event trace regression harness now exists. It uses `evals/advisor_source_event_cases.jsonl`, `scripts/capture_source_event_trace.py`, `scripts/eval_source_event_traces.py`, and `evals/reports/advisor_source_event_traces.md`. The first case is `sourceevents_v1_001`, the post-hardening 1584 "what should we fix first?" regression. The case is prepared but still needs a completed acting-agent trace before we can claim behavior validation.
+Implementation status: the source-event trace regression harness now exists. It uses `evals/advisor_source_event_cases.jsonl`, `scripts/capture_source_event_trace.py`, `scripts/eval_source_event_traces.py`, and `evals/reports/advisor_source_event_traces.md`. The first case is `sourceevents_v1_001`, the post-hardening 1584 "what should we fix first?" regression. Blind v1 and v2 traces failed in useful ways; v3 passed the expected-event gate with 2 / 2 expected events matched and one extra source event warning.
 
 Focus-term scoring should add agent-adjudicated concept coverage. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
 
@@ -109,7 +109,7 @@ For the first v1 pass:
 
 Tighten source-need precision before retrieval-backend comparisons:
 
-- complete the post-hardening acting-agent trace for `sourceevents_v1_001`; expected trace has two source events: diagnostic `unit-economics` plus recommendation for the selected fix layer
+- reduce redundant extra source events after `sourceevents_v1_001` v3, while preserving the successful split between diagnostic `unit-economics` and recommendation fix-layer evidence
 - keep runtime `intent` as a single primary label, but add eval-only `acceptable_intents` for mixed cases
 - refine layer guidance for payment-plan/free-trial cases so agents choose downsell/offer layers consistently
 - add acting-agent cases or trace checks for turns that require multiple source-material searches

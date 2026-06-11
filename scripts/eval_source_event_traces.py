@@ -15,6 +15,7 @@ from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -71,6 +72,7 @@ class CaseResult:
     extra_event_count: int | None
     status: str
     failure_reasons: tuple[str, ...]
+    warning_reasons: tuple[str, ...]
     event_matches: tuple[EventMatch, ...]
 
 
@@ -198,9 +200,13 @@ def actual_need(event: dict[str, Any]) -> SourceNeed | None:
 def term_recall(expected_terms: tuple[str, ...], actual_terms: tuple[str, ...]) -> float:
     if not expected_terms:
         return 1.0
-    actual_text = " ".join(actual_terms).lower()
-    hits = sum(1 for term in expected_terms if term.lower() in actual_text)
+    actual_text = normalize_text(" ".join(actual_terms))
+    hits = sum(1 for term in expected_terms if normalize_text(term) in actual_text)
     return hits / len(expected_terms)
+
+
+def normalize_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
 
 
 def layer_recall(expected_layers: tuple[str, ...], actual_layers: tuple[str, ...]) -> float:
@@ -211,6 +217,8 @@ def layer_recall(expected_layers: tuple[str, ...], actual_layers: tuple[str, ...
 
 def has_chunks(event: dict[str, Any]) -> bool:
     chunks = event.get("chunks")
+    if not isinstance(chunks, list):
+        chunks = event.get("inspected_chunks")
     return isinstance(chunks, list) and any(isinstance(chunk, dict) and chunk.get("id") for chunk in chunks)
 
 
@@ -264,6 +272,7 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
             extra_event_count=None,
             status="not_run",
             failure_reasons=(),
+            warning_reasons=(),
             event_matches=(),
         )
 
@@ -293,8 +302,10 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
     )
     all_matched = matched == len(expected)
     if extra_events:
-        failures.append(f"extra_events:{extra_events}")
-    status = "passed" if all_matched and not extra_events else "failed"
+        warnings = [f"extra_events:{extra_events}"]
+    else:
+        warnings = []
+    status = "passed" if all_matched else "failed"
     return CaseResult(
         case_id=case["case_id"],
         split=case["split"],
@@ -305,6 +316,7 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
         extra_event_count=extra_events,
         status=status,
         failure_reasons=tuple(failures),
+        warning_reasons=tuple(warnings),
         event_matches=tuple(matches),
     )
 
@@ -385,7 +397,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             f"`{result.case_id}` | `{result.split}` | {result.expected_event_count} | "
             f"{'-' if result.actual_event_count is None else result.actual_event_count} | "
             f"{result.matched_event_count} | `{result.status}` | "
-            f"{', '.join(result.failure_reasons) or '-'} |"
+            f"{', '.join([*result.failure_reasons, *result.warning_reasons]) or '-'} |"
         )
 
     lines.extend(

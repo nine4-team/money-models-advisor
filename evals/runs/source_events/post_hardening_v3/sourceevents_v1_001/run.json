@@ -1,0 +1,202 @@
+{
+  "actions": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business",
+      "type": "setup_state"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business",
+      "type": "read_snapshot"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business",
+      "type": "logs"
+    },
+    {
+      "inputs": {
+        "cac": 1000,
+        "month_one_gp": 10000,
+        "monthly_recurring_gp": 0
+      },
+      "metric": "payback",
+      "result": 1.0,
+      "type": "calculate"
+    },
+    {
+      "intent": "diagnostic_evidence",
+      "layers": [
+        "unit-economics"
+      ],
+      "query": "CAC first 30 day gross profit payback period paid acquisition capacity interior design STR",
+      "type": "search_source_material"
+    },
+    {
+      "intent": "recommendation_evidence",
+      "layers": [
+        "offers"
+      ],
+      "query": "front end offer diagnostic offer paid acquisition test core offer interior design STR",
+      "type": "search_source_material"
+    },
+    {
+      "intent": "recommendation_evidence",
+      "layers": [
+        "offers"
+      ],
+      "query": "attraction offer strategy call diagnostic front end offer upsell core offer interior design STR",
+      "type": "search_source_material"
+    },
+    {
+      "cited_chunk_ids": [
+        "how-businesses-make-money:2",
+        "payback-period:0",
+        "context:1",
+        "cfa:0",
+        "make-your-money-model:1",
+        "money-models-offer-stacks:0"
+      ],
+      "source_event_count": 3,
+      "type": "turn_record"
+    }
+  ],
+  "case_id": "sourceevents_v1_001",
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "payback-period:0",
+    "context:1",
+    "cfa:0",
+    "make-your-money-model:1",
+    "money-models-offer-stacks:0"
+  ],
+  "completed_at": "2026-06-11T04:16:48Z",
+  "created_at": "2026-06-11T04:14:18Z",
+  "notes": "Completed naturally from acting_prompt.md only; did not inspect hidden expected labels or rationale files.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [
+    {
+      "generated_query": "CAC first 30 day gross profit payback period paid acquisition capacity interior design STR",
+      "inspected_chunks": [
+        {
+          "id": "how-businesses-make-money:2",
+          "score": 24.206
+        },
+        {
+          "id": "payback-period:0",
+          "score": 22.784
+        },
+        {
+          "id": "context:1",
+          "score": 20.438
+        },
+        {
+          "id": "cfa:0",
+          "score": 20.411
+        },
+        {
+          "id": "payback-period:1",
+          "score": 18.504
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "CAC",
+          "first 30 day gross profit",
+          "payback period",
+          "paid acquisition capacity"
+        ],
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "user_turn": "what should we fix first?"
+      }
+    },
+    {
+      "generated_query": "front end offer diagnostic offer paid acquisition test core offer interior design STR",
+      "inspected_chunks": [
+        {
+          "id": "make-your-money-model:0",
+          "score": 11.364
+        },
+        {
+          "id": "buy-x-get-y:3",
+          "score": 9.397
+        },
+        {
+          "id": "buy-x-get-y:4",
+          "score": 8.489
+        },
+        {
+          "id": "buy-x-get-y:7",
+          "score": 8.428
+        },
+        {
+          "id": "ten-years-ten-minutes:2",
+          "score": 8.296
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "front end offer",
+          "diagnostic offer",
+          "paid acquisition test",
+          "core offer"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "offers"
+        ],
+        "user_turn": "what should we fix first?"
+      }
+    },
+    {
+      "generated_query": "attraction offer strategy call diagnostic front end offer upsell core offer interior design STR",
+      "inspected_chunks": [
+        {
+          "id": "make-your-money-model:0",
+          "score": 20.668
+        },
+        {
+          "id": "make-your-money-model:1",
+          "score": 13.987
+        },
+        {
+          "id": "free-with-consumption:8",
+          "score": 11.997
+        },
+        {
+          "id": "money-models-offer-stacks:0",
+          "score": 10.896
+        },
+        {
+          "id": "free-trials:1",
+          "score": 10.892
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "attraction offer",
+          "strategy call",
+          "diagnostic",
+          "front end offer",
+          "upsell core offer"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "offers"
+        ],
+        "user_turn": "what should we fix first?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_001",
+    "conversation_context": "The snapshot is recommendable for 1584 Design. Prior context includes referral-partner CAC and paid-acquisition capacity discussion. The user asks for the next priority.",
+    "scenario_id": "1584_design",
+    "user_turn": "what should we fix first?"
+  }
+}

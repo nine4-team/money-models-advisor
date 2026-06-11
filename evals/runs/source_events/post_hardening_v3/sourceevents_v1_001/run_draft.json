@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceevents_v1_001",
+  "created_at": "2026-06-11T04:14:18Z",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_v3/sourceevents_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceevents_v1_001",
+    "conversation_context": "The snapshot is recommendable for 1584 Design. Prior context includes referral-partner CAC and paid-acquisition capacity discussion. The user asks for the next priority.",
+    "scenario_id": "1584_design",
+    "user_turn": "what should we fix first?"
+  }
+}
