@@ -56,6 +56,8 @@ Senior review of the post-refactor batch: the agent/CLI boundary is sound and po
 
 Implementation status: the source-event trace regression harness now exists. It uses `evals/advisor_source_event_cases.jsonl`, `scripts/capture_source_event_trace.py`, `scripts/eval_source_event_traces.py`, and `evals/reports/advisor_source_event_traces.md`. The first case is `sourceevents_v1_001`, the post-hardening 1584 "what should we fix first?" regression. Blind v1 and v2 traces failed in useful ways; v3 passed the expected-event gate. The expanded `post_hardening_expanded_v2` batch now covers six blind acting-agent cases: multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation. The current report shows 100.0% case pass rate, 6 / 6 expected source events matched, and 0 extra source-event warnings after the upsell cleanup rerun.
 
+Overfit check: the cleanup rule is not "never search diagnostics during recommendations." It is "do not add diagnostic retrieval merely because already-known economics appear in the answer." The six-case regression intentionally includes both sides of that boundary: diagnostic-required cases still pass, while the concrete-fix and missing-context cases avoid unnecessary source events.
+
 Focus-term scoring should add agent-adjudicated concept coverage. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
 
 ## What A Source Need Represents
