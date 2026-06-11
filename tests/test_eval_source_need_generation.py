@@ -61,6 +61,63 @@ class SourceNeedGenerationEvalTest(unittest.TestCase):
 
         self.assertTrue(any("acceptable_intents must include" in error for error in errors))
 
+    def test_focus_aliases_count_as_concept_coverage(self):
+        case = {
+            "case_id": "case",
+            "split": "dev",
+            "expected_search": True,
+            "expected_source_need": {
+                "intent": "recommendation_evidence",
+                "layers": ["offers"],
+                "focus_terms": ["get leads to engage", "front end offer"],
+            },
+            "focus_aliases": {
+                "get leads to engage": ["engagement", "STR owners"],
+            },
+        }
+        run = {
+            "source_search_decision": True,
+            "source_need": {
+                "intent": "recommendation_evidence",
+                "layers": ["offers"],
+                "focus_terms": ["front-end offer", "engagement", "STR owners"],
+            },
+        }
+
+        with TemporaryDirectory() as tmpdir:
+            run_path = Path(tmpdir) / "run.json"
+            run_path.write_text(source_need_eval.json.dumps(run), encoding="utf-8")
+            result = source_need_eval.score_case(case, run_path)
+
+        self.assertEqual(result.focus_recall, 1.0)
+
+    def test_focus_alias_keys_must_be_expected_terms(self):
+        errors = source_need_eval.validate_cases(
+            [
+                {
+                    "case_id": "case",
+                    "split": "dev",
+                    "scenario_id": "scenario",
+                    "conversation_context": "context",
+                    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json",
+                    "prior_sessions_fixture_path": None,
+                    "user_turn": "turn",
+                    "expected_search": True,
+                    "expected_source_need": {
+                        "intent": "recommendation_evidence",
+                        "layers": ["offers"],
+                        "focus_terms": ["front end offer"],
+                    },
+                    "focus_aliases": {"unknown": ["engagement"]},
+                    "label_rationale": "rationale",
+                    "ambiguity": "medium",
+                    "severity_if_wrong": "medium",
+                }
+            ]
+        )
+
+        self.assertTrue(any("focus_aliases keys must be expected focus terms" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,33 @@
+{
+  "case_id": "sourceneed_v1_004",
+  "completed_at": "2026-06-11T05:36:34Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "User asks to compare an attraction offer and an upsell using known offer-stack context. Economics are missing, but not required for a conceptual comparison; use only offers and upsells layers.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_004/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "attraction offer",
+      "upsell",
+      "STR Design Diagnostic",
+      "pre-designed room packages",
+      "front-end offer",
+      "post-sale add-on"
+    ],
+    "intent": "comparison_evidence",
+    "layers": [
+      "offers",
+      "upsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_004",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks to compare two Money Models concepts.",
+    "scenario_id": "1584_design",
+    "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+  }
+}

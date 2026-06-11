@@ -16,7 +16,7 @@ The source-need generation harness exists and has now been run with blind acting
 - trace capture helper: `scripts/capture_source_need_trace.py`
 - scorer: `scripts/eval_source_need_generation.py`
 - report: `evals/reports/advisor_source_need_generation.md`
-- run artifacts: `evals/runs/source_need/pilot/`
+- current run artifacts: `evals/runs/source_need/taxonomy_v2/`
 
 The seed case set has 14 realistic turns:
 
@@ -24,19 +24,26 @@ The seed case set has 14 realistic turns:
 - 4 no-search controls where source search should not happen
 - dev and scenario-holdout splits
 
-Current scored result:
+Current scored result after taxonomy guidance and focus-alias cleanup:
 
 - scored runs: 14 / 14
 - search decision accuracy: 100.0%
 - false search rate: 0.0%
 - missed search rate: 0.0%
+- intent match on expected-search cases: 100.0%
+- layer exact match on expected-search cases: 90.0%
+- average layer recall on expected-search cases: 0.950
+- average focus-term concept recall on expected-search cases: 0.750
+- correct no-search controls: 100.0%
+
+Interpretation: source-need generation now meets the gate for seed retrieval-backend comparisons. The main behavioral issues from the pilot run improved: ad-spend capacity now uses diagnostic intent, recurring maintenance now uses continuity, and payment plans now use downsells. The remaining layer miss is `sourceneed_v1_008`, where the agent selected `offers` for free trial/front-end offer support but did not also include `downsells`.
+
+Previous pilot result before cleanup:
+
 - intent match on expected-search cases: 80.0%
 - layer exact match on expected-search cases: 70.0%
 - average layer recall on expected-search cases: 0.850
-- average focus-term recall on expected-search cases: 0.410
-- correct no-search controls: 100.0%
-
-Interpretation: the agent-facing guidance is now good enough on the first-order question of whether source-material search is needed. The remaining weakness is precision in the generated source need, especially layer boundaries and exact focus-term coverage. Intent match improved after adding eval-only acceptable intent labels for the free-trial mixed case.
+- average exact focus-term recall on expected-search cases: 0.410
 
 ## Partial/Miss Case Interpretation
 
@@ -58,7 +65,7 @@ Implementation status: the source-event trace regression harness now exists. It 
 
 Overfit check: the cleanup rule is not "never search diagnostics during recommendations." It is "do not add diagnostic retrieval merely because already-known economics appear in the answer." The six-case regression intentionally includes both sides of that boundary: diagnostic-required cases still pass, while the concrete-fix and missing-context cases avoid unnecessary source events.
 
-Focus-term scoring should add agent-adjudicated concept coverage. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
+Focus-term scoring now supports eval-only `focus_aliases` for case-local concept tolerance. Exact substring recall is still useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
 
 ## What A Source Need Represents
 
@@ -94,7 +101,7 @@ Metrics:
 - missed search rate
 - intent match on search-expected cases
 - layer exact match and layer recall
-- focus-term recall
+- focus-term concept recall
 - correct no-search controls
 
 ## Done Criteria
@@ -105,15 +112,14 @@ For the first v1 pass:
 - report generation works without external model-service calls **Done**
 - acting-agent traces are captured **Done**
 - search decision accuracy is high enough to avoid noisy retrieval-backend comparisons **Done**
-- source-search cases have good intent/layer/focus-term scores **Partially done**
+- source-search cases have good intent/layer/focus-term scores **Done for seed gate: one medium-severity free-trial layer residual remains documented**
 
 ## Next Work
 
-Tighten source-need precision before retrieval-backend comparisons:
+Keep source-need precision stable while moving into retrieval-backend comparisons:
 
 - keep the no-extra-event source-event regression clean as new behavior is added
 - keep runtime `intent` as a single primary label, but add eval-only `acceptable_intents` for mixed cases
-- refine layer guidance for payment-plan/free-trial cases so agents choose downsell/offer layers consistently
+- carry `sourceneed_v1_008` as a known residual: free-trial/front-end-offer cases may need both `offers` and `downsells`
 - add more acting-agent source-event cases only when they cover materially new behavior; the current six-case batch is enough for the hiring narrative around source-event splitting and no-search restraint
-- add agent-adjudicated focus-term concept coverage, while keeping exact substring overlap as a debugging metric
-- rerun the source-need eval after the taxonomy/scoring cleanup
+- keep focus aliases case-local and documented; do not turn them into a hidden global keyword router

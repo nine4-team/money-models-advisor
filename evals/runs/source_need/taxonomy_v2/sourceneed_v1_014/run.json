@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_014",
+  "completed_at": "2026-06-11T05:39:12Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "No source search: the current turn asks whether to start ads next month, but the snapshot lacks required economics (CAC and first-30-day gross profit/payback context). Responsible next move is to ask for or calculate economics before source-backed recommendation.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_014/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_014/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_014/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_014",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks whether to run ads next month.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we start running ads next month?"
+  }
+}

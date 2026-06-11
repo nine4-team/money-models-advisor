@@ -138,7 +138,7 @@ Score source-need generation traces:
 ```bash
 python3 scripts/capture_source_need_trace.py prepare sourceneed_v1_001
 python3 scripts/capture_source_need_trace.py complete \
-  evals/runs/source_need/pilot/sourceneed_v1_001 \
+  evals/runs/source_need/taxonomy_v2/sourceneed_v1_001 \
   --source-search-decision true \
   --source-need '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["gross profit","fulfillment cost","CAC","payback period"]}'
 python3 scripts/eval_source_need_generation.py
@@ -198,6 +198,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Agent-led local doc inspection before snapshot updates.
-- Source-need taxonomy and scoring cleanup before retrieval-model comparisons.
+- Retrieval-model comparisons now that source-need generation meets the seed gate.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

@@ -1,0 +1,27 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "created_at": "2026-06-11T05:35:36Z",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

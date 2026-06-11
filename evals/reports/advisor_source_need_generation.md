@@ -8,6 +8,8 @@ A source need contains retrieval intent, corpus layer or layers, and focus terms
 
 Some labeled cases may include `acceptable_intents`. That is eval-only label tolerance for turns where more than one primary retrieval objective is defensible; runtime source needs still emit one intent per source-material search call.
 
+Some labeled cases may include `focus_aliases`. That is eval-only concept tolerance for cases where the acting agent generated semantically aligned focus terms with different wording. Exact focus-term recall remains a deterministic debugging signal, not a production-quality semantic score.
+
 This script does not run an agent and does not call external model services. It validates labels and scores saved `run.json` artifacts when they exist under `evals/runs/source_need/`.
 
 ## Dataset
@@ -30,32 +32,31 @@ This script does not run an agent and does not call external model services. It 
 - Search decision accuracy: 100.0%
 - False search rate: 0.0%
 - Missed search rate: 0.0%
-- Intent match on expected-search cases: 80.0%
-- Layer exact match on expected-search cases: 70.0%
-- Average layer recall on expected-search cases: 0.850
-- Average focus-term recall on expected-search cases: 0.410
+- Intent match on expected-search cases: 100.0%
+- Layer exact match on expected-search cases: 90.0%
+- Average layer recall on expected-search cases: 0.950
+- Average focus-term concept recall on expected-search cases: 0.750
 - Correct no-search controls: 100.0%
 
 ## Interpretation
 
 - The search/no-search boundary is clean on this seed set.
-- Source-need precision is still partial; inspect intent and layer misses before treating retrieval-backend comparisons as meaningful.
-- Focus-term recall is low enough that the metric should be treated as a development signal, not a production-quality semantic score.
+- Source-need precision meets the seed gate for retrieval-backend comparison; carry any residual layer misses as caveats.
 
 ## Case Table
 
-| Case | Split | Expected Search | Actual Search | Intent Match | Layer Recall | Focus Recall | Status | Failure Reasons |
+| Case | Split | Expected Search | Actual Search | Intent Match | Layer Recall | Focus Concept Recall | Status | Failure Reasons |
 |---|---|---:|---:|---:|---:|---:|---|---|
-| `sourceneed_v1_001` | `dev` | true | true | true | 1.000 | 0.600 | `scored` | - |
-| `sourceneed_v1_002` | `dev` | true | true | true | 1.000 | 0.500 | `scored` | - |
-| `sourceneed_v1_003` | `dev` | true | true | false | 1.000 | 0.400 | `scored` | - |
-| `sourceneed_v1_004` | `scenario_holdout` | true | true | true | 1.000 | 0.600 | `scored` | - |
-| `sourceneed_v1_005` | `dev` | true | true | true | 1.000 | 0.250 | `scored` | - |
-| `sourceneed_v1_006` | `dev` | true | true | false | 1.000 | 0.750 | `scored` | - |
-| `sourceneed_v1_007` | `dev` | true | true | true | 0.000 | 0.200 | `scored` | - |
-| `sourceneed_v1_008` | `dev` | true | true | true | 0.500 | 0.400 | `scored` | - |
-| `sourceneed_v1_009` | `dev` | true | true | true | 1.000 | 0.400 | `scored` | - |
-| `sourceneed_v1_010` | `dev` | true | true | true | 1.000 | 0.000 | `scored` | - |
+| `sourceneed_v1_001` | `dev` | true | true | true | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_002` | `dev` | true | true | true | 1.000 | 0.750 | `scored` | - |
+| `sourceneed_v1_003` | `dev` | true | true | true | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_004` | `scenario_holdout` | true | true | true | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_005` | `dev` | true | true | true | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_006` | `dev` | true | true | true | 1.000 | 0.750 | `scored` | - |
+| `sourceneed_v1_007` | `dev` | true | true | true | 1.000 | 0.600 | `scored` | - |
+| `sourceneed_v1_008` | `dev` | true | true | true | 0.500 | 0.600 | `scored` | - |
+| `sourceneed_v1_009` | `dev` | true | true | true | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_010` | `dev` | true | true | true | 1.000 | 0.600 | `scored` | - |
 | `sourceneed_v1_011` | `dev` | false | false | true | 1.000 | 1.000 | `scored` | - |
 | `sourceneed_v1_012` | `dev` | false | false | true | 1.000 | 1.000 | `scored` | - |
 | `sourceneed_v1_013` | `scenario_holdout` | false | false | true | 1.000 | 1.000 | `scored` | - |

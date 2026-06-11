@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "created_at": "2026-06-11T05:35:36Z",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

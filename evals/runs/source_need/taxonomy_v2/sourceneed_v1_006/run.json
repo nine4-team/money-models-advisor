@@ -1,0 +1,30 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "completed_at": "2026-06-11T05:38:05Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "Snapshot has enough payback context and no continuity offer; user asks about a concrete recurring maintenance/membership mechanism, so source support should target continuity with payback/CAC as focus terms.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "recurring maintenance",
+      "membership offer",
+      "payback",
+      "CAC"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "continuity"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

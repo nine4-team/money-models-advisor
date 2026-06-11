@@ -1,0 +1,30 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "completed_at": "2026-06-11T05:36:36Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "Known offer-stack context is sufficient: the current turn asks what to offer next after a diagnostic front-end offer sells in order to increase first-month profit. The source need should support the concrete post-sale upsell mechanism, not a broad unit-economics diagnosis.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "diagnostic offer",
+      "post-sale upsell",
+      "first-month profit",
+      "pre-designed room packages"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "upsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

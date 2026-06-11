@@ -1,0 +1,42 @@
+{
+  "case_id": "sourceneed_v1_003",
+  "completed_at": "2026-06-11T05:36:38Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "Snapshot is recommendable and contains CAC, first-30-day gross profit, gross margin, and payback; the user asks how to think about ad spend capacity, which needs source-backed unit-economics interpretation rather than missing-facts collection.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_003/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "paid acquisition capacity",
+      "CAC",
+      "first 30 day gross profit",
+      "payback period"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_003",
+    "conversation_context": "The snapshot is diagnosed and the user asks how much paid acquisition capacity the business has.",
+    "focus_aliases": {
+      "ad spend": [
+        "paid acquisition capacity",
+        "paid acquisition"
+      ],
+      "client financed acquisition": [
+        "CFA"
+      ],
+      "first 30 day gross profit": [
+        "gross profit"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  }
+}

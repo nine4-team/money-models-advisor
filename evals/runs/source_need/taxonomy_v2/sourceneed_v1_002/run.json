@@ -1,0 +1,30 @@
+{
+  "case_id": "sourceneed_v1_002",
+  "completed_at": "2026-06-11T05:36:41Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "Snapshot is payback-ready and the user asks for a Money Models acquisition framework explanation; source-backed teaching evidence is appropriate, with minimal unit-economics layer.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_002/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "client-financed acquisition",
+      "CAC",
+      "payback period",
+      "first 30 day gross profit"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_002",
+    "conversation_context": "The snapshot is payback-ready and the user asks for a Money Models acquisition framework explanation.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about client-financed acquisition here?"
+  }
+}

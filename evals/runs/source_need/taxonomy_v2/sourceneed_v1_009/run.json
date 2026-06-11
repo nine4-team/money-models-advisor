@@ -1,0 +1,30 @@
+{
+  "case_id": "sourceneed_v1_009",
+  "completed_at": "2026-06-11T05:37:58Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "Snapshot is payback-ready with CAC, first-30-day gross profit, and calculated payback available. The user asks for a source-backed diagnostic comparison of CAC versus gross profit as the bottleneck, so retrieval should support unit-economics interpretation rather than substitute for missing facts.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_009/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_009/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_009/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "gross profit per client",
+      "payback period",
+      "acquisition capacity"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_009",
+    "conversation_context": "The snapshot is payback-ready. The user asks whether CAC or gross profit is the real bottleneck.",
+    "scenario_id": "1584_design",
+    "user_turn": "is the problem really CAC, or do we mostly need to make more gross profit per client?"
+  }
+}

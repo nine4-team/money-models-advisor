@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
@@ -145,10 +146,26 @@ def validate_cases(cases: list[dict[str, Any]]) -> list[str]:
                     expected_intent = source_need.get("intent") if isinstance(source_need, dict) else None
                     if expected_intent in INTENTS and expected_intent not in acceptable_intents:
                         errors.append(f"{case_ref}: acceptable_intents must include expected_source_need.intent")
+            focus_aliases = case.get("focus_aliases")
+            if focus_aliases is not None:
+                if not isinstance(focus_aliases, dict):
+                    errors.append(f"{case_ref}: focus_aliases must be an object when present")
+                else:
+                    expected_terms = set(source_need.get("focus_terms", [])) if isinstance(source_need, dict) else set()
+                    unknown_terms = sorted(set(focus_aliases) - expected_terms)
+                    if unknown_terms:
+                        errors.append(f"{case_ref}: focus_aliases keys must be expected focus terms: {', '.join(unknown_terms)}")
+                    for term, aliases in focus_aliases.items():
+                        if not isinstance(aliases, list) or not aliases:
+                            errors.append(f"{case_ref}: focus_aliases.{term} must be a non-empty list")
+                        elif not all(isinstance(alias, str) and alias.strip() for alias in aliases):
+                            errors.append(f"{case_ref}: focus_aliases.{term} must contain non-empty strings")
         elif source_need is not None:
             errors.append(f"{case_ref}: expected_source_need must be null when expected_search is false")
         elif case.get("acceptable_intents") is not None:
             errors.append(f"{case_ref}: acceptable_intents must be omitted when expected_search is false")
+        elif case.get("focus_aliases") is not None:
+            errors.append(f"{case_ref}: focus_aliases must be omitted when expected_search is false")
 
         for field in ("snapshot_fixture_path", "prior_sessions_fixture_path"):
             value = case.get(field)
@@ -255,11 +272,31 @@ def acceptable_intents(case: dict[str, Any], expected: SourceNeed | None) -> set
     return {expected.intent}
 
 
-def term_recall(expected_terms: tuple[str, ...], actual_terms: tuple[str, ...]) -> float:
+def normalize_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
+def focus_aliases(case: dict[str, Any]) -> dict[str, tuple[str, ...]]:
+    aliases = case.get("focus_aliases")
+    if not isinstance(aliases, dict):
+        return {}
+    return {
+        term: tuple(alias.strip() for alias in raw_aliases if isinstance(alias, str) and alias.strip())
+        for term, raw_aliases in aliases.items()
+        if isinstance(term, str) and isinstance(raw_aliases, list)
+    }
+
+
+def term_recall(expected_terms: tuple[str, ...], actual_terms: tuple[str, ...], aliases: dict[str, tuple[str, ...]] | None = None) -> float:
     if not expected_terms:
         return 1.0
-    actual_text = " ".join(actual_terms).lower()
-    hits = sum(1 for term in expected_terms if term.lower() in actual_text)
+    aliases = aliases or {}
+    actual_text = normalize_text(" ".join(actual_terms))
+    hits = 0
+    for term in expected_terms:
+        terms_to_match = (term, *aliases.get(term, ()))
+        if any(normalize_text(candidate) in actual_text for candidate in terms_to_match):
+            hits += 1
     return hits / len(expected_terms)
 
 
@@ -300,7 +337,7 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
         actual_layers = set(actual_need.layers)
         layer_exact_match = actual_layers == expected_layers
         layer_recall = len(expected_layers & actual_layers) / len(expected_layers)
-        focus_recall = term_recall(expected.focus_terms, actual_need.focus_terms)
+        focus_recall = term_recall(expected.focus_terms, actual_need.focus_terms, focus_aliases(case))
     elif not expected_search:
         intent_match = actual_need is None
         layer_exact_match = actual_need is None
@@ -362,6 +399,8 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         "",
         "Some labeled cases may include `acceptable_intents`. That is eval-only label tolerance for turns where more than one primary retrieval objective is defensible; runtime source needs still emit one intent per source-material search call.",
         "",
+        "Some labeled cases may include `focus_aliases`. That is eval-only concept tolerance for cases where the acting agent generated semantically aligned focus terms with different wording. Exact focus-term recall remains a deterministic debugging signal, not a production-quality semantic score.",
+        "",
         "This script does not run an agent and does not call external model services. It validates labels and scores saved `run.json` artifacts when they exist under `evals/runs/source_need/`.",
         "",
         "## Dataset",
@@ -412,7 +451,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
                 f"- Intent match on expected-search cases: {pct(intent_matches, len(search_expected))}",
                 f"- Layer exact match on expected-search cases: {pct(layer_exact_matches, len(search_expected))}",
                 f"- Average layer recall on expected-search cases: {fmt(average_layer_recall)}",
-                f"- Average focus-term recall on expected-search cases: {fmt(average_focus_recall)}",
+                f"- Average focus-term concept recall on expected-search cases: {fmt(average_focus_recall)}",
                 f"- Correct no-search controls: {pct(correct_no_search, len(no_search_expected))}",
             ]
         )
@@ -428,17 +467,19 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             lines.append("- The search/no-search boundary is clean on this seed set.")
         else:
             lines.append("- The search/no-search boundary still needs instruction or tool-surface work before retrieval-backend comparisons.")
-        if intent_matches < len(search_expected) or layer_exact_matches < len(search_expected):
+        if intent_matches == len(search_expected) and layer_exact_matches / len(search_expected) >= 0.9:
+            lines.append("- Source-need precision meets the seed gate for retrieval-backend comparison; carry any residual layer misses as caveats.")
+        elif intent_matches < len(search_expected) or layer_exact_matches < len(search_expected):
             lines.append("- Source-need precision is still partial; inspect intent and layer misses before treating retrieval-backend comparisons as meaningful.")
         if average_focus_recall is not None and average_focus_recall < 0.7:
-            lines.append("- Focus-term recall is low enough that the metric should be treated as a development signal, not a production-quality semantic score.")
+            lines.append("- Focus-term concept recall is low enough that the metric should be treated as a development signal, not a production-quality semantic score.")
 
     lines.extend(
         [
             "",
             "## Case Table",
             "",
-            "| Case | Split | Expected Search | Actual Search | Intent Match | Layer Recall | Focus Recall | Status | Failure Reasons |",
+            "| Case | Split | Expected Search | Actual Search | Intent Match | Layer Recall | Focus Concept Recall | Status | Failure Reasons |",
             "|---|---|---:|---:|---:|---:|---:|---|---|",
         ]
     )
@@ -485,7 +526,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_source_need_cases.jsonl")
-    parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "source_need")
+    parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "source_need" / "taxonomy_v2")
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "advisor_source_need_generation.md")
     args = parser.parse_args()
 

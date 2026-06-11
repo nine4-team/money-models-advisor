@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_013",
+  "completed_at": "2026-06-11T05:39:14Z",
+  "created_at": "2026-06-11T05:35:36Z",
+  "notes": "Simple vocabulary question; gross profit can be defined directly in plain English without Money Models source-material search. Empty snapshot only means there are no business-specific facts to diagnose or recommend from.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_013/business",
+    "sessions_dir": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_013/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/taxonomy_v2/sourceneed_v1_013/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_013",
+    "conversation_context": "The snapshot is empty. The user asks a simple business vocabulary question.",
+    "scenario_id": "1584_design",
+    "user_turn": "what does gross profit mean in plain English?"
+  }
+}
