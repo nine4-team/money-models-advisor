@@ -271,10 +271,15 @@ Input artifact:
         "intent": "diagnostic_evidence",
         "layers": ["unit-economics"],
         "focus_terms": ["CAC", "gross profit", "payback period"],
-        "user_turn": "what should we do next?"
+        "user_turn": "what should we do next?",
+        "query_variants": [
+          "CAC gross profit payback period",
+          "customer acquisition cost first month gross profit"
+        ]
       },
       "queries": [
-        "CAC gross profit payback period"
+        "CAC gross profit payback period",
+        "customer acquisition cost first month gross profit"
       ],
       "chunks": [
         {
@@ -425,6 +430,8 @@ This means the command shape is now workable for realistic turns, but the next b
 Query-variant source-event pass:
 
 - `session finish` now rejects source events whose `SourceNeed` omits 2-4 agent-written `query_variants`.
-- `scripts/eval_source_event_traces.py --require-query-variants` now scores whether completed source-event traces include those variants.
+- `session finish` also requires every `query_variants` entry to appear in the executed `queries` list, so a trace cannot pass by listing unused variants.
+- `scripts/eval_source_event_traces.py --require-query-variants` now scores whether completed source-event traces include and execute those variants.
 - Three blind subagents reran the six source-event cases under `evals/runs/source_events/query_variants_v1/`.
+- Each committed `run.json` records runner provenance, assigned cases, and whether expected labels were hidden from the acting run.
 - `evals/reports/advisor_source_event_query_variants.md` reports 6 / 6 passing, 6 / 6 expected source events matched, and 0 extra-event warnings.

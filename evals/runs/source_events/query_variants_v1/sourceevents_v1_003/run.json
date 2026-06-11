@@ -6,6 +6,17 @@
     "session_finish"
   ],
   "case_id": "sourceevents_v1_003",
+  "runner_provenance": {
+    "agent_id": "019eb871-529c-7c30-80be-15301ddd64ef",
+    "agent_nickname": "Mendel",
+    "agent_type": "worker",
+    "blind_to_expected_labels": true,
+    "assigned_case_ids": [
+      "sourceevents_v1_003",
+      "sourceevents_v1_004"
+    ],
+    "notes": "Subagent was instructed to treat expected_source_events and label fields as evaluator-only."
+  },
   "cited_chunk_ids": [
     "money-models-offer-stacks:0",
     "classic-upsell:4",

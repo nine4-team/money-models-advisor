@@ -577,6 +577,7 @@ def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
         queries = [event["query"]]
     if not isinstance(queries, list) or not queries or not all(isinstance(query, str) and query.strip() for query in queries):
         raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+    _validate_query_variants_executed(source_need, queries, f"record-json source_events[{index}]")
 
     chunks = event.get("chunks")
     if not isinstance(chunks, list) or not chunks:
@@ -638,6 +639,20 @@ def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> No
         or not all(isinstance(query, str) and query.strip() for query in query_variants)
     ):
         raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
+
+
+def _validate_query_variants_executed(source_need: dict[str, Any], queries: list[str], label: str) -> None:
+    query_variants = source_need.get("query_variants")
+    if not isinstance(query_variants, list):
+        return
+    executed = {_normalize_query_text(query) for query in queries}
+    missing = [variant for variant in query_variants if _normalize_query_text(variant) not in executed]
+    if missing:
+        raise SystemExit(f"{label}.queries must include every source_need.query_variants entry")
+
+
+def _normalize_query_text(value: str) -> str:
+    return " ".join(value.split()).lower()
 
 
 def _session_finish_warnings(source_events: list[dict[str, Any]], cited_chunk_ids: list[str], metadata: dict[str, Any]) -> list[str]:

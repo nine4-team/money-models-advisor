@@ -1,5 +1,16 @@
 {
   "case_id": "sourceevents_v1_005",
+  "runner_provenance": {
+    "agent_id": "019eb871-57c3-77f1-9d4c-9e2fa15e506f",
+    "agent_nickname": "Archimedes",
+    "agent_type": "worker",
+    "blind_to_expected_labels": true,
+    "assigned_case_ids": [
+      "sourceevents_v1_005",
+      "sourceevents_v1_006"
+    ],
+    "notes": "Subagent was instructed to treat expected_source_events and label fields as evaluator-only. This run records a transient session-finish schema error that was corrected."
+  },
   "visible_context": null,
   "workflow_steps": [
     {

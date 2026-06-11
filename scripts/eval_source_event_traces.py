@@ -60,6 +60,7 @@ class EventMatch:
     focus_recall: float
     has_chunks: bool
     query_variant_count: int
+    executed_query_variant_count: int
 
 
 @dataclass(frozen=True)
@@ -224,18 +225,36 @@ def has_chunks(event: dict[str, Any]) -> bool:
 
 
 def query_variant_count(event: dict[str, Any]) -> int:
+    return len(query_variants(event))
+
+
+def query_variants(event: dict[str, Any]) -> list[str]:
     source_need = event.get("source_need")
     if not isinstance(source_need, dict):
-        return 0
+        return []
     variants = source_need.get("query_variants")
     if not isinstance(variants, list):
+        return []
+    return [variant.strip() for variant in variants if isinstance(variant, str) and variant.strip()]
+
+
+def executed_query_variant_count(event: dict[str, Any]) -> int:
+    queries = event.get("queries")
+    if queries is None and isinstance(event.get("query"), str):
+        queries = [event["query"]]
+    if not isinstance(queries, list):
         return 0
-    return sum(1 for variant in variants if isinstance(variant, str) and variant.strip())
+    executed = {normalize_query_text(query) for query in queries if isinstance(query, str)}
+    return sum(1 for variant in query_variants(event) if normalize_query_text(variant) in executed)
+
+
+def normalize_query_text(value: str) -> str:
+    return " ".join(value.split()).lower()
 
 
 def find_best_match(expected: SourceNeed, events: list[dict[str, Any]], used_indexes: set[int]) -> tuple[int | None, EventMatch]:
     best_index = None
-    best_match = EventMatch(expected, None, False, 0.0, 0.0, False, 0)
+    best_match = EventMatch(expected, None, False, 0.0, 0.0, False, 0, 0)
     best_score = -1.0
     for index, event in enumerate(events):
         if index in used_indexes:
@@ -248,11 +267,12 @@ def find_best_match(expected: SourceNeed, events: list[dict[str, Any]], used_ind
         focus = term_recall(expected.focus_terms, need.focus_terms)
         chunks = has_chunks(event)
         variants = query_variant_count(event)
+        executed_variants = executed_query_variant_count(event)
         score = (2.0 if intent_match else 0.0) + layers + focus + (0.25 if chunks else 0.0)
         if score > best_score:
             best_index = index
             best_score = score
-            best_match = EventMatch(expected, need, intent_match, layers, focus, chunks, variants)
+            best_match = EventMatch(expected, need, intent_match, layers, focus, chunks, variants, executed_variants)
     return best_index, best_match
 
 
@@ -322,8 +342,10 @@ def score_case(case: dict[str, Any], run_path: Path | None, *, require_query_var
             failures.append(f"focus_miss:{need.intent}")
         if not match.has_chunks:
             failures.append(f"missing_chunks:{need.intent}")
-        if require_query_variants and match.query_variant_count < 2:
+        if require_query_variants and not 2 <= match.query_variant_count <= 4:
             failures.append(f"missing_query_variants:{need.intent}")
+        if require_query_variants and match.executed_query_variant_count != match.query_variant_count:
+            failures.append(f"unexecuted_query_variants:{need.intent}")
 
     extra_events = max(0, len(events) - len(used_indexes))
     matched = sum(
@@ -331,7 +353,10 @@ def score_case(case: dict[str, Any], run_path: Path | None, *, require_query_var
         and match.layer_recall >= 1.0
         and match.focus_recall >= 0.5
         and match.has_chunks
-        and (not require_query_variants or match.query_variant_count >= 2)
+        and (
+            not require_query_variants
+            or (2 <= match.query_variant_count <= 4 and match.executed_query_variant_count == match.query_variant_count)
+        )
         for match in matches
     )
     all_matched = matched == len(expected)
@@ -388,6 +413,7 @@ def render_report(
         "## Trace Requirement",
         "",
         "- Query variants required: " + ("yes" if require_query_variants else "no"),
+        "- Query variants must be present in executed queries: " + ("yes" if require_query_variants else "no"),
         "",
         "## Dataset",
         "",

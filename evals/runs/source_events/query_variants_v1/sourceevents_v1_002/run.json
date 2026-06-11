@@ -1,5 +1,16 @@
 {
   "case_id": "sourceevents_v1_002",
+  "runner_provenance": {
+    "agent_id": "019eb871-4dcd-7343-b4ff-d85590f79ce1",
+    "agent_nickname": "Nash",
+    "agent_type": "worker",
+    "blind_to_expected_labels": true,
+    "assigned_case_ids": [
+      "sourceevents_v1_001",
+      "sourceevents_v1_002"
+    ],
+    "notes": "Subagent was instructed to treat expected_source_events and label fields as evaluator-only."
+  },
   "visible_context": {
     "case_id": "sourceevents_v1_002",
     "split": "post_hardening_regression",

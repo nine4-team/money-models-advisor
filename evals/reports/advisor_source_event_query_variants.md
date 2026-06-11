@@ -9,6 +9,7 @@ It does not run an agent and does not call external model services. Acting agent
 ## Trace Requirement
 
 - Query variants required: yes
+- Query variants must be present in executed queries: yes
 
 ## Dataset
 
