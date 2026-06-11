@@ -214,6 +214,41 @@ JD-aligned next experiment:
 - Compare v1 flattened queries versus v2 variants on the golden search-query cases. **Done in `evals/reports/retrieval_backend_comparison_generated_variants.md`.**
 - Record quality, latency, embedding-cache behavior, and cost-oriented signals in the report. **Next.**
 
+Detailed implementation plan for the next report pass:
+
+1. Add embedding instrumentation without changing retrieval behavior.
+
+   Extend `OpenAIEmbeddingClient` with a small stats object that records cache hits, cache misses, API batches, embedded inputs, and approximate input characters. Keep the cache key and embedding outputs unchanged. The goal is observability, not a retrieval change.
+
+2. Add per-backend timing in the search-query evaluator.
+
+   Measure index-build time once per backend run and per-case retrieval latency around the actual search call. Report p50 and p95 latency for BM25, vector, and hybrid. Keep quality metrics identical so the new report answers: did the same retrieval choice improve quality, and what did it cost in runtime?
+
+3. Add cache/cost reporting to backend comparison.
+
+   For vector and hybrid runs, include cache hits, cache misses, cache hit rate, estimated newly embedded inputs, and estimated embedding cost. BM25 should report `n/a` for embedding metrics. Cost estimates should be clearly labeled as estimates and based on configured model pricing constants, not treated as billing truth.
+
+4. Separate warm-cache and cold-cache interpretation.
+
+   The default report should describe the current cache state because that is what a developer run actually experienced. Add an optional cold-cache mode or documented manual command later only if needed. Do not delete `.cache/embeddings/` during ordinary eval runs; that would make routine testing unnecessarily expensive and fragile.
+
+5. Preserve the current product boundary.
+
+   Embedding API use remains allowed only for deterministic vectorization. Do not add external model calls for source-need generation, labeling, acting-agent traces, or answer synthesis. This keeps the JD-aligned cost story focused: cached embeddings reduce vector retrieval cost, while agent reasoning stays in the Codex/subscription path.
+
+6. Update reports and docs together.
+
+   Regenerate `evals/reports/retrieval_backend_comparison.md` and `evals/reports/retrieval_backend_comparison_generated_variants.md`, then update `DESIGN.md`, `GOLDEN_DATASET.md`, `JOB_DESCRIPTION.md`, and `SEARCH_QUERY_QUALITY_PROGRESS.md` with the observed quality/latency/cache/cost tradeoff.
+
+Acceptance criteria:
+
+- Backend comparison reports include the existing quality table plus a performance/cost table.
+- Reports show p50/p95 retrieval latency for every backend.
+- Reports show embedding cache hits, misses, hit rate, API batches, and estimated incremental embedding cost for vector/hybrid.
+- Unit tests cover cache-hit/cache-miss accounting without making network calls.
+- Existing retrieval-quality numbers do not change except for normal latency variation.
+- The narrative explicitly says cached embeddings are the cost-control mechanism and does not imply that agent work uses the OpenAI API.
+
 ## Phase 2 — Chunking Comparison
 
 Objective: justify the chunking strategy with data.
