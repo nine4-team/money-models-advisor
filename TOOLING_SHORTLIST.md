@@ -29,7 +29,9 @@ Build the next slice as:
 
 ```bash
 money-model-advisor setup --business-dir /path/to/company
-money-model-advisor chat --business-dir /path/to/company
+money-model-advisor snapshot --business-dir /path/to/company
+money-model-advisor search --business-dir /path/to/company --source-need-json ...
+money-model-advisor turn record --business-dir /path/to/company ...
 ```
 
 Setup should:
@@ -39,7 +41,7 @@ Setup should:
 3. collect the fields needed for `BusinessSnapshot`;
 4. write accepted facts to `business_snapshot.json`.
 
-Chat should:
+The agent-operated turn should:
 
 1. load `business_snapshot.json`;
 2. ask targeted missing-context questions when needed;

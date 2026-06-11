@@ -17,6 +17,7 @@ class EvidenceChunk:
     layers: list[str]
     score: float
     preview: str
+    text: str
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -60,6 +61,7 @@ def execute_advisor_queries(
                         layers=list(result.chunk.layers),
                         score=round(result.score, 3),
                         preview=result.chunk.text[:360].replace("\n", " "),
+                        text=result.chunk.text,
                     )
                     for result in results
                 ],

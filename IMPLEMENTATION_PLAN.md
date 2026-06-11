@@ -138,9 +138,8 @@ Implemented:
 - Setup/intake answer collection in `src/money_model_architect/setup_intake.py`.
 - Advisor query policy in `ADVISOR_QUERY_POLICY_V1.md` and `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and evidence capture in `src/money_model_architect/advisor_retrieval.py`.
-- Deterministic stateful advisor prototype in `src/money_model_architect/advisor.py`; remove from product path.
-- `setup`, `search`, `snapshot`, and `logs` CLI commands.
-- Planned `turn record` command and source-need-driven search surface.
+- Deterministic stateful advisor prototype removed from the active source tree.
+- `setup`, `search`, `search --source-need-json`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record` CLI commands.
 - Advisor operating guide in `ADVISOR_OPERATING_GUIDE.md` and project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 - Framework-aware chunking candidate implemented, but not adopted as default.
 - Unit test for the calculator.
@@ -325,9 +324,9 @@ Objective: build the smallest useful advisor loop around real local business con
 Build:
 
 - `money-model-advisor setup --business-dir <path>`. **Started as `setup`; supports `--interactive` and `--answers`.**
-- `money-model-advisor turn record --business-dir <path>`. **Planned: replace deterministic `chat` orchestration in the product path.**
+- `money-model-advisor turn record --business-dir <path>`. **Done: persists completed agent-operated turns.**
 - `money-model-advisor search`. **Done: returns citation-ready local Money Models source chunks.**
-- `money-model-advisor search --source-need-json`. **Planned: source-need-driven product search.**
+- `money-model-advisor search --source-need-json`. **Done: source-need-driven product search.**
 - `money-model-advisor snapshot` and `snapshot set`. **Done: show/update saved `BusinessSnapshot`.**
 - `money-model-advisor logs`. **Done: show saved advisor session turns.**
 - Advisor operating guide / project-local skill. **Done.**
@@ -336,8 +335,8 @@ Build:
 - Snapshot update from setup answers and agent-saved facts. **Started for setup answers and `snapshot set`.**
 - An agent-led advisor turn that can clarify, calculate, diagnose, search source material, critique, draft, compare, teach, recommend, and update saved context. **Target: agent loop outside deterministic CLI orchestration; CLI records and executes tools.**
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
-- Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Agent-owned; deterministic `chat` synthesis should be removed from the product path.**
-- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Planned through `turn record`.**
+- Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Agent-owned; deterministic `chat` synthesis has been removed from the active product path.**
+- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started through `turn record`.**
 
 Metrics:
 

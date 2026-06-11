@@ -7,7 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .advisor import run_single_turn
+from .advisor_queries import SourceNeed, build_advisor_queries
+from .advisor_retrieval import execute_advisor_queries
 from .business_context import advisor_paths, ensure_advisor_state, utc_now
 from .calculator import (
     UnitEconomics,
@@ -35,7 +36,9 @@ def _build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     source_material = subparsers.add_parser("search", help="Get citation-ready Money Models source chunks")
-    source_material.add_argument("query")
+    source_material.add_argument("query", nargs="?", help="Raw debug/manual search query")
+    source_material.add_argument("--business-dir", help="Directory containing advisor state for source-need search")
+    source_material.add_argument("--source-need-json", help="JSON object or path to JSON file with agent-selected SourceNeed")
     source_material.add_argument("--layer", choices=LAYERS)
     source_material.add_argument("--top-k", type=int, default=5)
 
@@ -51,10 +54,6 @@ def _build_parser() -> argparse.ArgumentParser:
     setup.add_argument("--answers", help="JSON object or path to JSON file with setup answers")
     setup.add_argument("--interactive", action="store_true", help="Prompt for missing setup fields")
 
-    chat = subparsers.add_parser("chat", help="Run the first stateful advisor chat loop")
-    chat.add_argument("--business-dir", required=True, help="Directory containing advisor state")
-    chat.add_argument("--message", help="Single user message. If omitted, starts a simple interactive loop.")
-
     snapshot = subparsers.add_parser("snapshot", help="Show or update the saved BusinessSnapshot")
     snapshot.add_argument("snapshot_action", nargs="?", choices=("set",), help="Use 'set' to update snapshot fields")
     snapshot.add_argument("assignments", nargs="*", help="Field assignments such as economics.cac=350")
@@ -65,6 +64,17 @@ def _build_parser() -> argparse.ArgumentParser:
     logs.add_argument("--limit", type=int, default=10, help="Maximum session turns to return")
     logs.add_argument("--full", action="store_true", help="Return full saved session records")
 
+    turn = subparsers.add_parser("turn", help="Record completed agent-operated advisor turns")
+    turn_subparsers = turn.add_subparsers(dest="turn_command", required=True)
+    record = turn_subparsers.add_parser("record", help="Persist one completed advisor turn")
+    record.add_argument("--business-dir", required=True, help="Directory containing advisor state")
+    record.add_argument("--user-message", required=True)
+    record.add_argument("--assistant-message", required=True)
+    record.add_argument("--actions-json", default="[]", help="JSON array or path to JSON file")
+    record.add_argument("--source-events-json", default="[]", help="JSON array or path to JSON file")
+    record.add_argument("--cited-chunk-ids-json", default="[]", help="JSON array or path to JSON file")
+    record.add_argument("--metadata-json", default="{}", help="JSON object or path to JSON file")
+
     return parser
 
 
@@ -73,6 +83,30 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "search":
+        if args.source_need_json:
+            if not args.business_dir:
+                parser.error("search --source-need-json requires --business-dir")
+            paths = advisor_paths(Path(args.business_dir))
+            ensure_advisor_state(paths)
+            snapshot = BusinessSnapshot.load(paths.snapshot)
+            source_need = _parse_source_need(_read_json_value(args.source_need_json))
+            queries = build_advisor_queries(snapshot, source_need)
+            evidence = execute_advisor_queries(
+                queries,
+                _repo_root() / "corpus" / "transcripts",
+                top_k=args.top_k,
+            )
+            payload = {
+                "business_dir": str(paths.business_dir),
+                "source_need": _source_need_to_dict(source_need),
+                "queries": [query.to_dict() for query in queries],
+                "source_material": [item.to_dict() for item in evidence],
+            }
+            print(json.dumps(payload, indent=2))
+            return 0
+
+        if not args.query:
+            parser.error("search requires a raw query or --source-need-json")
         index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts")
         results = index.search(args.query, layer=args.layer, top_k=args.top_k)
         payload = {
@@ -135,29 +169,6 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(payload, indent=2))
         return 0
 
-    if args.command == "chat":
-        business_dir = Path(args.business_dir)
-        paths = advisor_paths(business_dir)
-        ensure_advisor_state(paths)
-        if args.message:
-            turn = run_single_turn(business_dir, args.message)
-            print(turn.assistant_message)
-            return 0
-
-        print("Money Model Advisor. Type 'exit' to quit.")
-        while True:
-            try:
-                message = input("> ").strip()
-            except EOFError:
-                break
-            if message.lower() in {"exit", "quit"}:
-                break
-            if not message:
-                continue
-            turn = run_single_turn(business_dir, message)
-            print(turn.assistant_message)
-        return 0
-
     if args.command == "snapshot":
         paths = advisor_paths(Path(args.business_dir))
         ensure_advisor_state(paths)
@@ -194,6 +205,42 @@ def main(argv: list[str] | None = None) -> int:
                 payload = _summarize_log(path, payload)
             records.append(payload)
         print(json.dumps({"business_dir": str(paths.business_dir), "logs": records}, indent=2))
+        return 0
+
+    if args.command == "turn" and args.turn_command == "record":
+        paths = advisor_paths(Path(args.business_dir))
+        ensure_advisor_state(paths)
+        snapshot = BusinessSnapshot.load(paths.snapshot)
+        actions = _expect_json_type(_read_json_value(args.actions_json), list, "actions-json")
+        source_events = _expect_json_type(_read_json_value(args.source_events_json), list, "source-events-json")
+        cited_chunk_ids = _expect_json_type(_read_json_value(args.cited_chunk_ids_json), list, "cited-chunk-ids-json")
+        metadata = _expect_json_type(_read_json_value(args.metadata_json), dict, "metadata-json")
+        created_at = utc_now()
+        session_path = _write_turn_record(
+            paths.sessions_dir,
+            {
+                "created_at": created_at,
+                "user_message": args.user_message,
+                "assistant_message": args.assistant_message,
+                "actions": actions,
+                "source_events": source_events,
+                "cited_chunk_ids": cited_chunk_ids,
+                "metadata": metadata,
+                "snapshot": snapshot.to_dict(),
+            },
+        )
+        print(
+            json.dumps(
+                {
+                    "recorded": True,
+                    "session_path": str(session_path),
+                    "created_at": created_at,
+                    "source_event_count": len(source_events),
+                    "cited_chunk_ids": cited_chunk_ids,
+                },
+                indent=2,
+            )
+        )
         return 0
 
     snapshot = json.loads(args.snapshot)
@@ -233,6 +280,61 @@ def _parse_value(raw_value: str) -> Any:
         return raw_value
 
 
+def _read_json_value(value: str) -> Any:
+    stripped = value.strip()
+    if stripped.startswith(("{", "[")):
+        return json.loads(stripped)
+    candidate = Path(value).expanduser()
+    if candidate.exists():
+        return json.loads(candidate.read_text(encoding="utf-8"))
+    return json.loads(stripped)
+
+
+def _expect_json_type(value: Any, expected_type: type, label: str) -> Any:
+    if not isinstance(value, expected_type):
+        raise SystemExit(f"{label} must decode to {expected_type.__name__}")
+    return value
+
+
+def _parse_source_need(value: Any) -> SourceNeed:
+    if not isinstance(value, dict):
+        raise SystemExit("source-need-json must decode to an object")
+    intent = value.get("intent")
+    layers = value.get("layers", [])
+    focus_terms = value.get("focus_terms", [])
+    user_turn = value.get("user_turn", "")
+    if not isinstance(intent, str) or not intent:
+        raise SystemExit("source need requires non-empty string field: intent")
+    if not isinstance(layers, list) or not all(isinstance(layer, str) for layer in layers):
+        raise SystemExit("source need field layers must be a list of strings")
+    if not isinstance(focus_terms, list) or not all(isinstance(term, str) for term in focus_terms):
+        raise SystemExit("source need field focus_terms must be a list of strings")
+    if not isinstance(user_turn, str):
+        raise SystemExit("source need field user_turn must be a string when supplied")
+    invalid_layers = [layer for layer in layers if layer not in LAYERS]
+    if invalid_layers:
+        raise SystemExit(f"unknown source need layer(s): {', '.join(invalid_layers)}")
+    return SourceNeed(intent=intent, layers=tuple(layers), focus_terms=tuple(focus_terms), user_turn=user_turn)
+
+
+def _source_need_to_dict(source_need: SourceNeed) -> dict[str, Any]:
+    return {
+        "intent": source_need.intent,
+        "layers": list(source_need.layers),
+        "focus_terms": list(source_need.focus_terms),
+        "user_turn": source_need.user_turn,
+    }
+
+
+def _write_turn_record(sessions_dir: Path, payload: dict[str, Any]) -> Path:
+    timestamp = payload["created_at"].replace(":", "").replace("-", "").replace("Z", "")
+    existing = len(list(sessions_dir.glob(f"{timestamp}*.json")))
+    suffix = f"_{existing + 1:02d}" if existing else ""
+    path = sessions_dir / f"{timestamp}{suffix}.json"
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
 def _set_snapshot_field(snapshot: BusinessSnapshot, field_name: str, value: Any) -> None:
     target: Any = snapshot
     parts = field_name.split(".")
@@ -249,8 +351,17 @@ def _set_snapshot_field(snapshot: BusinessSnapshot, field_name: str, value: Any)
 
 def _summarize_log(path: Path, payload: dict[str, Any]) -> dict[str, Any]:
     evidence = payload.get("evidence", [])
+    source_events = payload.get("source_events", [])
     source_ids = []
     for item in evidence:
+        for chunk in item.get("chunks", []):
+            chunk_id = chunk.get("id")
+            if chunk_id and chunk_id not in source_ids:
+                source_ids.append(chunk_id)
+    for chunk_id in payload.get("cited_chunk_ids", []):
+        if chunk_id and chunk_id not in source_ids:
+            source_ids.append(chunk_id)
+    for item in source_events:
         for chunk in item.get("chunks", []):
             chunk_id = chunk.get("id")
             if chunk_id and chunk_id not in source_ids:
@@ -262,6 +373,7 @@ def _summarize_log(path: Path, payload: dict[str, Any]) -> dict[str, Any]:
         "assistant_message": payload.get("assistant_message"),
         "actions": payload.get("actions", []),
         "retrieval_queries": payload.get("retrieval_queries", []),
+        "source_events": source_events,
         "source_chunk_ids": source_ids,
     }
 

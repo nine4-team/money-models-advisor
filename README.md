@@ -36,12 +36,24 @@ PYTHONPATH=src python3 -m money_model_architect.cli setup \
   --answers '{"business":{"business_type":"coaching business","icp":"gym owners"},"money_model":{"core_offer":{"description":"implementation program","price":5000},"attraction_offer":{"exists":true},"upsell":{"exists":false},"downsell":{"exists":true},"continuity":{"exists":false}},"economics":{"cac":350,"first_30_day_gross_profit":120},"problem":{"user_goal":"diagnose cash payback"}}'
 ```
 
-Run one advisor turn from the saved snapshot:
+Search source material from an explicit agent-selected SourceNeed:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli chat \
+PYTHONPATH=src python3 -m money_model_architect.cli search \
   --business-dir /path/to/company \
-  --message "We are a coaching business. Core offer is implementation program. CAC is $350 and first-30-day gross profit is $120. I want to diagnose cash payback."
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?"}'
+```
+
+Record a completed agent-operated turn:
+
+```bash
+PYTHONPATH=src python3 -m money_model_architect.cli turn record \
+  --business-dir /path/to/company \
+  --user-message "why do we need fulfillment cost?" \
+  --assistant-message "Fulfillment cost matters because gross profit, not revenue, pays back CAC." \
+  --actions-json '["snapshot","search","answer"]' \
+  --source-events-json '[{"source_need":{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","gross profit"]},"query":"CAC gross profit payback period","chunks":[{"id":"payback-period:0"}]}]' \
+  --cited-chunk-ids-json '["payback-period:0"]'
 ```
 
 The CLI writes local state under `/path/to/company/.money-model-advisor/`.
@@ -165,13 +177,14 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
 - Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
-- Deterministic stateful advisor prototype implemented in `src/money_model_architect/advisor.py`; this is being replaced in the product path by agent-led tool use plus `turn record`.
-- Core CLI commands started: `setup`, `search`, `snapshot`, and `logs`; `turn record` and source-need search are next.
+- Agent-facing source-need search implemented in `search --source-need-json`.
+- Completed turn persistence implemented in `turn record`.
+- Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.
+- Core CLI commands implemented: `setup`, `search`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record`.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 
 ## What remains planned
 
-- Agent/CLI boundary refactor: add `turn record`, add source-need search, and remove deterministic advisor orchestration from the product path.
 - Agent-led local doc inspection before snapshot updates.
 - Source-need taxonomy and scoring cleanup before retrieval-model comparisons.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.

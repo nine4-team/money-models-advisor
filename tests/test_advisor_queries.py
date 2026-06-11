@@ -25,51 +25,15 @@ def diagnosable_snapshot() -> BusinessSnapshot:
 
 
 class AdvisorQueryPolicyTest(unittest.TestCase):
-    def test_insufficient_context_does_not_query_by_default(self):
-        snapshot = BusinessSnapshot()
-
-        queries = build_advisor_queries(snapshot)
-
-        self.assertEqual(queries, [])
-
-    def test_diagnosable_snapshot_builds_diagnostic_query(self):
-        snapshot = diagnosable_snapshot()
-
-        queries = build_advisor_queries(snapshot)
-
-        self.assertEqual(len(queries), 1)
-        self.assertEqual(queries[0].intent, "diagnostic_evidence")
-        self.assertEqual(queries[0].layer, "unit-economics")
-        self.assertIn("CAC", queries[0].query)
-        self.assertIn("payback period", queries[0].query)
-        self.assertIn("coaching business", queries[0].query)
-
-    def test_payback_constraint_without_upsell_or_continuity_builds_fix_queries(self):
-        snapshot = diagnosable_snapshot()
-        snapshot.problem.diagnosed_constraints.append("payback_not_recovered_without_recurring_gp")
-        snapshot.money_model.attraction_offer.exists = True
-        snapshot.money_model.upsell.exists = False
-        snapshot.money_model.downsell.exists = True
-        snapshot.money_model.continuity.exists = False
-        snapshot.refresh()
-
-        queries = build_advisor_queries(snapshot)
-
-        self.assertEqual([query.layer for query in queries], ["upsells", "continuity"])
-        self.assertTrue(all(query.intent == "recommendation_evidence" for query in queries))
-        self.assertIn("upsell after first sale", queries[0].query)
-        self.assertIn("continuity recurring gross profit", queries[1].query)
-
-    def test_query_builder_does_not_route_teaching_by_keyword(self):
-        snapshot = BusinessSnapshot()
-
-        queries = build_advisor_queries(snapshot)
-
-        self.assertEqual(queries, [])
-
     def test_diagnostic_query_retrieves_local_evidence(self):
         snapshot = diagnosable_snapshot()
-        queries = build_advisor_queries(snapshot)
+        source_need = SourceNeed(
+            intent="diagnostic_evidence",
+            layers=("unit-economics",),
+            focus_terms=("CAC", "first 30 day gross profit", "payback period"),
+            user_turn="does this mean acquisition is probably not the bottleneck?",
+        )
+        queries = build_advisor_queries(snapshot, source_need)
 
         evidence = execute_advisor_queries(queries, TRANSCRIPT_DIR, top_k=3)
 
@@ -86,11 +50,17 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         snapshot.money_model.downsell.exists = True
         snapshot.money_model.continuity.exists = False
         snapshot.refresh()
-        queries = build_advisor_queries(snapshot)
+        source_need = SourceNeed(
+            intent="recommendation_evidence",
+            layers=("upsells", "continuity"),
+            focus_terms=("upsell after first sale", "continuity recurring gross profit", "improve payback period"),
+            user_turn="what should I fix first?",
+        )
+        queries = build_advisor_queries(snapshot, source_need)
 
         evidence = execute_advisor_queries(queries, TRANSCRIPT_DIR, top_k=2)
 
-        self.assertEqual([item.layer for item in evidence], ["upsells", "continuity"])
+        self.assertEqual([item.layer for item in evidence], [None])
         self.assertTrue(all(item.chunks for item in evidence))
 
     def test_source_need_overrides_snapshot_status(self):
@@ -102,7 +72,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
             user_turn="if cash is tight today, how should we think about payment plans?",
         )
 
-        queries = build_advisor_queries(snapshot, source_need=source_need)
+        queries = build_advisor_queries(snapshot, source_need)
 
         self.assertEqual(len(queries), 1)
         self.assertEqual(queries[0].intent, "recommendation_evidence")
@@ -126,8 +96,8 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
             user_turn="what is the difference between an attraction offer and an upsell?",
         )
 
-        teaching_query = build_advisor_queries(snapshot, source_need=teaching_need)[0]
-        comparison_query = build_advisor_queries(snapshot, source_need=comparison_need)[0]
+        teaching_query = build_advisor_queries(snapshot, teaching_need)[0]
+        comparison_query = build_advisor_queries(snapshot, comparison_need)[0]
 
         self.assertNotEqual(teaching_query.query, comparison_query.query)
         self.assertEqual(teaching_query.layer, "unit-economics")

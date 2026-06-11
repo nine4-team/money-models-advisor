@@ -6,7 +6,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from money_model_architect.advisor import run_single_turn
 from money_model_architect.business_context import advisor_paths
 from money_model_architect.snapshot import BusinessSnapshot
 from money_model_architect.setup_intake import run_setup
@@ -83,28 +82,6 @@ class BusinessContextTest(unittest.TestCase):
             self.assertEqual(summary["total"], 0)
             self.assertIsNone(snapshot.money_model.core_offer.description)
 
-    def test_single_chat_turn_updates_snapshot_and_persists_session(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            business_dir = Path(tmp)
-            message = (
-                "We are a coaching business. Core offer is implementation program. "
-                "CAC is $350 and first-30-day gross profit is $120. "
-                "I want to diagnose cash payback."
-            )
-
-            turn = run_single_turn(business_dir, message)
-            paths = advisor_paths(business_dir)
-            saved_snapshot = json.loads(paths.snapshot.read_text(encoding="utf-8"))
-            sessions = list(paths.sessions_dir.glob("*.json"))
-
-            self.assertIn("payback", turn.assistant_message.lower())
-            self.assertEqual(saved_snapshot["business"]["business_type"], "coaching business")
-            self.assertEqual(saved_snapshot["economics"]["cac"], 350)
-            self.assertEqual(saved_snapshot["economics"]["first_30_day_gross_profit"], 120)
-            self.assertTrue(sessions)
-            self.assertTrue(turn.evidence)
-            self.assertTrue(turn.evidence[0]["chunks"])
-
     def test_setup_answers_populate_snapshot(self):
         with tempfile.TemporaryDirectory() as tmp:
             business_dir = Path(tmp)
@@ -137,88 +114,6 @@ class BusinessContextTest(unittest.TestCase):
             self.assertEqual(saved["advisor_state"]["advisory_status"], "diagnosable")
             self.assertEqual(saved["money_model"]["core_offer"]["price"], 5000)
             self.assertEqual(saved["field_sources"]["business.business_type"]["source_type"], "setup")
-
-    def test_chat_uses_setup_snapshot(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            business_dir = Path(tmp)
-            run_setup(
-                business_dir,
-                answers={
-                    "business.business_type": "coaching business",
-                    "business.icp": "gym owners",
-                    "money_model.core_offer.description": "implementation program",
-                    "money_model.attraction_offer.exists": True,
-                    "money_model.upsell.exists": False,
-                    "money_model.downsell.exists": True,
-                    "money_model.continuity.exists": False,
-                    "economics.cac": 350,
-                    "economics.first_30_day_gross_profit": 120,
-                    "problem.user_goal": "diagnose cash payback",
-                },
-            )
-
-            turn = run_single_turn(business_dir, "What should I fix first?")
-
-            self.assertIn("payback", turn.assistant_message.lower())
-            self.assertNotIn("What is your CAC?", turn.assistant_message)
-
-    def test_chat_summarizes_known_offer_stack_before_economics_question(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            business_dir = Path(tmp)
-            run_setup(
-                business_dir,
-                answers={
-                    "business.business_type": "premium interior design firm",
-                    "business.icp": "STR owners",
-                    "money_model.core_offer.description": "full-service design",
-                    "money_model.attraction_offer.exists": True,
-                    "money_model.attraction_offer.description": "STR Design Diagnostic",
-                    "money_model.upsell.exists": True,
-                    "money_model.upsell.description": "room packages",
-                    "money_model.downsell.exists": False,
-                    "money_model.continuity.exists": False,
-                    "problem.user_goal": "let's talk about money models",
-                },
-            )
-
-            turn = run_single_turn(business_dir, "let's talk about money models")
-
-            self.assertIn("business context loaded", turn.assistant_message)
-            self.assertIn("premium interior design firm", turn.assistant_message)
-            self.assertIn("offer stack", turn.assistant_message)
-            self.assertIn("What is your CAC?", turn.assistant_message)
-            self.assertEqual(turn.evidence, [])
-            self.assertEqual(turn.retrieval_queries, [])
-
-    def test_chat_synthesizes_cited_recommendation_from_snapshot_and_evidence(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            business_dir = Path(tmp)
-            run_setup(
-                business_dir,
-                answers={
-                    "business.business_type": "coaching business",
-                    "business.icp": "gym owners",
-                    "money_model.core_offer.description": "implementation program",
-                    "money_model.attraction_offer.exists": True,
-                    "money_model.upsell.exists": False,
-                    "money_model.downsell.exists": True,
-                    "money_model.continuity.exists": False,
-                    "economics.cac": 350,
-                    "economics.first_30_day_gross_profit": 120,
-                    "problem.user_goal": "diagnose cash payback",
-                },
-            )
-
-            turn = run_single_turn(business_dir, "What should I fix first?")
-
-            self.assertIn("Diagnosis:", turn.assistant_message)
-            self.assertIn("CAC is $350", turn.assistant_message)
-            self.assertIn("first sale leaves $230", turn.assistant_message)
-            self.assertIn("Recommended next move:", turn.assistant_message)
-            self.assertIn("Source support:", turn.assistant_message)
-            self.assertRegex(turn.assistant_message, r"\[[a-z0-9-]+:\d+\]")
-            self.assertIn("Next action:", turn.assistant_message)
-            self.assertEqual([query["layer"] for query in turn.retrieval_queries], ["upsells", "continuity"])
 
 
 if __name__ == "__main__":

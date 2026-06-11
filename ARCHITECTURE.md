@@ -117,10 +117,12 @@ Agent judgment is appropriate for semantic work:
 
 The CLI should make these judgments auditable by recording prompts, traces, decisions, cited chunks, and rationales. It should score recorded judgments, not replace the agent with hidden semantic heuristics.
 
-Current boundary debt:
+Current boundary status:
 
-- `src/money_model_architect/advisor.py` is a deterministic v1 skeleton that still performs too much orchestration inside `chat`; remove it from the product path.
-- `src/money_model_architect/advisor_queries.py` can still build status-driven queries without a `SourceNeed`; remove or archive that fallback instead of preserving it for compatibility.
+- Deterministic `chat` orchestration has been removed from the active source tree.
+- `src/money_model_architect/advisor_queries.py` requires an explicit agent-selected `SourceNeed`; it no longer builds status-driven queries from snapshot state alone.
+- `search --source-need-json` executes source-material search from the agent's explicit source need.
+- `turn record` persists completed agent-operated turns with actions, source events, cited chunks, metadata, and the current snapshot.
 - `advisor_state.likely_retrieval_layers` and `advisor_state.retrieval_query_terms` are candidate hints, not final semantic decisions.
 - Exact focus-term recall in eval scripts is a debug proxy only; semantic focus coverage and chunk usefulness need recorded agent/human adjudication.
 

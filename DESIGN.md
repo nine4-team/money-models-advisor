@@ -187,7 +187,7 @@ The next implementation work is not external model-service integration. The sett
 
 1. treat the current next-action classification eval as the local baseline for tool-use judgment;
 2. repair the agent/CLI boundary so the agent plans and the CLI records/executes deterministic tools;
-3. add explicit source-need search and turn recording;
+3. add explicit source-need search and turn recording; **implemented**
 4. keep all active work local and auditable.
 
 This keeps the project aligned with the actual product use case and avoids premature infrastructure.

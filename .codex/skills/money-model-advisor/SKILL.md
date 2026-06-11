@@ -92,7 +92,7 @@ These are the operations the agent should use through the CLI. Humans may also r
 | `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
 | `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
 | `calculate` | `calculate ...` |
-| `search_source_material` | `search ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
 | `turn_record` | `turn record --business-dir "$CONTEXT_DIR" ...` |
 | `logs` | `logs --business-dir "$CONTEXT_DIR"` |
 
@@ -123,7 +123,10 @@ Search local source material:
 
 ```bash
 cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli search "CAC payback period" --layer unit-economics --top-k 5
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?"}' \
+  --top-k 5
 ```
 
 Inspect saved turns:

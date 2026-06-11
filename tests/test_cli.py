@@ -30,6 +30,44 @@ class CliTest(unittest.TestCase):
         self.assertIn("text", payload["source_material"][0])
         self.assertIn("id", payload["source_material"][0])
 
+    def test_search_accepts_agent_source_need(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_cli(
+                [
+                    "snapshot",
+                    "set",
+                    "--business-dir",
+                    tmp,
+                    "business.business_type=coaching business",
+                    "money_model.core_offer.description=implementation program",
+                ]
+            )
+            source_need = {
+                "intent": "teaching_evidence",
+                "layers": ["unit-economics"],
+                "focus_terms": ["CAC", "payback period", "gross profit"],
+                "user_turn": "why do we need fulfillment cost?",
+            }
+            output = run_cli(
+                [
+                    "search",
+                    "--business-dir",
+                    tmp,
+                    "--source-need-json",
+                    json.dumps(source_need),
+                    "--top-k",
+                    "1",
+                ]
+            )
+            payload = json.loads(output)
+
+            self.assertEqual(payload["source_need"]["intent"], "teaching_evidence")
+            self.assertEqual(payload["queries"][0]["layer"], "unit-economics")
+            self.assertIn("CAC", payload["queries"][0]["query"])
+            self.assertEqual(len(payload["source_material"]), 1)
+            self.assertEqual(len(payload["source_material"][0]["chunks"]), 1)
+            self.assertIn("text", payload["source_material"][0]["chunks"][0])
+
     def test_snapshot_show_and_set(self):
         with tempfile.TemporaryDirectory() as tmp:
             show_output = run_cli(["snapshot", "--business-dir", tmp])
@@ -55,57 +93,49 @@ class CliTest(unittest.TestCase):
             self.assertFalse(updated["state"]["money_model"]["upsell"]["exists"])
             self.assertEqual(updated["state"]["field_sources"]["economics.cac"]["source_type"], "cli")
 
-    def test_logs_summarize_saved_turns(self):
+    def test_turn_record_persists_completed_agent_turn(self):
         with tempfile.TemporaryDirectory() as tmp:
-            run_cli(
+            source_events = [
+                {
+                    "source_need": {
+                        "intent": "diagnostic_evidence",
+                        "layers": ["unit-economics"],
+                        "focus_terms": ["CAC", "payback period"],
+                    },
+                    "query": "CAC payback period coaching business",
+                    "chunks": [{"id": "payback-period:0", "score": 2.3}],
+                }
+            ]
+            record_output = run_cli(
                 [
-                    "chat",
+                    "turn",
+                    "record",
                     "--business-dir",
                     tmp,
-                    "--message",
-                    "We are a coaching business. Core offer is implementation program. CAC is $350 and first-30-day gross profit is $120. I want to diagnose cash payback.",
+                    "--user-message",
+                    "does this mean acquisition is probably not the bottleneck?",
+                    "--assistant-message",
+                    "CAC is still the first thing I would quantify.",
+                    "--actions-json",
+                    json.dumps(["read_snapshot", "search"]),
+                    "--source-events-json",
+                    json.dumps(source_events),
+                    "--cited-chunk-ids-json",
+                    json.dumps(["payback-period:0"]),
                 ]
             )
+            record = json.loads(record_output)
             logs_output = run_cli(["logs", "--business-dir", tmp])
-            payload = json.loads(logs_output)
+            logs = json.loads(logs_output)
+            full_output = run_cli(["logs", "--business-dir", tmp, "--full"])
+            full_logs = json.loads(full_output)
 
-            self.assertEqual(len(payload["logs"]), 1)
-            self.assertIn("user_message", payload["logs"][0])
-            self.assertIn("assistant_message", payload["logs"][0])
-            self.assertTrue(payload["logs"][0]["source_chunk_ids"])
-
-    def test_chat_persists_clarifying_turn_for_empty_context(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            chat_output = run_cli(["chat", "--business-dir", tmp, "--message", "Help me diagnose my money model."])
-            logs_output = run_cli(["logs", "--business-dir", tmp, "--full"])
-            payload = json.loads(logs_output)
-
-            self.assertIn("What kind of business is this?", chat_output)
-            self.assertEqual(len(payload["logs"]), 1)
-            self.assertEqual(payload["logs"][0]["user_message"], "Help me diagnose my money model.")
-            self.assertEqual(payload["logs"][0]["assistant_message"], "What kind of business is this?")
-            self.assertEqual(payload["logs"][0]["actions"], ["set problem.user_goal"])
-            self.assertEqual(payload["logs"][0]["evidence"], [])
-            self.assertEqual(payload["logs"][0]["retrieval_queries"], [])
-
-    def test_chat_extracts_first_person_business_type_and_logs_diagnosis(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            message = (
-                "I run a coaching business. We sell a 6-week implementation program. "
-                "CAC is $350 and first-30-day gross profit is $120. "
-                "No upsell and no continuity. I want to diagnose cash payback."
-            )
-
-            chat_output = run_cli(["chat", "--business-dir", tmp, "--message", message])
-            logs_output = run_cli(["logs", "--business-dir", tmp, "--full"])
-            payload = json.loads(logs_output)
-
-            self.assertIn("Diagnosis:", chat_output)
-            self.assertNotIn("What kind of business is this?", chat_output)
-            self.assertEqual(len(payload["logs"]), 1)
-            self.assertEqual(payload["logs"][0]["snapshot"]["business"]["business_type"], "coaching business")
-            self.assertTrue(payload["logs"][0]["evidence"])
-            self.assertTrue(payload["logs"][0]["retrieval_queries"])
+            self.assertTrue(record["recorded"])
+            self.assertEqual(record["source_event_count"], 1)
+            self.assertEqual(len(logs["logs"]), 1)
+            self.assertEqual(logs["logs"][0]["actions"], ["read_snapshot", "search"])
+            self.assertEqual(logs["logs"][0]["source_chunk_ids"], ["payback-period:0"])
+            self.assertEqual(full_logs["logs"][0]["source_events"], source_events)
 
 
 if __name__ == "__main__":
