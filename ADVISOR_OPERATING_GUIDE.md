@@ -120,6 +120,21 @@ Search when the advisor needs source material to:
 
 Do not search merely because a user mentioned a framework word. First understand the user's intent in context.
 
+Do not search source material as a substitute for missing business facts. If the responsible next move is to get CAC, gross profit, fulfillment cost, current offer details, or prior-session context before making a recommendation, do that first. Search can come later when enough business context exists to make a source-backed claim.
+
+Do use source search when the snapshot or prior-session context already contains enough facts for a source-backed explanation, diagnosis, comparison, or recommendation. A missing optional field should not block search when the user is asking for conceptual source support.
+
+Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
+
+When generating a source need:
+
+- `teaching_evidence` means the user needs a concept explained.
+- `diagnostic_evidence` means the user needs source support for identifying the business constraint from known facts.
+- `comparison_evidence` means the user needs two concepts or options compared.
+- `recommendation_evidence` means the user needs source support for a recommended next move after the necessary business facts are available.
+
+Use the smallest layer set that can support the answer. Extra layers make retrieval noisier.
+
 ## Snapshot Update Rules
 
 Save only accepted facts:
@@ -158,4 +173,4 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 
 ## Next Development Target
 
-The current CLI tool surface exists and `chat` now starts composing visible answers from snapshot state, deterministic math, source chunks, and next actions. The first next-action classification eval is captured and scored. The source-search query quality eval now checks reference queries and source-need-driven generated queries. The source-need generation case set, trace capture helper, and scorer now exist; the next product improvement is capturing acting-agent source-need runs.
+The current CLI tool surface exists and `chat` now starts composing visible answers from snapshot state, deterministic math, source chunks, and next actions. The first next-action classification eval is captured and scored. The source-search query quality eval now checks reference queries and source-need-driven generated queries. The source-need generation eval has blind acting-agent traces and now passes the search/no-search boundary on the seed set. The next product improvement is tightening source-need precision: intent boundaries, minimal layer choice, and focus-term scoring.

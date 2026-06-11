@@ -18,7 +18,7 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `chat`, `calculate`, `search_source_material`, and `logs`.
 
-Current dev focus: evaluate source-need generation now that next-action classification and source-need-driven query construction have seed baselines. The project keeps the ladder separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, source-need generation asks what source support is needed when search is appropriate. Third, search-query quality asks whether that source need retrieves useful Money Models chunks.
+Current dev focus: tighten source-need precision now that next-action classification, source-need-driven query construction, and source-need search/no-search judgment have seed baselines. The project keeps the ladder separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, source-need generation asks what source support is needed when search is appropriate. Third, search-query quality asks whether that source need retrieves useful Money Models chunks.
 
 Set up advisor state for a context directory:
 
@@ -173,6 +173,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 
 - Broader answer synthesis for teach/compare/clarify/recommendation cases.
 - Agent-led local doc inspection before snapshot updates.
-- Acting-agent source-need generation runs before retrieval-model comparisons.
+- Source-need taxonomy and scoring cleanup before retrieval-model comparisons.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

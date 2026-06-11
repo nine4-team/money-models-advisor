@@ -144,6 +144,25 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEX
 8. Cite inspected chunks inline, such as `[payback-period:0]`.
 9. Use `logs` to inspect prior session turns.
 
+## When To Search
+
+Search source material when the answer needs Money Models support for a concept, comparison, diagnosis, or recommendation.
+
+Do not search source material as a substitute for missing business facts. If the responsible next move is to get CAC, gross profit, fulfillment cost, current offer details, or prior-session context before making a recommendation, do that first. Search can come later when the agent has enough business context to make a source-backed claim.
+
+Do use source search when the snapshot or prior-session context already contains enough facts for a source-backed explanation, diagnosis, comparison, or recommendation. A missing optional field should not block search when the user is asking for conceptual source support.
+
+Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
+
+Use the smallest source need that can support the answer:
+
+- `teaching_evidence`: explain a Money Models concept.
+- `diagnostic_evidence`: support a diagnosis of the business constraint using known facts.
+- `comparison_evidence`: compare Money Models concepts or options.
+- `recommendation_evidence`: support a recommended next move after the needed business facts are available.
+
+Keep source layers minimal. Extra layers make retrieval noisier.
+
 ## Guardrails
 
 - Do not save guesses as snapshot facts.
@@ -151,4 +170,5 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEX
 - Do not reread local business files inside the CLI `chat` path; use `BusinessSnapshot`.
 - Do not cite chunks you did not inspect.
 - Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
 - Prefer one clear clarifying question over premature recommendation.

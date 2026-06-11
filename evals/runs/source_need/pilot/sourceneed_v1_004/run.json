@@ -1,0 +1,32 @@
+{
+  "case_id": "sourceneed_v1_004",
+  "completed_at": "2026-06-11T01:31:32Z",
+  "created_at": "2026-06-11T01:29:48Z",
+  "notes": "Second-pass blind subagent James: compare concepts in offer-stack context.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/pilot/sourceneed_v1_004/business",
+    "sessions_dir": "evals/runs/source_need/pilot/sourceneed_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/pilot/sourceneed_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "attraction offer",
+      "upsell",
+      "offer stack",
+      "front end offer",
+      "backend offer"
+    ],
+    "intent": "comparison_evidence",
+    "layers": [
+      "offers",
+      "upsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_004",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks to compare two Money Models concepts.",
+    "scenario_id": "1584_design",
+    "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+  }
+}

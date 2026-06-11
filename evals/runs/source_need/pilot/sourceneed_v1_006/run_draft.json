@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "created_at": "2026-06-11T01:32:13Z",
+  "paths": {
+    "business_dir": "evals/runs/source_need/pilot/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/source_need/pilot/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/pilot/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

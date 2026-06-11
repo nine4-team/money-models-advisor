@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceneed_v1_001",
+  "created_at": "2026-06-11T01:29:48Z",
+  "paths": {
+    "business_dir": "evals/runs/source_need/pilot/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/source_need/pilot/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/pilot/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}

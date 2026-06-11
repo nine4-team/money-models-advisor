@@ -10,12 +10,13 @@ It is separate from:
 
 ## Current Status
 
-The source-need generation harness exists:
+The source-need generation harness exists and has now been run with blind acting-agent traces:
 
 - case set: `evals/advisor_source_need_cases.jsonl`
 - trace capture helper: `scripts/capture_source_need_trace.py`
 - scorer: `scripts/eval_source_need_generation.py`
 - report: `evals/reports/advisor_source_need_generation.md`
+- run artifacts: `evals/runs/source_need/pilot/`
 
 The seed case set has 14 realistic turns:
 
@@ -23,7 +24,19 @@ The seed case set has 14 realistic turns:
 - 4 no-search controls where source search should not happen
 - dev and scenario-holdout splits
 
-The current report is inventory-only. No acting-agent source-need `run.json` artifacts have been captured yet.
+Current scored result:
+
+- scored runs: 14 / 14
+- search decision accuracy: 100.0%
+- false search rate: 0.0%
+- missed search rate: 0.0%
+- intent match on expected-search cases: 70.0%
+- layer exact match on expected-search cases: 70.0%
+- average layer recall on expected-search cases: 0.850
+- average focus-term recall on expected-search cases: 0.410
+- correct no-search controls: 100.0%
+
+Interpretation: the agent-facing guidance is now good enough on the first-order question of whether source-material search is needed. The remaining weakness is precision in the generated source need, especially intent boundaries and exact focus-term coverage.
 
 ## What A Source Need Represents
 
@@ -68,21 +81,15 @@ For the first v1 pass:
 
 - case labels validate **Done**
 - report generation works without external model-service calls **Done**
-- acting-agent traces are captured **Not yet**
-- search decision accuracy is high enough to avoid noisy retrieval-backend comparisons **Not yet**
-- source-search cases have good intent/layer/focus-term scores **Not yet**
+- acting-agent traces are captured **Done**
+- search decision accuracy is high enough to avoid noisy retrieval-backend comparisons **Done**
+- source-search cases have good intent/layer/focus-term scores **Partially done**
 
 ## Next Work
 
-Capture acting-agent source-need traces under `evals/runs/source_need/`, then score them with:
+Tighten source-need precision before retrieval-backend comparisons:
 
-```bash
-python3 scripts/capture_source_need_trace.py prepare sourceneed_v1_001
-python3 scripts/capture_source_need_trace.py complete \
-  evals/runs/source_need/pilot/sourceneed_v1_001 \
-  --source-search-decision true \
-  --source-need '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["gross profit","fulfillment cost","CAC","payback period"]}'
-python3 scripts/eval_source_need_generation.py
-```
-
-If source-need generation is weak, revise the skill or operating guide. If it is strong, proceed to retrieval-backend comparisons on the same source needs.
+- decide whether `intent` should be a hard single label or whether some cases naturally support multiple reasonable intents
+- refine layer guidance for payment-plan/free-trial cases so agents choose downsell/offer layers consistently
+- improve focus-term scoring so it measures concept coverage instead of only exact substring overlap
+- rerun the source-need eval after the taxonomy/scoring cleanup

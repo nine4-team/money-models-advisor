@@ -1,0 +1,30 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "completed_at": "2026-06-11T01:31:32Z",
+  "created_at": "2026-06-11T01:29:48Z",
+  "notes": "Second-pass blind subagent Anscombe: source-backed recommendation about upsells.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/pilot/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/source_need/pilot/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/pilot/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "diagnostic front-end offer",
+      "next offer",
+      "upsell",
+      "first-month profit"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "upsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

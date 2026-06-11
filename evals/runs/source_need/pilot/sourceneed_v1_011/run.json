@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "completed_at": "2026-06-11T01:31:32Z",
+  "created_at": "2026-06-11T01:29:48Z",
+  "notes": "Second-pass blind subagent Epicurus: prior-session context, not Money Models source search.",
+  "paths": {
+    "business_dir": "evals/runs/source_need/pilot/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/source_need/pilot/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_need/pilot/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

@@ -20,31 +20,44 @@ This script does not run an agent and does not call external model services. It 
 
 ## Run Coverage
 
-- Scored runs: 0 / 14
-- Missing runs: 14
+- Scored runs: 14 / 14
+- Missing runs: 0
 
 ## Metrics
 
-- Status: inventory only; no source-need run artifacts found yet.
+- Search decision accuracy: 100.0%
+- False search rate: 0.0%
+- Missed search rate: 0.0%
+- Intent match on expected-search cases: 70.0%
+- Layer exact match on expected-search cases: 70.0%
+- Average layer recall on expected-search cases: 0.850
+- Average focus-term recall on expected-search cases: 0.410
+- Correct no-search controls: 100.0%
+
+## Interpretation
+
+- The search/no-search boundary is clean on this seed set.
+- Source-need precision is still partial; inspect intent and layer misses before treating retrieval-backend comparisons as meaningful.
+- Focus-term recall is low enough that the metric should be treated as a development signal, not a production-quality semantic score.
 
 ## Case Table
 
 | Case | Split | Expected Search | Actual Search | Intent Match | Layer Recall | Focus Recall | Status | Failure Reasons |
 |---|---|---:|---:|---:|---:|---:|---|---|
-| `sourceneed_v1_001` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_002` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_003` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_004` | `scenario_holdout` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_005` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_006` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_007` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_008` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_009` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_010` | `dev` | true | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_011` | `dev` | false | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_012` | `dev` | false | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_013` | `scenario_holdout` | false | - | - | - | - | `not_run` | - |
-| `sourceneed_v1_014` | `scenario_holdout` | false | - | - | - | - | `not_run` | - |
+| `sourceneed_v1_001` | `dev` | true | true | true | 1.000 | 0.600 | `scored` | - |
+| `sourceneed_v1_002` | `dev` | true | true | true | 1.000 | 0.500 | `scored` | - |
+| `sourceneed_v1_003` | `dev` | true | true | false | 1.000 | 0.400 | `scored` | - |
+| `sourceneed_v1_004` | `scenario_holdout` | true | true | true | 1.000 | 0.600 | `scored` | - |
+| `sourceneed_v1_005` | `dev` | true | true | true | 1.000 | 0.250 | `scored` | - |
+| `sourceneed_v1_006` | `dev` | true | true | false | 1.000 | 0.750 | `scored` | - |
+| `sourceneed_v1_007` | `dev` | true | true | true | 0.000 | 0.200 | `scored` | - |
+| `sourceneed_v1_008` | `dev` | true | true | false | 0.500 | 0.400 | `scored` | - |
+| `sourceneed_v1_009` | `dev` | true | true | true | 1.000 | 0.400 | `scored` | - |
+| `sourceneed_v1_010` | `dev` | true | true | true | 1.000 | 0.000 | `scored` | - |
+| `sourceneed_v1_011` | `dev` | false | false | true | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_012` | `dev` | false | false | true | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_013` | `scenario_holdout` | false | false | true | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_014` | `scenario_holdout` | false | false | true | 1.000 | 1.000 | `scored` | - |
 
 ## Decision
 

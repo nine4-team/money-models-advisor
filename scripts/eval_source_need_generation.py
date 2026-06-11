@@ -372,18 +372,42 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
     if not scored:
         lines.append("- Status: inventory only; no source-need run artifacts found yet.")
     else:
+        search_decision_accuracy = sum(result.actual_search == result.expected_search for result in scored)
+        false_search_count = sum(bool(result.false_search) for result in scored)
+        missed_search_count = sum(bool(result.missed_search) for result in scored)
+        intent_matches = sum(result.intent_match is True for result in search_expected)
+        layer_exact_matches = sum(result.layer_exact_match is True for result in search_expected)
+        average_layer_recall = avg([result.layer_recall for result in search_expected])
+        average_focus_recall = avg([result.focus_recall for result in search_expected])
+        correct_no_search = sum(result.actual_search is False for result in no_search_expected)
         lines.extend(
             [
-                f"- Search decision accuracy: {pct(sum(result.actual_search == result.expected_search for result in scored), len(scored))}",
-                f"- False search rate: {pct(sum(bool(result.false_search) for result in scored), len(scored))}",
-                f"- Missed search rate: {pct(sum(bool(result.missed_search) for result in scored), len(scored))}",
-                f"- Intent match on expected-search cases: {pct(sum(result.intent_match is True for result in search_expected), len(search_expected))}",
-                f"- Layer exact match on expected-search cases: {pct(sum(result.layer_exact_match is True for result in search_expected), len(search_expected))}",
-                f"- Average layer recall on expected-search cases: {fmt(avg([result.layer_recall for result in search_expected]))}",
-                f"- Average focus-term recall on expected-search cases: {fmt(avg([result.focus_recall for result in search_expected]))}",
-                f"- Correct no-search controls: {pct(sum(result.actual_search is False for result in no_search_expected), len(no_search_expected))}",
+                f"- Search decision accuracy: {pct(search_decision_accuracy, len(scored))}",
+                f"- False search rate: {pct(false_search_count, len(scored))}",
+                f"- Missed search rate: {pct(missed_search_count, len(scored))}",
+                f"- Intent match on expected-search cases: {pct(intent_matches, len(search_expected))}",
+                f"- Layer exact match on expected-search cases: {pct(layer_exact_matches, len(search_expected))}",
+                f"- Average layer recall on expected-search cases: {fmt(average_layer_recall)}",
+                f"- Average focus-term recall on expected-search cases: {fmt(average_focus_recall)}",
+                f"- Correct no-search controls: {pct(correct_no_search, len(no_search_expected))}",
             ]
         )
+
+        lines.extend(
+            [
+                "",
+                "## Interpretation",
+                "",
+            ]
+        )
+        if false_search_count == 0 and missed_search_count == 0:
+            lines.append("- The search/no-search boundary is clean on this seed set.")
+        else:
+            lines.append("- The search/no-search boundary still needs instruction or tool-surface work before retrieval-backend comparisons.")
+        if intent_matches < len(search_expected) or layer_exact_matches < len(search_expected):
+            lines.append("- Source-need precision is still partial; inspect intent and layer misses before treating retrieval-backend comparisons as meaningful.")
+        if average_focus_recall is not None and average_focus_recall < 0.7:
+            lines.append("- Focus-term recall is low enough that the metric should be treated as a development signal, not a production-quality semantic score.")
 
     lines.extend(
         [
