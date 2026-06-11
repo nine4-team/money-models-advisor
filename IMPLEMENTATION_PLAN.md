@@ -72,6 +72,8 @@ Current boundary debt to resolve:
 2. Split `chat` so the CLI persists turns and records artifacts, while the agent decides whether to calculate, search, clarify, or answer.
 3. Add an eval artifact for agent-adjudicated focus-term concept coverage and retrieved-chunk usefulness.
 
+Detailed plan: `AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md`.
+
 **CLI setup and advisor loop:**
 
 ```mermaid
