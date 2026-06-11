@@ -130,8 +130,14 @@ python3 scripts/eval_search_query_quality.py --query-source reference \
   --report evals/reports/advisor_search_query_quality.md
 
 python3 scripts/eval_search_query_quality.py --query-source generated \
-  --report evals/reports/advisor_search_query_quality_generated.md
+  --retrieval-backend bm25 \
+  --report evals/reports/advisor_search_query_quality_generated_bm25.md
+
+python3 scripts/compare_retrieval_backends.py --query-source generated \
+  --report evals/reports/retrieval_backend_comparison.md
 ```
+
+`compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval on the same generated-query cases. Vector search uses the OpenAI embeddings API only for vectorization; agent planning, labeling, source-need generation, and answer synthesis remain Codex/CLI operated. Embeddings are cached under `.cache/embeddings/` so repeated runs reuse corpus and query vectors instead of paying for the same inputs again.
 
 Score source-need generation traces:
 
@@ -189,6 +195,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
 - Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
 - Source-event trace eval implemented in `evals/advisor_source_event_cases.jsonl`, with report generation in `scripts/eval_source_event_traces.py`.
+- Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented for post-source-need retrieval experiments. First generated-query comparison: BM25 100.0% Hit@5, vector 80.0% Hit@5, hybrid 90.0% Hit@5. BM25 remains the active default.
 - Agent-facing source-need search implemented in `search --source-need-json`.
 - Completed turn persistence implemented in `turn record`.
 - Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.
@@ -198,6 +205,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Agent-led local doc inspection before snapshot updates.
-- Retrieval-model comparisons now that source-need generation meets the seed gate.
+- Inspect vector/hybrid miss patterns before deciding whether to tune fusion, add reranking, or leave BM25 as the default citation retriever.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

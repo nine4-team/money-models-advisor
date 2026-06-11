@@ -154,6 +154,8 @@ Run checks:
 PYTHONPATH=src python3 scripts/eval_smoke.py
 PYTHONPATH=src python3 scripts/eval_retrieval.py
 PYTHONPATH=src python3 scripts/compare_chunking.py
+python3 scripts/eval_search_query_quality.py --query-source generated --retrieval-backend bm25 --report evals/reports/advisor_search_query_quality_generated_bm25.md
+python3 scripts/compare_retrieval_backends.py --query-source generated --report evals/reports/retrieval_backend_comparison.md
 PYTHONPATH=src python3 scripts/score_obligation_support.py --include-proposed
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business --answers '{"business":{"business_type":"coaching business","icp":"gym owners"},"money_model":{"core_offer":{"description":"implementation program","price":5000},"attraction_offer":{"exists":true},"upsell":{"exists":false},"downsell":{"exists":true},"continuity":{"exists":false}},"economics":{"cac":350,"first_30_day_gross_profit":120},"problem":{"user_goal":"diagnose cash payback"}}'
@@ -180,10 +182,25 @@ Acceptance criteria:
 - A single command evaluates the current local retriever. **Done.**
 - Results include per-query failures, aggregate metrics, and latency. **Done.**
 - The first report can be generated without external services. **Done.**
+- A backend comparison command evaluates BM25, vector, and hybrid over stable generated-query cases. **Done; vector and hybrid require uncached embeddings or an existing embedding cache.**
 
 First report:
 
 - `evals/reports/local_retrieval_baseline.md`
+- `evals/reports/retrieval_backend_comparison.md`
+
+Embedding policy:
+
+- OpenAI embeddings may be used for deterministic vectorization only. They are not used for source-need generation, labeling, planning, answer synthesis, or acting-agent evaluation.
+- Embeddings are cached by exact input text and model under `.cache/embeddings/`. This demonstrates the production cost-control pattern the advisor would use: pay once for stable corpus vectors, reuse cached vectors on later runs, and only create new query vectors when the agent asks a new search question.
+
+First generated-query backend result:
+
+- BM25: 100.0% known-useful Hit@5, mean known-useful rank 1.1.
+- Vector: 80.0% known-useful Hit@5, misses `searchq_v1_001` and `searchq_v1_010`.
+- Hybrid: 90.0% known-useful Hit@5, misses `searchq_v1_001`.
+
+Decision: BM25 remains the active default for citation-oriented source lookup. Vector and hybrid are implemented candidates, but the first seed comparison suggests lexical matching is strong because generated queries contain exact framework terms.
 
 ## Phase 2 — Chunking Comparison
 

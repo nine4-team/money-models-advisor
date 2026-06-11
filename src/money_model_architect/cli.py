@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .advisor_queries import SourceNeed, build_advisor_queries
-from .advisor_retrieval import execute_advisor_queries
+from .advisor_retrieval import RETRIEVAL_BACKENDS, execute_advisor_queries
 from .business_context import advisor_paths, ensure_advisor_state, utc_now
 from .calculator import (
     UnitEconomics,
@@ -41,6 +41,7 @@ def _build_parser() -> argparse.ArgumentParser:
     source_material.add_argument("--source-need-json", help="JSON object or path to JSON file with agent-selected SourceNeed")
     source_material.add_argument("--layer", choices=LAYERS)
     source_material.add_argument("--top-k", type=int, default=5)
+    source_material.add_argument("--backend", choices=RETRIEVAL_BACKENDS, default="bm25")
 
     calc = subparsers.add_parser("calculate", help="Run deterministic unit-economics formulas")
     calc.add_argument("metric", choices=("cac", "gross-profit", "gross-margin", "ltgp", "payback", "cfa-level"))
@@ -95,9 +96,11 @@ def main(argv: list[str] | None = None) -> int:
                 queries,
                 _repo_root() / "corpus" / "transcripts",
                 top_k=args.top_k,
+                retrieval_backend=args.backend,
             )
             payload = {
                 "business_dir": str(paths.business_dir),
+                "retrieval_backend": args.backend,
                 "source_need": _source_need_to_dict(source_need),
                 "queries": [query.to_dict() for query in queries],
                 "source_material": [item.to_dict() for item in evidence],
@@ -108,11 +111,12 @@ def main(argv: list[str] | None = None) -> int:
         if not args.query:
             parser.error("search requires a raw query or --source-need-json")
         index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts")
-        results = index.search(args.query, layer=args.layer, top_k=args.top_k)
+        results = _search_index(index, args.query, layer=args.layer, top_k=args.top_k, backend=args.backend)
         payload = {
             "query": args.query,
             "layer": args.layer,
             "top_k": args.top_k,
+            "retrieval_backend": args.backend,
             "source_material": [
                 {
                     "id": result.chunk.id,
@@ -315,6 +319,23 @@ def _parse_source_need(value: Any) -> SourceNeed:
     if invalid_layers:
         raise SystemExit(f"unknown source need layer(s): {', '.join(invalid_layers)}")
     return SourceNeed(intent=intent, layers=tuple(layers), focus_terms=tuple(focus_terms), user_turn=user_turn)
+
+
+def _search_index(
+    index: CorpusIndex,
+    query: str,
+    *,
+    layer: str | None,
+    top_k: int,
+    backend: str,
+):
+    if backend == "bm25":
+        return index.search(query, layer=layer, top_k=top_k)
+    if backend == "vector":
+        return index.vector_search(query, layer=layer, top_k=top_k)
+    if backend == "hybrid":
+        return index.hybrid_search(query, layer=layer, top_k=top_k)
+    raise SystemExit(f"unknown retrieval backend: {backend}")
 
 
 def _source_need_to_dict(source_need: SourceNeed) -> dict[str, Any]:

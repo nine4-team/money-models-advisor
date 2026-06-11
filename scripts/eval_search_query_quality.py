@@ -57,6 +57,7 @@ class QueryResult:
     split: str
     purpose: str
     query_source: str
+    retrieval_backend: str
     queries: tuple[str, ...]
     query_layers: tuple[str | None, ...]
     expected_layers: tuple[str, ...]
@@ -147,7 +148,17 @@ def query_specs_for_case(case: dict[str, Any], query_source: str) -> list[tuple[
     return [(query.layer, query.query) for query in build_advisor_queries(snapshot, source_need=source_need)]
 
 
-def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str) -> list[QueryResult]:
+def search_index(index: CorpusIndex, query: str, *, layer: str | None, top_k: int, backend: str):
+    if backend == "bm25":
+        return index.search(query, layer=layer, top_k=top_k)
+    if backend == "vector":
+        return index.vector_search(query, layer=layer, top_k=top_k)
+    if backend == "hybrid":
+        return index.hybrid_search(query, layer=layer, top_k=top_k)
+    raise ValueError(f"unknown retrieval backend: {backend}")
+
+
+def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str, retrieval_backend: str) -> list[QueryResult]:
     index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
     results: list[QueryResult] = []
 
@@ -157,7 +168,7 @@ def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str) -> l
         search_results = []
         seen_chunk_ids = set()
         for layer, query in query_specs:
-            for result in index.search(query, layer=layer, top_k=top_k):
+            for result in search_index(index, query, layer=layer, top_k=top_k, backend=retrieval_backend):
                 if result.chunk.id in seen_chunk_ids:
                     continue
                 seen_chunk_ids.add(result.chunk.id)
@@ -180,6 +191,7 @@ def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str) -> l
                 split=case["split"],
                 purpose=case["retrieval_purpose"],
                 query_source=query_source,
+                retrieval_backend=retrieval_backend,
                 queries=tuple(query for _layer, query in query_specs),
                 query_layers=tuple(layer for layer, _query in query_specs),
                 expected_layers=expected_layers,
@@ -202,7 +214,13 @@ def pct(count: int, total: int) -> str:
     return f"{(count / total) * 100:.1f}%"
 
 
-def render_report(cases: list[dict[str, Any]], results: list[QueryResult], validation_errors: list[str], query_source: str) -> str:
+def render_report(
+    cases: list[dict[str, Any]],
+    results: list[QueryResult],
+    validation_errors: list[str],
+    query_source: str,
+    retrieval_backend: str,
+) -> str:
     source_description = (
         "hand-authored reference queries from the eval cases"
         if query_source == "reference"
@@ -216,8 +234,9 @@ def render_report(cases: list[dict[str, Any]], results: list[QueryResult], valid
         "This eval covers only turns where source-material search is the correct next action. It does not evaluate whether the agent should search in the first place; that is covered by the next-action classification eval.",
         "",
         f"Query source: `{query_source}` ({source_description}).",
+        f"Retrieval backend: `{retrieval_backend}`.",
         "",
-        "Reference mode is a reviewer-written seed baseline: it asks whether source-specific queries can retrieve citeable chunks. Generated mode is the product-behavior check for the query builder after the advisor has selected a source need.",
+        "Reference mode is a reviewer-written seed baseline: it asks whether source-specific queries can retrieve citeable chunks. Generated mode is the product-behavior check for the query builder after the advisor has selected a source need. Backend comparisons should use the same query source and case set.",
         "",
         "The known-useful chunk labels are seed relevance labels, not exhaustive relevance judgments. A miss means the query did not retrieve one of the labeled citeable chunks, not that every returned chunk is useless.",
         "",
@@ -279,7 +298,7 @@ def render_report(cases: list[dict[str, Any]], results: list[QueryResult], valid
             "",
             "## Decision",
             "",
-            "Use reference mode as the source-specific query seed baseline. Use generated mode as the source-need-driven runtime query-generation baseline. Do not compare dense or hybrid retrieval until generated queries are good enough that retrieval-model differences are interpretable.",
+            "Use reference mode as the source-specific query seed baseline. Use generated mode as the source-need-driven runtime query-generation baseline. Compare retrieval backends only after source-need generation and generated-query quality are strong enough that backend differences are interpretable.",
             "",
             "## Next Work",
             "",
@@ -302,14 +321,38 @@ def main() -> int:
         default="reference",
         help="Use hand-authored reference queries or runtime-generated advisor queries.",
     )
+    parser.add_argument(
+        "--retrieval-backend",
+        choices=("bm25", "vector", "hybrid"),
+        default="bm25",
+        help="Retrieval backend to evaluate.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(args.cases)
     validation_errors = validate_cases(cases)
-    results = [] if validation_errors else score_cases(cases, top_k=args.top_k, query_source=args.query_source)
+    results = (
+        []
+        if validation_errors
+        else score_cases(
+            cases,
+            top_k=args.top_k,
+            query_source=args.query_source,
+            retrieval_backend=args.retrieval_backend,
+        )
+    )
 
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(render_report(cases, results, validation_errors, query_source=args.query_source), encoding="utf-8")
+    args.report.write_text(
+        render_report(
+            cases,
+            results,
+            validation_errors,
+            query_source=args.query_source,
+            retrieval_backend=args.retrieval_backend,
+        ),
+        encoding="utf-8",
+    )
 
     print(
         json.dumps(
@@ -318,6 +361,7 @@ def main() -> int:
                 "validation_errors": len(validation_errors),
                 "scored_cases": len(results),
                 "query_source": args.query_source,
+                "retrieval_backend": args.retrieval_backend,
                 "report": str(args.report.resolve().relative_to(ROOT)),
             },
             indent=2,

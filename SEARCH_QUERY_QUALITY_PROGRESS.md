@@ -11,6 +11,8 @@ The local source-material search stack exists and is auditable:
 - heading-aware transcript chunks
 - five-layer taxonomy
 - BM25-style local baseline
+- OpenAI embedding-backed vector search with disk-cached embeddings
+- hybrid search using reciprocal-rank fusion over BM25 and vector rankings
 - `search_source_material` CLI command
 - session logs with `retrieval_queries` and returned `evidence`
 
@@ -22,6 +24,18 @@ First seed baseline: `evals/advisor_search_query_cases.jsonl` now contains 10 se
 - Generated mode: `evals/reports/advisor_search_query_quality_generated.md` shows 100.0% known-useful Hit@3/Hit@5, 1.000 average focus-term recall, and no duplicate query reuse after adding explicit `SourceNeed` input.
 
 Treat these as query-development baselines with non-exhaustive known-useful chunk labels, not as production IR benchmarks. The important finding is that the query builder works when the advisor-selected source need is explicit; the next risk is source-need selection by the acting agent.
+
+After the source-need generation eval reached the seed gate, retrieval-backend comparison became the next valid experiment. `scripts/compare_retrieval_backends.py` now runs BM25, vector, and hybrid retrieval against the same generated-query cases and writes `evals/reports/retrieval_backend_comparison.md`. Vectorization may use the OpenAI embeddings API, but only for embedding text. The agent work remains outside the API path, and embeddings are cached under `.cache/embeddings/` for cost savings and repeatability.
+
+Current backend comparison on generated queries:
+
+| Backend | Known-useful Hit@3 | Known-useful Hit@5 | Mean known-useful rank | Misses @5 |
+|---|---:|---:|---:|---|
+| BM25 | 100.0% | 100.0% | 1.1 | none |
+| Vector | 80.0% | 80.0% | 1.5 | `searchq_v1_001`, `searchq_v1_010` |
+| Hybrid | 80.0% | 90.0% | 1.44 | `searchq_v1_001` |
+
+Decision: keep BM25 as the active default. Vector and hybrid are now available for experimentation, but the first embedding-backed run does not justify switching the product default. The misses suggest dense retrieval is finding semantically nearby material while missing the exact framework passages currently labeled as citeable. That is especially important for this product because source search is often citation-oriented, not just topical.
 
 ## Known Failure Modes
 
@@ -66,7 +80,7 @@ Secondary diagnostics:
 3. Generate compact source-seeking queries from the current turn plus minimal snapshot context.
 4. Inspect top chunks.
 5. Revise query examples/templates when chunks are broad, stale, or irrelevant.
-6. After query construction is sane, compare BM25, dense, and hybrid retrieval on the same cases.
+6. After query construction is sane, compare BM25, vector, and hybrid retrieval on the same cases.
 
 The target is not exact-query matching. The target is source material that can support the advisor's answer with citations.
 
@@ -80,8 +94,8 @@ For the first v1 pass:
 - each has expected purpose, layer, and focus terms **Done**
 - generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it **Done when `SourceNeed` is supplied**
 - top retrieved chunks are useful enough to cite for most cases **Done on seed known-useful labels**
-- BM25 remains the baseline; dense/hybrid comparison waits until the query set is stable **Still active**
+- BM25 remains the baseline; vector/hybrid comparison waits until the query set is stable **Done for first seed comparison; BM25 remains active default**
 
 ## Next Work
 
-Test and tighten the acting-agent guidance so it selects the right source need before calling source-material search.
+Inspect vector/hybrid miss patterns, especially `searchq_v1_001`, before deciding whether to tune hybrid fusion, add reranking, or leave BM25 as the default citation retriever.

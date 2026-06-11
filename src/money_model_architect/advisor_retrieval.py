@@ -9,6 +9,9 @@ from .advisor_queries import AdvisorQuery
 from .retrieval import CorpusIndex
 
 
+RETRIEVAL_BACKENDS = ("bm25", "vector", "hybrid")
+
+
 @dataclass(frozen=True)
 class EvidenceChunk:
     id: str
@@ -42,11 +45,12 @@ def execute_advisor_queries(
     transcript_dir: Path,
     top_k: int = 3,
     index: CorpusIndex | None = None,
+    retrieval_backend: str = "bm25",
 ) -> list[QueryEvidence]:
     corpus_index = index or CorpusIndex.from_transcripts(transcript_dir)
     evidence: list[QueryEvidence] = []
     for query in queries:
-        results = corpus_index.search(query.query, layer=query.layer, top_k=top_k)
+        results = _search(corpus_index, query.query, layer=query.layer, top_k=top_k, retrieval_backend=retrieval_backend)
         evidence.append(
             QueryEvidence(
                 intent=query.intent,
@@ -68,3 +72,21 @@ def execute_advisor_queries(
             )
         )
     return evidence
+
+
+def _search(
+    index: CorpusIndex,
+    query: str,
+    *,
+    layer: str | None,
+    top_k: int,
+    retrieval_backend: str,
+):
+    if retrieval_backend == "bm25":
+        return index.search(query, layer=layer, top_k=top_k)
+    if retrieval_backend == "vector":
+        return index.vector_search(query, layer=layer, top_k=top_k)
+    if retrieval_backend == "hybrid":
+        return index.hybrid_search(query, layer=layer, top_k=top_k)
+    allowed = ", ".join(RETRIEVAL_BACKENDS)
+    raise ValueError(f"unknown retrieval backend {retrieval_backend!r}; expected one of: {allowed}")

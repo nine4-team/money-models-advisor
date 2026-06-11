@@ -7,7 +7,9 @@ import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Protocol
 
+from .embeddings import OpenAIEmbeddingClient, cosine_similarity
 from .namespaces import route_for_chapter
 
 TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
@@ -52,6 +54,14 @@ class Chunk:
 class SearchResult:
     chunk: Chunk
     score: float
+
+
+class EmbeddingClient(Protocol):
+    def embed_text(self, text: str) -> list[float]:
+        raise NotImplementedError
+
+    def embed_texts(self, texts: list[str]) -> list[list[float]]:
+        raise NotImplementedError
 
 
 def tokenize(text: str) -> list[str]:
@@ -154,6 +164,7 @@ class CorpusIndex:
             for term in terms:
                 self._doc_freqs[term] += 1
         self._avg_len = sum(sum(terms.values()) for terms in self._term_freqs) / max(1, len(self._term_freqs))
+        self._chunk_embeddings: dict[str, list[float]] = {}
 
     @classmethod
     def from_transcripts(cls, transcript_dir: Path, chunking: str | ChunkingStrategy = "heading-aware") -> "CorpusIndex":
@@ -198,6 +209,59 @@ class CorpusIndex:
         results.sort(key=lambda result: result.score, reverse=True)
         return results[:top_k]
 
+    def vector_search(
+        self,
+        query: str,
+        layer: str | None = None,
+        top_k: int = 5,
+        embedding_client: EmbeddingClient | None = None,
+    ) -> list[SearchResult]:
+        if not query.strip():
+            return []
+        client = embedding_client or OpenAIEmbeddingClient()
+        self._ensure_chunk_embeddings(client)
+        query_embedding = client.embed_text(query)
+
+        results: list[SearchResult] = []
+        for chunk in self.chunks:
+            if layer and layer not in chunk.layers:
+                continue
+            score = cosine_similarity(query_embedding, self._chunk_embeddings[chunk.id])
+            if score > 0:
+                results.append(SearchResult(chunk=chunk, score=score))
+        results.sort(key=lambda result: result.score, reverse=True)
+        return results[:top_k]
+
+    def hybrid_search(
+        self,
+        query: str,
+        layer: str | None = None,
+        top_k: int = 5,
+        embedding_client: EmbeddingClient | None = None,
+        rrf_k: int = 60,
+    ) -> list[SearchResult]:
+        bm25_results = self.search(query, layer=layer, top_k=max(top_k * 5, top_k))
+        vector_results = self.vector_search(
+            query,
+            layer=layer,
+            top_k=max(top_k * 5, top_k),
+            embedding_client=embedding_client,
+        )
+
+        chunks_by_id = {result.chunk.id: result.chunk for result in [*bm25_results, *vector_results]}
+        fused_scores: dict[str, float] = defaultdict(float)
+        for rank, result in enumerate(bm25_results, 1):
+            fused_scores[result.chunk.id] += 1 / (rrf_k + rank)
+        for rank, result in enumerate(vector_results, 1):
+            fused_scores[result.chunk.id] += 1 / (rrf_k + rank)
+
+        fused = [
+            SearchResult(chunk=chunks_by_id[chunk_id], score=score)
+            for chunk_id, score in fused_scores.items()
+        ]
+        fused.sort(key=lambda result: result.score, reverse=True)
+        return fused[:top_k]
+
     def _bm25(self, query_counts: Counter[str], terms: Counter[str]) -> float:
         k1 = 1.5
         b = 0.75
@@ -213,6 +277,22 @@ class CorpusIndex:
             denom = tf + k1 * (1 - b + b * doc_len / max(1.0, self._avg_len))
             score += query_weight * idf * (tf * (k1 + 1)) / denom
         return score
+
+    def _ensure_chunk_embeddings(self, embedding_client: EmbeddingClient) -> None:
+        missing_chunks = [chunk for chunk in self.chunks if chunk.id not in self._chunk_embeddings]
+        if not missing_chunks:
+            return
+        texts = [_embedding_text(chunk) for chunk in missing_chunks]
+        embeddings = embedding_client.embed_texts(texts)
+        if len(embeddings) != len(missing_chunks):
+            raise ValueError("embedding client returned the wrong number of chunk embeddings")
+        for chunk, embedding in zip(missing_chunks, embeddings, strict=True):
+            self._chunk_embeddings[chunk.id] = embedding
+
+
+def _embedding_text(chunk: Chunk) -> str:
+    layers = ", ".join(chunk.layers)
+    return f"chapter: {chunk.chapter}\nlayers: {layers}\n\n{chunk.text}"
 
 
 def resolve_chunking_strategy(chunking: str | ChunkingStrategy) -> ChunkingStrategy:
