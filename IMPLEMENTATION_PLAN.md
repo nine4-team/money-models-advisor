@@ -66,7 +66,7 @@ Improvement strategy:
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, vector, and hybrid retrieval only after query construction is sane.
 - Semantic evals should use agent or human adjudication artifacts rather than hidden keyword proxies. For example, focus-term concept coverage should be judged by an agent and recorded with rationale, while exact substring recall can remain a debugging metric.
 
-The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the seed set. The source-need generation eval has now been rerun with blind acting-agent traces after taxonomy guidance and focus-alias cleanup. Search/no-search decisions remain clean, intent match is 100.0%, layer exact match is 90.0%, and focus-term concept recall is 0.750. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work can now move toward retrieval-backend comparison, while carrying the known free-trial `offers`/`downsells` residual as a caveat.
+The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the eval slice. The source-need generation eval has now been rerun with blind acting-agent traces after taxonomy guidance and focus-alias cleanup. Search/no-search decisions remain clean, intent match is 100.0%, layer exact match is 90.0%, and focus-term concept recall is 0.750. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work can now move toward retrieval-backend comparison, while carrying the known free-trial `offers`/`downsells` residual as a caveat.
 
 Current boundary debt to resolve:
 
@@ -198,11 +198,12 @@ Embedding policy:
 
 First generated-query backend result:
 
-- BM25: 100.0% known-useful Hit@5, mean known-useful rank 1.1.
-- Vector: 90.0% known-useful Hit@5 after miss adjudication, misses `searchq_v1_001`.
-- Hybrid: 90.0% known-useful Hit@5 after miss adjudication, misses `searchq_v1_001`.
+- Plain generated BM25: 93.3% known-useful Hit@3, 100.0% Hit@5, mean known-useful rank 1.43.
+- Plain generated vector: 96.7% known-useful Hit@3/Hit@5, mean known-useful rank 1.34, misses `searchq_v1_001`.
+- Plain generated hybrid: 96.7% known-useful Hit@3/Hit@5, mean known-useful rank 1.21, misses `searchq_v1_001`.
+- Generated variants + hybrid: 100.0% known-useful Hit@3/Hit@5, mean known-useful rank 1.17, no top-5 misses.
 
-Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The current seed data supports moving hybrid+variants to candidate default, while requiring a larger golden set before calling it final.
+Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The 30-case expanded slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and observability/cost reporting before calling it final.
 
 JD-aligned next experiment:
 
@@ -211,7 +212,7 @@ JD-aligned next experiment:
 - Keep the deterministic flattened query as a fallback variant. **Done.**
 - Fuse variant-level retrieval results so repeated chunks across variants are promoted instead of allowing early variants to crowd out the fallback. **Done in the query-quality scorer.**
 - Compare v1 flattened queries versus v2 variants on the golden search-query cases. **Done in `evals/reports/retrieval_backend_comparison_generated_variants.md`.**
-- Record quality, latency, embedding-cache behavior, and cost-oriented signals in the report.
+- Record quality, latency, embedding-cache behavior, and cost-oriented signals in the report. **Next.**
 
 ## Phase 2 — Chunking Comparison
 

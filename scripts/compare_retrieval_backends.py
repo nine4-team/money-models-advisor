@@ -102,14 +102,14 @@ def render_report(query_source: str, top_k: int, summaries: dict[str, dict[str, 
         )
         best_backend, best_summary = sorted_hit5[0]
         lines.append(
-            f"- Best seed result by Hit@5 and mean known-useful rank: `{best_backend}` at "
+            f"- Best eval-slice result by Hit@5 and mean known-useful rank: `{best_backend}` at "
             f"{best_summary['known_useful_hit_at_5']} Hit@5 and mean rank {best_summary['mean_known_useful_rank']}."
         )
         lines.append(
             "- Treat this as a retrieval-engineering signal, not a production benchmark, because the known-useful labels are intentionally non-exhaustive."
         )
         lines.append(
-            "- If vector or hybrid underperform BM25 on this seed set, inspect misses before changing the active backend. Dense retrieval may return semantically adjacent chunks while missing exact framework passages the advisor needs to cite."
+            "- If vector or hybrid underperform BM25 on this eval slice, inspect misses before changing the candidate backend. Dense retrieval may return semantically adjacent chunks while missing exact framework passages the advisor needs to cite."
         )
     if errors:
         lines.extend(["", "## Run Notes", ""])

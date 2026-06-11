@@ -41,7 +41,7 @@ Strong alignment:
 
 - The advisor is agent-operated and CLI-backed: the agent plans; deterministic tools persist state, calculate, search, and record traces.
 - The project has explicit eval assets for next-action classification, source-need generation, source-event logging, query quality, chunking, and retrieval backend comparison.
-- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; hybrid retrieval with constrained query variants is the candidate product path after vector/hybrid comparison.
+- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; hybrid retrieval with constrained query variants is the candidate product path after a 30-case golden search-query comparison.
 - Embeddings are cached under `.cache/embeddings/` so repeated vector runs reuse corpus and query vectors.
 - The narrative records decisions, metrics, misses, and non-adoptions rather than treating every sophisticated technique as automatically better.
 
@@ -56,10 +56,8 @@ Weak alignment / gaps to close:
 
 The next highest-signal work is:
 
-1. Expand the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
-2. Expand the golden search-query set before claiming hybrid+variants as final.
-3. Add latency, embedding-cache, and cost-oriented reporting to the retrieval comparisons.
-4. Record latency and embedding-cache behavior in the backend comparison report.
-5. Decide whether to add a lightweight vector database adapter or document the adapter boundary as planned production work.
+1. Add latency, embedding-cache, and cost-oriented reporting to the retrieval comparisons.
+2. Decide whether to add a lightweight vector database adapter or document the adapter boundary as planned production work.
+3. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
 
 This keeps the work aligned with the JD: golden datasets first, measured retrieval improvements second, production-oriented infrastructure third.

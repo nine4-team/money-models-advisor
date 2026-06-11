@@ -63,7 +63,7 @@ Do not tune only for one visible miss unless the fix is framed as a general beha
 
 ## Retrieval Position
 
-BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The current seed data supports moving hybrid+variants to candidate default, while requiring a larger golden set before calling it final.
+BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The 30-case expanded search-query slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and observability/cost reporting before calling it final.
 
 Embedding API use is allowed for deterministic vectorization and cached retrieval experiments. Do not use external model APIs for agent planning, labeling, answer synthesis, or acting-agent eval work.
 

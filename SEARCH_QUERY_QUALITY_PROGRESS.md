@@ -18,10 +18,11 @@ The local source-material search stack exists and is auditable:
 
 The 1584 Design trace showed repeated generic diagnostic queries after the snapshot became diagnosable, even when later turns needed a different source focus or no source search at all. That exposed two separate problems: the agent must select the right source need, and the query builder must turn that source need into a compact corpus query.
 
-First seed baseline: `evals/advisor_search_query_cases.jsonl` now contains 10 search-appropriate turns, and `scripts/eval_search_query_quality.py` can score either reviewer-authored reference queries or source-need-driven runtime-generated queries.
+Current search-query slice: `evals/advisor_search_query_cases.jsonl` now contains 30 search-appropriate turns, and `scripts/eval_search_query_quality.py` can score reviewer-authored reference queries, deterministic source-need-generated queries, or generated variants plus fallback.
 
-- Reference mode: `evals/reports/advisor_search_query_quality.md` shows 100.0% known-useful Hit@3/Hit@5.
-- Generated mode: `evals/reports/advisor_search_query_quality_generated.md` shows 100.0% known-useful Hit@3/Hit@5, 1.000 average focus-term recall, and no duplicate query reuse after adding explicit `SourceNeed` input.
+- Plain generated BM25: `evals/reports/retrieval_backend_comparison.md` shows 93.3% known-useful Hit@3 and 100.0% Hit@5.
+- Plain generated vector/hybrid each miss `searchq_v1_001` at Hit@5.
+- Generated variants + hybrid: `evals/reports/retrieval_backend_comparison_generated_variants.md` shows 100.0% known-useful Hit@3/Hit@5, mean known-useful rank 1.17, and no top-5 misses.
 
 Treat these as query-development baselines with non-exhaustive known-useful chunk labels, not as production IR benchmarks. The important finding is that the query builder works when the advisor-selected source need is explicit; the next risk is source-need selection by the acting agent.
 
@@ -31,16 +32,18 @@ Current backend comparison on generated queries:
 
 | Backend | Known-useful Hit@3 | Known-useful Hit@5 | Mean known-useful rank | Misses @5 |
 |---|---:|---:|---:|---|
-| BM25 | 100.0% | 100.0% | 1.1 | none |
-| Vector | 90.0% | 90.0% | 1.44 | `searchq_v1_001` |
-| Hybrid | 90.0% | 90.0% | 1.0 | `searchq_v1_001` |
+| BM25 | 93.3% | 100.0% | 1.43 | none |
+| Vector | 96.7% | 96.7% | 1.34 | `searchq_v1_001` |
+| Hybrid | 96.7% | 96.7% | 1.21 | `searchq_v1_001` |
 
-Decision: keep BM25 as the active default. Vector and hybrid are now available for experimentation, but the first embedding-backed run does not justify switching the product default. The misses suggest dense retrieval is finding semantically nearby material while missing the exact framework passages currently labeled as citeable. That is especially important for this product because source search is often citation-oriented, not just topical.
+Decision: keep BM25 as the lexical baseline/control, not the product architecture. Plain vector and hybrid still expose one real top-5 weakness on `searchq_v1_001`, but generated query variants plus fusion fix that miss and make hybrid+variants the strongest candidate on the expanded 30-case slice. Because the slice is still portfolio-scale, do not claim final production superiority yet; use hybrid+variants as the candidate product path while continuing golden-set expansion and observability/cost reporting.
 
 Miss adjudication:
 
 - `searchq_v1_010` was a label-set limitation, not a true vector failure. Vector ranked `attraction-offers:0` first, and that chunk directly defines attraction offers as free/discount front-end offers that generate leads and customers. The known-useful labels now include it.
+- Several expansion misses were also label-set limitations, not true retrieval failures. Retrieved `menu-upsell`, `rollover-upsell`, `waived-fee`, and `continuity-bonus` chunks were directly citeable and were added to the known-useful labels after inspection.
 - `searchq_v1_001` remains a true vector/hybrid weakness at top 5. The user asks why fulfillment cost matters for whether ads can work. BM25 retrieves the clean CAC/GP/payback framework chunk at rank 1 and a payback-definition chunk at rank 4. Vector and hybrid mostly retrieve adjacent payback, CAC, CFA, and upsell-timing chunks; `gross-profit:0`, the clearest fulfillment-cost/gross-profit explanation, appears only at rank 8. This suggests dense retrieval is semantically close but less citation-ready for exact framework explanations.
+- Generated query variants fix `searchq_v1_001` for hybrid by separating the gross-profit/fulfillment-cost meaning from the broader CAC/payback wording. With variants and fusion, hybrid retrieves `gross-profit:0` at rank 1.
 
 ## Known Failure Modes
 
@@ -95,12 +98,12 @@ First prove that the agent can decide when to search and generate source-specifi
 
 For the first v1 pass:
 
-- at least 10 search-appropriate turns labeled **Done**
+- 30 search-appropriate turns labeled **Done**
 - each has expected purpose, layer, and focus terms **Done**
 - generated queries do not reuse the generic diagnostic query unless the current turn actually calls for it **Done when `SourceNeed` is supplied**
-- top retrieved chunks are useful enough to cite for most cases **Done on seed known-useful labels**
-- BM25 remains the baseline; vector/hybrid comparison waits until the query set is stable **Done for first seed comparison; BM25 remains active default**
+- top retrieved chunks are useful enough to cite for most cases **Done on the expanded 30-case known-useful labels**
+- BM25 remains the baseline/control; vector/hybrid comparison waits until the query set is stable **Done for first expanded comparison; hybrid+variants is the candidate product path**
 
 ## Next Work
 
-Inspect vector/hybrid miss patterns, especially `searchq_v1_001`, before deciding whether to tune hybrid fusion, add reranking, or leave BM25 as the default citation retriever.
+Add latency, embedding-cache, and cost-oriented reporting so the next comparison is not only retrieval quality, but also JD-aligned production behavior.

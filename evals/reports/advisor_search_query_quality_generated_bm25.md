@@ -13,9 +13,9 @@ The known-useful chunk labels are seed relevance labels, not exhaustive relevanc
 
 ## Dataset
 
-- Cases: 10
-- Splits: {'dev': 9, 'scenario_holdout': 1}
-- Retrieval purposes: {'comparison_evidence': 1, 'diagnostic_evidence': 2, 'recommendation_evidence': 4, 'teaching_evidence': 3}
+- Cases: 30
+- Splits: {'dev': 9, 'expansion': 20, 'scenario_holdout': 1}
+- Retrieval purposes: {'comparison_evidence': 5, 'diagnostic_evidence': 3, 'recommendation_evidence': 13, 'teaching_evidence': 9}
 
 ## Validation
 
@@ -23,7 +23,7 @@ The known-useful chunk labels are seed relevance labels, not exhaustive relevanc
 
 ## Metrics
 
-- Known-useful Hit@3: 100.0%
+- Known-useful Hit@3: 93.3%
 - Known-useful Hit@5: 100.0%
 - Top-1 layer match: 100.0%
 - Any expected-layer chunk in top 5: 100.0%
@@ -45,6 +45,26 @@ The known-useful chunk labels are seed relevance labels, not exhaustive relevanc
 | `searchq_v1_008` | `dev` | `teaching_evidence` | offers, downsells | none | free trial trial with penalty attraction offer required actions card on file interior design STR | `free-trials:1`, `free-trials:5`, `make-your-money-model:0`, `free-trials:3`, `free-trials:2` | 1 | 1.00 |
 | `searchq_v1_009` | `dev` | `diagnostic_evidence` | unit-economics | unit-economics | CAC gross profit make more per customer customer worth acquisition interior design STR | `gross-profit:0`, `context:1`, `cfa:1`, `gross-profit:2`, `gross-profit:3` | 1 | 1.00 |
 | `searchq_v1_010` | `dev` | `recommendation_evidence` | offers | offers | attraction offer front end offer get leads to engage free discount interior design STR | `make-your-money-model:0`, `make-your-money-model:1`, `decoy-offers:3`, `attraction-offers:0`, `pay-less-now:2` | 2 | 1.00 |
+| `searchq_v1_011` | `expansion` | `teaching_evidence` | unit-economics | unit-economics | revenue gross profit gross margin CAC delivery cost interior design STR | `gross-profit:4`, `how-businesses-make-money:1`, `gross-profit:3`, `gross-profit:0`, `gross-profit:5` | 1 | 1.00 |
+| `searchq_v1_012` | `expansion` | `teaching_evidence` | unit-economics | unit-economics | CFA level 3 first 30 day gross profit twice CAC reinvest growth limit interior design STR | `cfa:3`, `cfa:1`, `cfa:2`, `context:1`, `cfa:0` | 1 | 1.00 |
+| `searchq_v1_013` | `expansion` | `recommendation_evidence` | unit-economics | unit-economics | setup fee onboarding fee activation fee first and last month payback period interior design STR | `payback-period:5`, `payback-period:6`, `ten-years-ten-minutes:2`, `ten-years-ten-minutes:3`, `payback-period:1` | 1 | 1.00 |
+| `searchq_v1_014` | `expansion` | `recommendation_evidence` | upsells | upsells | upsell timing after first sale next step big win halfway point interior design STR | `payback-period:4`, `payback-period:3`, `payback-period:5`, `upsell-offers:0`, `payback-period:2` | 1 | 1.00 |
+| `searchq_v1_015` | `expansion` | `comparison_evidence` | upsells | upsells | classic upsell menu upsell next problem prescribe options interior design STR | `ten-years-ten-minutes:1`, `menu-upsell:0`, `menu-upsell:5`, `upsell-offers:2`, `make-your-money-model:0` | 1 | 1.00 |
+| `searchq_v1_016` | `expansion` | `teaching_evidence` | upsells | upsells | anchor upsell premium option expensive offer first cheaper alternative price perception interior design STR | `anchor-upsell:2`, `ten-years-ten-minutes:1`, `anchor-upsell:7`, `anchor-upsell:6`, `anchor-upsell:3` | 2 | 1.00 |
+| `searchq_v1_017` | `expansion` | `recommendation_evidence` | upsells | upsells | rollover upsell credit previous purchase diagnostic fee bigger package next offer interior design STR | `rollover-upsell:7`, `rollover-upsell:3`, `rollover-upsell:0`, `rollover-upsell:4`, `rollover-upsell:6` | 1 | 1.00 |
+| `searchq_v1_018` | `expansion` | `comparison_evidence` | offers | offers | attraction offer free discount lead generation front end interior design STR | `make-your-money-model:0`, `make-your-money-model:1`, `cac:12`, `attraction-offers:0`, `buy-x-get-y:3` | 4 | 1.00 |
+| `searchq_v1_019` | `expansion` | `recommendation_evidence` | offers | offers | giveaway grand prize participation offer room refresh lead capture interior design STR | `free-giveaways:1`, `free-giveaways:2`, `free-giveaways:4`, `free-giveaways:3`, `free-giveaways:0` | 1 | 1.00 |
+| `searchq_v1_020` | `expansion` | `teaching_evidence` | offers | offers | win your money back goal store credit service business attraction offer interior design STR | `ten-years-ten-minutes:0`, `win-your-money-back:1`, `ten-years-ten-minutes:1`, `win-your-money-back:0`, `make-your-money-model:0` | 1 | 1.00 |
+| `searchq_v1_021` | `expansion` | `diagnostic_evidence` | offers | offers | buy X get Y free fulfillment cost cash management gross margin fit interior design STR | `buy-x-get-y:4`, `ten-years-ten-minutes:1`, `buy-x-get-y:7`, `buy-x-get-y:3`, `make-your-money-model:2` | 3 | 1.00 |
+| `searchq_v1_022` | `expansion` | `teaching_evidence` | offers | offers | free with consumption education trust beliefs paid offer interior design STR | `free-with-consumption:1`, `free-with-consumption:10`, `free-with-consumption:3`, `free-with-consumption:2`, `free-with-consumption:0` | 1 | 1.00 |
+| `searchq_v1_023` | `expansion` | `recommendation_evidence` | offers | offers | decoy offer premium offer free or discounted more valuable package interior design STR | `decoy-offers:8`, `decoy-offers:2`, `ten-years-ten-minutes:1`, `decoy-offers:5`, `decoy-offers:3` | 1 | 1.00 |
+| `searchq_v1_024` | `expansion` | `recommendation_evidence` | downsells | downsells | downsell path payment plan feature downsell free trial say no interior design STR | `make-your-money-model:1`, `feature-downsells:1`, `downsells:0`, `make-your-money-model:0`, `payment-plans:10` | 1 | 1.00 |
+| `searchq_v1_025` | `expansion` | `recommendation_evidence` | downsells | downsells | feature downsell fewer rooms lower friction same offer reduced scope interior design STR | `feature-downsells:2`, `feature-downsells:5`, `ten-years-ten-minutes:2`, `feature-downsells:4`, `feature-downsells:1` | 5 | 1.00 |
+| `searchq_v1_026` | `expansion` | `comparison_evidence` | downsells | downsells | pay less now pay more later discount additional benefit choice interior design STR | `pay-less-now:8`, `ten-years-ten-minutes:1`, `pay-less-now:1`, `pay-less-now:2`, `make-your-money-model:0` | 2 | 1.00 |
+| `searchq_v1_027` | `expansion` | `recommendation_evidence` | continuity | continuity | waived fee continuity recurring revenue design fee later interior design STR | `continuity-offers:6`, `waived-fee:1`, `waived-fee:5`, `continuity-discounts:4`, `make-your-money-model:0` | 1 | 1.00 |
+| `searchq_v1_028` | `expansion` | `teaching_evidence` | continuity | continuity | continuity discount retention canceling earn point reminders interior design STR | `continuity-discounts:7`, `continuity-discounts:11`, `make-your-money-model:0`, `continuity-discounts:6`, `continuity-bonus:0` | 2 | 1.00 |
+| `searchq_v1_029` | `expansion` | `recommendation_evidence` | continuity | continuity | continuity bonus maintenance membership bonus retention valuable interior design STR | `continuity-bonus:4`, `continuity-offers:6`, `continuity-bonus:11`, `continuity-bonus:5`, `continuity-bonus:12` | 1 | 1.00 |
+| `searchq_v1_030` | `expansion` | `comparison_evidence` | offers, upsells, downsells, continuity | none | money model stack attraction offer upsell downsell continuity interior design STR | `make-your-money-model:0`, `make-your-money-model:1`, `continuity-bonus:3`, `offer-types:4`, `continuity-offers:0` | 1 | 1.00 |
 
 ## Decision
 

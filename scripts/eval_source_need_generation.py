@@ -464,7 +464,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             ]
         )
         if false_search_count == 0 and missed_search_count == 0:
-            lines.append("- The search/no-search boundary is clean on this seed set.")
+            lines.append("- The search/no-search boundary is clean on this eval slice.")
         else:
             lines.append("- The search/no-search boundary still needs instruction or tool-surface work before retrieval-backend comparisons.")
         if intent_matches == len(search_expected) and layer_exact_matches / len(search_expected) >= 0.9:

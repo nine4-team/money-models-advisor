@@ -40,7 +40,7 @@ This script does not run an agent and does not call external model services. It 
 
 ## Interpretation
 
-- The search/no-search boundary is clean on this seed set.
+- The search/no-search boundary is clean on this eval slice.
 - Source-need precision meets the seed gate for retrieval-backend comparison; carry any residual layer misses as caveats.
 
 ## Case Table
