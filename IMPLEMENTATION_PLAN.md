@@ -473,6 +473,7 @@ Objective: build the smallest useful advisor loop around real local business con
 Build:
 
 - `money-model-advisor setup --business-dir <path>`. **Started as `setup`; supports `--interactive` and `--answers`.**
+- `money-model-advisor session start --business-dir <path>`. **Done: prepares an agent workbench with snapshot summary, known/missing facts, recent traces, available operations, and trace requirements.**
 - `money-model-advisor turn record --business-dir <path>`. **Done: persists completed agent-operated turns.**
 - `money-model-advisor search`. **Done: returns citation-ready local Money Models source chunks.**
 - `money-model-advisor search --source-need-json`. **Done: source-need-driven product search.**
@@ -485,7 +486,7 @@ Build:
 - An agent-led advisor turn that can clarify, calculate, diagnose, search source material, critique, draft, compare, teach, recommend, and update saved context. **Target: agent loop outside deterministic CLI orchestration; CLI records and executes tools.**
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
 - Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Agent-owned; deterministic `chat` synthesis has been removed from the active product path.**
-- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started through `turn record`.**
+- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started through `session start` and `turn record`.**
 - Post-hardening acting-agent regression for source-event behavior. **Expanded to six blind cases covering multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation turns. Current report: 100.0% case pass rate, 6 / 6 expected source events matched, with 0 extra-event warnings after the upsell cleanup rerun.**
 
 Metrics:

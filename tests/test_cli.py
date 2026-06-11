@@ -149,6 +149,54 @@ class CliTest(unittest.TestCase):
             self.assertEqual(logs["logs"][0]["source_chunk_ids"], ["payback-period:0", "upsells:0"])
             self.assertEqual(full_logs["logs"][0]["source_events"], source_events)
 
+    def test_session_start_returns_agent_workbench(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_cli(
+                [
+                    "snapshot",
+                    "set",
+                    "--business-dir",
+                    tmp,
+                    "business.business_type=coaching business",
+                    "economics.cac=350",
+                ]
+            )
+            run_cli(
+                [
+                    "turn",
+                    "record",
+                    "--business-dir",
+                    tmp,
+                    "--user-message",
+                    "why do we need fulfillment cost?",
+                    "--assistant-message",
+                    "Because gross profit controls payback.",
+                    "--actions-json",
+                    json.dumps(["read_snapshot"]),
+                ]
+            )
+
+            output = run_cli(
+                [
+                    "session",
+                    "start",
+                    "--business-dir",
+                    tmp,
+                    "--user-message",
+                    "what should we do next?",
+                ]
+            )
+            payload = json.loads(output)
+
+            self.assertEqual(payload["user_message"], "what should we do next?")
+            self.assertEqual(payload["advisor_state"]["advisory_status"], "insufficient_context")
+            self.assertEqual(payload["advisor_state"]["known_facts"]["business.business_type"], "coaching business")
+            self.assertEqual(payload["advisor_state"]["known_facts"]["economics.cac"], 350)
+            self.assertIn("economics.first_30_day_gross_profit", payload["advisor_state"]["missing_fields"])
+            self.assertEqual(payload["recent_turns"][0]["user_message"], "why do we need fulfillment cost?")
+            self.assertIn("turn_record", payload["available_operations"])
+            self.assertIn("agent_owns", payload["boundary"])
+
 
 if __name__ == "__main__":
     unittest.main()

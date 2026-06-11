@@ -53,24 +53,19 @@ The folder where the skill is invoked is the context directory. It is where advi
 ## Operating Flow
 
 1. Resolve `context_dir`.
-2. Use `setup_state` to initialize local advisor state:
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
 
    ```bash
    cd /Users/benjaminmackenzie/Dev/money-model-architect
-   PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir "$CONTEXT_DIR"
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
    ```
 
-3. Use `read_snapshot` to inspect the saved snapshot:
-
-   ```bash
-   cd /Users/benjaminmackenzie/Dev/money-model-architect
-   PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
-   ```
-
-4. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
-5. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
-6. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
-7. After composing the final answer, record the completed turn:
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn:
 
    ```bash
    cd /Users/benjaminmackenzie/Dev/money-model-architect
@@ -94,6 +89,7 @@ These are the operations the agent should use through the CLI. Humans may also r
 
 | Operation | Current CLI implementation |
 |---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
 | `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
 | `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
 | `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
@@ -109,6 +105,15 @@ Show saved state:
 ```bash
 cd /Users/benjaminmackenzie/Dev/money-model-architect
 PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
 ```
 
 Update accepted facts:
@@ -144,7 +149,7 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEX
 
 ## Workflow
 
-1. Load `snapshot` before business-specific advice.
+1. Run `session start` before business-specific advice.
 2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
 3. Save clear inspected facts with `update_snapshot`.
 4. Decide the next advisory move yourself.

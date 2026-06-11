@@ -32,6 +32,7 @@ During normal use, the human should not need to choose commands or flags; the sk
 
 | Operation | Purpose | Current CLI command |
 |---|---|---|
+| `session_start` | load state, recent traces, and turn workbench | `session start --business-dir <context_dir>` |
 | `setup_state` | create/load local advisor state | `setup --business-dir <context_dir>` |
 | `read_snapshot` | inspect saved business facts | `snapshot --business-dir <context_dir>` |
 | `update_snapshot` | save accepted facts | `snapshot set --business-dir <context_dir> field=value` |
@@ -43,6 +44,14 @@ During normal use, the human should not need to choose commands or flags; the sk
 ## Command Implementations
 
 These commands are the CLI interface. In normal use, the skill guides the agent through them; in development, a human can run them directly.
+
+Start an advisor turn:
+
+```bash
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir /path/to/company \
+  --user-message "..."
+```
 
 Show saved business context:
 
@@ -98,7 +107,7 @@ Use quoted heredocs for message arguments that contain dollar amounts. Do not pu
 
 ## Workflow
 
-1. Load `snapshot` before giving business-specific advice.
+1. Run `session start` before giving business-specific advice.
 2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the user.
 3. Save clear inspected facts with `update_snapshot`.
 4. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.

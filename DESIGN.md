@@ -204,6 +204,7 @@ The advisor can teach, compare, diagnose, calculate, recommend, clarify, or upda
 The CLI should expose operations the agent can use:
 
 - `setup_state`: create/load `.money-model-advisor/business_snapshot.json`
+- `session_start`: prepare one advisor turn with state summary, recent traces, available operations, and trace requirements
 - `read_snapshot`: inspect saved business facts
 - `update_snapshot`: persist accepted facts from the human or inspected docs
 - `turn_record`: persist the completed agent turn

@@ -38,6 +38,14 @@ PYTHONPATH=src python3 -m money_model_architect.cli setup \
   --answers '{"business":{"business_type":"coaching business","icp":"gym owners"},"money_model":{"core_offer":{"description":"implementation program","price":5000},"attraction_offer":{"exists":true},"upsell":{"exists":false},"downsell":{"exists":true},"continuity":{"exists":false}},"economics":{"cac":350,"first_30_day_gross_profit":120},"problem":{"user_goal":"diagnose cash payback"}}'
 ```
 
+Start an agent-operated advisor turn:
+
+```bash
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir /path/to/company \
+  --user-message "what should we do next?"
+```
+
 Search source material from an explicit agent-selected SourceNeed:
 
 ```bash
@@ -214,9 +222,10 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Source-event trace eval implemented in `evals/advisor_source_event_cases.jsonl`, with report generation in `scripts/eval_source_event_traces.py`.
 - Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented for post-source-need retrieval experiments. BM25 is treated as the lexical baseline/control. The golden search-query slice now has 30 cases; after constrained query variants plus fusion, hybrid is the candidate product path, with continued golden-set validation required before calling it final.
 - Agent-facing source-need search implemented in `search --source-need-json`.
+- Agent-facing session workbench implemented in `session start`; it loads state, recent traces, known/missing facts, operation names, and trace requirements without synthesizing an answer.
 - Completed turn persistence implemented in `turn record`.
 - Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.
-- Core CLI commands implemented: `setup`, `search`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record`.
+- Core CLI commands implemented: `setup`, `session start`, `search`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record`.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 
 ## What remains planned

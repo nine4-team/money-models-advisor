@@ -74,6 +74,13 @@ def _build_parser() -> argparse.ArgumentParser:
     logs.add_argument("--limit", type=int, default=10, help="Maximum session turns to return")
     logs.add_argument("--full", action="store_true", help="Return full saved session records")
 
+    session = subparsers.add_parser("session", help="Prepare an agent-operated advisor session")
+    session_subparsers = session.add_subparsers(dest="session_command", required=True)
+    session_start = session_subparsers.add_parser("start", help="Load advisor state and recent traces for one agent turn")
+    session_start.add_argument("--business-dir", required=True, help="Directory containing advisor state")
+    session_start.add_argument("--user-message", help="Current human message for trace context")
+    session_start.add_argument("--limit", type=int, default=3, help="Recent turn summaries to include")
+
     turn = subparsers.add_parser("turn", help="Record completed agent-operated advisor turns")
     turn_subparsers = turn.add_subparsers(dest="turn_command", required=True)
     record = turn_subparsers.add_parser("record", help="Persist one completed advisor turn")
@@ -246,6 +253,50 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({"business_dir": str(paths.business_dir), "logs": records}, indent=2))
         return 0
 
+    if args.command == "session" and args.session_command == "start":
+        paths = advisor_paths(Path(args.business_dir))
+        ensure_advisor_state(paths)
+        snapshot = BusinessSnapshot.load(paths.snapshot)
+        payload = {
+            "business_dir": str(paths.business_dir),
+            "state_dir": str(paths.state_dir),
+            "snapshot": str(paths.snapshot),
+            "sessions_dir": str(paths.sessions_dir),
+            "user_message": args.user_message,
+            "advisor_state": _advisor_state_summary(snapshot),
+            "recent_turns": _recent_turn_summaries(paths.sessions_dir, args.limit),
+            "available_operations": [
+                "read_snapshot",
+                "update_snapshot",
+                "calculate",
+                "search_source_material",
+                "logs",
+                "turn_record",
+            ],
+            "trace_requirements": [
+                "Record the completed turn with turn record.",
+                "Include every CLI-backed action in actions-json.",
+                "Include one source_events entry per source-material search.",
+                "Include cited chunk ids when source material supports the answer.",
+            ],
+            "boundary": {
+                "agent_owns": [
+                    "advisory judgment",
+                    "local document inspection",
+                    "source-need generation",
+                    "answer synthesis",
+                ],
+                "cli_owns": [
+                    "snapshot persistence",
+                    "deterministic calculations",
+                    "source-material retrieval",
+                    "trace recording",
+                ],
+            },
+        }
+        print(json.dumps(payload, indent=2))
+        return 0
+
     if args.command == "turn" and args.turn_command == "record":
         paths = advisor_paths(Path(args.business_dir))
         ensure_advisor_state(paths)
@@ -400,6 +451,82 @@ def _write_turn_record(sessions_dir: Path, payload: dict[str, Any]) -> Path:
     path = sessions_dir / f"{timestamp}{suffix}.json"
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return path
+
+
+def _advisor_state_summary(snapshot: BusinessSnapshot) -> dict[str, Any]:
+    payload = snapshot.to_dict()
+    advisor_state = payload["advisor_state"]
+    return {
+        "advisory_status": advisor_state["advisory_status"],
+        "ready_for_payback_diagnosis": advisor_state["ready_for_payback_diagnosis"],
+        "ready_for_offer_stack_diagnosis": advisor_state["ready_for_offer_stack_diagnosis"],
+        "missing_fields": advisor_state["missing_fields"],
+        "likely_retrieval_layers": advisor_state["likely_retrieval_layers"],
+        "retrieval_query_terms": _compact_list(advisor_state["retrieval_query_terms"], 8),
+        "known_facts": _known_snapshot_facts(payload),
+    }
+
+
+def _known_snapshot_facts(snapshot_payload: dict[str, Any]) -> dict[str, Any]:
+    known: dict[str, Any] = {}
+    for section_name in ("business", "economics"):
+        for key, value in snapshot_payload.get(section_name, {}).items():
+            _add_known_fact(known, f"{section_name}.{key}", value)
+    problem = snapshot_payload.get("problem", {})
+    _add_known_fact(known, "problem.user_goal", problem.get("user_goal"))
+    symptoms = problem.get("reported_symptoms", [])
+    if symptoms:
+        known["problem.reported_symptoms_count"] = len(symptoms)
+        known["problem.recent_reported_symptoms"] = symptoms[-3:]
+    constraints = problem.get("diagnosed_constraints", [])
+    if constraints:
+        known["problem.diagnosed_constraints"] = constraints
+    for position, values in snapshot_payload.get("money_model", {}).items():
+        if not isinstance(values, dict):
+            continue
+        for key, value in values.items():
+            _add_known_fact(known, f"money_model.{position}.{key}", value)
+    return known
+
+
+def _add_known_fact(known: dict[str, Any], field_name: str, value: Any) -> None:
+    if value is None or value == "" or value == []:
+        return
+    known[field_name] = value
+
+
+def _recent_turn_summaries(sessions_dir: Path, limit: int) -> list[dict[str, Any]]:
+    summaries = []
+    for path in sorted(sessions_dir.glob("*.json"), reverse=True)[:limit]:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        summaries.append(_session_turn_summary(path, payload))
+    return summaries
+
+
+def _session_turn_summary(path: Path, payload: dict[str, Any]) -> dict[str, Any]:
+    summary = _summarize_log(path, payload)
+    return {
+        "path": summary["path"],
+        "created_at": summary["created_at"],
+        "user_message": _truncate_text(summary.get("user_message"), 180),
+        "assistant_message": _truncate_text(summary.get("assistant_message"), 360),
+        "actions": summary["actions"],
+        "source_event_count": len(summary["source_events"]),
+        "source_chunk_ids": summary["source_chunk_ids"],
+    }
+
+
+def _compact_list(values: list[Any], limit: int) -> list[Any]:
+    compacted = [_truncate_text(value, 120) for value in values]
+    if len(values) <= limit:
+        return compacted
+    return [*compacted[:limit], f"... {len(values) - limit} more"]
+
+
+def _truncate_text(value: Any, limit: int) -> Any:
+    if not isinstance(value, str) or len(value) <= limit:
+        return value
+    return value[: limit - 3].rstrip() + "..."
 
 
 def _set_snapshot_field(snapshot: BusinessSnapshot, field_name: str, value: Any) -> None:
