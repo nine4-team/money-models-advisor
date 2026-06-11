@@ -337,6 +337,7 @@ Build:
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
 - Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Agent-owned; deterministic `chat` synthesis has been removed from the active product path.**
 - Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started through `turn record`.**
+- Post-hardening acting-agent regression for multi-source turns. **Next: prove the agent chooses two SourceNeeds for the 1584 "what should we fix first?" scenario: diagnostic unit-economics evidence plus recommendation evidence for the selected fix layer.**
 
 Metrics:
 
@@ -345,6 +346,7 @@ Metrics:
 - next-action appropriateness
 - deterministic calculation correctness
 - citation coverage after retrieval
+- multi-source source-event correctness when one answer needs multiple retrieval jobs
 - user turns to useful recommendation
 
 Decision rule:

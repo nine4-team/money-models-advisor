@@ -52,6 +52,8 @@ Design decision: runtime should emit one primary `intent` per source need becaus
 
 Post-refactor manual 1584 test note: a recommendation turn that mixed unit-economics focus terms with broad offer-stack layers retrieved mostly unit-economics chunks. The correct agent behavior is to split that answer into separate searches: one `diagnostic_evidence` SourceNeed for the unit-economics interpretation and one `recommendation_evidence` SourceNeed for the specific fix layer. The skill and operating guide now state this explicitly, and `turn record` is tested with multiple source events.
 
+Senior review of the post-refactor batch: the agent/CLI boundary is sound and portfolio-positive, but the multi-source hardening is not behavior-validated yet. The current test proves `turn record` can persist multiple `source_events`; it does not prove that an acting agent will choose multiple SourceNeeds after the guidance change. The next best evidence is a post-hardening acting-agent regression for the 1584 "what should we fix first?" scenario that expects two searches: a diagnostic `unit-economics` SourceNeed and a recommendation SourceNeed for the specific fix layer. This is higher-priority hiring evidence than adding embeddings right now.
+
 Focus-term scoring should add agent-adjudicated concept coverage. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
 
 ## What A Source Need Represents
@@ -105,6 +107,7 @@ For the first v1 pass:
 
 Tighten source-need precision before retrieval-backend comparisons:
 
+- add a post-hardening acting-agent regression for the 1584 "what should we fix first?" case; expected trace has two source events: diagnostic `unit-economics` plus recommendation for the selected fix layer
 - keep runtime `intent` as a single primary label, but add eval-only `acceptable_intents` for mixed cases
 - refine layer guidance for payment-plan/free-trial cases so agents choose downsell/offer layers consistently
 - add acting-agent cases or trace checks for turns that require multiple source-material searches
