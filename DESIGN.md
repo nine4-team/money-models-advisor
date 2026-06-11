@@ -92,6 +92,30 @@ Report: `evals/reports/local_retrieval_baseline.md`.
 
 The project is still experiment-first, but all active experiments must run locally or through agent-assisted human review. The point is to demonstrate clear engineering judgment, not to accumulate fragile experiments.
 
+Core design principle: the agent judges meaning; the CLI handles deterministic bookkeeping. The advisor is built around an agent that can read conversation context, inspect local docs, decide which tool is appropriate, generate source needs, and adjudicate semantic quality. The CLI should not pretend to be that semantic judge. Its job is to persist state, run formulas, execute local search, capture traces, and score recorded judgments.
+
+This means deterministic code is appropriate for:
+
+- snapshot schema, persistence, and source metadata
+- unit-economics calculations
+- numeric/accounting state classification after the agent has chosen the task
+- local corpus search execution
+- exact trace capture and report generation
+- validation that recorded eval artifacts have the expected shape
+
+Agent judgment is appropriate for:
+
+- deciding the next advisory action
+- generating `SourceNeed` objects
+- judging whether retrieved chunks actually support a claim
+- judging whether focus terms are conceptually covered even when wording differs
+- adjudicating ambiguous intent/layer cases
+- evaluating final answer quality, grounding, and usefulness
+
+The system should record those agent judgments as auditable artifacts, with rationale, instead of burying semantic decisions in brittle keyword rules.
+
+Senior audit refinement: deterministic code can classify numeric/accounting states such as "CAC is not recovered by first-30-day gross profit." That is not the same as deciding the user's conversational intent. Readiness flags, likely retrieval layers, and query terms are candidate hints; the agent decides whether they apply to the current turn.
+
 Active eval assets:
 
 | Asset | Purpose |
@@ -129,7 +153,7 @@ Current source-need result: `evals/advisor_source_need_cases.jsonl` defines 14 s
 
 Review of the partial/miss cases suggests this is mostly an eval-design and taxonomy-precision problem, not a search-decision problem. For ad-spend capacity (`sourceneed_v1_003`), the correct intent remains diagnostic because the user is asking how to interpret known economics, not which fix to implement. For recurring maintenance (`sourceneed_v1_006`), the correct intent remains recommendation and the primary layer remains continuity; payback can be a focus term without adding the unit-economics layer when the source claim is about a fix. For payment plans (`sourceneed_v1_007`), downsells is the right layer because the business function is reducing immediate purchase friction. For free trials (`sourceneed_v1_008`), the layer should remain offers plus downsells, but the intent can reasonably be either teaching or recommendation. For front-end offers (`sourceneed_v1_010`), the low focus score is a metric false negative: terms like "front-end offer" and "engagement" are semantically aligned with "front end offer" and "get leads to engage" but fail exact substring matching.
 
-Next design decision: treat `SourceNeed.intent` as the retrieval objective for one search call, not as a complete label for the user's whole turn. A turn can be mixed: for example, the final answer may both teach and recommend. But a single source-material search should know which job it is doing, because teaching, diagnosis, comparison, and recommendation ask the corpus for different kinds of support. If an answer genuinely needs two different retrieval jobs, the planner should issue two source needs rather than one ambiguous mixed-intent source need. Eval labels can still declare `acceptable_intents` for cases where more than one primary retrieval objective is defensible; that is label-tolerance, not a different runtime contract. Focus-term scoring should also move from exact substring recall toward concept-aware recall with alias groups, while keeping exact recall temporarily as a debugging signal.
+Next design decision: treat `SourceNeed.intent` as the retrieval objective for one search call, not as a complete label for the user's whole turn. A turn can be mixed: for example, the final answer may both teach and recommend. But a single source-material search should know which job it is doing, because teaching, diagnosis, comparison, and recommendation ask the corpus for different kinds of support. If an answer genuinely needs two different retrieval jobs, the planner should issue two source needs rather than one ambiguous mixed-intent source need. Eval labels can still declare `acceptable_intents` for cases where more than one primary retrieval objective is defensible; that is label-tolerance, not a different runtime contract. Focus-term concept coverage should be judged by an agent and recorded with rationale, while exact substring recall remains only a deterministic debugging signal.
 
 ## Advisor Loop
 

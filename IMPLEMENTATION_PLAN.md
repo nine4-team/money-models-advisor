@@ -16,6 +16,10 @@ Treat RAG architecture like ML model selection:
 
 The goal is not to build every sophisticated component immediately. The goal is to make each added component earn its place.
 
+For this agent-operated product, semantic judgment belongs to the agent and deterministic bookkeeping belongs to the CLI. The CLI should persist state, run calculations, execute search, capture traces, validate artifact shape, and produce reports. The agent should decide tool use, generate source needs, inspect retrieved chunks, adjudicate semantic coverage, and judge answer quality. When the project needs semantic evals, record agent judgments with rationale and let the CLI score those recorded artifacts.
+
+Refinement: deterministic code may classify numeric/accounting states after the agent has chosen the task. For example, it can compute whether CAC is recovered by first-30-day gross profit. It should not decide broad conversational intent or whether the current user turn is a teaching, diagnosis, recommendation, or source-search turn.
+
 ## Current product direction
 
 The next real product slice is agent-first and CLI-backed. A human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI commands:
@@ -58,8 +62,15 @@ Improvement strategy:
 
 - Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
 - Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
+- Semantic evals should use agent or human adjudication artifacts rather than hidden keyword proxies. For example, focus-term concept coverage should be judged by an agent and recorded with rationale, while exact substring recall can remain a debugging metric.
 
-The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the seed set. The source-need generation eval has now been run with blind acting-agent traces. Search/no-search decisions are clean on the seed set, but source-need precision is only partial: intent match and layer exact match are both 70.0%, with low focus-term recall. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work is tightening source-need taxonomy/scoring before retrieval-backend comparisons.
+The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the seed set. The source-need generation eval has now been run with blind acting-agent traces. Search/no-search decisions are clean on the seed set, but source-need precision is only partial: intent match is 80.0%, layer exact match is 70.0%, and exact focus-term recall is low. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work is tightening source-need taxonomy and adding agent-adjudicated semantic coverage before retrieval-backend comparisons.
+
+Current boundary debt to resolve:
+
+1. Make `SourceNeed` required for production source search; keep status-driven query generation only as legacy/debug scaffolding.
+2. Split `chat` so the CLI persists turns and records artifacts, while the agent decides whether to calculate, search, clarify, or answer.
+3. Add an eval artifact for agent-adjudicated focus-term concept coverage and retrieved-chunk usefulness.
 
 **CLI setup and advisor loop:**
 

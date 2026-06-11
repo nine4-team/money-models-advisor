@@ -4,14 +4,16 @@
 
 V1 is intentionally lean. It stores only the information needed to:
 
-1. decide what the advisor should do next;
+1. support the agent's decision about what the advisor should do next;
 2. run deterministic unit-economics calculations;
 3. diagnose money-model constraints;
-4. choose the right Money Models corpus layer;
-5. form better retrieval queries;
+4. provide deterministic readiness and retrieval hints;
+5. help the agent form better source needs and retrieval queries;
 6. explain what is missing before making a recommendation.
 
 It is not a CRM profile.
+
+`BusinessSnapshot` is not the semantic planner. It can compute readiness flags, numeric/accounting states, and candidate retrieval hints. The agent decides whether those hints matter for the current turn.
 
 ## Schema
 
@@ -100,8 +102,8 @@ It is not a CRM profile.
 | `advisor_state.missing_fields` | Drives targeted clarification. |
 | `advisor_state.ready_for_payback_diagnosis` | Implementation helper for payback readiness. |
 | `advisor_state.ready_for_offer_stack_diagnosis` | Implementation helper for stack-readiness. |
-| `advisor_state.likely_retrieval_layers` | Directly supports namespace selection. |
-| `advisor_state.retrieval_query_terms` | Directly supports retrieval query construction. |
+| `advisor_state.likely_retrieval_layers` | Candidate namespace hints for the agent or query builder; not a final planner decision. |
+| `advisor_state.retrieval_query_terms` | Candidate query hints for the agent or query builder; not a final source need. |
 | `field_sources` | Lets cached file-derived facts be invalidated by source hash. |
 
 ## Stack Position Shape

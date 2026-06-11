@@ -50,7 +50,7 @@ Senior review of the partial/miss cases:
 
 Design decision: runtime should emit one primary `intent` per source need because `intent` means the retrieval objective for one search call, not the full conversational intent of the user's turn. Teaching, diagnosis, comparison, and recommendation ask the source corpus for different kinds of support. If one answer needs two different retrieval jobs, the planner should issue two source needs rather than one ambiguous mixed-intent source need. Eval labels can use optional `acceptable_intents` when more than one primary retrieval objective is defensible; that makes the label tolerant without changing the runtime meaning. This is now implemented for `sourceneed_v1_008`.
 
-Focus-term scoring should add concept-aware recall. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
+Focus-term scoring should add agent-adjudicated concept coverage. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
 
 ## What A Source Need Represents
 
@@ -105,5 +105,5 @@ Tighten source-need precision before retrieval-backend comparisons:
 
 - keep runtime `intent` as a single primary label, but add eval-only `acceptable_intents` for mixed cases
 - refine layer guidance for payment-plan/free-trial cases so agents choose downsell/offer layers consistently
-- improve focus-term scoring so it measures concept coverage in addition to exact substring overlap
+- add agent-adjudicated focus-term concept coverage, while keeping exact substring overlap as a debugging metric
 - rerun the source-need eval after the taxonomy/scoring cleanup

@@ -96,15 +96,37 @@ Some cross-cutting chapters are tagged across layers so they can surface when us
 
 ## Deterministic Boundaries
 
+Design principle: the agent judges meaning; the CLI handles deterministic bookkeeping.
+
 Deterministic code is appropriate for:
 
 - formulas
 - snapshot persistence
 - schema/readiness checks
+- numeric/accounting state classification after the agent has chosen the task
 - local retrieval execution
 - session trace writing
+- report generation over recorded artifacts
 
 It is not appropriate as the production conversational brain. The advisor should not use regex or shallow keywords to decide whether the user wants teaching, diagnosis, comparison, or recommendation.
+
+Agent judgment is appropriate for semantic work:
+
+- next-action classification
+- source-need generation
+- deciding whether retrieved chunks actually support a claim
+- adjudicating ambiguous intent/layer cases
+- judging whether focus terms are conceptually covered when wording differs
+- evaluating whether the final answer is grounded, useful, and appropriate to the business context
+
+The CLI should make these judgments auditable by recording prompts, traces, decisions, cited chunks, and rationales. It should score recorded judgments, not replace the agent with hidden semantic heuristics.
+
+Current boundary debt:
+
+- `src/money_model_architect/advisor.py` is a deterministic v1 skeleton that still performs too much orchestration inside `chat`.
+- `src/money_model_architect/advisor_queries.py` can still build status-driven queries without a `SourceNeed`; this should be retained only as legacy/debug scaffolding until replaced by explicit agent-selected source needs.
+- `advisor_state.likely_retrieval_layers` and `advisor_state.retrieval_query_terms` are candidate hints, not final semantic decisions.
+- Exact focus-term recall in eval scripts is a debug proxy only; semantic focus coverage and chunk usefulness need recorded agent/human adjudication.
 
 ## Evaluation
 
