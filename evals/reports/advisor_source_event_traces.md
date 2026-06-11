@@ -24,7 +24,7 @@ It does not run an agent and does not call external model services. Acting agent
 
 - Case pass rate: 100.0%
 - Expected source events matched: 6 / 6
-- Extra source-event warnings: 1 cases / 1 events
+- Extra source-event warnings: 0 cases / 0 events
 
 ## Case Table
 
@@ -32,7 +32,7 @@ It does not run an agent and does not call external model services. Acting agent
 |---|---|---:|---:|---:|---|---|
 | `sourceevents_v1_001` | `post_hardening_regression` | 2 | 2 | 2 | `passed` | - |
 | `sourceevents_v1_002` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
-| `sourceevents_v1_003` | `post_hardening_regression` | 1 | 2 | 1 | `passed` | extra_events:1 |
+| `sourceevents_v1_003` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
 | `sourceevents_v1_004` | `post_hardening_regression` | 0 | 0 | 0 | `passed` | - |
 | `sourceevents_v1_005` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
 | `sourceevents_v1_006` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |

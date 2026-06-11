@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceevents_v1_002",
+  "created_at": "2026-06-11T04:28:54Z",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceevents_v1_002",
+    "conversation_context": "The snapshot is recommendable for 1584 Design and already contains CAC, first-30-day gross profit, gross margin, and payback period. The user asks only how to interpret the economics.",
+    "scenario_id": "1584_design",
+    "user_turn": "does this mean paid acquisition is viable, or is CAC the bottleneck?"
+  }
+}

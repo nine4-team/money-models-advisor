@@ -143,6 +143,8 @@ Recommendation support rule: if the answer recommends a concrete Money Models mo
 
 Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
 
+Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.
+
 When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
 
 Use the smallest layer set that can support the answer. Extra layers make retrieval noisier.

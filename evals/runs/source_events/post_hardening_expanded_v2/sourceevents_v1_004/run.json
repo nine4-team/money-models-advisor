@@ -1,0 +1,63 @@
+{
+  "actions": [
+    {
+      "details": {
+        "advisory_status": "insufficient_context",
+        "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_004/business",
+        "missing_fields": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit"
+        ]
+      },
+      "type": "setup_state"
+    },
+    {
+      "details": {
+        "missing_fields": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit"
+        ],
+        "ready_for_offer_stack_diagnosis": true,
+        "ready_for_payback_diagnosis": false
+      },
+      "type": "read_snapshot"
+    },
+    {
+      "details": {
+        "turns_found": 0
+      },
+      "type": "logs"
+    },
+    {
+      "details": {
+        "cited_chunk_ids": [],
+        "source_event_count": 0
+      },
+      "type": "turn_record"
+    },
+    {
+      "details": {
+        "decision": "ask_for_missing_economics_before_prioritizing_fixes",
+        "source_search_used": false
+      },
+      "type": "answer"
+    }
+  ],
+  "case_id": "sourceevents_v1_004",
+  "cited_chunk_ids": [],
+  "completed_at": "2026-06-11T04:30:55Z",
+  "created_at": "2026-06-11T04:28:54Z",
+  "notes": "No source-material search was run. The snapshot already contained business and offer-stack context but was missing CAC and first-30-day gross profit, so the appropriate next move was to ask for those economics before prioritizing fixes or making a sourced recommendation.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_004/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [],
+  "visible_context": {
+    "case_id": "sourceevents_v1_004",
+    "conversation_context": "The snapshot knows the business and draft offer stack but is missing CAC and first-30-day gross profit. The user asks for prioritization before the needed economics are known.",
+    "scenario_id": "1584_design",
+    "user_turn": "what should we fix first?"
+  }
+}

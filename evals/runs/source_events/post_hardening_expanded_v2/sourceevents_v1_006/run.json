@@ -1,0 +1,85 @@
+{
+  "actions": [
+    {
+      "summary": "Initialized/verified advisor state for the business directory.",
+      "type": "setup_state"
+    },
+    {
+      "summary": "Inspected snapshot: recommendable, no missing fields, no continuity offer, CAC 1000, first-30-day gross profit 10000, monthly recurring gross profit 0, payback 1.0 months.",
+      "type": "read_snapshot"
+    },
+    {
+      "summary": "Retrieved continuity recommendation evidence for a recurring post-install owner maintenance offer.",
+      "type": "search_source_material"
+    },
+    {
+      "summary": "Recorded completed advisor turn with source event and citations.",
+      "type": "turn_record"
+    }
+  ],
+  "case_id": "sourceevents_v1_006",
+  "cited_chunk_ids": [
+    "continuity-offers:2",
+    "continuity-bonus:4"
+  ],
+  "completed_at": "2026-06-11T04:31:16Z",
+  "created_at": "2026-06-11T04:28:55Z",
+  "notes": "Answered yes, recommending a recurring post-install owner maintenance plan as the missing continuity lever. Used one recommendation_evidence SourceNeed for the continuity layer; cited continuity-offers:2 for LTGP/continuity support and continuity-bonus:4 for packaging the offer around a concrete valuable benefit.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_006/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [
+    {
+      "generated_queries": [
+        {
+          "intent": "recommendation_evidence",
+          "layer": "continuity",
+          "query": "recurring maintenance offer continuity post-install service owner maintenance lifetime gross profit interior design STR",
+          "reason": "Source need was selected for the current turn; retrieve source-specific Money Models support."
+        }
+      ],
+      "inspected_chunks": [
+        {
+          "chapter": "continuity-offers",
+          "id": "continuity-offers:2",
+          "layer": "continuity",
+          "score": 16.685
+        },
+        {
+          "chapter": "continuity-bonus",
+          "id": "continuity-bonus:4",
+          "layer": "continuity",
+          "score": 10.701
+        },
+        {
+          "chapter": "make-your-money-model",
+          "id": "make-your-money-model:0",
+          "layer": "offers",
+          "score": 10.22
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "recurring maintenance offer",
+          "continuity",
+          "post-install service",
+          "owner maintenance",
+          "lifetime gross profit"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "continuity"
+        ],
+        "user_turn": "should we add a recurring owner maintenance offer after installs?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_006",
+    "conversation_context": "The snapshot is recommendable and shows no continuity offer. The user asks whether a recurring post-install service would improve the money model.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we add a recurring owner maintenance offer after installs?"
+  }
+}

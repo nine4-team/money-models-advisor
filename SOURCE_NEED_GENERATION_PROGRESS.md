@@ -54,7 +54,7 @@ Post-refactor manual 1584 test note: a recommendation turn that mixed unit-econo
 
 Senior review of the post-refactor batch: the agent/CLI boundary is sound and portfolio-positive, but the multi-source hardening needed behavior validation. The storage test proved `turn record` could persist multiple `source_events`; it did not prove that an acting agent would choose multiple SourceNeeds after the guidance change. The next best evidence was a post-hardening acting-agent regression for the 1584 "what should we fix first?" scenario that expected two searches: a diagnostic `unit-economics` SourceNeed and a recommendation SourceNeed for the specific fix layer. That evidence now exists and has been broadened beyond the seed case.
 
-Implementation status: the source-event trace regression harness now exists. It uses `evals/advisor_source_event_cases.jsonl`, `scripts/capture_source_event_trace.py`, `scripts/eval_source_event_traces.py`, and `evals/reports/advisor_source_event_traces.md`. The first case is `sourceevents_v1_001`, the post-hardening 1584 "what should we fix first?" regression. Blind v1 and v2 traces failed in useful ways; v3 passed the expected-event gate. The expanded `post_hardening_expanded` batch now covers six blind acting-agent cases: multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation. The current report shows 100.0% case pass rate, 6 / 6 expected source events matched, and one extra source-event warning in the upsell recommendation case.
+Implementation status: the source-event trace regression harness now exists. It uses `evals/advisor_source_event_cases.jsonl`, `scripts/capture_source_event_trace.py`, `scripts/eval_source_event_traces.py`, and `evals/reports/advisor_source_event_traces.md`. The first case is `sourceevents_v1_001`, the post-hardening 1584 "what should we fix first?" regression. Blind v1 and v2 traces failed in useful ways; v3 passed the expected-event gate. The expanded `post_hardening_expanded_v2` batch now covers six blind acting-agent cases: multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation. The current report shows 100.0% case pass rate, 6 / 6 expected source events matched, and 0 extra source-event warnings after the upsell cleanup rerun.
 
 Focus-term scoring should add agent-adjudicated concept coverage. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
 
@@ -109,7 +109,7 @@ For the first v1 pass:
 
 Tighten source-need precision before retrieval-backend comparisons:
 
-- reduce redundant extra source events after the expanded source-event regression, especially the upsell recommendation case that matched the expected source event but added an unnecessary diagnostic event
+- keep the no-extra-event source-event regression clean as new behavior is added
 - keep runtime `intent` as a single primary label, but add eval-only `acceptable_intents` for mixed cases
 - refine layer guidance for payment-plan/free-trial cases so agents choose downsell/offer layers consistently
 - add more acting-agent source-event cases only when they cover materially new behavior; the current six-case batch is enough for the hiring narrative around source-event splitting and no-search restraint

@@ -435,7 +435,7 @@ def main() -> int:
     parser.add_argument(
         "--runs-dir",
         type=Path,
-        default=ROOT / "evals" / "runs" / "source_events" / "post_hardening_expanded",
+        default=ROOT / "evals" / "runs" / "source_events" / "post_hardening_expanded_v2",
     )
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "advisor_source_event_traces.md")
     args = parser.parse_args()

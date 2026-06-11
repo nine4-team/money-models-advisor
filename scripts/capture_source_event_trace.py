@@ -135,6 +135,8 @@ def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
             "",
             "Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.",
             "",
+            "Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.",
+            "",
             f"Business dir: `{business_dir}`",
             "",
             "Visible case context:",

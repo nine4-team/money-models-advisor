@@ -1,0 +1,133 @@
+{
+  "actions": [
+    {
+      "details": {
+        "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business"
+      },
+      "type": "setup_state"
+    },
+    {
+      "details": {
+        "advisory_status": "recommendable",
+        "cac": 1000,
+        "first_30_day_gross_profit": 10000,
+        "gross_margin": 0.769,
+        "payback_period_months": 1.0
+      },
+      "type": "read_snapshot"
+    },
+    {
+      "details": {
+        "prior_context": "Prior sessions state CAC is roughly $1,000 from referral partners and that $10,000 first-30-day gross profit leaves room to test paid acquisition carefully.",
+        "turns_found": 2
+      },
+      "type": "logs"
+    },
+    {
+      "details": {
+        "inputs": {
+          "cac": 1000,
+          "month_one_gp": 10000,
+          "monthly_recurring_gp": 0
+        },
+        "metric": "payback",
+        "result": 1.0
+      },
+      "type": "calculate"
+    },
+    {
+      "details": {
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "query": "CAC first 30 day gross profit payback period paid acquisition viability interior design STR"
+      },
+      "type": "search_source_material"
+    },
+    {
+      "details": {
+        "cited_chunk_ids": [
+          "how-businesses-make-money:2",
+          "payback-period:0",
+          "context:1",
+          "cfa:0"
+        ],
+        "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business/.money-model-advisor/sessions/20260611T043221.json",
+        "source_event_count": 1
+      },
+      "type": "turn_record"
+    }
+  ],
+  "case_id": "sourceevents_v1_002",
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "payback-period:0",
+    "context:1",
+    "cfa:0"
+  ],
+  "completed_at": "2026-06-11T04:32:35Z",
+  "created_at": "2026-06-11T04:28:54Z",
+  "notes": "Answered that paid acquisition is viable enough to test and that CAC is not the current bottleneck. Used one diagnostic_evidence source event for unit economics/payback interpretation; no separate recommendation source event because the user asked only how to interpret the economics, not for a concrete offer-stack move.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [
+    {
+      "generated_query": "CAC first 30 day gross profit payback period paid acquisition viability interior design STR",
+      "inspected_chunks": [
+        {
+          "chapter": "how-businesses-make-money",
+          "id": "how-businesses-make-money:2",
+          "layer": "unit-economics",
+          "score": 24.206
+        },
+        {
+          "chapter": "payback-period",
+          "id": "payback-period:0",
+          "layer": "unit-economics",
+          "score": 22.784
+        },
+        {
+          "chapter": "context",
+          "id": "context:1",
+          "layer": "unit-economics",
+          "score": 20.438
+        },
+        {
+          "chapter": "cfa",
+          "id": "cfa:0",
+          "layer": "unit-economics",
+          "score": 20.411
+        },
+        {
+          "chapter": "payback-period",
+          "id": "payback-period:1",
+          "layer": "unit-economics",
+          "score": 18.504
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "CAC",
+          "first 30 day gross profit",
+          "payback period",
+          "paid acquisition viability"
+        ],
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "user_turn": "does this mean paid acquisition is viable, or is CAC the bottleneck?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_002",
+    "conversation_context": "The snapshot is recommendable for 1584 Design and already contains CAC, first-30-day gross profit, gross margin, and payback period. The user asks only how to interpret the economics.",
+    "scenario_id": "1584_design",
+    "user_turn": "does this mean paid acquisition is viable, or is CAC the bottleneck?"
+  }
+}

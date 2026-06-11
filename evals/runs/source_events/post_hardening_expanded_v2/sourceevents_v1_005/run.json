@@ -1,0 +1,96 @@
+{
+  "actions": [
+    {
+      "summary": "Initialized advisor state for the case business directory.",
+      "type": "setup_state"
+    },
+    {
+      "summary": "Read the saved recommendable business snapshot.",
+      "type": "read_snapshot"
+    },
+    {
+      "summary": "Searched for teaching evidence on front-end/attraction offers.",
+      "type": "search_source_material"
+    },
+    {
+      "summary": "Recorded the completed advisory turn with source citations.",
+      "type": "turn_record"
+    }
+  ],
+  "case_id": "sourceevents_v1_005",
+  "cited_chunk_ids": [
+    "make-your-money-model:0",
+    "free-with-consumption:1"
+  ],
+  "completed_at": "2026-06-11T04:31:11Z",
+  "created_at": "2026-06-11T04:28:55Z",
+  "notes": "Conceptual teaching answer. One teaching_evidence source event on offers; cited make-your-money-model:0 for attraction/front-end placement and free-with-consumption:1 for first-step value/trust before the next action.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_005/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [
+    {
+      "inspected_chunks": [
+        {
+          "chapter": "free-with-consumption",
+          "id": "free-with-consumption:1",
+          "layer": "offers",
+          "score": 6.799
+        },
+        {
+          "chapter": "pay-less-now",
+          "id": "pay-less-now:2",
+          "layer": "offers",
+          "score": 6.705
+        },
+        {
+          "chapter": "buy-x-get-y",
+          "id": "buy-x-get-y:4",
+          "layer": "offers",
+          "score": 6.209
+        },
+        {
+          "chapter": "make-your-money-model",
+          "id": "make-your-money-model:0",
+          "layer": "offers",
+          "score": 5.523
+        },
+        {
+          "chapter": "ten-years-ten-minutes",
+          "id": "ten-years-ten-minutes:2",
+          "layer": "unit-economics",
+          "score": 5.425
+        }
+      ],
+      "queries": [
+        {
+          "intent": "teaching_evidence",
+          "layer": "offers",
+          "query": "front-end offer low-risk first purchase core offer buyer journey interior design STR",
+          "reason": "Source need was selected for the current turn; retrieve source-specific Money Models support."
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "front-end offer",
+          "low-risk first purchase",
+          "core offer",
+          "buyer journey"
+        ],
+        "intent": "teaching_evidence",
+        "layers": [
+          "offers"
+        ],
+        "user_turn": "what is a front-end offer in plain English?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_005",
+    "conversation_context": "The snapshot is recommendable, but the user asks a conceptual teaching question rather than asking for diagnosis or implementation advice.",
+    "scenario_id": "1584_design",
+    "user_turn": "what is a front-end offer in plain English?"
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "actions": [
+    {
+      "details": {
+        "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_001/business"
+      },
+      "type": "setup_state"
+    },
+    {
+      "details": {
+        "advisory_status": "recommendable",
+        "cac": 1000,
+        "first_30_day_gross_profit": 10000,
+        "payback_period_months": 1.0
+      },
+      "type": "read_snapshot"
+    },
+    {
+      "details": {
+        "prior_context": "referral-partner CAC and paid-acquisition capacity discussion"
+      },
+      "type": "inspect_logs"
+    },
+    {
+      "details": {
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "query": "CAC first 30 day gross profit payback period paid acquisition capacity interior design STR"
+      },
+      "type": "search_source_material"
+    },
+    {
+      "details": {
+        "intent": "recommendation_evidence",
+        "layers": [
+          "offers"
+        ],
+        "query": "diagnostic offer front end offer paid acquisition test attraction offer interior design STR"
+      },
+      "type": "search_source_material"
+    }
+  ],
+  "case_id": "sourceevents_v1_001",
+  "cited_chunk_ids": [
+    "context:1",
+    "payback-period:0",
+    "make-your-money-model:1",
+    "cac:12"
+  ],
+  "completed_at": "2026-06-11T04:30:28Z",
+  "created_at": "2026-06-11T04:28:54Z",
+  "notes": "Answered that 1584 Design should fix repeatable acquisition first by turning the $597 STR Design Diagnostic into a controlled paid front-end test, because snapshot economics show $1,000 CAC, $10,000 first-30-day gross profit, and 1.0 month payback. Recorded one diagnostic unit-economics source event and one recommendation offers source event.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_001/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [
+    {
+      "generated_query": "CAC first 30 day gross profit payback period paid acquisition capacity interior design STR",
+      "inspected_chunks": [
+        {
+          "id": "how-businesses-make-money:2",
+          "score": 24.206
+        },
+        {
+          "id": "payback-period:0",
+          "score": 22.784
+        },
+        {
+          "id": "context:1",
+          "score": 20.438
+        },
+        {
+          "id": "cfa:0",
+          "score": 20.411
+        },
+        {
+          "id": "payback-period:1",
+          "score": 18.504
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "CAC",
+          "first 30 day gross profit",
+          "payback period",
+          "paid acquisition capacity"
+        ],
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "user_turn": "what should we fix first?"
+      }
+    },
+    {
+      "generated_query": "diagnostic offer front end offer paid acquisition test attraction offer interior design STR",
+      "inspected_chunks": [
+        {
+          "id": "make-your-money-model:0",
+          "score": 14.924
+        },
+        {
+          "id": "make-your-money-model:1",
+          "score": 11.517
+        },
+        {
+          "id": "cac:12",
+          "score": 9.933
+        },
+        {
+          "id": "free-trials:1",
+          "score": 9.42
+        },
+        {
+          "id": "buy-x-get-y:3",
+          "score": 9.397
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "diagnostic offer",
+          "front end offer",
+          "paid acquisition test",
+          "attraction offer"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "offers"
+        ],
+        "user_turn": "what should we fix first?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_001",
+    "conversation_context": "The snapshot is recommendable for 1584 Design. Prior context includes referral-partner CAC and paid-acquisition capacity discussion. The user asks for the next priority.",
+    "scenario_id": "1584_design",
+    "user_turn": "what should we fix first?"
+  }
+}
