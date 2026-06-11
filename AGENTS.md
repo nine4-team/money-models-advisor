@@ -63,7 +63,7 @@ Do not tune only for one visible miss unless the fix is framed as a general beha
 
 ## Retrieval Position
 
-BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a retrieval storage boundary. The local backend remains the fast eval baseline. The 30-case expanded search-query slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and Pinecone parity checks before calling it final.
+BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a retrieval storage boundary. The local backend remains the fast eval baseline. The 30-case expanded search-query slice plus Pinecone parity supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and hosted-vector latency optimization before calling it production-final.
 
 Embedding API use is allowed for deterministic vectorization and cached retrieval experiments. Do not use external model APIs for agent planning, labeling, answer synthesis, or acting-agent eval work.
 
@@ -73,7 +73,7 @@ Never commit `.env`, API keys, or `.cache/embeddings/`.
 
 The next JD-aligned work should emphasize:
 
-- Pinecone indexing and parity evals now that the vector-store boundary exists
+- hosted-vector latency optimization now that Pinecone indexing and parity evals work
 - continued golden-dataset breadth and regression coverage
 - cold-cache reporting only if first-run embedding cost needs to be separated from steady-state warm-cache behavior
 

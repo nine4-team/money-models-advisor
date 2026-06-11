@@ -222,6 +222,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Agent-led local doc inspection before snapshot updates.
-- Configure Pinecone credentials/index host, index the corpus, and run the same golden retrieval evals against Pinecone-backed vector storage.
+- Optimize hosted-vector latency now that Pinecone indexing and parity evals are working.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

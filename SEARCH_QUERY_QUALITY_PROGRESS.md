@@ -107,4 +107,4 @@ For the first v1 pass:
 
 ## Next Work
 
-Run Pinecone parity once `PINECONE_API_KEY` and `PINECONE_INDEX_HOST` are configured: index the corpus with `index pinecone`, then run the same golden search-query evals with `--vector-store pinecone`. The adapter and local parity path are implemented; the remaining question is whether Pinecone-backed retrieval matches the local vector-store quality/latency/cost profile closely enough for the write-up.
+Pinecone parity is complete for the 30-case generated-variants slice. The corpus was indexed as 202 heading-aware chunk vectors. `--vector-store pinecone` preserves the local quality direction: hybrid+variants reaches 100.0% Hit@3, 100.0% Hit@5, mean known-useful rank 1.17, and no top-5 misses. Cached embeddings kept the comparison at zero external embedding API batches. The remaining retrieval-engineering question is hosted-vector latency: the current sequential variant harness performs 120 Pinecone vector searches and shows roughly 5.3s p50 retrieval latency for hybrid, so the next optimization is reducing or parallelizing query fanout without losing quality.

@@ -203,7 +203,7 @@ First generated-query backend result:
 - Plain generated hybrid: 96.7% known-useful Hit@3/Hit@5, mean known-useful rank 1.21, misses `searchq_v1_001`.
 - Generated variants + hybrid: 100.0% known-useful Hit@3/Hit@5, mean known-useful rank 1.17, no top-5 misses.
 
-Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a clean storage boundary. The 30-case expanded slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and Pinecone parity checks before calling it final.
+Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a clean storage boundary. The 30-case expanded slice plus Pinecone parity supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and hosted-vector latency optimization before calling it production-final.
 
 JD-aligned next experiment:
 
@@ -346,6 +346,10 @@ Narrative:
 
 "I started with local retrieval so I could iterate quickly and build reliable evals. Once the retrieval strategy was justified, I added a Pinecone-backed vector store behind the same interface, so the system could move from local CLI experimentation to hosted production retrieval without rewriting advisor logic."
 
+Implementation framing:
+
+The important decision is the vector-store boundary, not the adapter's internal transport. The first Pinecone implementation uses a small direct HTTP wrapper so the advisor, eval harness, and future web surface depend only on a narrow `VectorStore` contract instead of Pinecone-specific SDK objects. In production, the adapter internals could be swapped to the official SDK if that improved retries, auth ergonomics, batching, observability, or maintenance; the retrieval contract, tests, and narrative would stay the same.
+
 Design:
 
 - Define a `VectorStore` boundary responsible for vector upsert and vector query, not answer synthesis or source-need generation.
@@ -365,7 +369,7 @@ Build order:
 4. Add an indexing command that upserts heading-aware corpus chunks to Pinecone with metadata. **Done.**
 5. Add a Pinecone-backed vector search path and keep hybrid fusion unchanged above it. **Done.**
 6. Extend backend comparison so vector/hybrid can run against local or Pinecone vector storage. **Done.**
-7. Run the same golden search-query evals against local and Pinecone and record parity, latency, cache behavior, and cost. **Pending Pinecone credentials/index host.**
+7. Run the same golden search-query evals against local and Pinecone and record parity, latency, cache behavior, and cost. **Done for generated-variants slice.**
 
 Acceptance criteria:
 
@@ -390,7 +394,10 @@ Current status:
 - `search --vector-store local|pinecone` and backend comparison `--vector-store local|pinecone` are implemented.
 - `index pinecone` upserts heading-aware corpus chunk vectors to Pinecone using stable ids and chunk metadata.
 - Local adapter parity is verified: generated and generated-variants reports preserve the previous quality results through `--vector-store local`.
-- Pinecone parity eval is not yet run because `PINECONE_API_KEY` and `PINECONE_INDEX_HOST` are not configured.
+- Pinecone index `money-models-advisor` is configured locally and contains 202 heading-aware chunk vectors.
+- Pinecone parity is verified on the 30-case generated-variants slice: hybrid+variants reaches 100.0% Hit@3, 100.0% Hit@5, mean known-useful rank 1.17, and no top-5 misses.
+- Pinecone eval cost was controlled by cached embeddings: 100.0% query cache hit rate and zero external embedding API batches during the comparison run.
+- Pinecone hosted-vector latency is the next optimization target: the current sequential variant eval produced 120 Pinecone vector searches and roughly 5.3s p50 retrieval latency for hybrid in this harness.
 
 ## Phase 4 — Robust Local Evaluation Methodology
 

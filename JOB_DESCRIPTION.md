@@ -48,7 +48,7 @@ Strong alignment:
 Weak alignment / gaps to close:
 
 - The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
-- The vector backend now has a storage boundary with local and Pinecone implementations. The local backend remains the fast eval baseline; the Pinecone path is implemented and needs indexing/parity results once credentials and index host are configured.
+- The vector backend now has a storage boundary with local and Pinecone implementations. The local backend remains the fast eval baseline; the Pinecone path is indexed and parity-tested on the 30-case generated-variants slice.
 - Query generation v2 is implemented as constrained `SourceNeed.query_variants` with the deterministic flattened query retained as a fallback/control.
 - Observability is now present through traces, Markdown reports, summary JSON, case-level JSONL, latency metrics, cache hit/miss accounting, and estimated embedding cost. Token/cost reporting is explicit for embeddings; agent work remains outside the API path.
 
@@ -56,8 +56,8 @@ Weak alignment / gaps to close:
 
 The next highest-signal work is:
 
-1. Run Pinecone parity evals after configuring `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`.
-2. Record Pinecone quality/latency/cache/cost results beside the local vector-store reports.
-3. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
+1. Optimize hosted-vector latency by reducing or parallelizing query-variant fanout while preserving hybrid+variants quality.
+2. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
+3. Keep Pinecone quality/latency/cache/cost reports beside local vector-store reports as the hosted retrieval guardrail.
 
 This keeps the work aligned with the JD: golden datasets first, measured retrieval improvements second, production-oriented infrastructure third.
