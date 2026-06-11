@@ -218,25 +218,31 @@ Detailed implementation plan for the next report pass:
 
 1. Add embedding instrumentation without changing retrieval behavior.
 
-   Extend `OpenAIEmbeddingClient` with a small stats object that records cache hits, cache misses, API batches, embedded inputs, and approximate input characters. Keep the cache key and embedding outputs unchanged. The goal is observability, not a retrieval change.
+   Extend `OpenAIEmbeddingClient` with a small stats object that records cache hits, cache misses, API batches, embedded inputs, embedding model, cache namespace, and approximate input characters. Keep the cache key and embedding outputs unchanged. Cache keys must continue to include the embedding model and exact input text. The goal is observability, not a retrieval change.
 
 2. Add per-backend timing in the search-query evaluator.
 
-   Measure index-build time once per backend run and per-case retrieval latency around the actual search call. Report p50 and p95 latency for BM25, vector, and hybrid. Keep quality metrics identical so the new report answers: did the same retrieval choice improve quality, and what did it cost in runtime?
+   Measure index-build time once per backend run and per-case timing around the actual work. Where the code can separate phases cleanly, record `query_build_ms`, `embedding_ms`, `retrieval_ms`, `merge_rank_ms`, and `total_ms`. Report p50 and p95 latency for BM25, vector, and hybrid. Keep quality metrics identical so the new report answers: did the same retrieval choice improve quality, and what did it cost in runtime?
 
 3. Add cache/cost reporting to backend comparison.
 
-   For vector and hybrid runs, include cache hits, cache misses, cache hit rate, estimated newly embedded inputs, and estimated embedding cost. BM25 should report `n/a` for embedding metrics. Cost estimates should be clearly labeled as estimates and based on configured model pricing constants, not treated as billing truth.
+   For vector and hybrid runs, include cache hits, cache misses, cache hit rate, API requests/batches, estimated newly embedded inputs, estimated embedding input characters or tokens, estimated incremental embedding cost, and estimated cost per 1,000 queries. BM25 should report zero embedding requests and zero embedding cost. Cost estimates should be clearly labeled as estimates and based on configured model pricing constants, not treated as billing truth.
 
-4. Separate warm-cache and cold-cache interpretation.
+4. Emit machine-readable run artifacts.
+
+   In addition to Markdown reports, write a summary JSON artifact with aggregate metrics by backend and a case-level JSONL artifact with one row per case per backend. Include case id, backend, query source, query count, top chunk ids, rank, hit flags, latency fields, cache counters, and estimated cost. These artifacts should be stable enough to diff across runs.
+
+5. Separate warm-cache and cold-cache interpretation.
 
    The default report should describe the current cache state because that is what a developer run actually experienced. Add an optional cold-cache mode or documented manual command later only if needed. Do not delete `.cache/embeddings/` during ordinary eval runs; that would make routine testing unnecessarily expensive and fragile.
 
-5. Preserve the current product boundary.
+   If cold-cache and warm-cache runs are added, report them separately. Do not blend the numbers: cold-cache tells us first-run embedding cost, while warm-cache tells us steady-state developer/product behavior.
+
+6. Preserve the current product boundary.
 
    Embedding API use remains allowed only for deterministic vectorization. Do not add external model calls for source-need generation, labeling, acting-agent traces, or answer synthesis. This keeps the JD-aligned cost story focused: cached embeddings reduce vector retrieval cost, while agent reasoning stays in the Codex/subscription path.
 
-6. Update reports and docs together.
+7. Update reports and docs together.
 
    Regenerate `evals/reports/retrieval_backend_comparison.md` and `evals/reports/retrieval_backend_comparison_generated_variants.md`, then update `DESIGN.md`, `GOLDEN_DATASET.md`, `JOB_DESCRIPTION.md`, and `SEARCH_QUERY_QUALITY_PROGRESS.md` with the observed quality/latency/cache/cost tradeoff.
 
@@ -244,10 +250,15 @@ Acceptance criteria:
 
 - Backend comparison reports include the existing quality table plus a performance/cost table.
 - Reports show p50/p95 retrieval latency for every backend.
-- Reports show embedding cache hits, misses, hit rate, API batches, and estimated incremental embedding cost for vector/hybrid.
+- Reports show embedding cache hits, misses, hit rate, API batches, estimated incremental embedding cost, and estimated cost per 1,000 queries for vector/hybrid.
+- Reports do not hide query-variant cost: query count, variant count, and vector search count are visible.
+- A summary JSON artifact and case-level JSONL artifact are written for each comparison run.
+- BM25 reports zero embedding requests and zero embedding cost.
+- Warm-cache runs make zero external embedding calls when all corpus and query embeddings are cached.
 - Unit tests cover cache-hit/cache-miss accounting without making network calls.
 - Existing retrieval-quality numbers do not change except for normal latency variation.
 - The narrative explicitly says cached embeddings are the cost-control mechanism and does not imply that agent work uses the OpenAI API.
+- Latency tests do not hard-fail on exact milliseconds; any thresholds should be broad budgets, not brittle stopwatch assertions.
 
 ## Phase 2 — Chunking Comparison
 
