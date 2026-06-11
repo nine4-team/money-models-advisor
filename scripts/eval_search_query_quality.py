@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -21,6 +22,7 @@ import sys
 sys.path.insert(0, str(ROOT / "src"))
 
 from money_model_architect.advisor_queries import SourceNeed, build_advisor_queries  # noqa: E402
+from money_model_architect.embeddings import OpenAIEmbeddingClient  # noqa: E402
 from money_model_architect.retrieval import CorpusIndex, SearchResult  # noqa: E402
 from money_model_architect.snapshot import BusinessSnapshot  # noqa: E402
 
@@ -69,6 +71,16 @@ class QueryResult:
     top1_layer_match: bool
     any_layer_match_at_5: bool
     focus_term_recall: float
+    query_build_ms: float = 0.0
+    retrieval_ms: float = 0.0
+    merge_rank_ms: float = 0.0
+    total_ms: float = 0.0
+    embedding_ms: float = 0.0
+    query_count: int = 0
+    variant_count: int = 0
+    vector_search_count: int = 0
+    merged_result_count: int = 0
+    embedding_delta: dict[str, Any] | None = None
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -173,13 +185,21 @@ def query_specs_for_case(
     return [(query.layer, query.query, query.reason) for query in build_advisor_queries(snapshot, source_need=source_need)]
 
 
-def search_index(index: CorpusIndex, query: str, *, layer: str | None, top_k: int, backend: str):
+def search_index(
+    index: CorpusIndex,
+    query: str,
+    *,
+    layer: str | None,
+    top_k: int,
+    backend: str,
+    embedding_client: Any | None = None,
+):
     if backend == "bm25":
         return index.search(query, layer=layer, top_k=top_k)
     if backend == "vector":
-        return index.vector_search(query, layer=layer, top_k=top_k)
+        return index.vector_search(query, layer=layer, top_k=top_k, embedding_client=embedding_client)
     if backend == "hybrid":
-        return index.hybrid_search(query, layer=layer, top_k=top_k)
+        return index.hybrid_search(query, layer=layer, top_k=top_k, embedding_client=embedding_client)
     raise ValueError(f"unknown retrieval backend: {backend}")
 
 
@@ -205,13 +225,40 @@ def score_cases(
     retrieval_backend: str,
     variants_by_case: dict[str, list[str]] | None = None,
 ) -> list[QueryResult]:
+    return score_cases_with_metrics(
+        cases,
+        top_k=top_k,
+        query_source=query_source,
+        retrieval_backend=retrieval_backend,
+        variants_by_case=variants_by_case,
+    )[0]
+
+
+def score_cases_with_metrics(
+    cases: list[dict[str, Any]],
+    top_k: int,
+    query_source: str,
+    retrieval_backend: str,
+    variants_by_case: dict[str, list[str]] | None = None,
+) -> tuple[list[QueryResult], dict[str, Any]]:
+    index_started = time.perf_counter()
     index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
+    index_ms = (time.perf_counter() - index_started) * 1000
+    embedding_client = OpenAIEmbeddingClient() if retrieval_backend in {"vector", "hybrid"} else None
+    query_texts = all_query_texts(cases, query_source, variants_by_case=variants_by_case)
+    corpus_cache_before = embedding_client.cache_presence(index.corpus_embedding_texts()) if embedding_client else None
+    query_cache_before = embedding_client.cache_presence(query_texts) if embedding_client else None
     results: list[QueryResult] = []
 
     for case in cases:
+        case_started = time.perf_counter()
         expected_layers = tuple(case["expected_layers"])
+        query_started = time.perf_counter()
         query_specs = query_specs_for_case(case, query_source, variants_by_case=variants_by_case)
+        query_build_ms = (time.perf_counter() - query_started) * 1000
         query_result_sets = []
+        embedding_before = _embedding_stats_snapshot(embedding_client)
+        retrieval_started = time.perf_counter()
         for layer, query, _reason in query_specs:
             query_result_sets.append(
                 search_index(
@@ -220,9 +267,15 @@ def score_cases(
                     layer=layer,
                     top_k=max(top_k * 5, top_k),
                     backend=retrieval_backend,
+                    embedding_client=embedding_client,
                 )
             )
+        retrieval_ms = (time.perf_counter() - retrieval_started) * 1000
+        embedding_after = _embedding_stats_snapshot(embedding_client)
+        merge_started = time.perf_counter()
         search_results = fuse_query_results(query_result_sets, top_k=top_k)
+        merge_rank_ms = (time.perf_counter() - merge_started) * 1000
+        embedding_delta = _embedding_stats_delta(embedding_before, embedding_after)
 
         returned_ids = tuple(result.chunk.id for result in search_results)
         returned_layers = [set(result.chunk.layers) for result in search_results]
@@ -253,10 +306,109 @@ def score_cases(
                 top1_layer_match=bool(returned_layers) and bool(returned_layers[0] & expected_layer_set),
                 any_layer_match_at_5=any(layers & expected_layer_set for layers in returned_layers[:5]),
                 focus_term_recall=focus_term_recall(" ".join(query for _layer, query, _reason in query_specs), case["focus_terms"]),
+                query_build_ms=round(query_build_ms, 3),
+                retrieval_ms=round(retrieval_ms, 3),
+                merge_rank_ms=round(merge_rank_ms, 3),
+                total_ms=round((time.perf_counter() - case_started) * 1000, 3),
+                embedding_ms=round(_embedding_elapsed_ms(embedding_delta), 3),
+                query_count=len(query_specs),
+                variant_count=max(0, len(query_specs) - 1) if query_source == "generated_variants" else 0,
+                vector_search_count=len(query_specs) if retrieval_backend in {"vector", "hybrid"} else 0,
+                merged_result_count=len({result.chunk.id for result_set in query_result_sets for result in result_set}),
+                embedding_delta=embedding_delta,
             )
         )
 
-    return results
+    run_metadata = {
+        "index_ms": round(index_ms, 3),
+        "chunks": len(index.chunks),
+        "cache_mode": "current",
+        "embedding": _embedding_run_metadata(embedding_client, corpus_cache_before, query_cache_before),
+    }
+    return results, run_metadata
+
+
+def all_query_texts(
+    cases: list[dict[str, Any]],
+    query_source: str,
+    variants_by_case: dict[str, list[str]] | None = None,
+) -> list[str]:
+    texts: list[str] = []
+    for case in cases:
+        texts.extend(query for _layer, query, _reason in query_specs_for_case(case, query_source, variants_by_case=variants_by_case))
+    return texts
+
+
+def _embedding_stats_snapshot(client: Any | None) -> dict[str, Any]:
+    stats = getattr(client, "stats", None)
+    if stats is None:
+        return {}
+    return stats.to_dict()
+
+
+def _embedding_stats_delta(before: dict[str, Any], after: dict[str, Any]) -> dict[str, Any]:
+    if not after:
+        return {}
+    before_by_purpose = before.get("by_purpose", {}) if before else {}
+    after_by_purpose = after.get("by_purpose", {})
+    by_purpose: dict[str, dict[str, float | int]] = {}
+    for purpose, after_stats in after_by_purpose.items():
+        before_stats = before_by_purpose.get(purpose, {})
+        by_purpose[purpose] = {
+            key: round(after_stats.get(key, 0) - before_stats.get(key, 0), 3)
+            if isinstance(after_stats.get(key, 0), float)
+            else after_stats.get(key, 0) - before_stats.get(key, 0)
+            for key in (
+                "cache_hits",
+                "cache_misses",
+                "api_batches",
+                "api_inputs",
+                "input_chars",
+                "api_input_chars",
+                "estimated_api_input_tokens",
+                "elapsed_ms",
+            )
+        }
+        total = by_purpose[purpose]["cache_hits"] + by_purpose[purpose]["cache_misses"]
+        by_purpose[purpose]["cache_hit_rate"] = round(by_purpose[purpose]["cache_hits"] / total, 4) if total else 1.0
+    return {
+        "model": after.get("model"),
+        "cache_namespace": after.get("cache_namespace"),
+        "cache_dir": after.get("cache_dir"),
+        "by_purpose": by_purpose,
+    }
+
+
+def _embedding_elapsed_ms(delta: dict[str, Any]) -> float:
+    return sum(stats.get("elapsed_ms", 0.0) for stats in delta.get("by_purpose", {}).values())
+
+
+def _embedding_run_metadata(
+    client: OpenAIEmbeddingClient | None,
+    corpus_cache_before: dict[str, int | bool] | None,
+    query_cache_before: dict[str, int | bool] | None,
+) -> dict[str, Any]:
+    if client is None:
+        return {
+            "model": None,
+            "cache_namespace": None,
+            "cache_dir": None,
+            "cache_mode": "n/a",
+            "corpus_cache_before": None,
+            "query_cache_before": None,
+            "estimated_embedding_cost_usd": 0.0,
+        }
+    return {
+        "model": client.model,
+        "cache_namespace": f"openai/{client.model}",
+        "cache_dir": str(client.cache_dir),
+        "cache_mode": "current",
+        "corpus_cache_before": corpus_cache_before,
+        "query_cache_before": query_cache_before,
+        "cache_was_complete_for_queries": bool(query_cache_before and query_cache_before.get("complete")),
+        "estimated_embedding_cost_usd": round(client.estimated_api_cost_usd(), 8),
+        "stats": client.stats.to_dict(),
+    }
 
 
 def pct(count: int, total: int) -> str:

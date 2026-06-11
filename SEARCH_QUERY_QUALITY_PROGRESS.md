@@ -23,6 +23,7 @@ Current search-query slice: `evals/advisor_search_query_cases.jsonl` now contain
 - Plain generated BM25: `evals/reports/retrieval_backend_comparison.md` shows 93.3% known-useful Hit@3 and 100.0% Hit@5.
 - Plain generated vector/hybrid each miss `searchq_v1_001` at Hit@5.
 - Generated variants + hybrid: `evals/reports/retrieval_backend_comparison_generated_variants.md` shows 100.0% known-useful Hit@3/Hit@5, mean known-useful rank 1.17, and no top-5 misses.
+- Operational reporting now shows latency, query count, variant count, vector-search count, corpus/query embedding cache behavior, and estimated embedding cost. On the warm-cache generated-variants run, hybrid used 4.0 queries per case, 120 vector searches across 30 cases, 100.0% query/corpus cache hit rates, and zero external embedding API batches.
 
 Treat these as query-development baselines with non-exhaustive known-useful chunk labels, not as production IR benchmarks. The important finding is that the query builder works when the advisor-selected source need is explicit; the next risk is source-need selection by the acting agent.
 
@@ -36,7 +37,7 @@ Current backend comparison on generated queries:
 | Vector | 96.7% | 96.7% | 1.34 | `searchq_v1_001` |
 | Hybrid | 96.7% | 96.7% | 1.21 | `searchq_v1_001` |
 
-Decision: keep BM25 as the lexical baseline/control, not the product architecture. Plain vector and hybrid still expose one real top-5 weakness on `searchq_v1_001`, but generated query variants plus fusion fix that miss and make hybrid+variants the strongest candidate on the expanded 30-case slice. Because the slice is still portfolio-scale, do not claim final production superiority yet; use hybrid+variants as the candidate product path while continuing golden-set expansion and observability/cost reporting.
+Decision: keep BM25 as the lexical baseline/control, not the product architecture. Plain vector and hybrid still expose one real top-5 weakness on `searchq_v1_001`, but generated query variants plus fusion fix that miss and make hybrid+variants the strongest candidate on the expanded 30-case slice. The operational report makes the tradeoff visible: variants improve quality but multiply query/vector-search work. Because the slice is still portfolio-scale, do not claim final production superiority yet; use hybrid+variants as the candidate product path while continuing golden-set expansion and production adapter work.
 
 Miss adjudication:
 
@@ -106,4 +107,4 @@ For the first v1 pass:
 
 ## Next Work
 
-Add latency, embedding-cache, and cost-oriented reporting so the next comparison is not only retrieval quality, but also JD-aligned production behavior.
+Decide whether to add a lightweight vector database adapter or document the production adapter boundary. The current backend is local/in-memory with cached embeddings, which is enough for eval-driven development but not the full production RAG infrastructure named in the job description.

@@ -11,7 +11,7 @@ class FakeEmbeddingClient:
     def embed_text(self, text: str) -> list[float]:
         return self.embed_texts([text])[0]
 
-    def embed_texts(self, texts: list[str]) -> list[list[float]]:
+    def embed_texts(self, texts: list[str], *, purpose: str = "query") -> list[list[float]]:
         return [self._embed(text) for text in texts]
 
     def _embed(self, text: str) -> list[float]:

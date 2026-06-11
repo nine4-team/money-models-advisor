@@ -203,7 +203,7 @@ First generated-query backend result:
 - Plain generated hybrid: 96.7% known-useful Hit@3/Hit@5, mean known-useful rank 1.21, misses `searchq_v1_001`.
 - Generated variants + hybrid: 100.0% known-useful Hit@3/Hit@5, mean known-useful rank 1.17, no top-5 misses.
 
-Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The 30-case expanded slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and observability/cost reporting before calling it final.
+Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The 30-case expanded slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and a production vector-index adapter or clearly documented adapter boundary before calling it final.
 
 JD-aligned next experiment:
 
@@ -212,7 +212,7 @@ JD-aligned next experiment:
 - Keep the deterministic flattened query as a fallback variant. **Done.**
 - Fuse variant-level retrieval results so repeated chunks across variants are promoted instead of allowing early variants to crowd out the fallback. **Done in the query-quality scorer.**
 - Compare v1 flattened queries versus v2 variants on the golden search-query cases. **Done in `evals/reports/retrieval_backend_comparison_generated_variants.md`.**
-- Record quality, latency, embedding-cache behavior, and cost-oriented signals in the report. **Next.**
+- Record quality, latency, embedding-cache behavior, and cost-oriented signals in the report. **Done in the backend comparison reports, summary JSON, and case JSONL artifacts.**
 
 Detailed implementation plan for the next report pass:
 
@@ -264,6 +264,14 @@ Acceptance criteria:
 - Existing retrieval-quality numbers do not change; latency may vary.
 - The narrative explicitly says cached embeddings are the cost-control mechanism and does not imply that agent work uses the OpenAI API.
 - Latency tests do not hard-fail on exact milliseconds; any thresholds should be broad budgets, not brittle stopwatch assertions.
+
+Observed result:
+
+- Plain generated query comparison preserved the previous quality result: BM25 reaches 100.0% Hit@5; vector and hybrid each miss `searchq_v1_001` at Hit@5.
+- Generated variants preserved the previous quality result: hybrid reaches 100.0% Hit@3/Hit@5 with mean known-useful rank 1.17.
+- Generated variants expose the operational cost of that quality improvement: average query count rises from 1.0 to 4.0 and vector/hybrid vector searches rise from 30 to 120 on the 30-case slice.
+- Warm-cache runs made zero external embedding API calls because corpus and query embeddings were already cached. The report separates corpus and query cache behavior so this is not confused with cold-cache cost.
+- Machine-readable artifacts are now emitted beside the Markdown reports: `retrieval_backend_comparison_summary.json`, `retrieval_backend_comparison_cases.jsonl`, `retrieval_backend_comparison_generated_variants_summary.json`, and `retrieval_backend_comparison_generated_variants_cases.jsonl`.
 
 ## Phase 2 — Chunking Comparison
 

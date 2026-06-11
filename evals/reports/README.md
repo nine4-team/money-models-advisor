@@ -78,7 +78,7 @@ python3 scripts/compare_retrieval_backends.py --query-source generated \
 
 `eval_search_query_quality.py` validates `evals/advisor_search_query_cases.jsonl` and runs a selected backend over heading-aware chunks. Reference mode asks whether reviewer-authored, source-specific queries can retrieve useful chunks. Generated mode asks whether the current runtime query builder can do the same from snapshot fixtures plus advisor-selected source needs. Known-useful chunk labels are seed labels for query development, not exhaustive relevance judgments.
 
-`compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval after source-need generation has passed its seed gate. Vector search uses OpenAI embeddings only for deterministic vectorization and caches embeddings under `.cache/embeddings/` for cost savings.
+`compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval after source-need generation has passed its seed gate. Vector search uses OpenAI embeddings only for deterministic vectorization and caches embeddings under `.cache/embeddings/` for cost savings. The command now writes Markdown plus machine-readable artifacts beside the report: `<report-stem>_summary.json` and `<report-stem>_cases.jsonl`. These artifacts include quality, p50/p95 latency, query/variant counts, vector-search counts, corpus/query embedding cache behavior, and estimated embedding cost.
 
 For active source-need generation checks, use:
 

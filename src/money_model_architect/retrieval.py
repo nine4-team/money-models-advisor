@@ -57,10 +57,10 @@ class SearchResult:
 
 
 class EmbeddingClient(Protocol):
-    def embed_text(self, text: str) -> list[float]:
+    def embed_text(self, text: str, *, purpose: str = "query") -> list[float]:
         raise NotImplementedError
 
-    def embed_texts(self, texts: list[str]) -> list[list[float]]:
+    def embed_texts(self, texts: list[str], *, purpose: str = "query") -> list[list[float]]:
         raise NotImplementedError
 
 
@@ -220,7 +220,7 @@ class CorpusIndex:
             return []
         client = embedding_client or OpenAIEmbeddingClient()
         self._ensure_chunk_embeddings(client)
-        query_embedding = client.embed_text(query)
+        query_embedding = client.embed_texts([query], purpose="query")[0]
 
         results: list[SearchResult] = []
         for chunk in self.chunks:
@@ -283,11 +283,14 @@ class CorpusIndex:
         if not missing_chunks:
             return
         texts = [_embedding_text(chunk) for chunk in missing_chunks]
-        embeddings = embedding_client.embed_texts(texts)
+        embeddings = embedding_client.embed_texts(texts, purpose="corpus")
         if len(embeddings) != len(missing_chunks):
             raise ValueError("embedding client returned the wrong number of chunk embeddings")
         for chunk, embedding in zip(missing_chunks, embeddings, strict=True):
             self._chunk_embeddings[chunk.id] = embedding
+
+    def corpus_embedding_texts(self) -> list[str]:
+        return [_embedding_text(chunk) for chunk in self.chunks]
 
 
 def _embedding_text(chunk: Chunk) -> str:
