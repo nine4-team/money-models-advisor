@@ -87,5 +87,18 @@ python3 scripts/eval_source_need_generation.py
 
 `capture_source_need_trace.py prepare` creates an isolated eval directory plus an acting prompt that hides expected labels. `complete` records the acting agent's source-search decision and generated source need. `eval_source_need_generation.py` validates `evals/advisor_source_need_cases.jsonl` and scores saved acting-agent `run.json` artifacts under `evals/runs/source_need/`. It tests whether the acting agent decides if source search is needed and, when it is, generates intent, layer, and focus-term structure before query construction.
 
+## Source-Event Trace Eval
+
+```bash
+python3 scripts/capture_source_event_trace.py prepare sourceevents_v1_001
+python3 scripts/capture_source_event_trace.py complete \
+  evals/runs/source_events/post_hardening/sourceevents_v1_001 \
+  --actions-json '["read_snapshot","calculate","diagnose","search_source_material","search_source_material","turn_record"]' \
+  --source-events-json '[{"source_need":{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period"]},"query":"CAC payback period","chunks":[{"id":"payback-period:0"}]},{"source_need":{"intent":"recommendation_evidence","layers":["upsells"],"focus_terms":["upsell","first 30 day gross profit"]},"query":"upsell first 30 day gross profit","chunks":[{"id":"upsells:0"}]}]'
+python3 scripts/eval_source_event_traces.py
+```
+
+`capture_source_event_trace.py prepare` creates an isolated eval directory plus an acting prompt that hides expected source-event labels. `complete` records the completed turn's actions, source events, and cited chunk IDs. `eval_source_event_traces.py` validates `evals/advisor_source_event_cases.jsonl` and scores saved `run.json` artifacts under `evals/runs/source_events/`. It tests whether an acting agent records distinct source events when one answer needs multiple retrieval jobs.
+
 Old keyword evidence-term experiments are archived under `archive/keyword-evidence-proxy/` and are not part of the active design.
 Old provider-backed experiments are archived under `archive/provider-backed-experiments/` and are not part of the active design.

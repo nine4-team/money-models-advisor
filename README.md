@@ -144,6 +144,17 @@ python3 scripts/capture_source_need_trace.py complete \
 python3 scripts/eval_source_need_generation.py
 ```
 
+Score completed source-event traces for multi-search advisor turns:
+
+```bash
+python3 scripts/capture_source_event_trace.py prepare sourceevents_v1_001
+python3 scripts/capture_source_event_trace.py complete \
+  evals/runs/source_events/post_hardening/sourceevents_v1_001 \
+  --actions-json '["read_snapshot","calculate","diagnose","search_source_material","search_source_material","turn_record"]' \
+  --source-events-json '[{"source_need":{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period"]},"query":"CAC payback period","chunks":[{"id":"payback-period:0"}]},{"source_need":{"intent":"recommendation_evidence","layers":["upsells"],"focus_terms":["upsell","first 30 day gross profit"]},"query":"upsell first 30 day gross profit","chunks":[{"id":"upsells:0"}]}]'
+python3 scripts/eval_source_event_traces.py
+```
+
 Review human-auditable required-claim labels:
 
 ```bash
@@ -177,6 +188,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
 - Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
+- Source-event trace eval implemented in `evals/advisor_source_event_cases.jsonl`, with report generation in `scripts/eval_source_event_traces.py`.
 - Agent-facing source-need search implemented in `search --source-need-json`.
 - Completed turn persistence implemented in `turn record`.
 - Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.
