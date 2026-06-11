@@ -1,6 +1,6 @@
 # Tooling Shortlist
 
-Current recommendation for the next build pass: keep the product agent-first and CLI-backed, use setup/intake to build a `BusinessSnapshot`, and avoid building a web app until the advisor loop is useful. For v1, a human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI tools with no external model-service calls.
+Current recommendation for the next build pass: keep the product agent-first and CLI-backed, use setup/intake to build a `BusinessSnapshot`, and add Pinecone behind a retrieval storage boundary. The local backend remains the fast eval baseline; Pinecone demonstrates the hosted retrieval path. A web UI should come after the shared advisor/retrieval core is clean enough to reuse.
 
 ## Recommended stack
 
@@ -10,18 +10,19 @@ Current recommendation for the next build pass: keep the product agent-first and
 | Local agent/operator workflow | Codex environment | The human talks to an agent; the agent follows the project skill's guidance and runs local CLI tools. Treat this as the v1 advisor runtime. | Local architecture decision |
 | Setup/intake input | Plain local directory + Markdown/JSON/YAML readers | Optional setup input can come from local notes, offers, metrics, docs, and prior sessions. Runtime chat should use the saved snapshot. | Local architecture decision |
 | Local session and snapshot store | JSON now; SQLite later only if traces become unwieldy | JSON files are enough for `BusinessSnapshot`, context manifests, and sessions in v1. | Local implementation |
-| Local retrieval | Standard-library BM25-style search | Keeps the advisor runnable without external model-service keys or hosted infrastructure. | Local implementation |
+| Local retrieval baseline | Standard-library BM25-style search plus local cached embeddings | Keeps the advisor runnable and testable without hosted infrastructure. | Local implementation |
+| Hosted vector storage | Pinecone | Demonstrates the production RAG storage layer named in the target job family while keeping retrieval behavior behind an adapter. | Local architecture decision |
 | Eval and trace visibility | Arize Phoenix | Open-source observability/evaluation tool for LLM apps; useful once the CLI has multi-step traces that are hard to inspect by logs alone. | https://arize.com/docs/phoenix/, https://github.com/Arize-ai/phoenix |
 | Future web/chat UI | Vercel AI SDK + assistant-ui | Only after the CLI loop works. Vercel AI SDK handles streaming/tool calls; assistant-ui provides React chat components that work with Vercel AI SDK. | https://vercel.com/docs/agents, https://github.com/assistant-ui/assistant-ui |
 
 ## Do not build yet
 
-- A full web app before the CLI advisor loop works.
+- A full web app before the shared advisor/retrieval core works through both local and Pinecone-backed retrieval.
 - Multi-agent orchestration beyond a simple state graph.
 - A brittle regex diagnostic router as the production brain.
 - A custom chat UI from scratch.
-- External model-service calls.
-- External-service-dependent retrieval or labeling.
+- External model-service calls for agent planning, labeling, answer synthesis, or acting-agent eval work.
+- External-service-dependent labeling.
 
 ## Immediate shortcut
 

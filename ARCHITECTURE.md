@@ -180,13 +180,12 @@ Source-search query quality remains a separate eval and should only be scored fo
 | Deterministic calculations | `src/money_model_architect/calculator.py` |
 | Caching for token savings | `BusinessSnapshot` caches accepted business facts so the agent/CLI flow does not reread business files every turn |
 | Observability | `.money-model-advisor/sessions/` traces |
+| Hosted vector storage path | Planned Pinecone-backed `VectorStore` behind the same retrieval boundary as local vector search |
 
 ## Deliberately Out Of Scope For V1
 
 - external model-service integration
-- external embedding calls
 - external model-service key management
-- hosted vector databases
-- web UI
+- web UI before the shared advisor/retrieval core is clean
 - multi-agent orchestration
 - production auth, billing, or multi-tenancy

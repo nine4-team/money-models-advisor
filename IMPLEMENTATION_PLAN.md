@@ -203,7 +203,7 @@ First generated-query backend result:
 - Plain generated hybrid: 96.7% known-useful Hit@3/Hit@5, mean known-useful rank 1.21, misses `searchq_v1_001`.
 - Generated variants + hybrid: 100.0% known-useful Hit@3/Hit@5, mean known-useful rank 1.17, no top-5 misses.
 
-Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The 30-case expanded slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and a production vector-index adapter or clearly documented adapter boundary before calling it final.
+Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a clean storage boundary. The 30-case expanded slice supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and Pinecone parity checks before calling it final.
 
 JD-aligned next experiment:
 
@@ -324,7 +324,7 @@ Metrics:
 
 Decision rule:
 
-Keep retrieval local and simple until the advisor loop and label methodology justify more complexity. Do not add external-service-dependent retrieval to the active build.
+Use local retrieval as the fast guardrail and baseline. Hosted retrieval should be added only behind the same retrieval storage boundary, so evals can compare local and Pinecone-backed behavior without rewriting advisor logic.
 
 Current result:
 
@@ -337,6 +337,51 @@ Report:
 
 - `evals/reports/local_retrieval_baseline.md`
 - `evals/reports/obligation_support_coverage.md`
+
+## Phase 3B — Pinecone Vector Store Adapter
+
+Objective: make the retrieval layer credible for a hosted product while preserving fast local evals.
+
+Narrative:
+
+"I started with local retrieval so I could iterate quickly and build reliable evals. Once the retrieval strategy was justified, I added a Pinecone-backed vector store behind the same interface, so the system could move from local CLI experimentation to hosted production retrieval without rewriting advisor logic."
+
+Design:
+
+- Define a `VectorStore` boundary responsible for vector upsert and vector query, not answer synthesis or source-need generation.
+- Keep current local in-memory vector search as `LocalVectorStore` or equivalent for fast tests and eval iteration.
+- Add `PineconeVectorStore` as the first hosted implementation.
+- Keep BM25 lexical search local; hybrid retrieval should fuse BM25 results with whichever vector store is selected.
+- Keep embedding generation and cache behavior separate from vector storage. The vector store stores/query vectors; the embedding client creates vectors and records cache/cost metrics.
+- Use environment/config selection such as `MMA_VECTOR_BACKEND=local|pinecone`.
+- Required Pinecone metadata per chunk: `chunk_id`, `chapter`, `layer`, `layers`, `char_start`, `char_end`, `embedding_model`, `chunking_strategy`, `content_hash`, and enough text or text reference to support citation rendering.
+- Use stable vector ids such as `{chunking_strategy}:{embedding_model}:{chunk_id}` so re-indexing is idempotent.
+
+Build order:
+
+1. Add the `VectorStore` protocol and local implementation without changing retrieval quality.
+2. Move current in-memory vector search through that boundary.
+3. Add Pinecone config and client wrapper.
+4. Add an indexing command that upserts heading-aware corpus chunks to Pinecone with metadata.
+5. Add a Pinecone-backed vector search path and keep hybrid fusion unchanged above it.
+6. Extend backend comparison so vector/hybrid can run against local or Pinecone vector storage.
+7. Run the same golden search-query evals against local and Pinecone and record parity, latency, cache behavior, and cost.
+
+Acceptance criteria:
+
+- Existing local retrieval tests still pass.
+- Local vector/hybrid quality is unchanged after the adapter boundary is introduced.
+- Pinecone indexing is idempotent for the current corpus/chunking/embedding-model combination.
+- Pinecone vector search returns chunk ids that map back to the same local chunk records used for citations.
+- Backend comparison can report whether vector storage is `local` or `pinecone`.
+- Pinecone-backed evals use the same 30-case golden search-query slice and do not require changing labels.
+- Docs clearly explain that CLI and future web UI share the same core retrieval/eval logic.
+
+Non-goals:
+
+- Do not move BM25 into Pinecone.
+- Do not make Pinecone required for local tests.
+- Do not add web UI in the same implementation pass; the adapter prepares the core for a hosted surface.
 
 ## Phase 4 — Robust Local Evaluation Methodology
 

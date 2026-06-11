@@ -8,9 +8,9 @@ The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an a
 
 This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
 
-The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI commands against saved local state. The active project direction does not call external model services.
+The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs CLI commands against saved state. Embedding API use is allowed for deterministic vectorization only. The next retrieval infrastructure step is a Pinecone-backed vector store behind the same boundary as local vector search, so a future web-hosted version can reuse the same core.
 
-If the user provides missing information, the agent saves it back into the snapshot. The web app can wait until that loop is actually good.
+If the user provides missing information, the agent saves it back into the snapshot. The web app should be a second surface over the same advisor/retrieval core, not a separate implementation.
 
 ## Advisor skill
 
@@ -210,7 +210,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Agent-led local doc inspection before snapshot updates.
-- Continue evaluating agent-generated query variants against the golden dataset, while keeping the deterministic flattened query as a baseline/fallback.
-- Decide whether to add a lightweight vector database adapter or document the production adapter boundary for Pinecone/Qdrant/FAISS/Weaviate.
+- Add a Pinecone-backed vector store behind the retrieval storage boundary while keeping local retrieval as the fast eval baseline.
+- Run the same golden retrieval evals against local and Pinecone-backed vector storage.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

@@ -107,4 +107,4 @@ For the first v1 pass:
 
 ## Next Work
 
-Decide whether to add a lightweight vector database adapter or document the production adapter boundary. The current backend is local/in-memory with cached embeddings, which is enough for eval-driven development but not the full production RAG infrastructure named in the job description.
+Add a Pinecone-backed vector store behind a clean retrieval storage boundary. The current backend is local/in-memory with cached embeddings, which is enough for eval-driven development, but the job-description-aligned product path should also demonstrate hosted vector storage. Keep the local backend as the fast baseline and run the same golden evals against Pinecone for parity.

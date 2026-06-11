@@ -48,7 +48,7 @@ Strong alignment:
 Weak alignment / gaps to close:
 
 - The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
-- The current vector backend is local/in-memory with cached OpenAI embeddings. The JD explicitly mentions production RAG systems using vector databases such as Pinecone, Qdrant, FAISS, or Weaviate. The project should either add a lightweight vector-index adapter or clearly document the production adapter boundary.
+- The current vector backend is local/in-memory with cached OpenAI embeddings. The JD explicitly mentions production RAG systems using vector databases such as Pinecone, Qdrant, FAISS, or Weaviate. The next implementation pass should add a real Pinecone-backed vector store behind a vector-store interface while preserving the local backend for fast evals.
 - Query generation v2 is implemented as constrained `SourceNeed.query_variants` with the deterministic flattened query retained as a fallback/control.
 - Observability is now present through traces, Markdown reports, summary JSON, case-level JSONL, latency metrics, cache hit/miss accounting, and estimated embedding cost. Token/cost reporting is explicit for embeddings; agent work remains outside the API path.
 
@@ -56,8 +56,8 @@ Weak alignment / gaps to close:
 
 The next highest-signal work is:
 
-1. Decide whether to add a lightweight vector database adapter or document the adapter boundary as planned production work.
-2. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
-3. Add cold-cache reporting only if we need to quantify first-run embedding cost separately from steady-state warm-cache behavior.
+1. Add a Pinecone-backed vector store behind a clean retrieval storage boundary.
+2. Keep golden evals runnable against both local and Pinecone-backed retrieval.
+3. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
 
 This keeps the work aligned with the JD: golden datasets first, measured retrieval improvements second, production-oriented infrastructure third.
