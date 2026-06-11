@@ -200,7 +200,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
 - Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
 - Source-event trace eval implemented in `evals/advisor_source_event_cases.jsonl`, with report generation in `scripts/eval_source_event_traces.py`.
-- Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented for post-source-need retrieval experiments. After miss adjudication, the first generated-query comparison is BM25 100.0% Hit@5, vector 90.0% Hit@5, and hybrid 90.0% Hit@5. BM25 remains the active default.
+- Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented for post-source-need retrieval experiments. BM25 is treated as the lexical baseline/control. After constrained query variants plus fusion, hybrid is the candidate product path, with larger golden-set validation required before calling it final.
 - Agent-facing source-need search implemented in `search --source-need-json`.
 - Completed turn persistence implemented in `turn record`.
 - Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.

@@ -202,7 +202,7 @@ First generated-query backend result:
 - Vector: 90.0% known-useful Hit@5 after miss adjudication, misses `searchq_v1_001`.
 - Hybrid: 90.0% known-useful Hit@5 after miss adjudication, misses `searchq_v1_001`.
 
-Decision: BM25 remains the active default for citation-oriented source lookup. Vector and hybrid are implemented candidates, but the first seed comparison suggests lexical matching is strong because generated queries contain exact framework terms.
+Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, and eval-gated promotion. The current seed data supports moving hybrid+variants to candidate default, while requiring a larger golden set before calling it final.
 
 JD-aligned next experiment:
 

@@ -41,24 +41,24 @@ Strong alignment:
 
 - The advisor is agent-operated and CLI-backed: the agent plans; deterministic tools persist state, calculate, search, and record traces.
 - The project has explicit eval assets for next-action classification, source-need generation, source-event logging, query quality, chunking, and retrieval backend comparison.
-- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 remains the active citation retriever after vector/hybrid comparison.
+- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; hybrid retrieval with constrained query variants is the candidate product path after vector/hybrid comparison.
 - Embeddings are cached under `.cache/embeddings/` so repeated vector runs reuse corpus and query vectors.
 - The narrative records decisions, metrics, misses, and non-adoptions rather than treating every sophisticated technique as automatically better.
 
 Weak alignment / gaps to close:
 
-- The eval assets need a more explicit "golden dataset" framing. They currently exist as separate case files and reports, but the hiring narrative should make the golden dataset structure obvious.
+- The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
 - The current vector backend is local/in-memory with cached OpenAI embeddings. The JD explicitly mentions production RAG systems using vector databases such as Pinecone, Qdrant, FAISS, or Weaviate. The project should either add a lightweight vector-index adapter or clearly document the production adapter boundary.
-- Query generation is still v1. The deterministic `SourceNeed.focus_terms + snapshot context` flattening is useful as a baseline, but the next experiment should evaluate agent-generated query variants against the golden dataset.
+- Query generation v2 is implemented as constrained `SourceNeed.query_variants` with the deterministic flattened query retained as a fallback/control.
 - Observability is present through traces and reports, but cost/token/latency reporting should become more explicit.
 
 ## Next JD-Aligned Work
 
 The next highest-signal work is:
 
-1. Create an explicit golden-dataset document that maps each eval file to the product risk it measures.
-2. Add query-generation v2: agent-proposed query variants under a constrained schema, with the deterministic flattened query retained as a fallback variant.
-3. Score query variants at the source-need level and compare them against the current baseline.
+1. Expand the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
+2. Expand the golden search-query set before claiming hybrid+variants as final.
+3. Add latency, embedding-cache, and cost-oriented reporting to the retrieval comparisons.
 4. Record latency and embedding-cache behavior in the backend comparison report.
 5. Decide whether to add a lightweight vector database adapter or document the adapter boundary as planned production work.
 
