@@ -1,0 +1,58 @@
+{
+  "actual_actions": [
+    "session_start",
+    "clarify",
+    "answer",
+    "session_finish"
+  ],
+  "case_id": "sourceevents_v1_004",
+  "cited_chunk_ids": [],
+  "final_answer": "I would not pick a fix yet. The business and offer stack are clear enough to discuss options, but the two numbers that decide priority are missing: CAC and first-30-day gross profit. Give me the average cost to get one new client and the gross profit collected in the first 30 days on a typical project. Once I have those, I can tell whether the first fix is acquisition, first-sale gross profit, or the offer stack. Without those numbers, any recommendation would be guessing.",
+  "notes": {
+    "acting_decision": "No source search: snapshot is missing economics.cac and economics.first_30_day_gross_profit, so the responsible move is clarification.",
+    "external_model_apis_used": false,
+    "session_finish_warnings": [],
+    "source_event_count": 0
+  },
+  "paths": {
+    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004",
+    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json",
+    "session_finish_output_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/session_finish_output.json",
+    "turn_record_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/turn_record.json"
+  },
+  "session_paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business",
+    "session_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor/sessions/20260611T205007.json",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor/business_snapshot.json",
+    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor"
+  },
+  "source_events": [],
+  "visible_context": {
+    "ambiguity": "low",
+    "conversation_context": "The snapshot knows the business and draft offer stack but is missing CAC and first-30-day gross profit. The user asks for prioritization before the needed economics are known.",
+    "prior_sessions_fixture_path": null,
+    "scenario_id": "1584_design",
+    "severity_if_wrong": "high",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json",
+    "split": "post_hardening_regression",
+    "user_turn": "what should we fix first?"
+  },
+  "workflow_steps": [
+    {
+      "command": "mkdir -p <run>/business/.money-model-advisor/sessions && cp snapshot fixture into business_snapshot.json",
+      "exit_code": 0,
+      "step": "create_business_dir_and_install_fixtures"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business --user-message 'what should we fix first?'",
+      "exit_code": 0,
+      "step": "session_start"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/turn_record.json",
+      "exit_code": 0,
+      "step": "session_finish"
+    }
+  ]
+}

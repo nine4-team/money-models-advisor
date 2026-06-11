@@ -59,6 +59,7 @@ class EventMatch:
     layer_recall: float
     focus_recall: float
     has_chunks: bool
+    query_variant_count: int
 
 
 @dataclass(frozen=True)
@@ -222,9 +223,19 @@ def has_chunks(event: dict[str, Any]) -> bool:
     return isinstance(chunks, list) and any(isinstance(chunk, dict) and chunk.get("id") for chunk in chunks)
 
 
+def query_variant_count(event: dict[str, Any]) -> int:
+    source_need = event.get("source_need")
+    if not isinstance(source_need, dict):
+        return 0
+    variants = source_need.get("query_variants")
+    if not isinstance(variants, list):
+        return 0
+    return sum(1 for variant in variants if isinstance(variant, str) and variant.strip())
+
+
 def find_best_match(expected: SourceNeed, events: list[dict[str, Any]], used_indexes: set[int]) -> tuple[int | None, EventMatch]:
     best_index = None
-    best_match = EventMatch(expected, None, False, 0.0, 0.0, False)
+    best_match = EventMatch(expected, None, False, 0.0, 0.0, False, 0)
     best_score = -1.0
     for index, event in enumerate(events):
         if index in used_indexes:
@@ -236,11 +247,12 @@ def find_best_match(expected: SourceNeed, events: list[dict[str, Any]], used_ind
         layers = layer_recall(expected.layers, need.layers)
         focus = term_recall(expected.focus_terms, need.focus_terms)
         chunks = has_chunks(event)
+        variants = query_variant_count(event)
         score = (2.0 if intent_match else 0.0) + layers + focus + (0.25 if chunks else 0.0)
         if score > best_score:
             best_index = index
             best_score = score
-            best_match = EventMatch(expected, need, intent_match, layers, focus, chunks)
+            best_match = EventMatch(expected, need, intent_match, layers, focus, chunks, variants)
     return best_index, best_match
 
 
@@ -259,7 +271,7 @@ def find_run_artifacts(runs_dir: Path) -> dict[str, Path]:
     return artifacts
 
 
-def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
+def score_case(case: dict[str, Any], run_path: Path | None, *, require_query_variants: bool = False) -> CaseResult:
     expected = expected_needs(case)
     if run_path is None:
         return CaseResult(
@@ -310,10 +322,16 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
             failures.append(f"focus_miss:{need.intent}")
         if not match.has_chunks:
             failures.append(f"missing_chunks:{need.intent}")
+        if require_query_variants and match.query_variant_count < 2:
+            failures.append(f"missing_query_variants:{need.intent}")
 
     extra_events = max(0, len(events) - len(used_indexes))
     matched = sum(
-        match.intent_match and match.layer_recall >= 1.0 and match.focus_recall >= 0.5 and match.has_chunks
+        match.intent_match
+        and match.layer_recall >= 1.0
+        and match.focus_recall >= 0.5
+        and match.has_chunks
+        and (not require_query_variants or match.query_variant_count >= 2)
         for match in matches
     )
     all_matched = matched == len(expected)
@@ -349,7 +367,13 @@ def fmt(value: float | None) -> str:
     return f"{value:.3f}"
 
 
-def render_report(cases: list[dict[str, Any]], results: list[CaseResult], validation_errors: list[str]) -> str:
+def render_report(
+    cases: list[dict[str, Any]],
+    results: list[CaseResult],
+    validation_errors: list[str],
+    *,
+    require_query_variants: bool = False,
+) -> str:
     scored = [result for result in results if result.status != "not_run"]
     passed = [result for result in scored if result.status == "passed"]
     lines = [
@@ -360,6 +384,10 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         "This eval checks completed advisor-turn traces. It verifies that source-backed answers contain the expected source events, multi-job answers split retrieval into distinct SourceNeeds, and no-search turns do not fabricate source events.",
         "",
         "It does not run an agent and does not call external model services. Acting agents complete traces separately; this scorer validates the resulting `run.json` artifacts.",
+        "",
+        "## Trace Requirement",
+        "",
+        "- Query variants required: " + ("yes" if require_query_variants else "no"),
         "",
         "## Dataset",
         "",
@@ -438,15 +466,25 @@ def main() -> int:
         default=ROOT / "evals" / "runs" / "source_events" / "post_hardening_expanded_v2",
     )
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "advisor_source_event_traces.md")
+    parser.add_argument(
+        "--require-query-variants",
+        action="store_true",
+        help="Fail matched source events unless source_need.query_variants contains at least two agent-written variants.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(args.cases)
     validation_errors = validate_cases(cases)
     artifacts = find_run_artifacts(args.runs_dir)
-    results = [] if validation_errors else [score_case(case, artifacts.get(case["case_id"])) for case in cases]
+    results = [] if validation_errors else [
+        score_case(case, artifacts.get(case["case_id"]), require_query_variants=args.require_query_variants) for case in cases
+    ]
 
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(render_report(cases, results, validation_errors), encoding="utf-8")
+    args.report.write_text(
+        render_report(cases, results, validation_errors, require_query_variants=args.require_query_variants),
+        encoding="utf-8",
+    )
     print(
         json.dumps(
             {

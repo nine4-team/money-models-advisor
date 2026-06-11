@@ -631,6 +631,13 @@ def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> No
     focus_terms = source_need.get("focus_terms")
     if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
         raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
+    query_variants = source_need.get("query_variants")
+    if (
+        not isinstance(query_variants, list)
+        or not 2 <= len(query_variants) <= 4
+        or not all(isinstance(query, str) and query.strip() for query in query_variants)
+    ):
+        raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
 
 
 def _session_finish_warnings(source_events: list[dict[str, Any]], cited_chunk_ids: list[str], metadata: dict[str, Any]) -> list[str]:

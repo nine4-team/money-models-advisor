@@ -1,0 +1,153 @@
+{
+  "user_message": "what should we fix first?",
+  "assistant_message": "Fix the paid-acquisition path first, specifically the STR Design Diagnostic as the front-end step into the full-service project. I would not treat CAC as the current bottleneck: the known economics are about $1,000 CAC against about $10,000 first-30-day gross profit, and the Money Models frame says CAC, gross profit, and payback period are the acquisition numbers to triangulate [how-businesses-make-money:2]. Payback gets easier to scale when gross profit gets back over CAC quickly [payback-period:0], and 30-day gross profit above CAC is the core client-financed acquisition threshold [cfa:0].\n\nSo my first priority is not adding another back-end product; it is proving that the $597 diagnostic can turn cold or paid traffic into qualified premium design conversations. Keep this as one simple money-model move before adding complexity [make-your-money-model:2]. Run a small paid test, measure diagnostic booked-call rate, close rate into the $15k full-service offer, and actual CAC by channel. If the diagnostic creates qualified calls but conversion is weak, fix the diagnostic promise/sales process. If CAC rises above first-30-day gross profit, then acquisition becomes the constraint.",
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "source_events": [
+    {
+      "source_need": {
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "focus_terms": [
+          "CAC",
+          "first 30 day gross profit",
+          "payback period",
+          "paid acquisition capacity"
+        ],
+        "user_turn": "what should we fix first?",
+        "query_variants": [
+          "CAC first 30 day gross profit payback period paid acquisition capacity",
+          "cash payback period CAC gross profit acquisition bottleneck",
+          "unit economics gross profit covers CAC paid ads test"
+        ]
+      },
+      "queries": [
+        "CAC first 30 day gross profit payback period paid acquisition capacity",
+        "cash payback period CAC gross profit acquisition bottleneck",
+        "unit economics gross profit covers CAC paid ads test",
+        "CAC first 30 day gross profit payback period paid acquisition capacity interior design STR"
+      ],
+      "retrieval_backend": "bm25",
+      "vector_store": "local",
+      "chunks": [
+        {
+          "id": "how-businesses-make-money:2",
+          "chapter": "how-businesses-make-money",
+          "layer": "unit-economics",
+          "score": 24.206,
+          "preview": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period  Which then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math"
+        },
+        {
+          "id": "payback-period:0",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "score": 22.784,
+          "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A"
+        },
+        {
+          "id": "context:1",
+          "chapter": "context",
+          "layer": "unit-economics",
+          "score": 20.438,
+          "preview": "## [\u00a71.1.b] The CAC problem & introducing CFA  So, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs "
+        },
+        {
+          "id": "cfa:0",
+          "chapter": "cfa",
+          "layer": "unit-economics",
+          "score": 20.411,
+          "preview": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three lev"
+        },
+        {
+          "id": "payback-period:1",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "score": 18.504,
+          "preview": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you w"
+        }
+      ]
+    },
+    {
+      "source_need": {
+        "intent": "recommendation_evidence",
+        "layers": [
+          "offers"
+        ],
+        "focus_terms": [
+          "STR Design Diagnostic",
+          "front-end offer",
+          "paid acquisition",
+          "attraction offer"
+        ],
+        "user_turn": "what should we fix first?",
+        "query_variants": [
+          "front end offer diagnostic before core offer paid acquisition",
+          "attraction offer paid acquisition diagnostic audit core offer",
+          "low priced diagnostic offer converts paid traffic to premium service"
+        ]
+      },
+      "queries": [
+        "front end offer diagnostic before core offer paid acquisition",
+        "attraction offer paid acquisition diagnostic audit core offer",
+        "low priced diagnostic offer converts paid traffic to premium service",
+        "STR Design Diagnostic front-end offer paid acquisition attraction offer interior design STR"
+      ],
+      "retrieval_backend": "bm25",
+      "vector_store": "local",
+      "chunks": [
+        {
+          "id": "free-with-consumption:5",
+          "chapter": "free-with-consumption",
+          "layer": "offers",
+          "score": 8.505,
+          "preview": "approach to solving problems is different. How our, our approach is different than what you've had before. Tuesday, it's gonna be second valuable nugget of value, which is regarding their ability or insecurity. It's like what are they most afraid of? What are the thing that they're most concerned about? The next one is gonna be the second thing that they're "
+        },
+        {
+          "id": "buy-x-get-y:3",
+          "chapter": "buy-x-get-y",
+          "layer": "offers",
+          "score": 8.305,
+          "preview": "a, uh, uh, uh, a one-third discount, but it accomplishes the same objective. Okay, so those are two examples. Or sorry, this... That's the description. Now I have more examples for you. All right, so buy one get two physical products offers. This is the Boot Factory offer. One pair is $200. Buy X get Y free. Buy one pair for 600, get two pairs free. So the e"
+        },
+        {
+          "id": "free-with-consumption:1",
+          "chapter": "free-with-consumption",
+          "layer": "offers",
+          "score": 8.186,
+          "preview": "free video, it could be a PDF, it could be an audio, it could be, uh, a live event, it could be a workshop. Anything that someone's gonna consume a ton, that then they go, \"Oh, this thing's free.\" They learn a bunch. They say, \"Oh, I can do this.\" And then they put money down. That's how it works. Fundamentally, you're selling or giving away a selling tool. "
+        },
+        {
+          "id": "make-your-money-model:2",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "score": 7.797,
+          "preview": "## [\u00a77.1.c] Implementation rules \u2014 perfect one at a time, simple scales, affiliate gap-fill  So here's some notes. One, perfect one of these. at a time. If you try and do all four at once, or six of these things at once, you're- you're gonna break your business. Like, I strongly recommend just start with one. One is enough. There's already enough complexity "
+        },
+        {
+          "id": "pay-less-now:2",
+          "chapter": "pay-less-now",
+          "layer": "offers",
+          "score": 7.409,
+          "preview": "it's like, \"Oh, my God.\" Which also, by the way, shows you the value of delayed payment and guarantees. How much you have to discount and how many bonuses you have to stack shows you the relative value of a guarantee and a delayed payment. So the pay later option allows you to advertise free since you can choose to pay or not. And this gets lots of leads to "
+        }
+      ]
+    }
+  ],
+  "calculation_events": [],
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "payback-period:0",
+    "cfa:0",
+    "make-your-money-model:2"
+  ],
+  "metadata": {
+    "case_id": "sourceevents_v1_001",
+    "acting_agent_notes": "Snapshot already contained enough economics for a source-backed priority recommendation; ran separate searches for diagnosis and concrete offer recommendation."
+  }
+}

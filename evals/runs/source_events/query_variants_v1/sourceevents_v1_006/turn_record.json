@@ -1,0 +1,171 @@
+{
+  "user_message": "should we add a recurring owner maintenance offer after installs?",
+  "assistant_message": "Yes, I would pilot it, but I would design it as a true continuity offer rather than just a payment plan for the install.\n\nThe reason is that your snapshot already shows strong first-sale economics: about $1,000 CAC, about $10,000 first-30-day gross profit, and no continuity offer yet. A post-install owner maintenance plan gives you a clean way to increase lifetime gross profit after the full-service install is complete. Money Models frames continuity as ongoing value customers pay for until they cancel, which boosts profit per customer and gives you another thing to sell after the main transaction [continuity-offers:0] [ten-years-ten-minutes:2].\n\nThe constraint is value design: price the recurring plan around things that keep creating new monthly value, not around the one-time design/install value they already received. For 1584, that could be seasonal refresh planning, replacement sourcing, owner/photo audit checkups, vendor coordination, and listing-readiness reviews. The source material is explicit that continuity works best when one-time value is separated from ongoing consumable value, because blending them can create churn [continuity-offers:4].\n\nMy recommendation: test a simple maintenance tier with a small set of post-install clients before making it a core promise. Keep it operationally light, measure attach rate and retention, then decide whether it belongs as the default post-install next offer.",
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "source_events": [
+    {
+      "source_need": {
+        "intent": "recommendation_evidence",
+        "layers": [
+          "continuity"
+        ],
+        "focus_terms": [
+          "continuity offer",
+          "ongoing value",
+          "recurring payments",
+          "maintenance after install"
+        ],
+        "user_turn": "should we add a recurring owner maintenance offer after installs?",
+        "query_variants": [
+          "continuity offer ongoing value recurring payments after service",
+          "maintenance offer after installation ongoing owner support",
+          "recurring continuity offer boosts profit per customer"
+        ]
+      },
+      "queries": [
+        "continuity offer ongoing value recurring payments after service",
+        "maintenance offer after installation ongoing owner support",
+        "recurring continuity offer boosts profit per customer",
+        "continuity offer ongoing value recurring payments maintenance after install interior design STR"
+      ],
+      "chunks": [
+        {
+          "id": "continuity-offers:0",
+          "chapter": "continuity-offers",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 12.889,
+          "preview": "So we just finished the downsell offer section, and now we move on, to the magic of continuity offers. I've been a continuity guy my whole life, and so this is a section that I hold near and dear to my heart. It has made me a tremendous amount of money. It also stabilizes cash flow for the business. And so in our four money. models, we have attraction, upsel",
+          "text": "So we just finished the downsell offer section, and now we move on, to the magic of continuity offers. I've been a continuity guy my whole life, and so this is a section that I hold near and dear to my heart. It has made me a tremendous amount of money. It also stabilizes cash flow for the business. And so in our four money. models, we have attraction, upsells, down sells, and now, kaboom, continuity. So continuity. offers provide ongoing value that customers make ongoing payments for until they cancel. They boost the profit from every customer and give you one last thing to sell. Continuity offers are awesome because you sell. once and get paid again, and again, and again. So here's my quick explanation. Let's say you offer something for $1,000 to 100 people and 10 people buy. You make $10,000. 10 times $1,000. Okay. Now, let's say that you talk to the same 100 people, but you make your $1,000 thing $50 a month instead. And at 50 bucks, we can get 40 out of the 100 to buy. \u00d0\u00b8. And if you keep those people, for 20 months, you still make $1,000 from each customer. So you go from making $10,000 now and zero dollars over time to $2,000 now and $40,000 over time. And as an added bonus, in the first example, if you only sold 10 customers, you'd only have 10 customers to upsell later. If you use a continuity offer and sold 40 customers, you'd have four times the customers to upsell later, which is a massive difference. This is fundamentally why people do continuity. You can sell more people at a lower price, you can still collect the same LTV, and you get four times the customers to upsell later. The pros are you can attract more customers compared to something more expensive. The cons are but you make way less money now, which makes it tough to use as an attraction offer on its own, which is why we put it last, or at least why I tend to put it last. So the TL;DR is that by making continuity offers last, we get the best of all worlds. We get cash today from attraction offers, upsell offers, and downsell offers, and we get a little cash today and tons of cash tomorrow from continuity offers. Note, to be clear, you can make continuity offers whenever and however you want. There are no rules, all right? They can attract new customers, upsell and downsell current customers, or reengage old customers, same as all the others. So the objective here for continuity offers within the money models that I explain is"
+        },
+        {
+          "id": "ten-years-ten-minutes:2",
+          "chapter": "ten-years-ten-minutes",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 16.575,
+          "preview": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a ",
+          "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+        },
+        {
+          "id": "continuity-offers:4",
+          "chapter": "continuity-offers",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 14.975,
+          "preview": "on that 50 is so low that you even make more over time than the $200 a month. So you have to play with the numbers here. But typically, the more offset the upfront versus the continuity, the more valuable it is. And I will do one little side quest here and then we'll get into 'em. I think the main reason that a lot of education businesses and media businesse",
+          "text": "on that 50 is so low that you even make more over time than the $200 a month. So you have to play with the numbers here. But typically, the more offset the upfront versus the continuity, the more valuable it is. And I will do one little side quest here and then we'll get into 'em. I think the main reason that a lot of education businesses and media businesses do not have good continuity is because the price to value is mis- mismatched. If I teach you arithmetic, the day before you learn arithmetic, it's unbelievably valuable. You, you learn. You will be able to do mathematics in the world. How valuable is that? The day after you learn arithmetic, you getting a course on arithmetic is vet- worth nothing. And so the problem is that a lot of, uh, media and education businesses will take that continuity concept that I talked about earlier, like, \"Well, I could sell to way more people,\" but the problem is that the value diminishes precipitously with information. Because once you've learned something, you've learned it, you've gotten, you've extracted the value. And so the way that I like to think about this is that either you sell bulk payments upfront, so you sell annual memberships, which I'm obviously a big fan of, or you can sell one-time prices for things that deliver one-time value and then you'd have much lower continuity for things that deliver ongoing value. And so you basically break apart the things that are one-time value versus consumable value. And I'll give you an example. So in Gym Watch, we had, um, like a sales system. Once you install the sales system, you have the sales system. Okay, got it. So that would be one-time value. Something that would be recurring value or consumable value, but would be calls with, uh, one of our business consultants who's gonna make sure that you're tweaking the things in your business and look at the metrics every single month, having access to the new plays or new releases that were released every single month. That's something that's consumed every single month 'cause it's new. If we had new ads that we were going to test and run to make sure they were winners, then every month you're like, \"Well, I want the new ads.\" So those are things that are consumable. So it makes sense to price the payment plan or the continuity based on the value of those consumables, not the blended value of the one-time thing and the consumable, because that blended value would be much higher and would have a much higher likelihood of churn. And so this"
+        },
+        {
+          "id": "continuity-bonus:8",
+          "chapter": "continuity-bonus",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 11.358,
+          "preview": "gonna become an anchor and less likely for them to buy it. The lower it is, the more people will buy it, and I'll give you the exact math on that in a second. Because when you ask, \"Hey, do you wanna know how you can get this for free?\" if they do, which they will, explain, \"Hey, just become a VIP member today and you'll get it all as a free gift just for jo",
+          "text": "gonna become an anchor and less likely for them to buy it. The lower it is, the more people will buy it, and I'll give you the exact math on that in a second. Because when you ask, \"Hey, do you wanna know how you can get this for free?\" if they do, which they will, explain, \"Hey, just become a VIP member today and you'll get it all as a free gift just for joining, or you can just buy it on its own for X, X, X. Which would you prefer?\" So someone's doing the math, they're like, \"Shoot, this thing's a grand, or I get the grand thing for free when I sign up for 200 bucks a month. Well, basically at month five, I quote break even, but I still get all the value of being a member. Well, I'll do that.\" Now, if that price was $300 or you get the $300 thing for free when you do the $200 membership, you might be like, \"Eh, I'll just do the $300 thing.\" So how big you price the difference will indicate how many people take the upfront cash versus the continuity offer. And so more bonuses get more people to join. That's the TL;DR. So after you ask them if they wanna know how to get it for free, you tell them that they can when they join. Then you say, \"On top of that, when you become a member, you'll get amazing thing one, amazing thing two, amazing thing three,\" and mention the individual dollar values of each to anchor that value, and actually, it further stacks the value of the $200 thing. And so stacking bonuses this way gets even more people to join the continuity. So here's the math example I told you that I was gonna break down. So we ran this test, and I can only say that this works for brick and mortar fitness sales in this offer structure. That being said, if I were a betting man, which I am, I would bet this pretty much transfers across, uh, domains, especially service businesses. Pricing for continuity versus offering cash. So for whatever reason, people pick one-time payments over continuity, even with higher one-time payments. And to be fair, I'm kind of this way. So if someone says, \"Hey, do you wanna sign up for membership or do you just wanna sign up for one month? One a- month is twice the price.\" I might be like, \"I don't feel like dealing with the cancellation. Just like, just put me on the one-month thing.\" And so offer a higher one-time payment option. This way some customers will make you"
+        },
+        {
+          "id": "continuity-bonus:9",
+          "chapter": "continuity-bonus",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 10.294,
+          "preview": "I'm kind of this way. So if someone says, \"Hey, do you wanna sign up for membership or do you just wanna sign up for one month? One a- month is twice the price.\" I might be like, \"I don't feel like dealing with the cancellation. Just like, just put me on the one-month thing.\" And so offer a higher one-time payment option. This way some customers will make yo",
+          "text": "I'm kind of this way. So if someone says, \"Hey, do you wanna sign up for membership or do you just wanna sign up for one month? One a- month is twice the price.\" I might be like, \"I don't feel like dealing with the cancellation. Just like, just put me on the one-month thing.\" And so offer a higher one-time payment option. This way some customers will make you more money today while other customers stack recurring revenue for tomorrow. So we change the price depending on our goals. I've tested this a ton, at least for me, and the data in this range looks really clear. So this is basically the take rates, um, based on the price. So this is the price. So if you're three times the price, you're gonna have almost 90, you know, 90% of people taking continuity. If you are, you know, 1.3 times the price, then you're gonna have 50% of people taking continuity and 50% of people taking the one-time offer. So this is the actual data as it broke out. So if you wanna get 50% of people to take continuity, then you make the standalone offer 1.33 times, which in my personal experience feels about right. So the example is, hey, this one-time program is 400 bucks, which would then equate to 266 a month if it was six weeks, or 199 a month membership. So I say, \"Pay 400 for six weeks, or you can become a member for 199 a month.\" At that point, at that price point, 50-50 will take the, uh, $400 offer versus doing 199 a month, even though this is 1.33 times more expensive. And so for me, I find this the most important number because that tells you the break even price on the market. So people basically value, at least in this particular setting when we tested this, that people value not being on continuity as a 33% premium that they're willing to pay on the price to not have to deal. with cancellations or anything like that. I find that to be very interesting. So if we want 60% to choose continuity, we make it 1.66 times more. If we want 70%, we double it. If we want 80% to choose continuity, we 2.3x it. If we want 90% of people to choose continuity, we 2.66x it. So basically once you're at about 3x the price of what they would have to pay, almost everybody takes the continuity. But if you're like, \"Shoot, I would rather get some of that cash up front because, you know, these, these $600 payments, they add up, it's not bad.\" Well, fine, if you"
+        },
+        {
+          "id": "continuity-bonus:4",
+          "chapter": "continuity-bonus",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 7.166,
+          "preview": "toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the oth",
+          "text": "toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the other is to get them to stay. Now, service, short-term accelerator offer. So one-time bonus for the short-term accelerator, it costs $1,000 on its own. Get it free when you become a member for $100 a month. Same concept as the gym. The bonus package is the VIP community members enjoy first in line access to our events, longer support hours, as in longer, not longer time period, uh, better support reps, and faster response times. So if you become a VIP member, not only do you get this big benefit, you also get this recurring benefit of c- continuing to pay and stay. Digital product offer. So one-time bonus would be, uh, get all my past 40 newsletters, valued at 15,800 whatever, by becoming a member today for only $3.99 a month after a 30-day free trial. Lifetime discount plus lifetime bonuses if you pay today. You can lock in a lifetime discount for $299 a month, and you get early digital access and a physical copy every month. Now, important points. Focus on the bonus, not the membership. This is really important. Join my membership program isn't very compelling, not nearly as compelling as get this free valuable thing. So advertise the free valuable thing, then explain the rest of the offer once, they show interest. So if I'm talking about the $800 of dog toys, I advertise my free $800 of dog toys, not my dog food. If I'm talking about my six-week challenge, I'm talking about the six-week challenge. They come in, I explain the $1,000 thing. I say, \"Or you can get that whole thing and this other thing for less.\" That's the idea, is you advertise the thing you're gonna give away, not the thing you sell. Bonuses kind of work like, up-sells. More of the same. You get two years of past newsletters by becoming a member. So they're coming in for newsletters, so you get more of that thing. Complimentary. You get nutrition services for free when you sign up for one of our fitness memberships. Great, that's complimentary. It goes together. You could have an upgrade, which is better, right? You get a free gold membership when you buy a bonus membership. So it's limited availability. Keep your bonuses related to"
+        },
+        {
+          "id": "continuity-bonus:1",
+          "chapter": "continuity-bonus",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 5.129,
+          "preview": "this percentage here, look how much we can extend LTV.\" That's the... That's where the real magic happens. But you can't build a building unless you learn how to lay a brick. So that's what we're doing. Okay, so note, he didn't offer the $24,000 offer. He simply valued it. All right? Now, when I saw that, I was like, \"That's a really cool offer.\" This is the",
+          "text": "this percentage here, look how much we can extend LTV.\" That's the... That's where the real magic happens. But you can't build a building unless you learn how to lay a brick. So that's what we're doing. Okay, so note, he didn't offer the $24,000 offer. He simply valued it. All right? Now, when I saw that, I was like, \"That's a really cool offer.\" This is then when it happened in my world years later. So there was this gym owner that hopped on a call and I was like, \"Okay, you know, tell me your numbers,\" and he was crushing everyone's numbers and I was like, \"Dude, what are you doing?\" And he explained that he had a new way of getting members, and it wasn't that he had started offering a different front-end offer in terms of his advertising. So he kept our ads, he kept the copy, all that stuff was the same, but when people came in, he had a different way of kind of judo chopping how he would make the presentation. And so what he did was he increased the price of his challenge, and so then he offered that thing after selling it to them as a free gift for just becoming a member. So remember, I came from the gym world. We wanted to sell continuity. At the end of the day, you just want everyone to get into memberships. The thing is, no one wants to buy a membership. That's the problem. And so we have to come up with 21-day transformations, 28-day transformations, six-week challenges, all this stuff to get people in the door, and then they realize after they work out, they feel good, they want to do this for life. But people don't just come and sign up for memberships, not often, and people get way better experience when you have some sort of like structured onboarding. And so what he did was he was like, \"Huh.\" He said he did it by accident one time, and then he was like, \"Oh, my God, that went so easily,\" which by the way, is how most of the sales innovations happen. Somebody came in and he'd sold them on the challenge, but they couldn't afford it, and he said, \"You know what? I'll give you the challenge for free if you just sign up as a member.\" And they were like, \"Oh, cool.\" And just like that, he figured he could take this really valuable. thing and get everyone in continuity by just giving it to them for free. And so by doing that, he was closing 70 to 80% of people walking in the door, which is"
+        },
+        {
+          "id": "continuity-bonus:3",
+          "chapter": "continuity-bonus",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 12.497,
+          "preview": "join right now. Also, you can offer the bonus as a standalone purchase or you can only make it available if they buy your continuity. So either of them work. And I'm gonna show you some really cool math examples at' the end of this video of price tests we've run to generate more cash up front or more people taking continuity. So there's actually some signs I",
+          "text": "join right now. Also, you can offer the bonus as a standalone purchase or you can only make it available if they buy your continuity. So either of them work. And I'm gonna show you some really cool math examples at' the end of this video of price tests we've run to generate more cash up front or more people taking continuity. So there's actually some signs I can show you of like how much cash do you want up front versus how many people do you want to take continuity, and then what percentage is the right percentage to offer so you can get the right distribution you want? And we tested this across a lot of Okay. ... locations, so I feel pretty confident about it. So on their own, continuity offers get less cash now, remember, less cash now, and that makes it tough for getting customers profitably. But the way that I use them, we can still hit our 30-day profit goals, which I'll explain in a second. So first, I do all my big cash attraction, upsell and downsell offers, so I should already be profitable, I should already have cash from all those original offers. Then continuity offers get a little bit of cash from the first month's payments. Then I offer people who bought that one month a discount for pre-paying more months. This further boosts 30-day profits, giving me more cash to advertise and stacks recurring revenue. So think about how that goes.Big attraction offer, buy X, get Y' free, win your money back, whatever. Got it. Then we do our up-sells. Got it. Then we do our down-sells. Got it. Then we get them into continuity, really soft pitch. We got them on continuity, we gave them some bonuses in order to say yes. Now that they're on continuity, we already have the commitment, we then say, \"Hey, you're already committed. Let's just pre-pay and save some money.\" We stack even more cash forward. And that's how you just stack, stack, stack, stack, stack. You front-load the money so that you can scale your advertising and go to the moon. All right, let's do some examples. So physical products. Let's use pet food. All right, so one-time bonus, get every dog toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the"
+        },
+        {
+          "id": "continuity-offers:2",
+          "chapter": "continuity-offers",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 10.877,
+          "preview": "the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And ",
+          "text": "the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments and contracts. They can significantly increase LTV if you deliver value. So that's downsell the upsell. Now let's talk about calculating back of napkin LTV. So the simplest way to do this is look at your price, divide it by your monthly churn, and that gives you your lifetime revenue. Remember, we still have margin on this. We still have some cost of delivery. Now, the gross margin times lifetime revenue equals your lifetime gross profit. So for example, let's say our price minus our cost of goods times 100% equals our gross margins. So let's say we have a $100 price, $20 cost of goods, times 100 equals 80% gross margins. Okay. So now we take our 80% gross margins, we multiply it by our lifetime revenue, and we get $800 of lifetime gross profit. That's how much we make per customer. over lifetime. That is what you can calculate for yourself given whatever it is you have. So you divide your price by your churn, that gives you the revenue, then you basically just figure out what your gross margin is, multiply that by that, and there you go. So getting people into continuity automatically extends LTV. Even with a company that does one-time transactions, most recurring stuff that has basically no added value, I'm just being super real with you, the recurring is usually three months, which still 3X your new LTV. So if you sell physical products, which maybe have one-time use, if you just get someone into a subscription, it usually triples the value of the customer. So if half the people do that thing, then you've got half the people doing 3X and half of them doing 1X, which means you double the revenue of your business, not bad, just by making it available. So the valuable money lesson is people think more about price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to"
+        },
+        {
+          "id": "continuity-offers:6",
+          "chapter": "continuity-offers",
+          "layer": "continuity",
+          "layers": [
+            "continuity"
+          ],
+          "score": 10.509,
+          "preview": "that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where c",
+          "text": "that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This is, again, this is not in the book. So this is me giving you bonus stuff. Um, there's a difference. between recurring and reoccurring revenue. So Netflix is recurring. Think memberships. Coca-Cola is reoccurring. I am a Coca-Cola product buyer. I buy lots of their drinks and I do that on a regular basis, but I don't have a fixed membership, but I reoccur. Both are great. The key with this one is that you just need to demonstrate that, hey, I... For example, there's a sauce company that I like and I bu- I bought their sauce for like four straight years and I use it every single month. I go through three or four bottles a month and I've been using for years and sure as hell you can bet that they can calculate that the average person who buys a bottle over time buys another 20 bottles. That makes it a very valuable business. Company one, let's say that's got top line of $10 million EBITDA3. Company two is 10 million and 3 million in EBITDA. Okay, this one's all transactional. You might get a 4X multiple. This is all recurring and based on how much you retain it, it might be worth eight to 15 times. So it's 24 to 45 million. So between 12 and 24 to 45, that's a hell of a lot more money. So this is problems worth solving. And so if they stay, buyers will pay. And when I say buyers, I mean investors. So my personal note is that you sleep great, this is me telling you personally, when you know in the first of the month that all your bills are paid and your profit's already locked in and everything else you have is gravy. And so recurring/continuity equals stability, which is why it's the fourth pillar of this. It's also the thing that will usually make your company the most valuable. So have I sold you? Hopefully on adding some recurring element to your business. Great. So let's get to the three best combinations that I've seen and used. Continuity. bonus offers, continuity discount offers, and then the waived fee offer. All right? So let's rock and roll. And now we do bonus offer."
+        }
+      ],
+      "retrieval_backend": "bm25",
+      "vector_store": "local"
+    }
+  ],
+  "cited_chunk_ids": [
+    "continuity-offers:0",
+    "ten-years-ten-minutes:2",
+    "continuity-offers:4"
+  ],
+  "metadata": {
+    "case_id": "sourceevents_v1_006",
+    "acting_agent_notes": [
+      "Started advisor session for the user turn.",
+      "Generated a recommendation SourceNeed for continuity/maintenance with three query variants.",
+      "Searched local Money Models source material on the continuity layer.",
+      "Answered in first person with inspected source citations."
+    ],
+    "external_model_apis_used": false
+  }
+}

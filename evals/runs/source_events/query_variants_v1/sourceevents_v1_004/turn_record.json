@@ -1,0 +1,16 @@
+{
+  "actions": [
+    "session_start",
+    "clarify",
+    "answer",
+    "session_finish"
+  ],
+  "assistant_message": "I would not pick a fix yet. The business and offer stack are clear enough to discuss options, but the two numbers that decide priority are missing: CAC and first-30-day gross profit. Give me the average cost to get one new client and the gross profit collected in the first 30 days on a typical project. Once I have those, I can tell whether the first fix is acquisition, first-sale gross profit, or the offer stack. Without those numbers, any recommendation would be guessing.",
+  "cited_chunk_ids": [],
+  "metadata": {
+    "acting_agent_notes": "No source search: snapshot is missing economics.cac and economics.first_30_day_gross_profit, so the responsible move is clarification.",
+    "case_id": "sourceevents_v1_004"
+  },
+  "source_events": [],
+  "user_message": "what should we fix first?"
+}

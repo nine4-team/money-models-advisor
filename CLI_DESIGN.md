@@ -296,7 +296,7 @@ Validation:
 - require `user_message` and `assistant_message`
 - require `actions` as a non-empty list of known operation labels
 - allow zero `source_events`, because not every turn should search
-- when `source_events` are present, require `source_need.intent`, `source_need.layers`, `source_need.focus_terms`, at least one query, and inspected chunk IDs
+- when `source_events` are present, require `source_need.intent`, `source_need.layers`, `source_need.focus_terms`, 2-4 agent-written `query_variants`, at least one executed query, and inspected chunk IDs
 - require every `cited_chunk_id` to appear in at least one source event unless `metadata.external_cited_chunk_ids` explicitly marks it as an external/non-corpus citation
 - warn, but do not fail, when a source event has chunks but no cited chunks; the agent may have inspected material and decided not to cite it
 - include the ending snapshot automatically, as `turn record` already does
@@ -419,3 +419,10 @@ Second acting-agent check:
 - Resulting design hardening: the skill now requires 2-4 agent-generated `query_variants` for source searches, and `diagnose --business-dir <path>` reads the saved `BusinessSnapshot` directly while preserving `--snapshot <json-or-path>` as a debug form.
 
 This means the command shape is now workable for realistic turns, but the next behavior pass should test whether multiple acting agents independently use query variants and `session finish` correctly without intervention.
+
+Query-variant source-event pass:
+
+- `session finish` now rejects source events whose `SourceNeed` omits 2-4 agent-written `query_variants`.
+- `scripts/eval_source_event_traces.py --require-query-variants` now scores whether completed source-event traces include those variants.
+- Three blind subagents reran the six source-event cases under `evals/runs/source_events/query_variants_v1/`.
+- `evals/reports/advisor_source_event_query_variants.md` reports 6 / 6 passing, 6 / 6 expected source events matched, and 0 extra-event warnings.

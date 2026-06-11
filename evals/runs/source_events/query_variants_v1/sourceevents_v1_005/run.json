@@ -1,0 +1,250 @@
+{
+  "case_id": "sourceevents_v1_005",
+  "visible_context": null,
+  "workflow_steps": [
+    {
+      "step": "install_snapshot_fixture",
+      "command": "mkdir -p /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/sessions && cp evals/fixtures/snapshots/1584_diagnosed.json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/business_snapshot.json",
+      "exit_code": 0
+    },
+    {
+      "step": "session_start",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --user-message \"what is a front-end offer in plain English?\"",
+      "exit_code": 0,
+      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_start.out"
+    },
+    {
+      "step": "write_source_need",
+      "command": "write JSON SourceNeed artifact to /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json",
+      "exit_code": 0,
+      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json"
+    },
+    {
+      "step": "search_source_material",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --source-need-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json --top-k 5",
+      "exit_code": 0,
+      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/search.out"
+    },
+    {
+      "step": "write_turn_record",
+      "command": "write completed turn record to /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+      "exit_code": 0,
+      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json"
+    },
+    {
+      "step": "session_finish_initial_attempt",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+      "exit_code": 1,
+      "error": "record-json requires non-empty string list field: actions",
+      "notes": "Initial artifact used structured action objects; corrected to CLI action-label list before successful finish."
+    },
+    {
+      "step": "session_finish",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+      "exit_code": 0,
+      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_finish.out"
+    }
+  ],
+  "actual_actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "source_events": [
+    {
+      "source_need": {
+        "intent": "teaching_evidence",
+        "layers": [
+          "offers"
+        ],
+        "focus_terms": [
+          "front-end offer",
+          "attraction offer",
+          "low-friction first purchase",
+          "core offer"
+        ],
+        "user_turn": "what is a front-end offer in plain English?",
+        "query_variants": [
+          "front end offer plain English low friction first purchase",
+          "attraction offer before core offer customer first step",
+          "low risk entry offer leads to larger core offer"
+        ]
+      },
+      "queries": [
+        "front end offer plain English low friction first purchase",
+        "attraction offer before core offer customer first step",
+        "low risk entry offer leads to larger core offer",
+        "front-end offer attraction offer low-friction first purchase core offer interior design STR"
+      ],
+      "chunks": [
+        {
+          "id": "cac:12",
+          "chapter": "cac",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "offers"
+          ],
+          "score": 7.723,
+          "preview": "doing. Um, you splinter out the thing. Now, I talk about this at length in the $100 million offers course. I'm not gonna break it down now, but basically, lots of different components to your offer, you have lots of different features. You take one feature off. You say, \"This feature is 99% off now.\" Great. That's where the discount is. And then you sell the",
+          "text": "doing. Um, you splinter out the thing. Now, I talk about this at length in the $100 million offers course. I'm not gonna break it down now, but basically, lots of different components to your offer, you have lots of different features. You take one feature off. You say, \"This feature is 99% off now.\" Great. That's where the discount is. And then you sell the rest of it. All right? And so whatever you break off, it has to be something that's well-understood or it's not gonna work. All right? That's kind of the thing I was talking about earlier. People have to have an understanding of it. Um, the cons are you got the bargain hoppers, right? People who, you know, complain about this, but really they, they're already, you know, uh, they're already customers. They're easier to upsell though than somebody who's cold. So yeah. All right. So the objective is that attraction offers are the first step in the four prongs because if you don't have interest, you don't have anything, right? And so customer-financed acquisition requires demand. And a big difference between CAC and GP, having low cost or free front ends is a strong way to do it. So lots of demand, free big front ends, drives more in. All right. So these things are going to be interchangeable throughout the remainder of these trainings. So if you see $19 chiropractor visit, it can be just as much a free chiropractor visit. The whole thing will work. But if you're like, you insist on doing this, fine, do that. If you insist on doing this, fine, do that. It does not matter. All the money models that I will show you can have free or discount interchange and they will both work. Kaboom. These are the ways that you can improve your CAC. So with that being said, CAC is covered. Now we go into gross profit."
+        },
+        {
+          "id": "offer-types:0",
+          "chapter": "offer-types",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 8.093,
+          "preview": "## [\u00a72.2.a] Gym Launch \u2014 the $10M ad and the LBO-model problem  Four types of offers that create a money model. Let's dive in. So number one is how we broke the gym industry, and then we'll go into the four-pronged money model, the four components, the four types of offers that exist. All right? So how we broke the gym industry. So I used to get gyms full. S",
+          "text": "## [\u00a72.2.a] Gym Launch \u2014 the $10M ad and the LBO-model problem\n\nFour types of offers that create a money model. Let's dive in. So number one is how we broke the gym industry, and then we'll go into the four-pronged money model, the four components, the four types of offers that exist. All right? So how we broke the gym industry. So I used to get gyms full. So what I just talked about earlier was my model. at Gym Launch. But what created this, and the reason I'm telling you this story is to show you how many different industries this structure of creating a good money model, works in. And so I used to open gyms at full. capacity on day one. And so this, is a video. This was my first... This video, this ad made me 10 million dollars. So it was sick. I' was 26 and it was awesome. Uh, it is how you would imagine it sounded. Um, I honestly did feel like it was something I was doing was illegal. I found out later it's completely legal to advertise and make money. It just sometimes the stars align. And so what I would do is I would go into a neighborhood and, you know, this one I did 191 sign-ups in 19 days at 500 bucks a pop. And this is me holding up all the $500 contracts that I had sold, like in the middle of nowhere. All right? And so this is the old way that gyms worked and the reason I'm, I'm outlining this is 'cause this might be how your business works. And in the gym industry, this is what all the gurus at the time were teaching. It was something that they called the LBO model, which has nothing to do with leveraged buyouts. An LBO model in the gym world was a low barrier offer. All right? So it's like trials, uh, super discount things. But the thing is, is I talked about earlier having a discount thing as the front end, but then they didn't have anything else to sell. So the discount stuff works, but you gotta have the thing to sell to make your money back. But this is how it used to work."
+        },
+        {
+          "id": "make-your-money-model:1",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 10.281,
+          "preview": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)  So let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in.",
+          "text": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)\n\nSo let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in. They're coming off win-your-money-back. They're coming on, uh, buy X get Y free. They're coming on, uh, decoy offer. Whatever it is, they're coming on the front end. You say, \"Great, now I'm either gonna do a menu upsell, I'm gonna do an anchor- anchor upsell, I'm gonna do a rollover upsell.\" All of those things you can use as your second, second piece. Then you can pick your downsell offer. So what if they say no to any of these other offers? Well, we have our. entire downsell flow, which is we start with payment plans, uh, then we do a free trial, or we do payment plan to feature downsell. Then we go to free trial. You just pick the ones that you know that you can execute on right? now. Step four, then you' pick a continuity offer. And the result is. that you get your cash back in 30 days, more customers, and make more money."
+        },
+        {
+          "id": "ten-years-ten-minutes:2",
+          "chapter": "ten-years-ten-minutes",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 7.794,
+          "preview": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a ",
+          "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+        },
+        {
+          "id": "cac:5",
+          "chapter": "cac",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "offers"
+          ],
+          "score": 7.331,
+          "preview": "that the volume can be a double-edged sword if you're not prepared for it. So if you use some of the stuff in this book, in this training, you're gonna get way more leads than ever you, ever you used to. And so what'll happen is you'll get way more people reaching out, and if you don't have the manpower or the time to reach out to all these leads, it's waste",
+          "text": "that the volume can be a double-edged sword if you're not prepared for it. So if you use some of the stuff in this book, in this training, you're gonna get way more leads than ever you, ever you used to. And so what'll happen is you'll get way more people reaching out, and if you don't have the manpower or the time to reach out to all these leads, it's wasteful. And so what you then do is you can add friction. So you give something away for free and then add friction. And so then you can add qualifications, which could be like types of questions, the number of steps in a process. The targeting you do is also another form of friction. You can force them to consume stuff prior to taking another step. You can increase ad length. These are all things that you can do to increase friction. All right, so if you're looking at this and you're like writing this down, like these are the steps that you can do to add friction to any advertising process. And so for me, I don't wanna make my ads or my offers worse. I wanna make them better and then add more friction, because fundamentally the idea is like, I wanna get as many people who want this thing to raise their hand and then put my filters in place so that only the people with money who are qualified come through. But I want the strongest magnet to get as many people as possible to take that first step, and then the filter to cut out as many of the people who I don't want in that I got as extra eyeballs or extra clicks from my big, amazing, sexy thing. And so the other con of free is that sometimes you have people who have no intention of buying, right? This is the, uh, the free brings broke people myth. Let me see if I actually dive into this deeper. Okay, I don't. So I'll tell you right now. So here's the free brings both- brings people myth. We' tested this, so we have a tremendous amount of data on this concept. Um, but in gyms, as you might imagine, 'cause I came from the gym world, uh, we'd have gym owners saying, \"I don't wanna give away free service.\" They'd be like, \"It undervalues my brand,\" blah, blah, blah, blah, blah. Whatever. Okay. So what we did was we ran a test and we said, \"10 locations, run not free. So we're not gonna use free in the advertising, and then you 10 locations use free in the advertising. Everything else stays the"
+        },
+        {
+          "id": "free-with-consumption:6",
+          "chapter": "free-with-consumption",
+          "layer": "offers",
+          "layers": [
+            "offers"
+          ],
+          "score": 7.31,
+          "preview": "process, you should understand what their goals are, what the reasons that the obstacles have got in the way for them, um, and basically all the friction that they've had to deal with, uh, in the past. So this is basically like a closure framework. Clarify what their label them the problem, overview their past pain, and then sell them the vacation of, the va",
+          "text": "process, you should understand what their goals are, what the reasons that the obstacles have got in the way for them, um, and basically all the friction that they've had to deal with, uh, in the past. So this is basically like a closure framework. Clarify what their label them the problem, overview their past pain, and then sell them the vacation of, the vacation being what we're gonna accomplish together in the next five days. Uh, explain away whatever their concerns are, reinforce decision, and then you frame the sale. All right. Sorry that was fast. You can watch it again on slow. That's what you would do in the first day. The next two to, you know, two, three days, whatever it is, uh, you then overcome the main beliefs that they're gonna have about the things that are gonna stop them. You're gonna show them one on one. And at the end you say, \"Hey,\" ask for a referral, anybody else who... So you can recap it. \"Hey, it was just great.\" Then you can ask for other people who would like to go through this free thing with you. And then finally you can make your offer. \"Hey, remember that thing I told you about again? Do you mind if I tell you about it now?\" Now if you're a super beginner, you can just ask them, \"What do you think working with me for $3,000 per year would look like to you?\" Then they can tell you the offer. And then you can say, \"Yeah, that sounds good. Let's do that.\" Right? If you have no idea, if you have 20 of those conversations, you're gonna have a pretty decent idea and then you can start making the offer. So this is the easiest way because if you suck at sales, it's way easier to sell when you spend five hours with someone building, building value. This is exactly what I did when I started my first business is I told people to donate 500 to $1,000 to the charity of their choice and I worked with them for 12 weeks. Those 12 weeks was one time a week for the 12 weeks and then I, you know, pitched them at the end for, for staying more stuff. Now I learn now I should have pitched them halfway through and I probably could have done it in six weeks. Lots of things I learned. And so here there's just X amount of time you need to spend and you can microwave it with the prospect. You can just do it in five days rather than five weeks by just compressing the time period. So these"
+        },
+        {
+          "id": "make-your-money-model:2",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 8.705,
+          "preview": "## [\u00a77.1.c] Implementation rules \u2014 perfect one at a time, simple scales, affiliate gap-fill  So here's some notes. One, perfect one of these. at a time. If you try and do all four at once, or six of these things at once, you're- you're gonna break your business. Like, I strongly recommend just start with one. One is enough. There's already enough complexity ",
+          "text": "## [\u00a77.1.c] Implementation rules \u2014 perfect one at a time, simple scales, affiliate gap-fill\n\nSo here's some notes. One, perfect one of these. at a time. If you try and do all four at once, or six of these things at once, you're- you're gonna break your business. Like, I strongly recommend just start with one. One is enough. There's already enough complexity doing anything new that you haven't done before. I try to include as many important notes as I know that make these things work in these trainings and in the book. There's some things that are in this tr- uh, video training that aren't in the book. There's some things in the book that aren't in the video training. It's the way it is. Uh, so read both if you're really serious about it. But if you have enough from either of them, by all means, please take action. All right, now if you are going to, uh, start one of these things, start it with a lower price. Get people to say yes, and then start raising prices in stages. That's my recommendation. Payment plans, based on how I told you to present the, uh, the discounted rate, uh, basically the pre-payment discount versus the payment plan rate, is a great way to get kind of a look into the future of what prices the market will sustain. I like this little saying, \"Simple scales, fancy fails.\" I wanna have as few of these as humanly possible, because the fewer pieces I have in my business, the fewer things can break. And so I would rather start with the simplest possible. thing that accomplished the objective, which is that I can offset my cost to acquire customers. I can recycle that cash within 30 days, and I keep, keep scaling, basically removing acquisition as the bottleneck in my business. Once I've accomplished that, we've accomplished our objective. We no longer need outside money to scale, which is pretty sweet. So this is a little bit of an advanced tip. Affiliate products can fill money model gaps. So if you're like, \"Okay, well, I wanna do a buy X get Y free,\" then just do a buy X get Y free on someone else's product. So then you. can still sell, your main thing, and then use somebody else's product that, you send traffic to, so you can get cash and you have no operational constraints. Now, you can use that for complementary services rather than something that's gonna take away from your core offer. You can turn attraction offers into continuity offers automatically just with renewal. Buy X get Y free, for example, if I said buy six get six, it becomes a continuity offer if after the end of that first year it rolls into continuity. If I do win your money back and say, \"Hey, after this period, you then roll into continuity.\" If I say decoy offer, I could say, \"Hey, you'd pay- you can either do this, uh, you know, this- this simple thing that's not that good, or this amazing thing for more money that has a guarantee.\" After that period, it rolls into continuity. So you can take any attraction offer that I had and just immediately turn it into continuity by just saying, adding a clause that says it rolls into continuity at. this price. And again, you can mix and match these however you like. So I- I present them in- this order because this is the most logical order that I can think of and as I have used them in my businesses. But this is no- in no way a limitation on your- ability to innovate. And honestly, I want you, I want you to send me all the cool money- models you guys figure out. Like, that's the point. This is me just showing you all the stuff that I know that I could fit into a presentation within a reasonable amount of time. Um, and so again, right, you can use attraction offers and upsell, anything that you can, that you can put your mind to, you can figure out. Okay, so that is how you make the money model. And let's go to 10 years in 10 minutes."
+        },
+        {
+          "id": "win-your-money-back:0",
+          "chapter": "win-your-money-back",
+          "layer": "offers",
+          "layers": [
+            "offers"
+          ],
+          "score": 7.891,
+          "preview": "So we start with our very first money model in the book, which is an attraction offer, win your money back. So win your money back. is one of these incredibly sexy offers that I start with because it's made me more money than any other offer that I'm going to show you. Let's dive in. We're gonna go through how I learned it, the description, the examples, imp",
+          "text": "So we start with our very first money model in the book, which is an attraction offer, win your money back. So win your money back. is one of these incredibly sexy offers that I start with because it's made me more money than any other offer that I'm going to show you. Let's dive in. We're gonna go through how I learned it, the description, the examples, important points, and summary. All right, so this is my beautiful doodle that exemplifies what this is. So I was in this gym mastermind where I signed up before I had a gym because I wanted to learn about the gym business. And this guy, Danny, uh, he said he had a client, uh, say no, and then said, \"Well, I'll pay you 500 bucks, and you can train me one-on-one. And if I lose 20 pounds in eight weeks, um, you give me the money back, but I'll let' you use my, you know, my pictures.\" And so, you know, Danny was like, \"Well, I'd rather take the money than not take the money.\" And so he did the deal. The dude got amazing results. And the thing is, is that once the guy got amazing results, he advertised the before and after of this dude, and he got like 13 more customers from advertising this guy's results. And so he started talking about that at this mastermind. We' then took it, at the gym that I was at with Sam, and we tried a six-week version of it to shorten it. It was still one-on-one PT, personal training. And so then I had the idea of, \"Hey, one, let's see if we run ads for this instead of just being, like, a thing that we tell our customers. And two, what if we made it large group instead of personal training?\" And so those two changes took this from this is a profitable thing to this being a money nuclear bomb. And so we then switched it to, uh, free and non-free versions with credit back and money back guarantees, which I'll explain in more detail. All right? So that's how I learned it. And it was an iteration. I mean, this was, like, a year, two years before we learned every single thing that I'm gonna share with you in, like, eight or 10 minutes. So now that's how I learned it. Let's go into the description. All right? What does this thing even mean? So a win your money back offer works like this. So you set a goal for your customer and then you tell them how to reach it, and if they reach it, then they"
+        },
+        {
+          "id": "free-with-consumption:5",
+          "chapter": "free-with-consumption",
+          "layer": "offers",
+          "layers": [
+            "offers"
+          ],
+          "score": 7.134,
+          "preview": "approach to solving problems is different. How our, our approach is different than what you've had before. Tuesday, it's gonna be second valuable nugget of value, which is regarding their ability or insecurity. It's like what are they most afraid of? What are the thing that they're most concerned about? The next one is gonna be the second thing that they're ",
+          "text": "approach to solving problems is different. How our, our approach is different than what you've had before. Tuesday, it's gonna be second valuable nugget of value, which is regarding their ability or insecurity. It's like what are they most afraid of? What are the thing that they're most concerned about? The next one is gonna be the second thing that they're also concerned about. This is typically an excuse outside of themselves. So that's like, uh, one is, \"I don't think I can do it.\" Something is, \"This other thing is going to block me from doing it.\" All right, the next one is gonna be me- you mention your core offer's gonna be coming the next day. And then of course, you pitch, and then you re-pitch with some sort of Q&A which you add more proof in. That's when you invite past success stories on, you do mini case studies and then you restack the offer. All right? So this is fundamentally how it works. Now, if you're a beginner, this is like a, this is flashing Vegas lights, okay? We... So by the time you're seeing this, we should have done a big school launch for people. This is more or less what I teach all the beginners to do. And you're like, \"Wait, I thought it was complex.\" If you wanna do it at scale, it's complex. If you wanna do it one on one, it's the simplest way to sell. So hear me out. You could do this with one person at a time. And so you could say, \"Hey,\" instead of calling it a three to five day challenge, say, \"I will spend five days with you.\" Doesn't have to be full days. Can be five one-hour sessions. You get five hours of my time to help you get this goal. Insert goal. On the first day, you're going to frame the fact that you're gonna make an offer at the end. You say, \"Hey, before we get going, is it okay if at the end of this whole thing, um, I just make you an offer of what it would look like to work with me long term?\" If they say no, then don't do the rest of it, right? But during that process, you should understand what their goals are, what the reasons that the obstacles have got in the way for them, um, and basically all the friction that they've had to deal with, uh, in the past. So this is basically like a closure framework. Clarify what their label them the problem, overview their past pain, and then sell them the vacation of, the vacation being what we're gonna accomplish"
+        },
+        {
+          "id": "free-giveaways:4",
+          "chapter": "free-giveaways",
+          "layer": "offers",
+          "layers": [
+            "offers"
+          ],
+          "score": 8.223,
+          "preview": "## [\u00a73.3.e] Advanced tactics \u2014 dual prizes, scarcity, back-pocket offer, recurring setup  A couple, couple little details for you. Um, talk to your law people about law things. Uh, make sure that they're legal in your area, the how you do it. Eligibility criteria get you more customers to buy the promotional offer. So I ask questions like, to, you know, just",
+          "text": "## [\u00a73.3.e] Advanced tactics \u2014 dual prizes, scarcity, back-pocket offer, recurring setup\n\nA couple, couple little details for you. Um, talk to your law people about law things. Uh, make sure that they're legal in your area, the how you do it. Eligibility criteria get you more customers to buy the promotional offer. So I ask questions like, to, you know, just to get ammo for a sales conversation. \"So why should we pick you? Why this program? Why now? Why does this matter to you? Why is this important? What are your goals?\" Right? These are all important questions you can ask in an application that then you can cipher, you know, go through them and say, \"Oh, these are really good people.\" And you can also order the leads and score them based on who you think is more likely to buy. You can also ask for income. You can ask for whatever you want. Um, if your giveaway doesn't work, so let me just troubleshoot this for you, it means your grand prize wasn't grand enough. So I had, um, I had a portfolio company do a gr- uh, do a giveaway and it bombed and I was like, \"How did they...\" or they told me that it bombed. I was like, there, like, \"Giveaways always work.\" Like, \"How did this not work for you?\" And they told me the grand prize was free tickets to their event, which was like $300 for the tickets for the event, and this is a B2B business with a, like, $40,000 thing. Uh, well, like, uh, 15 to 40, somewhere in that range, right? And so I was like, \"So why do we think that $300 value is in any w-\" like, if we're gonna sell $40,000 stuff, we need to have $40,000 giveaways at minimum. And so they reran the campaign with equipment for, uh, that business owner type that was $50,000 of equipment and then all of a sudden the giveaway worked, right? And so, like, giveaways are only grand if you have grand prizes, and they have to be super grand because people have to want them, right? Um, here's a little pro tip for you. You can give away two prizes for twice the leads. I'll give you an example in the next slide. Uh, so this is from school. So refer a winner and you win too. So this is really, I think this is sexy as hell. All right, so I'll just read this to you. But many of, many of you are inviting friends to play. the games with you and that's the point, to make business fun. To encourage this even more, we're adding a new incentive, right? If a person you refer gets in the top 10, you get to come too. So they won prizes. And so the whole point is if you double your grand prizes, then what you can do is, \"Hey, I'm gonna do this grand prize winner,\" but if you're the person who referred the grand prize winner, then you win a grand prize too. So let's say in that, in that example with the equipment, I would say, \"Okay, instead of $50,000 worth of equipment, I'm gonna give two $50,000 packages,\" or you can give two $25,000 packages, whatever, two big packages, and so that then gets-... every single person who's coming into the contest to say, \"Wait, I can get way more chances to win?\" Like, every person I refer gives me another shot to win. So there's a huge incentive now to refer tons of people and this can double, triple, quadruple the amount of leads you get in a giveaway, if the giveaway is good enough. So there's a huge incentive now to refer tons of people and this can double, triple, quadruple the amount of leads you get in a giveaway, if the giveaway is good enough. So again, these are regulated, for a reason. All right, um, but this, this crushes, so highly recommend doing that if you, if you have the cash or the capital to double the incentive, I would do it. All marketing rules apply, so scarcity, scarcity, scarcity. Limit your giveaway by time, number of entries, or both. You can run the giveaways for a specific amount of time, like, seven days, a specific number of entry, like 5,000 entries, or both. I like both. Now, I wanna be clear. How, would you. use the scarcity part? Well, I tend to limit scarcity based on how many people, um, I have the time and resources to connect with. So if I don't have the team to be able to actually reach out to more than 200 leads, then I wanna, I wanna put my, my qualifications as high as possible, and I want, to limit, uh, the amount of entries to 200. That also increases the chances of winning, which makes it even more attractive for people to enter. All right? And so if you ca- if you don't even have the bandwidth to do more than 200 contacts, then cap it, right? And if you can't do it, you can't reach out to those, to 200 leads in, in any more than seven days, then it's like cap it at seven, 207, done. Which leads to the next one, urgency, urgency, urgency, right? So I add urgency in three places for giveaways. Number one is to enter, number two is to claim, number t- three is to use or to, um, to use the, the thing 'cause even once you have, let's say, a scholarship. that you give away or once you give someone a vacation, give them, a time period to use it in, right? 'Cause you want them to actually consume it 'cause big picture, even for a- and most importantly for all the partial scholarship winners, uh, this is important because you want them to start. You want them to become customers. You want them to buy, right? And so this basically aligns with the three actions we need them to take, and so we put urgency around each, all right, and make it clear in the advertisements how that works. So once you announce the winners, let them know how long they have to claim, and when they do, schedule their call someday the next week if you can. And then once you let them know what they won, tell them how long they have to use it. I like hours personally, but I've gone up to five days. In short, just always have deadlines. So this is another, another little interesting tidbit, um, on a little more advanced thing that I've learned over the years, which is when you have the participation trophy, winner calls, when you have the promotional off- basically, the calls for everybody who didn't win, but you still wanna get to buy something, right? At the start of the call, let them know that they have two ways to use their partial scholarship, their g- voucher, their gift card, their credit, whatever, all right, and that you'll help them find which way makes the most sense for them, and then offer the discount on the grand prize. thing first. If they take that, awesome. If not, then offer the same discount by percentage on any other product that you have that makes sense. So using the dentist example earlier, I might say, \"Hey, the grand prize, is the full teeth and you're gonna get $2,000 off that.\" Now, they might be like, \"I can't afford that.\" We might say, \"Well, you know what? 80% of your pictures are gonna be your top teeth, not your bottom teeth, so why don't we just do braces on your top teeth for $3,000, and I'll give you a thousand bucks off that?\" Right? And so that way, you can have a back pocket offer for people who still obviously want, to improve their smile, they still want the main thing, but they might not be able to afford it' right? now, or might not be right? for the business right? now. And the key is to just discount by the same percentage. That way, they don't feel like, they're, they're losing out on their partial scholarship. Okay. So if, uh, if you have a lot of no-shows for in-person appointments and that becomes an issue, um, instead of doing mass notifications for people who qualified, uh, just reach out to them individually. Sometimes that happens, so just it... basically, you just need to do more personalization. And when you get a hold of them, just let them know they have to claim their prize. So if you have recurring revenue business, what you wanna do is apply the promotional discount over the longest period of time that they'll agree to and then set up monthly subscription to bill automatically at normal rates, uh, after the discounted period ends. Okay, so let's say that someone wins, you know, um, a partial discount for, whatever, $2,000 and you normally charge, uh, $6,000, or so let's... for simple math, let's say you normally charge $8,000. You give them $2,000 off. That's $6,000 for the year. So then I would just reverse that into $500 a month, which then at the end of the year would bump up to whatever $8,000 divided by 12 is, right? Um, and that way, you get the recurring revenue, uh, on a, on a regular basis. And again, that's... you wanna spread it over as long as possible, but you wanna collect as much cash as possible fro- up front. So if someone will pay six up front, do that, obviously. Um, but if you can't do that, then extend it over as long a period of time. This is what I'm trying to help you avoid. You don't wanna say, \"Okay, I'm gonna give you $2,000 for the first four months, and then you'll start getting billed on month five.\" Do not do that. It doesn't work. It sucks. I've already, I've already got the scar tissue to show it. Don't do it. Just try and spread it over longer periods of time. All right, so there's the important points. So this is a quick, quick recap. So at the core, free giveaways ask an audience to apply to get a high value thing of yours for free. Many will enter, many will win or one wins, and then the re- the rest win, win discounts. Uh, you wanna pick a grand prize that people want. It has to be sexy. If you do a bad grand prize, like, do not be cheap on your grand prize. Two, give two prizes away if you want more people to refer. I think a grand prize should be about the value of your high-cost thing, right? Now, to be clear here, the reason this is all so valuable is that if you give away something that you, that retails, that you actually sell for, let's say, $10,000, then it's really, uh, is only gonna cost you maybe two, $3,000 in terms of hard costs or services to deliver that thing. And so, like, that's a smoking hot th- like, it's not that much money compared to how much you have to spend in marketing, right, which is why cash giveaways are, like, my least favorite type of thing because, I mean, I have done them, but they, they tend to be my least favorite because they are the least original. Now, the plus side of cash giveaways is that they are valuable to everyone, right? And so if you are in a niche, which I hope you are 'cause you know who your avatar is, being more specific and making the g- the grand prize around your service allows you to bake in the difference between what it costs you versus what the value of it is at a retail price, and I think that's a huge arbitrage opportunity. It also makes doubling the prizes when you give two away easier 'cause if you give two $10,000 prizes away that really only cost you two or three, at hard costs, still works great. Okay, so, uh, then you wanna offer a chance to win the grand prize to anyone who enters and qualifies is a key point, and qualifies. You don't just give it to any... Like, they have to qualify in order to win. Uh, and you can get great information from every lead because you make it part of the entry process, and this is why I think this is so magical. People are just willing to enter pages and paragraphs about themselves, whereas if you just did a normal lead gen campaign, it's hard to get two or three fields, right? Let alone here, you can get massive applications with whole life stories, uh, built into them because people wanna win something. So get that information, um, and then it'll indicate how your offer will provide more value to them, and this becomes very important for when you offer your discounted or your promotional or your participation trophy offers later. Advertise your seven, uh, giveaway for, you know, three to seven days or hit the number of people that you can manage to call in that time period, whichever comes first. Everyone who doesn't win the grand prize qua- and qualifies gets offered the promotional offer. Uh, book appointments to the promotional offer winners to credit their win towards the grand prize. Give them limited time to claim their prize, then put an expiration date on people claiming their prizes, making them more likely to claim it. And if somebody says no to your main participation trophy offer, have another product, uh, that's probably like half the price to a third of the price that you have in your back pocket to make available to them, all right, um, and it... 'cause it might suit them better. I would just keep the percentage discount the same. That way, they still feel like they won something. Beyond that, that is how you do free giveaways. Those destroy, like murder, across markets, physical products, brick and mortar, online, d- like, these work. So use them at your own peril."
+        }
+      ],
+      "retrieval_backend": "bm25",
+      "vector_store": "local"
+    }
+  ],
+  "cited_chunk_ids": [
+    "cac:12",
+    "offer-types:0",
+    "make-your-money-model:1"
+  ],
+  "session_paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business",
+    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/sessions",
+    "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/sessions/20260611T205046.json"
+  },
+  "final_answer": "A front-end offer is the first, easy yes you put in front of a prospect. In plain English: it is the small, low-friction thing that gets the right person to raise their hand before you ask them to buy the bigger core offer.\n\nFor 1584, the STR Design Diagnostic is the front-end offer: it lets an owner experience your judgment through a listing/photo audit before committing to the full-service design project. The important part is that it should not be a random cheap thing. It should create demand and point naturally to the next sale, because a discounted front end only works when there is something else to sell behind it [cac:12] [offer-types:0]. In the Money Models build order, this is the attraction offer that gets leads engaged before upsells, downsells, continuity, and the full stack [make-your-money-model:1].",
+  "notes": {
+    "external_model_apis_used": false,
+    "source_event_count": 1,
+    "calculation_event_count": 0,
+    "session_finish_warnings": [],
+    "acting_notes": [
+      "Started advisor session for the user turn.",
+      "Generated a teaching SourceNeed for front-end/attraction offers with three query variants.",
+      "Searched local Money Models source material on the offers layer.",
+      "Answered in first person with inspected source citations."
+    ],
+    "prior_sessions_fixture_path": null
+  },
+  "paths": {
+    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005",
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json",
+    "installed_snapshot_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/business_snapshot.json",
+    "source_need_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json",
+    "session_start_output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_start.out",
+    "search_output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/search.out",
+    "turn_record_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+    "session_finish_output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_finish.out",
+    "run_json_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json"
+  }
+}

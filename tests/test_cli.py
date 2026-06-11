@@ -257,6 +257,10 @@ class CliTest(unittest.TestCase):
                             "layers": ["unit-economics"],
                             "focus_terms": ["CAC", "gross profit", "payback period"],
                             "user_turn": "what should we do next?",
+                            "query_variants": [
+                                "CAC gross profit payback period",
+                                "customer acquisition cost first month gross profit",
+                            ],
                         },
                         "queries": ["CAC gross profit payback period"],
                         "chunks": [{"id": "payback-period:0", "score": 20.4}],
@@ -299,6 +303,10 @@ class CliTest(unittest.TestCase):
                             "intent": "teaching_evidence",
                             "layers": ["unit-economics"],
                             "focus_terms": ["payback period"],
+                            "query_variants": [
+                                "payback period recover CAC",
+                                "customer acquisition cost payback",
+                            ],
                         },
                         "query": "payback period",
                         "chunks": [{"id": "payback-period:0"}],
@@ -332,6 +340,10 @@ class CliTest(unittest.TestCase):
                             "intent": "teaching_evidence",
                             "layers": ["unit-economics"],
                             "focus_terms": ["payback period"],
+                            "query_variants": [
+                                "payback period recover CAC",
+                                "customer acquisition cost payback",
+                            ],
                         },
                         "queries": ["payback period"],
                         "chunks": [{"id": "payback-period:0"}],
@@ -392,6 +404,37 @@ class CliTest(unittest.TestCase):
                 "user_message": "calculate payback",
                 "assistant_message": "Payback is 0.1 months.",
                 "actions": ["session_start", "calculate", "answer"],
+            }
+
+            with self.assertRaises(SystemExit):
+                run_cli(
+                    [
+                        "session",
+                        "finish",
+                        "--business-dir",
+                        tmp,
+                        "--record-json",
+                        json.dumps(record_artifact),
+                    ]
+                )
+
+    def test_session_finish_rejects_source_event_without_query_variants(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "teach me payback",
+                "assistant_message": "Payback is about recovering CAC.",
+                "actions": ["session_start", "search_source_material", "answer"],
+                "source_events": [
+                    {
+                        "source_need": {
+                            "intent": "teaching_evidence",
+                            "layers": ["unit-economics"],
+                            "focus_terms": ["payback period"],
+                        },
+                        "queries": ["payback period"],
+                        "chunks": [{"id": "payback-period:0"}],
+                    }
+                ],
             }
 
             with self.assertRaises(SystemExit):

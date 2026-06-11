@@ -1,0 +1,149 @@
+{
+  "actual_actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "case_id": "sourceevents_v1_003",
+  "cited_chunk_ids": [
+    "money-models-offer-stacks:0",
+    "classic-upsell:4",
+    "payback-period:2"
+  ],
+  "final_answer": "I would add a tightly-scoped, low-drag room package upsell immediately after the design plan is accepted: for example, a $5k per-room furnishing/photo-ready implementation bundle that is framed as the next natural thing clients need, not as a redesign of the full-service offer. The reason is that a good money model sequences offers to maximize gross profit collected in the first 30 days [money-models-offer-stacks:0], and classic upsells work best when the add-on is the thing that naturally goes with the thing they already bought [classic-upsell:4]. For Lisa, that means making the room package feel like, 'you approved the STR plan; now here is the fastest way to make the highest-impact rooms listing-ready.' I would test it as an assumed-but-optional add-on on every accepted project for 10 sales conversations, track take rate and added gross profit, and keep it operationally simple so it raises first-30-day gross profit without pulling Lisa into a new service line. The timing matters: upsells improve payback when they happen in the first 30 days and when the client is at the moment the related problem is active [payback-period:2].",
+  "notes": {
+    "acting_decision": "Snapshot already had CAC and first-30-day gross profit, so the turn sourced the concrete upsell/add-on mechanism only.",
+    "external_model_apis_used": false,
+    "session_finish_warnings": [],
+    "source_event_count": 1
+  },
+  "paths": {
+    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003",
+    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/run.json",
+    "search_output_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/search_output.json",
+    "session_finish_output_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/session_finish_output.json",
+    "turn_record_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/turn_record.json"
+  },
+  "session_paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/business",
+    "session_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/business/.money-model-advisor/sessions/20260611T205007.json",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/business/.money-model-advisor/business_snapshot.json",
+    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/business/.money-model-advisor"
+  },
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "chapter": "classic-upsell",
+          "id": "classic-upsell:4",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "preview": "## [\u00a74.2.e] Important points + 80% close rate benchmark  So important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly enco",
+          "score": 10.108,
+          "text": "## [\u00a74.2.e] Important points + 80% close rate benchmark\n\nSo important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly encourage the thing, but that's fundamentally how it works. All right? So make sure that it doesn't cost you a lot or anything at all, uh, like, that thumb drive that we gave, like, you can y- you want it to be something that's cheap, uh, but still valuable. The next thing is make the upsells the next natural thing that they would need to buy. That's the boxes, the large units, the locks, the, the insurance, things like, that. The weight loss clinic, continuity of service, continuity of supplements, done-for-you meals, hormone treatments, et cetera, all of those things were all part of classic upsells that' went through. You can't have X without Y. You can't have this weight loss service without these supplements. Just think, \"You can't have X without Y,\" as your, as your mental framework for what the next thing I'm gonna offer is. All right, this play works so, well because the perception of how essential or required the next thing is. All right? So, this is the key point. If supplements is core to how someone's gonna get results with the main thing, the likelihood they buy is very high. So, if you, remember the, uh, minimum package for the rental car story I gave you, you want this to, feel as required as possible. Again, you don't wanna make it' required, because then it's, it's, it gets shady, but you want to strongly encourage people to take these things to get the best results, which ethically, they should be able to get better results with whatever your upsell is. All right? And so, how seamless the upsell process is for the prospect, if you make it frictionless, you can get sometimes 80% plus the people to take these upsells. I personally prefer to have upsells that have very little operational drag so, that I can' immediately offset cost to get it, getting a customer, or it becomes that's my major profit stream. It depends on' what the objective is for your business. Boom. Summary, works on' the front end as a back end, works as an internal play, meaning you can just upsell your existing customers. That's basically what the storage thing with, with the fur coats was. Many of those people were existing customers, so you can just upsell those people. Um, if you suck at sales, this is not a hard sale to make. Uh, there's a lot of goodwill in this play, because you just make sure that you close the upsell. Like, it's like, \"Hey, let me give you this thing. I'm giving you this free earmuffs. Why not take it? But, of course, you gotta take this other thing, too.\" Um, and if you aren't getting 80% plus close rates, you're doing it wrong. So that's my big benchmark for you. If you're getting 30% to take it, you're not, you're not making it assumed enough. You're not, it's, it's not clear enough to them that this goes with. So think about it like that. It has to go with. If you go to a McDonald's, I would bet you that 80% of people are getting fries and a Coke. You want, you want a very high uptake rate on' the people who buy the next natural thing. Think of this as the thing that goes with the thing, uh, and give the thing away for free to make sure that all the thing that goes with the thing you can make the money on. All right? And so, the nice thing with this is that it gives you a lot of upfront customers. And that is the classic upsell."
+        },
+        {
+          "chapter": "upsell-offers",
+          "id": "upsell-offers:1",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "preview": "of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize that? Boo",
+          "score": 8.445,
+          "text": "of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize that? Boom, upsell one, upsell two. And the thing is, is that when they make this upsell, look at how much more they make per sale, a lot more. And so the end result of this goes from 25 cents to 8X the gross profit per sale. They're making way more, two dol- $1.75 from 25 cents originally. And so the thing is, is that you may just be one upsell offer away from making yours into a dynasty like theirs. You just have to figure out what's your fries and a Coke. And if you don't, someone else will. Let me talk about when they fail. Upsell offers fail or feel cringy when you offer something that they don't want, so that's either too different or doesn't solve their existing problem. You offer it at the wrong time, so it's before they've experienced the problem. You say, \"Hey, you just had a steak. Do you want another steak?\" They're like, \"Well, I'm not really hungry anymore.\" You already solved that, you're trying to solve the same problem. You offer it the wrong way, which is they don't believe you. They're like, \"Sure, that would be nice, but I don't believe you specifically.\" Or it's a combination of the above. This is when it fails. Now, what to sell? Which becomes the next upsell offer question. More of what they just got, think quantity. So that's, uh, one burger to two burgers. Better versions of it, think quality. So this is why have a mystery meat burger, when you could have a sirloin meat burger, organic burger, or newer complimentary stuff? Think different. This is, do you want fries and a soda with that burger? Fundamentally, that's how this works. So the objective of the upsell is to maximize profit per customer and to send clients into backends. Note, these structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end offer. Upsell offers, you can"
+        },
+        {
+          "chapter": "payback-period",
+          "id": "payback-period:2",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ],
+          "preview": "have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period? Two months. Also, ",
+          "score": 10.348,
+          "text": "have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period? Two months. Also, to be really clear here, if it costs you 160 bucks to acquire a customer, some people are like, \"It takes me one and a half months to break even here,\" because they see $100 in revenue and they say, \"Oh, it's one and a half months.\" You have to take out your cost of goods in the payback period. If it costs me $9 in meals and I sell 10 bucks for the meal, I make a dollar. I can't say, \"Oh, you know, they paid me 20 bucks. It cost me 20. I break even in two months.\" You have to do it off gross profit. All right, so here's how to improve it. You can make them more, better, or new offers, and here's the key part, in the first 30 days. And the key part is to do- to do it at the right, moment. The reason that somebody will not take an upsell from you is 'cause you did it the wrong way or at the wrong time or you described it poorly, or they're the wrong person. Right? And so, let' me give you this supplement sale example. This is just, uh, zoned in on. timing, presenting it at the right time. So I say this because some of you might have an amazing upsell offer. You're just, you're just presenting it not when the problem, uh, exists, all right, or creates itself. So I tried to sell supplements after people bought services from me, and it didn't work. Now, I could give you a whole bunch of theories around that. Someone comes in saying they wanna lose weight, and I say, \"Awesome, let's get you signed up.\" And then right then after they signed up, I say, \"Oh, by the way, buy these supplements.\" And you might think, \"Wait, isn't that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they"
+        },
+        {
+          "chapter": "money-models-offer-stacks",
+          "id": "money-models-offer-stacks:0",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "preview": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that so",
+          "score": 13.736,
+          "text": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that some of the things are a little bit different from the book, and that's done on purpose because I like to think through things differently in different mediums. All right? Because I can say things here that I couldn't normally say in the book. So we'll go definition, rental car story, and the gym launch example. All right. So a money model is a series of offers. That's it. The reason I had to start with the offers book before talking about the money model book is that an offer is one unit. A money model is sequencing these things. It's putting them in a series of offers deliberately to maximize gross profit collected in the first 30 days. So I will say this all together. A money model is a series of offers. A good money model, which is the objective of this book, or this training, is a series of offers structured to minimize CAC, how much it costs to get a customer, maximize gross profit, how much they pay you, collected in the first 30 days, how fast they pay you. That's the point... [Content continues with rental car counter story example including late checkout, insurance upgrade, minimum package, prepaid gas, and late return fees explanation] ...describing how rental car companies engineer their offers sequentially. The story illustrates 9 different upsells that occurred during a single reservation transaction. This is followed by the Gym Launch case study detailing how the company grew from $1,000 in the bank to $17 million in profit in 20 months through their money model approach. The transcript covers their specific offer stack including: free book/podcast lead magnet, free strategy call, $16,000 premium offer with payment terms, free supplement training, and free feedback call with continuity upsell. The lesson emphasizes how understanding offer sequencing and psychology can dramatically increase customer lifetime value and enable rapid scaling without external funding."
+        }
+      ],
+      "queries": [
+        "upsell add on increase gross profit without changing core offer",
+        "post sale upsell additional services improve first sale economics",
+        "add-on offer after core sale raises gross profit",
+        "upsell add-on increase gross profit without changing core offer interior design STR"
+      ],
+      "retrieval_backend": "bm25",
+      "source_need": {
+        "focus_terms": [
+          "upsell",
+          "add-on",
+          "increase gross profit",
+          "without changing core offer"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "upsells"
+        ],
+        "query_variants": [
+          "upsell add on increase gross profit without changing core offer",
+          "post sale upsell additional services improve first sale economics",
+          "add-on offer after core sale raises gross profit"
+        ],
+        "user_turn": "how should we increase first-30-day gross profit without changing the full-service offer?"
+      },
+      "vector_store": "local"
+    }
+  ],
+  "visible_context": {
+    "ambiguity": "medium",
+    "conversation_context": "The snapshot is recommendable and already identifies strong first-sale economics. The user asks for a concrete way to increase first-30-day gross profit without redesigning the core service.",
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "scenario_id": "1584_design",
+    "severity_if_wrong": "medium",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json",
+    "split": "post_hardening_regression",
+    "user_turn": "how should we increase first-30-day gross profit without changing the full-service offer?"
+  },
+  "workflow_steps": [
+    {
+      "command": "mkdir -p <run>/business/.money-model-advisor/sessions && cp snapshot fixture into business_snapshot.json && cp prior session fixture into sessions/",
+      "exit_code": 0,
+      "step": "create_business_dir_and_install_fixtures"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/business --user-message 'how should we increase first-30-day gross profit without changing the full-service offer?'",
+      "exit_code": 0,
+      "step": "session_start"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <recommendation_evidence upsells with 3 query_variants> --top-k 5",
+      "exit_code": 0,
+      "step": "search_source_material"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_003/turn_record.json",
+      "exit_code": 0,
+      "step": "session_finish"
+    }
+  ]
+}

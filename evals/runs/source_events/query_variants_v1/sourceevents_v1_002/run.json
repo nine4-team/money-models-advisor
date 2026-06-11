@@ -1,0 +1,142 @@
+{
+  "case_id": "sourceevents_v1_002",
+  "visible_context": {
+    "case_id": "sourceevents_v1_002",
+    "split": "post_hardening_regression",
+    "scenario_id": "1584_design",
+    "conversation_context": "The snapshot is recommendable for 1584 Design and already contains CAC, first-30-day gross profit, gross margin, and payback period. The user asks only how to interpret the economics.",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json",
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "user_turn": "does this mean paid acquisition is viable, or is CAC the bottleneck?",
+    "ambiguity": "low",
+    "severity_if_wrong": "medium"
+  },
+  "workflow_steps": [
+    {
+      "step": "install_fixtures",
+      "command": "python3 - <<'PY'  # create /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business; copy evals/fixtures/snapshots/1584_diagnosed.json to business/.money-model-advisor/business_snapshot.json; install prior sessions fixture when present",
+      "exit_code": 0
+    },
+    {
+      "step": "session_start",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business --user-message 'does this mean paid acquisition is viable, or is CAC the bottleneck?'",
+      "exit_code": 0
+    },
+    {
+      "step": "search_source_material_unit_economics",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business --source-need-json '{\"intent\":\"diagnostic_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"CAC\",\"first 30 day gross profit\",\"payback period\",\"paid acquisition\"],\"user_turn\":\"does this mean paid acquisition is viable, or is CAC the bottleneck?\",\"query_variants\":[\"CAC first 30 day gross profit payback period paid acquisition viability\",\"30 day gross profit greater than CAC paid ads bottleneck\",\"cash payback period acquisition bottleneck CAC gross profit\"]}' --top-k 5",
+      "exit_code": 0,
+      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/search_unit_economics.json"
+    },
+    {
+      "step": "session_finish",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/turn_record.json",
+      "exit_code": 0,
+      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/session_finish_stdout.json"
+    }
+  ],
+  "actual_actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "source_events": [
+    {
+      "source_need": {
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "focus_terms": [
+          "CAC",
+          "first 30 day gross profit",
+          "payback period",
+          "paid acquisition"
+        ],
+        "user_turn": "does this mean paid acquisition is viable, or is CAC the bottleneck?",
+        "query_variants": [
+          "CAC first 30 day gross profit payback period paid acquisition viability",
+          "30 day gross profit greater than CAC paid ads bottleneck",
+          "cash payback period acquisition bottleneck CAC gross profit"
+        ]
+      },
+      "queries": [
+        "CAC first 30 day gross profit payback period paid acquisition viability",
+        "30 day gross profit greater than CAC paid ads bottleneck",
+        "cash payback period acquisition bottleneck CAC gross profit",
+        "CAC first 30 day gross profit payback period paid acquisition interior design STR"
+      ],
+      "retrieval_backend": "bm25",
+      "vector_store": "local",
+      "chunks": [
+        {
+          "id": "how-businesses-make-money:2",
+          "chapter": "how-businesses-make-money",
+          "layer": "unit-economics",
+          "score": 24.206,
+          "preview": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period  Which then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math"
+        },
+        {
+          "id": "payback-period:0",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "score": 22.784,
+          "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A"
+        },
+        {
+          "id": "context:1",
+          "chapter": "context",
+          "layer": "unit-economics",
+          "score": 20.438,
+          "preview": "## [\u00a71.1.b] The CAC problem & introducing CFA  So, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs "
+        },
+        {
+          "id": "cfa:0",
+          "chapter": "cfa",
+          "layer": "unit-economics",
+          "score": 20.411,
+          "preview": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three lev"
+        },
+        {
+          "id": "payback-period:1",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "score": 18.504,
+          "preview": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you w"
+        }
+      ]
+    }
+  ],
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "cfa:0",
+    "payback-period:0"
+  ],
+  "session_paths": {
+    "session_finish_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions/20260611T205052.json",
+    "prior_session_paths": [
+      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions/fixture_prior_001.json",
+      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions/fixture_prior_002.json"
+    ]
+  },
+  "final_answer": "Yes, the economics say paid acquisition is viable to test; CAC is not the obvious bottleneck right now. The core acquisition read is CAC, gross profit, and payback period together [how-businesses-make-money:2]. Here, the snapshot has about $1,000 CAC and about $10,000 first-30-day gross profit, so first-month gross profit is far above acquisition cost. That matches the client-financed acquisition threshold: first-30-day gross profit greater than CAC [cfa:0].\n\nThe caveat is that the $1,000 CAC came from referral partners, not yet from paid ads. So I would interpret this as permission to run a controlled paid-acquisition test, not proof that every paid channel will work. The bottleneck to watch is whether paid traffic can hold CAC low enough and payback fast enough; shorter payback is what makes advertising easier to scale [payback-period:0].",
+  "notes": {
+    "result": "completed",
+    "session_finish_warnings": [],
+    "source_event_count": 1,
+    "calculation_event_count": 0,
+    "external_model_apis_used": false,
+    "source_code_or_docs_edited": false,
+    "evaluator_fields_ignored_in_artifact": true
+  },
+  "paths": {
+    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002",
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/business_snapshot.json",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions",
+    "turn_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/turn_record.json",
+    "session_finish_stdout": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/session_finish_stdout.json",
+    "search_unit_economics": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/search_unit_economics.json"
+  }
+}
