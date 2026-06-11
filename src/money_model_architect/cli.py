@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -52,6 +53,16 @@ SOURCE_NEED_INTENTS = {
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
+
+
+def _reject_repo_business_dir(business_dir: Path) -> None:
+    if os.getenv("MMA_ALLOW_REPO_BUSINESS_DIR") == "1":
+        return
+    if business_dir.resolve() == _repo_root().resolve():
+        raise SystemExit(
+            "Refusing to use the advisor repo as --business-dir. "
+            "Pass the business/context directory instead, or set MMA_ALLOW_REPO_BUSINESS_DIR=1 for an intentional dev run."
+        )
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -279,6 +290,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "session" and args.session_command == "start":
         paths = advisor_paths(Path(args.business_dir))
+        _reject_repo_business_dir(paths.business_dir)
         ensure_advisor_state(paths)
         snapshot = BusinessSnapshot.load(paths.snapshot)
         payload = {
@@ -324,6 +336,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "session" and args.session_command == "finish":
         paths = advisor_paths(Path(args.business_dir))
+        _reject_repo_business_dir(paths.business_dir)
         ensure_advisor_state(paths)
         snapshot = BusinessSnapshot.load(paths.snapshot)
         record = _expect_json_type(_read_json_value(args.record_json), dict, "record-json")

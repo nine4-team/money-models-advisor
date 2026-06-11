@@ -325,3 +325,13 @@ The next CLI gaps are behavior and demo quality, not missing command shape:
 - inspect whether agents create complete source events without over-recording
 - tune the skill if agents omit actions, cite uninspected chunks, or over-search
 - consider a human-readable trace view only after the JSON trace contract is stable
+
+First acting-agent check:
+
+- Three blind subagents were asked to run realistic 1584 turns through `session start` and `session finish`.
+- One completed a valid `session finish` trace for a prior-context/referral-CAC question.
+- One failed before recording because it used inline shell assignment for `CONTEXT_DIR` and accidentally pointed `session start` at the advisor repo.
+- Two did not return usable traces within the run window.
+- Resulting design hardening: the skill now shows a safe shell-variable pattern, and `session start` / `session finish` refuse to use the advisor repo as `--business-dir` unless `MMA_ALLOW_REPO_BUSINESS_DIR=1` is set.
+
+This means the command shape is workable, but the next behavior pass should test whether agents can reliably complete multiple turns after the path-safety hardening.

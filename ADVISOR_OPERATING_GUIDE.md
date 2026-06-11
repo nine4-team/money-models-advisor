@@ -46,6 +46,8 @@ During normal use, the human should not need to choose commands or flags; the sk
 
 These commands are the CLI interface. In normal use, the skill guides the agent through them; in development, a human can run them directly.
 
+When using shell variables, assign them before the CLI command. Do not rely on inline assignment such as `CONTEXT_DIR=/path python ... --business-dir "$CONTEXT_DIR"`; shell argument expansion can produce an empty or wrong path. After `session start`, verify that the returned `business_dir` is the intended business context directory.
+
 Start an advisor turn:
 
 ```bash

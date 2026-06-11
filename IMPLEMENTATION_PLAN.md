@@ -491,6 +491,7 @@ Build:
 - Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Agent-owned; deterministic `chat` synthesis has been removed from the active product path.**
 - Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started through `session start` and `turn record`.**
 - Agent-facing end-of-turn recording. **Done: `session finish --record-json` validates trace shape and keeps `turn record` as the lower-level primitive.**
+- Acting-agent CLI behavior pass. **Started: first blind subagent run produced one valid trace and exposed path-plumbing failures; path safety is now hardened and should be retested.**
 - Post-hardening acting-agent regression for source-event behavior. **Expanded to six blind cases covering multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation turns. Current report: 100.0% case pass rate, 6 / 6 expected source events matched, with 0 extra-event warnings after the upsell cleanup rerun.**
 
 Metrics:

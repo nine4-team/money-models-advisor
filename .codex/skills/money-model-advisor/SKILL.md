@@ -38,6 +38,21 @@ The advisor operations are implemented as CLI commands. Run CLI commands from `a
 
 The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
 
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
 ## Mental Model
 
 ```text
@@ -56,6 +71,8 @@ The folder where the skill is invoked is the context directory. It is where advi
 2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
 
    ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
    cd /Users/benjaminmackenzie/Dev/money-model-architect
    PYTHONPATH=src python3 -m money_model_architect.cli session start \
      --business-dir "$CONTEXT_DIR" \

@@ -197,6 +197,11 @@ class CliTest(unittest.TestCase):
             self.assertIn("turn_record", payload["available_operations"])
             self.assertIn("agent_owns", payload["boundary"])
 
+    def test_session_start_rejects_advisor_repo_as_business_dir(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        with self.assertRaises(SystemExit):
+            run_cli(["session", "start", "--business-dir", str(repo_root), "--user-message", "hello"])
+
     def test_session_finish_records_validated_turn_artifact(self):
         with tempfile.TemporaryDirectory() as tmp:
             record_artifact = {
