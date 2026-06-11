@@ -173,6 +173,8 @@ Boundary rule: do not label a unit-economics search as `recommendation_evidence`
 
 Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
 
+Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
+
 When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
 
 Keep source layers minimal. Extra layers make retrieval noisier.

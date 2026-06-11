@@ -71,8 +71,7 @@ Search source material:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli search \
-  "CAC payback period first 30 day gross profit" \
-  --layer unit-economics \
+  --source-need-json '{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","first 30 day gross profit"]}' \
   --top-k 5
 ```
 
@@ -141,6 +140,8 @@ Common split: if the answer needs both unit-economics interpretation and a propo
 Boundary rule: do not label a unit-economics search as `recommendation_evidence` just because the final answer contains a recommendation. If the source material is being used to justify why the economics point in a certain direction, the SourceNeed is `diagnostic_evidence` on `unit-economics`. Then, if you recommend a concrete next move such as a front-end offer, upsell, continuity path, or downsell/payment-plan path, run a separate `recommendation_evidence` search on that concrete fix layer.
 
 Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
+
+Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
 
 When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
 

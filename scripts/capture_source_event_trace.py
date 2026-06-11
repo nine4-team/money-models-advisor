@@ -133,6 +133,8 @@ def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
             "",
             "If you recommend a concrete Money Models move, source that move separately. Examples: diagnostic/front-end offer -> offers; post-sale add-on -> upsells; recurring maintenance -> continuity; payment plan/downsell -> downsells.",
             "",
+            "Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.",
+            "",
             f"Business dir: `{business_dir}`",
             "",
             "Visible case context:",
