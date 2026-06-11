@@ -307,6 +307,7 @@ def _parse_source_need(value: Any) -> SourceNeed:
     layers = value.get("layers", [])
     focus_terms = value.get("focus_terms", [])
     user_turn = value.get("user_turn", "")
+    query_variants = value.get("query_variants", [])
     if not isinstance(intent, str) or not intent:
         raise SystemExit("source need requires non-empty string field: intent")
     if not isinstance(layers, list) or not all(isinstance(layer, str) for layer in layers):
@@ -315,10 +316,18 @@ def _parse_source_need(value: Any) -> SourceNeed:
         raise SystemExit("source need field focus_terms must be a list of strings")
     if not isinstance(user_turn, str):
         raise SystemExit("source need field user_turn must be a string when supplied")
+    if not isinstance(query_variants, list) or not all(isinstance(query, str) for query in query_variants):
+        raise SystemExit("source need field query_variants must be a list of strings when supplied")
     invalid_layers = [layer for layer in layers if layer not in LAYERS]
     if invalid_layers:
         raise SystemExit(f"unknown source need layer(s): {', '.join(invalid_layers)}")
-    return SourceNeed(intent=intent, layers=tuple(layers), focus_terms=tuple(focus_terms), user_turn=user_turn)
+    return SourceNeed(
+        intent=intent,
+        layers=tuple(layers),
+        focus_terms=tuple(focus_terms),
+        user_turn=user_turn,
+        query_variants=tuple(query_variants),
+    )
 
 
 def _search_index(
@@ -344,6 +353,7 @@ def _source_need_to_dict(source_need: SourceNeed) -> dict[str, Any]:
         "layers": list(source_need.layers),
         "focus_terms": list(source_need.focus_terms),
         "user_turn": source_need.user_turn,
+        "query_variants": list(source_need.query_variants),
     }
 
 

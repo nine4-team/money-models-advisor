@@ -102,7 +102,8 @@ def render_report(query_source: str, top_k: int, summaries: dict[str, dict[str, 
         )
         best_backend, best_summary = sorted_hit5[0]
         lines.append(
-            f"- Best seed result by Hit@5: `{best_backend}` at {best_summary['known_useful_hit_at_5']}."
+            f"- Best seed result by Hit@5 and mean known-useful rank: `{best_backend}` at "
+            f"{best_summary['known_useful_hit_at_5']} Hit@5 and mean rank {best_summary['mean_known_useful_rank']}."
         )
         lines.append(
             "- Treat this as a retrieval-engineering signal, not a production benchmark, because the known-useful labels are intentionally non-exhaustive."
@@ -127,7 +128,13 @@ def _pct_value(value: object) -> float:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_search_query_cases.jsonl")
-    parser.add_argument("--query-source", choices=("reference", "generated"), default="generated")
+    parser.add_argument("--query-source", choices=("reference", "generated", "generated_variants"), default="generated")
+    parser.add_argument(
+        "--query-variants",
+        type=Path,
+        default=ROOT / "evals" / "advisor_query_variants_v2.jsonl",
+        help="JSONL candidate query variants keyed by case_id; used only with --query-source generated_variants.",
+    )
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "retrieval_backend_comparison.md")
     parser.add_argument(
@@ -139,6 +146,19 @@ def main() -> int:
 
     cases = query_eval.load_jsonl(args.cases)
     validation_errors = query_eval.validate_cases(cases)
+    variants_by_case: dict[str, list[str]] = {}
+    if not validation_errors and args.query_source == "generated_variants":
+        try:
+            variants_by_case = query_eval.load_variant_rows(args.query_variants)
+        except ValueError as exc:
+            validation_errors.append(str(exc))
+        missing_variant_cases = [
+            case["case_id"]
+            for case in cases
+            if case["case_id"] not in variants_by_case
+        ]
+        if missing_variant_cases:
+            validation_errors.append("query variants missing cases: " + ", ".join(missing_variant_cases))
     if validation_errors:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text("\n".join(["# Retrieval Backend Comparison", "", *validation_errors, ""]), encoding="utf-8")
@@ -149,7 +169,13 @@ def main() -> int:
     errors: dict[str, str] = {}
     for backend in BACKENDS:
         try:
-            results = query_eval.score_cases(cases, top_k=args.top_k, query_source=args.query_source, retrieval_backend=backend)
+            results = query_eval.score_cases(
+                cases,
+                top_k=args.top_k,
+                query_source=args.query_source,
+                retrieval_backend=backend,
+                variants_by_case=variants_by_case,
+            )
         except EmbeddingError as exc:
             errors[backend] = str(exc)
             continue
@@ -162,6 +188,7 @@ def main() -> int:
             {
                 "cases": len(cases),
                 "query_source": args.query_source,
+                "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
                 "summaries": summaries,
                 "errors": errors,
                 "report": str(args.report.resolve().relative_to(ROOT)),

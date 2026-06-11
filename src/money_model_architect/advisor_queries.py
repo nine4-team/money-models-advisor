@@ -26,6 +26,7 @@ class SourceNeed:
     layers: tuple[str, ...]
     focus_terms: tuple[str, ...]
     user_turn: str = ""
+    query_variants: tuple[str, ...] = ()
 
 
 def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -> list[AdvisorQuery]:
@@ -36,19 +37,34 @@ def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -
 
 def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -> list[AdvisorQuery]:
     terms = [*source_need.focus_terms, *_compact_context_terms(snapshot)]
-    query_text = _join_terms(terms)
-    if not query_text:
-        return []
-
     layer = source_need.layers[0] if len(source_need.layers) == 1 else None
-    return [
+
+    queries: list[AdvisorQuery] = []
+    for variant in source_need.query_variants:
+        variant_text = _join_terms([variant])
+        if not variant_text:
+            continue
+        queries.append(
+            AdvisorQuery(
+                intent=source_need.intent,
+                layer=layer,
+                query=variant_text,
+                reason="Agent-generated query variant for the selected source need.",
+            )
+        )
+
+    fallback_text = _join_terms(terms)
+    if not fallback_text:
+        return queries
+    queries.append(
         AdvisorQuery(
             intent=source_need.intent,
             layer=layer,
-            query=query_text,
-            reason="Source need was selected for the current turn; retrieve source-specific Money Models support.",
+            query=fallback_text,
+            reason="Deterministic fallback query from source-need focus terms and compact business context.",
         )
-    ]
+    )
+    return _dedupe_queries(queries)
 
 
 def _compact_context_terms(snapshot: BusinessSnapshot) -> list[str]:
@@ -92,4 +108,16 @@ def _dedupe(values: list[str]) -> list[str]:
             continue
         seen.add(key)
         deduped.append(value)
+    return deduped
+
+
+def _dedupe_queries(queries: list[AdvisorQuery]) -> list[AdvisorQuery]:
+    seen = set()
+    deduped = []
+    for query in queries:
+        key = (query.layer, query.query.lower())
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(query)
     return deduped

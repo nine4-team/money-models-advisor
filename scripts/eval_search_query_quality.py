@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -21,7 +21,7 @@ import sys
 sys.path.insert(0, str(ROOT / "src"))
 
 from money_model_architect.advisor_queries import SourceNeed, build_advisor_queries  # noqa: E402
-from money_model_architect.retrieval import CorpusIndex  # noqa: E402
+from money_model_architect.retrieval import CorpusIndex, SearchResult  # noqa: E402
 from money_model_architect.snapshot import BusinessSnapshot  # noqa: E402
 
 
@@ -59,6 +59,7 @@ class QueryResult:
     query_source: str
     retrieval_backend: str
     queries: tuple[str, ...]
+    query_reasons: tuple[str, ...]
     query_layers: tuple[str | None, ...]
     expected_layers: tuple[str, ...]
     returned_ids: tuple[str, ...]
@@ -132,20 +133,44 @@ def focus_term_recall(query: str, focus_terms: list[str]) -> float:
     return hits / len(focus_terms)
 
 
-def query_specs_for_case(case: dict[str, Any], query_source: str) -> list[tuple[str | None, str]]:
+def load_variant_rows(path: Path | None) -> dict[str, list[str]]:
+    if path is None:
+        return {}
+    rows = load_jsonl(path)
+    variants_by_case: dict[str, list[str]] = {}
+    for row in rows:
+        case_id = row.get("case_id")
+        variants = row.get("query_variants")
+        if not isinstance(case_id, str) or not case_id:
+            raise ValueError(f"{path}: every row must have a non-empty case_id")
+        if not isinstance(variants, list) or not variants or not all(isinstance(item, str) and item.strip() for item in variants):
+            raise ValueError(f"{path}: {case_id} query_variants must be a non-empty list of strings")
+        variants_by_case[case_id] = variants
+    return variants_by_case
+
+
+def query_specs_for_case(
+    case: dict[str, Any],
+    query_source: str,
+    variants_by_case: dict[str, list[str]] | None = None,
+) -> list[tuple[str | None, str, str]]:
     if query_source == "reference":
         expected_layers = case["expected_layers"]
         layer = expected_layers[0] if len(expected_layers) == 1 else None
-        return [(layer, case["reference_query"])]
+        return [(layer, case["reference_query"], "Reviewer-authored source-specific reference query.")]
 
     snapshot = BusinessSnapshot.load(ROOT / case["snapshot_fixture_path"])
+    query_variants = ()
+    if query_source == "generated_variants":
+        query_variants = tuple((variants_by_case or {}).get(case["case_id"], ()))
     source_need = SourceNeed(
         intent=case["retrieval_purpose"],
         layers=tuple(case["expected_layers"]),
         focus_terms=tuple(case["focus_terms"]),
         user_turn=case["user_turn"],
+        query_variants=query_variants,
     )
-    return [(query.layer, query.query) for query in build_advisor_queries(snapshot, source_need=source_need)]
+    return [(query.layer, query.query, query.reason) for query in build_advisor_queries(snapshot, source_need=source_need)]
 
 
 def search_index(index: CorpusIndex, query: str, *, layer: str | None, top_k: int, backend: str):
@@ -158,24 +183,49 @@ def search_index(index: CorpusIndex, query: str, *, layer: str | None, top_k: in
     raise ValueError(f"unknown retrieval backend: {backend}")
 
 
-def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str, retrieval_backend: str) -> list[QueryResult]:
+def fuse_query_results(query_result_sets: list[list[SearchResult]], top_k: int, rrf_k: int = 60) -> list[SearchResult]:
+    chunks_by_id = {}
+    fused_scores: dict[str, float] = defaultdict(float)
+    for result_set in query_result_sets:
+        for rank, result in enumerate(result_set, 1):
+            chunks_by_id[result.chunk.id] = result.chunk
+            fused_scores[result.chunk.id] += 1 / (rrf_k + rank)
+    fused = [
+        SearchResult(chunk=chunks_by_id[chunk_id], score=score)
+        for chunk_id, score in fused_scores.items()
+    ]
+    fused.sort(key=lambda result: result.score, reverse=True)
+    return fused[:top_k]
+
+
+def score_cases(
+    cases: list[dict[str, Any]],
+    top_k: int,
+    query_source: str,
+    retrieval_backend: str,
+    variants_by_case: dict[str, list[str]] | None = None,
+) -> list[QueryResult]:
     index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
     results: list[QueryResult] = []
 
     for case in cases:
         expected_layers = tuple(case["expected_layers"])
-        query_specs = query_specs_for_case(case, query_source)
-        search_results = []
-        seen_chunk_ids = set()
-        for layer, query in query_specs:
-            for result in search_index(index, query, layer=layer, top_k=top_k, backend=retrieval_backend):
-                if result.chunk.id in seen_chunk_ids:
-                    continue
-                seen_chunk_ids.add(result.chunk.id)
-                search_results.append(result)
+        query_specs = query_specs_for_case(case, query_source, variants_by_case=variants_by_case)
+        query_result_sets = []
+        for layer, query, _reason in query_specs:
+            query_result_sets.append(
+                search_index(
+                    index,
+                    query,
+                    layer=layer,
+                    top_k=max(top_k * 5, top_k),
+                    backend=retrieval_backend,
+                )
+            )
+        search_results = fuse_query_results(query_result_sets, top_k=top_k)
 
-        returned_ids = tuple(result.chunk.id for result in search_results[:top_k])
-        returned_layers = [set(result.chunk.layers) for result in search_results[:top_k]]
+        returned_ids = tuple(result.chunk.id for result in search_results)
+        returned_layers = [set(result.chunk.layers) for result in search_results]
         known_useful = set(case["known_useful_chunk_ids"])
 
         known_useful_rank = None
@@ -192,8 +242,9 @@ def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str, retr
                 purpose=case["retrieval_purpose"],
                 query_source=query_source,
                 retrieval_backend=retrieval_backend,
-                queries=tuple(query for _layer, query in query_specs),
-                query_layers=tuple(layer for layer, _query in query_specs),
+                queries=tuple(query for _layer, query, _reason in query_specs),
+                query_reasons=tuple(reason for _layer, _query, reason in query_specs),
+                query_layers=tuple(layer for layer, _query, _reason in query_specs),
                 expected_layers=expected_layers,
                 returned_ids=returned_ids,
                 known_useful_rank=known_useful_rank,
@@ -201,7 +252,7 @@ def score_cases(cases: list[dict[str, Any]], top_k: int, query_source: str, retr
                 useful_at_5=known_useful_rank is not None and known_useful_rank <= 5,
                 top1_layer_match=bool(returned_layers) and bool(returned_layers[0] & expected_layer_set),
                 any_layer_match_at_5=any(layers & expected_layer_set for layers in returned_layers[:5]),
-                focus_term_recall=focus_term_recall(" ".join(query for _layer, query in query_specs), case["focus_terms"]),
+                focus_term_recall=focus_term_recall(" ".join(query for _layer, query, _reason in query_specs), case["focus_terms"]),
             )
         )
 
@@ -224,7 +275,11 @@ def render_report(
     source_description = (
         "hand-authored reference queries from the eval cases"
         if query_source == "reference"
-        else "queries generated by the current runtime query builder from each snapshot fixture plus the planner-selected source need"
+        else (
+            "queries generated by the current runtime query builder from each snapshot fixture, planner-selected source need, and agent-generated query variants"
+            if query_source == "generated_variants"
+            else "queries generated by the current runtime query builder from each snapshot fixture plus the planner-selected source need"
+        )
     )
     lines = [
         "# Advisor Search-Query Quality Eval",
@@ -236,7 +291,7 @@ def render_report(
         f"Query source: `{query_source}` ({source_description}).",
         f"Retrieval backend: `{retrieval_backend}`.",
         "",
-        "Reference mode is a reviewer-written seed baseline: it asks whether source-specific queries can retrieve citeable chunks. Generated mode is the product-behavior check for the query builder after the advisor has selected a source need. Backend comparisons should use the same query source and case set.",
+        "Reference mode is a reviewer-written seed baseline: it asks whether source-specific queries can retrieve citeable chunks. Generated mode is the deterministic fallback query-builder baseline after the advisor has selected a source need. Generated-variants mode adds constrained agent-written query variants ahead of the fallback query. Backend comparisons should use the same query source and case set.",
         "",
         "The known-useful chunk labels are seed relevance labels, not exhaustive relevance judgments. A miss means the query did not retrieve one of the labeled citeable chunks, not that every returned chunk is useless.",
         "",
@@ -273,6 +328,7 @@ def render_report(
             f"- Any expected-layer chunk in top 5: {pct(sum(result.any_layer_match_at_5 for result in results), total)}",
             f"- Average focus-term recall in query text: {avg_focus:.3f}",
             f"- Duplicate query strings: {duplicate_queries or 'none'}",
+            f"- Average queries per case: {(sum(len(result.queries) for result in results) / total) if total else 0:.2f}",
             "",
             "## Case Table",
             "",
@@ -298,11 +354,11 @@ def render_report(
             "",
             "## Decision",
             "",
-            "Use reference mode as the source-specific query seed baseline. Use generated mode as the source-need-driven runtime query-generation baseline. Compare retrieval backends only after source-need generation and generated-query quality are strong enough that backend differences are interpretable.",
+            "Use reference mode as the source-specific query seed baseline. Use generated mode as the deterministic fallback runtime baseline. Use generated-variants mode to test whether constrained agent-authored query variants improve retrieval before changing the production search path.",
             "",
             "## Next Work",
             "",
-            "Use generated-mode regressions to catch broad queries or duplicate query reuse. The next product eval is whether the acting agent selects the right source need before search.",
+            "Use generated-mode regressions to catch broad queries or duplicate query reuse. Use generated-variants misses to tune the query-variant schema or agent guidance without changing golden relevance labels.",
             "",
         ]
     )
@@ -317,9 +373,15 @@ def main() -> int:
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument(
         "--query-source",
-        choices=("reference", "generated"),
+        choices=("reference", "generated", "generated_variants"),
         default="reference",
         help="Use hand-authored reference queries or runtime-generated advisor queries.",
+    )
+    parser.add_argument(
+        "--query-variants",
+        type=Path,
+        default=ROOT / "evals" / "advisor_query_variants_v2.jsonl",
+        help="JSONL candidate query variants keyed by case_id; used only with --query-source generated_variants.",
     )
     parser.add_argument(
         "--retrieval-backend",
@@ -331,6 +393,21 @@ def main() -> int:
 
     cases = load_jsonl(args.cases)
     validation_errors = validate_cases(cases)
+    variants_by_case: dict[str, list[str]] = {}
+    if not validation_errors and args.query_source == "generated_variants":
+        try:
+            variants_by_case = load_variant_rows(args.query_variants)
+        except ValueError as exc:
+            validation_errors.append(str(exc))
+        missing_variant_cases = [
+            case["case_id"]
+            for case in cases
+            if case["case_id"] not in variants_by_case
+        ]
+        if missing_variant_cases:
+            validation_errors.append(
+                "query variants missing cases: " + ", ".join(missing_variant_cases)
+            )
     results = (
         []
         if validation_errors
@@ -339,6 +416,7 @@ def main() -> int:
             top_k=args.top_k,
             query_source=args.query_source,
             retrieval_backend=args.retrieval_backend,
+            variants_by_case=variants_by_case,
         )
     )
 
@@ -362,6 +440,7 @@ def main() -> int:
                 "scored_cases": len(results),
                 "query_source": args.query_source,
                 "retrieval_backend": args.retrieval_backend,
+                "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
                 "report": str(args.report.resolve().relative_to(ROOT)),
             },
             indent=2,

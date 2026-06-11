@@ -47,6 +47,7 @@ class CliTest(unittest.TestCase):
                 "layers": ["unit-economics"],
                 "focus_terms": ["CAC", "payback period", "gross profit"],
                 "user_turn": "why do we need fulfillment cost?",
+                "query_variants": ["why cost to deliver affects gross profit CAC payback ads"],
             }
             output = run_cli(
                 [
@@ -62,9 +63,11 @@ class CliTest(unittest.TestCase):
             payload = json.loads(output)
 
             self.assertEqual(payload["source_need"]["intent"], "teaching_evidence")
+            self.assertEqual(payload["source_need"]["query_variants"], ["why cost to deliver affects gross profit CAC payback ads"])
             self.assertEqual(payload["queries"][0]["layer"], "unit-economics")
-            self.assertIn("CAC", payload["queries"][0]["query"])
-            self.assertEqual(len(payload["source_material"]), 1)
+            self.assertEqual(payload["queries"][0]["query"], "why cost to deliver affects gross profit CAC payback ads")
+            self.assertIn("CAC", payload["queries"][1]["query"])
+            self.assertEqual(len(payload["source_material"]), 2)
             self.assertEqual(len(payload["source_material"][0]["chunks"]), 1)
             self.assertIn("text", payload["source_material"][0]["chunks"][0])
 

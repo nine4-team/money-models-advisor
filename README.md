@@ -137,6 +137,9 @@ python3 scripts/eval_search_query_quality.py --query-source generated \
 
 python3 scripts/compare_retrieval_backends.py --query-source generated \
   --report evals/reports/retrieval_backend_comparison.md
+
+python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
+  --report evals/reports/retrieval_backend_comparison_generated_variants.md
 ```
 
 `compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval on the same generated-query cases. Vector search uses the OpenAI embeddings API only for vectorization; agent planning, labeling, source-need generation, and answer synthesis remain Codex/CLI operated. Embeddings are cached under `.cache/embeddings/` so repeated runs reuse corpus and query vectors instead of paying for the same inputs again.
@@ -207,7 +210,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Agent-led local doc inspection before snapshot updates.
-- Implement and evaluate agent-generated query variants against the golden dataset, while keeping the deterministic flattened query as a baseline/fallback.
+- Continue evaluating agent-generated query variants against the golden dataset, while keeping the deterministic flattened query as a baseline/fallback.
 - Record latency, cache hits/misses, and cost-oriented signals in retrieval reports.
 - Decide whether to add a lightweight vector database adapter or document the production adapter boundary for Pinecone/Qdrant/FAISS/Weaviate.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.

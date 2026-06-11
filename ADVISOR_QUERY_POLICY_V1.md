@@ -13,7 +13,7 @@ The two capabilities must be evaluated separately:
 
 Search queries are not the bridge from every conversation turn to every action. They are only inputs to the `search_source_material` tool. Saved context lookup, conversation recall, snapshot updates, business-doc inspection, and deterministic calculations should use their own tools or agent reasoning without fabricating a corpus-search query.
 
-When source-material search is appropriate, the agent should first select a source need: the retrieval purpose, expected corpus layer or layers, and short focus terms for one source-material search call. The runtime query builder turns that `SourceNeed` into the final corpus-search query.
+When source-material search is appropriate, the agent should first select a source need: the retrieval purpose, expected corpus layer or layers, and short focus terms for one source-material search call. The agent may also supply short query variants for that source need. The runtime query builder executes those variants and keeps the deterministic focus-term query as a fallback.
 
 One advisor turn may issue multiple source-material searches. If the answer needs teaching evidence and recommendation evidence, the planner should generate two source needs rather than one mixed-intent source need.
 

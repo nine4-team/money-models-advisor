@@ -207,10 +207,10 @@ Decision: BM25 remains the active default for citation-oriented source lookup. V
 JD-aligned next experiment:
 
 - Formalize the existing eval files as a golden-dataset suite. **Done in `GOLDEN_DATASET.md`.**
-- Add agent-generated query variants under a constrained schema.
-- Keep the deterministic flattened query as a fallback variant.
-- Log variant-level retrieval results in source events.
-- Compare v1 flattened queries versus v2 variants on the golden search-query cases.
+- Add agent-generated query variants under a constrained schema. **Done in `SourceNeed.query_variants` and `evals/advisor_query_variants_v2.jsonl`.**
+- Keep the deterministic flattened query as a fallback variant. **Done.**
+- Fuse variant-level retrieval results so repeated chunks across variants are promoted instead of allowing early variants to crowd out the fallback. **Done in the query-quality scorer.**
+- Compare v1 flattened queries versus v2 variants on the golden search-query cases. **Done in `evals/reports/retrieval_backend_comparison_generated_variants.md`.**
 - Record quality, latency, embedding-cache behavior, and cost-oriented signals in the report.
 
 ## Phase 2 — Chunking Comparison

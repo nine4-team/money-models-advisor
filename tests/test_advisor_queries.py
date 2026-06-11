@@ -105,6 +105,32 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         self.assertIn("gross profit", teaching_query.query)
         self.assertIn("attraction offer", comparison_query.query)
 
+    def test_query_variants_are_emitted_before_fallback(self):
+        snapshot = diagnosable_snapshot()
+        source_need = SourceNeed(
+            intent="teaching_evidence",
+            layers=("unit-economics",),
+            focus_terms=("gross profit", "fulfillment cost", "CAC"),
+            user_turn="why do we need fulfillment cost?",
+            query_variants=(
+                "why cost to deliver affects gross profit CAC payback ads",
+                "gross profit after fulfillment cost pays back customer acquisition cost",
+            ),
+        )
+
+        queries = build_advisor_queries(snapshot, source_need)
+
+        self.assertEqual(
+            [query.reason for query in queries[:2]],
+            [
+                "Agent-generated query variant for the selected source need.",
+                "Agent-generated query variant for the selected source need.",
+            ],
+        )
+        self.assertEqual(queries[-1].reason, "Deterministic fallback query from source-need focus terms and compact business context.")
+        self.assertEqual(queries[0].layer, "unit-economics")
+        self.assertIn("fulfillment cost", queries[-1].query)
+
 
 if __name__ == "__main__":
     unittest.main()
