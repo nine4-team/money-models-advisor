@@ -2,7 +2,7 @@
 
 This project should be built experiment-first.
 
-The target job description is recorded in `JOB_DESCRIPTION.md`, and repo-wide Codex guidance is recorded in `AGENTS.md`. Implementation priorities should stay aligned with that hiring target: production-grade agent workflows, golden datasets, RAG tuning, cached embeddings, cost-aware design, observability, and regression detection.
+The target job description is recorded in `JOB_DESCRIPTION.md`, repo-wide Codex guidance is recorded in `AGENTS.md`, and the golden-dataset suite is mapped in `GOLDEN_DATASET.md`. Implementation priorities should stay aligned with that hiring target: production-grade agent workflows, golden datasets, RAG tuning, cached embeddings, cost-aware design, observability, and regression detection.
 
 The architecture docs describe the intended system. The implementation plan keeps the work honest: every major RAG or agent choice should either be part of the minimal runnable slice or justified by an evaluation report.
 
@@ -206,7 +206,7 @@ Decision: BM25 remains the active default for citation-oriented source lookup. V
 
 JD-aligned next experiment:
 
-- Formalize the existing eval files as a golden-dataset suite.
+- Formalize the existing eval files as a golden-dataset suite. **Done in `GOLDEN_DATASET.md`.**
 - Add agent-generated query variants under a constrained schema.
 - Keep the deterministic flattened query as a fallback variant.
 - Log variant-level retrieval results in source events.

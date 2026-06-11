@@ -95,7 +95,7 @@ Report: `evals/reports/local_retrieval_baseline.md`.
 
 The project is still experiment-first, but all active experiments must run locally or through agent-assisted human review. The point is to demonstrate clear engineering judgment, not to accumulate fragile experiments.
 
-Because the target JD explicitly calls for golden datasets, the eval assets should be presented as a golden-dataset suite rather than a loose pile of scripts. The current case files already cover several product risks: tool-use judgment, source-need generation, source-event logging, search-query quality, chunking, retrieval backend comparison, and required-claim support. The next documentation step is to make that structure explicit in a dedicated golden-dataset guide.
+Because the target JD explicitly calls for golden datasets, the eval assets are presented as a golden-dataset suite rather than a loose pile of scripts. `GOLDEN_DATASET.md` maps the case files, scorers, reports, current results, and decisions. The current suite covers several product risks: tool-use judgment, source-need generation, source-event logging, search-query quality, chunking, retrieval backend comparison, and required-claim support.
 
 Core design principle: the agent judges meaning; the CLI handles deterministic bookkeeping. The advisor is built around an agent that can read conversation context, inspect local docs, decide which tool is appropriate, generate source needs, and adjudicate semantic quality. The CLI should not pretend to be that semantic judge. Its job is to persist state, run formulas, execute local search, capture traces, and score recorded judgments.
 
@@ -205,7 +205,7 @@ The next implementation work is not external model-service integration. The sett
 1. treat the current next-action classification eval as the local baseline for tool-use judgment;
 2. repair the agent/CLI boundary so the agent plans and the CLI records/executes deterministic tools;
 3. add explicit source-need search and turn recording; **implemented**
-4. formalize the eval cases as a golden-dataset suite;
+4. formalize the eval cases as a golden-dataset suite; **implemented in `GOLDEN_DATASET.md`**
 5. implement agent-generated query variants as the next query-generation experiment;
 6. keep all active work auditable and cost-aware.
 

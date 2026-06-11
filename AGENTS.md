@@ -41,7 +41,7 @@ Keep repo-wide development guidance in this `AGENTS.md` file. Keep advisor-opera
 
 ## Evaluation And Golden Dataset
 
-Treat the eval cases as a golden-dataset suite, not ad hoc tests. Design changes should be justified against the relevant golden data and reports.
+Treat the eval cases as a golden-dataset suite, not ad hoc tests. `GOLDEN_DATASET.md` is the canonical map of datasets, product risks, scorers, reports, current results, and decisions. Design changes should be justified against the relevant golden data and reports.
 
 Important eval assets include:
 
@@ -73,7 +73,6 @@ Never commit `.env`, API keys, or `.cache/embeddings/`.
 
 The next JD-aligned work should emphasize:
 
-- explicit golden-dataset documentation
 - agent-generated query variants under a constrained schema
 - deterministic flattened query retained as a fallback variant
 - variant-level source-event logging
