@@ -16,8 +16,8 @@ Known-useful labels are seed relevance labels, not exhaustive judgments. This co
 | Backend | Cases | Hit@3 | Hit@5 | Top-1 Layer | Any Expected Layer @5 | Mean Known-Useful Rank | Misses @5 |
 |---|---:|---:|---:|---:|---:|---:|---|
 | `bm25` | 10 | 100.0% | 100.0% | 100.0% | 100.0% | 1.1 | none |
-| `vector` | 10 | 80.0% | 80.0% | 100.0% | 100.0% | 1.5 | `searchq_v1_001`, `searchq_v1_010` |
-| `hybrid` | 10 | 80.0% | 90.0% | 100.0% | 100.0% | 1.44 | `searchq_v1_001` |
+| `vector` | 10 | 90.0% | 90.0% | 100.0% | 100.0% | 1.44 | `searchq_v1_001` |
+| `hybrid` | 10 | 90.0% | 90.0% | 100.0% | 100.0% | 1.0 | `searchq_v1_001` |
 
 ## Dataset
 

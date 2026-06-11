@@ -23,8 +23,8 @@ The known-useful chunk labels are seed relevance labels, not exhaustive relevanc
 
 ## Metrics
 
-- Known-useful Hit@3: 80.0%
-- Known-useful Hit@5: 80.0%
+- Known-useful Hit@3: 90.0%
+- Known-useful Hit@5: 90.0%
 - Top-1 layer match: 100.0%
 - Any expected-layer chunk in top 5: 100.0%
 - Average focus-term recall in query text: 1.000
@@ -43,7 +43,7 @@ The known-useful chunk labels are seed relevance labels, not exhaustive relevanc
 | `searchq_v1_007` | `dev` | `recommendation_evidence` | downsells | downsells | payment plan downsell pay less now payment terms same product interior design STR | `payment-plans:10`, `payment-plans:1`, `payment-plans:0`, `payment-plans:6`, `payment-plans:8` | 1 | 1.00 |
 | `searchq_v1_008` | `dev` | `teaching_evidence` | offers, downsells | none | free trial trial with penalty attraction offer required actions card on file interior design STR | `free-trials:2`, `free-trials:1`, `free-trials:5`, `decoy-offers:4`, `attraction-offers:0` | 1 | 1.00 |
 | `searchq_v1_009` | `dev` | `diagnostic_evidence` | unit-economics | unit-economics | CAC gross profit make more per customer customer worth acquisition interior design STR | `gross-profit:0`, `cac:12`, `gross-profit:2`, `gross-profit:5`, `gross-profit:3` | 1 | 1.00 |
-| `searchq_v1_010` | `dev` | `recommendation_evidence` | offers | offers | attraction offer front end offer get leads to engage free discount interior design STR | `attraction-offers:0`, `decoy-offers:4`, `free-with-consumption:11`, `decoy-offers:3`, `decoy-offers:8` | - | 1.00 |
+| `searchq_v1_010` | `dev` | `recommendation_evidence` | offers | offers | attraction offer front end offer get leads to engage free discount interior design STR | `attraction-offers:0`, `decoy-offers:4`, `free-with-consumption:11`, `decoy-offers:3`, `decoy-offers:8` | 1 | 1.00 |
 
 ## Decision
 

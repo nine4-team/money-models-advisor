@@ -61,7 +61,7 @@ Progress trackers:
 Improvement strategy:
 
 - Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
-- Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, dense, and hybrid retrieval only after query construction is sane.
+- Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, vector, and hybrid retrieval only after query construction is sane.
 - Semantic evals should use agent or human adjudication artifacts rather than hidden keyword proxies. For example, focus-term concept coverage should be judged by an agent and recorded with rationale, while exact substring recall can remain a debugging metric.
 
 The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the seed set. The source-need generation eval has now been rerun with blind acting-agent traces after taxonomy guidance and focus-alias cleanup. Search/no-search decisions remain clean, intent match is 100.0%, layer exact match is 90.0%, and focus-term concept recall is 0.750. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work can now move toward retrieval-backend comparison, while carrying the known free-trial `offers`/`downsells` residual as a caveat.
@@ -197,8 +197,8 @@ Embedding policy:
 First generated-query backend result:
 
 - BM25: 100.0% known-useful Hit@5, mean known-useful rank 1.1.
-- Vector: 80.0% known-useful Hit@5, misses `searchq_v1_001` and `searchq_v1_010`.
-- Hybrid: 90.0% known-useful Hit@5, misses `searchq_v1_001`.
+- Vector: 90.0% known-useful Hit@5 after miss adjudication, misses `searchq_v1_001`.
+- Hybrid: 90.0% known-useful Hit@5 after miss adjudication, misses `searchq_v1_001`.
 
 Decision: BM25 remains the active default for citation-oriented source lookup. Vector and hybrid are implemented candidates, but the first seed comparison suggests lexical matching is strong because generated queries contain exact framework terms.
 

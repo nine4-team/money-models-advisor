@@ -32,10 +32,15 @@ Current backend comparison on generated queries:
 | Backend | Known-useful Hit@3 | Known-useful Hit@5 | Mean known-useful rank | Misses @5 |
 |---|---:|---:|---:|---|
 | BM25 | 100.0% | 100.0% | 1.1 | none |
-| Vector | 80.0% | 80.0% | 1.5 | `searchq_v1_001`, `searchq_v1_010` |
-| Hybrid | 80.0% | 90.0% | 1.44 | `searchq_v1_001` |
+| Vector | 90.0% | 90.0% | 1.44 | `searchq_v1_001` |
+| Hybrid | 90.0% | 90.0% | 1.0 | `searchq_v1_001` |
 
 Decision: keep BM25 as the active default. Vector and hybrid are now available for experimentation, but the first embedding-backed run does not justify switching the product default. The misses suggest dense retrieval is finding semantically nearby material while missing the exact framework passages currently labeled as citeable. That is especially important for this product because source search is often citation-oriented, not just topical.
+
+Miss adjudication:
+
+- `searchq_v1_010` was a label-set limitation, not a true vector failure. Vector ranked `attraction-offers:0` first, and that chunk directly defines attraction offers as free/discount front-end offers that generate leads and customers. The known-useful labels now include it.
+- `searchq_v1_001` remains a true vector/hybrid weakness at top 5. The user asks why fulfillment cost matters for whether ads can work. BM25 retrieves the clean CAC/GP/payback framework chunk at rank 1 and a payback-definition chunk at rank 4. Vector and hybrid mostly retrieve adjacent payback, CAC, CFA, and upsell-timing chunks; `gross-profit:0`, the clearest fulfillment-cost/gross-profit explanation, appears only at rank 8. This suggests dense retrieval is semantically close but less citation-ready for exact framework explanations.
 
 ## Known Failure Modes
 
