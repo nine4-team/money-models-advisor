@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceevents_v1_005",
+  "created_at": "2026-06-11T04:28:55Z",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_005/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceevents_v1_005",
+    "conversation_context": "The snapshot is recommendable, but the user asks a conceptual teaching question rather than asking for diagnosis or implementation advice.",
+    "scenario_id": "1584_design",
+    "user_turn": "what is a front-end offer in plain English?"
+  }
+}

@@ -2,14 +2,14 @@
 
 ## Scope
 
-This eval checks completed advisor-turn traces. It verifies that when one answer needs multiple retrieval jobs, the recorded turn contains multiple source events with distinct SourceNeeds.
+This eval checks completed advisor-turn traces. It verifies that source-backed answers contain the expected source events, multi-job answers split retrieval into distinct SourceNeeds, and no-search turns do not fabricate source events.
 
 It does not run an agent and does not call external model services. Acting agents complete traces separately; this scorer validates the resulting `run.json` artifacts.
 
 ## Dataset
 
-- Cases: 1
-- Splits: {'post_hardening_regression': 1}
+- Cases: 6
+- Splits: {'post_hardening_regression': 6}
 
 ## Validation
 
@@ -17,20 +17,26 @@ It does not run an agent and does not call external model services. Acting agent
 
 ## Run Coverage
 
-- Scored runs: 1 / 1
+- Scored runs: 6 / 6
 - Missing runs: 0
 
 ## Metrics
 
 - Case pass rate: 100.0%
-- Expected source events matched: 2 / 2
+- Expected source events matched: 6 / 6
+- Extra source-event warnings: 1 cases / 1 events
 
 ## Case Table
 
-| Case | Split | Expected Events | Actual Events | Matched Events | Status | Failure Reasons |
+| Case | Split | Expected Events | Actual Events | Matched Events | Status | Findings |
 |---|---|---:|---:|---:|---|---|
-| `sourceevents_v1_001` | `post_hardening_regression` | 2 | 3 | 2 | `passed` | extra_events:1 |
+| `sourceevents_v1_001` | `post_hardening_regression` | 2 | 2 | 2 | `passed` | - |
+| `sourceevents_v1_002` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
+| `sourceevents_v1_003` | `post_hardening_regression` | 1 | 2 | 1 | `passed` | extra_events:1 |
+| `sourceevents_v1_004` | `post_hardening_regression` | 0 | 0 | 0 | `passed` | - |
+| `sourceevents_v1_005` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
+| `sourceevents_v1_006` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
 
 ## Decision
 
-Use this eval to validate post-hardening acting-agent traces before claiming that the advisor reliably handles multi-search answers.
+Use this eval to validate post-hardening acting-agent traces before claiming that the advisor reliably decides when to search, when not to search, and when to split one answer into multiple source-material searches.

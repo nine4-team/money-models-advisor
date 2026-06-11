@@ -194,7 +194,46 @@ class SourceEventTraceEvalTest(unittest.TestCase):
         self.assertEqual(result.status, "passed")
         self.assertEqual(result.warning_reasons, ("extra_events:1",))
 
-    def test_validate_cases_requires_expected_source_events(self):
+    def test_no_search_case_passes_with_no_source_events(self):
+        case = {
+            "case_id": "case",
+            "split": "dev",
+            "expected_source_events": [],
+        }
+        run = {"source_events": []}
+
+        with TemporaryDirectory() as tmpdir:
+            result = source_event_eval.score_case(case, write_run(tmpdir, run))
+
+        self.assertEqual(result.status, "passed")
+        self.assertTrue(result.all_expected_events_matched)
+
+    def test_no_search_case_fails_with_any_source_event(self):
+        case = {
+            "case_id": "case",
+            "split": "dev",
+            "expected_source_events": [],
+        }
+        run = {
+            "source_events": [
+                {
+                    "source_need": {
+                        "intent": "teaching_evidence",
+                        "layers": ["offers"],
+                        "focus_terms": ["front end offer"],
+                    },
+                    "chunks": [{"id": "make-your-money-model:0"}],
+                }
+            ]
+        }
+
+        with TemporaryDirectory() as tmpdir:
+            result = source_event_eval.score_case(case, write_run(tmpdir, run))
+
+        self.assertEqual(result.status, "failed")
+        self.assertEqual(result.failure_reasons, ("unexpected_source_events:1",))
+
+    def test_validate_cases_allows_empty_expected_source_events(self):
         errors = source_event_eval.validate_cases(
             [
                 {
@@ -213,7 +252,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
             ]
         )
 
-        self.assertTrue(any("expected_source_events must be a non-empty list" in error for error in errors))
+        self.assertEqual(errors, [])
 
 
 if __name__ == "__main__":

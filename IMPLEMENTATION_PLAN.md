@@ -337,7 +337,7 @@ Build:
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
 - Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Agent-owned; deterministic `chat` synthesis has been removed from the active product path.**
 - Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started through `turn record`.**
-- Post-hardening acting-agent regression for multi-source turns. **Done for seed case: `sourceevents_v1_001` now has blind v1/v2/v3 traces; v3 matched both expected source events with one extra-event warning.**
+- Post-hardening acting-agent regression for source-event behavior. **Expanded to six blind cases covering multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation turns. Current report: 100.0% case pass rate, 6 / 6 expected source events matched, with one extra-event warning in the upsell recommendation case.**
 
 Metrics:
 

@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceevents_v1_006",
+  "created_at": "2026-06-11T04:28:55Z",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_006/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceevents_v1_006",
+    "conversation_context": "The snapshot is recommendable and shows no continuity offer. The user asks whether a recurring post-install service would improve the money model.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we add a recurring owner maintenance offer after installs?"
+  }
+}

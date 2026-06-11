@@ -137,8 +137,8 @@ def validate_cases(cases: list[dict[str, Any]]) -> list[str]:
         seen.add(case_id)
 
         expected_events = case.get("expected_source_events")
-        if not isinstance(expected_events, list) or not expected_events:
-            errors.append(f"{case_ref}: expected_source_events must be a non-empty list")
+        if not isinstance(expected_events, list):
+            errors.append(f"{case_ref}: expected_source_events must be a list")
         else:
             for index, event in enumerate(expected_events, 1):
                 errors.extend(validate_source_need(event, case_ref, f"expected_source_events[{index}]"))
@@ -278,6 +278,22 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
 
     run = json.loads(run_path.read_text(encoding="utf-8"))
     events = actual_events(run)
+    if not expected:
+        failures = [f"unexpected_source_events:{len(events)}"] if events else []
+        return CaseResult(
+            case_id=case["case_id"],
+            split=case["split"],
+            expected_event_count=0,
+            actual_event_count=len(events),
+            matched_event_count=0,
+            all_expected_events_matched=not failures,
+            extra_event_count=len(events),
+            status="failed" if failures else "passed",
+            failure_reasons=tuple(failures),
+            warning_reasons=(),
+            event_matches=(),
+        )
+
     used_indexes: set[int] = set()
     matches: list[EventMatch] = []
     failures: list[str] = []
@@ -341,7 +357,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         "",
         "## Scope",
         "",
-        "This eval checks completed advisor-turn traces. It verifies that when one answer needs multiple retrieval jobs, the recorded turn contains multiple source events with distinct SourceNeeds.",
+        "This eval checks completed advisor-turn traces. It verifies that source-backed answers contain the expected source events, multi-job answers split retrieval into distinct SourceNeeds, and no-search turns do not fabricate source events.",
         "",
         "It does not run an agent and does not call external model services. Acting agents complete traces separately; this scorer validates the resulting `run.json` artifacts.",
         "",
@@ -377,6 +393,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             [
                 f"- Case pass rate: {pct(len(passed), len(scored))}",
                 f"- Expected source events matched: {sum(result.matched_event_count for result in scored)} / {sum(result.expected_event_count for result in scored)}",
+                f"- Extra source-event warnings: {sum(1 for result in scored if result.extra_event_count)} cases / {sum(result.extra_event_count or 0 for result in scored)} events",
             ]
         )
     else:
@@ -387,7 +404,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             "",
             "## Case Table",
             "",
-            "| Case | Split | Expected Events | Actual Events | Matched Events | Status | Failure Reasons |",
+            "| Case | Split | Expected Events | Actual Events | Matched Events | Status | Findings |",
             "|---|---|---:|---:|---:|---|---|",
         ]
     )
@@ -405,7 +422,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             "",
             "## Decision",
             "",
-            "Use this eval to validate post-hardening acting-agent traces before claiming that the advisor reliably handles multi-search answers.",
+            "Use this eval to validate post-hardening acting-agent traces before claiming that the advisor reliably decides when to search, when not to search, and when to split one answer into multiple source-material searches.",
             "",
         ]
     )
@@ -415,7 +432,11 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_source_event_cases.jsonl")
-    parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "source_events")
+    parser.add_argument(
+        "--runs-dir",
+        type=Path,
+        default=ROOT / "evals" / "runs" / "source_events" / "post_hardening_expanded",
+    )
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "advisor_source_event_traces.md")
     args = parser.parse_args()
 

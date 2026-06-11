@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceevents_v1_004",
+  "created_at": "2026-06-11T04:28:54Z",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_004/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceevents_v1_004",
+    "conversation_context": "The snapshot knows the business and draft offer stack but is missing CAC and first-30-day gross profit. The user asks for prioritization before the needed economics are known.",
+    "scenario_id": "1584_design",
+    "user_turn": "what should we fix first?"
+  }
+}

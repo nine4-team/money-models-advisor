@@ -1,0 +1,131 @@
+{
+  "actions": [
+    {
+      "summary": "Initialized Money Model Advisor state for the case business directory.",
+      "type": "setup_state"
+    },
+    {
+      "summary": "Read the saved business snapshot; advisory status was recommendable with strong first-sale economics, CAC of 1000, first-30-day gross profit of 10000, gross margin of 0.769, and an existing 5000 pre-designed room-package upsell.",
+      "type": "read_snapshot"
+    },
+    {
+      "summary": "Searched unit-economics source material for diagnostic evidence about first-30-day gross profit, CAC, and payback period.",
+      "type": "search_source_material"
+    },
+    {
+      "summary": "Searched upsell source material for recommendation evidence about increasing first-30-day gross profit through a post-core add-on.",
+      "type": "search_source_material"
+    }
+  ],
+  "case_id": "sourceevents_v1_003",
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "cfa:0",
+    "payback-period:1",
+    "money-models-offer-stacks:0",
+    "ten-years-ten-minutes:1"
+  ],
+  "completed_at": "2026-06-11T04:31:42Z",
+  "created_at": "2026-06-11T04:28:54Z",
+  "notes": "Answered by recommending a same-window pre-designed room-package upsell to increase first-30-day gross profit without redesigning the core full-service offer. Recorded separate diagnostic unit-economics and recommendation upsells source events.",
+  "paths": {
+    "business_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_003/business",
+    "sessions_dir": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/post_hardening_expanded/sourceevents_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_events": [
+    {
+      "generated_query": "first 30 day gross profit CAC payback period high first-sale margin interior design STR",
+      "inspected_chunks": [
+        {
+          "id": "how-businesses-make-money:2",
+          "layer": "unit-economics",
+          "score": 24.352
+        },
+        {
+          "id": "payback-period:0",
+          "layer": "unit-economics",
+          "score": 20.655
+        },
+        {
+          "id": "payback-period:1",
+          "layer": "unit-economics",
+          "score": 18.504
+        },
+        {
+          "id": "cfa:0",
+          "layer": "unit-economics",
+          "score": 17.409
+        },
+        {
+          "id": "payback-period:6",
+          "layer": "unit-economics",
+          "score": 16.409
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "first 30 day gross profit",
+          "CAC",
+          "payback period",
+          "high first-sale margin"
+        ],
+        "intent": "diagnostic_evidence",
+        "layers": [
+          "unit-economics"
+        ],
+        "user_turn": "how should we increase first-30-day gross profit without changing the full-service offer?"
+      }
+    },
+    {
+      "generated_query": "upsell first 30 days gross profit premium add-on additional value after core purchase interior design STR",
+      "inspected_chunks": [
+        {
+          "id": "money-models-offer-stacks:0",
+          "layer": "offers",
+          "score": 16.31
+        },
+        {
+          "id": "ten-years-ten-minutes:1",
+          "layer": "unit-economics",
+          "score": 15.249
+        },
+        {
+          "id": "offer-types:2",
+          "layer": "offers",
+          "score": 14.378
+        },
+        {
+          "id": "anchor-upsell:7",
+          "layer": "upsells",
+          "score": 13.542
+        },
+        {
+          "id": "anchor-upsell:2",
+          "layer": "upsells",
+          "score": 12.58
+        }
+      ],
+      "source_need": {
+        "focus_terms": [
+          "upsell",
+          "first 30 days",
+          "gross profit",
+          "premium add-on",
+          "additional value after core purchase"
+        ],
+        "intent": "recommendation_evidence",
+        "layers": [
+          "upsells"
+        ],
+        "user_turn": "how should we increase first-30-day gross profit without changing the full-service offer?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_003",
+    "conversation_context": "The snapshot is recommendable and already identifies strong first-sale economics. The user asks for a concrete way to increase first-30-day gross profit without redesigning the core service.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should we increase first-30-day gross profit without changing the full-service offer?"
+  }
+}

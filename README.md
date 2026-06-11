@@ -144,7 +144,7 @@ python3 scripts/capture_source_need_trace.py complete \
 python3 scripts/eval_source_need_generation.py
 ```
 
-Score completed source-event traces for multi-search advisor turns:
+Score completed source-event traces for search/no-search and multi-search advisor turns:
 
 ```bash
 python3 scripts/capture_source_event_trace.py prepare sourceevents_v1_001
@@ -152,7 +152,7 @@ python3 scripts/capture_source_event_trace.py complete \
   evals/runs/source_events/post_hardening/sourceevents_v1_001 \
   --actions-json '["read_snapshot","calculate","diagnose","search_source_material","search_source_material","turn_record"]' \
   --source-events-json '[{"source_need":{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period"]},"query":"CAC payback period","chunks":[{"id":"payback-period:0"}]},{"source_need":{"intent":"recommendation_evidence","layers":["upsells"],"focus_terms":["upsell","first 30 day gross profit"]},"query":"upsell first 30 day gross profit","chunks":[{"id":"upsells:0"}]}]'
-python3 scripts/eval_source_event_traces.py
+python3 scripts/eval_source_event_traces.py --runs-dir evals/runs/source_events/post_hardening_expanded
 ```
 
 Review human-auditable required-claim labels:
