@@ -96,6 +96,48 @@ class CliTest(unittest.TestCase):
             self.assertFalse(updated["state"]["money_model"]["upsell"]["exists"])
             self.assertEqual(updated["state"]["field_sources"]["economics.cac"]["source_type"], "cli")
 
+    def test_diagnose_accepts_business_dir_snapshot(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_cli(
+                [
+                    "snapshot",
+                    "set",
+                    "--business-dir",
+                    tmp,
+                    "business.business_type=service business",
+                    "economics.cac=1000",
+                    "economics.first_30_day_gross_profit=10000",
+                    "economics.gross_margin=0.769",
+                ]
+            )
+
+            output = run_cli(["diagnose", "--business-dir", tmp])
+            payload = json.loads(output)
+
+            self.assertEqual(payload["constraint"], "gross-margin")
+            self.assertEqual(payload["metrics"]["cac"], 1000)
+            self.assertEqual(payload["metrics"]["first_30_day_gross_profit"], 10000)
+
+    def test_diagnose_accepts_snapshot_file_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            snapshot_path = Path(tmp) / "economics.json"
+            snapshot_path.write_text(
+                json.dumps(
+                    {
+                        "cac": 1000,
+                        "first_30_day_gross_profit": 2500,
+                        "monthly_recurring_gross_profit": 0,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            output = run_cli(["diagnose", "--snapshot", str(snapshot_path)])
+            payload = json.loads(output)
+
+            self.assertEqual(payload["constraint"], "scale-ready")
+            self.assertEqual(payload["metrics"]["cfa_level"], 3)
+
     def test_turn_record_persists_completed_agent_turn(self):
         with tempfile.TemporaryDirectory() as tmp:
             source_events = [

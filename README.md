@@ -71,11 +71,11 @@ PYTHONPATH=src python3 -m money_model_architect.cli calculate gross-margin \
   --inputs '{"price":100,"cogs":20}'
 ```
 
-Diagnose a business snapshot:
+Diagnose saved advisor state:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli diagnose \
-  --snapshot '{"cac":200,"first_30_day_gross_profit":80,"monthly_recurring_gross_profit":20,"lifetime_gross_profit":250,"gross_margin":0.4}'
+  --business-dir /path/to/company
 ```
 
 Search the transcript corpus through the five-layer local taxonomy:

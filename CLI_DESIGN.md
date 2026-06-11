@@ -93,11 +93,15 @@ Use this for CAC, gross profit, gross margin, lifetime gross profit, payback per
 
 ### 4. Diagnose
 
-`diagnose --snapshot <json>`
+`diagnose --business-dir <path>`
+
+Debug form: `diagnose --snapshot <json-or-path>`
 
 Purpose: provide deterministic unit-economics diagnostic support from already-known numbers.
 
 This command is a helper, not a full advisor. The agent decides whether the diagnostic result is relevant to the human's turn and how to explain it.
+
+Agents should prefer `--business-dir` so the command reads the saved `BusinessSnapshot` directly. The raw `--snapshot` form exists for tests and manual debugging.
 
 ### 5. Search Source Material
 
@@ -334,4 +338,12 @@ First acting-agent check:
 - Two did not return usable traces within the run window.
 - Resulting design hardening: the skill now shows a safe shell-variable pattern, and `session start` / `session finish` refuse to use the advisor repo as `--business-dir` unless `MMA_ALLOW_REPO_BUSINESS_DIR=1` is set.
 
-This means the command shape is workable, but the next behavior pass should test whether agents can reliably complete multiple turns after the path-safety hardening.
+Second acting-agent check:
+
+- A post-hardening 1584 offer-sequencing turn completed a valid trace at `/Users/benjaminmackenzie/1584_design/.money-model-advisor/sessions/20260611T195850.json`.
+- The trace used `session_start`, `search_source_material`, `calculate`, `answer`, and `session_finish`, with three source events for attraction/diagnostic offer, room-package upsell, and continuity support.
+- The session started with the correct `business_dir`.
+- The run exposed two product issues: the first search pass omitted agent-written query variants and fell back to deterministic queries, and `diagnose` was awkward because it expected raw JSON rather than the saved advisor state.
+- Resulting design hardening: the skill now requires 2-4 agent-generated `query_variants` for source searches, and `diagnose --business-dir <path>` reads the saved `BusinessSnapshot` directly while preserving `--snapshot <json-or-path>` as a debug form.
+
+This means the command shape is now workable for realistic turns, but the next behavior pass should test whether multiple acting agents independently use query variants and `session finish` correctly without intervention.

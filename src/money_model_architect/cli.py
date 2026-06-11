@@ -89,7 +89,8 @@ def _build_parser() -> argparse.ArgumentParser:
     calc.add_argument("--inputs", required=True, help="JSON object with metric inputs")
 
     diag = subparsers.add_parser("diagnose", help="Diagnose the active money-model constraint")
-    diag.add_argument("--snapshot", required=True, help="JSON business snapshot")
+    diag.add_argument("--business-dir", help="Directory containing advisor state")
+    diag.add_argument("--snapshot", help="JSON object or path to JSON file with economics or BusinessSnapshot data")
 
     setup = subparsers.add_parser("setup", help="Initialize advisor state for a business directory")
     setup.add_argument("--business-dir", required=True, help="Directory for local business context and advisor state")
@@ -406,15 +407,16 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
 
-    snapshot = json.loads(args.snapshot)
-    economics = UnitEconomics(
-        cac=snapshot["cac"],
-        first_30_day_gross_profit=snapshot.get("first_30_day_gross_profit", 0.0),
-        monthly_recurring_gross_profit=snapshot.get("monthly_recurring_gross_profit", 0.0),
-        lifetime_gross_profit=snapshot.get("lifetime_gross_profit"),
-        gross_margin=snapshot.get("gross_margin"),
-        service_business=snapshot.get("service_business", False),
-    )
+    if args.business_dir:
+        paths = advisor_paths(Path(args.business_dir))
+        _reject_repo_business_dir(paths.business_dir)
+        ensure_advisor_state(paths)
+        snapshot_payload = BusinessSnapshot.load(paths.snapshot).to_dict()
+    elif args.snapshot:
+        snapshot_payload = _expect_json_type(_read_json_value(args.snapshot), dict, "snapshot")
+    else:
+        raise SystemExit("diagnose requires either --business-dir or --snapshot")
+    economics = _unit_economics_from_snapshot_payload(snapshot_payload)
     print(json.dumps(diagnose(economics).to_dict(), indent=2))
     return 0
 
@@ -457,6 +459,47 @@ def _expect_json_type(value: Any, expected_type: type, label: str) -> Any:
     if not isinstance(value, expected_type):
         raise SystemExit(f"{label} must decode to {expected_type.__name__}")
     return value
+
+
+def _unit_economics_from_snapshot_payload(payload: dict[str, Any]) -> UnitEconomics:
+    if isinstance(payload.get("economics"), dict):
+        economics = payload["economics"]
+        business = payload.get("business", {})
+        money_model = payload.get("money_model", {})
+        service_business = _snapshot_payload_looks_service_based(business, money_model)
+    else:
+        economics = payload
+        service_business = bool(economics.get("service_business", False))
+
+    cac_value = economics.get("cac")
+    if cac_value is None:
+        raise SystemExit("diagnose requires economics.cac")
+
+    return UnitEconomics(
+        cac=cac_value,
+        first_30_day_gross_profit=economics.get("first_30_day_gross_profit") or 0.0,
+        monthly_recurring_gross_profit=economics.get("monthly_recurring_gross_profit") or 0.0,
+        lifetime_gross_profit=economics.get("lifetime_gross_profit"),
+        gross_margin=economics.get("gross_margin"),
+        service_business=service_business,
+    )
+
+
+def _snapshot_payload_looks_service_based(business: Any, money_model: Any) -> bool:
+    text_parts: list[str] = []
+    if isinstance(business, dict):
+        for field_name in ("business_type", "delivery_model"):
+            value = business.get(field_name)
+            if isinstance(value, str):
+                text_parts.append(value)
+    if isinstance(money_model, dict):
+        core_offer = money_model.get("core_offer", {})
+        if isinstance(core_offer, dict):
+            description = core_offer.get("description")
+            if isinstance(description, str):
+                text_parts.append(description)
+    text = " ".join(text_parts).lower()
+    return any(term in text for term in ("service", "services", "consulting", "agency", "design", "implementation"))
 
 
 def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:

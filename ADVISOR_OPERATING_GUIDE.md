@@ -83,7 +83,7 @@ Search source material:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli search \
-  --source-need-json '{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","first 30 day gross profit"]}' \
+  --source-need-json '{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","first 30 day gross profit"],"query_variants":["CAC first 30 day gross profit payback period","client financed acquisition CAC gross profit payback"]}' \
   --top-k 5
 ```
 
@@ -154,6 +154,8 @@ When generating a source need:
 - `recommendation_evidence` means the user needs source support for a recommended next move after the necessary business facts are available.
 
 Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+
+For each source-material search, include 2-4 agent-generated `query_variants` in the SourceNeed. These variants are the agent's focused requests for source evidence. Do not depend on the deterministic fallback query except for manual debugging or a last-resort safety net. Strong variants are short, source-facing, and aimed at the claim being supported rather than copied from the user's message.
 
 Common split: if the answer needs both unit-economics interpretation and a proposed offer-stack fix, run one `diagnostic_evidence` search on `unit-economics`, then a separate `recommendation_evidence` search on the specific fix layer such as `upsells`, `continuity`, `offers`, or `downsells`. Do not combine broad economics terms and offer-stack layers into one catch-all SourceNeed; that makes retrieval noisy.
 
