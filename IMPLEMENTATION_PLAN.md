@@ -470,6 +470,8 @@ Reports:
 
 Objective: build the smallest useful advisor loop around real local business context.
 
+Canonical design: `CLI_DESIGN.md`.
+
 Build:
 
 - `money-model-advisor setup --business-dir <path>`. **Started as `setup`; supports `--interactive` and `--answers`.**

@@ -97,7 +97,7 @@ The project is still experiment-first, but all active experiments must run local
 
 Because the target JD explicitly calls for golden datasets, the eval assets are presented as a golden-dataset suite rather than a loose pile of scripts. `GOLDEN_DATASET.md` maps the case files, scorers, reports, current results, and decisions. The current suite covers several product risks: tool-use judgment, source-need generation, source-event logging, search-query quality, chunking, retrieval backend comparison, and required-claim support.
 
-Core design principle: the agent judges meaning; the CLI handles deterministic bookkeeping. The advisor is built around an agent that can read conversation context, inspect local docs, decide which tool is appropriate, generate source needs, and adjudicate semantic quality. The CLI should not pretend to be that semantic judge. Its job is to persist state, run formulas, execute local search, capture traces, and score recorded judgments.
+Core design principle: the agent judges meaning; the CLI handles deterministic bookkeeping. The advisor is built around an agent that can read conversation context, inspect local docs, decide which tool is appropriate, generate source needs, and adjudicate semantic quality. The CLI should not pretend to be that semantic judge. Its job is to persist state, run formulas, execute local search, capture traces, and score recorded judgments. The detailed CLI product contract is defined in `CLI_DESIGN.md`.
 
 This means deterministic code is appropriate for:
 
