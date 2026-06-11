@@ -13,7 +13,9 @@ The two capabilities must be evaluated separately:
 
 Search queries are not the bridge from every conversation turn to every action. They are only inputs to the `search_source_material` tool. Saved context lookup, conversation recall, snapshot updates, business-doc inspection, and deterministic calculations should use their own tools or agent reasoning without fabricating a corpus-search query.
 
-When source-material search is appropriate, the agent should first select a source need: the retrieval purpose, expected corpus layer or layers, and short focus terms for the current answer. The runtime query builder turns that `SourceNeed` into the final corpus-search query.
+When source-material search is appropriate, the agent should first select a source need: the retrieval purpose, expected corpus layer or layers, and short focus terms for one source-material search call. The runtime query builder turns that `SourceNeed` into the final corpus-search query.
+
+One advisor turn may issue multiple source-material searches. If the answer needs teaching evidence and recommendation evidence, the planner should generate two source needs rather than one mixed-intent source need.
 
 Deterministic rules are allowed only where the justification is strong:
 
@@ -131,6 +133,15 @@ If no constraint-specific rule matches, build a fallback `recommendation_evidenc
 
 - layer: first `likely_retrieval_layers` value, or `unit-economics`
 - query: diagnosed constraints + business type + core offer + user goal
+
+## Offer-Layer Boundaries
+
+Choose retrieval layers by business function, not by surface wording:
+
+- `offers`: source support for creating initial demand, lead engagement, or first customer engagement.
+- `downsells`: source support for saving a sale or reducing immediate purchase friction after interest or resistance.
+- Payment plans belong to `downsells`, even when the customer receives the same product, because the mechanism reduces immediate payment friction.
+- Free trials can span both layers. Use `downsells` when the trial is framed as a trial-with-penalty or resistance reducer; include `offers` too when the user frames it as a front-end acquisition mechanism.
 
 ## Teaching and Comparison
 

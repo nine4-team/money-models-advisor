@@ -23,6 +23,7 @@ PROMPT_HIDDEN_FIELDS = {
     "prior_sessions_fixture_path",
     "expected_search",
     "expected_source_need",
+    "acceptable_intents",
     "label_rationale",
     "ambiguity",
     "severity_if_wrong",

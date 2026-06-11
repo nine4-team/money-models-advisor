@@ -161,6 +161,8 @@ Use the smallest source need that can support the answer:
 - `comparison_evidence`: compare Money Models concepts or options.
 - `recommendation_evidence`: support a recommended next move after the needed business facts are available.
 
+Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+
 Keep source layers minimal. Extra layers make retrieval noisier.
 
 ## Guardrails

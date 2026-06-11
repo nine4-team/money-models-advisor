@@ -133,6 +133,8 @@ When generating a source need:
 - `comparison_evidence` means the user needs two concepts or options compared.
 - `recommendation_evidence` means the user needs source support for a recommended next move after the necessary business facts are available.
 
+Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+
 Use the smallest layer set that can support the answer. Extra layers make retrieval noisier.
 
 ## Snapshot Update Rules

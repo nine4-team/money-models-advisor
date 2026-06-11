@@ -86,11 +86,19 @@ In this repo, that is `scripts/eval_tool_use_judgment.py`.
 
 ## Source Need
 
-The source need is the specific kind of Money Models source support the advisor needs for the current answer.
+The source need is the specific kind of Money Models source support the advisor needs for one source-material search call.
 
-It is narrower than the user's whole business situation. For example, if the user asks, "why do we need fulfillment cost to know whether ads can work?", the source need is not "1584 Design, STR owners, diagnostics, pricing, and ads." The source need is "explain gross profit, CAC, and payback period."
+It is narrower than the user's whole business situation and narrower than the full answer plan. For example, if the user asks, "why do we need fulfillment cost to know whether ads can work?", the source need is not "1584 Design, STR owners, diagnostics, pricing, and ads." The source need is "explain gross profit, CAC, and payback period."
 
 The source need is used only after the advisor has already decided that source-material search is the right tool.
+
+One advisor turn may need more than one source need. In that case, the planner should issue multiple source-material searches, each with its own source need, instead of putting multiple intents into one source need.
+
+## Acceptable Intents
+
+Acceptable intents are eval-only labels for source-need generation cases where more than one primary retrieval objective is defensible.
+
+They do not change the runtime contract. A runtime source need still emits one `intent` for one search call. Acceptable intents only prevent the scorer from marking a reasonable primary intent wrong when the user turn naturally straddles two purposes, such as teaching a concept and recommending whether it applies.
 
 ## Source-Specific Query
 

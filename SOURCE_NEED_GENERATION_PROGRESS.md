@@ -30,13 +30,27 @@ Current scored result:
 - search decision accuracy: 100.0%
 - false search rate: 0.0%
 - missed search rate: 0.0%
-- intent match on expected-search cases: 70.0%
+- intent match on expected-search cases: 80.0%
 - layer exact match on expected-search cases: 70.0%
 - average layer recall on expected-search cases: 0.850
 - average focus-term recall on expected-search cases: 0.410
 - correct no-search controls: 100.0%
 
-Interpretation: the agent-facing guidance is now good enough on the first-order question of whether source-material search is needed. The remaining weakness is precision in the generated source need, especially intent boundaries and exact focus-term coverage.
+Interpretation: the agent-facing guidance is now good enough on the first-order question of whether source-material search is needed. The remaining weakness is precision in the generated source need, especially layer boundaries and exact focus-term coverage. Intent match improved after adding eval-only acceptable intent labels for the free-trial mixed case.
+
+## Partial/Miss Case Interpretation
+
+Senior review of the partial/miss cases:
+
+- `sourceneed_v1_003`: keep expected `diagnostic_evidence`. The user asks how to interpret ad-spend capacity from known economics, not which offer fix to implement. Add alias credit for `paid acquisition capacity` as a match for `ad spend`.
+- `sourceneed_v1_006`: keep expected `recommendation_evidence` and `continuity`. The user asks whether recurring maintenance or membership would help payback, so the source claim is about a continuity fix. Payback can be a focus term without adding the `unit-economics` layer.
+- `sourceneed_v1_007`: keep expected `downsells`. Payment plans reduce immediate purchase friction and are therefore downsell-layer evidence, even when the underlying product stays the same.
+- `sourceneed_v1_008`: keep expected layers `offers` and `downsells`, but allow both `teaching_evidence` and `recommendation_evidence` as acceptable intents. The user asks whether a free trial could work, which can reasonably require both concept explanation and recommendation support.
+- `sourceneed_v1_010`: treat the low focus score as a metric false negative. `front-end offer`, `engagement`, and `STR owners` are reasonable concept matches for the expected front-end-offer and lead-engagement ideas, but exact substring scoring misses them.
+
+Design decision: runtime should emit one primary `intent` per source need because `intent` means the retrieval objective for one search call, not the full conversational intent of the user's turn. Teaching, diagnosis, comparison, and recommendation ask the source corpus for different kinds of support. If one answer needs two different retrieval jobs, the planner should issue two source needs rather than one ambiguous mixed-intent source need. Eval labels can use optional `acceptable_intents` when more than one primary retrieval objective is defensible; that makes the label tolerant without changing the runtime meaning. This is now implemented for `sourceneed_v1_008`.
+
+Focus-term scoring should add concept-aware recall. Exact substring recall is useful for debugging query wording, but it is too brittle as the main quality score because it treats harmless wording differences as failures.
 
 ## What A Source Need Represents
 
@@ -89,7 +103,7 @@ For the first v1 pass:
 
 Tighten source-need precision before retrieval-backend comparisons:
 
-- decide whether `intent` should be a hard single label or whether some cases naturally support multiple reasonable intents
+- keep runtime `intent` as a single primary label, but add eval-only `acceptable_intents` for mixed cases
 - refine layer guidance for payment-plan/free-trial cases so agents choose downsell/offer layers consistently
-- improve focus-term scoring so it measures concept coverage instead of only exact substring overlap
+- improve focus-term scoring so it measures concept coverage in addition to exact substring overlap
 - rerun the source-need eval after the taxonomy/scoring cleanup

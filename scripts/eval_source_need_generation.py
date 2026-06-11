@@ -134,8 +134,21 @@ def validate_cases(cases: list[dict[str, Any]]) -> list[str]:
         source_need = case.get("expected_source_need")
         if expected_search is True:
             errors.extend(validate_source_need(source_need, case_ref, "expected_source_need"))
+            acceptable_intents = case.get("acceptable_intents")
+            if acceptable_intents is not None:
+                if not isinstance(acceptable_intents, list) or not acceptable_intents:
+                    errors.append(f"{case_ref}: acceptable_intents must be a non-empty list when present")
+                else:
+                    unknown_intents = sorted(set(acceptable_intents) - INTENTS)
+                    if unknown_intents:
+                        errors.append(f"{case_ref}: acceptable_intents unknown values: {', '.join(unknown_intents)}")
+                    expected_intent = source_need.get("intent") if isinstance(source_need, dict) else None
+                    if expected_intent in INTENTS and expected_intent not in acceptable_intents:
+                        errors.append(f"{case_ref}: acceptable_intents must include expected_source_need.intent")
         elif source_need is not None:
             errors.append(f"{case_ref}: expected_source_need must be null when expected_search is false")
+        elif case.get("acceptable_intents") is not None:
+            errors.append(f"{case_ref}: acceptable_intents must be omitted when expected_search is false")
 
         for field in ("snapshot_fixture_path", "prior_sessions_fixture_path"):
             value = case.get(field)
@@ -233,6 +246,15 @@ def expected_need(case: dict[str, Any]) -> SourceNeed | None:
     return parsed
 
 
+def acceptable_intents(case: dict[str, Any], expected: SourceNeed | None) -> set[str]:
+    raw_intents = case.get("acceptable_intents")
+    if isinstance(raw_intents, list):
+        return {intent for intent in raw_intents if isinstance(intent, str)}
+    if expected is None:
+        return set()
+    return {expected.intent}
+
+
 def term_recall(expected_terms: tuple[str, ...], actual_terms: tuple[str, ...]) -> float:
     if not expected_terms:
         return 1.0
@@ -273,7 +295,7 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
     focus_recall = None
 
     if expected_search and actual_need is not None and expected is not None:
-        intent_match = actual_need.intent == expected.intent
+        intent_match = actual_need.intent in acceptable_intents(case, expected)
         expected_layers = set(expected.layers)
         actual_layers = set(actual_need.layers)
         layer_exact_match = actual_layers == expected_layers
@@ -337,6 +359,8 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         "This eval checks the step between next-action classification and query construction. Given conversation context, snapshot state, and the current user turn, the acting agent should decide whether source-material search is needed and, if it is, generate a structured source need.",
         "",
         "A source need contains retrieval intent, corpus layer or layers, and focus terms. The query builder then turns that structure into a concrete search query.",
+        "",
+        "Some labeled cases may include `acceptable_intents`. That is eval-only label tolerance for turns where more than one primary retrieval objective is defensible; runtime source needs still emit one intent per source-material search call.",
         "",
         "This script does not run an agent and does not call external model services. It validates labels and scores saved `run.json` artifacts when they exist under `evals/runs/source_need/`.",
         "",

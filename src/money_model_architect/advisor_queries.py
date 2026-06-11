@@ -20,7 +20,7 @@ class AdvisorQuery:
 
 @dataclass(frozen=True)
 class SourceNeed:
-    """Planner-selected source support needed for the current advisor turn."""
+    """Planner-selected source support for one source-material search call."""
 
     intent: str
     layers: tuple[str, ...]
