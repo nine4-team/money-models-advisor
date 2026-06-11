@@ -330,6 +330,71 @@ The next CLI gaps are behavior and demo quality, not missing command shape:
 - tune the skill if agents omit actions, cite uninspected chunks, or over-search
 - consider a human-readable trace view only after the JSON trace contract is stable
 
+## Acting-Agent Test-Fix Loop
+
+CLI quality should improve through a deliberate test-fix loop, not by adding commands speculatively.
+
+Loop:
+
+1. Pick 3-5 realistic user turns that exercise different advisor behaviors.
+2. Send each turn to a blind acting agent with the current skill and CLI surface.
+3. Require the agent to use `session start` and `session finish`.
+4. Inspect saved traces, not just final answers.
+5. Classify each issue by failure type.
+6. Apply the smallest general fix to the right layer.
+7. Rerun similar turns after the fix.
+8. Promote repeated or high-risk failures into a regression case.
+
+Failure types:
+
+- `path_plumbing`: wrong `business_dir`, wrong repo, missing state, shell quoting problems.
+- `tool_choice`: searched when it should not, failed to search when needed, skipped logs, skipped calculation, or asked unnecessary questions.
+- `source_need`: wrong intent, wrong layer, missing focus terms, overbroad source need, or missing query variants.
+- `retrieval`: source need was good but retrieved chunks were weak, noisy, or missing obvious support.
+- `trace_shape`: actions, source events, citations, metadata, or snapshot state were missing or invalid.
+- `answer_quality`: trace was valid but final advice was unclear, unsupported, too generic, or operationally weak.
+
+Fix layer:
+
+- Skill fix: use when the command exists but the agent used it poorly.
+- CLI affordance fix: use when the command shape makes the right behavior awkward or easy to get wrong.
+- Trace schema fix: use when the agent did the work but the trace cannot prove it.
+- Eval/golden-case fix: use when the failure should be caught automatically next time.
+- Narrative/doc fix: use when the behavior is acceptable but the design rationale is unclear.
+
+Promotion rule:
+
+If one agent fails because of confusing instructions, patch the skill and rerun. If two agents fail in the same way, add a regression case or trace validation. If a failure could corrupt saved state or hide unsupported advice, add a CLI guard even after one occurrence.
+
+Current example: calculation traces.
+
+Recent acting-agent runs showed that agents may list `calculate` in `actions` while the saved turn does not preserve the calculation inputs or output in a structured way. That is a trace-shape gap: the agent may have calculated correctly, but the trace cannot prove it. The likely fix is to add `calculation_events` to the `session finish` record schema.
+
+Proposed `calculation_events` shape:
+
+```json
+[
+  {
+    "metric": "payback",
+    "inputs": {
+      "cac": 1000,
+      "month_one_gp": 10000,
+      "monthly_recurring_gp": 0
+    },
+    "value": 1.0
+  }
+]
+```
+
+Validation:
+
+- If `actions` includes `calculate`, require at least one `calculation_events` entry.
+- Each calculation event must include `metric`, `inputs`, and `value`.
+- The CLI may validate shape immediately.
+- Later, the CLI can optionally recompute deterministic metrics and warn or fail on mismatch.
+
+This keeps the agent responsible for deciding when a calculation matters, while making deterministic math auditable in the saved trace.
+
 First acting-agent check:
 
 - Three blind subagents were asked to run realistic 1584 turns through `session start` and `session finish`.

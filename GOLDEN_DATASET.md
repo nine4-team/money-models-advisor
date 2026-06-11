@@ -62,6 +62,17 @@ When a report depends on non-exhaustive labels, the conclusion should be framed 
 
 Before changing advisor behavior, identify which product risk the change is supposed to improve and which golden dataset should catch regressions.
 
+Use an acting-agent test-fix loop for product workflow hardening:
+
+1. Run blind acting agents on realistic turns.
+2. Inspect saved traces, not only final answers.
+3. Classify failures as path plumbing, tool choice, source need, retrieval, trace shape, or answer quality.
+4. Fix the right layer: skill, CLI affordance, trace schema, eval case, or narrative.
+5. Rerun after the fix.
+6. Promote repeated or high-risk failures into a golden regression case.
+
+Example: if agents list `calculate` in a trace but do not preserve the metric inputs and output, treat that as a trace-shape failure. The fix should be a structured trace field such as `calculation_events`, followed by a regression check that calculation actions are auditable.
+
 When adding a new case:
 
 1. Put it in the smallest dataset that matches the risk being tested.
