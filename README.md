@@ -20,7 +20,7 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `calculate`, `search_source_material`, `turn_record`, and `logs`.
 
-Current dev focus: repair the agent/CLI boundary before adding retrieval complexity. The project keeps the ladder separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, source-need generation asks what source support is needed when search is appropriate. Third, search-query quality asks whether that source need retrieves useful Money Models chunks. The current boundary-refactor plan is in `AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md`.
+Current dev focus: turn the working agent-operated CLI pieces into an impressive end-to-end advisor workflow. The project keeps the evaluation ladder separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, source-need generation asks what source support is needed when search is appropriate. Third, search-query quality asks whether that source need retrieves useful Money Models chunks. Retrieval now has local and Pinecone-backed vector storage; the next product-facing work is making the CLI session flow crisp, traceable, and demo-ready.
 
 Set up advisor state for a context directory:
 
@@ -223,5 +223,5 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 
 - Agent-led local doc inspection before snapshot updates.
 - Optimize hosted-vector latency now that Pinecone indexing and parity evals are working.
-- Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
-- Local-only richer evals, CI gates, and trace inspection.
+- Optional LangGraph state graph once the CLI advisor loop is defined clearly enough to benefit from it.
+- Final hiring write-up assembled from the narrative, reports, and saved result tables.
