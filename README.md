@@ -57,13 +57,9 @@ PYTHONPATH=src python3 -m money_model_architect.cli search \
 Record a completed agent-operated turn:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli turn record \
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
   --business-dir /path/to/company \
-  --user-message "why do we need fulfillment cost?" \
-  --assistant-message "Fulfillment cost matters because gross profit, not revenue, pays back CAC." \
-  --actions-json '["snapshot","search","answer"]' \
-  --source-events-json '[{"source_need":{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","gross profit"]},"query":"CAC gross profit payback period","chunks":[{"id":"payback-period:0"}]}]' \
-  --cited-chunk-ids-json '["payback-period:0"]'
+  --record-json /path/to/turn-record.json
 ```
 
 The CLI writes local state under `/path/to/company/.money-model-advisor/`.
@@ -223,9 +219,9 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented for post-source-need retrieval experiments. BM25 is treated as the lexical baseline/control. The golden search-query slice now has 30 cases; after constrained query variants plus fusion, hybrid is the candidate product path, with continued golden-set validation required before calling it final.
 - Agent-facing source-need search implemented in `search --source-need-json`.
 - Agent-facing session workbench implemented in `session start`; it loads state, recent traces, known/missing facts, operation names, and trace requirements without synthesizing an answer.
-- Completed turn persistence implemented in `turn record`.
+- Agent-facing completed turn persistence implemented in `session finish`; lower-level `turn record` remains available for tests and scripts.
 - Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.
-- Core CLI commands implemented: `setup`, `session start`, `search`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record`.
+- Core CLI commands implemented: `setup`, `session start`, `session finish`, `search`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record`.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 
 ## What remains planned

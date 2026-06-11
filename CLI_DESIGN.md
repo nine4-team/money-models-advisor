@@ -234,13 +234,13 @@ The CLI should not:
 - require Pinecone for local development
 - make a web UI depend on different advisor logic
 
-## Current Gaps
+## End-Of-Turn Trace Recording
 
-The strongest current gap is end-of-turn ergonomics. `turn record` works, but rich `actions-json` and `source-events-json` payloads are awkward for an acting agent to assemble manually. The next CLI design improvement should make trace recording smoother without taking semantic judgment away from the agent.
+`turn record` works as a low-level primitive, but rich `actions-json` and `source-events-json` payloads are awkward for an acting agent to assemble manually. `session finish` is the agent-facing command that makes trace recording smoother without taking semantic judgment away from the agent.
 
 ## End-Of-Turn Trace Recording Design
 
-Recommended next slice: add `session finish`.
+Implemented slice: `session finish`.
 
 `session finish --business-dir <path> --record-json <json-or-path>`
 
@@ -293,7 +293,7 @@ Validation:
 - require `actions` as a non-empty list of known operation labels
 - allow zero `source_events`, because not every turn should search
 - when `source_events` are present, require `source_need.intent`, `source_need.layers`, `source_need.focus_terms`, at least one query, and inspected chunk IDs
-- require every `cited_chunk_id` to appear in at least one source event unless metadata explicitly marks it as an external/non-corpus citation
+- require every `cited_chunk_id` to appear in at least one source event unless `metadata.external_cited_chunk_ids` explicitly marks it as an external/non-corpus citation
 - warn, but do not fail, when a source event has chunks but no cited chunks; the agent may have inspected material and decided not to cite it
 - include the ending snapshot automatically, as `turn record` already does
 
@@ -316,3 +316,12 @@ Relationship to `turn record`:
 - Internally, `session finish` can normalize and validate the artifact, then call the same persistence helper used by `turn record`.
 
 The goal is not more automation for its own sake. The goal is a cleaner agent-operated workflow with better traces.
+
+## Current Gaps
+
+The next CLI gaps are behavior and demo quality, not missing command shape:
+
+- run realistic acting-agent turns through `session start` and `session finish`
+- inspect whether agents create complete source events without over-recording
+- tune the skill if agents omit actions, cite uninspected chunks, or over-search
+- consider a human-readable trace view only after the JSON trace contract is stable

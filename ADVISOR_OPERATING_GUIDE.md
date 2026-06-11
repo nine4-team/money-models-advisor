@@ -38,7 +38,8 @@ During normal use, the human should not need to choose commands or flags; the sk
 | `update_snapshot` | save accepted facts | `snapshot set --business-dir <context_dir> field=value` |
 | `calculate` | run deterministic math | `calculate ...` |
 | `search_source_material` | search Money Models corpus | `search ...` |
-| `turn_record` | persist the completed agent turn | `turn record --business-dir <context_dir> ...` |
+| `session_finish` | validate and persist a completed agent turn | `session finish --business-dir <context_dir> --record-json <json-or-path>` |
+| `turn_record` | low-level turn persistence primitive | `turn record --business-dir <context_dir> ...` |
 | `logs` | inspect saved traces | `logs --business-dir <context_dir>` |
 
 ## Command Implementations
@@ -94,6 +95,14 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs \
 Record a completed advisor turn:
 
 ```bash
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir /path/to/company \
+  --record-json /path/to/turn-record.json
+```
+
+Low-level turn recording primitive:
+
+```bash
 PYTHONPATH=src python3 -m money_model_architect.cli turn record \
   --business-dir /path/to/company \
   --user-message "..." \
@@ -114,7 +123,7 @@ Use quoted heredocs for message arguments that contain dollar amounts. Do not pu
 5. If numbers are present, use `calculate`; do not do payback or margin math from memory.
 6. Use `search` only after generating an explicit source need.
 7. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
-8. Record the completed turn with `turn record`.
+8. Record the completed turn with `session finish`.
 9. Use `logs` when you need to inspect what happened in prior advisor turns.
 
 ## When To Search

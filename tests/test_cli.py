@@ -197,6 +197,114 @@ class CliTest(unittest.TestCase):
             self.assertIn("turn_record", payload["available_operations"])
             self.assertIn("agent_owns", payload["boundary"])
 
+    def test_session_finish_records_validated_turn_artifact(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "what should we do next?",
+                "assistant_message": "I would fix payback first.",
+                "actions": ["session_start", "read_snapshot", "search_source_material", "answer"],
+                "source_events": [
+                    {
+                        "source_need": {
+                            "intent": "diagnostic_evidence",
+                            "layers": ["unit-economics"],
+                            "focus_terms": ["CAC", "gross profit", "payback period"],
+                            "user_turn": "what should we do next?",
+                        },
+                        "queries": ["CAC gross profit payback period"],
+                        "chunks": [{"id": "payback-period:0", "score": 20.4}],
+                    }
+                ],
+                "cited_chunk_ids": ["payback-period:0"],
+                "metadata": {"run_type": "unit_test"},
+            }
+
+            output = run_cli(
+                [
+                    "session",
+                    "finish",
+                    "--business-dir",
+                    tmp,
+                    "--record-json",
+                    json.dumps(record_artifact),
+                ]
+            )
+            payload = json.loads(output)
+            full_logs = json.loads(run_cli(["logs", "--business-dir", tmp, "--full"]))
+
+            self.assertTrue(payload["recorded"])
+            self.assertEqual(payload["warnings"], [])
+            self.assertEqual(payload["source_event_count"], 1)
+            self.assertEqual(payload["cited_chunk_ids"], ["payback-period:0"])
+            self.assertEqual(full_logs["logs"][0]["actions"], record_artifact["actions"])
+            self.assertEqual(full_logs["logs"][0]["metadata"], {"run_type": "unit_test"})
+            self.assertEqual(full_logs["logs"][0]["source_events"][0]["query"], "CAC gross profit payback period")
+
+    def test_session_finish_warns_when_inspected_chunks_are_not_cited(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "teach me payback",
+                "assistant_message": "Payback is about recovering CAC.",
+                "actions": ["session_start", "search_source_material", "answer"],
+                "source_events": [
+                    {
+                        "source_need": {
+                            "intent": "teaching_evidence",
+                            "layers": ["unit-economics"],
+                            "focus_terms": ["payback period"],
+                        },
+                        "query": "payback period",
+                        "chunks": [{"id": "payback-period:0"}],
+                    }
+                ],
+            }
+
+            output = run_cli(
+                [
+                    "session",
+                    "finish",
+                    "--business-dir",
+                    tmp,
+                    "--record-json",
+                    json.dumps(record_artifact),
+                ]
+            )
+            payload = json.loads(output)
+
+            self.assertEqual(payload["warnings"], ["source_events include inspected chunks but cited_chunk_ids is empty"])
+
+    def test_session_finish_rejects_unknown_cited_chunk(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "teach me payback",
+                "assistant_message": "Payback is about recovering CAC.",
+                "actions": ["session_start", "search_source_material", "answer"],
+                "source_events": [
+                    {
+                        "source_need": {
+                            "intent": "teaching_evidence",
+                            "layers": ["unit-economics"],
+                            "focus_terms": ["payback period"],
+                        },
+                        "queries": ["payback period"],
+                        "chunks": [{"id": "payback-period:0"}],
+                    }
+                ],
+                "cited_chunk_ids": ["missing:0"],
+            }
+
+            with self.assertRaises(SystemExit):
+                run_cli(
+                    [
+                        "session",
+                        "finish",
+                        "--business-dir",
+                        tmp,
+                        "--record-json",
+                        json.dumps(record_artifact),
+                    ]
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

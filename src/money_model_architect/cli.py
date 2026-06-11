@@ -27,6 +27,27 @@ from .snapshot import BusinessSnapshot
 from .vector_store import PineconeVectorStore, VectorStoreError
 
 LAYERS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
+ACTION_LABELS = {
+    "setup_state",
+    "session_start",
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "logs",
+    "answer",
+    "turn_record",
+    "session_finish",
+    "inspect_local_docs",
+    "clarify",
+}
+SOURCE_NEED_INTENTS = {
+    "teaching_evidence",
+    "diagnostic_evidence",
+    "comparison_evidence",
+    "recommendation_evidence",
+}
 
 
 def _repo_root() -> Path:
@@ -80,6 +101,9 @@ def _build_parser() -> argparse.ArgumentParser:
     session_start.add_argument("--business-dir", required=True, help="Directory containing advisor state")
     session_start.add_argument("--user-message", help="Current human message for trace context")
     session_start.add_argument("--limit", type=int, default=3, help="Recent turn summaries to include")
+    session_finish = session_subparsers.add_parser("finish", help="Validate and persist one completed advisor turn")
+    session_finish.add_argument("--business-dir", required=True, help="Directory containing advisor state")
+    session_finish.add_argument("--record-json", required=True, help="JSON object or path to a completed turn record")
 
     turn = subparsers.add_parser("turn", help="Record completed agent-operated advisor turns")
     turn_subparsers = turn.add_subparsers(dest="turn_command", required=True)
@@ -272,10 +296,11 @@ def main(argv: list[str] | None = None) -> int:
                 "search_source_material",
                 "logs",
                 "turn_record",
+                "session_finish",
             ],
             "trace_requirements": [
-                "Record the completed turn with turn record.",
-                "Include every CLI-backed action in actions-json.",
+                "Record the completed turn with session finish.",
+                "Include every CLI-backed action in the record actions list.",
                 "Include one source_events entry per source-material search.",
                 "Include cited chunk ids when source material supports the answer.",
             ],
@@ -295,6 +320,41 @@ def main(argv: list[str] | None = None) -> int:
             },
         }
         print(json.dumps(payload, indent=2))
+        return 0
+
+    if args.command == "session" and args.session_command == "finish":
+        paths = advisor_paths(Path(args.business_dir))
+        ensure_advisor_state(paths)
+        snapshot = BusinessSnapshot.load(paths.snapshot)
+        record = _expect_json_type(_read_json_value(args.record_json), dict, "record-json")
+        normalized, warnings = _normalize_session_finish_record(record)
+        created_at = utc_now()
+        session_path = _write_turn_record(
+            paths.sessions_dir,
+            {
+                "created_at": created_at,
+                "user_message": normalized["user_message"],
+                "assistant_message": normalized["assistant_message"],
+                "actions": normalized["actions"],
+                "source_events": normalized["source_events"],
+                "cited_chunk_ids": normalized["cited_chunk_ids"],
+                "metadata": normalized["metadata"],
+                "snapshot": snapshot.to_dict(),
+            },
+        )
+        print(
+            json.dumps(
+                {
+                    "recorded": True,
+                    "session_path": str(session_path),
+                    "created_at": created_at,
+                    "warnings": warnings,
+                    "source_event_count": len(normalized["source_events"]),
+                    "cited_chunk_ids": normalized["cited_chunk_ids"],
+                },
+                indent=2,
+            )
+        )
         return 0
 
     if args.command == "turn" and args.turn_command == "record":
@@ -384,6 +444,139 @@ def _expect_json_type(value: Any, expected_type: type, label: str) -> Any:
     if not isinstance(value, expected_type):
         raise SystemExit(f"{label} must decode to {expected_type.__name__}")
     return value
+
+
+def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    user_message = _required_string(record, "user_message")
+    assistant_message = _required_string(record, "assistant_message")
+    actions = _required_string_list(record, "actions")
+    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+    if invalid_actions:
+        raise SystemExit(f"record-json actions contain unknown label(s): {', '.join(invalid_actions)}")
+
+    source_events = record.get("source_events", [])
+    if not isinstance(source_events, list):
+        raise SystemExit("record-json source_events must be a list when supplied")
+    normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
+
+    cited_chunk_ids = record.get("cited_chunk_ids", [])
+    if not isinstance(cited_chunk_ids, list) or not all(isinstance(chunk_id, str) for chunk_id in cited_chunk_ids):
+        raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
+    cited_chunk_ids = _dedupe_strings(cited_chunk_ids)
+
+    metadata = record.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise SystemExit("record-json metadata must be an object when supplied")
+
+    warnings = _session_finish_warnings(normalized_events, cited_chunk_ids, metadata)
+    return (
+        {
+            "user_message": user_message,
+            "assistant_message": assistant_message,
+            "actions": actions,
+            "source_events": normalized_events,
+            "cited_chunk_ids": cited_chunk_ids,
+            "metadata": metadata,
+        },
+        warnings,
+    )
+
+
+def _required_string(record: dict[str, Any], field_name: str) -> str:
+    value = record.get(field_name)
+    if not isinstance(value, str) or not value.strip():
+        raise SystemExit(f"record-json requires non-empty string field: {field_name}")
+    return value
+
+
+def _required_string_list(record: dict[str, Any], field_name: str) -> list[str]:
+    value = record.get(field_name)
+    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item.strip() for item in value):
+        raise SystemExit(f"record-json requires non-empty string list field: {field_name}")
+    return value
+
+
+def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json source_events[{index}] must be an object")
+    source_need = event.get("source_need")
+    if not isinstance(source_need, dict):
+        raise SystemExit(f"record-json source_events[{index}].source_need must be an object")
+    _validate_source_need_payload(source_need, f"record-json source_events[{index}].source_need")
+
+    queries = event.get("queries")
+    if queries is None and isinstance(event.get("query"), str):
+        queries = [event["query"]]
+    if not isinstance(queries, list) or not queries or not all(isinstance(query, str) and query.strip() for query in queries):
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+
+    chunks = event.get("chunks")
+    if not isinstance(chunks, list) or not chunks:
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+    for chunk_index, chunk in enumerate(chunks, start=1):
+        if not isinstance(chunk, dict):
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+        if not isinstance(chunk.get("id"), str) or not chunk["id"].strip():
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+
+    normalized = dict(event)
+    normalized["queries"] = queries
+    normalized["query"] = queries[0]
+    normalized["chunks"] = chunks
+    return normalized
+
+
+def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> None:
+    intent = source_need.get("intent")
+    if intent not in SOURCE_NEED_INTENTS:
+        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
+    layers = source_need.get("layers")
+    if not isinstance(layers, list) or not layers or not all(isinstance(layer, str) for layer in layers):
+        raise SystemExit(f"{label}.layers must be a non-empty list of strings")
+    invalid_layers = [layer for layer in layers if layer not in LAYERS]
+    if invalid_layers:
+        raise SystemExit(f"{label}.layers contain unknown layer(s): {', '.join(invalid_layers)}")
+    focus_terms = source_need.get("focus_terms")
+    if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
+        raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
+
+
+def _session_finish_warnings(source_events: list[dict[str, Any]], cited_chunk_ids: list[str], metadata: dict[str, Any]) -> list[str]:
+    warnings = []
+    event_chunk_ids = _source_event_chunk_ids(source_events)
+    external_citations = metadata.get("external_cited_chunk_ids", [])
+    if external_citations is None:
+        external_citations = []
+    if not isinstance(external_citations, list) or not all(isinstance(chunk_id, str) for chunk_id in external_citations):
+        raise SystemExit("record-json metadata.external_cited_chunk_ids must be a list of strings when supplied")
+    allowed_external = set(external_citations)
+    missing = [chunk_id for chunk_id in cited_chunk_ids if chunk_id not in event_chunk_ids and chunk_id not in allowed_external]
+    if missing:
+        raise SystemExit("record-json cited_chunk_ids not found in source_events chunks: " + ", ".join(missing))
+    if event_chunk_ids and not cited_chunk_ids:
+        warnings.append("source_events include inspected chunks but cited_chunk_ids is empty")
+    return warnings
+
+
+def _source_event_chunk_ids(source_events: list[dict[str, Any]]) -> set[str]:
+    chunk_ids: set[str] = set()
+    for event in source_events:
+        for chunk in event.get("chunks", []):
+            chunk_id = chunk.get("id")
+            if isinstance(chunk_id, str):
+                chunk_ids.add(chunk_id)
+    return chunk_ids
+
+
+def _dedupe_strings(values: list[str]) -> list[str]:
+    deduped = []
+    seen = set()
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        deduped.append(value)
+    return deduped
 
 
 def _parse_source_need(value: Any) -> SourceNeed:

@@ -65,23 +65,19 @@ The folder where the skill is invoked is the context directory. It is where advi
 3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
 4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
 5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
-6. After composing the final answer, record the completed turn:
+6. After composing the final answer, record the completed turn with one JSON artifact:
 
    ```bash
    cd /Users/benjaminmackenzie/Dev/money-model-architect
-   PYTHONPATH=src python3 -m money_model_architect.cli turn record \
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
      --business-dir "$CONTEXT_DIR" \
-     --user-message "$USER_REQUEST" \
-     --assistant-message "$FINAL_ANSWER" \
-     --actions-json '[]' \
-     --source-events-json '[]' \
-     --cited-chunk-ids-json '[]'
+     --record-json /path/to/turn-record.json
    ```
 
-   Use quoted heredocs when message arguments contain dollar amounts. Do not put a literal money-containing request in double quotes, because the shell can expand values like `$500`.
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
 
-8. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
-9. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
 
 ## Advisor Operations
 
@@ -95,7 +91,8 @@ These are the operations the agent should use through the CLI. Humans may also r
 | `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
 | `calculate` | `calculate ...` |
 | `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
-| `turn_record` | `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
 | `logs` | `logs --business-dir "$CONTEXT_DIR"` |
 
 ## Command Implementations
@@ -147,6 +144,15 @@ cd /Users/benjaminmackenzie/Dev/money-model-architect
 PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
 ```
 
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
 ## Workflow
 
 1. Run `session start` before business-specific advice.
@@ -156,7 +162,7 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEX
 5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
 6. Use `search` only after generating an explicit source need.
 7. Cite inspected chunks inline, such as `[payback-period:0]`.
-8. Record the final turn with `turn record`.
+8. Record the final turn with `session finish`.
 9. Use `logs` to inspect prior session turns.
 
 ## When To Search
