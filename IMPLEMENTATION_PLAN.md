@@ -2,6 +2,8 @@
 
 This project should be built experiment-first.
 
+The target job description is recorded in `JOB_DESCRIPTION.md`, and repo-wide Codex guidance is recorded in `AGENTS.md`. Implementation priorities should stay aligned with that hiring target: production-grade agent workflows, golden datasets, RAG tuning, cached embeddings, cost-aware design, observability, and regression detection.
+
 The architecture docs describe the intended system. The implementation plan keeps the work honest: every major RAG or agent choice should either be part of the minimal runnable slice or justified by an evaluation report.
 
 ## Principle
@@ -201,6 +203,15 @@ First generated-query backend result:
 - Hybrid: 90.0% known-useful Hit@5 after miss adjudication, misses `searchq_v1_001`.
 
 Decision: BM25 remains the active default for citation-oriented source lookup. Vector and hybrid are implemented candidates, but the first seed comparison suggests lexical matching is strong because generated queries contain exact framework terms.
+
+JD-aligned next experiment:
+
+- Formalize the existing eval files as a golden-dataset suite.
+- Add agent-generated query variants under a constrained schema.
+- Keep the deterministic flattened query as a fallback variant.
+- Log variant-level retrieval results in source events.
+- Compare v1 flattened queries versus v2 variants on the golden search-query cases.
+- Record quality, latency, embedding-cache behavior, and cost-oriented signals in the report.
 
 ## Phase 2 — Chunking Comparison
 

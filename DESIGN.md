@@ -2,6 +2,8 @@
 
 This is the canonical narrative for the current project direction.
 
+The target hiring context is recorded in `JOB_DESCRIPTION.md`. This project is intended to demonstrate the skills in that role: production-grade agent workflows, tool use, RAG pipeline judgment, golden datasets, retrieval metrics, cached embeddings, cost-aware design, observability, and regression-oriented iteration.
+
 The product is an agent-operated advisor for Alex Hormozi's *$100M Money Models*. It helps a founder diagnose unit economics, understand the money-model stack, compare concepts, and choose the next practical change to test. A human talks to an agent; the agent follows the project skill's guidance; the agent runs the local CLI against saved local state. The active design does not call external model services.
 
 ## Corrected Product Frame
@@ -93,6 +95,8 @@ Report: `evals/reports/local_retrieval_baseline.md`.
 
 The project is still experiment-first, but all active experiments must run locally or through agent-assisted human review. The point is to demonstrate clear engineering judgment, not to accumulate fragile experiments.
 
+Because the target JD explicitly calls for golden datasets, the eval assets should be presented as a golden-dataset suite rather than a loose pile of scripts. The current case files already cover several product risks: tool-use judgment, source-need generation, source-event logging, search-query quality, chunking, retrieval backend comparison, and required-claim support. The next documentation step is to make that structure explicit in a dedicated golden-dataset guide.
+
 Core design principle: the agent judges meaning; the CLI handles deterministic bookkeeping. The advisor is built around an agent that can read conversation context, inspect local docs, decide which tool is appropriate, generate source needs, and adjudicate semantic quality. The CLI should not pretend to be that semantic judge. Its job is to persist state, run formulas, execute local search, capture traces, and score recorded judgments.
 
 This means deterministic code is appropriate for:
@@ -159,6 +163,8 @@ Current retrieval-backend result: `evals/reports/retrieval_backend_comparison.md
 
 Miss adjudication matters because the labels are intentionally non-exhaustive. `searchq_v1_010` was a label-set limitation: vector ranked `attraction-offers:0` first, and that chunk is directly citeable for front-end attraction offers. `searchq_v1_001` remains a true vector/hybrid top-5 weakness: the user asks why fulfillment cost matters for ads, and dense retrieval ranks adjacent payback/CAC/CFA chunks above the clearest gross-profit/fulfillment-cost explanation.
 
+Senior review of the remaining miss concluded that deterministic query flattening was a reasonable v1 baseline because it separated risks: the agent selected the semantic `SourceNeed`, while the CLI produced a stable query that could be evaluated. The v2 direction should not be one unconstrained freeform agent query. It should be agent-generated query variants under a constrained schema, with the deterministic flattened query retained as a fallback variant. That preserves traceability while letting the agent express causal teaching queries such as "why cost to deliver affects gross profit and paid acquisition." This is a JD-aligned next experiment because it uses a golden dataset to turn a concrete miss into a measured architecture change.
+
 Current source-event trace result: `evals/advisor_source_event_cases.jsonl` defines the post-hardening source-event regression requested after senior review. The first case, `sourceevents_v1_001`, checks the 1584 "what should we fix first?" turn and expects two recorded source events: diagnostic unit-economics evidence plus recommendation evidence for the selected fix layer. Blind acting-agent traces exposed the intended failure mode twice: v1 used one broad recommendation/unit-economics event, and v2 used only one diagnostic event. After tightening the source-event guidance, v3 matched both expected source events. The regression has since expanded to six blind acting-agent cases covering multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation turns. A follow-up cleanup reran the upsell recommendation case after adding restraint guidance against re-sourcing already-known diagnostics. The current report shows 100.0% case pass rate, 6 / 6 expected source events matched, and 0 extra source-event warnings.
 
 The anti-over-search restraint is intentionally framed as a general claim-support rule, not as a case-specific route. Known economics can appear in an answer without requiring a fresh `diagnostic_evidence` search; the agent should search diagnostics only when the answer needs source support for a diagnostic claim. The regression guards against overfitting this rule by retaining counter-cases where diagnostic search is required (`sourceevents_v1_001` and `sourceevents_v1_002`) alongside cases where it should be absent (`sourceevents_v1_003` and `sourceevents_v1_004`).
@@ -199,6 +205,8 @@ The next implementation work is not external model-service integration. The sett
 1. treat the current next-action classification eval as the local baseline for tool-use judgment;
 2. repair the agent/CLI boundary so the agent plans and the CLI records/executes deterministic tools;
 3. add explicit source-need search and turn recording; **implemented**
-4. keep all active work local and auditable.
+4. formalize the eval cases as a golden-dataset suite;
+5. implement agent-generated query variants as the next query-generation experiment;
+6. keep all active work auditable and cost-aware.
 
 This keeps the project aligned with the actual product use case and avoids premature infrastructure.
