@@ -301,6 +301,8 @@ Validation:
 - warn, but do not fail, when a source event has chunks but no cited chunks; the agent may have inspected material and decided not to cite it
 - include the ending snapshot automatically, as `turn record` already does
 
+The `2-4` query-variant range is the v1 fanout policy. It is intentionally small: one query is often too brittle for transcript language, while unlimited variants create latency, cost, and noisy retrieval candidates. For this corpus, 2 variants proves the agent did more than pass one pasted user query, 3 is the expected default, and 4 is the cap before the source need is probably too broad. Treat this as a configurable policy in a larger production system, not as a permanent constant.
+
 Output:
 
 ```json
