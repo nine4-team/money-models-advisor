@@ -238,11 +238,81 @@ The CLI should not:
 
 The strongest current gap is end-of-turn ergonomics. `turn record` works, but rich `actions-json` and `source-events-json` payloads are awkward for an acting agent to assemble manually. The next CLI design improvement should make trace recording smoother without taking semantic judgment away from the agent.
 
-Possible next slice:
+## End-Of-Turn Trace Recording Design
 
-- add a `turn draft-record` or file-based recorder that accepts a single JSON artifact
-- add schema validation for source events and actions
-- add a compact `session finish` command that validates trace shape before saving
-- keep `turn record` as the lower-level primitive
+Recommended next slice: add `session finish`.
+
+`session finish --business-dir <path> --record-json <json-or-path>`
+
+Purpose: let the agent save one completed turn with a single structured artifact instead of manually passing several shell-escaped JSON arguments.
+
+The agent would still decide what happened. The CLI would only validate and persist the record.
+
+Input artifact:
+
+```json
+{
+  "user_message": "what should we do next?",
+  "assistant_message": "I would fix payback first...",
+  "actions": [
+    "session_start",
+    "read_snapshot",
+    "calculate",
+    "search_source_material",
+    "answer"
+  ],
+  "source_events": [
+    {
+      "source_need": {
+        "intent": "diagnostic_evidence",
+        "layers": ["unit-economics"],
+        "focus_terms": ["CAC", "gross profit", "payback period"],
+        "user_turn": "what should we do next?"
+      },
+      "queries": [
+        "CAC gross profit payback period"
+      ],
+      "chunks": [
+        {
+          "id": "payback-period:0",
+          "score": 20.4
+        }
+      ]
+    }
+  ],
+  "cited_chunk_ids": ["payback-period:0"],
+  "metadata": {
+    "run_type": "manual_agent_turn"
+  }
+}
+```
+
+Validation:
+
+- require `user_message` and `assistant_message`
+- require `actions` as a non-empty list of known operation labels
+- allow zero `source_events`, because not every turn should search
+- when `source_events` are present, require `source_need.intent`, `source_need.layers`, `source_need.focus_terms`, at least one query, and inspected chunk IDs
+- require every `cited_chunk_id` to appear in at least one source event unless metadata explicitly marks it as an external/non-corpus citation
+- warn, but do not fail, when a source event has chunks but no cited chunks; the agent may have inspected material and decided not to cite it
+- include the ending snapshot automatically, as `turn record` already does
+
+Output:
+
+```json
+{
+  "recorded": true,
+  "session_path": ".../.money-model-advisor/sessions/20260611T120000.json",
+  "warnings": [],
+  "source_event_count": 1,
+  "cited_chunk_ids": ["payback-period:0"]
+}
+```
+
+Relationship to `turn record`:
+
+- `session finish` is the preferred agent-facing command.
+- `turn record` remains the lower-level primitive for tests, scripts, and manual debugging.
+- Internally, `session finish` can normalize and validate the artifact, then call the same persistence helper used by `turn record`.
 
 The goal is not more automation for its own sake. The goal is a cleaner agent-operated workflow with better traces.
