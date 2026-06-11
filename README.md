@@ -211,7 +211,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 
 - Agent-led local doc inspection before snapshot updates.
 - Continue evaluating agent-generated query variants against the golden dataset, while keeping the deterministic flattened query as a baseline/fallback.
-- Decide whether to add a lightweight vector database adapter or document the production adapter boundary.
 - Decide whether to add a lightweight vector database adapter or document the production adapter boundary for Pinecone/Qdrant/FAISS/Weaviate.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.
