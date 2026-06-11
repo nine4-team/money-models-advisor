@@ -1,0 +1,27 @@
+{
+  "user_message": "so does that mean paid acquisition is viable if the average client is worth about 10000 in first-month gross profit and CAC is 1000?",
+  "assistant_message": "Yes, this is viable enough to test paid acquisition, with guardrails. At $1,000 CAC and about $10,000 in first-month gross profit, the business is at CFA Level 3, meaning the first sale can fund acquisition very comfortably. I would treat that as permission to run a controlled paid acquisition test, not permission to scale spend blindly. The diagnostic check still points at gross margin as the next constraint because current margin is about 76.9%, a little below the 80% target. So my recommendation is: test paid acquisition with a capped budget and simple tracking by channel, while tightening delivery scope/pricing so the margin gets above 80% before aggressive scaling.",
+  "actions": [
+    "session_start",
+    "read_snapshot",
+    "calculate",
+    "diagnose",
+    "answer"
+  ],
+  "source_events": [],
+  "cited_chunk_ids": [],
+  "calculation_events": [
+    {
+      "metric": "cfa-level",
+      "inputs": {
+        "cac": 1000,
+        "first_30_day_gp": 10000
+      },
+      "value": 3
+    }
+  ],
+  "metadata": {
+    "run_type": "blind_acting_agent_calculation_trace",
+    "case_id": "calctrace_v1_003"
+  }
+}

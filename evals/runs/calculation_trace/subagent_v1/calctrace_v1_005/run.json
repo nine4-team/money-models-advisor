@@ -1,0 +1,83 @@
+{
+  "case_id": "calctrace_v1_005",
+  "visible_context": {
+    "scenario_id": "1584_design",
+    "conversation_context": "The user provides acquisition spend and customer count, then asks for CAC and what to save.",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json",
+    "prior_sessions_fixture_path": null,
+    "user_turn": "last month we spent 2400 on referrals and got 3 signed projects. what CAC should we use for the snapshot?"
+  },
+  "workflow_steps": [
+    {
+      "step": "create_business_dir_and_install_snapshot_fixture",
+      "command": "mkdir -p evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor && cp evals/fixtures/snapshots/1584_offer_stack_no_economics.json evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor/business_snapshot.json",
+      "exit_code": 0
+    },
+    {
+      "step": "session_start",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business --user-message 'last month we spent 2400 on referrals and got 3 signed projects. what CAC should we use for the snapshot?'",
+      "exit_code": 0
+    },
+    {
+      "step": "calculate_cac",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate cac --inputs '{\"total_acquisition_cost\":2400,\"new_customers\":3}'",
+      "exit_code": 0
+    },
+    {
+      "step": "update_snapshot_cac",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business economics.cac=800",
+      "exit_code": 0
+    },
+    {
+      "step": "session_finish_initial_attempt",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/turn-record.json",
+      "exit_code": 1,
+      "stderr_or_message": "record-json actions include calculate, so calculation_events must contain at least one event"
+    },
+    {
+      "step": "session_finish_after_trace_schema_correction",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/turn-record.json",
+      "exit_code": 0
+    }
+  ],
+  "actual_actions": [
+    "session_start",
+    "calculate",
+    "update_snapshot",
+    "answer",
+    "session_finish"
+  ],
+  "calculation_events": [
+    {
+      "metric": "cac",
+      "inputs": {
+        "total_acquisition_cost": 2400,
+        "new_customers": 3
+      },
+      "value": 800.0
+    }
+  ],
+  "session_paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business",
+    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor/business_snapshot.json",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor/sessions",
+    "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor/sessions/20260611T203643.json"
+  },
+  "final_answer": "Use $800 as the CAC for the snapshot. I calculated it as $2,400 in referral acquisition spend divided by 3 signed projects, and I saved `economics.cac = 800`. The next number I need before we can judge payback is first-30-day gross profit per project.",
+  "notes": [
+    "No external model APIs were used.",
+    "No source material search was run because the user asked for arithmetic and snapshot persistence, not source-backed advice.",
+    "The snapshot fixture was installed into the case business directory before session start.",
+    "No prior sessions fixture was installed because prior_sessions_fixture_path was null.",
+    "The first session finish attempt failed because calculation_events was nested under metadata; the turn artifact was corrected to put calculation_events at the top level and session finish then succeeded.",
+    "Final snapshot has economics.cac set to 800 and economics.first_30_day_gross_profit remains the next missing payback input."
+  ],
+  "paths": {
+    "run_folder": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005",
+    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/run.json",
+    "turn_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/turn-record.json",
+    "business_snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor/business_snapshot.json",
+    "session_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_005/business/.money-model-advisor/sessions/20260611T203643.json"
+  }
+}

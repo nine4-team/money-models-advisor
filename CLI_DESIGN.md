@@ -366,11 +366,11 @@ Promotion rule:
 
 If one agent fails because of confusing instructions, patch the skill and rerun. If two agents fail in the same way, add a regression case or trace validation. If a failure could corrupt saved state or hide unsupported advice, add a CLI guard even after one occurrence.
 
-Current example: calculation traces.
+Completed example: calculation traces.
 
-Recent acting-agent runs showed that agents may list `calculate` in `actions` while the saved turn does not preserve the calculation inputs or output in a structured way. That is a trace-shape gap: the agent may have calculated correctly, but the trace cannot prove it. The likely fix is to add `calculation_events` to the `session finish` record schema.
+Recent acting-agent runs showed that agents may list `calculate` in `actions` while the saved turn does not preserve the calculation inputs or output in a structured way. That was a trace-shape gap: the agent may have calculated correctly, but the trace could not prove it. The implemented fix adds `calculation_events` to the `session finish` record schema.
 
-Proposed `calculation_events` shape:
+`calculation_events` shape:
 
 ```json
 [
@@ -390,10 +390,17 @@ Validation:
 
 - If `actions` includes `calculate`, require at least one `calculation_events` entry.
 - Each calculation event must include `metric`, `inputs`, and `value`.
-- The CLI may validate shape immediately.
+- The CLI validates shape immediately.
 - Later, the CLI can optionally recompute deterministic metrics and warn or fail on mismatch.
 
 This keeps the agent responsible for deciding when a calculation matters, while making deterministic math auditable in the saved trace.
+
+Calculation-trace regression result:
+
+- Five blind acting-agent cases now cover payback, gross profit, gross margin, CFA level, CAC, snapshot update after calculation, and a no-calculation vocabulary control.
+- Run artifacts live under `evals/runs/calculation_trace/subagent_v1/`.
+- `scripts/eval_calculation_trace_events.py --runs-dir evals/runs/calculation_trace/subagent_v1` scores 5 / 5 passing.
+- One subagent initially nested `calculation_events` under `metadata`; `session finish` rejected it, and the corrected trace passed. That confirms the CLI guard is catching the right failure class.
 
 First acting-agent check:
 

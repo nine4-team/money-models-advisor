@@ -1,0 +1,23 @@
+{
+  "user_message": "last month we spent 2400 on referrals and got 3 signed projects. what CAC should we use for the snapshot?",
+  "assistant_message": "Use $800 as the CAC for the snapshot. I calculated it as $2,400 in referral acquisition spend divided by 3 signed projects, and I saved `economics.cac = 800`. The next number I need before we can judge payback is first-30-day gross profit per project.",
+  "actions": [
+    "session_start",
+    "calculate",
+    "update_snapshot",
+    "answer"
+  ],
+  "source_events": [],
+  "cited_chunk_ids": [],
+  "calculation_events": [
+    {
+      "metric": "cac",
+      "inputs": {
+        "total_acquisition_cost": 2400,
+        "new_customers": 3
+      },
+      "value": 800.0
+    }
+  ],
+  "metadata": {}
+}

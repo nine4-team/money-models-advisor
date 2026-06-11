@@ -1,0 +1,28 @@
+{
+  "user_message": "if CAC is about 1000 and first month gross profit is about 10000, what's the payback period?",
+  "assistant_message": "With CAC at about $1,000 and first-month gross profit at about $10,000, the calculator reports a payback period of 1.0 month. In plain English: the first month of gross profit more than covers CAC, so acquisition cost is recovered inside the first month.",
+  "actions": [
+    "session_start",
+    "read_snapshot",
+    "calculate",
+    "answer",
+    "session_finish"
+  ],
+  "source_events": [],
+  "calculation_events": [
+    {
+      "metric": "payback",
+      "inputs": {
+        "cac": 1000,
+        "month_one_gp": 10000,
+        "monthly_recurring_gp": 0
+      },
+      "value": 1.0
+    }
+  ],
+  "cited_chunk_ids": [],
+  "metadata": {
+    "case_id": "calctrace_v1_001",
+    "acting_run": "subagent_v1"
+  }
+}

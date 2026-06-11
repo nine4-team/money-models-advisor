@@ -1,0 +1,15 @@
+{
+  "user_message": "what does CAC mean in plain English?",
+  "assistant_message": "CAC means customer acquisition cost. In plain English, it is what you spend to get one new client or customer. If you spend $1,000 on ads, referrals, sales time, or other acquisition work and that produces one new client, your CAC is $1,000. The reason I care about it is simple: your first-sale gross profit needs to be high enough to pay that CAC back quickly.",
+  "actions": [
+    "session_start",
+    "answer"
+  ],
+  "source_events": [],
+  "cited_chunk_ids": [],
+  "calculation_events": [],
+  "metadata": {
+    "run_type": "blind_acting_agent_calculation_trace",
+    "case_id": "calctrace_v1_004"
+  }
+}

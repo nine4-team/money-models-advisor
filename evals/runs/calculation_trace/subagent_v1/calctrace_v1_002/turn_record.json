@@ -1,0 +1,35 @@
+{
+  "user_message": "if the diagnostic sells for 997 and costs us about 150 to fulfill, what are gross profit and gross margin?",
+  "assistant_message": "At a $997 diagnostic price and about $150 in fulfillment cost, gross profit is $847. Gross margin is about 84.95%, so roughly 85 cents of every revenue dollar is left after fulfillment cost.",
+  "actions": [
+    "session_start",
+    "read_snapshot",
+    "calculate",
+    "answer",
+    "session_finish"
+  ],
+  "source_events": [],
+  "calculation_events": [
+    {
+      "metric": "gross-profit",
+      "inputs": {
+        "price": 997,
+        "cogs": 150
+      },
+      "value": 847
+    },
+    {
+      "metric": "gross-margin",
+      "inputs": {
+        "price": 997,
+        "cogs": 150
+      },
+      "value": 0.8495486459378134
+    }
+  ],
+  "cited_chunk_ids": [],
+  "metadata": {
+    "case_id": "calctrace_v1_002",
+    "acting_run": "subagent_v1"
+  }
+}

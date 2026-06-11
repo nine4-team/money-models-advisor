@@ -351,6 +351,7 @@ def main(argv: list[str] | None = None) -> int:
                 "assistant_message": normalized["assistant_message"],
                 "actions": normalized["actions"],
                 "source_events": normalized["source_events"],
+                "calculation_events": normalized["calculation_events"],
                 "cited_chunk_ids": normalized["cited_chunk_ids"],
                 "metadata": normalized["metadata"],
                 "snapshot": snapshot.to_dict(),
@@ -364,6 +365,7 @@ def main(argv: list[str] | None = None) -> int:
                     "created_at": created_at,
                     "warnings": warnings,
                     "source_event_count": len(normalized["source_events"]),
+                    "calculation_event_count": len(normalized["calculation_events"]),
                     "cited_chunk_ids": normalized["cited_chunk_ids"],
                 },
                 indent=2,
@@ -515,6 +517,15 @@ def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, 
         raise SystemExit("record-json source_events must be a list when supplied")
     normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
 
+    calculation_events = record.get("calculation_events", [])
+    if not isinstance(calculation_events, list):
+        raise SystemExit("record-json calculation_events must be a list when supplied")
+    normalized_calculation_events = [
+        _normalize_calculation_event(event, index) for index, event in enumerate(calculation_events, start=1)
+    ]
+    if "calculate" in actions and not normalized_calculation_events:
+        raise SystemExit("record-json actions include calculate, so calculation_events must contain at least one event")
+
     cited_chunk_ids = record.get("cited_chunk_ids", [])
     if not isinstance(cited_chunk_ids, list) or not all(isinstance(chunk_id, str) for chunk_id in cited_chunk_ids):
         raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
@@ -531,6 +542,7 @@ def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, 
             "assistant_message": assistant_message,
             "actions": actions,
             "source_events": normalized_events,
+            "calculation_events": normalized_calculation_events,
             "cited_chunk_ids": cited_chunk_ids,
             "metadata": metadata,
         },
@@ -579,6 +591,30 @@ def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
     normalized["queries"] = queries
     normalized["query"] = queries[0]
     normalized["chunks"] = chunks
+    return normalized
+
+
+def _normalize_calculation_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json calculation_events[{index}] must be an object")
+    metric = event.get("metric")
+    valid_metrics = {"cac", "gross-profit", "gross-margin", "ltgp", "payback", "cfa-level"}
+    if not isinstance(metric, str) or metric not in valid_metrics:
+        raise SystemExit(
+            f"record-json calculation_events[{index}].metric must be one of: {', '.join(sorted(valid_metrics))}"
+        )
+    inputs = event.get("inputs")
+    if not isinstance(inputs, dict) or not inputs:
+        raise SystemExit(f"record-json calculation_events[{index}].inputs must be a non-empty object")
+    if not all(isinstance(key, str) and key.strip() for key in inputs):
+        raise SystemExit(f"record-json calculation_events[{index}].inputs keys must be non-empty strings")
+    value = event.get("value")
+    if not isinstance(value, (int, float)):
+        raise SystemExit(f"record-json calculation_events[{index}].value must be a number")
+    normalized = dict(event)
+    normalized["metric"] = metric
+    normalized["inputs"] = inputs
+    normalized["value"] = value
     return normalized
 
 
@@ -817,6 +853,7 @@ def _summarize_log(path: Path, payload: dict[str, Any]) -> dict[str, Any]:
         "actions": payload.get("actions", []),
         "retrieval_queries": payload.get("retrieval_queries", []),
         "source_events": source_events,
+        "calculation_events": payload.get("calculation_events", []),
         "source_chunk_ids": source_ids,
     }
 

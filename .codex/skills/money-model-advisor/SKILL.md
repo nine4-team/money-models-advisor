@@ -182,6 +182,14 @@ PYTHONPATH=src python3 -m money_model_architect.cli session finish \
 8. Record the final turn with `session finish`.
 9. Use `logs` to inspect prior session turns.
 
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
 ## When To Search
 
 Search source material when the answer needs Money Models support for a concept, comparison, diagnosis, or recommendation.

@@ -1,0 +1,91 @@
+{
+  "case_id": "calctrace_v1_002",
+  "visible_context": {
+    "scenario_id": "1584_design",
+    "conversation_context": "The user provides price and fulfillment cost for a diagnostic-style offer and asks what gross profit and margin are.",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json",
+    "prior_sessions_fixture_path": null,
+    "user_turn": "if the diagnostic sells for 997 and costs us about 150 to fulfill, what are gross profit and gross margin?"
+  },
+  "workflow_steps": [
+    {
+      "action": "install_snapshot_fixture",
+      "command": "cp evals/fixtures/snapshots/1584_offer_stack_no_economics.json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business/.money-model-advisor/business_snapshot.json",
+      "exit_code": 0
+    },
+    {
+      "action": "session_start",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business --user-message <user_turn>",
+      "exit_code": 0
+    },
+    {
+      "action": "read_snapshot",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business",
+      "exit_code": 0
+    },
+    {
+      "action": "calculate",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate gross-profit --inputs '{\"price\":997,\"cogs\":150}'",
+      "exit_code": 0,
+      "stdout": {
+        "metric": "gross-profit",
+        "value": 847
+      }
+    },
+    {
+      "action": "calculate",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate gross-margin --inputs '{\"price\":997,\"cogs\":150}'",
+      "exit_code": 0,
+      "stdout": {
+        "metric": "gross-margin",
+        "value": 0.8495486459378134
+      }
+    },
+    {
+      "action": "session_finish",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/turn_record.json",
+      "exit_code": 0
+    }
+  ],
+  "actual_actions": [
+    "session_start",
+    "read_snapshot",
+    "calculate",
+    "answer",
+    "session_finish"
+  ],
+  "calculation_events": [
+    {
+      "metric": "gross-profit",
+      "inputs": {
+        "price": 997,
+        "cogs": 150
+      },
+      "value": 847
+    },
+    {
+      "metric": "gross-margin",
+      "inputs": {
+        "price": 997,
+        "cogs": 150
+      },
+      "value": 0.8495486459378134
+    }
+  ],
+  "session_paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business",
+    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business/.money-model-advisor",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business/.money-model-advisor/sessions",
+    "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business/.money-model-advisor/sessions/20260611T203648.json"
+  },
+  "final_answer": "At a $997 diagnostic price and about $150 in fulfillment cost, gross profit is $847. Gross margin is about 84.95%, so roughly 85 cents of every revenue dollar is left after fulfillment cost.",
+  "notes": [
+    "No source-material search was used because the turn only required deterministic arithmetic.",
+    "Both requested metrics were calculated with separate CLI calculate commands and recorded as calculation_events."
+  ],
+  "paths": {
+    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/run.json",
+    "turn_record_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/turn_record.json",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_002/business/.money-model-advisor/business_snapshot.json"
+  }
+}

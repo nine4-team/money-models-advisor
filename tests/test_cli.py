@@ -352,6 +352,60 @@ class CliTest(unittest.TestCase):
                     ]
                 )
 
+    def test_session_finish_records_calculation_events(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "if CAC is 1000 and first month gross profit is 10000, what's payback?",
+                "assistant_message": "Payback is 0.1 months.",
+                "actions": ["session_start", "read_snapshot", "calculate", "answer"],
+                "calculation_events": [
+                    {
+                        "metric": "payback",
+                        "inputs": {"cac": 1000, "month_one_gp": 10000, "monthly_recurring_gp": 0},
+                        "value": 0.1,
+                    }
+                ],
+            }
+
+            output = run_cli(
+                [
+                    "session",
+                    "finish",
+                    "--business-dir",
+                    tmp,
+                    "--record-json",
+                    json.dumps(record_artifact),
+                ]
+            )
+            payload = json.loads(output)
+            full_logs = json.loads(run_cli(["logs", "--business-dir", tmp, "--full"]))
+            logs = json.loads(run_cli(["logs", "--business-dir", tmp]))
+
+            self.assertTrue(payload["recorded"])
+            self.assertEqual(payload["calculation_event_count"], 1)
+            self.assertEqual(full_logs["logs"][0]["calculation_events"], record_artifact["calculation_events"])
+            self.assertEqual(logs["logs"][0]["calculation_events"], record_artifact["calculation_events"])
+
+    def test_session_finish_rejects_missing_calculation_event_for_calculate_action(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "calculate payback",
+                "assistant_message": "Payback is 0.1 months.",
+                "actions": ["session_start", "calculate", "answer"],
+            }
+
+            with self.assertRaises(SystemExit):
+                run_cli(
+                    [
+                        "session",
+                        "finish",
+                        "--business-dir",
+                        tmp,
+                        "--record-json",
+                        json.dumps(record_artifact),
+                    ]
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

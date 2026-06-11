@@ -1,0 +1,75 @@
+{
+  "case_id": "calctrace_v1_001",
+  "visible_context": {
+    "scenario_id": "1584_design",
+    "conversation_context": "Snapshot contains 1584 Design business facts and economics: CAC 1000, first-30-day gross profit 10000, monthly recurring gross profit 0. The user asks for a direct payback interpretation.",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json",
+    "prior_sessions_fixture_path": null,
+    "user_turn": "if CAC is about 1000 and first month gross profit is about 10000, what's the payback period?"
+  },
+  "workflow_steps": [
+    {
+      "action": "install_snapshot_fixture",
+      "command": "cp evals/fixtures/snapshots/1584_diagnosed.json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/business_snapshot.json",
+      "exit_code": 0
+    },
+    {
+      "action": "session_start",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business --user-message <user_turn>",
+      "exit_code": 0
+    },
+    {
+      "action": "read_snapshot",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business",
+      "exit_code": 0
+    },
+    {
+      "action": "calculate",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}'",
+      "exit_code": 0,
+      "stdout": {
+        "metric": "payback",
+        "value": 1.0
+      }
+    },
+    {
+      "action": "session_finish",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/turn_record.json",
+      "exit_code": 0
+    }
+  ],
+  "actual_actions": [
+    "session_start",
+    "read_snapshot",
+    "calculate",
+    "answer",
+    "session_finish"
+  ],
+  "calculation_events": [
+    {
+      "metric": "payback",
+      "inputs": {
+        "cac": 1000,
+        "month_one_gp": 10000,
+        "monthly_recurring_gp": 0
+      },
+      "value": 1.0
+    }
+  ],
+  "session_paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business",
+    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/sessions",
+    "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/sessions/20260611T203648.json"
+  },
+  "final_answer": "With CAC at about $1,000 and first-month gross profit at about $10,000, the calculator reports a payback period of 1.0 month. In plain English: the first month of gross profit more than covers CAC, so acquisition cost is recovered inside the first month.",
+  "notes": [
+    "No source-material search was used because the turn only required deterministic arithmetic.",
+    "The payback calculation event preserves the actual CLI output from calculate payback for the supplied inputs."
+  ],
+  "paths": {
+    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/run.json",
+    "turn_record_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/turn_record.json",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/business_snapshot.json"
+  }
+}
