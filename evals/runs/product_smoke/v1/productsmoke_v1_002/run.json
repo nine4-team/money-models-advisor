@@ -1,0 +1,744 @@
+{
+  "scenario_id": "productsmoke_v1_002",
+  "runner_provenance": {
+    "agent_id": "019eb8a5-7a84-7cb3-a061-b2064d166c03",
+    "agent_nickname": "Hypatia",
+    "agent_type": "worker",
+    "blind_to_success_rubric": true,
+    "runner": "Codex GPT-5 acting as Money Model Advisor via local CLI",
+    "created_at": "2026-06-11T21:49:55Z",
+    "repo": "/Users/benjaminmackenzie/Dev/money-model-architect",
+    "git_head": "24657d09e6fe670e19e8ee5049ae496d2bc66331",
+    "git_status_short_at_write": [
+      " M DESIGN.md",
+      " M GOLDEN_DATASET.md",
+      " M IMPLEMENTATION_PLAN.md",
+      "?? evals/advisor_product_smoke_scenarios.jsonl",
+      "?? evals/reports/advisor_product_smoke_v1.md",
+      "?? evals/runs/product_smoke/",
+      "?? narrative.html",
+      "?? narrative_v1_backup.html"
+    ],
+    "python": "3.14.2",
+    "external_model_apis_used": false,
+    "source_or_docs_edited": false,
+    "write_scope": "evals/runs/product_smoke/v1/productsmoke_v1_002"
+  },
+  "scenario": {
+    "scenario_id": "productsmoke_v1_002",
+    "split": "product_smoke_v1",
+    "business_fixture": "1584_design",
+    "title": "Numbers arrive gradually and require calculation plus diagnosis",
+    "starting_snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json",
+    "prior_sessions_fixture_path": null,
+    "turns": [
+      "I think our average referral partner cost is about 2400 for every 3 signed projects.",
+      "Our diagnostic would sell for 997 and cost maybe 150 to fulfill.",
+      "Full-service projects produce around 10000 in first-month gross profit on average.",
+      "so does that mean paid acquisition is viable or is CAC still the bottleneck?",
+      "what would you test next?"
+    ],
+    "notes": "Tests the full stateful loop: update snapshot, calculate, diagnose, search, cite, and recommend."
+  },
+  "turns": [
+    {
+      "turn_index": 1,
+      "user_message": "I think our average referral partner cost is about 2400 for every 3 signed projects.",
+      "assistant_message": "That gives me a useful starting CAC: $2,400 divided by 3 signed projects is $800 per signed project. I\u2019ve saved that as the current observed referral-partner CAC, not as a paid-ads CAC yet.\n\nThe next number I need is first-30-day gross profit: how much gross profit you typically collect in the first month after a project signs. With CAC and first-30-day gross profit together, I can tell whether acquisition is actually the bottleneck or whether the model is already client-financed.",
+      "actions": [
+        "session_start",
+        "calculate",
+        "update_snapshot",
+        "answer",
+        "session_finish"
+      ],
+      "calculation_events": [
+        {
+          "inputs": {
+            "new_customers": 3,
+            "total_acquisition_cost": 2400
+          },
+          "metric": "cac",
+          "value": 800.0
+        }
+      ],
+      "source_events": [],
+      "cited_chunk_ids": [],
+      "metadata": {
+        "decision": "calculate_and_collect_missing_first_30_day_gross_profit",
+        "saved_facts": [
+          "economics.cac"
+        ],
+        "turn_index": 1
+      },
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214637.json"
+    },
+    {
+      "turn_index": 2,
+      "user_message": "Our diagnostic would sell for 997 and cost maybe 150 to fulfill.",
+      "assistant_message": "That diagnostic has strong unit economics: $997 price minus about $150 fulfillment cost leaves about $847 gross profit, or roughly an 85% gross margin. I\u2019ve saved the diagnostic price and the calculated margin.\n\nI still wouldn\u2019t call paid acquisition viable from this alone, because the CAC we calculated is for signed projects, while this diagnostic is the front-end step. The missing bridge is whether the diagnostic reliably turns into full-service projects, and the missing payback number is still first-30-day gross profit on the signed project.",
+      "actions": [
+        "session_start",
+        "calculate",
+        "update_snapshot",
+        "answer",
+        "session_finish"
+      ],
+      "calculation_events": [
+        {
+          "inputs": {
+            "cogs": 150,
+            "price": 997
+          },
+          "metric": "gross-profit",
+          "value": 847
+        },
+        {
+          "inputs": {
+            "cogs": 150,
+            "price": 997
+          },
+          "metric": "gross-margin",
+          "value": 0.8495486459378134
+        }
+      ],
+      "source_events": [],
+      "cited_chunk_ids": [],
+      "metadata": {
+        "decision": "persist_diagnostic_offer_economics_but_defer_payback_diagnosis",
+        "note": "Gross margin is from the diagnostic offer because the schema has one economics.gross_margin field and no offer-specific fulfillment-cost field.",
+        "saved_facts": [
+          "money_model.attraction_offer.price",
+          "economics.gross_margin"
+        ],
+        "turn_index": 2
+      },
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214707.json"
+    },
+    {
+      "turn_index": 3,
+      "user_message": "Full-service projects produce around 10000 in first-month gross profit on average.",
+      "assistant_message": "Great. With the $800 observed CAC already saved, $10,000 of first-month gross profit changes the read pretty dramatically. Payback is effectively inside month one, and the model clears CFA Level 3 because first-30-day gross profit is more than 2x CAC.\n\nSo the economics are now strong enough to diagnose. The next question is not whether the full-service project can absorb an $800 acquisition cost; it clearly can. The next question is whether the diagnostic can predictably create enough qualified full-service sales to make paid acquisition controllable.",
+      "actions": [
+        "session_start",
+        "update_snapshot",
+        "calculate",
+        "answer",
+        "session_finish"
+      ],
+      "calculation_events": [
+        {
+          "inputs": {
+            "cac": 800,
+            "month_one_gp": 10000,
+            "monthly_recurring_gp": 0
+          },
+          "metric": "payback",
+          "value": 1.0
+        },
+        {
+          "inputs": {
+            "cac": 800,
+            "first_30_day_gp": 10000
+          },
+          "metric": "cfa-level",
+          "value": 3
+        }
+      ],
+      "source_events": [],
+      "cited_chunk_ids": [],
+      "metadata": {
+        "decision": "save_first_30_day_gp_and_compute_payback_readiness",
+        "derived_snapshot_fields": [
+          "economics.payback_period_months"
+        ],
+        "saved_facts": [
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "turn_index": 3
+      },
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214737.json"
+    },
+    {
+      "turn_index": 4,
+      "user_message": "so does that mean paid acquisition is viable or is CAC still the bottleneck?",
+      "assistant_message": "Yes: based on the numbers we have, CAC is not the current bottleneck. Your observed CAC is about $800, and the full-service project produces about $10,000 of first-30-day gross profit. That means the first month covers CAC more than 12x, payback is effectively inside month one, and the CLI diagnosis is scale-ready / CFA Level 3.\n\nThe Money Models source frame matches that read: the core acquisition math is CAC, gross profit, and payback period [how-businesses-make-money:2]. Payback asks how long it takes gross profit to exceed CAC, and shorter payback makes advertising easier to scale [payback-period:0]. The CFA idea is specifically that first-30-day gross profit should exceed CAC [context:1], and Level 2 is first-month gross profit greater than CAC [cfa:0]. On that basis, the bottleneck is not raw CAC. The bottleneck is proof of a controllable paid-acquisition path: can you buy the right diagnostic conversations at a predictable cost, convert enough of them to full-service, and avoid creating unqualified design shoppers?",
+      "actions": [
+        "session_start",
+        "diagnose",
+        "search_source_material",
+        "update_snapshot",
+        "answer",
+        "session_finish"
+      ],
+      "calculation_events": [],
+      "source_events": [
+        {
+          "chunks": [
+            {
+              "chapter": "how-businesses-make-money",
+              "id": "how-businesses-make-money:2",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics"
+              ],
+              "preview": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period  Which then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math",
+              "score": 24.206
+            },
+            {
+              "chapter": "payback-period",
+              "id": "payback-period:0",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics",
+                "upsells",
+                "continuity"
+              ],
+              "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A",
+              "score": 22.784
+            },
+            {
+              "chapter": "context",
+              "id": "context:1",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics"
+              ],
+              "preview": "## [\u00a71.1.b] The CAC problem & introducing CFA  So, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs ",
+              "score": 20.438
+            },
+            {
+              "chapter": "cfa",
+              "id": "cfa:0",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics"
+              ],
+              "preview": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three lev",
+              "score": 20.411
+            },
+            {
+              "chapter": "payback-period",
+              "id": "payback-period:1",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics",
+                "upsells",
+                "continuity"
+              ],
+              "preview": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you w",
+              "score": 18.504
+            },
+            {
+              "chapter": "money-models-offer-stacks",
+              "id": "money-models-offer-stacks:0",
+              "layer": "offers",
+              "layers": [
+                "offers",
+                "unit-economics",
+                "upsells",
+                "downsells",
+                "continuity"
+              ],
+              "preview": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that so",
+              "score": 16.599
+            },
+            {
+              "chapter": "cfa",
+              "id": "cfa:1",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics"
+              ],
+              "preview": "owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long as I figure out",
+              "score": 16.498
+            },
+            {
+              "chapter": "gross-profit",
+              "id": "gross-profit:0",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics"
+              ],
+              "preview": "Gross profit. All right, let's rock in. So this is the second of the three metrics that we look at to triangulate acquisition. We started with CAC. You have to have cheap customers. We talked about the different ways to improve it, free or discount, different ways to display discounts. Uh, but now we're gonna talk about gross profit. Okay? So we're gonna def",
+              "score": 15.618
+            }
+          ],
+          "queries": [
+            "CAC first 30 day gross profit payback period paid acquisition viability",
+            "client financed acquisition first 30 day gross profit covers CAC",
+            "payback period CAC gross profit paid acquisition bottleneck",
+            "CAC first 30 day gross profit payback period paid acquisition viability interior design STR"
+          ],
+          "query": "CAC first 30 day gross profit payback period paid acquisition viability",
+          "retrieval_backend": "bm25",
+          "source_need": {
+            "focus_terms": [
+              "CAC",
+              "first 30 day gross profit",
+              "payback period",
+              "paid acquisition viability"
+            ],
+            "intent": "diagnostic_evidence",
+            "layers": [
+              "unit-economics"
+            ],
+            "query_variants": [
+              "CAC first 30 day gross profit payback period paid acquisition viability",
+              "client financed acquisition first 30 day gross profit covers CAC",
+              "payback period CAC gross profit paid acquisition bottleneck"
+            ],
+            "user_turn": "so does that mean paid acquisition is viable or is CAC still the bottleneck?"
+          },
+          "vector_store": "local"
+        }
+      ],
+      "cited_chunk_ids": [
+        "how-businesses-make-money:2",
+        "payback-period:0",
+        "context:1",
+        "cfa:0"
+      ],
+      "metadata": {
+        "decision": "source_backed_unit_economics_diagnosis_only_no_recommendation_source_event",
+        "diagnosis": {
+          "constraint": "scale-ready",
+          "metrics": {
+            "cac": 800,
+            "cfa_level": 3,
+            "first_30_day_gross_profit": 10000,
+            "gross_margin": 0.8495486459378134,
+            "lifetime_gross_profit": null,
+            "monthly_recurring_gross_profit": 0.0,
+            "payback_period_months": 1.0
+          },
+          "prescribed_sections": [
+            "1.6 CFA",
+            "6.1 Continuity Offers Overview"
+          ],
+          "reason": "First-30-day gross profit is at least 2x CAC, so acquisition is client-financed at Level 3.",
+          "success_metric": "Protect conversion and churn while scaling spend.",
+          "tree": "Tree E - What to Add Next"
+        },
+        "saved_facts": [
+          "problem.diagnosed_constraints"
+        ],
+        "turn_index": 4
+      },
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214818.json"
+    },
+    {
+      "turn_index": 5,
+      "user_message": "what would you test next?",
+      "assistant_message": "I would test a paid-acquisition path into the $997 STR Design Diagnostic, not straight into a full-service design sale. The goal is to prove the diagnostic can buy qualified conversations and then graduate enough of them into $10,000 first-month gross profit projects.\n\nMy test would be: spend a capped amount, for example $1,500-$3,000, on one narrow audience of STR or second-home owners; offer the diagnostic with a concrete deliverable like a listing/photo audit plus revenue-readiness score; and track four numbers only: cost per booked diagnostic, diagnostic purchase rate, diagnostic-to-full-service close rate, and gross profit created within 30 days. The source material supports using a front-end/decoy style offer to create goodwill and increase later premium-offer conversion [decoy-offers:8], using useful education as a selling tool for colder audiences [free-with-consumption:1], and improving CAC by measuring it and improving offer response/conversion [cac:2]. The broader Money Model point is to combine attraction offers and follow-on offers to maximize first-30-day profit so acquisition can scale [make-your-money-model:0].\n\nMy pass/fail rule: if the test can create a signed full-service project for anything near the current $800 CAC, keep going. If paid CAC lands materially higher, I would not kill the channel immediately; with $10,000 first-month gross profit you have room. I would first fix the diagnostic promise, audience, and sales handoff. I would only call CAC the bottleneck if the test cannot produce qualified diagnostic buyers at a cost that still leaves a clear path to profitable full-service sales.",
+      "actions": [
+        "session_start",
+        "search_source_material",
+        "answer",
+        "session_finish"
+      ],
+      "calculation_events": [],
+      "source_events": [
+        {
+          "chunks": [
+            {
+              "chapter": "buy-x-get-y",
+              "id": "buy-x-get-y:3",
+              "layer": "offers",
+              "layers": [
+                "offers",
+                "upsells",
+                "continuity"
+              ],
+              "preview": "a, uh, uh, uh, a one-third discount, but it accomplishes the same objective. Okay, so those are two examples. Or sorry, this... That's the description. Now I have more examples for you. All right, so buy one get two physical products offers. This is the Boot Factory offer. One pair is $200. Buy X get Y free. Buy one pair for 600, get two pairs free. So the e",
+              "score": 8.305
+            },
+            {
+              "chapter": "buy-x-get-y",
+              "id": "buy-x-get-y:4",
+              "layer": "offers",
+              "layers": [
+                "offers",
+                "upsells",
+                "continuity"
+              ],
+              "preview": "wrinkle and that's very high margin for me. So for a gym, I'd- I might say, \"You get text access to me,\" which by the way, I probably would give all my first customers anyways. I just wouldn't promise that in the sale. I might for a grand opening. So raise prices when we're giving stuff away to preserve profits. Obviously, if you can only afford a certain am",
+              "score": 7.696
+            },
+            {
+              "chapter": "buy-x-get-y",
+              "id": "buy-x-get-y:7",
+              "layer": "offers",
+              "layers": [
+                "offers",
+                "upsells",
+                "continuity"
+              ],
+              "preview": "as big as you can if you're only gonna get one shot. Summarizing buy X, get Y, free. In buy X, get Y free, customers buy something, they get other stuff for free. Buy X, get Y free. works, uh, for stuff that makes sense to buy more of or get longer access to. Basic buy X, get Y free, offers reframe pricing. Buy one, get two free, costs the same as buying thr",
+              "score": 7.542
+            },
+            {
+              "chapter": "make-your-money-model",
+              "id": "make-your-money-model:0",
+              "layer": "offers",
+              "layers": [
+                "offers",
+                "unit-economics",
+                "upsells",
+                "downsells",
+                "continuity"
+              ],
+              "preview": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)  So we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where ",
+              "score": 7.397
+            },
+            {
+              "chapter": "ten-years-ten-minutes",
+              "id": "ten-years-ten-minutes:2",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics",
+                "offers",
+                "upsells",
+                "downsells",
+                "continuity"
+              ],
+              "preview": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a ",
+              "score": 7.243
+            },
+            {
+              "chapter": "free-giveaways",
+              "id": "free-giveaways:1",
+              "layer": "offers",
+              "layers": [
+                "offers"
+              ],
+              "preview": "## [\u00a73.3.b] Structure \u2014 grand prize + participation trophy + eligibility  Okay, so h- how does this work overall? So I'll just read this to you. So giveaway offers advertise a chance to win a big prize in, exchange for contact information, whatever else you want, and then after picking a winner, you offer everyone else a big prize at a discount. Um, giveaway",
+              "score": 7.025
+            },
+            {
+              "chapter": "buy-x-get-y",
+              "id": "buy-x-get-y:0",
+              "layer": "offers",
+              "layers": [
+                "offers",
+                "upsells",
+                "continuity"
+              ],
+              "preview": "So we just covered win-your-money-back, free giveaways, and now decoy offers. And one thing that I will highlight before we get into buy X get Y free is that an ethical salesman makes recommendations that he believes will help the customer and help the business. An unethical salesman makes recommendations to customers that will not help the customer and only",
+              "score": 6.887
+            },
+            {
+              "chapter": "cac",
+              "id": "cac:11",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics",
+                "offers"
+              ],
+              "preview": "for cheap leads, meaning you don't have to ever worry about, like, anybody saying that you did a bait and switch or anything like that. So if you charge people for stuff, then there's, there's really nothing to say about it. All right, number two is that you can actually collect some money, which is decent, right? I mean, some money is better than no money, ",
+              "score": 6.633
+            },
+            {
+              "chapter": "free-with-consumption",
+              "id": "free-with-consumption:5",
+              "layer": "offers",
+              "layers": [
+                "offers"
+              ],
+              "preview": "approach to solving problems is different. How our, our approach is different than what you've had before. Tuesday, it's gonna be second valuable nugget of value, which is regarding their ability or insecurity. It's like what are they most afraid of? What are the thing that they're most concerned about? The next one is gonna be the second thing that they're ",
+              "score": 6.492
+            },
+            {
+              "chapter": "free-with-consumption",
+              "id": "free-with-consumption:4",
+              "layer": "offers",
+              "layers": [
+                "offers"
+              ],
+              "preview": "sell 10 at 10K, you make 100 grand from a dinner. This is super common in the education space. So there's these three to five-day challenges, these virtual summits, things like that. And so these are, you know, day one you give, day two you give/ask, day three you re-pitch/give. That is the very standard structure. And so in the challenges structure, it's gi",
+              "score": 9.896
+            },
+            {
+              "chapter": "decoy-offers",
+              "id": "decoy-offers:8",
+              "layer": "offers",
+              "layers": [
+                "offers"
+              ],
+              "preview": "that you do wanna actually help them, so it- it's aligned with the scripting in the sale, right? So this builds goodwill, it over-delivers, and it increases the chance that they take your upsell offer later. Remember, they're still a lead and if they bought the decoy, if it's a free thing that they haven't bought yet, if it's not a free thing, they paid. The",
+              "score": 7.628
+            },
+            {
+              "chapter": "free-with-consumption",
+              "id": "free-with-consumption:1",
+              "layer": "offers",
+              "layers": [
+                "offers"
+              ],
+              "preview": "free video, it could be a PDF, it could be an audio, it could be, uh, a live event, it could be a workshop. Anything that someone's gonna consume a ton, that then they go, \"Oh, this thing's free.\" They learn a bunch. They say, \"Oh, I can do this.\" And then they put money down. That's how it works. Fundamentally, you're selling or giving away a selling tool. ",
+              "score": 7.319
+            },
+            {
+              "chapter": "cac",
+              "id": "cac:2",
+              "layer": "unit-economics",
+              "layers": [
+                "unit-economics",
+                "offers"
+              ],
+              "preview": "spent $35,000 divided by 10 customers, $3,500 per customer is our CAC. That's how this works. By the way, one of the best ways to improve any metric is to start measuring it. So, how to improve it? In this whole training, I talk about lots of different things that cover and check off different boxes here. But fundamentally, if you had nothing else and you ju",
+              "score": 6.742
+            }
+          ],
+          "queries": [
+            "front end offer paid acquisition test diagnostic core offer conversion",
+            "diagnostic offer attract qualified buyers before core offer",
+            "paid acquisition front end offer convert to high ticket service",
+            "front-end offer diagnostic offer paid acquisition test core offer conversion interior design STR"
+          ],
+          "query": "front end offer paid acquisition test diagnostic core offer conversion",
+          "retrieval_backend": "bm25",
+          "source_need": {
+            "focus_terms": [
+              "front-end offer",
+              "diagnostic offer",
+              "paid acquisition test",
+              "core offer conversion"
+            ],
+            "intent": "recommendation_evidence",
+            "layers": [
+              "offers"
+            ],
+            "query_variants": [
+              "front end offer paid acquisition test diagnostic core offer conversion",
+              "diagnostic offer attract qualified buyers before core offer",
+              "paid acquisition front end offer convert to high ticket service"
+            ],
+            "user_turn": "what would you test next?"
+          },
+          "vector_store": "local"
+        }
+      ],
+      "cited_chunk_ids": [
+        "decoy-offers:8",
+        "free-with-consumption:1",
+        "cac:2",
+        "make-your-money-model:0"
+      ],
+      "metadata": {
+        "decision": "recommend_capped_paid_acquisition_test_into_diagnostic_offer",
+        "retrieval_quality_note": "Offers retrieval contained some less-direct buy-X-get-Y chunks; cited only decoy/free-with-consumption/CAC/money-model chunks that directly supported the recommendation.",
+        "test_metrics": [
+          "cost per booked diagnostic",
+          "diagnostic purchase rate",
+          "diagnostic-to-full-service close rate",
+          "first-30-day gross profit created"
+        ],
+        "turn_index": 5
+      },
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214857.json"
+    }
+  ],
+  "workflow_steps": [
+    {
+      "step": "loaded_scenario",
+      "details": {
+        "scenario_id": "productsmoke_v1_002",
+        "rubric_read_after_run": true
+      }
+    },
+    {
+      "step": "created_isolated_business_dir",
+      "details": {
+        "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business"
+      }
+    },
+    {
+      "step": "installed_starting_snapshot_fixture",
+      "details": {
+        "fixture": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json",
+        "destination": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/business_snapshot.json"
+      }
+    },
+    {
+      "step": "checked_prior_sessions_fixture",
+      "details": {
+        "prior_sessions_fixture_path": null,
+        "installed": false
+      }
+    },
+    {
+      "step": "completed_turn",
+      "details": {
+        "turn_index": 1,
+        "user_message": "I think our average referral partner cost is about 2400 for every 3 signed projects.",
+        "actions": [
+          "session_start",
+          "calculate",
+          "update_snapshot",
+          "answer",
+          "session_finish"
+        ],
+        "calculation_event_count": 1,
+        "source_event_count": 0,
+        "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214637.json"
+      }
+    },
+    {
+      "step": "completed_turn",
+      "details": {
+        "turn_index": 2,
+        "user_message": "Our diagnostic would sell for 997 and cost maybe 150 to fulfill.",
+        "actions": [
+          "session_start",
+          "calculate",
+          "update_snapshot",
+          "answer",
+          "session_finish"
+        ],
+        "calculation_event_count": 2,
+        "source_event_count": 0,
+        "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214707.json"
+      }
+    },
+    {
+      "step": "completed_turn",
+      "details": {
+        "turn_index": 3,
+        "user_message": "Full-service projects produce around 10000 in first-month gross profit on average.",
+        "actions": [
+          "session_start",
+          "update_snapshot",
+          "calculate",
+          "answer",
+          "session_finish"
+        ],
+        "calculation_event_count": 2,
+        "source_event_count": 0,
+        "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214737.json"
+      }
+    },
+    {
+      "step": "completed_turn",
+      "details": {
+        "turn_index": 4,
+        "user_message": "so does that mean paid acquisition is viable or is CAC still the bottleneck?",
+        "actions": [
+          "session_start",
+          "diagnose",
+          "search_source_material",
+          "update_snapshot",
+          "answer",
+          "session_finish"
+        ],
+        "calculation_event_count": 0,
+        "source_event_count": 1,
+        "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214818.json"
+      }
+    },
+    {
+      "step": "completed_turn",
+      "details": {
+        "turn_index": 5,
+        "user_message": "what would you test next?",
+        "actions": [
+          "session_start",
+          "search_source_material",
+          "answer",
+          "session_finish"
+        ],
+        "calculation_event_count": 0,
+        "source_event_count": 1,
+        "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214857.json"
+      }
+    },
+    {
+      "step": "captured_final_snapshot_and_logs",
+      "details": {
+        "final_snapshot_stdout": "stdout/999_final_snapshot.json",
+        "logs_stdout": "stdout/999_logs_full.json"
+      }
+    }
+  ],
+  "session_paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business",
+    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/business_snapshot.json",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions",
+    "turn_sessions_chronological": [
+      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214637.json",
+      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214707.json",
+      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214737.json",
+      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214818.json",
+      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/business/.money-model-advisor/sessions/20260611T214857.json"
+    ],
+    "records_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/records",
+    "stdout_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_002/stdout"
+  },
+  "final_snapshot_summary": {
+    "advisory_status": "recommendable",
+    "missing_fields": [],
+    "diagnosed_constraints": [
+      "scale-ready"
+    ],
+    "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+    "icp": "STR and second-home owners with $80K-$200K+ project capacity",
+    "attraction_offer_price": 997,
+    "cac": 800,
+    "first_30_day_gross_profit": 10000,
+    "monthly_recurring_gross_profit": 0,
+    "gross_margin": 0.8495486459378134,
+    "payback_period_months": 1.0
+  },
+  "self_review_against_rubric": [
+    {
+      "rubric_item": "Agent calculates CAC from spend and signed projects.",
+      "assessment": "pass",
+      "evidence": "Turn 1 used CLI calculate cac with total_acquisition_cost=2400 and new_customers=3, value=800, then saved economics.cac."
+    },
+    {
+      "rubric_item": "Agent calculates or correctly uses first-30-day gross profit and gross margin when relevant.",
+      "assessment": "mostly_pass",
+      "evidence": "Turn 2 calculated diagnostic gross profit and gross margin; turn 3 saved and used first-30-day gross profit and calculated payback/CFA. Caveat: schema has one economics.gross_margin field, so the diagnostic-offer margin is stored there with metadata noting scope."
+    },
+    {
+      "rubric_item": "Agent updates saved economics only for explicit user-provided or calculated facts.",
+      "assessment": "pass_with_caveat",
+      "evidence": "Saved CAC, diagnostic price/margin, first-30-day GP, monthly recurring GP=0, payback derived by snapshot, and diagnosis after CLI diagnose. Caveat: monthly_recurring_gross_profit=0 was an operational assumption to run payback for a project business with no continuity in the starting snapshot."
+    },
+    {
+      "rubric_item": "Agent diagnoses whether CAC/payback is the likely bottleneck from saved numbers.",
+      "assessment": "pass",
+      "evidence": "Turn 4 diagnosed CAC is not the bottleneck; CLI diagnose returned scale-ready with CAC=800, first_30_day_gross_profit=10000, payback=1.0, cfa_level=3."
+    },
+    {
+      "rubric_item": "Agent searches source material only when supporting a source-backed diagnosis or recommendation.",
+      "assessment": "pass",
+      "evidence": "No searches in turns 1-3 while numbers were incomplete. Search occurred only for turn 4 source-backed diagnosis and turn 5 source-backed recommendation."
+    },
+    {
+      "rubric_item": "Search source events include focused SourceNeeds, executed query variants, inspected chunks, and citations.",
+      "assessment": "pass_with_quality_caveat",
+      "evidence": "Both search turns include SourceNeed objects, 3 agent query variants plus fallback executed queries, inspected chunks, and cited_chunk_ids. Caveat: turn 5 offers retrieval returned several less-direct buy-X-get-Y chunks; answer cited only the more relevant decoy/free-with-consumption/CAC/money-model chunks."
+    }
+  ],
+  "observed_failure_modes": [
+    {
+      "mode": "offer-specific economics squeezed into global snapshot field",
+      "severity": "medium",
+      "details": "The current BusinessSnapshot has economics.gross_margin but no attraction-offer fulfillment cost or offer-level gross margin. Turn 2 saved the diagnostic gross margin globally and documented the scope caveat in metadata."
+    },
+    {
+      "mode": "recommendation retrieval noisier than diagnosis retrieval",
+      "severity": "medium",
+      "details": "The offers-layer query for a diagnostic/front-end paid test retrieved several buy-X-get-Y chunks before more directly relevant decoy/free-with-consumption chunks. Trace is complete, but retrieval precision for this recommendation need could improve."
+    },
+    {
+      "mode": "paid CAC versus referral CAC distinction remains an assumption to test",
+      "severity": "low",
+      "details": "The run correctly treated $800 as observed referral-partner CAC, then recommended a paid test to measure actual paid diagnostic CAC rather than assuming channel parity."
+    }
+  ],
+  "notes": "Completed the multi-turn product smoke session using only the real local CLI. No external model APIs were used. Source searches were delayed until there was enough business context for diagnosis/recommendation. Product quality is good on statefulness, math, and traceability; retrieval quality for concrete offer recommendations is the main product gap surfaced by this run."
+}

@@ -1,0 +1,276 @@
+{
+  "runner_provenance": {
+    "agent_id": "019eb8a5-78e0-7870-b1ce-8794fb1a6a36",
+    "agent_nickname": "Nietzsche",
+    "agent_type": "worker",
+    "blind_to_success_rubric": false,
+    "rubric_exposure_note": "Runner reported that the initial scenario lookup exposed success_rubric and failure_modes before the acting run. Treat this run as useful product evidence but compromised as a blind eval.",
+    "external_model_apis_used": false,
+    "source_or_docs_edited": false,
+    "write_scope": "evals/runs/product_smoke/v1/productsmoke_v1_001"
+  },
+  "final_snapshot_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/final_snapshot.json",
+  "final_snapshot_summary": {
+    "advisory_status": "insufficient_context",
+    "field_sources": {
+      "business.business_type": {
+        "confidence": "high",
+        "source_type": "cli",
+        "updated_at": "2026-06-11T21:46:33Z"
+      },
+      "business.delivery_model": {
+        "confidence": "high",
+        "source_type": "cli",
+        "updated_at": "2026-06-11T21:46:33Z"
+      },
+      "business.icp": {
+        "confidence": "high",
+        "source_type": "cli",
+        "updated_at": "2026-06-11T21:46:33Z"
+      },
+      "money_model.core_offer.description": {
+        "confidence": "high",
+        "source_type": "cli",
+        "updated_at": "2026-06-11T21:46:33Z"
+      },
+      "money_model.core_offer.exists": {
+        "confidence": "high",
+        "source_type": "cli",
+        "updated_at": "2026-06-11T21:46:33Z"
+      },
+      "problem.reported_symptoms": {
+        "confidence": "high",
+        "source_type": "cli",
+        "updated_at": "2026-06-11T21:47:10Z"
+      },
+      "problem.user_goal": {
+        "confidence": "high",
+        "source_type": "cli",
+        "updated_at": "2026-06-11T21:46:14Z"
+      }
+    },
+    "known_business": {
+      "business_type": "premium STR and second-home interior design firm",
+      "delivery_model": "full-service design, procurement, and install",
+      "icp": "STR and second-home owners"
+    },
+    "known_core_offer": {
+      "description": "premium full-service STR and second-home interior design, procurement, and install projects",
+      "exists": true,
+      "price": null
+    },
+    "known_economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "missing_fields": [
+      "money_model.attraction_offer.exists",
+      "money_model.upsell.exists",
+      "money_model.downsell.exists",
+      "money_model.continuity.exists",
+      "economics.cac",
+      "economics.first_30_day_gross_profit"
+    ],
+    "ready_for_offer_stack_diagnosis": false,
+    "ready_for_payback_diagnosis": false,
+    "reported_symptoms": [
+      "Lead sources are mostly referrals and Instagram",
+      "CAC is not known yet"
+    ]
+  },
+  "notes": "Product behavior was good for the intended smoke: the advisor gathered context, saved facts, avoided retrieval and calculation when unsupported, and converged on CAC as the first useful diagnostic field. The main flaw is procedural rubric exposure during setup, not advisor-turn behavior.",
+  "observed_failure_modes": [
+    "Process caveat: rubric and failure_modes were accidentally exposed by the initial scenario lookup before the acting run.",
+    "Product nuance: snapshot schema has no dedicated acquisition channel field, so lead-source context was stored in problem.reported_symptoms rather than a first-class marketing/acquisition field.",
+    "Answer quality is intentionally conservative; it avoids premature recommendations, but a real user might benefit from a small CAC worksheet template next."
+  ],
+  "raw_logs_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/logs_full.json",
+  "runner_provenance": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business",
+    "current_date": "2026-06-11",
+    "no_external_model_apis": true,
+    "repo": "/Users/benjaminmackenzie/Dev/money-model-architect",
+    "rubric_exposure_caveat": "Initial rg command printed the full scenario line, including success_rubric and failure_modes, before the acting run. Acting decisions still followed the live turn context and CLI state, but this is a process defect for this smoke run.",
+    "runner": "Codex GPT-5 coding agent using money-model-advisor skill and local CLI",
+    "source_code_or_docs_edited": false,
+    "timezone": "Pacific/Honolulu",
+    "write_scope": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001"
+  },
+  "scenario_id": "productsmoke_v1_001",
+  "self_review_against_rubric": [
+    {
+      "assessment": "Pass. The run asked for business, customer, offer, acquisition, and economics context before any diagnosis.",
+      "rubric_item": "Agent inspects or asks for enough business context before diagnosing."
+    },
+    {
+      "assessment": "Pass. Persisted user goal, business type, ICP, delivery model, core offer existence/description, and acquisition/CAC context.",
+      "rubric_item": "Agent saves clear business facts to the snapshot when provided."
+    },
+    {
+      "assessment": "Pass. No source-material search was run because the missing facts were business economics, not source support.",
+      "rubric_item": "Agent does not search source material just to compensate for missing economics."
+    },
+    {
+      "assessment": "Pass. The final answer asks for a rough CAC range first and names first-30-day gross profit as the next field.",
+      "rubric_item": "Agent asks for the next needed economics field instead of making a premature recommendation."
+    },
+    {
+      "assessment": "Pass. All four turns have successful session_finish outputs and session artifacts.",
+      "rubric_item": "Every turn is recorded with session finish."
+    }
+  ],
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214614.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214633.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214711.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214728.json"
+  ],
+  "turns": [
+    {
+      "acting_decision": "Insufficient business context; saved broad user goal and asked for business, buyer, and acquisition context.",
+      "actions": [
+        "session_start",
+        "update_snapshot",
+        "answer"
+      ],
+      "assistant_message": "Absolutely. I can help with that. To make the first pass useful, I need to anchor the model in your actual business instead of giving you generic Money Models advice.\n\nStart with three things: what do you sell, who buys it, and how do most customers find you today? Once I have that, I\u2019ll help identify the first economics number we need before we diagnose the offer stack.",
+      "calculation_events": [],
+      "cited_chunk_ids": [],
+      "finish_warnings": [],
+      "session_finish_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_01_session_finish.json",
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214614.json",
+      "session_start_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_01_session_start.json",
+      "snapshot_updates": [
+        {
+          "field": "problem.user_goal",
+          "value": "talk about Money Models for the business"
+        }
+      ],
+      "source_events": [],
+      "turn_index": 1,
+      "user_message": "let's talk about money models"
+    },
+    {
+      "acting_decision": "Persisted clear business and core-offer facts; asked for acquisition context and CAC before diagnosis.",
+      "actions": [
+        "session_start",
+        "update_snapshot",
+        "answer"
+      ],
+      "assistant_message": "Got it. I\u2019m saving 1584 Design as a premium STR and second-home interior design business with a full-service design, procurement, and install core offer.\n\nThe first diagnostic fork is whether growth is constrained by acquisition economics or by the offer stack. To see that, I need two numbers next: roughly how a new client comes in today, and either your CAC if you know it or the inputs to estimate it. After that, I\u2019ll ask for first-30-day gross profit per project so we can compare what it costs to acquire a client against what the project produces early.",
+      "calculation_events": [],
+      "cited_chunk_ids": [],
+      "finish_warnings": [],
+      "session_finish_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_02_session_finish.json",
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214633.json",
+      "session_start_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_02_session_start.json",
+      "snapshot_updates": [
+        {
+          "field": "business.business_type",
+          "value": "premium STR and second-home interior design firm"
+        },
+        {
+          "field": "business.delivery_model",
+          "value": "full-service design, procurement, and install"
+        },
+        {
+          "field": "business.icp",
+          "value": "STR and second-home owners"
+        },
+        {
+          "field": "money_model.core_offer.exists",
+          "value": true
+        },
+        {
+          "field": "money_model.core_offer.description",
+          "value": "premium full-service STR and second-home interior design, procurement, and install projects"
+        }
+      ],
+      "source_events": [],
+      "turn_index": 2,
+      "user_message": "we're 1584 Design. We do premium STR and second-home interior design projects, mostly full-service design, procurement, and install."
+    },
+    {
+      "acting_decision": "Persisted acquisition context and unknown CAC; avoided source search and asked for CAC-estimation inputs.",
+      "actions": [
+        "session_start",
+        "update_snapshot",
+        "answer"
+      ],
+      "assistant_message": "That\u2019s actually the right place to slow down. Since referrals and Instagram can hide the real acquisition cost, I wouldn\u2019t diagnose the model yet.\n\nI\u2019d estimate CAC first, even if it\u2019s a rough range. For the last 90 days, I\u2019d want: total marketing spend, owner or team hours spent creating content and handling leads, number of qualified inquiries, and number of closed projects. That gives us a practical CAC range instead of pretending referrals are free.\n\nAfter CAC, the next number is first-30-day gross profit per project. Those two together tell us whether the core offer can support more deliberate acquisition.",
+      "calculation_events": [],
+      "cited_chunk_ids": [],
+      "finish_warnings": [],
+      "session_finish_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_03_session_finish.json",
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214711.json",
+      "session_start_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_03_session_start.json",
+      "snapshot_updates": [
+        {
+          "field": "problem.reported_symptoms",
+          "value": [
+            "Lead sources are mostly referrals and Instagram",
+            "CAC is not known yet"
+          ]
+        }
+      ],
+      "source_events": [],
+      "turn_index": 3,
+      "user_message": "most leads come from referrals and Instagram. I don't know CAC exactly yet."
+    },
+    {
+      "acting_decision": "Answered with the next needed economics field, CAC range, and deferred recommendations until CAC and first-30-day gross profit are known.",
+      "actions": [
+        "session_start",
+        "answer"
+      ],
+      "assistant_message": "First, figure out a rough CAC range. Not perfect CAC. Good-enough CAC.\n\nFor 1584 Design, I\u2019d use the last 90 days and calculate: marketing spend plus a reasonable cost for the time spent on Instagram, referral follow-up, consults, and proposal work, divided by the number of new closed projects. If that feels too hard, start with qualified consultations instead of closed projects, then we can convert it later.\n\nOnce we have that CAC range, the next field is first-30-day gross profit per project. CAC tells us what it costs to create a client; first-30-day gross profit tells us how quickly the model earns that cost back. Until we know those two, I\u2019d avoid recommending a new offer, upsell, or ad channel.",
+      "calculation_events": [],
+      "cited_chunk_ids": [],
+      "finish_warnings": [],
+      "session_finish_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_04_session_finish.json",
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/sessions/20260611T214728.json",
+      "session_start_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/records/turn_04_session_start.json",
+      "snapshot_updates": [],
+      "source_events": [],
+      "turn_index": 4,
+      "user_message": "what should we figure out first?"
+    }
+  ],
+  "workflow_steps": [
+    {
+      "path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business",
+      "step": "Created isolated business directory under run folder"
+    },
+    {
+      "fixture": "evals/fixtures/snapshots/1584_empty.json",
+      "step": "Installed starting snapshot fixture",
+      "target": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_001/business/.money-model-advisor/business_snapshot.json"
+    },
+    {
+      "fixture": null,
+      "step": "No prior sessions fixture was provided"
+    },
+    {
+      "step": "Ran session start for each user turn before acting"
+    },
+    {
+      "step": "Persisted clear business facts from user turns with snapshot set"
+    },
+    {
+      "step": "Did not run source search because immediate need was missing business/economics context"
+    },
+    {
+      "step": "Did not run calculations because CAC and first-30-day gross profit were unavailable"
+    },
+    {
+      "step": "Ran session finish for each turn with complete empty source/calculation event arrays where appropriate"
+    },
+    {
+      "step": "Collected final snapshot and full logs for run artifact"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "runner_provenance": {
+    "agent_id": "019eb8a8-eb81-78b3-ba85-98605ec34c89",
+    "agent_nickname": "Descartes",
+    "agent_type": "worker",
+    "blind_to_success_rubric": true,
+    "external_model_apis_used": false,
+    "source_or_docs_edited": false,
+    "write_scope": "evals/runs/product_smoke/v1/productsmoke_v1_003"
+  },
+  "final_snapshot_summary": {
+    "advisory_status": "recommendable",
+    "attraction_offer": {
+      "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "exists": true,
+      "price": 597
+    },
+    "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+    "continuity": {
+      "description": null,
+      "exists": false,
+      "price": null
+    },
+    "core_offer": {
+      "description": "full-service STR and second-home design",
+      "exists": true,
+      "price": 15000
+    },
+    "diagnosed_constraints": [
+      "high_first_sale_margin",
+      "can_test_paid_acquisition"
+    ],
+    "economics": {
+      "cac": 1000,
+      "first_30_day_gross_profit": 10000,
+      "gross_margin": 0.769,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": 0,
+      "payback_period_months": 1.0
+    },
+    "icp": "STR and second-home owners with $80K-$200K+ project capacity",
+    "missing_fields": []
+  },
+  "notes": [
+    "Product-quality assessment: useful and coherent under challenge. The advisor maintained a clear point of view, explained sequencing, cited relevant source material, and gave falsifiable decision criteria.",
+    "Trace quality was strong: all source searches recorded SourceNeed, executed variants including deterministic fallback, chunks, citations; turn 1 recorded the payback calculation event.",
+    "Observed product issue: starting snapshot fixture contained payback_period_months=0.1, but BusinessSnapshot.refresh/CLI calculate produced 1.0 for CAC=1000, first_30_day_gross_profit=10000, monthly_recurring_gross_profit=0. The run answers used the CLI-calculated value; the fixture mismatch is worth follow-up outside this no-edit smoke run.",
+    "Potential improvement: source retrieval for diagnostic/front-end idea could benefit from corpus chunks or cases closer to high-ticket service diagnostics; current citations are conceptually relevant but not domain-specific."
+  ],
+  "observed_failure_modes": [
+    {
+      "failure_mode": "Ignores the user's challenge and repeats the same answer.",
+      "notes": "The challenge got a new comparison answer rather than a repeated recommendation.",
+      "observed": false
+    },
+    {
+      "failure_mode": "Over-searches unit economics merely because known economics appear in the answer.",
+      "notes": "Unit-economics searches were used when diagnosing or contrasting acquisition cash timing, not on the final turn.",
+      "observed": false
+    },
+    {
+      "failure_mode": "Fails to source the front-end offer explanation when citations are requested.",
+      "notes": "Turn 3 contains a dedicated teaching_evidence source event and citations.",
+      "observed": false
+    },
+    {
+      "failure_mode": "Uses citations that do not support the recommendation.",
+      "notes": "Offer citations support attraction/decoy mechanics, though not interior-design-specific diagnostics.",
+      "observed": "minor_risk"
+    },
+    {
+      "failure_mode": "Does not preserve complete traces across turns.",
+      "notes": "Each turn has a session_start/stdout artifact, record JSON, persisted session file, actions, source events, citations, and calculation event where applicable.",
+      "observed": false
+    }
+  ],
+  "runner_provenance": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business",
+    "external_model_apis_used": false,
+    "python": "3.14.2",
+    "repo_path": "/Users/benjaminmackenzie/Dev/money-model-architect",
+    "run_completed_at_utc": "2026-06-11T21:53:09Z",
+    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003",
+    "runner": "Codex GPT-5 coding agent using money-model-advisor skill and local CLI",
+    "source_or_docs_edited": false,
+    "write_scope": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003"
+  },
+  "scenario_id": "productsmoke_v1_003",
+  "self_review_against_rubric": [
+    {
+      "assessment": "pass",
+      "evidence": "All turns used the diagnosed snapshot facts; no known facts were re-asked.",
+      "rubric_item": "Agent uses existing diagnosed snapshot instead of re-asking known facts."
+    },
+    {
+      "assessment": "pass",
+      "evidence": "Recommended tightening the existing $597 STR Design Diagnostic and paid acquisition test for STR/second-home owners.",
+      "rubric_item": "Agent makes a specific recommendation tied to 1584 context."
+    },
+    {
+      "assessment": "pass",
+      "evidence": "Turn 2 used separate continuity comparison and unit-economics diagnostic source events; did not collapse front-end and continuity into one source need.",
+      "rubric_item": "Agent can compare diagnostic/front-end offer vs continuity without collapsing them into one source need."
+    },
+    {
+      "assessment": "pass",
+      "evidence": "Searched on turns 1, 2, and 3. Did not search turn 4 because it asked for decision criteria based on accumulated context.",
+      "rubric_item": "Agent searches source material for source-backed teaching/comparison/recommendation turns."
+    },
+    {
+      "assessment": "mostly_pass",
+      "evidence": "Cited chunks generally support claims. Turn 3 decoy citations are plausible but somewhat indirect for a premium interior-design diagnostic because corpus examples are from other domains.",
+      "rubric_item": "Agent cites chunks that plausibly support the claims being made."
+    },
+    {
+      "assessment": "pass",
+      "evidence": "Turn 2 directly addressed the maintenance-offer challenge; turn 4 listed explicit criteria that would change the recommendation.",
+      "rubric_item": "Agent answers the challenge directly and identifies decision criteria that would change the recommendation."
+    }
+  ],
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215040.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215116.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215145.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215208.json"
+  ],
+  "turns": [
+    {
+      "actions": [
+        "session_start",
+        "calculate",
+        "search_source_material",
+        "session_finish"
+      ],
+      "assistant_message": "I would fix the front-end diagnostic and paid-acquisition test first, not the back-end. The reason is the current economics say you are not fighting a margin problem: with about $1,000 CAC and about $10,000 first-30-day gross profit, the CLI-calculated payback is 1.0 month. Money Models treats CAC, gross profit, and payback period as the core acquisition triangle, and short payback makes advertising easier to scale [how-businesses-make-money:2] [payback-period:0].\n\nSo my first move would be: turn the STR Design Diagnostic into a clean, trackable acquisition offer, then run a small paid test against qualified STR/second-home owners. The diagnostic should do one job: get the right owner to raise their hand, experience your thinking, and naturally lead into the full-service design project. That lines up with the Money Models build order: start with an attraction offer, then add upsell/downsell/continuity pieces after the front end is working [make-your-money-model:1].\n\nThe practical fix is not \u201cinvent a new thing\u201d; it is tightening the existing $597 diagnostic: one landing page, one qualification path, one promise, one conversion target, and a rule for when a diagnostic buyer is offered the $15k core service. If that offer can produce qualified consults without damaging close rate or delivery capacity, then paid acquisition becomes measurable instead of theoretical.",
+      "calculation_event_count": 1,
+      "cited_chunk_ids": [
+        "how-businesses-make-money:2",
+        "payback-period:0",
+        "make-your-money-model:1"
+      ],
+      "record_json_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/records/turn1_record.json",
+      "session_finish_warnings": [],
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215040.json",
+      "source_event_count": 2,
+      "turn_index": 1,
+      "user_message": "what should we fix first?"
+    },
+    {
+      "actions": [
+        "session_start",
+        "search_source_material",
+        "session_finish"
+      ],
+      "assistant_message": "I like the recurring owner-maintenance idea. I just would not make it first.\n\nThe reason is sequencing. A maintenance plan is a stability and enterprise-value move, but the current bottleneck is proving a repeatable buyer-flow into the high-margin core service. Money Models is pretty explicit that continuity is powerful because it creates ongoing payments and retention value, but it also tends to produce less cash now when used on its own [continuity-offers:0] [continuity-offers:6]. For your current problem, cash timing matters because we are trying to test paid acquisition.\n\nYour known economics already suggest the first sale can fund acquisition: about $10,000 first-30-day gross profit against about $1,000 CAC. That is the kind of setup where the important question is, \u201cCan we buy more qualified opportunities predictably?\u201d not \u201cCan we add another back-end product?\u201d Money Models frames the first-30-day gross-profit-over-CAC point as the unlock for customer-financed acquisition [context:1] [cfa:0].\n\nSo I would park the maintenance offer as phase two. Build it once the diagnostic is producing the right owners and you can see where maintenance naturally fits: after install, before seasonal refresh, or as a property-performance check-in. If we build it first, we may create a nice offer for customers we have not yet learned how to acquire repeatably.",
+      "calculation_event_count": 0,
+      "cited_chunk_ids": [
+        "continuity-offers:0",
+        "continuity-offers:6",
+        "context:1",
+        "cfa:0"
+      ],
+      "record_json_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/records/turn2_record.json",
+      "session_finish_warnings": [],
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215116.json",
+      "source_event_count": 2,
+      "turn_index": 2,
+      "user_message": "why not add a recurring owner maintenance offer first?"
+    },
+    {
+      "actions": [
+        "session_start",
+        "search_source_material",
+        "session_finish"
+      ],
+      "assistant_message": "The front-end diagnostic is a paid \u201clet me show you what is really going on\u201d offer.\n\nFor this business, I would position it as: \u201cFor $597, I\u2019ll audit your STR listing/photos/layout, identify the design issues likely hurting bookings or guest perception, and give you a prioritized action plan.\u201d That is not meant to replace the $15k full-service design offer. It is meant to get the right owner to engage, experience your judgment, and discover whether the bigger project is worth doing.\n\nThat matches Money Models\u2019 attraction-offer idea: the front-end offer exists to create engagement and turn advertising into customers [attraction-offers:0]. The build sequence also starts with an attraction offer, then moves into upsells, downsells, continuity, and the larger stack [make-your-money-model:1].\n\nIn plain English: the diagnostic is the small door into the big room. The owner gets a useful answer quickly. You get a qualified conversation with someone who has a real property, real project economics, and enough trust to consider the core service. If the diagnostic is designed like a decoy or stripped-down version of the premium work, it can make the premium option easier to understand without doing the full job for cheap [decoy-offers:3] [decoy-offers:4].",
+      "calculation_event_count": 0,
+      "cited_chunk_ids": [
+        "attraction-offers:0",
+        "make-your-money-model:1",
+        "decoy-offers:3",
+        "decoy-offers:4"
+      ],
+      "record_json_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/records/turn3_record.json",
+      "session_finish_warnings": [],
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215145.json",
+      "source_event_count": 1,
+      "turn_index": 3,
+      "user_message": "explain the front-end diagnostic idea in plain English, but cite the Money Models source material."
+    },
+    {
+      "actions": [
+        "session_start",
+        "session_finish"
+      ],
+      "assistant_message": "I would change my mind if the facts showed the front-end test was not actually the constraint.\n\nThe main things that would flip my recommendation are:\n\n1. Paid diagnostic traffic produces low-quality leads: owners take the $597 audit, but they are not $80K-$200K project buyers.\n2. Diagnostic buyers do not convert into the $15k core service at a healthy rate, even after the offer and sales path are cleaned up.\n3. Delivery capacity is already the bottleneck: more core projects would hurt quality, timelines, or Lisa\u2019s role in delivery.\n4. The real CAC for paid channels is much higher than the current referral-based $1,000 assumption, enough that first-30-day gross profit no longer comfortably covers acquisition.\n5. Past clients are asking for ongoing help now, and the maintenance offer can be sold quickly to existing customers without distracting from acquisition.\n\nSo my view is not \u201cnever build maintenance.\u201d It is: prove the buyer-flow first unless the data says buyer-flow is already proven or capacity/retention is the tighter bottleneck. If we learn that paid acquisition cannot produce the right project owners, or that existing clients are ready to buy maintenance immediately, I would move the recurring owner-maintenance offer up the priority list.",
+      "calculation_event_count": 0,
+      "cited_chunk_ids": [],
+      "record_json_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/records/turn4_record.json",
+      "session_finish_warnings": [],
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/product_smoke/v1/productsmoke_v1_003/business/.money-model-advisor/sessions/20260611T215208.json",
+      "source_event_count": 0,
+      "turn_index": 4,
+      "user_message": "what would make you change your mind?"
+    }
+  ],
+  "workflow_steps": [
+    "Loaded only allowed scenario fields before acting: scenario_id, title, starting_snapshot_fixture_path, prior_sessions_fixture_path, turns.",
+    "Created isolated business directory under the run folder.",
+    "Installed starting BusinessSnapshot fixture into .money-model-advisor/business_snapshot.json.",
+    "Installed prior-session fixture as two session records in the isolated business sessions directory.",
+    "For each user turn, ran session start and verified the returned business_dir matched the isolated business directory.",
+    "Used calculate payback on turn 1 for deterministic traceability.",
+    "Used source search on recommendation/comparison/teaching turns where Money Models support was needed; did not search on final decision-criteria turn.",
+    "Recorded each turn with session finish using complete record JSON artifacts.",
+    "Read success_rubric and failure_modes only after all four turns were recorded.",
+    "Read final snapshot and logs, then assembled this run.json self-review."
+  ]
+}
