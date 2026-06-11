@@ -73,7 +73,7 @@ Never commit `.env`, API keys, or `.cache/embeddings/`.
 
 The next JD-aligned work should emphasize:
 
-- Pinecone-backed vector storage behind a clean adapter boundary
+- Pinecone indexing and parity evals now that the vector-store boundary exists
 - continued golden-dataset breadth and regression coverage
 - cold-cache reporting only if first-run embedding cost needs to be separated from steady-state warm-cache behavior
 

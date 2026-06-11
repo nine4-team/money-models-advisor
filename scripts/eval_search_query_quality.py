@@ -25,6 +25,7 @@ from money_model_architect.advisor_queries import SourceNeed, build_advisor_quer
 from money_model_architect.embeddings import OpenAIEmbeddingClient  # noqa: E402
 from money_model_architect.retrieval import CorpusIndex, SearchResult  # noqa: E402
 from money_model_architect.snapshot import BusinessSnapshot  # noqa: E402
+from money_model_architect.vector_store import PineconeVectorStore, VectorStore, selected_vector_store_name  # noqa: E402
 
 
 REQUIRED_FIELDS = {
@@ -193,13 +194,29 @@ def search_index(
     top_k: int,
     backend: str,
     embedding_client: Any | None = None,
+    vector_store: VectorStore | None = None,
+    vector_store_name: str = "local",
 ):
     if backend == "bm25":
         return index.search(query, layer=layer, top_k=top_k)
     if backend == "vector":
-        return index.vector_search(query, layer=layer, top_k=top_k, embedding_client=embedding_client)
+        return index.vector_search(
+            query,
+            layer=layer,
+            top_k=top_k,
+            embedding_client=embedding_client,
+            vector_store=vector_store,
+            vector_store_name=vector_store_name,
+        )
     if backend == "hybrid":
-        return index.hybrid_search(query, layer=layer, top_k=top_k, embedding_client=embedding_client)
+        return index.hybrid_search(
+            query,
+            layer=layer,
+            top_k=top_k,
+            embedding_client=embedding_client,
+            vector_store=vector_store,
+            vector_store_name=vector_store_name,
+        )
     raise ValueError(f"unknown retrieval backend: {backend}")
 
 
@@ -224,6 +241,7 @@ def score_cases(
     query_source: str,
     retrieval_backend: str,
     variants_by_case: dict[str, list[str]] | None = None,
+    vector_store_name: str = "local",
 ) -> list[QueryResult]:
     return score_cases_with_metrics(
         cases,
@@ -231,6 +249,7 @@ def score_cases(
         query_source=query_source,
         retrieval_backend=retrieval_backend,
         variants_by_case=variants_by_case,
+        vector_store_name=vector_store_name,
     )[0]
 
 
@@ -240,11 +259,14 @@ def score_cases_with_metrics(
     query_source: str,
     retrieval_backend: str,
     variants_by_case: dict[str, list[str]] | None = None,
+    vector_store_name: str = "local",
 ) -> tuple[list[QueryResult], dict[str, Any]]:
     index_started = time.perf_counter()
     index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
     index_ms = (time.perf_counter() - index_started) * 1000
     embedding_client = OpenAIEmbeddingClient() if retrieval_backend in {"vector", "hybrid"} else None
+    selected_store = selected_vector_store_name(vector_store_name)
+    vector_store = PineconeVectorStore.from_env() if retrieval_backend in {"vector", "hybrid"} and selected_store == "pinecone" else None
     query_texts = all_query_texts(cases, query_source, variants_by_case=variants_by_case)
     corpus_cache_before = embedding_client.cache_presence(index.corpus_embedding_texts()) if embedding_client else None
     query_cache_before = embedding_client.cache_presence(query_texts) if embedding_client else None
@@ -268,6 +290,8 @@ def score_cases_with_metrics(
                     top_k=max(top_k * 5, top_k),
                     backend=retrieval_backend,
                     embedding_client=embedding_client,
+                    vector_store=vector_store,
+                    vector_store_name=selected_store,
                 )
             )
         retrieval_ms = (time.perf_counter() - retrieval_started) * 1000
@@ -323,6 +347,7 @@ def score_cases_with_metrics(
         "index_ms": round(index_ms, 3),
         "chunks": len(index.chunks),
         "cache_mode": "current",
+        "vector_store": selected_store if retrieval_backend in {"vector", "hybrid"} else "n/a",
         "embedding": _embedding_run_metadata(embedding_client, corpus_cache_before, query_cache_before),
     }
     return results, run_metadata
@@ -541,6 +566,12 @@ def main() -> int:
         default="bm25",
         help="Retrieval backend to evaluate.",
     )
+    parser.add_argument(
+        "--vector-store",
+        choices=("local", "pinecone"),
+        default="local",
+        help="Vector storage backend for vector/hybrid retrieval.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(args.cases)
@@ -569,6 +600,7 @@ def main() -> int:
             query_source=args.query_source,
             retrieval_backend=args.retrieval_backend,
             variants_by_case=variants_by_case,
+            vector_store_name=args.vector_store,
         )
     )
 
@@ -592,6 +624,7 @@ def main() -> int:
                 "scored_cases": len(results),
                 "query_source": args.query_source,
                 "retrieval_backend": args.retrieval_backend,
+                "vector_store": args.vector_store,
                 "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
                 "report": str(args.report.resolve().relative_to(ROOT)),
             },

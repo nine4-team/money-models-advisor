@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .advisor_queries import SourceNeed, build_advisor_queries
-from .advisor_retrieval import RETRIEVAL_BACKENDS, execute_advisor_queries
+from .advisor_retrieval import RETRIEVAL_BACKENDS, VECTOR_STORES, execute_advisor_queries
 from .business_context import advisor_paths, ensure_advisor_state, utc_now
 from .calculator import (
     UnitEconomics,
@@ -20,9 +20,11 @@ from .calculator import (
     payback_period_months,
 )
 from .diagnose import diagnose
+from .embeddings import OpenAIEmbeddingClient
 from .retrieval import CorpusIndex
 from .setup_intake import load_answers, run_setup
 from .snapshot import BusinessSnapshot
+from .vector_store import PineconeVectorStore, VectorStoreError
 
 LAYERS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
 
@@ -42,6 +44,13 @@ def _build_parser() -> argparse.ArgumentParser:
     source_material.add_argument("--layer", choices=LAYERS)
     source_material.add_argument("--top-k", type=int, default=5)
     source_material.add_argument("--backend", choices=RETRIEVAL_BACKENDS, default="bm25")
+    source_material.add_argument("--vector-store", choices=VECTOR_STORES, default="local")
+
+    index_cmd = subparsers.add_parser("index", help="Manage hosted retrieval indexes")
+    index_subparsers = index_cmd.add_subparsers(dest="index_command", required=True)
+    pinecone = index_subparsers.add_parser("pinecone", help="Upsert corpus chunks to Pinecone")
+    pinecone.add_argument("--namespace", help="Pinecone namespace; defaults to MMA_PINECONE_NAMESPACE or money-models")
+    pinecone.add_argument("--batch-size", type=int, default=64)
 
     calc = subparsers.add_parser("calculate", help="Run deterministic unit-economics formulas")
     calc.add_argument("metric", choices=("cac", "gross-profit", "gross-margin", "ltgp", "payback", "cfa-level"))
@@ -97,10 +106,12 @@ def main(argv: list[str] | None = None) -> int:
                 _repo_root() / "corpus" / "transcripts",
                 top_k=args.top_k,
                 retrieval_backend=args.backend,
+                vector_store=args.vector_store,
             )
             payload = {
                 "business_dir": str(paths.business_dir),
                 "retrieval_backend": args.backend,
+                "vector_store": args.vector_store,
                 "source_need": _source_need_to_dict(source_need),
                 "queries": [query.to_dict() for query in queries],
                 "source_material": [item.to_dict() for item in evidence],
@@ -111,12 +122,13 @@ def main(argv: list[str] | None = None) -> int:
         if not args.query:
             parser.error("search requires a raw query or --source-need-json")
         index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts")
-        results = _search_index(index, args.query, layer=args.layer, top_k=args.top_k, backend=args.backend)
+        results = _search_index(index, args.query, layer=args.layer, top_k=args.top_k, backend=args.backend, vector_store=args.vector_store)
         payload = {
             "query": args.query,
             "layer": args.layer,
             "top_k": args.top_k,
             "retrieval_backend": args.backend,
+            "vector_store": args.vector_store,
             "source_material": [
                 {
                     "id": result.chunk.id,
@@ -130,6 +142,29 @@ def main(argv: list[str] | None = None) -> int:
                 }
                 for result in results
             ],
+        }
+        print(json.dumps(payload, indent=2))
+        return 0
+
+    if args.command == "index" and args.index_command == "pinecone":
+        index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts")
+        embedding_client = OpenAIEmbeddingClient()
+        records = index.vector_records(embedding_client)
+        store = PineconeVectorStore.from_env()
+        upserted = 0
+        try:
+            for start in range(0, len(records), args.batch_size):
+                upserted += store.upsert(records[start : start + args.batch_size], namespace=args.namespace)
+        except VectorStoreError as exc:
+            raise SystemExit(str(exc)) from exc
+        payload = {
+            "vector_store": "pinecone",
+            "namespace": args.namespace or store.default_namespace,
+            "chunks": len(index.chunks),
+            "records_upserted": upserted,
+            "embedding_model": embedding_client.model,
+            "chunking_strategy": index.strategy.name,
+            "embedding_cache": embedding_client.stats.to_dict(),
         }
         print(json.dumps(payload, indent=2))
         return 0
@@ -337,13 +372,14 @@ def _search_index(
     layer: str | None,
     top_k: int,
     backend: str,
+    vector_store: str = "local",
 ):
     if backend == "bm25":
         return index.search(query, layer=layer, top_k=top_k)
     if backend == "vector":
-        return index.vector_search(query, layer=layer, top_k=top_k)
+        return index.vector_search(query, layer=layer, top_k=top_k, vector_store_name=vector_store)
     if backend == "hybrid":
-        return index.hybrid_search(query, layer=layer, top_k=top_k)
+        return index.hybrid_search(query, layer=layer, top_k=top_k, vector_store_name=vector_store)
     raise SystemExit(f"unknown retrieval backend: {backend}")
 
 

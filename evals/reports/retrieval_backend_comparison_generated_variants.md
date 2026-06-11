@@ -6,6 +6,7 @@ This report compares retrieval backends after the agent has already generated a 
 
 - Query source: `generated_variants`
 - Top K: `5`
+- Vector store: `local`
 - Vector backend: OpenAI embeddings with disk cache under `.cache/embeddings/`.
 - Hybrid backend: reciprocal-rank fusion over BM25 and vector rankings.
 
@@ -23,14 +24,14 @@ Known-useful labels are seed relevance labels, not exhaustive judgments. This co
 
 | Backend | p50 Total | p95 Total | p50 Retrieval | p95 Retrieval | p50 Embedding | p95 Embedding | Avg Queries | Avg Variants | Vector Searches | Query Cache Hit Rate | Corpus Cache Hit Rate | API Batches | Estimated Cost | Est. Cost / 1K Queries |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| `bm25` | 0.948 ms | 3.703 ms | 0.8 ms | 2.995 ms | 0.0 ms | 0.0 ms | 4.0 | 3.0 | 0 | n/a | n/a | 0 | $0.00000000 | $0.00000000 |
-| `vector` | 41.559 ms | 108.537 ms | 41.349 ms | 108.302 ms | 3.023 ms | 3.544 ms | 4.0 | 3.0 | 120 | 100.0% | 100.0% | 0 | $0.00000000 | $0.00000000 |
-| `hybrid` | 40.63 ms | 110.338 ms | 40.401 ms | 110.124 ms | 2.121 ms | 2.342 ms | 4.0 | 3.0 | 120 | 100.0% | 100.0% | 0 | $0.00000000 | $0.00000000 |
+| `bm25` | 1.117 ms | 3.589 ms | 0.929 ms | 2.626 ms | 0.0 ms | 0.0 ms | 4.0 | 3.0 | 0 | n/a | n/a | 0 | $0.00000000 | $0.00000000 |
+| `vector` | 42.939 ms | 115.279 ms | 42.695 ms | 115.085 ms | 2.971 ms | 3.824 ms | 4.0 | 3.0 | 120 | 100.0% | 100.0% | 0 | $0.00000000 | $0.00000000 |
+| `hybrid` | 44.863 ms | 111.096 ms | 44.63 ms | 110.874 ms | 2.212 ms | 3.948 ms | 4.0 | 3.0 | 120 | 100.0% | 100.0% | 0 | $0.00000000 | $0.00000000 |
 
 ## Cache State
 
-- `vector`: cache mode `current`, namespace `openai/text-embedding-3-small`, query cache complete before run: `True`, cache dir `/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small`.
-- `hybrid`: cache mode `current`, namespace `openai/text-embedding-3-small`, query cache complete before run: `True`, cache dir `/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small`.
+- `vector`: vector store `local`, cache mode `current`, namespace `openai/text-embedding-3-small`, query cache complete before run: `True`, cache dir `/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small`.
+- `hybrid`: vector store `local`, cache mode `current`, namespace `openai/text-embedding-3-small`, query cache complete before run: `True`, cache dir `/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small`.
 
 ## Dataset
 

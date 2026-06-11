@@ -1,6 +1,6 @@
 # Tooling Shortlist
 
-Current recommendation for the next build pass: keep the product agent-first and CLI-backed, use setup/intake to build a `BusinessSnapshot`, and add Pinecone behind a retrieval storage boundary. The local backend remains the fast eval baseline; Pinecone demonstrates the hosted retrieval path. A web UI should come after the shared advisor/retrieval core is clean enough to reuse.
+Current recommendation for the next build pass: keep the product agent-first and CLI-backed, use setup/intake to build a `BusinessSnapshot`, and run Pinecone parity now that the vector-store boundary exists. The local backend remains the fast eval baseline; Pinecone demonstrates the hosted retrieval path. A web UI should come after the shared advisor/retrieval core is clean enough to reuse.
 
 ## Recommended stack
 

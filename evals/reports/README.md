@@ -80,6 +80,8 @@ python3 scripts/compare_retrieval_backends.py --query-source generated \
 
 `compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval after source-need generation has passed its seed gate. Vector search uses OpenAI embeddings only for deterministic vectorization and caches embeddings under `.cache/embeddings/` for cost savings. The command now writes Markdown plus machine-readable artifacts beside the report: `<report-stem>_summary.json` and `<report-stem>_cases.jsonl`. These artifacts include quality, p50/p95 latency, query/variant counts, vector-search counts, corpus/query embedding cache behavior, and estimated embedding cost.
 
+Use `--vector-store local` for the default local eval path. After running `PYTHONPATH=src python3 -m money_model_architect.cli index pinecone`, use `--vector-store pinecone` to run the same golden search-query evals against Pinecone-backed vector storage. Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`.
+
 For active source-need generation checks, use:
 
 ```bash

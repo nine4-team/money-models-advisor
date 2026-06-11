@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import eval_search_query_quality as query_eval  # noqa: E402
 from money_model_architect.embeddings import EmbeddingError  # noqa: E402
+from money_model_architect.vector_store import VectorStoreError  # noqa: E402
 
 
 BACKENDS = ("bm25", "vector", "hybrid")
@@ -123,6 +124,7 @@ def estimate_embedding_cost(embedding: dict[str, object]) -> float:
 def render_report(
     query_source: str,
     top_k: int,
+    vector_store: str,
     summaries: dict[str, dict[str, object]],
     errors: dict[str, str],
     run_metadata: dict[str, dict[str, object]],
@@ -136,6 +138,7 @@ def render_report(
         "",
         f"- Query source: `{query_source}`",
         f"- Top K: `{top_k}`",
+        f"- Vector store: `{vector_store}`",
         "- Vector backend: OpenAI embeddings with disk cache under `.cache/embeddings/`.",
         "- Hybrid backend: reciprocal-rank fusion over BM25 and vector rankings.",
         "",
@@ -209,7 +212,7 @@ def render_report(
             if not isinstance(embedding, dict) or not embedding.get("model"):
                 continue
             lines.append(
-                f"- `{backend}`: cache mode `{embedding.get('cache_mode')}`, namespace `{embedding.get('cache_namespace')}`, "
+                f"- `{backend}`: vector store `{metadata.get('vector_store')}`, cache mode `{embedding.get('cache_mode')}`, namespace `{embedding.get('cache_namespace')}`, "
                 f"query cache complete before run: `{embedding.get('cache_was_complete_for_queries')}`, "
                 f"cache dir `{embedding.get('cache_dir')}`."
             )
@@ -284,11 +287,12 @@ def display_path(path: Path) -> str:
         return str(resolved)
 
 
-def case_row(result: query_eval.QueryResult, query_source: str) -> dict[str, object]:
+def case_row(result: query_eval.QueryResult, query_source: str, vector_store: str) -> dict[str, object]:
     return {
         "case_id": result.case_id,
         "retriever": result.retrieval_backend,
         "query_source": query_source,
+        "vector_store": "n/a" if result.retrieval_backend == "bm25" else vector_store,
         "hit_at_3": result.useful_at_3,
         "hit_at_5": result.useful_at_5,
         "rank": result.known_useful_rank,
@@ -326,6 +330,7 @@ def main() -> int:
     )
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "retrieval_backend_comparison.md")
+    parser.add_argument("--vector-store", choices=("local", "pinecone"), default="local")
     parser.add_argument("--summary-json", type=Path)
     parser.add_argument("--cases-jsonl", type=Path)
     parser.add_argument(
@@ -368,16 +373,17 @@ def main() -> int:
                 query_source=args.query_source,
                 retrieval_backend=backend,
                 variants_by_case=variants_by_case,
+                vector_store_name=args.vector_store,
             )
-        except EmbeddingError as exc:
+        except (EmbeddingError, VectorStoreError) as exc:
             errors[backend] = str(exc)
             continue
         summaries[backend] = summarize(results)
         run_metadata[backend] = metadata
-        case_rows.extend(case_row(result, args.query_source) for result in results)
+        case_rows.extend(case_row(result, args.query_source, args.vector_store) for result in results)
 
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(render_report(args.query_source, args.top_k, summaries, errors, run_metadata), encoding="utf-8")
+    args.report.write_text(render_report(args.query_source, args.top_k, args.vector_store, summaries, errors, run_metadata), encoding="utf-8")
     summary_json = args.summary_json or args.report.with_name(f"{args.report.stem}_summary.json")
     cases_jsonl = args.cases_jsonl or args.report.with_name(f"{args.report.stem}_cases.jsonl")
     summary_json.write_text(
@@ -385,6 +391,7 @@ def main() -> int:
             {
                 "cases": len(cases),
                 "query_source": args.query_source,
+                "vector_store": args.vector_store,
                 "top_k": args.top_k,
                 "summaries": summaries,
                 "errors": errors,
@@ -406,6 +413,7 @@ def main() -> int:
                 "cases": len(cases),
                 "query_source": args.query_source,
                 "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
+                "vector_store": args.vector_store,
                 "summaries": summaries,
                 "errors": errors,
                 "report": display_path(args.report),

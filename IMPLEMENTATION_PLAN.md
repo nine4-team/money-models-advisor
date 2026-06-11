@@ -353,19 +353,19 @@ Design:
 - Add `PineconeVectorStore` as the first hosted implementation.
 - Keep BM25 lexical search local; hybrid retrieval should fuse BM25 results with whichever vector store is selected.
 - Keep embedding generation and cache behavior separate from vector storage. The vector store stores/query vectors; the embedding client creates vectors and records cache/cost metrics.
-- Use environment/config selection such as `MMA_VECTOR_BACKEND=local|pinecone`.
+- Use environment/config selection such as `MMA_VECTOR_STORE=local|pinecone`.
 - Required Pinecone metadata per chunk: `chunk_id`, `chapter`, `layer`, `layers`, `char_start`, `char_end`, `embedding_model`, `chunking_strategy`, `content_hash`, and enough text or text reference to support citation rendering.
 - Use stable vector ids such as `{chunking_strategy}:{embedding_model}:{chunk_id}` so re-indexing is idempotent.
 
 Build order:
 
-1. Add the `VectorStore` protocol and local implementation without changing retrieval quality.
-2. Move current in-memory vector search through that boundary.
-3. Add Pinecone config and client wrapper.
-4. Add an indexing command that upserts heading-aware corpus chunks to Pinecone with metadata.
-5. Add a Pinecone-backed vector search path and keep hybrid fusion unchanged above it.
-6. Extend backend comparison so vector/hybrid can run against local or Pinecone vector storage.
-7. Run the same golden search-query evals against local and Pinecone and record parity, latency, cache behavior, and cost.
+1. Add the `VectorStore` protocol and local implementation without changing retrieval quality. **Done.**
+2. Move current in-memory vector search through that boundary. **Done.**
+3. Add Pinecone config and client wrapper. **Done.**
+4. Add an indexing command that upserts heading-aware corpus chunks to Pinecone with metadata. **Done.**
+5. Add a Pinecone-backed vector search path and keep hybrid fusion unchanged above it. **Done.**
+6. Extend backend comparison so vector/hybrid can run against local or Pinecone vector storage. **Done.**
+7. Run the same golden search-query evals against local and Pinecone and record parity, latency, cache behavior, and cost. **Pending Pinecone credentials/index host.**
 
 Acceptance criteria:
 
@@ -382,6 +382,15 @@ Non-goals:
 - Do not move BM25 into Pinecone.
 - Do not make Pinecone required for local tests.
 - Do not add web UI in the same implementation pass; the adapter prepares the core for a hosted surface.
+
+Current status:
+
+- `src/money_model_architect/vector_store.py` defines `VectorStore`, `LocalVectorStore`, and `PineconeVectorStore`.
+- `CorpusIndex.vector_search` now routes vector retrieval through the selected vector store.
+- `search --vector-store local|pinecone` and backend comparison `--vector-store local|pinecone` are implemented.
+- `index pinecone` upserts heading-aware corpus chunk vectors to Pinecone using stable ids and chunk metadata.
+- Local adapter parity is verified: generated and generated-variants reports preserve the previous quality results through `--vector-store local`.
+- Pinecone parity eval is not yet run because `PINECONE_API_KEY` and `PINECONE_INDEX_HOST` are not configured.
 
 ## Phase 4 — Robust Local Evaluation Methodology
 

@@ -8,7 +8,7 @@ The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an a
 
 This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
 
-The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs CLI commands against saved state. Embedding API use is allowed for deterministic vectorization only. The next retrieval infrastructure step is a Pinecone-backed vector store behind the same boundary as local vector search, so a future web-hosted version can reuse the same core.
+The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs CLI commands against saved state. Embedding API use is allowed for deterministic vectorization only. Retrieval now has a local/Pinecone vector-store boundary, so a future web-hosted version can reuse the same core.
 
 If the user provides missing information, the agent saves it back into the snapshot. The web app should be a second surface over the same advisor/retrieval core, not a separate implementation.
 
@@ -144,6 +144,18 @@ python3 scripts/compare_retrieval_backends.py --query-source generated_variants 
 
 `compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval on the same generated-query cases. Vector search uses the OpenAI embeddings API only for vectorization; agent planning, labeling, source-need generation, and answer synthesis remain Codex/CLI operated. Embeddings are cached under `.cache/embeddings/` so repeated runs reuse corpus and query vectors instead of paying for the same inputs again.
 
+Pinecone-backed retrieval uses the same generated-query cases after the corpus has been indexed:
+
+```bash
+PYTHONPATH=src python3 -m money_model_architect.cli index pinecone
+
+python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
+  --vector-store pinecone \
+  --report evals/reports/retrieval_backend_comparison_generated_variants_pinecone.md
+```
+
+Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`. Local tests and local evals continue to use `--vector-store local`.
+
 Score source-need generation traces:
 
 ```bash
@@ -210,7 +222,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Agent-led local doc inspection before snapshot updates.
-- Add a Pinecone-backed vector store behind the retrieval storage boundary while keeping local retrieval as the fast eval baseline.
-- Run the same golden retrieval evals against local and Pinecone-backed vector storage.
+- Configure Pinecone credentials/index host, index the corpus, and run the same golden retrieval evals against Pinecone-backed vector storage.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.
 - Local-only richer evals, CI gates, and trace inspection.

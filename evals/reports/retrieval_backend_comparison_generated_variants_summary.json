@@ -1,6 +1,7 @@
 {
   "cases": 30,
   "query_source": "generated_variants",
+  "vector_store": "local",
   "top_k": 5,
   "summaries": {
     "bm25": {
@@ -11,10 +12,10 @@
       "any_expected_layer_at_5": "100.0%",
       "mean_known_useful_rank": 1.3,
       "misses_at_5": [],
-      "p50_total_ms": 0.948,
-      "p95_total_ms": 3.703,
-      "p50_retrieval_ms": 0.8,
-      "p95_retrieval_ms": 2.995,
+      "p50_total_ms": 1.117,
+      "p95_total_ms": 3.589,
+      "p50_retrieval_ms": 0.929,
+      "p95_retrieval_ms": 2.626,
       "p50_embedding_ms": 0.0,
       "p95_embedding_ms": 0.0,
       "average_query_count": 4.0,
@@ -37,12 +38,12 @@
       "any_expected_layer_at_5": "100.0%",
       "mean_known_useful_rank": 1.37,
       "misses_at_5": [],
-      "p50_total_ms": 41.559,
-      "p95_total_ms": 108.537,
-      "p50_retrieval_ms": 41.349,
-      "p95_retrieval_ms": 108.302,
-      "p50_embedding_ms": 3.023,
-      "p95_embedding_ms": 3.544,
+      "p50_total_ms": 42.939,
+      "p95_total_ms": 115.279,
+      "p50_retrieval_ms": 42.695,
+      "p95_retrieval_ms": 115.085,
+      "p50_embedding_ms": 2.971,
+      "p95_embedding_ms": 3.824,
       "average_query_count": 4.0,
       "average_variant_count": 3.0,
       "vector_search_count": 120,
@@ -59,7 +60,7 @@
             "input_chars": 537158,
             "api_input_chars": 0,
             "estimated_api_input_tokens": 0,
-            "elapsed_ms": 102.653,
+            "elapsed_ms": 104.311,
             "cache_hit_rate": 1.0
           },
           "query": {
@@ -70,7 +71,7 @@
             "input_chars": 7351,
             "api_input_chars": 0,
             "estimated_api_input_tokens": 0,
-            "elapsed_ms": 88.341,
+            "elapsed_ms": 88.964,
             "cache_hit_rate": 1.0
           }
         }
@@ -86,12 +87,12 @@
       "any_expected_layer_at_5": "100.0%",
       "mean_known_useful_rank": 1.17,
       "misses_at_5": [],
-      "p50_total_ms": 40.63,
-      "p95_total_ms": 110.338,
-      "p50_retrieval_ms": 40.401,
-      "p95_retrieval_ms": 110.124,
-      "p50_embedding_ms": 2.121,
-      "p95_embedding_ms": 2.342,
+      "p50_total_ms": 44.863,
+      "p95_total_ms": 111.096,
+      "p50_retrieval_ms": 44.63,
+      "p95_retrieval_ms": 110.874,
+      "p50_embedding_ms": 2.212,
+      "p95_embedding_ms": 3.948,
       "average_query_count": 4.0,
       "average_variant_count": 3.0,
       "vector_search_count": 120,
@@ -108,7 +109,7 @@
             "input_chars": 537158,
             "api_input_chars": 0,
             "estimated_api_input_tokens": 0,
-            "elapsed_ms": 92.465,
+            "elapsed_ms": 95.698,
             "cache_hit_rate": 1.0
           },
           "query": {
@@ -119,7 +120,7 @@
             "input_chars": 7351,
             "api_input_chars": 0,
             "estimated_api_input_tokens": 0,
-            "elapsed_ms": 63.084,
+            "elapsed_ms": 69.096,
             "cache_hit_rate": 1.0
           }
         }
@@ -131,9 +132,10 @@
   "errors": {},
   "run_metadata": {
     "bm25": {
-      "index_ms": 31.142,
+      "index_ms": 25.246,
       "chunks": 202,
       "cache_mode": "current",
+      "vector_store": "n/a",
       "embedding": {
         "model": null,
         "cache_namespace": null,
@@ -145,9 +147,10 @@
       }
     },
     "vector": {
-      "index_ms": 24.776,
+      "index_ms": 25.721,
       "chunks": 202,
       "cache_mode": "current",
+      "vector_store": "local",
       "embedding": {
         "model": "text-embedding-3-small",
         "cache_namespace": "openai/text-embedding-3-small",
@@ -181,7 +184,7 @@
               "input_chars": 537158,
               "api_input_chars": 0,
               "estimated_api_input_tokens": 0,
-              "elapsed_ms": 102.653
+              "elapsed_ms": 104.311
             },
             "query": {
               "cache_hits": 120,
@@ -192,16 +195,17 @@
               "input_chars": 7351,
               "api_input_chars": 0,
               "estimated_api_input_tokens": 0,
-              "elapsed_ms": 88.341
+              "elapsed_ms": 88.964
             }
           }
         }
       }
     },
     "hybrid": {
-      "index_ms": 27.611,
+      "index_ms": 24.921,
       "chunks": 202,
       "cache_mode": "current",
+      "vector_store": "local",
       "embedding": {
         "model": "text-embedding-3-small",
         "cache_namespace": "openai/text-embedding-3-small",
@@ -235,7 +239,7 @@
               "input_chars": 537158,
               "api_input_chars": 0,
               "estimated_api_input_tokens": 0,
-              "elapsed_ms": 92.465
+              "elapsed_ms": 95.698
             },
             "query": {
               "cache_hits": 120,
@@ -246,7 +250,7 @@
               "input_chars": 7351,
               "api_input_chars": 0,
               "estimated_api_input_tokens": 0,
-              "elapsed_ms": 63.084
+              "elapsed_ms": 69.096
             }
           }
         }

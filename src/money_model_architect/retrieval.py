@@ -6,11 +6,21 @@ import math
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from hashlib import sha256
 from pathlib import Path
 from typing import Protocol
 
 from .embeddings import OpenAIEmbeddingClient, cosine_similarity
 from .namespaces import route_for_chapter
+from .vector_store import (
+    LocalVectorStore,
+    PineconeVectorStore,
+    VectorRecord,
+    VectorStore,
+    chunk_id_from_vector_id,
+    selected_vector_store_name,
+    vector_id,
+)
 
 TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
 HEADING_RE = re.compile(r"(?=## \[§[^]]+\])")
@@ -215,20 +225,34 @@ class CorpusIndex:
         layer: str | None = None,
         top_k: int = 5,
         embedding_client: EmbeddingClient | None = None,
+        vector_store: VectorStore | None = None,
+        vector_store_name: str | None = None,
     ) -> list[SearchResult]:
         if not query.strip():
             return []
         client = embedding_client or OpenAIEmbeddingClient()
-        self._ensure_chunk_embeddings(client)
         query_embedding = client.embed_texts([query], purpose="query")[0]
+        store = vector_store or self._build_vector_store(client, vector_store_name=vector_store_name)
+        filter_payload = {"layers": {"$in": [layer]}} if layer else None
+        requested_top_k = max(top_k * 10, top_k)
+        matches = store.query(
+            query_embedding,
+            top_k=requested_top_k,
+            namespace=None,
+            filter=filter_payload,
+        )
+        chunk_by_id = {chunk.id: chunk for chunk in self.chunks}
 
         results: list[SearchResult] = []
-        for chunk in self.chunks:
+        for match in matches:
+            chunk_id = str(match.metadata.get("chunk_id") or chunk_id_from_vector_id(match.id))
+            chunk = chunk_by_id.get(chunk_id)
+            if chunk is None:
+                continue
             if layer and layer not in chunk.layers:
                 continue
-            score = cosine_similarity(query_embedding, self._chunk_embeddings[chunk.id])
-            if score > 0:
-                results.append(SearchResult(chunk=chunk, score=score))
+            if match.score > 0:
+                results.append(SearchResult(chunk=chunk, score=match.score))
         results.sort(key=lambda result: result.score, reverse=True)
         return results[:top_k]
 
@@ -238,6 +262,8 @@ class CorpusIndex:
         layer: str | None = None,
         top_k: int = 5,
         embedding_client: EmbeddingClient | None = None,
+        vector_store: VectorStore | None = None,
+        vector_store_name: str | None = None,
         rrf_k: int = 60,
     ) -> list[SearchResult]:
         bm25_results = self.search(query, layer=layer, top_k=max(top_k * 5, top_k))
@@ -246,6 +272,8 @@ class CorpusIndex:
             layer=layer,
             top_k=max(top_k * 5, top_k),
             embedding_client=embedding_client,
+            vector_store=vector_store,
+            vector_store_name=vector_store_name,
         )
 
         chunks_by_id = {result.chunk.id: result.chunk for result in [*bm25_results, *vector_results]}
@@ -292,10 +320,56 @@ class CorpusIndex:
     def corpus_embedding_texts(self) -> list[str]:
         return [_embedding_text(chunk) for chunk in self.chunks]
 
+    def vector_records(self, embedding_client: EmbeddingClient) -> list[VectorRecord]:
+        self._ensure_chunk_embeddings(embedding_client)
+        model = getattr(embedding_client, "model", "unknown-model")
+        records = []
+        for chunk in self.chunks:
+            records.append(
+                VectorRecord(
+                    id=vector_id(
+                        chunking_strategy=self.strategy.name,
+                        embedding_model=str(model),
+                        chunk_id=chunk.id,
+                    ),
+                    values=self._chunk_embeddings[chunk.id],
+                    metadata=chunk_metadata(chunk, self.strategy.name, str(model)),
+                )
+            )
+        return records
+
+    def _build_vector_store(
+        self,
+        embedding_client: EmbeddingClient,
+        *,
+        vector_store_name: str | None = None,
+    ) -> VectorStore:
+        name = selected_vector_store_name(vector_store_name)
+        if name == "local":
+            return LocalVectorStore(self.vector_records(embedding_client))
+        if name == "pinecone":
+            return PineconeVectorStore.from_env()
+        raise ValueError("unknown vector store {!r}; expected one of: local, pinecone".format(name))
+
 
 def _embedding_text(chunk: Chunk) -> str:
     layers = ", ".join(chunk.layers)
     return f"chapter: {chunk.chapter}\nlayers: {layers}\n\n{chunk.text}"
+
+
+def chunk_metadata(chunk: Chunk, chunking_strategy: str, embedding_model: str) -> dict[str, object]:
+    return {
+        "chunk_id": chunk.id,
+        "chapter": chunk.chapter,
+        "layer": chunk.layer,
+        "layers": list(chunk.layers),
+        "char_start": chunk.char_start,
+        "char_end": chunk.char_end,
+        "embedding_model": embedding_model,
+        "chunking_strategy": chunking_strategy,
+        "content_hash": sha256(chunk.text.encode("utf-8")).hexdigest(),
+        "text": chunk.text,
+    }
 
 
 def resolve_chunking_strategy(chunking: str | ChunkingStrategy) -> ChunkingStrategy:
