@@ -19,9 +19,9 @@ These pieces remain valid:
 - source-need eval structure where acting agents generate `SourceNeed`
 - source-query quality eval when an explicit `SourceNeed` is supplied
 
-## Demote
+## Remove Or Replace
 
-These pieces should remain useful only as debugging, legacy, or scaffolding:
+These pieces should not remain in the product path:
 
 - exact focus-term substring recall: keep as a debugging metric, not a semantic quality score
 - status-driven query generation from `build_advisor_queries(snapshot)` without a `SourceNeed`
@@ -34,9 +34,8 @@ Before changing eval machinery, define the product-facing command contract:
 
 - The agent remains the semantic planner.
 - `chat` must not be the semantic answer engine in product-facing usage.
-- Either:
-  - `chat` becomes a turn-persistence command that records the user message, agent actions, source needs, tool results, and final answer; or
-  - a new command such as `turn record` is added for persistence and current `chat` is explicitly marked legacy/scaffold.
+- Add `turn record` as the persistence command.
+- Remove `chat` from the target product workflow instead of preserving a compatibility path.
 - Source-backed turns must record:
   - agent-selected `SourceNeed`
   - generated query or direct search query
@@ -62,14 +61,14 @@ Target behavior:
 - CLI commands persist turns, run deterministic functions, execute search, and record artifacts
 - `chat` no longer acts as the primary semantic planner in product-facing usage
 
-Possible v1 shape:
+V1 shape:
 
-- replace product-facing use of `chat` with a persistence-oriented turn command
-- or keep `chat` as a legacy scaffold and introduce `turn record`
+- replace product-facing use of `chat` with `turn record`
+- remove or archive deterministic `chat` synthesis rather than maintaining compatibility
 
 Why:
 
-The current `run_single_turn()` path still extracts facts, diagnoses, builds queries, retrieves evidence, and synthesizes answers in one deterministic path. That is useful scaffolding, but it blurs the agent/CLI boundary.
+The current `run_single_turn()` path still extracts facts, diagnoses, builds queries, retrieves evidence, and synthesizes answers in one deterministic path. That blurs the agent/CLI boundary and should not remain active in the target architecture.
 
 ### 2. Require Explicit SourceNeed For Product Search
 
@@ -77,8 +76,8 @@ Target behavior:
 
 - production source search is driven by agent-selected `SourceNeed`
 - `build_advisor_queries(snapshot, source_need=...)` remains the active path
-- `build_advisor_queries(snapshot)` without a source need is kept only for legacy/debug tests or removed from product-facing flow
-- product-facing tests assert that status-driven query generation is not used by `chat`/turn flow
+- remove or archive `build_advisor_queries(snapshot)` without a source need
+- product-facing tests assert that status-driven query generation is not used by turn flow
 
 Why:
 
@@ -144,7 +143,7 @@ Artifact shape:
 1. Define the product command contract for turn persistence.
 2. Stop product-facing `chat`/turn flow from auto-planning or searching without an explicit source need.
 3. Add a concrete source-need search surface, preferably `search --source-need-json ...`.
-4. Mark status-driven query generation as legacy/debug.
+4. Remove or archive status-driven query generation.
 5. Update tests so product-facing query construction requires explicit `SourceNeed`.
 6. Adjust the advisor skill and operating guide so agents call `search` only after generating a source need.
 
@@ -165,11 +164,11 @@ Artifact shape:
 ## Acceptance Criteria
 
 - Product-facing source search has an explicit `SourceNeed`.
-- Product-facing `chat`/turn flow does not call `build_advisor_queries(snapshot)` without a `SourceNeed`.
-- Tests assert status-driven query generation is legacy/debug only or not used by product flow.
+- Product-facing turn flow does not call `build_advisor_queries(snapshot)` without a `SourceNeed`.
+- Tests assert status-driven query generation is removed, archived, or not used by product flow.
 - A source-backed trace records `source_need`, query, returned chunks, and cited chunk IDs.
 - No active narrative treats `build_advisor_queries(snapshot)` fallback as production behavior.
-- `chat` is documented or refactored as persistence/scaffolding, not the semantic advisor brain.
+- `chat` is removed from product-flow docs or replaced by `turn record`.
 - Source-need report includes recorded semantic coverage judgments or clearly marks exact focus recall as debug-only.
 - Query-quality report includes recorded chunk usefulness judgments before being used for retrieval-backend selection.
 - Unit tests and smoke evals pass.

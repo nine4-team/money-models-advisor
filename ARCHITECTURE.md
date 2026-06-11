@@ -16,12 +16,8 @@ read_snapshot
 update_snapshot
 → update accepted snapshot fields
 
-chat
-→ load saved BusinessSnapshot
-→ update accepted facts when obvious
-→ run deterministic calculations when fields are present
-→ retrieve local Money Models source chunks when evidence is needed
-→ persist session trace
+turn_record
+→ persist the completed agent turn, actions, source events, citations, and answer
 
 search_source_material
 → return citation-ready Money Models source chunks
@@ -60,7 +56,7 @@ The advisor reasoning happens in the agent conversation. The repo supplies the s
 - missing fields and advisory status
 - field source metadata
 
-The agent can inspect local business docs as needed before updating the snapshot. Runtime `chat` should use the saved snapshot. If the user provides a missing fact in chat, the advisor saves it to the snapshot.
+The agent can inspect local business docs as needed before updating the snapshot. Product-facing advisor flow should use the saved snapshot instead of rereading local files every turn. If the user provides a missing fact, the agent saves it to the snapshot.
 
 ## Retrieval Contract
 
@@ -123,8 +119,8 @@ The CLI should make these judgments auditable by recording prompts, traces, deci
 
 Current boundary debt:
 
-- `src/money_model_architect/advisor.py` is a deterministic v1 skeleton that still performs too much orchestration inside `chat`.
-- `src/money_model_architect/advisor_queries.py` can still build status-driven queries without a `SourceNeed`; this should be retained only as legacy/debug scaffolding until replaced by explicit agent-selected source needs.
+- `src/money_model_architect/advisor.py` is a deterministic v1 skeleton that still performs too much orchestration inside `chat`; remove it from the product path.
+- `src/money_model_architect/advisor_queries.py` can still build status-driven queries without a `SourceNeed`; remove or archive that fallback instead of preserving it for compatibility.
 - `advisor_state.likely_retrieval_layers` and `advisor_state.retrieval_query_terms` are candidate hints, not final semantic decisions.
 - Exact focus-term recall in eval scripts is a debug proxy only; semantic focus coverage and chunk usefulness need recorded agent/human adjudication.
 
@@ -180,7 +176,7 @@ Source-search query quality remains a separate eval and should only be scored fo
 | Retrieval metrics | `scripts/eval_retrieval.py` |
 | Tool use / agentic workflow | CLI commands plus `BusinessSnapshot` state |
 | Deterministic calculations | `src/money_model_architect/calculator.py` |
-| Caching for token savings | `BusinessSnapshot` caches accepted business facts so chat does not reread business files every turn |
+| Caching for token savings | `BusinessSnapshot` caches accepted business facts so the agent/CLI flow does not reread business files every turn |
 | Observability | `.money-model-advisor/sessions/` traces |
 
 ## Deliberately Out Of Scope For V1

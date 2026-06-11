@@ -29,12 +29,12 @@ The next real product slice is agent-first and CLI-backed. A human talks to an a
 | `setup_state` | `money-model-advisor setup --business-dir /path/to/company` |
 | `read_snapshot` | `money-model-advisor snapshot --business-dir /path/to/company` |
 | `update_snapshot` | `money-model-advisor snapshot set --business-dir /path/to/company field=value` |
-| `chat` | `money-model-advisor chat --business-dir /path/to/company --message ...` |
 | `calculate` | `money-model-advisor calculate ...` |
 | `search_source_material` | `money-model-advisor search ...` |
+| `turn_record` | `money-model-advisor turn record --business-dir /path/to/company ...` |
 | `logs` | `money-model-advisor logs --business-dir /path/to/company` |
 
-`setup_state` initializes local advisor state and an empty `BusinessSnapshot`. The agent inspects local business docs as needed, saves accepted facts through `update_snapshot`, then runs `chat`. `chat` uses the saved snapshot only. If the human provides missing information during chat, the advisor saves that fact back into the snapshot with source metadata. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
+`setup_state` initializes local advisor state and an empty `BusinessSnapshot`. The agent inspects local business docs as needed, saves accepted facts through `update_snapshot`, uses deterministic tools for calculations and source search, composes the answer, then records the completed turn with `turn_record`. This keeps `BusinessSnapshot` as the cache and avoids rereading local files during every advisor turn.
 
 The v1 advisor loop is operated by the agent using local CLI commands and saved state. Humans can still run the same commands directly for development, debugging, or manual control. Active work should not require external model-service keys.
 
@@ -68,8 +68,8 @@ The first next-action classification pass has been captured and scored. The firs
 
 Current boundary debt to resolve:
 
-1. Make `SourceNeed` required for production source search; keep status-driven query generation only as legacy/debug scaffolding.
-2. Split `chat` so the CLI persists turns and records artifacts, while the agent decides whether to calculate, search, clarify, or answer.
+1. Make `SourceNeed` required for production source search; remove or archive status-driven query generation.
+2. Replace deterministic product-facing `chat` with `turn_record`, so the CLI persists turns and records artifacts while the agent decides whether to calculate, search, clarify, or answer.
 3. Add an eval artifact for agent-adjudicated focus-term concept coverage and retrieved-chunk usefulness.
 
 Detailed plan: `AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md`.
@@ -81,8 +81,7 @@ flowchart TD
   A["RUN SETUP<br/>money-model-advisor setup --business-dir /company"] --> C["INITIALIZE BUSINESS SNAPSHOT<br/>empty state + sessions directory"]
   X["AGENT INSPECTS LOCAL DOCS<br/>only as needed"] --> S["SAVE ACCEPTED FACTS<br/>update BusinessSnapshot with source notes"]
 
-  C --> D["RUN CHAT<br/>money-model-advisor chat --business-dir /company"]
-  D --> E["USER MESSAGE<br/>current turn"]
+  C --> E["USER MESSAGE<br/>current turn"]
   C --> F["AGENT ADVISOR TURN<br/>use saved snapshot + available tools"]
   E --> F
 
@@ -108,11 +107,11 @@ flowchart TD
 
   P --> Q["ADVISOR ANSWER<br/>recommendation, citations, next action"]
   J --> Q
-  Q --> R["PERSIST SESSION TRACE<br/>snapshot, tool calls, chunks, answer"]
+  Q --> R["RECORD TURN<br/>snapshot, tool calls, chunks, answer"]
   R --> E
 ```
 
-In this diagram, **search source material** means: search the Money Models source corpus for chunks that can support the advisor's answer with citations. It does not mean rereading the user's local context files, searching the web, or deciding the user's intent. The agent may inspect local business docs before saving accepted facts, but the CLI `chat` path uses the snapshot. The advisor may search source material when it needs support to teach a concept, compare options, explain a diagnosis, or support a recommendation.
+In this diagram, **search source material** means: search the Money Models source corpus for chunks that can support the advisor's answer with citations. It does not mean rereading the user's local context files, searching the web, or deciding the user's intent. The agent may inspect local business docs before saving accepted facts, and product-facing turns use the snapshot. The advisor may search source material when it needs support to teach a concept, compare options, explain a diagnosis, or support a recommendation.
 
 The other tools are separate:
 
@@ -139,9 +138,9 @@ Implemented:
 - Setup/intake answer collection in `src/money_model_architect/setup_intake.py`.
 - Advisor query policy in `ADVISOR_QUERY_POLICY_V1.md` and `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and evidence capture in `src/money_model_architect/advisor_retrieval.py`.
-- First stateful advisor turn in `src/money_model_architect/advisor.py`.
-- `setup` and `chat` CLI commands.
-- Visible `chat` answer synthesis for first payback/recommendation path.
+- Deterministic stateful advisor prototype in `src/money_model_architect/advisor.py`; remove from product path.
+- `setup`, `search`, `snapshot`, and `logs` CLI commands.
+- Planned `turn record` command and source-need-driven search surface.
 - Advisor operating guide in `ADVISOR_OPERATING_GUIDE.md` and project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 - Framework-aware chunking candidate implemented, but not adopted as default.
 - Unit test for the calculator.
@@ -159,7 +158,6 @@ PYTHONPATH=src python3 scripts/compare_chunking.py
 PYTHONPATH=src python3 scripts/score_obligation_support.py --include-proposed
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business
 PYTHONPATH=src python3 -m money_model_architect.cli setup --business-dir /tmp/mma-demo-business --answers '{"business":{"business_type":"coaching business","icp":"gym owners"},"money_model":{"core_offer":{"description":"implementation program","price":5000},"attraction_offer":{"exists":true},"upsell":{"exists":false},"downsell":{"exists":true},"continuity":{"exists":false}},"economics":{"cac":350,"first_30_day_gross_profit":120},"problem":{"user_goal":"diagnose cash payback"}}'
-PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /tmp/mma-demo-business --message "We are a coaching business. Core offer is implementation program. CAC is $350 and first-30-day gross profit is $120. I want to diagnose cash payback."
 PYTHONPATH=src python3 -m money_model_architect.cli search "CAC payback period" --layer unit-economics
 PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /tmp/mma-demo-business
 PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /tmp/mma-demo-business economics.cac=350
@@ -327,18 +325,19 @@ Objective: build the smallest useful advisor loop around real local business con
 Build:
 
 - `money-model-advisor setup --business-dir <path>`. **Started as `setup`; supports `--interactive` and `--answers`.**
-- `money-model-advisor chat --business-dir <path>`. **Started as `chat`; console-script alias added.**
+- `money-model-advisor turn record --business-dir <path>`. **Planned: replace deterministic `chat` orchestration in the product path.**
 - `money-model-advisor search`. **Done: returns citation-ready local Money Models source chunks.**
+- `money-model-advisor search --source-need-json`. **Planned: source-need-driven product search.**
 - `money-model-advisor snapshot` and `snapshot set`. **Done: show/update saved `BusinessSnapshot`.**
 - `money-model-advisor logs`. **Done: show saved advisor session turns.**
 - Advisor operating guide / project-local skill. **Done.**
 - Agent-led local doc inspection before snapshot updates. **Documented in the skill; not a CLI crawler.**
 - A persisted `BusinessSnapshot` stored under `.money-model-advisor/` in the target directory. **Done.**
-- Snapshot update from setup answers and the user's chat message. **Started for setup answers and obvious user-message facts.**
-- An agent-led advisor turn that can clarify, calculate, diagnose, search source material, critique, draft, compare, teach, recommend, and update saved context. **Not yet implemented as a full agent loop inside the CLI; current skeleton covers clarify/payback diagnosis and `advisory_status` tracks `insufficient_context`, `diagnosable`, `diagnosed`, and `recommendable`.**
+- Snapshot update from setup answers and agent-saved facts. **Started for setup answers and `snapshot set`.**
+- An agent-led advisor turn that can clarify, calculate, diagnose, search source material, critique, draft, compare, teach, recommend, and update saved context. **Target: agent loop outside deterministic CLI orchestration; CLI records and executes tools.**
 - Targeted missing-field questions before diagnosis/design when the snapshot is incomplete. **Started.**
-- Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Started for the payback/recommendation path.**
-- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Started: message, actions, snapshot, planned queries, retrieved evidence, answer.**
+- Visible answer synthesis from snapshot, deterministic math, retrieved source chunks, and next action. **Agent-owned; deterministic `chat` synthesis should be removed from the product path.**
+- Session trace output with tool calls, calculations, retrieved chunks, citations, and final answer. **Planned through `turn record`.**
 
 Metrics:
 
@@ -392,10 +391,9 @@ Objective: decide whether the agent-operated advisor loop is useful enough to mo
 
 Compare:
 
-- Current `chat` skeleton.
-- `chat` with stronger visible answer synthesis from source chunks.
-- `chat` with clearer snapshot update behavior.
-- `chat` with an optional trace review step for confusing turns.
+- Agent-run workflow with explicit `SourceNeed` search and `turn record`.
+- Agent-run workflow plus focus-term semantic adjudication.
+- Agent-run workflow plus retrieved-chunk usefulness adjudication.
 
 Metrics:
 

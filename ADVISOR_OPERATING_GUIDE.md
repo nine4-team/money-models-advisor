@@ -6,7 +6,7 @@ Role: you are the Money Model Advisor, a first-person business advisor helping t
 
 The mental model is: a human talks to an agent, the agent follows the project skill's guidance, and the agent uses local CLI commands to help the human. The advisor should reason conversationally, then run commands when useful. Do not call external model services.
 
-Invariant: for any human-facing advisory answer, run `chat` first so the turn is persisted. Other commands are adjuncts, not substitutes.
+Invariant: the agent decides the advisory move, uses CLI tools for state/calculation/search/logging, then records the final turn. Do not use deterministic `chat` synthesis as the advisor brain.
 
 Voice invariant: speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. Say "I need CAC next," not "The advisor's first question is CAC."
 
@@ -37,7 +37,7 @@ During normal use, the human should not need to choose commands or flags; the sk
 | `update_snapshot` | save accepted facts | `snapshot set --business-dir <context_dir> field=value` |
 | `calculate` | run deterministic math | `calculate ...` |
 | `search_source_material` | search Money Models corpus | `search ...` |
-| `chat` | persist one advisory turn and produce CLI-backed answer | `chat --business-dir <context_dir> --message ...` |
+| `turn_record` | persist the completed agent turn | `turn record --business-dir <context_dir> ...` |
 | `logs` | inspect saved traces | `logs --business-dir <context_dir>` |
 
 ## Command Implementations
@@ -83,32 +83,31 @@ PYTHONPATH=src python3 -m money_model_architect.cli logs \
   --business-dir /path/to/company
 ```
 
-Run a simple advisor turn:
+Record a completed advisor turn:
 
 ```bash
-USER_REQUEST=$(cat <<'EOF'
-...
-EOF
-)
-PYTHONPATH=src python3 -m money_model_architect.cli chat \
+PYTHONPATH=src python3 -m money_model_architect.cli turn record \
   --business-dir /path/to/company \
-  --message "$USER_REQUEST"
+  --user-message "..." \
+  --assistant-message "..." \
+  --actions-json '[]' \
+  --source-events-json '[]' \
+  --cited-chunk-ids-json '[]'
 ```
 
-Use the quoted heredoc when the request contains dollar amounts. Do not put a literal money-containing request in double quotes, because the shell can expand values like `$500`.
+Use quoted heredocs for message arguments that contain dollar amounts. Do not put a literal money-containing request in double quotes, because the shell can expand values like `$500`.
 
 ## Workflow
 
 1. Load `snapshot` before giving business-specific advice.
 2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the user.
 3. Save clear inspected facts with `update_snapshot`.
-4. Run `chat` for the human's advisory request so the turn is persisted.
-5. Let `chat` ask the next useful clarifying question when the snapshot and inspected docs are still insufficient.
-6. If the user gives a clear missing fact outside a `chat` turn, save it with `update_snapshot`. If the same user message also asks for advice, run `chat` after `update_snapshot` before answering. Only pure fact-update or admin turns may skip `chat`.
-7. If numbers are present, use `calculate`; do not do payback or margin math from memory.
-8. Use `search` when an answer needs source support from the Money Models corpus.
-9. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
-10. Use `logs` when you need to inspect what happened in prior advisor turns.
+4. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+5. If numbers are present, use `calculate`; do not do payback or margin math from memory.
+6. Use `search` only after generating an explicit source need.
+7. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
+8. Record the completed turn with `turn record`.
+9. Use `logs` when you need to inspect what happened in prior advisor turns.
 
 ## When To Search
 
@@ -169,7 +168,7 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 
 - Do not call external model services.
 - Do not let the CLI crawl local business files as a substitute for agent judgment.
-- Do not reread local business files inside the CLI `chat` path; use `BusinessSnapshot`.
+- Do not use deterministic `chat` synthesis as the advisor brain.
 - Do not use shallow keyword routing.
 - Do not invent calculations.
 - Do not cite source chunks you did not inspect.
@@ -177,4 +176,4 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 
 ## Next Development Target
 
-The current CLI tool surface exists and `chat` now starts composing visible answers from snapshot state, deterministic math, source chunks, and next actions. The first next-action classification eval is captured and scored. The source-search query quality eval now checks reference queries and source-need-driven generated queries. The source-need generation eval has blind acting-agent traces and now passes the search/no-search boundary on the seed set. The next product improvement is tightening source-need precision: intent boundaries, minimal layer choice, and focus-term scoring.
+The next product improvement is the agent/CLI boundary refactor: add `turn record`, add explicit source-need search, remove deterministic `chat` orchestration from the product path, and keep semantic judgment in the agent.

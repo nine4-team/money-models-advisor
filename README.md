@@ -8,7 +8,7 @@ This repo also includes a small local proof harness so the core modeling decisio
 
 The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI commands against saved local state. The active project direction does not call external model services.
 
-If the user provides missing information during chat, the advisor saves it back into the snapshot. The web app can wait until that loop is actually good.
+If the user provides missing information, the agent saves it back into the snapshot. The web app can wait until that loop is actually good.
 
 ## Advisor skill
 
@@ -16,7 +16,7 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 ## Local proof harness
 
-These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `chat`, `calculate`, `search_source_material`, and `logs`.
+These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `calculate`, `search_source_material`, `turn_record`, and `logs`.
 
 Current dev focus: repair the agent/CLI boundary before adding retrieval complexity. The project keeps the ladder separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, source-need generation asks what source support is needed when search is appropriate. Third, search-query quality asks whether that source need retrieves useful Money Models chunks. The current boundary-refactor plan is in `AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md`.
 
@@ -157,7 +157,7 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - A chunking comparison report in `evals/reports/chunking_comparison.md`; `heading-aware` remains the default, while `framework-aware` is tracked as a candidate.
 - A 65-label reviewed required-claim support set in `evals/obligations.jsonl`, plus a local review UI in `scripts/review_obligations.py`.
 - A required-claim support scorer in `scripts/score_obligation_support.py`; accepted-label BM25 heading-aware coverage is currently 87.69%.
-- A corrected architecture direction for setup/intake plus snapshot-backed chat.
+- A corrected architecture direction for setup/intake plus snapshot-backed agent operation.
 - `BusinessSnapshot v1` implemented in `src/money_model_architect/snapshot.py`.
 - Setup/intake state directory implemented in `src/money_model_architect/business_context.py`.
 - Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
@@ -165,13 +165,13 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
 - Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
-- First stateful advisor turn implemented in `src/money_model_architect/advisor.py`, with `setup`, `chat`, `search`, `snapshot`, and `logs` CLI commands.
-- Visible `chat` answer synthesis started: diagnosis, key math, recommendation, source chunk IDs, and next action.
+- Deterministic stateful advisor prototype implemented in `src/money_model_architect/advisor.py`; this is being replaced in the product path by agent-led tool use plus `turn record`.
+- Core CLI commands started: `setup`, `search`, `snapshot`, and `logs`; `turn record` and source-need search are next.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
 
 ## What remains planned
 
-- Broader answer synthesis for teach/compare/clarify/recommendation cases.
+- Agent/CLI boundary refactor: add `turn record`, add source-need search, and remove deterministic advisor orchestration from the product path.
 - Agent-led local doc inspection before snapshot updates.
 - Source-need taxonomy and scoring cleanup before retrieval-model comparisons.
 - Optional LangGraph state graph once the first CLI loop is defined clearly enough to benefit from it.

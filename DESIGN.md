@@ -14,7 +14,7 @@ The advisor is not a one-shot retrieval bot. A realistic user starts with a conv
 - "What should I add after the first sale?"
 - "Explain rollover upsells in my situation."
 
-Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`. The agent inspects local business docs as needed, saves accepted facts to the snapshot, then runs `chat`. Advisory turns should go through `chat`, which persists the trace, uses the saved snapshot, runs deterministic calculations where appropriate, searches the Money Models corpus when source support is needed, and returns the answer for the agent to relay.
+Those are different advisory moves. The system should maintain a structured `BusinessSnapshot`. The agent inspects local business docs as needed, saves accepted facts to the snapshot, uses deterministic CLI tools for calculations and source search when appropriate, composes the answer, then records the completed turn. Advisory turns should not depend on deterministic `chat` synthesis as the advisor brain.
 
 The v1 runtime is:
 
@@ -25,6 +25,7 @@ human asks agent for advice
 → agent saves accepted facts to BusinessSnapshot
 → agent runs local CLI commands for calculation, source search, and trace logging
 → agent answers with cited source chunks when support is needed
+→ agent records the completed turn with turn metadata
 ```
 
 No external model-service call is part of the active advisor runtime.
@@ -41,7 +42,7 @@ The source corpus is transcribed into `corpus/transcripts/`, one lesson per file
 | `downsells` | save offers, payment plans, lower-friction alternatives |
 | `continuity` | recurring offers, retention, discounts, continuity bonuses |
 
-The key runtime object is `BusinessSnapshot`, defined in `BUSINESS_SNAPSHOT_V1.md`. It stores accepted business facts, source metadata, calculated economics, missing fields, and advisory status. It is the cache for business context. The agent may inspect local docs before updating the snapshot. `chat` should use the snapshot, not crawl local business files.
+The key runtime object is `BusinessSnapshot`, defined in `BUSINESS_SNAPSHOT_V1.md`. It stores accepted business facts, source metadata, calculated economics, missing fields, and advisory status. It is the cache for business context. The agent may inspect local docs before updating the snapshot. Product-facing advisor flow should use the snapshot, not crawl local business files every turn.
 
 ## Chunking Decision
 
@@ -172,7 +173,7 @@ The CLI should expose operations the agent can use:
 - `setup_state`: create/load `.money-model-advisor/business_snapshot.json`
 - `read_snapshot`: inspect saved business facts
 - `update_snapshot`: persist accepted facts from the human or inspected docs
-- `chat`: run one stateful advisor turn from saved snapshot and persist the trace
+- `turn_record`: persist the completed agent turn
 - `calculate`: deterministic formulas
 - `diagnose`: deterministic unit-economics diagnosis helpers
 - `search_source_material`: local Money Models corpus retrieval
@@ -185,8 +186,8 @@ The operating rules for using those commands live in `ADVISOR_OPERATING_GUIDE.md
 The next implementation work is not external model-service integration. The settled path is:
 
 1. treat the current next-action classification eval as the local baseline for tool-use judgment;
-2. run the source-need generation eval with acting-agent traces;
-3. expand visible answer synthesis beyond the first payback/recommendation path;
+2. repair the agent/CLI boundary so the agent plans and the CLI records/executes deterministic tools;
+3. add explicit source-need search and turn recording;
 4. keep all active work local and auditable.
 
 This keeps the project aligned with the actual product use case and avoids premature infrastructure.
