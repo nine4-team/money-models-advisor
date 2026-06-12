@@ -902,7 +902,7 @@
                 the system: the decision tree inspired the five-layer
                 namespace division, and the frameworks summary seeded the
                 golden eval set. The Pinecone-backed pipeline exists to
-                demonstrate production RAG infrastructure (§2.4, §3.5).
+                demonstrate production RAG infrastructure (§2.4, §3.6).
               </dd>
             </div>
             <div>
@@ -917,7 +917,7 @@
                 audits query realism separately (§3.1). Vector and hybrid
                 retrieval were built to demonstrate semantic-retrieval
                 engineering, and were promoted only after beating the BM25
-                control (§3.4).
+                control (§3.4–3.5).
               </dd>
             </div>
             <div>
@@ -928,7 +928,7 @@
                 benchmarked anyway, because the JD names multi-namespace
                 operation and the split exercises index management. The test
                 came back honest: identical retrieval, slower worst-case latency —
-                so the single namespace stays the default (§3.6).
+                so the single namespace stays the default (§3.7).
               </dd>
             </div>
           </dl>
@@ -942,9 +942,9 @@
             <div class="rail-num">02</div>
             <div class="rail-title">Design</div>
             <p class="rail-gist">
-              Five decisions: an agent/CLI split, typed business state,
-              eight CLI tools, hybrid retrieval, and a validated trace for
-              every turn.
+              The agent/CLI split, a versioned instruction file, typed
+              business state, eight CLI tools, a RAG pipeline with generated
+              queries, and a validated trace for every turn.
             </p>
           </div>
         </div>
@@ -1010,6 +1010,19 @@
             rather than a metered generation API, the only per-token charge
             anywhere in the build-and-eval loop is embeddings — cached after
             first use (§2.4).
+          </p>
+
+          <h4 class="block">Where the agent's instructions live</h4>
+          <p>
+            The agent's instructions are one versioned file — a skill,
+            <code>SKILL.md</code>, 238 lines — that tells it how to run a
+            turn: the loop above, when to search versus ask, the query
+            variants each search requires (§2.4), and what the trace must
+            contain at the end. It is the system's prompt layer, and it's
+            treated like code: versioned in git and amended through the
+            test-fix loop in §3.9 — when one agent misreads an instruction
+            the skill is patched, and when two fail the same way the case
+            becomes a regression test.
           </p>
 
           <h4 class="block">Reading the founder's business files in place</h4>
@@ -1236,12 +1249,35 @@
             combined into one ranked list.
           </p>
 
+          <h4 class="block">The corpus: 32 lesson transcripts in five namespaces</h4>
+          <p>
+            The source material is the book's lessons — 32 transcript files,
+            one per lesson, about 88,000 words. The lessons are partitioned
+            into five namespaces, and each search names which to look in:
+          </p>
+          <div class="chips">
+            <span>unit-economics</span>
+            <span>offers</span>
+            <span>upsells</span>
+            <span>downsells</span>
+            <span>continuity</span>
+          </div>
+          <p class="quiet">
+            Deliberately not embedded: the two hand-built design documents
+            from §1.1 — the coaching decision tree and the frameworks
+            summary. They shaped the namespace layout and seeded the golden
+            datasets, but the advisor must cite the book itself; embedding
+            them would let hand-written conclusions come back disguised as
+            retrieved evidence.
+          </p>
+
           <h4 class="block">The request: a SourceNeed</h4>
           <p>
             A <code>SourceNeed</code> says what a search is for. It carries an
-            intent, the corpus layers to look in, focus terms, the user's turn
-            for context, and 2–4 query variants. Different advisory jobs need
-            different evidence, so each search names its intent:
+            intent, the namespaces to look in, focus terms, the user's turn
+            for context, and the query variants described next. Different
+            advisory jobs need different evidence, so each search names its
+            intent:
           </p>
           <div class="chips">
             <span>teaching_evidence</span>
@@ -1255,20 +1291,39 @@
             evidence runs two searches and records two source events.
           </p>
 
-          <h4 class="block">The corpus: five retrieval namespaces</h4>
+          <h4 class="block">Query generation: agent-written variants + a deterministic fallback</h4>
           <p>
-            The corpus is the book's lessons, one file per lesson, partitioned
-            into five namespaces — the corpus layers. A search is scoped to
-            one or more of them, and the agent names them in its
-            <code>SourceNeed</code>:
+            Queries are generated, not lifted from the user's message. The
+            agent writes 2–4 variants of each search — the same need phrased
+            different ways, typically once in cause-and-effect terms and once
+            in the book's framework vocabulary. One variant is always the
+            deterministic fallback: the focus terms joined mechanically, with
+            no agent judgment in it. All variants run, and their results are
+            merged by rank, so a badly phrased variant can't sink the search.
+            A real request from a recorded turn:
           </p>
-          <div class="chips">
-            <span>unit-economics</span>
-            <span>offers</span>
-            <span>upsells</span>
-            <span>downsells</span>
-            <span>continuity</span>
-          </div>
+          <figure class="figure">
+            <figcaption>SourceNeed from sourceevents_v1_001 — first variant is the deterministic fallback</figcaption>
+            <pre>{
+  "intent": "diagnostic_evidence",
+  "layers": ["unit-economics"],
+  "focus_terms": ["CAC", "first 30 day gross profit",
+                  "payback period", "paid acquisition capacity"],
+  "user_turn": "what should we fix first?",
+  "query_variants": [
+    "CAC first 30 day gross profit payback period paid acquisition capacity",
+    "cash payback period CAC gross profit acquisition bottleneck",
+    "unit economics gross profit covers CAC paid ads test"
+  ]
+}</pre>
+          </figure>
+          <p class="quiet">
+            Why not one freeform agent query? Traceability: every variant is
+            recorded in the trace, and the fallback gives every search a
+            stable, judgment-free baseline to score against. The measurement
+            that forced this design — a fallback-only query losing a
+            cause-and-effect question — is §3.5.
+          </p>
 
           <h4 class="block">How a search runs</h4>
           <dl class="rows">
@@ -1290,13 +1345,20 @@
               </dd>
             </div>
             <div>
-              <dt>Queries</dt>
+              <dt>Embeddings</dt>
               <dd>
-                The agent phrases the same need 2–4 ways — in cause-and-effect
-                terms, and in the book's framework terms. One more query is
-                always built mechanically from the source need's own terms,
-                and its results are merged in, so a badly phrased variant
-                can't sink the search.
+                OpenAI <code>text-embedding-3-small</code> embeds chunks and
+                queries. One model so far — the 3-small vs 3-large comparison
+                is queued (§4).
+              </dd>
+            </div>
+            <div>
+              <dt>Results</dt>
+              <dd>
+                Each search returns the top 5 chunks (CLI default
+                <code>--top-k 5</code>), each with a stable ID, its score,
+                and citation metadata. The agent reads them and decides which
+                actually support the claim — rank is never treated as truth.
               </dd>
             </div>
             <div>
@@ -1317,7 +1379,7 @@
                 is what matters; the adapter behind it can move to the SDK
                 without touching advisor or eval logic. The index also
                 supports a five-namespace layer layout; a single namespace
-                with metadata filters is the default (§3.6).
+                with metadata filters is the default (§3.7).
               </dd>
             </div>
           </dl>
@@ -1354,7 +1416,10 @@
                 the trace explicitly marks it as an external, non-corpus
                 citation — the agent cannot quietly cite material it never
                 retrieved. Chunks inspected but not cited only warn: that's
-                legitimate behavior.
+                legitimate behavior. This is the grounding rule: a claim
+                about the book either cites an inspected chunk or isn't made
+                as a book claim at all — when retrieval finds no support,
+                the advisor has to say so instead of inventing a citation.
               </dd>
             </div>
             <div>
@@ -1363,7 +1428,7 @@
                 If actions include <code>calculate</code>, the trace must
                 include structured <code>calculation_events</code> with
                 metric, inputs, and output — added after agents were observed
-                claiming math their traces couldn't prove (§3.8).
+                claiming math their traces couldn't prove (§3.9).
               </dd>
             </div>
             <div>
@@ -1389,9 +1454,16 @@
       "intent": "diagnostic_evidence",
       "layers": ["unit-economics"],
       "focus_terms": ["CAC", "gross profit", "payback period"],
-      "user_turn": "what should we do next?"
+      "user_turn": "what should we do next?",
+      "query_variants": [
+        "CAC gross profit payback period",
+        "slow payback period what to fix first",
+        "gross profit covers CAC paid ads"
+      ]
     },
-    "queries": ["CAC gross profit payback period"],
+    "queries": ["CAC gross profit payback period",
+                "slow payback period what to fix first",
+                "gross profit covers CAC paid ads"],
     "chunks": [{ "id": "payback-period:0", "score": 20.4 }]
   }],
   "calculation_events": [{
@@ -1537,7 +1609,7 @@
                     <tr>
                       <td>source_events · 6</td>
                       <td class="wrap">Traces record exactly the right searches — including none?</td>
-                      <td class="wrap">6/6, zero extra-search warnings. Built from a real failure (§3.8).</td>
+                      <td class="wrap">6/6, zero extra-search warnings. Built from a real failure (§3.9).</td>
                     </tr>
                     <tr>
                       <td>calc_traces · 5</td>
@@ -1717,8 +1789,24 @@
             review as a true miss. Dashes in these tables are metrics
             the source reports don't include.
           </p>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>
+                No retriever change from this table alone.
+              </p>
+              <p>
+                Vector and hybrid each missed a case the keyword control
+                found, and that miss traced to how the query was built — not
+                to which retriever ran it. Fixing it is the next section.
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="sub">3.5 · Query generation</span>One flattened query lost to agent-written variants</h3>
           <p>
-            That miss is what put query variants into the design (§2.4):
+            The <code>searchq_v1_001</code> miss is what put query variants
+            into the design (§2.4):
           </p>
           <dl class="rows">
             <div>
@@ -1814,7 +1902,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.5 · Latency benchmarks</span>Pinecone matched local quality, and exposed slow retrieval</h3>
+          <h3><span class="sub">3.6 · Latency benchmarks</span>Pinecone matched local quality, and exposed slow retrieval</h3>
           <p>
             Local retrieval came first so iteration and evals stayed fast.
             Once the strategy was justified, the same 30-case set was rerun
@@ -1845,7 +1933,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.6 · Pinecone namespaces</span>One namespace or five</h3>
+          <h3><span class="sub">3.7 · Pinecone namespaces</span>One namespace or five</h3>
           <p>
             The JD names multi-namespace Pinecone operation, and the corpus
             already had a five-layer taxonomy — so the layout was tested
@@ -1898,7 +1986,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.7 · Model routing &amp; tiering</span>Can a cheaper model do the planning?</h3>
+          <h3><span class="sub">3.8 · Model routing &amp; tiering</span>Can a cheaper model do the planning?</h3>
           <p>
             The JD asks for model routing that improves unit economics while
             maintaining output quality. The second half is the constraint, so
@@ -1956,7 +2044,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.8 · Regression detection</span>Failures became regression suites</h3>
+          <h3><span class="sub">3.9 · Regression detection</span>Failures became regression suites</h3>
           <p>
             Beyond the planned experiments, the design was hardened by a blind
             test-fix loop: send realistic turns to acting agents, inspect the
@@ -2056,7 +2144,7 @@
                 ~1.4s p50 / ~1.8s p95 for Pinecone hybrid after parallelizing
                 the variant queries (down from ~5.3s sequential). Hosted
                 quality matches local exactly; top-k tuning and request-level
-                observability remain (§3.5).
+                observability remain (§3.6).
               </dd>
             </div>
             <div>
@@ -2078,7 +2166,7 @@
             <div>
               <dt>Model routing</dt>
               <dd>
-                Generation tiering is now measured (§3.7): no tested
+                Generation tiering is now measured (§3.8): no tested
                 downgrade held planning quality, so the routing decision is
                 recorded rather than open. Still missing: embedding model
                 selection, and a controlled same-harness cross-provider run —
@@ -2113,7 +2201,7 @@
                 <tbody>
                   <tr>
                     <td class="wrap">Production-grade AI agents and end-to-end agentic workflows</td>
-                    <td class="wrap">Agent-planned turns over a deterministic CLI tool surface; every turn bounded by session start/finish and recorded as a validated trace (§1, §2.1, §2.5).</td>
+                    <td class="wrap">Agent-planned turns over a deterministic CLI tool surface, with the agent's instructions in a versioned skill file; every turn bounded by session start/finish and recorded as a validated trace (§1, §2.1, §2.5).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Integrate LLMs with internal systems, APIs, and data sources</td>
@@ -2121,15 +2209,15 @@
                   </tr>
                   <tr>
                     <td class="wrap">RAG pipelines across Pinecone namespaces — chunking strategy, embedding model selection, hybrid retrieval, reranking</td>
-                    <td class="wrap">A Pinecone-backed store behind a vector-store interface, with the corpus organized as a five-layer namespace taxonomy and the one-vs-five namespace layout benchmarked before choosing a default (§2.4, §3.6); chunking strategy decided by comparison (§3.3); hybrid retrieval with reciprocal-rank fusion as the recorded v1 reranking baseline, with the trigger for a true reranker written down: known-useful chunks landing in the top-20 candidates but missing the top-5 (§3.4). Embedding model selection is a named gap — one embedding model so far (§4).</td>
+                    <td class="wrap">A Pinecone-backed store behind a vector-store interface, with the corpus organized as a five-layer namespace taxonomy and the one-vs-five namespace layout benchmarked before choosing a default (§2.4, §3.7); chunking strategy decided by comparison (§3.3); hybrid retrieval with reciprocal-rank fusion as the recorded v1 reranking baseline, with the trigger for a true reranker written down: known-useful chunks landing in the top-20 candidates but missing the top-5 (§3.4–3.5). Agent-generated query variants with a deterministic fallback are the query-construction layer (§2.4, §3.5). Embedding model selection is a named gap — one model so far, <code>text-embedding-3-small</code> (§4).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Evaluation framework — golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, regression detection</td>
-                    <td class="wrap">Nine golden datasets, each with an automated scorer and a written report (§3.1); Hit@3 / Hit@5 / mean-rank retrieval metrics (§3.4); a hosted-vs-local latency benchmark (§3.5); two regression suites and a CLI guard promoted from real failures (§3.8).</td>
+                    <td class="wrap">Nine golden datasets, each with an automated scorer and a written report (§3.1); Hit@3 / Hit@5 / mean-rank retrieval metrics (§3.4); a hosted-vs-local latency benchmark (§3.6); two regression suites and a CLI guard promoted from real failures (§3.9).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Embedding strategies, index management, and retrieval tuning</td>
-                    <td class="wrap">Deterministic, cached embeddings (§2.4); <code>index pinecone</code> upsert tooling over the vector-store interface (§2.3–2.4); the strategy comparison, variant fusion, query parallelization, and namespace-layout benchmark are measured retrieval tuning, with top-k tuning named as the next step (§3.4–3.6).</td>
+                    <td class="wrap">Deterministic, cached embeddings (§2.4); <code>index pinecone</code> upsert tooling over the vector-store interface (§2.3–2.4); the strategy comparison, variant fusion, query parallelization, and namespace-layout benchmark are measured retrieval tuning, with top-k tuning named as the next step (§3.4–3.7).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Reduce LLM API costs — model routing, caching, token management, or architectural improvements</td>
@@ -2137,11 +2225,11 @@
                   </tr>
                   <tr>
                     <td class="wrap">Observability — cost-per-request, token usage, quality signals, anomaly detection</td>
-                    <td class="wrap">Per-turn validated traces (§2.5); per-run cost, cache, and latency accounting (§3.4–3.5); scorer reports as quality signals (§3.1). Token usage and anomaly detection are named gaps (§4).</td>
+                    <td class="wrap">Per-turn validated traces (§2.5); per-run cost, cache, and latency accounting (§3.4–3.6); scorer reports as quality signals (§3.1). Token usage and anomaly detection are named gaps (§4).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Model routing and tiering to improve unit economics; multiple LLM providers</td>
-                    <td class="wrap">Measured (§3.7): four OpenAI tiers replayed two golden suites under the same scorers. No downgrade held planning quality, so nothing routes downward and the cost lever stays the deterministic CLI. Family tradeoffs are recorded — reasoning tiers fail closed, the non-reasoning tier fails open and breaks the output contract. A controlled same-harness Anthropic condition is the named next step.</td>
+                    <td class="wrap">Measured (§3.8): four OpenAI tiers replayed two golden suites under the same scorers. No downgrade held planning quality, so nothing routes downward and the cost lever stays the deterministic CLI. Family tradeoffs are recorded — reasoning tiers fail closed, the non-reasoning tier fails open and breaks the output contract. A controlled same-harness Anthropic condition is the named next step.</td>
                   </tr>
                   <tr>
                     <td class="wrap">Comfortable in both TypeScript and Python</td>
