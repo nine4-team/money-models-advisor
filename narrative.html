@@ -1012,17 +1012,16 @@
             first use (§2.4).
           </p>
 
-          <h4 class="block">Where the agent's instructions live</h4>
+          <h4 class="block">The skill</h4>
           <p>
-            The agent's instructions are one versioned file — a skill,
-            <code>SKILL.md</code>, 238 lines — that tells it how to run a
-            turn: the loop above, when to search versus ask, the query
-            variants each search requires (§2.4), and what the trace must
-            contain at the end. It is the system's prompt layer, and it's
-            treated like code: versioned in git and amended through the
-            test-fix loop in §3.9 — when one agent misreads an instruction
-            the skill is patched, and when two fail the same way the case
-            becomes a regression test.
+            The agent's instructions are one versioned skill file
+            (<code>SKILL.md</code>, 238 lines): how to run a turn, when to
+            search versus ask, the query variants each search requires
+            (§2.4), and what the trace must contain at the end. It's treated
+            like code — versioned in git and amended through the test-fix
+            loop in §3.9: when one agent misreads an instruction the skill is
+            patched, and when two fail the same way the case becomes a
+            regression test.
           </p>
 
           <h4 class="block">Reading the founder's business files in place</h4>
@@ -1262,15 +1261,6 @@
             <span>downsells</span>
             <span>continuity</span>
           </div>
-          <p class="quiet">
-            Deliberately not embedded: the two hand-built design documents
-            from §1.1 — the coaching decision tree and the frameworks
-            summary. They shaped the namespace layout and seeded the golden
-            datasets, but the advisor must cite the book itself; embedding
-            them would let hand-written conclusions come back disguised as
-            retrieved evidence.
-          </p>
-
           <h4 class="block">The request: a SourceNeed</h4>
           <p>
             A <code>SourceNeed</code> says what a search is for. It carries an
