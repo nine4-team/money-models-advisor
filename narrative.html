@@ -1011,6 +1011,11 @@
             output stable enough to score exactly, and a developer can rerun
             any turn by hand.
           </p>
+          <p class="quiet">
+            Speed is unclaimed here: there is no controlled benchmark holding
+            the model constant across the subscription-agent shape versus a
+            hosted-API loop, so the cost story stands on its own.
+          </p>
 
           <h4 class="block">The skill</h4>
           <p>
@@ -2002,61 +2007,136 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.8 · Model routing &amp; tiering</span>Can a cheaper model do the planning?</h3>
+          <h3><span class="sub">3.8 · Model routing &amp; tiering</span>Can a cheaper model match the planning tier?</h3>
           <p>
-            The JD asks for model routing that improves unit economics while
-            maintaining output quality. The second half is the constraint, so
-            it was tested first: the source-need and tool-use golden suites
-            were replayed as single API calls — the needed state included in
-            the prompt, a JSON answer required — against four hosted tiers — gpt-5, gpt-5-mini, gpt-5-nano, and the
-            non-reasoning gpt-4.1-mini — and scored by the same deterministic
-            scorers used on the recorded agent traces. 152 completions, zero
-            request errors, every prompt and raw response committed as a run
-            artifact.
+            The JD asks for routing that improves unit economics while keeping
+            output quality. The expensive tier is already named by the
+            product: planning runs as Claude in the CLI, and the recorded
+            traces of that path score 92.9% strict pass on source-need and
+            100% strict pass on tool-use under the same deterministic scorers
+            used everywhere else in this report. The question this section
+            answers is whether any cheaper tier matches that baseline on the
+            same suites.
           </p>
           <p>
-            No tested tier held quality. gpt-5 kept the search/no-search
-            boundary perfect (100%) but still reached only 71.4% strict pass
-            on source-need against 92.9% for the recorded interactive agent.
-            The cheaper reasoning tiers failed closed: gpt-5-mini declined 5
-            of 10 expected searches, gpt-5-nano declined 9 of 10 — answers
-            would silently lose their citations. The non-reasoning tier
-            failed open: gpt-4.1-mini searched on 3 of the 4 no-search
-            controls and returned malformed action objects on 3 of 24
-            tool-use cases. Model family changed the failure direction, not
-            just the rate.
+            Four hosted OpenAI tiers were replayed as single bounded JSON
+            completions with the needed state inlined in the prompt: gpt-5,
+            gpt-5-mini, gpt-5-nano, and the non-reasoning gpt-4.1-mini. 152
+            completions, zero request errors, every prompt and raw response
+            committed under <code>evals/runs/model_routing/</code>. Source-need
+            is the cleaner discriminator — its task is one bounded completion,
+            so the comparison isolates model judgment from harness — and is
+            the table shown below.
           </p>
+          <figure class="figure">
+            <figcaption>source-need suite, 14 cases · scored by the same deterministic scorer used on the recorded Claude-CLI traces · pricing per the static June 2026 table in <code>scripts/eval_model_routing.py</code></figcaption>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tier</th>
+                    <th>Harness</th>
+                    <th class="num">Strict pass</th>
+                    <th class="num">Search decision</th>
+                    <th class="num">p50 latency</th>
+                    <th class="num">$ / case</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Claude (interactive, recorded)</td>
+                    <td>CLI w/ state inspection</td>
+                    <td class="num">92.9%</td>
+                    <td class="num">100.0%</td>
+                    <td class="num">—</td>
+                    <td class="num">—</td>
+                  </tr>
+                  <tr>
+                    <td><code>gpt-5</code></td>
+                    <td>single API call</td>
+                    <td class="num">71.4%</td>
+                    <td class="num">100.0%</td>
+                    <td class="num">12.8 s</td>
+                    <td class="num">$0.0108</td>
+                  </tr>
+                  <tr>
+                    <td><code>gpt-5-mini</code></td>
+                    <td>single API call</td>
+                    <td class="num">50.0%</td>
+                    <td class="num">64.3%</td>
+                    <td class="num">5.4 s</td>
+                    <td class="num">$0.0012</td>
+                  </tr>
+                  <tr>
+                    <td><code>gpt-5-nano</code></td>
+                    <td>single API call</td>
+                    <td class="num">28.6%</td>
+                    <td class="num">35.7%</td>
+                    <td class="num">9.1 s</td>
+                    <td class="num">$0.0006</td>
+                  </tr>
+                  <tr>
+                    <td><code>gpt-4.1-mini</code></td>
+                    <td>single API call</td>
+                    <td class="num">50.0%</td>
+                    <td class="num">78.6%</td>
+                    <td class="num">1.0 s</td>
+                    <td class="num">$0.0006</td>
+                  </tr>
+                  <tr>
+                    <td>Claude Haiku / Sonnet via API</td>
+                    <td>single API call</td>
+                    <td class="num">not yet run</td>
+                    <td class="num">—</td>
+                    <td class="num">—</td>
+                    <td class="num">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </figure>
           <p>
-            The economics were measured, and they are tempting: gpt-4.1-mini
-            runs roughly 10× faster (p50 ~1s versus 5–14s) and ~20× cheaper
-            per case than gpt-5. The quality columns are what disqualify it.
-            Cheap reasoning is also not free: gpt-5-nano spent 45,599
-            completion tokens on the tool-use suite — triple gpt-5-mini — for
-            equal-or-worse results, with latency near gpt-5's.
+            No tested OpenAI tier matches the Claude-CLI baseline, and the
+            failure direction depends on the family. gpt-5 keeps the
+            search/no-search call perfect but drops 30 points of intent match.
+            The cheaper reasoning tiers fail closed: gpt-5-mini declines 5 of
+            10 expected searches, gpt-5-nano declines 9 of 10. Answers from
+            those tiers would silently lose their citations. The non-reasoning
+            tier fails open: gpt-4.1-mini searches on 3 of the 4 no-search
+            controls and returns malformed action objects on 3 of 24 tool-use
+            cases. Cheap reasoning is also not free in latency — gpt-5-nano
+            spends 45,599 completion tokens on tool-use, triple gpt-5-mini,
+            and its p50 lands near gpt-5's.
           </p>
           <p class="quiet">
-            Caveat: six tool-use cases failed on every API tier, because
-            their labels expect CLI actions that a single API call, with the
-            state already in its prompt, will reasonably skip. Part of that
-            suite's gap measures the harness, not the model; source-need is
-            the cleaner tier discriminator. And the 92.9% reference comes
-            from a different setup — Claude working interactively through the
-            CLI, not answering one API call — so the gap says the interactive
-            agent is ahead, but not how much of that is the model versus the
-            harness.
+            Two caveats are explicit. (1) The Claude row was recorded
+            interactively through the CLI with state inspection and
+            multi-step iteration; the OpenAI rows were single API calls with
+            state inlined. Some of the gap is harness, not model — source-need
+            is the cleaner discriminator because its task fits one bounded
+            completion, which is why it's the table above. Six tool-use cases
+            failed on every API tier because their labels expect CLI actions
+            (<code>read_snapshot</code>, <code>calculate</code>,
+            <code>search_source_material</code>) that a single completion with
+            state already inlined will skip. (2) Claude Haiku and Sonnet have
+            not been replayed in this harness yet. That is the same-provider
+            downgrade test and the obvious next experiment; it is named here
+            as a gap, not folded into the v1 decision.
           </p>
           <div class="decision">
             <span class="d-tag">Decision</span>
             <div>
               <p>
-                Nothing routes downward in v1. Planning stays on the strong
-                interactive tier; the real unit-economics lever stays the
-                deterministic CLI, at zero model cost.
+                Nothing routes downward for planning in v1. Claude-in-CLI
+                stays the planning tier; the real unit-economics lever stays
+                the deterministic CLI, which costs zero model tokens per
+                call.
               </p>
               <p>
-                The first candidates for a cheaper model are small, low-stakes
-                jobs like phrasing query variants — and only after matching
-                the recorded baseline on the relevant suite.
+                The first routed downgrade candidates are bounded low-stakes
+                transforms — query-variant phrasing first — and any candidate,
+                OpenAI or Claude Haiku, must match the recorded baseline on
+                the relevant golden suite before it ships.
               </p>
             </div>
           </div>
