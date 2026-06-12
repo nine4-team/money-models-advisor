@@ -179,7 +179,7 @@ python3 scripts/compare_retrieval_backends.py --query-source generated_variants 
   --report evals/reports/retrieval_backend_comparison_generated_variants_pinecone_layer_namespaces_oracle.md
 ```
 
-The hosted Pinecone namespace benchmark uses bounded per-case parallel retrieval because query variants and multi-layer namespaces create retrieval fanout. The current result supports keeping single namespace plus metadata filters as the v1 default: five-layer namespaces preserve quality but do not improve it, and they add hosted vector searches on multi-layer cases.
+The hosted Pinecone namespace benchmark uses bounded per-case parallel retrieval because query variants and multi-layer namespaces create retrieval fanout. The current result supports keeping single namespace plus metadata filters as the v1 default: the two conditions returned identical top-5 results in identical order across all 90 per-case rows, and the namespace split adds hosted vector searches on multi-layer cases. The split also worsens tail latency (p95 retrieval about 3.01s vs 1.76s): at this corpus size, Pinecone query time is round-trip dominated, so scoping a query to a smaller namespace saves nothing while fanning one round-trip out into several — and the case waits for the slowest. See DESIGN.md for the full experiment record.
 
 Score source-need generation traces:
 
