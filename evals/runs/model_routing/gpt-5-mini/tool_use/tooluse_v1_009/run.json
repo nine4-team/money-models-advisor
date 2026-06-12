@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_009",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 380,
+    "created_at": "2026-06-12T04:24:53Z",
+    "estimated_cost_usd": 0.00106975,
+    "latency_ms": 6066.5,
+    "model": "gpt-5-mini",
+    "prompt_tokens": 1239,
+    "raw_content": "{\"actions\": [{\"action\": \"read_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics\"}, {\"action\": \"compose_answer_from_state\", \"confidence\": \"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

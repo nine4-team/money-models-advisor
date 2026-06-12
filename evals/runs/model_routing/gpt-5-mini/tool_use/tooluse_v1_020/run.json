@@ -1,0 +1,21 @@
+{
+  "actual_actions": [
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct"
+    }
+  ],
+  "case_id": "tooluse_v1_020",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 344,
+    "created_at": "2026-06-12T04:25:42Z",
+    "estimated_cost_usd": 0.0009375,
+    "latency_ms": 4178.7,
+    "model": "gpt-5-mini",
+    "prompt_tokens": 998,
+    "raw_content": "{\"actions\":[{\"action\":\"answer_without_tool\",\"confidence\":\"direct\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

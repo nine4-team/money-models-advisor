@@ -1,0 +1,31 @@
+{
+  "case_id": "sourceneed_v1_008",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 968,
+    "created_at": "2026-06-12T04:23:53Z",
+    "estimated_cost_usd": 0.01126,
+    "latency_ms": 13825.2,
+    "model": "gpt-5",
+    "prompt_tokens": 1264,
+    "raw_content": "{\"source_search_decision\": true, \"source_need\": {\"intent\": \"teaching_evidence\", \"layers\": [\"offers\"], \"focus_terms\": [\"free trial\", \"front-end offer\", \"action-gated trial\", \"activation requirement\", \"risk reversal\", \"service business\", \"qualified lead\"]}}",
+    "sampling": "provider defaults",
+    "suite": "source_need"
+  },
+  "source_need": {
+    "focus_terms": [
+      "free trial",
+      "front-end offer",
+      "action-gated trial",
+      "activation requirement",
+      "risk reversal",
+      "service business",
+      "qualified lead"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "offers"
+    ]
+  },
+  "source_search_decision": true
+}

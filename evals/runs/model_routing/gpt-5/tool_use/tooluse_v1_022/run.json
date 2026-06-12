@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "money_model.attraction_offer, money_model.upsell",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_022",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 954,
+    "created_at": "2026-06-12T04:25:48Z",
+    "estimated_cost_usd": 0.01096375,
+    "latency_ms": 13826.4,
+    "model": "gpt-5",
+    "prompt_tokens": 1139,
+    "raw_content": "{\"actions\":[{\"action\":\"read_snapshot\",\"confidence\":\"direct\",\"evidence_type\":\"snapshot_field\",\"evidence_ref\":\"money_model.attraction_offer, money_model.upsell\"},{\"action\":\"compose_answer_from_state\",\"confidence\":\"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

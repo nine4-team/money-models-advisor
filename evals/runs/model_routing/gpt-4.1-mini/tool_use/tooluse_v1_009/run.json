@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "economics.cac",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct"
+    }
+  ],
+  "case_id": "tooluse_v1_009",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 52,
+    "created_at": "2026-06-12T04:24:54Z",
+    "estimated_cost_usd": 0.0005792,
+    "latency_ms": 1041.9,
+    "model": "gpt-4.1-mini",
+    "prompt_tokens": 1240,
+    "raw_content": "{\"actions\": [{\"action\": \"diagnose\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics.cac\"}, {\"action\": \"compose_answer_from_state\", \"confidence\": \"direct\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

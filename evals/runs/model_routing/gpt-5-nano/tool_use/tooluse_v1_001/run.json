@@ -1,0 +1,33 @@
+{
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.cac",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.first_30_day_gross_profit",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_001",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 1764,
+    "created_at": "2026-06-12T04:24:10Z",
+    "estimated_cost_usd": 0.00077605,
+    "latency_ms": 16099.0,
+    "model": "gpt-5-nano",
+    "prompt_tokens": 1409,
+    "raw_content": "{\"actions\": [{\"action\": \"read_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics.cac\"}, {\"action\": \"read_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics.first_30_day_gross_profit\"}, {\"action\": \"compose_answer_from_state\", \"confidence\": \"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

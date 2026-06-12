@@ -1,0 +1,30 @@
+{
+  "case_id": "sourceneed_v1_007",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 1411,
+    "created_at": "2026-06-12T04:23:50Z",
+    "estimated_cost_usd": 0.0156925,
+    "latency_ms": 16940.3,
+    "model": "gpt-5",
+    "prompt_tokens": 1266,
+    "raw_content": "{\"source_search_decision\": true, \"source_need\": {\"intent\": \"teaching_evidence\", \"layers\": [\"downsells\"], \"focus_terms\": [\"payment plan\", \"split pay\", \"milestone billing\", \"deposit\", \"cash-tight buyer\", \"payback\"]}}",
+    "sampling": "provider defaults",
+    "suite": "source_need"
+  },
+  "source_need": {
+    "focus_terms": [
+      "payment plan",
+      "split pay",
+      "milestone billing",
+      "deposit",
+      "cash-tight buyer",
+      "payback"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "downsells"
+    ]
+  },
+  "source_search_decision": true
+}

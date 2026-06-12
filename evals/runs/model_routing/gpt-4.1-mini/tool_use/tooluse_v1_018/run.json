@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "services-and-pricing.md",
+      "evidence_type": "local_doc"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct"
+    }
+  ],
+  "case_id": "tooluse_v1_018",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 54,
+    "created_at": "2026-06-12T04:25:35Z",
+    "estimated_cost_usd": 0.0006676,
+    "latency_ms": 1201.7,
+    "model": "gpt-4.1-mini",
+    "prompt_tokens": 1453,
+    "raw_content": "{\"actions\": [{\"action\": \"inspect_local_docs\", \"confidence\": \"direct\", \"evidence_type\": \"local_doc\", \"evidence_ref\": \"services-and-pricing.md\"}, {\"action\": \"compose_answer_from_state\", \"confidence\": \"direct\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

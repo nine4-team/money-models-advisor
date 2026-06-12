@@ -1,0 +1,39 @@
+{
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.cac",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.first_30_day_gross_profit",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calc_gross_profit_minus_cac",
+      "evidence_type": "planned_cli"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_016",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 3079,
+    "created_at": "2026-06-12T04:25:22Z",
+    "estimated_cost_usd": 0.00129425,
+    "latency_ms": 21498.0,
+    "model": "gpt-5-nano",
+    "prompt_tokens": 1253,
+    "raw_content": "{\"actions\": [{\"action\": \"read_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics.cac\"}, {\"action\": \"read_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics.first_30_day_gross_profit\"}, {\"action\": \"calculate\", \"confidence\": \"direct\", \"evidence_type\": \"planned_cli\", \"evidence_ref\": \"calc_gross_profit_minus_cac\"}, {\"action\": \"compose_answer_from_state\", \"confidence\": \"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

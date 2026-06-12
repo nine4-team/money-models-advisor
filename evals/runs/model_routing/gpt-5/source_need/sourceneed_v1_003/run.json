@@ -1,0 +1,30 @@
+{
+  "case_id": "sourceneed_v1_003",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 1802,
+    "created_at": "2026-06-12T04:23:39Z",
+    "estimated_cost_usd": 0.01993875,
+    "latency_ms": 25030.5,
+    "model": "gpt-5",
+    "prompt_tokens": 1535,
+    "raw_content": "{\"source_search_decision\": true, \"source_need\": {\"intent\": \"teaching_evidence\", \"layers\": [\"unit-economics\"], \"focus_terms\": [\"paid acquisition capacity\", \"client financed acquisition\", \"CFA\", \"first 30 day gross profit\", \"CAC\", \"payback period\"]}}",
+    "sampling": "provider defaults",
+    "suite": "source_need"
+  },
+  "source_need": {
+    "focus_terms": [
+      "paid acquisition capacity",
+      "client financed acquisition",
+      "CFA",
+      "first 30 day gross profit",
+      "CAC",
+      "payback period"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true
+}

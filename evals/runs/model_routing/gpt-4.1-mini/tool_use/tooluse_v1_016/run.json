@@ -1,0 +1,39 @@
+{
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "economics.cac",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "economics",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct"
+    }
+  ],
+  "case_id": "tooluse_v1_016",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 113,
+    "created_at": "2026-06-12T04:25:22Z",
+    "estimated_cost_usd": 0.0006824,
+    "latency_ms": 1636.7,
+    "model": "gpt-4.1-mini",
+    "prompt_tokens": 1254,
+    "raw_content": "{\"actions\": [{\"action\": \"read_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics\"}, {\"action\": \"calculate\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics.cac\"}, {\"action\": \"diagnose\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics\"}, {\"action\": \"compose_answer_from_state\", \"confidence\": \"direct\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

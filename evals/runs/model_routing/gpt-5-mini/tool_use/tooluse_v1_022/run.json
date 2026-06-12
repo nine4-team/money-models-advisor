@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "money_model",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_022",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 689,
+    "created_at": "2026-06-12T04:25:49Z",
+    "estimated_cost_usd": 0.00166275,
+    "latency_ms": 8468.0,
+    "model": "gpt-5-mini",
+    "prompt_tokens": 1139,
+    "raw_content": "{\"actions\":[{\"action\":\"read_snapshot\",\"confidence\":\"direct\",\"evidence_type\":\"snapshot_field\",\"evidence_ref\":\"money_model\"},{\"action\":\"compose_answer_from_state\",\"confidence\":\"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

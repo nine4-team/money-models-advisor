@@ -1,0 +1,33 @@
+{
+  "actual_actions": [
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "services-and-pricing.md",
+      "evidence_type": "local_doc"
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "product-ladder.md",
+      "evidence_type": "local_doc"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_006",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 975,
+    "created_at": "2026-06-12T04:24:38Z",
+    "estimated_cost_usd": 0.0114375,
+    "latency_ms": 12416.0,
+    "model": "gpt-5",
+    "prompt_tokens": 1350,
+    "raw_content": "{\"actions\":[{\"action\":\"inspect_local_docs\",\"confidence\":\"direct\",\"evidence_type\":\"local_doc\",\"evidence_ref\":\"services-and-pricing.md\"},{\"action\":\"inspect_local_docs\",\"confidence\":\"direct\",\"evidence_type\":\"local_doc\",\"evidence_ref\":\"product-ladder.md\"},{\"action\":\"compose_answer_from_state\",\"confidence\":\"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

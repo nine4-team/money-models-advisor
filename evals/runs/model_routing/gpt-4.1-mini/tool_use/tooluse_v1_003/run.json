@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "user_turn: CAC is probably around $1,000 if we count referral partner payments",
+      "evidence_type": "user_turn"
+    },
+    {
+      "action": "diagnose",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_003",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 64,
+    "created_at": "2026-06-12T04:24:22Z",
+    "estimated_cost_usd": 0.0005588,
+    "latency_ms": 1080.4,
+    "model": "gpt-4.1-mini",
+    "prompt_tokens": 1141,
+    "raw_content": "{\"actions\": [{\"action\": \"update_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"user_turn\", \"evidence_ref\": \"user_turn: CAC is probably around $1,000 if we count referral partner payments\"}, {\"action\": \"diagnose\", \"confidence\": \"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

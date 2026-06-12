@@ -1,0 +1,21 @@
+{
+  "actual_actions": [
+    {
+      "action": "clarify",
+      "confidence": "direct"
+    }
+  ],
+  "case_id": "tooluse_v1_014",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 1307,
+    "created_at": "2026-06-12T04:25:16Z",
+    "estimated_cost_usd": 0.0005723,
+    "latency_ms": 10526.6,
+    "model": "gpt-5-nano",
+    "prompt_tokens": 990,
+    "raw_content": "{\"actions\": [{\"action\": \"clarify\", \"confidence\": \"direct\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

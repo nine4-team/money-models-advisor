@@ -1,0 +1,26 @@
+{
+  "case_id": "sourceneed_v1_009",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 42,
+    "created_at": "2026-06-12T04:24:00Z",
+    "estimated_cost_usd": 0.000636,
+    "latency_ms": 1115.4,
+    "model": "gpt-4.1-mini",
+    "prompt_tokens": 1422,
+    "raw_content": "{\"source_search_decision\": true, \"source_need\": {\"intent\": \"diagnostic_evidence\", \"layers\": [\"unit-economics\"], \"focus_terms\": [\"CAC\", \"gross profit\"]}}",
+    "sampling": "provider defaults",
+    "suite": "source_need"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "gross profit"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true
+}

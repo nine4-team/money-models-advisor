@@ -181,6 +181,16 @@ python3 scripts/compare_retrieval_backends.py --query-source generated_variants 
 
 The hosted Pinecone namespace benchmark uses bounded per-case parallel retrieval because query variants and multi-layer namespaces create retrieval fanout. The current result supports keeping single namespace plus metadata filters as the v1 default: the two conditions returned identical top-5 results in identical order across all 90 per-case rows, and the namespace split adds hosted vector searches on multi-layer cases. The split also worsens tail latency (p95 retrieval about 3.01s vs 1.76s): at this corpus size, Pinecone query time is round-trip dominated, so scoping a query to a smaller namespace saves nothing while fanning one round-trip out into several — and the case waits for the slowest. See DESIGN.md for the full experiment record.
 
+Run the model-routing/tiering eval (replays the source-need and tool-use golden suites as bounded completions across hosted model tiers, requires `OPENAI_API_KEY`):
+
+```bash
+python3 scripts/eval_model_routing.py --max-workers 8
+# subset: --models gpt-5 gpt-4.1-mini --suites source_need
+# completions are cached under evals/runs/model_routing/; --force re-runs them
+```
+
+The report lands at `evals/reports/model_routing_tiering.md` with a summary JSON beside it. The current decision: no tested cheaper tier maintains agent-planning quality, so deterministic CLI work stays the cost lever and planning stays on the strong interactive tier.
+
 Score source-need generation traces:
 
 ```bash

@@ -1,0 +1,18 @@
+{
+  "actual_actions": [
+    "compose_answer_from_state"
+  ],
+  "case_id": "tooluse_v1_022",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 10,
+    "created_at": "2026-06-12T04:25:53Z",
+    "estimated_cost_usd": 0.000472,
+    "latency_ms": 736.2,
+    "model": "gpt-4.1-mini",
+    "prompt_tokens": 1140,
+    "raw_content": "{\"actions\": [\"compose_answer_from_state\"]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "case_id": "sourceneed_v1_014",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 215,
+    "created_at": "2026-06-12T04:24:09Z",
+    "estimated_cost_usd": 0.00074375,
+    "latency_ms": 3164.8,
+    "model": "gpt-5-mini",
+    "prompt_tokens": 1255,
+    "raw_content": "{\"source_search_decision\": false, \"source_need\": null}",
+    "sampling": "provider defaults",
+    "suite": "source_need"
+  },
+  "source_need": null,
+  "source_search_decision": false
+}

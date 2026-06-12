@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.cac = 1000 (user: 'CAC is probably around $1,000 if we count referral partner payments')",
+      "evidence_type": "user_turn"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_003",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 616,
+    "created_at": "2026-06-12T04:24:18Z",
+    "estimated_cost_usd": 0.001517,
+    "latency_ms": 7505.7,
+    "model": "gpt-5-mini",
+    "prompt_tokens": 1140,
+    "raw_content": "{\n  \"actions\": [\n    {\n      \"action\": \"update_snapshot\",\n      \"confidence\": \"direct\",\n      \"evidence_type\": \"user_turn\",\n      \"evidence_ref\": \"economics.cac = 1000 (user: 'CAC is probably around $1,000 if we count referral partner payments')\"\n    },\n    {\n      \"action\": \"compose_answer_from_state\",\n      \"confidence\": \"inferred\"\n    }\n  ]\n}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

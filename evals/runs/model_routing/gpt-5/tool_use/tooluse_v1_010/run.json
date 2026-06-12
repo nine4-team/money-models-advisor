@@ -1,0 +1,27 @@
+{
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.first_30_day_gross_profit",
+      "evidence_type": "snapshot_field"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred"
+    }
+  ],
+  "case_id": "tooluse_v1_010",
+  "model_meta": {
+    "attempts": 1,
+    "completion_tokens": 1859,
+    "created_at": "2026-06-12T04:24:54Z",
+    "estimated_cost_usd": 0.02030125,
+    "latency_ms": 23079.0,
+    "model": "gpt-5",
+    "prompt_tokens": 1369,
+    "raw_content": "{\"actions\": [{\"action\": \"read_snapshot\", \"confidence\": \"direct\", \"evidence_type\": \"snapshot_field\", \"evidence_ref\": \"economics.first_30_day_gross_profit\"}, {\"action\": \"compose_answer_from_state\", \"confidence\": \"inferred\"}]}",
+    "sampling": "provider defaults",
+    "suite": "tool_use"
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "created_at": "2026-06-12T04:28:00Z",
+  "models": [
+    "gpt-5",
+    "gpt-5-mini",
+    "gpt-5-nano",
+    "gpt-4.1-mini"
+  ],
+  "performance": {
+    "gpt-4.1-mini": {
+      "source_need": {
+        "completion_tokens": 603,
+        "estimated_cost_per_case_usd": 0.000608,
+        "estimated_cost_usd": 0.008507,
+        "p50_latency_ms": 1003.7,
+        "p95_latency_ms": 2250.5,
+        "prompt_tokens": 18855,
+        "request_errors": 0,
+        "requests": 14
+      },
+      "tool_use": {
+        "completion_tokens": 1488,
+        "estimated_cost_per_case_usd": 0.000592,
+        "estimated_cost_usd": 0.014214,
+        "p50_latency_ms": 1208.2,
+        "p95_latency_ms": 4473.4,
+        "prompt_tokens": 29583,
+        "request_errors": 0,
+        "requests": 24
+      }
+    },
+    "gpt-5": {
+      "source_need": {
+        "completion_tokens": 12732,
+        "estimated_cost_per_case_usd": 0.010777,
+        "estimated_cost_usd": 0.150871,
+        "p50_latency_ms": 12812.2,
+        "p95_latency_ms": 26400.8,
+        "prompt_tokens": 18841,
+        "request_errors": 0,
+        "requests": 14
+      },
+      "tool_use": {
+        "completion_tokens": 27195,
+        "estimated_cost_per_case_usd": 0.012871,
+        "estimated_cost_usd": 0.308899,
+        "p50_latency_ms": 12481.0,
+        "p95_latency_ms": 29508.4,
+        "prompt_tokens": 29559,
+        "request_errors": 0,
+        "requests": 24
+      }
+    },
+    "gpt-5-mini": {
+      "source_need": {
+        "completion_tokens": 5968,
+        "estimated_cost_per_case_usd": 0.001189,
+        "estimated_cost_usd": 0.016646,
+        "p50_latency_ms": 5356.0,
+        "p95_latency_ms": 12223.0,
+        "prompt_tokens": 18841,
+        "request_errors": 0,
+        "requests": 14
+      },
+      "tool_use": {
+        "completion_tokens": 14287,
+        "estimated_cost_per_case_usd": 0.001498,
+        "estimated_cost_usd": 0.035964,
+        "p50_latency_ms": 7606.4,
+        "p95_latency_ms": 22577.3,
+        "prompt_tokens": 29559,
+        "request_errors": 0,
+        "requests": 24
+      }
+    },
+    "gpt-5-nano": {
+      "source_need": {
+        "completion_tokens": 17271,
+        "estimated_cost_per_case_usd": 0.000561,
+        "estimated_cost_usd": 0.00785,
+        "p50_latency_ms": 9148.3,
+        "p95_latency_ms": 17024.5,
+        "prompt_tokens": 18841,
+        "request_errors": 0,
+        "requests": 14
+      },
+      "tool_use": {
+        "completion_tokens": 45599,
+        "estimated_cost_per_case_usd": 0.000822,
+        "estimated_cost_usd": 0.019718,
+        "p50_latency_ms": 14235.4,
+        "p95_latency_ms": 26365.6,
+        "prompt_tokens": 29559,
+        "request_errors": 0,
+        "requests": 24
+      }
+    }
+  },
+  "pricing_per_1m_usd": {
+    "gpt-4.1-mini": [
+      0.4,
+      1.6
+    ],
+    "gpt-5": [
+      1.25,
+      10.0
+    ],
+    "gpt-5-mini": [
+      0.25,
+      2.0
+    ],
+    "gpt-5-nano": [
+      0.05,
+      0.4
+    ]
+  },
+  "quality": {
+    "gpt-4.1-mini": {
+      "source_need": {
+        "avg_focus_recall": 0.48500000000000004,
+        "failure_modes": {
+          "false_search": 3,
+          "intent_mismatch": 3,
+          "layer_mismatch": 2
+        },
+        "intent_match_rate": 0.7,
+        "layer_exact_match_rate": 0.8,
+        "scored": 14,
+        "search_decision_accuracy": 0.7857142857142857,
+        "strict_case_pass_rate": 0.5,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.6319444444444444,
+        "failure_modes": {
+          "actual_actions[0]_not_object": 3,
+          "actual_actions[1]_not_object": 1,
+          "missed_search": 4,
+          "missing_required:answer_without_tool": 1,
+          "missing_required:calculate": 1,
+          "missing_required:calculate,read_snapshot": 1,
+          "missing_required:calculate,search_source_material": 1,
+          "missing_required:clarify": 1,
+          "missing_required:read_snapshot": 4,
+          "missing_required:read_snapshot,search_source_material": 2,
+          "missing_required:search_source_material": 1,
+          "wrong_first_action": 9
+        },
+        "false_search_rate": 0.0,
+        "first_action_accuracy": 0.625,
+        "forbidden_violation_rate": 0.0,
+        "missed_search_rate": 0.16666666666666666,
+        "scored": 24,
+        "strict_case_pass_rate": 0.5,
+        "total": 24
+      }
+    },
+    "gpt-5": {
+      "source_need": {
+        "avg_focus_recall": 0.6900000000000001,
+        "failure_modes": {
+          "intent_mismatch": 3,
+          "layer_mismatch": 1
+        },
+        "intent_match_rate": 0.7,
+        "layer_exact_match_rate": 0.9,
+        "scored": 14,
+        "search_decision_accuracy": 1.0,
+        "strict_case_pass_rate": 0.7142857142857143,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.8125,
+        "failure_modes": {
+          "missed_search": 4,
+          "missing_required:calculate": 2,
+          "missing_required:calculate,search_source_material": 1,
+          "missing_required:diagnose": 1,
+          "missing_required:read_snapshot": 1,
+          "missing_required:read_snapshot,search_source_material": 1,
+          "missing_required:search_source_material": 2,
+          "wrong_first_action": 5
+        },
+        "false_search_rate": 0.0,
+        "first_action_accuracy": 0.7916666666666666,
+        "forbidden_violation_rate": 0.0,
+        "missed_search_rate": 0.16666666666666666,
+        "scored": 24,
+        "strict_case_pass_rate": 0.6666666666666666,
+        "total": 24
+      }
+    },
+    "gpt-5-mini": {
+      "source_need": {
+        "avg_focus_recall": 0.66,
+        "failure_modes": {
+          "intent_mismatch": 1,
+          "layer_mismatch": 2,
+          "missed_search": 5
+        },
+        "intent_match_rate": 0.4,
+        "layer_exact_match_rate": 0.3,
+        "scored": 14,
+        "search_decision_accuracy": 0.6428571428571429,
+        "strict_case_pass_rate": 0.5,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.8402777777777778,
+        "failure_modes": {
+          "missed_search": 4,
+          "missing_required:calculate": 1,
+          "missing_required:calculate,diagnose": 1,
+          "missing_required:calculate,search_source_material": 1,
+          "missing_required:diagnose": 1,
+          "missing_required:search_source_material": 3,
+          "wrong_first_action": 5
+        },
+        "false_search_rate": 0.0,
+        "first_action_accuracy": 0.7916666666666666,
+        "forbidden_violation_rate": 0.0,
+        "missed_search_rate": 0.16666666666666666,
+        "scored": 24,
+        "strict_case_pass_rate": 0.7083333333333334,
+        "total": 24
+      }
+    },
+    "gpt-5-nano": {
+      "source_need": {
+        "avg_focus_recall": 0.8,
+        "failure_modes": {
+          "intent_mismatch": 1,
+          "missed_search": 9
+        },
+        "intent_match_rate": 0.0,
+        "layer_exact_match_rate": 0.1,
+        "scored": 14,
+        "search_decision_accuracy": 0.35714285714285715,
+        "strict_case_pass_rate": 0.2857142857142857,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.8541666666666666,
+        "failure_modes": {
+          "missed_search": 4,
+          "missing_required:calculate": 1,
+          "missing_required:calculate,diagnose": 1,
+          "missing_required:diagnose": 1,
+          "missing_required:search_source_material": 4,
+          "wrong_first_action": 3
+        },
+        "false_search_rate": 0.0,
+        "first_action_accuracy": 0.875,
+        "forbidden_violation_rate": 0.0,
+        "missed_search_rate": 0.16666666666666666,
+        "scored": 24,
+        "strict_case_pass_rate": 0.7083333333333334,
+        "total": 24
+      }
+    }
+  },
+  "recorded_acting_agent_reference": {
+    "source_need": {
+      "avg_focus_recall": 0.75,
+      "failure_modes": {
+        "layer_mismatch": 1
+      },
+      "intent_match_rate": 1.0,
+      "layer_exact_match_rate": 0.9,
+      "scored": 14,
+      "search_decision_accuracy": 1.0,
+      "strict_case_pass_rate": 0.9285714285714286,
+      "total": 14
+    },
+    "tool_use": {
+      "avg_required_recall": 1.0,
+      "failure_modes": {},
+      "false_search_rate": 0.0,
+      "first_action_accuracy": 1.0,
+      "forbidden_violation_rate": 0.0,
+      "missed_search_rate": 0.0,
+      "scored": 24,
+      "strict_case_pass_rate": 1.0,
+      "total": 24
+    }
+  },
+  "suites": [
+    "source_need",
+    "tool_use"
+  ]
+}
