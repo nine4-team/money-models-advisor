@@ -64,6 +64,7 @@ class QueryResult:
     queries: tuple[str, ...]
     query_reasons: tuple[str, ...]
     query_layers: tuple[str | None, ...]
+    query_target_namespaces: tuple[tuple[str, ...], ...]
     expected_layers: tuple[str, ...]
     returned_ids: tuple[str, ...]
     known_useful_rank: int | None
@@ -166,11 +167,13 @@ def query_specs_for_case(
     case: dict[str, Any],
     query_source: str,
     variants_by_case: dict[str, list[str]] | None = None,
+    target_namespace_source: str = "none",
 ) -> list[tuple[tuple[str, ...], tuple[str, ...], str, str]]:
+    target_namespaces = target_namespaces_for_case(case, target_namespace_source)
     if query_source == "reference":
         expected_layers = case["expected_layers"]
         layers = tuple(expected_layers)
-        return [(layers, layers, case["reference_query"], "Reviewer-authored source-specific reference query.")]
+        return [(layers, target_namespaces, case["reference_query"], "Reviewer-authored source-specific reference query.")]
 
     snapshot = BusinessSnapshot.load(ROOT / case["snapshot_fixture_path"])
     query_variants = ()
@@ -182,11 +185,20 @@ def query_specs_for_case(
         focus_terms=tuple(case["focus_terms"]),
         user_turn=case["user_turn"],
         query_variants=query_variants,
+        target_namespaces=target_namespaces,
     )
     return [
         (query.layers, query.target_namespaces, query.query, query.reason)
         for query in build_advisor_queries(snapshot, source_need=source_need)
     ]
+
+
+def target_namespaces_for_case(case: dict[str, Any], target_namespace_source: str) -> tuple[str, ...]:
+    if target_namespace_source == "none":
+        return ()
+    if target_namespace_source == "expected_layers":
+        return tuple(case["expected_layers"])
+    raise ValueError(f"unknown target namespace source: {target_namespace_source}")
 
 
 def search_index(
@@ -252,6 +264,7 @@ def score_cases(
     variants_by_case: dict[str, list[str]] | None = None,
     vector_store_name: str = "local",
     namespace_prefix: str = "money-models",
+    target_namespace_source: str = "none",
 ) -> list[QueryResult]:
     return score_cases_with_metrics(
         cases,
@@ -261,6 +274,7 @@ def score_cases(
         variants_by_case=variants_by_case,
         vector_store_name=vector_store_name,
         namespace_prefix=namespace_prefix,
+        target_namespace_source=target_namespace_source,
     )[0]
 
 
@@ -272,6 +286,7 @@ def score_cases_with_metrics(
     variants_by_case: dict[str, list[str]] | None = None,
     vector_store_name: str = "local",
     namespace_prefix: str = "money-models",
+    target_namespace_source: str = "none",
 ) -> tuple[list[QueryResult], dict[str, Any]]:
     index_started = time.perf_counter()
     index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
@@ -279,7 +294,7 @@ def score_cases_with_metrics(
     embedding_client = OpenAIEmbeddingClient() if retrieval_backend in {"vector", "hybrid"} else None
     selected_store = selected_vector_store_name(vector_store_name)
     vector_store = PineconeVectorStore.from_env() if retrieval_backend in {"vector", "hybrid"} and selected_store == "pinecone" else None
-    query_texts = all_query_texts(cases, query_source, variants_by_case=variants_by_case)
+    query_texts = all_query_texts(cases, query_source, variants_by_case=variants_by_case, target_namespace_source=target_namespace_source)
     corpus_cache_before = embedding_client.cache_presence(index.corpus_embedding_texts()) if embedding_client else None
     query_cache_before = embedding_client.cache_presence(query_texts) if embedding_client else None
     results: list[QueryResult] = []
@@ -288,7 +303,12 @@ def score_cases_with_metrics(
         case_started = time.perf_counter()
         expected_layers = tuple(case["expected_layers"])
         query_started = time.perf_counter()
-        query_specs = query_specs_for_case(case, query_source, variants_by_case=variants_by_case)
+        query_specs = query_specs_for_case(
+            case,
+            query_source,
+            variants_by_case=variants_by_case,
+            target_namespace_source=target_namespace_source,
+        )
         query_build_ms = (time.perf_counter() - query_started) * 1000
         query_result_sets = []
         embedding_before = _embedding_stats_snapshot(embedding_client)
@@ -340,6 +360,9 @@ def score_cases_with_metrics(
                     layers[0] if len(layers) == 1 else None
                     for layers, _target_namespaces, _query, _reason in query_specs
                 ),
+                query_target_namespaces=tuple(
+                    target_namespaces for _layers, target_namespaces, _query, _reason in query_specs
+                ),
                 expected_layers=expected_layers,
                 returned_ids=returned_ids,
                 known_useful_rank=known_useful_rank,
@@ -370,8 +393,17 @@ def score_cases_with_metrics(
         "cache_mode": "current",
         "vector_store": selected_store if retrieval_backend in {"vector", "hybrid"} else "n/a",
         "namespace_policy": "source_need_target_namespaces" if retrieval_backend in {"vector", "hybrid"} else "n/a",
+        "target_namespace_source": target_namespace_source if retrieval_backend in {"vector", "hybrid"} else "n/a",
         "namespace_prefix": namespace_prefix if retrieval_backend in {"vector", "hybrid"} else None,
-        "namespaces": _namespaces_for_query_specs(query_specs_for_all_cases(cases, query_source, variants_by_case), namespace_prefix)
+        "namespaces": _namespaces_for_query_specs(
+            query_specs_for_all_cases(
+                cases,
+                query_source,
+                variants_by_case,
+                target_namespace_source=target_namespace_source,
+            ),
+            namespace_prefix,
+        )
         if retrieval_backend in {"vector", "hybrid"}
         else [],
         "embedding": _embedding_run_metadata(embedding_client, corpus_cache_before, query_cache_before),
@@ -411,10 +443,19 @@ def all_query_texts(
     cases: list[dict[str, Any]],
     query_source: str,
     variants_by_case: dict[str, list[str]] | None = None,
+    target_namespace_source: str = "none",
 ) -> list[str]:
     texts: list[str] = []
     for case in cases:
-        texts.extend(query for _layers, _target_namespaces, query, _reason in query_specs_for_case(case, query_source, variants_by_case=variants_by_case))
+        texts.extend(
+            query
+            for _layers, _target_namespaces, query, _reason in query_specs_for_case(
+                case,
+                query_source,
+                variants_by_case=variants_by_case,
+                target_namespace_source=target_namespace_source,
+            )
+        )
     return texts
 
 
@@ -422,10 +463,18 @@ def query_specs_for_all_cases(
     cases: list[dict[str, Any]],
     query_source: str,
     variants_by_case: dict[str, list[str]] | None = None,
+    target_namespace_source: str = "none",
 ) -> list[tuple[tuple[str, ...], tuple[str, ...], str, str]]:
     specs: list[tuple[tuple[str, ...], tuple[str, ...], str, str]] = []
     for case in cases:
-        specs.extend(query_specs_for_case(case, query_source, variants_by_case=variants_by_case))
+        specs.extend(
+            query_specs_for_case(
+                case,
+                query_source,
+                variants_by_case=variants_by_case,
+                target_namespace_source=target_namespace_source,
+            )
+        )
     return specs
 
 
@@ -638,6 +687,12 @@ def main() -> int:
         help="Vector storage backend for vector/hybrid retrieval.",
     )
     parser.add_argument("--namespace-prefix", default="money-models")
+    parser.add_argument(
+        "--target-namespace-source",
+        choices=("none", "expected_layers"),
+        default="none",
+        help="How to populate SourceNeed.target_namespaces for namespace-layout experiments. 'expected_layers' is an oracle condition, not an agent namespace-selection result.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(args.cases)
@@ -668,6 +723,7 @@ def main() -> int:
             variants_by_case=variants_by_case,
             vector_store_name=args.vector_store,
             namespace_prefix=args.namespace_prefix,
+            target_namespace_source=args.target_namespace_source,
         )
     )
 
@@ -693,6 +749,7 @@ def main() -> int:
                 "retrieval_backend": args.retrieval_backend,
                 "vector_store": args.vector_store,
                 "namespace_policy": "source_need_target_namespaces" if args.retrieval_backend in {"vector", "hybrid"} else "n/a",
+                "target_namespace_source": args.target_namespace_source if args.retrieval_backend in {"vector", "hybrid"} else "n/a",
                 "namespace_prefix": args.namespace_prefix if args.retrieval_backend in {"vector", "hybrid"} else None,
                 "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
                 "report": display_path(args.report),

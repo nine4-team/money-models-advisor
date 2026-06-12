@@ -160,6 +160,21 @@ python3 scripts/compare_retrieval_backends.py --query-source generated_variants 
 
 Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`. Local tests and local evals continue to use `--vector-store local`.
 
+The JD-specific multi-namespace experiment indexes the same corpus into the five Money Models layer namespaces and runs an oracle namespace condition where `SourceNeed.target_namespaces` is populated from expected layers:
+
+```bash
+PYTHONPATH=src python3 -m money_model_architect.cli index pinecone \
+  --index-layout layer \
+  --namespace-prefix money-models
+
+python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
+  --vector-store local \
+  --target-namespace-source expected_layers \
+  --report evals/reports/retrieval_backend_comparison_generated_variants_local_layer_namespaces_oracle.md
+```
+
+The hosted Pinecone namespace smoke currently uses a representative subset because the full sequential query-variant x namespace benchmark is too slow to treat as production-latency evidence without parallelization or bounded fanout.
+
 Score source-need generation traces:
 
 ```bash

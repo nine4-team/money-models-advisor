@@ -78,6 +78,17 @@ search command or retrieval_queries entry -> search_source_material
 
 The extractor should mark weak evidence as `inferred` or `missing` instead of pretending it is direct.
 
+## Fanout
+
+Fanout is the number of retrieval calls created from one user-facing source search.
+
+In this project, fanout can come from two places:
+
+- query variants: one `SourceNeed` may use 2-4 query strings instead of one
+- namespaces: one query may search one or more selected vector namespaces
+
+Example: a source need with 4 query variants and 2 target namespaces creates 8 vector searches. Fanout is not automatically bad: it can improve recall because the system asks the corpus from several angles. It becomes a problem when extra searches add latency, cost, or noisy candidates without improving quality. For hosted Pinecone runs, fanout should be measured and usually bounded or parallelized.
+
 ## Scorer
 
 The scorer compares the extracted `actual_actions[]` against the case labels.

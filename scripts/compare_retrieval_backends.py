@@ -126,6 +126,7 @@ def render_report(
     top_k: int,
     vector_store: str,
     namespace_prefix: str,
+    target_namespace_source: str,
     summaries: dict[str, dict[str, object]],
     errors: dict[str, str],
     run_metadata: dict[str, dict[str, object]],
@@ -141,6 +142,7 @@ def render_report(
         f"- Top K: `{top_k}`",
         f"- Vector store: `{vector_store}`",
         "- Namespace policy: `source_need_target_namespaces` for vector/hybrid runs; BM25 does not use vector namespaces.",
+        f"- Target namespace source: `{target_namespace_source}`",
         f"- Namespace prefix: `{namespace_prefix}`",
         "- Vector backend: OpenAI embeddings with disk cache under `.cache/embeddings/`.",
         "- Hybrid backend: reciprocal-rank fusion over BM25 and vector rankings.",
@@ -218,6 +220,7 @@ def render_report(
             lines.append(
                 f"- `{backend}`: vector store `{metadata.get('vector_store')}`, cache mode `{embedding.get('cache_mode')}`, namespace `{embedding.get('cache_namespace')}`, "
                 f"namespace policy `{metadata.get('namespace_policy')}`, "
+                f"target namespace source `{metadata.get('target_namespace_source')}`, "
                 f"query namespaces `{', '.join(f'`{namespace}`' for namespace in namespaces) if namespaces else 'default'}`, "
                 f"query cache complete before run: `{embedding.get('cache_was_complete_for_queries')}`, "
                 f"cache dir `{embedding.get('cache_dir')}`."
@@ -300,6 +303,7 @@ def case_row(result: query_eval.QueryResult, query_source: str, vector_store: st
         "query_source": query_source,
         "vector_store": "n/a" if result.retrieval_backend == "bm25" else vector_store,
         "namespace_policy": "n/a" if result.retrieval_backend == "bm25" else "source_need_target_namespaces",
+        "target_namespaces_by_query": [list(namespaces) for namespaces in result.query_target_namespaces],
         "hit_at_3": result.useful_at_3,
         "hit_at_5": result.useful_at_5,
         "rank": result.known_useful_rank,
@@ -339,6 +343,12 @@ def main() -> int:
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "retrieval_backend_comparison.md")
     parser.add_argument("--vector-store", choices=("local", "pinecone"), default="local")
     parser.add_argument("--namespace-prefix", default="money-models")
+    parser.add_argument(
+        "--target-namespace-source",
+        choices=("none", "expected_layers"),
+        default="none",
+        help="How to populate SourceNeed.target_namespaces for vector/hybrid namespace experiments. 'expected_layers' is an oracle condition.",
+    )
     parser.add_argument("--summary-json", type=Path)
     parser.add_argument("--cases-jsonl", type=Path)
     parser.add_argument(
@@ -383,6 +393,7 @@ def main() -> int:
                 variants_by_case=variants_by_case,
                 vector_store_name=args.vector_store,
                 namespace_prefix=args.namespace_prefix,
+                target_namespace_source=args.target_namespace_source,
             )
         except (EmbeddingError, VectorStoreError) as exc:
             errors[backend] = str(exc)
@@ -398,6 +409,7 @@ def main() -> int:
             args.top_k,
             args.vector_store,
             args.namespace_prefix,
+            args.target_namespace_source,
             summaries,
             errors,
             run_metadata,
@@ -413,6 +425,7 @@ def main() -> int:
                 "query_source": args.query_source,
                 "vector_store": args.vector_store,
                 "namespace_policy": "source_need_target_namespaces",
+                "target_namespace_source": args.target_namespace_source,
                 "namespace_prefix": args.namespace_prefix,
                 "top_k": args.top_k,
                 "summaries": summaries,
@@ -437,6 +450,7 @@ def main() -> int:
                 "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
                 "vector_store": args.vector_store,
                 "namespace_policy": "source_need_target_namespaces",
+                "target_namespace_source": args.target_namespace_source,
                 "namespace_prefix": args.namespace_prefix,
                 "summaries": summaries,
                 "errors": errors,

@@ -69,6 +69,8 @@ The agent owns semantic namespace selection. The CLI must not infer namespaces f
 
 The experiment should record namespace names, embedding model, vector counts, upsert behavior, agent-selected namespace behavior, quality, latency, and failure modes. The decision should avoid namespace theater: use multiple namespaces because the job names that operating mode and because it tests index management, not because this tiny corpus inherently needs it. Single namespace may still win if it has comparable quality with lower operational complexity.
 
+Status: namespace support is implemented and measured. The corrected runtime contract uses `SourceNeed.target_namespaces`; the CLI validates logical namespace names and mechanically maps them to physical Pinecone namespaces. Pinecone indexing has populated the five layer namespaces with 339 records total across 202 unique chunks. Local 30-case oracle namespace testing preserved hybrid quality but did not improve it over single/default namespace retrieval, and it increased vector search count from 120 to 140. A hosted 5-case Pinecone namespace smoke preserved hybrid quality but exposed the expected latency cost of sequential query-variant x namespace fanout. Next step is not more namespace theater; it is either agent namespace-selection evals or parallel/bounded hosted retrieval, depending on which JD gap we prioritize next.
+
 ## Current product direction
 
 The next real product slice is agent-first and CLI-backed. A human talks to an agent, the agent follows the project skill's guidance, and the agent runs local CLI commands:
