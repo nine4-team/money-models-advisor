@@ -794,8 +794,9 @@
               candidate search path is hybrid (keyword + vector, merged into
               one ranking)
               over heading-aware chunks, with agent-written query variants,
-              cached embeddings, and a Pinecone-backed vector store behind a
-              swappable interface.
+              cached embeddings, and a vector store interface with two
+              implementations: local for development and evals, Pinecone for
+              hosted retrieval.
             </p>
           </div>
           <div>
@@ -804,9 +805,9 @@
               Every architecture choice was decided by measurement: nine
               golden datasets, ordered so agent judgment is evaluated before
               the retriever, with the judgment suites scored against agents
-              that never saw the expected answers. Choices that didn't earn
-              their complexity
-              were rejected and recorded.
+              that never saw the expected answers. Anything more complex than
+              the baseline had to beat the baseline on a measurement to be
+              adopted; what didn't was rejected and recorded.
             </p>
           </div>
         </div>
@@ -925,10 +926,10 @@
               <dd>
                 One namespace with metadata filters is the right default at
                 202 chunks. The five-layer Pinecone split was built and
-                benchmarked anyway, because the JD names multi-namespace
-                operation and the split exercises index management. The test
-                came back honest: identical retrieval, slower worst-case latency —
-                so the single namespace stays the default (§3.7).
+                benchmarked anyway, because the role calls for operating
+                multiple Pinecone namespaces. The result: identical
+                retrieval, slower worst-case latency — so the single
+                namespace stays the default (§3.7).
               </dd>
             </div>
           </dl>
@@ -1001,15 +1002,14 @@
           <h4 class="block">Why a local CLI, run by a subscription agent</h4>
           <p>
             The deterministic side is a local CLI, and the agent driving it is
-            a subscription coding tool (Codex), not a hosted model API. That
-            shape pays off three ways. Running locally was required anyway,
-            since no hosted model is allowed in the runtime. A CLI gives the
-            agent commands it can run reliably, gives the eval harness output
-            stable enough to score exactly, and lets a developer rerun any
-            turn by hand. And because the agent runs on a Codex subscription
-            rather than a metered generation API, the only per-token charge
-            anywhere in the build-and-eval loop is embeddings — cached after
-            first use (§2.4).
+            a subscription coding tool (Codex), not a hosted model API. The
+            runtime makes no hosted model calls — a constraint chosen for
+            cost: the agent runs on a subscription, so the only per-token
+            charge anywhere in the build-and-eval loop is embeddings, cached
+            after first use (§2.4). The CLI shape pays off three ways: the
+            agent gets commands it can run reliably, the eval harness gets
+            output stable enough to score exactly, and a developer can rerun
+            any turn by hand.
           </p>
 
           <h4 class="block">The skill</h4>
@@ -1331,9 +1331,11 @@
               <dt>Search</dt>
               <dd>
                 BM25 and embedding-based vector search run over the same
-                chunks; their rankings are combined with reciprocal-rank
-                fusion — the reranking step — so raw keyword and vector
-                scores never need to be directly comparable.
+                chunks, and their results are merged by position, not score —
+                reciprocal-rank fusion, the reranking step. Merging by raw
+                score would mean calibrating two unrelated scales against
+                each other, a common source of fragile hybrid search; merging
+                by rank sidesteps it.
               </dd>
             </div>
             <div>
@@ -1496,9 +1498,11 @@
 
           <h3><span class="sub">3.1 · Evaluation framework</span>Nine golden datasets, five layers</h3>
           <p class="lede">
-            Each layer isolates a failure mode the layers below it can't
-            explain — so retrieval comparisons measure retrieval, not
-            upstream noise.
+            The evals are layered so a failure points at one component.
+            Agent judgment is tested before query writing, and query writing
+            before the retriever — so when two retrieval strategies differ,
+            the difference is about retrieval, not a bad query or a wrong
+            decision upstream.
           </p>
           <ol class="steps">
             <li>
@@ -1540,13 +1544,14 @@
           <p class="quiet">
             Five of the nine datasets sit directly on these layers — tool use,
             source need, search queries, the strategy comparison built on
-            them, and the support-coverage labels. The other four check the eval
-            system itself: trace integrity (source events, calculation
-            traces), the chunk inventory (chunking comparison), and query
-            realism. Every dataset pairs with an automated scorer that writes
-            an auditable report. Acting agents in the judgment evals are
-            Codex-driven; vector search uses OpenAI embeddings, for
-            vectorization only.
+            them, and the support-coverage labels. The other four check the
+            eval system itself: two verify traces record what actually
+            happened (source events, calculation events), one compares
+            chunking strategies, and one audits whether eval queries are
+            phrased the way real users talk. Every dataset pairs with an automated scorer that writes
+            an auditable report. The acting agents in the judgment evals run
+            on Codex. OpenAI is used only to turn text into vectors for
+            search — no hosted model makes any judgment that gets scored.
           </p>
           <dl class="rows">
             <div>
@@ -1620,7 +1625,7 @@
                     </tr>
                     <tr>
                       <td>chunking</td>
-                      <td class="wrap">Which strategy earns its complexity?</td>
+                      <td class="wrap">Does the fancier strategy beat the simpler one?</td>
                       <td class="wrap">Heading-aware kept; framework-aware rejected (§3.3).</td>
                     </tr>
                     <tr>
@@ -1645,14 +1650,17 @@
 
           <h3><span class="sub">3.2 · Quality scoring</span>Does the agent act on the right turns?</h3>
           <p>
-            Twenty-four tool-use cases — dev and regression traces captured
-            during the build, held-out scenarios run after the prompts were frozen by
-            separate acting agents that never saw the labels — and fourteen blind
-            source-need cases (10 search, 4 no-search controls). Results:
-            23/24 strict first-action accuracy, 24/24 after one documented
-            label correction, with zero false and zero missed searches;
-            100% search-decision accuracy, with layer exact match on 9 of the
-            10 search cases. The misses, case by case:
+            The tool-use suite has 24 cases. Most were captured during the
+            build as development and regression traces; the rest are held-out
+            scenarios, run after the instructions were frozen, by acting
+            agents that never saw the expected answers. The source-need suite
+            has 14 cases: 10 where the right move is to search, 4 controls
+            where it isn't. Results: 23 of 24 tool-use cases passed on strict
+            first-action accuracy — 24 of 24 after one documented label
+            correction — with zero false and zero missed searches.
+            Source-need scored 100% on the search/no-search decision and
+            matched the expected namespaces exactly on 9 of the 10 search
+            cases. The misses, case by case:
           </p>
           <dl class="rows">
             <div>
@@ -1675,11 +1683,15 @@
             <div>
               <dt>General rules, not patches</dt>
               <dd>
-                Layer disagreements produced general rules: payment plans
-                belong to <code>downsells</code> because their function is
-                reducing purchase friction; a fix-oriented turn keeps
-                <code>recommendation</code> intent even when payback appears
-                as a focus term.
+                When a case disagreed with its label, the resolution became a
+                general rule, not a one-case patch. Two examples: payment
+                plans are labeled <code>downsells</code> — they look like
+                pricing, but their function is reducing purchase friction.
+                And a turn asking how to <em>fix</em> payback gets
+                <code>recommendation_evidence</code>, not
+                <code>diagnostic_evidence</code>: the user already wants a
+                fix, so the search exists to support the recommendation, even
+                though "payback" sounds diagnostic.
               </dd>
             </div>
           </dl>
@@ -1687,7 +1699,8 @@
             <span class="d-tag">Decision</span>
             <div>
               <p>
-                Judgment is good enough to gate the retrieval comparisons.
+                Agent judgment is solid enough to build the retrieval
+                comparisons on.
               </p>
               <p>
                 With search/no-search decisions at 100% on the captured sets,
@@ -1699,17 +1712,23 @@
 
           <h3><span class="sub">3.3 · Chunking strategy</span>Heading-aware kept; framework-aware rejected</h3>
           <p>
-            Two chunking strategies were compared on a labeled set:
-            heading-aware scored 81.25% Hit@1 and 0.8917 MRR; a
-            framework-aware variant scored identical Hit@1 and +0.0041 MRR.
+            Two chunking strategies were compared on a labeled set.
+            Heading-aware splits the transcripts at their section headings.
+            The framework-aware variant adds split points at cue phrases like
+            "how it works," "step one," and "examples" — the spots where a
+            lesson switches from naming a framework to explaining it — on the
+            theory that tighter chunks would match definition-style and
+            mechanics-style queries better. It didn't help: identical Hit@1
+            (81.25%), and an MRR gain of +0.0041.
           </p>
           <div class="decision">
             <span class="d-tag">Decision</span>
             <div>
               <p>Keep heading-aware chunking.</p>
               <p>
-                The gain doesn't clear the adoption threshold; the comparison
-                stays in the repo as a recorded non-adoption.
+                A gain of less than half a percent doesn't justify
+                maintaining a second chunking pipeline; the comparison stays
+                in the repo as a recorded non-adoption.
               </p>
             </div>
           </div>
@@ -1717,19 +1736,23 @@
           <h3><span class="sub">3.4 · Hybrid retrieval + reranking</span>Comparing BM25, vector, and hybrid</h3>
           <p>
             BM25 served as the keyword baseline and control, not the product
-            architecture. Its job was to reveal whether fancier
-            retrieval earns its complexity, and it set a high bar — the
+            architecture. Its job was to reveal whether vector and hybrid
+            retrieval actually beat the simple thing, and it set a high bar — the
             generated queries carry the book's exact framework terms ("CFA,"
             "rollover upsell," "payback period"), and that shared vocabulary
             makes keyword retrieval unusually competitive. Against it:
             vector search and rank-fused hybrid, all over the same chunks.
           </p>
           <p>
-            The golden set itself grew with the work. An earlier
-            snapshot-only query mode scored 50.0% by repeating one broad
-            diagnostic query — the failure that motivated structured source
-            needs — and the set was then expanded from 10 to 30 cases, with
-            newly retrieved citeable chunks reviewed and added to the labels.
+            The golden set itself grew with the work. The first version of
+            query generation was the deliberately simple baseline: one query
+            built from the saved business state, before SourceNeeds existed.
+            The eval exposed it — nearly every search produced the same broad
+            diagnostic query, and only half the cases found a useful chunk
+            (50.0%). That measurement is what created the structured
+            SourceNeed (§2.4). The case set was then expanded from 10 to 30,
+            and chunks the new searches surfaced were reviewed and added to
+            the labels where they were genuinely citeable.
           </p>
           <figure class="figure">
             <figcaption>30-case golden set · deterministic generated queries · mean useful rank = average rank of the first known-useful chunk</figcaption>
@@ -1915,8 +1938,9 @@
             <span class="d-tag">Decision</span>
             <div>
               <p>
-                Pinecone proves the hosted path and preserves quality;
-                parallelizing the variant queries fixed the worst of the latency.
+                Hosted retrieval works: Pinecone returns the same results as
+                the local store, and parallelizing the variant queries fixed
+                the worst of the latency.
               </p>
               <p>
                 Top-k tuning and request-level observability are still open —
@@ -1951,9 +1975,9 @@
             scan time — so searching a smaller namespace saves microseconds.
             The split instead turns one round-trip into up to five for
             multi-layer cases, and a case finishes only when its slowest
-            namespace answers. The maximum of five draws from the same
-            latency distribution has a worse tail than a single draw, which
-            is exactly what the p95 shows.
+            namespace answers. Waiting on the slowest of five queries is
+            usually slower than waiting on one — which is exactly what the
+            p95 shows.
           </p>
           <p class="quiet">
             One scope caveat: this set is saturated — Hit@5 is 100% for
@@ -2015,10 +2039,11 @@
             their labels expect CLI actions that a single API call, with the
             state already in its prompt, will reasonably skip. Part of that
             suite's gap measures the harness, not the model; source-need is
-            the cleaner tier discriminator. And the recorded-agent reference
-            ran a different harness and provider (Claude operating the CLI
-            interactively), so it is a direction of evidence, not a
-            controlled cross-provider benchmark.
+            the cleaner tier discriminator. And the 92.9% reference comes
+            from a different setup — Claude working interactively through the
+            CLI, not answering one API call — so the gap says the interactive
+            agent is ahead, but not how much of that is the model versus the
+            harness.
           </p>
           <div class="decision">
             <span class="d-tag">Decision</span>
@@ -2151,8 +2176,12 @@
               <dt>Cost reporting</dt>
               <dd>
                 Embedding cost, cache hit rates, and per-run query counts are
-                instrumented. Agent-side token usage isn't — the acting agent
-                runs outside the API path in this prototype.
+                instrumented. Agent-side token usage isn't — the agent runs
+                inside a subscription coding tool, which doesn't expose
+                per-turn token counts. Where calls do go through an API
+                directly, exact token and cost numbers are reported: the
+                embedding runs (§3.5) and the model-routing experiment
+                (§3.8).
               </dd>
             </div>
             <div>
