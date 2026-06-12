@@ -1,0 +1,252 @@
+{
+  "cases": 30,
+  "query_source": "generated_variants",
+  "vector_store": "pinecone",
+  "namespace_policy": "source_need_target_namespaces",
+  "target_namespace_source": "expected_layers",
+  "namespace_prefix": "money-models",
+  "max_workers": 8,
+  "top_k": 5,
+  "summaries": {
+    "bm25": {
+      "cases": 30,
+      "known_useful_hit_at_3": "96.7%",
+      "known_useful_hit_at_5": "100.0%",
+      "top1_layer_match": "100.0%",
+      "any_expected_layer_at_5": "100.0%",
+      "mean_known_useful_rank": 1.33,
+      "misses_at_5": [],
+      "p50_total_ms": 1.508,
+      "p95_total_ms": 4.354,
+      "p50_retrieval_ms": 1.313,
+      "p95_retrieval_ms": 3.72,
+      "p50_embedding_ms": 0.0,
+      "p95_embedding_ms": 0.0,
+      "average_query_count": 4.0,
+      "average_variant_count": 3.0,
+      "vector_search_count": 0,
+      "embedding": {
+        "model": null,
+        "cache_namespace": null,
+        "cache_dir": null,
+        "by_purpose": {}
+      },
+      "estimated_embedding_cost_usd": 0.0,
+      "estimated_embedding_cost_per_1000_queries_usd": 0.0
+    },
+    "vector": {
+      "cases": 30,
+      "known_useful_hit_at_3": "96.7%",
+      "known_useful_hit_at_5": "100.0%",
+      "top1_layer_match": "100.0%",
+      "any_expected_layer_at_5": "100.0%",
+      "mean_known_useful_rank": 1.37,
+      "misses_at_5": [],
+      "p50_total_ms": 1434.463,
+      "p95_total_ms": 2962.739,
+      "p50_retrieval_ms": 1433.521,
+      "p95_retrieval_ms": 2962.207,
+      "p50_embedding_ms": 19.634,
+      "p95_embedding_ms": 30.176,
+      "average_query_count": 4.0,
+      "average_variant_count": 3.0,
+      "vector_search_count": 140,
+      "embedding": {
+        "model": "text-embedding-3-small",
+        "cache_namespace": "openai/text-embedding-3-small",
+        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+        "by_purpose": {
+          "query": {
+            "cache_hits": 120,
+            "cache_misses": 0,
+            "api_batches": 0,
+            "api_inputs": 0,
+            "input_chars": 7351,
+            "api_input_chars": 0,
+            "estimated_api_input_tokens": 0,
+            "elapsed_ms": 615.282,
+            "cache_hit_rate": 1.0
+          }
+        }
+      },
+      "estimated_embedding_cost_usd": 0.0,
+      "estimated_embedding_cost_per_1000_queries_usd": 0.0
+    },
+    "hybrid": {
+      "cases": 30,
+      "known_useful_hit_at_3": "100.0%",
+      "known_useful_hit_at_5": "100.0%",
+      "top1_layer_match": "100.0%",
+      "any_expected_layer_at_5": "100.0%",
+      "mean_known_useful_rank": 1.17,
+      "misses_at_5": [],
+      "p50_total_ms": 1449.508,
+      "p95_total_ms": 3007.177,
+      "p50_retrieval_ms": 1448.886,
+      "p95_retrieval_ms": 3006.541,
+      "p50_embedding_ms": 20.346,
+      "p95_embedding_ms": 28.426,
+      "average_query_count": 4.0,
+      "average_variant_count": 3.0,
+      "vector_search_count": 140,
+      "embedding": {
+        "model": "text-embedding-3-small",
+        "cache_namespace": "openai/text-embedding-3-small",
+        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+        "by_purpose": {
+          "query": {
+            "cache_hits": 120,
+            "cache_misses": 0,
+            "api_batches": 0,
+            "api_inputs": 0,
+            "input_chars": 7351,
+            "api_input_chars": 0,
+            "estimated_api_input_tokens": 0,
+            "elapsed_ms": 582.416,
+            "cache_hit_rate": 1.0
+          }
+        }
+      },
+      "estimated_embedding_cost_usd": 0.0,
+      "estimated_embedding_cost_per_1000_queries_usd": 0.0
+    }
+  },
+  "errors": {},
+  "run_metadata": {
+    "bm25": {
+      "index_ms": 25.726,
+      "chunks": 202,
+      "cache_mode": "current",
+      "vector_store": "n/a",
+      "namespace_policy": "n/a",
+      "target_namespace_source": "n/a",
+      "namespace_prefix": null,
+      "max_workers": 8,
+      "namespaces": [],
+      "embedding": {
+        "model": null,
+        "cache_namespace": null,
+        "cache_dir": null,
+        "cache_mode": "n/a",
+        "corpus_cache_before": null,
+        "query_cache_before": null,
+        "estimated_embedding_cost_usd": 0.0
+      }
+    },
+    "vector": {
+      "index_ms": 24.899,
+      "chunks": 202,
+      "cache_mode": "current",
+      "vector_store": "pinecone",
+      "namespace_policy": "source_need_target_namespaces",
+      "target_namespace_source": "expected_layers",
+      "namespace_prefix": "money-models",
+      "max_workers": 8,
+      "namespaces": [
+        "money-models-unit-economics",
+        "money-models-offers",
+        "money-models-upsells",
+        "money-models-continuity",
+        "money-models-downsells"
+      ],
+      "embedding": {
+        "model": "text-embedding-3-small",
+        "cache_namespace": "openai/text-embedding-3-small",
+        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+        "cache_mode": "current",
+        "corpus_cache_before": {
+          "total": 202,
+          "hits": 202,
+          "misses": 0,
+          "complete": true
+        },
+        "query_cache_before": {
+          "total": 120,
+          "hits": 120,
+          "misses": 0,
+          "complete": true
+        },
+        "cache_was_complete_for_queries": true,
+        "estimated_embedding_cost_usd": 0.0,
+        "stats": {
+          "model": "text-embedding-3-small",
+          "cache_namespace": "openai/text-embedding-3-small",
+          "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+          "by_purpose": {
+            "query": {
+              "cache_hits": 120,
+              "cache_misses": 0,
+              "cache_hit_rate": 1.0,
+              "api_batches": 0,
+              "api_inputs": 0,
+              "input_chars": 7351,
+              "api_input_chars": 0,
+              "estimated_api_input_tokens": 0,
+              "elapsed_ms": 615.282
+            }
+          }
+        }
+      }
+    },
+    "hybrid": {
+      "index_ms": 41.621,
+      "chunks": 202,
+      "cache_mode": "current",
+      "vector_store": "pinecone",
+      "namespace_policy": "source_need_target_namespaces",
+      "target_namespace_source": "expected_layers",
+      "namespace_prefix": "money-models",
+      "max_workers": 8,
+      "namespaces": [
+        "money-models-unit-economics",
+        "money-models-offers",
+        "money-models-upsells",
+        "money-models-continuity",
+        "money-models-downsells"
+      ],
+      "embedding": {
+        "model": "text-embedding-3-small",
+        "cache_namespace": "openai/text-embedding-3-small",
+        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+        "cache_mode": "current",
+        "corpus_cache_before": {
+          "total": 202,
+          "hits": 202,
+          "misses": 0,
+          "complete": true
+        },
+        "query_cache_before": {
+          "total": 120,
+          "hits": 120,
+          "misses": 0,
+          "complete": true
+        },
+        "cache_was_complete_for_queries": true,
+        "estimated_embedding_cost_usd": 0.0,
+        "stats": {
+          "model": "text-embedding-3-small",
+          "cache_namespace": "openai/text-embedding-3-small",
+          "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+          "by_purpose": {
+            "query": {
+              "cache_hits": 120,
+              "cache_misses": 0,
+              "cache_hit_rate": 1.0,
+              "api_batches": 0,
+              "api_inputs": 0,
+              "input_chars": 7351,
+              "api_input_chars": 0,
+              "estimated_api_input_tokens": 0,
+              "elapsed_ms": 582.416
+            }
+          }
+        }
+      }
+    }
+  },
+  "split_counts": {
+    "dev": 9,
+    "expansion": 20,
+    "scenario_holdout": 1
+  }
+}

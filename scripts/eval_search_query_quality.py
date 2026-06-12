@@ -11,6 +11,7 @@ import argparse
 import json
 import time
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -265,6 +266,7 @@ def score_cases(
     vector_store_name: str = "local",
     namespace_prefix: str = "money-models",
     target_namespace_source: str = "none",
+    max_workers: int = 1,
 ) -> list[QueryResult]:
     return score_cases_with_metrics(
         cases,
@@ -275,6 +277,7 @@ def score_cases(
         vector_store_name=vector_store_name,
         namespace_prefix=namespace_prefix,
         target_namespace_source=target_namespace_source,
+        max_workers=max_workers,
     )[0]
 
 
@@ -287,6 +290,7 @@ def score_cases_with_metrics(
     vector_store_name: str = "local",
     namespace_prefix: str = "money-models",
     target_namespace_source: str = "none",
+    max_workers: int = 1,
 ) -> tuple[list[QueryResult], dict[str, Any]]:
     index_started = time.perf_counter()
     index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
@@ -310,25 +314,19 @@ def score_cases_with_metrics(
             target_namespace_source=target_namespace_source,
         )
         query_build_ms = (time.perf_counter() - query_started) * 1000
-        query_result_sets = []
         embedding_before = _embedding_stats_snapshot(embedding_client)
         retrieval_started = time.perf_counter()
-        for layers, target_namespaces, query, _reason in query_specs:
-            vector_namespaces = tuple(layer_namespaces(target_namespaces, prefix=namespace_prefix)) if target_namespaces else None
-            query_result_sets.append(
-                search_index(
-                    index,
-                    query,
-                    layers=layers,
-                    top_k=max(top_k * 5, top_k),
-                    backend=retrieval_backend,
-                    embedding_client=embedding_client,
-                    vector_store=vector_store,
-                    vector_store_name=selected_store,
-                    namespace_prefix=namespace_prefix,
-                    vector_namespaces=vector_namespaces,
-                )
-            )
+        query_result_sets = execute_query_specs(
+            index,
+            query_specs,
+            top_k=max(top_k * 5, top_k),
+            backend=retrieval_backend,
+            embedding_client=embedding_client,
+            vector_store=vector_store,
+            vector_store_name=selected_store,
+            namespace_prefix=namespace_prefix,
+            max_workers=max_workers,
+        )
         retrieval_ms = (time.perf_counter() - retrieval_started) * 1000
         embedding_after = _embedding_stats_snapshot(embedding_client)
         merge_started = time.perf_counter()
@@ -395,6 +393,7 @@ def score_cases_with_metrics(
         "namespace_policy": "source_need_target_namespaces" if retrieval_backend in {"vector", "hybrid"} else "n/a",
         "target_namespace_source": target_namespace_source if retrieval_backend in {"vector", "hybrid"} else "n/a",
         "namespace_prefix": namespace_prefix if retrieval_backend in {"vector", "hybrid"} else None,
+        "max_workers": max_workers,
         "namespaces": _namespaces_for_query_specs(
             query_specs_for_all_cases(
                 cases,
@@ -409,6 +408,79 @@ def score_cases_with_metrics(
         "embedding": _embedding_run_metadata(embedding_client, corpus_cache_before, query_cache_before),
     }
     return results, run_metadata
+
+
+def execute_query_specs(
+    index: CorpusIndex,
+    query_specs: list[tuple[tuple[str, ...], tuple[str, ...], str, str]],
+    *,
+    top_k: int,
+    backend: str,
+    embedding_client: Any | None,
+    vector_store: VectorStore | None,
+    vector_store_name: str,
+    namespace_prefix: str,
+    max_workers: int,
+) -> list[list[SearchResult]]:
+    if max_workers <= 1 or len(query_specs) <= 1:
+        return [
+            execute_query_spec(
+                index,
+                query_spec,
+                top_k=top_k,
+                backend=backend,
+                embedding_client=embedding_client,
+                vector_store=vector_store,
+                vector_store_name=vector_store_name,
+                namespace_prefix=namespace_prefix,
+            )
+            for query_spec in query_specs
+        ]
+
+    workers = min(max_workers, len(query_specs))
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        futures = [
+            executor.submit(
+                execute_query_spec,
+                index,
+                query_spec,
+                top_k=top_k,
+                backend=backend,
+                embedding_client=embedding_client,
+                vector_store=vector_store,
+                vector_store_name=vector_store_name,
+                namespace_prefix=namespace_prefix,
+            )
+            for query_spec in query_specs
+        ]
+        return [future.result() for future in futures]
+
+
+def execute_query_spec(
+    index: CorpusIndex,
+    query_spec: tuple[tuple[str, ...], tuple[str, ...], str, str],
+    *,
+    top_k: int,
+    backend: str,
+    embedding_client: Any | None,
+    vector_store: VectorStore | None,
+    vector_store_name: str,
+    namespace_prefix: str,
+) -> list[SearchResult]:
+    layers, target_namespaces, query, _reason = query_spec
+    vector_namespaces = tuple(layer_namespaces(target_namespaces, prefix=namespace_prefix)) if target_namespaces else None
+    return search_index(
+        index,
+        query,
+        layers=layers,
+        top_k=top_k,
+        backend=backend,
+        embedding_client=embedding_client,
+        vector_store=vector_store,
+        vector_store_name=vector_store_name,
+        namespace_prefix=namespace_prefix,
+        vector_namespaces=vector_namespaces,
+    )
 
 
 def _vector_search_count(
@@ -693,6 +765,12 @@ def main() -> int:
         default="none",
         help="How to populate SourceNeed.target_namespaces for namespace-layout experiments. 'expected_layers' is an oracle condition, not an agent namespace-selection result.",
     )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=1,
+        help="Maximum per-case retrieval workers. Use >1 for hosted vector stores to avoid serial query-variant latency.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(args.cases)
@@ -724,6 +802,7 @@ def main() -> int:
             vector_store_name=args.vector_store,
             namespace_prefix=args.namespace_prefix,
             target_namespace_source=args.target_namespace_source,
+            max_workers=args.max_workers,
         )
     )
 
@@ -751,6 +830,7 @@ def main() -> int:
                 "namespace_policy": "source_need_target_namespaces" if args.retrieval_backend in {"vector", "hybrid"} else "n/a",
                 "target_namespace_source": args.target_namespace_source if args.retrieval_backend in {"vector", "hybrid"} else "n/a",
                 "namespace_prefix": args.namespace_prefix if args.retrieval_backend in {"vector", "hybrid"} else None,
+                "max_workers": args.max_workers,
                 "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
                 "report": display_path(args.report),
             },

@@ -171,9 +171,15 @@ python3 scripts/compare_retrieval_backends.py --query-source generated_variants 
   --vector-store local \
   --target-namespace-source expected_layers \
   --report evals/reports/retrieval_backend_comparison_generated_variants_local_layer_namespaces_oracle.md
+
+python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
+  --vector-store pinecone \
+  --target-namespace-source expected_layers \
+  --max-workers 8 \
+  --report evals/reports/retrieval_backend_comparison_generated_variants_pinecone_layer_namespaces_oracle.md
 ```
 
-The hosted Pinecone namespace smoke currently uses a representative subset because the full sequential query-variant x namespace benchmark is too slow to treat as production-latency evidence without parallelization or bounded fanout.
+The hosted Pinecone namespace benchmark uses bounded per-case parallel retrieval because query variants and multi-layer namespaces create retrieval fanout. The current result supports keeping single namespace plus metadata filters as the v1 default: five-layer namespaces preserve quality but do not improve it, and they add hosted vector searches on multi-layer cases.
 
 Score source-need generation traces:
 

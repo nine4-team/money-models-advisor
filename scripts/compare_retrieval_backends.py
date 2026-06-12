@@ -127,6 +127,7 @@ def render_report(
     vector_store: str,
     namespace_prefix: str,
     target_namespace_source: str,
+    max_workers: int,
     summaries: dict[str, dict[str, object]],
     errors: dict[str, str],
     run_metadata: dict[str, dict[str, object]],
@@ -143,6 +144,7 @@ def render_report(
         f"- Vector store: `{vector_store}`",
         "- Namespace policy: `source_need_target_namespaces` for vector/hybrid runs; BM25 does not use vector namespaces.",
         f"- Target namespace source: `{target_namespace_source}`",
+        f"- Max per-case retrieval workers: `{max_workers}`",
         f"- Namespace prefix: `{namespace_prefix}`",
         "- Vector backend: OpenAI embeddings with disk cache under `.cache/embeddings/`.",
         "- Hybrid backend: reciprocal-rank fusion over BM25 and vector rankings.",
@@ -221,6 +223,7 @@ def render_report(
                 f"- `{backend}`: vector store `{metadata.get('vector_store')}`, cache mode `{embedding.get('cache_mode')}`, namespace `{embedding.get('cache_namespace')}`, "
                 f"namespace policy `{metadata.get('namespace_policy')}`, "
                 f"target namespace source `{metadata.get('target_namespace_source')}`, "
+                f"max workers `{metadata.get('max_workers')}`, "
                 f"query namespaces `{', '.join(f'`{namespace}`' for namespace in namespaces) if namespaces else 'default'}`, "
                 f"query cache complete before run: `{embedding.get('cache_was_complete_for_queries')}`, "
                 f"cache dir `{embedding.get('cache_dir')}`."
@@ -349,6 +352,12 @@ def main() -> int:
         default="none",
         help="How to populate SourceNeed.target_namespaces for vector/hybrid namespace experiments. 'expected_layers' is an oracle condition.",
     )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=1,
+        help="Maximum per-case retrieval workers. Use >1 for hosted vector stores to avoid serial query-variant latency.",
+    )
     parser.add_argument("--summary-json", type=Path)
     parser.add_argument("--cases-jsonl", type=Path)
     parser.add_argument(
@@ -394,6 +403,7 @@ def main() -> int:
                 vector_store_name=args.vector_store,
                 namespace_prefix=args.namespace_prefix,
                 target_namespace_source=args.target_namespace_source,
+                max_workers=args.max_workers,
             )
         except (EmbeddingError, VectorStoreError) as exc:
             errors[backend] = str(exc)
@@ -410,6 +420,7 @@ def main() -> int:
             args.vector_store,
             args.namespace_prefix,
             args.target_namespace_source,
+            args.max_workers,
             summaries,
             errors,
             run_metadata,
@@ -427,6 +438,7 @@ def main() -> int:
                 "namespace_policy": "source_need_target_namespaces",
                 "target_namespace_source": args.target_namespace_source,
                 "namespace_prefix": args.namespace_prefix,
+                "max_workers": args.max_workers,
                 "top_k": args.top_k,
                 "summaries": summaries,
                 "errors": errors,
@@ -452,6 +464,7 @@ def main() -> int:
                 "namespace_policy": "source_need_target_namespaces",
                 "target_namespace_source": args.target_namespace_source,
                 "namespace_prefix": args.namespace_prefix,
+                "max_workers": args.max_workers,
                 "summaries": summaries,
                 "errors": errors,
                 "report": display_path(args.report),
