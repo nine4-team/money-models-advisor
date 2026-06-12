@@ -789,7 +789,8 @@
             <p>
               An agent plans each turn; a deterministic CLI persists typed
               business state, runs the math, and executes retrieval. The
-              candidate search path is hybrid (keyword + vector, rank-fused)
+              candidate search path is hybrid (keyword + vector, merged into
+              one ranking)
               over heading-aware chunks, with agent-written query variants,
               cached embeddings, and a Pinecone-backed vector store behind a
               swappable interface.
@@ -800,8 +801,9 @@
             <p>
               Every architecture choice was decided by measurement: nine
               golden datasets, ordered so agent judgment is evaluated before
-              the retriever, with the judgment suites scored against blind
-              acting-agent runs. Choices that didn't earn their complexity
+              the retriever, with the judgment suites scored against agents
+              that never saw the expected answers. Choices that didn't earn
+              their complexity
               were rejected and recorded.
             </p>
           </div>
@@ -923,7 +925,7 @@
                 202 chunks. The five-layer Pinecone split was built and
                 benchmarked anyway, because the JD names multi-namespace
                 operation and the split exercises index management. The test
-                came back honest: identical retrieval, worse tail latency —
+                came back honest: identical retrieval, slower worst-case latency —
                 so the single namespace stays the default (§3.6).
               </dd>
             </div>
@@ -1022,7 +1024,7 @@
           <p class="quiet">
             Building a hosted web product before the advisor loop and the eval
             method were proven would have been premature. If one is built
-            later, it is a second surface over the same core (§4) — the stable
+            later, it is a web front end over the same core (§4) — the stable
             JSON contract and the vector-store boundary are what make that
             cheap. The only outside services today are the embedding API, for
             vectorization, and the Pinecone vector store (§2.4).
@@ -1043,19 +1045,23 @@
             <div>
               <dt>Business identity</dt>
               <dd>
-                Type, ICP, delivery model — they change how examples apply and
+                Type, ICP (ideal customer profile), delivery model — they
+                change how examples apply and
                 how fulfillment cost and margin should be read.
               </dd>
             </div>
             <div>
               <dt>Money-model stack</dt>
               <dd>
-                Five positions — attraction offer, core offer, upsell,
-                downsell, continuity — each stored as
-                <code>{exists, description, price}</code>. The flag alone is
-                not enough: "add an upsell" is bad advice when one exists but
-                is underpriced. <code>null</code> means unknown;
-                <code>false</code> requires evidence of absence.
+                The book's five offer types — attraction offer, core offer,
+                upsell, downsell, continuity — each stored as
+                <code>{exists, description, price}</code>.
+                <code>exists</code> alone wouldn't be enough — "add an
+                upsell" is bad advice for a business that has one but priced
+                it too low — so the description and price are stored with it.
+                And <code>exists</code> takes three values: <code>true</code>,
+                <code>false</code> only when there's evidence the offer is
+                really absent, and <code>null</code> when nobody knows yet.
               </dd>
             </div>
             <div>
@@ -1071,26 +1077,27 @@
               <dt>Problem framing</dt>
               <dd>
                 The user's goal, their symptoms in their own words ("cash is
-                tight"), and the advisor's stored conclusions
-                (<code>slow_payback</code>) — kept separate so the advisor
-                doesn't optimize the wrong thing.
+                tight"), and the advisor's diagnosed constraints
+                (<code>slow_payback</code>) — kept in separate fields so what
+                the user reported is never confused with what the advisor
+                concluded.
               </dd>
             </div>
           </dl>
           <p>
-            Every non-null field records its source: source type
-            (<code>file</code> / <code>conversation</code> /
-            <code>calculated</code>), the path and content hash for
-            file-derived facts so they invalidate when the file changes, a
-            confidence grade, and a timestamp. Merge rules are explicit —
+            Every saved fact records its source: whether it came from a
+            <code>file</code>, the <code>conversation</code>, or a
+            <code>calculation</code>; for file-derived facts, the file's path
+            and a hash of its contents, so the fact is marked stale when the
+            file changes; plus a confidence grade and a timestamp. Merge rules are explicit —
             inspected evidence beats inference, direct user statements beat
             weak file inferences, newer direct user statements beat older
             ones — and conflicts are preserved in the trace rather than
             silently overwritten.
           </p>
           <p>
-            The snapshot also computes deterministic hints. The advisory
-            status moves through a four-state machine:
+            The snapshot also computes status fields the agent can read but
+            not invent. The advisory status moves through four stages:
           </p>
           <div class="statusflow">
             <span>insufficient_context</span><i>→</i>
@@ -1099,11 +1106,12 @@
             <span>recommendable</span>
           </div>
           <p>
-            Readiness flags (payback diagnosis needs CAC and first-30-day
-            gross profit; stack diagnosis needs to know which positions
-            exist), missing-field lists that drive targeted clarifying
-            questions, and candidate retrieval layers all live here too. The
-            agent decides whether any hint matters for the current turn.
+            Alongside it: readiness checks (a payback diagnosis needs CAC and
+            first-30-day gross profit; an offer-stack diagnosis needs to know
+            which offers exist), the list of still-missing facts — which is
+            what drives the clarifying questions — and which sections of the
+            book are likely relevant. The agent decides whether any of this
+            matters for the current turn.
           </p>
           <p class="quiet">
             The snapshot is also the cache for business context: facts are
@@ -1276,9 +1284,11 @@
             <div>
               <dt>Queries</dt>
               <dd>
-                The variants are causal and framework phrasings of the same
-                source need, fused with a deterministic flattened fallback
-                query so they can't crowd out the stable baseline.
+                The agent phrases the same need 2–4 ways — in cause-and-effect
+                terms, and in the book's framework terms. One more query is
+                always built mechanically from the source need's own terms,
+                and its results are merged in, so a badly phrased variant
+                can't sink the search.
               </dd>
             </div>
             <div>
@@ -1482,13 +1492,14 @@
             <div>
               <dt>Label strength</dt>
               <dd>
-                "Do not search on this turn" is a strict behavioral
-                expectation. "This chunk is known useful" is a non-exhaustive
-                seed label. Exact focus-term recall is only a debugging signal
-                — "front-end offer" fails a substring match against "front end
-                offer" — so concept coverage judged with rationale is the
-                semantic measure. Misses against seed labels get reviewed
-                before they're interpreted.
+                "Do not search on this turn" is strict: searching fails the
+                case. "This chunk is known useful" is a starting label, not a
+                complete list of every useful chunk. Exact term matching is
+                only a debugging signal — "front-end offer" fails a text
+                match against "front end offer" — so the measure that counts
+                is whether the concepts are covered, judged with a written
+                rationale. Misses against the starting labels get reviewed
+                before they're counted.
               </dd>
             </div>
           </dl>
@@ -1563,7 +1574,7 @@
           <h3><span class="sub">3.2 · Quality scoring</span>Does the agent act on the right turns?</h3>
           <p>
             Twenty-four tool-use cases — dev and regression traces captured
-            in-thread, held-out scenarios run after the prompts were frozen by
+            during the build, held-out scenarios run after the prompts were frozen by
             separate acting agents that never saw the labels — and fourteen blind
             source-need cases (10 search, 4 no-search controls). Results:
             23/24 strict first-action accuracy, 24/24 after one documented
@@ -1590,7 +1601,7 @@
               </dd>
             </div>
             <div>
-              <dt>Taxonomy, not patches</dt>
+              <dt>General rules, not patches</dt>
               <dd>
                 Layer disagreements produced general rules: payment plans
                 belong to <code>downsells</code> because their function is
@@ -1642,14 +1653,14 @@
             vector search and rank-fused hybrid, all over the same chunks.
           </p>
           <p>
-            The golden slice itself grew with the work. An earlier
+            The golden set itself grew with the work. An earlier
             snapshot-only query mode scored 50.0% by repeating one broad
             diagnostic query — the failure that motivated structured source
-            needs — and the slice was then expanded from 10 to 30 cases, with
+            needs — and the set was then expanded from 10 to 30 cases, with
             newly retrieved citeable chunks reviewed and added to the labels.
           </p>
           <figure class="figure">
-            <figcaption>30-case golden slice · deterministic generated queries · mean useful rank = average rank of the first known-useful chunk</figcaption>
+            <figcaption>30-case golden set · deterministic generated queries · mean useful rank = average rank of the first known-useful chunk</figcaption>
             <div class="table-scroll">
               <table>
                 <thead>
@@ -1712,25 +1723,25 @@
             <div>
               <dt>The diagnosis</dt>
               <dd>
-                The v1 query builder flattened the agent's source need into a
-                deterministic bag of terms — a reasonable baseline, since it
-                isolated retrieval execution from agent judgment and gave
-                every eval a stable query to score. But a flat noun list loses
-                the causal shape of the question, so dense retrieval ranked
-                adjacent payback/CAC chunks above the one passage that
+                The v1 query builder collapsed the agent's source need into
+                one fixed list of its terms — a reasonable baseline, since it
+                kept agent judgment out of the comparison and gave every eval
+                the same query to score. But a list of nouns loses the
+                cause-and-effect shape of the question, so vector search
+                ranked nearby payback/CAC chunks above the one passage that
                 actually explains gross profit and fulfillment cost. The
-                failure was in query generation, not the retriever.
+                failure was in how the query was built, not in the retriever.
               </dd>
             </div>
             <div>
               <dt>The fix</dt>
               <dd>
                 Deliberately constrained — not one freeform agent query, which
-                would trade away traceability. The agent writes query variants
-                under a constrained schema, the deterministic flattened query
-                stays as a fallback variant, and results are fused with
-                reciprocal-rank fusion so early variants can't crowd out the
-                fallback.
+                would trade away traceability. The agent writes 2–4 query
+                variants in a fixed format, the mechanical query stays in the
+                set as a fallback, and all results are merged with
+                reciprocal-rank fusion so no variant can push the fallback
+                out.
               </dd>
             </div>
           </dl>
@@ -1775,7 +1786,7 @@
           </figure>
           <p class="quiet">
             Cost reported beside quality: variants average 4.0 queries per
-            case — 120 vector searches across the slice. On warm runs the
+            case — 120 vector searches across the set. On warm runs the
             embedding cache hit 100% for corpus and query vectors, so the
             vector and hybrid evals made zero external embedding API batches.
           </p>
@@ -1789,7 +1800,7 @@
               <p>
                 Variants fixed the miss, but they add another agent-authored
                 artifact that can be wrong — which is why the deterministic
-                fallback and the golden slice stay in place as guards, and why
+                fallback and the golden set stay in place as guards, and why
                 this is a candidate default rather than a final claim.
               </p>
             </div>
@@ -1798,7 +1809,7 @@
           <h3><span class="sub">3.5 · Latency benchmarks</span>Pinecone matched local quality, and exposed slow retrieval</h3>
           <p>
             Local retrieval came first so iteration and evals stayed fast.
-            Once the strategy was justified, the same 30-case slice was rerun
+            Once the strategy was justified, the same 30-case set was rerun
             against the Pinecone implementation of the
             <code>VectorStore</code> interface (§2.4): 100% Hit@3/Hit@5, mean
             useful rank 1.17, 100% query-cache hit rate, zero embedding API
@@ -1857,12 +1868,12 @@
             is exactly what the p95 shows.
           </p>
           <p class="quiet">
-            One scope caveat: this slice is saturated — Hit@5 is 100% for
+            One scope caveat: this set is saturated — Hit@5 is 100% for
             every backend in both conditions — so it cannot detect a quality
             improvement from anything. The supported claim is "no measurable
-            difference on this slice," not "namespaces never help." If the
+            difference on this set," not "namespaces never help." If the
             corpus grows to where layers interfere in ranking, re-test on a
-            harder slice.
+            harder set.
           </p>
           <div class="decision">
             <span class="d-tag">Decision</span>
@@ -1884,8 +1895,8 @@
             The JD asks for model routing that improves unit economics while
             maintaining output quality. The second half is the constraint, so
             it was tested first: the source-need and tool-use golden suites
-            were replayed as single bounded JSON completions against four
-            hosted tiers — gpt-5, gpt-5-mini, gpt-5-nano, and the
+            were replayed as single API calls — the needed state included in
+            the prompt, a JSON answer required — against four hosted tiers — gpt-5, gpt-5-mini, gpt-5-nano, and the
             non-reasoning gpt-4.1-mini — and scored by the same deterministic
             scorers used on the recorded agent traces. 152 completions, zero
             request errors, every prompt and raw response committed as a run
@@ -1913,8 +1924,8 @@
           </p>
           <p class="quiet">
             Caveat: six tool-use cases failed on every API tier, because
-            their labels expect CLI actions that a bounded completion with
-            the state already inlined will reasonably skip. Part of that
+            their labels expect CLI actions that a single API call, with the
+            state already in its prompt, will reasonably skip. Part of that
             suite's gap measures the harness, not the model; source-need is
             the cleaner tier discriminator. And the recorded-agent reference
             ran a different harness and provider (Claude operating the CLI
@@ -1930,9 +1941,9 @@
                 deterministic CLI, at zero model cost.
               </p>
               <p>
-                First downgrade candidates are bounded low-stakes transforms
-                like query-variant phrasing — gated on matching the recorded
-                baseline on the relevant suite.
+                The first candidates for a cheaper model are small, low-stakes
+                jobs like phrasing query variants — and only after matching
+                the recorded baseline on the relevant suite.
               </p>
             </div>
           </div>
@@ -1972,7 +1983,8 @@
                 case became a 6-case set covering multi-search,
                 pure-diagnosis, pure-recommendation, no-search, teaching-only,
                 and continuity turns — with counter-cases in both directions
-                so the anti-over-search rule can't overfit. Current: 6/6, zero
+                so the rule against extra searches can't be passed by simply
+                never searching. Current: 6/6, zero
                 extra-search warnings.
               </dd>
             </div>
@@ -2063,7 +2075,7 @@
                 recorded rather than open. Still missing: embedding model
                 selection, and a controlled same-harness cross-provider run —
                 the recorded Claude reference is interactive, the OpenAI
-                tiers are bounded completions.
+                tiers answered single API calls.
               </dd>
             </div>
           </dl>
