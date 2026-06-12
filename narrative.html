@@ -19,8 +19,8 @@
         --faint: #99917f;
         --rule: #ddd5c2;
         --rule-strong: #1c1914;
-        --accent: #8c3318;
-        --accent-soft: #f3e4dc;
+        --accent: #6b3fa0;
+        --accent-soft: #ede5f6;
         --serif: "Newsreader", Georgia, serif;
         --display: "Fraunces", Georgia, serif;
         --mono: "IBM Plex Mono", Menlo, monospace;
@@ -1344,7 +1344,7 @@
                 If actions include <code>calculate</code>, the trace must
                 include structured <code>calculation_events</code> with
                 metric, inputs, and output — added after agents were observed
-                claiming math their traces couldn't prove (§3.7).
+                claiming math their traces couldn't prove (§3.8).
               </dd>
             </div>
             <div>
@@ -1517,7 +1517,7 @@
                     <tr>
                       <td>source_events · 6</td>
                       <td class="wrap">Traces record exactly the right searches — including none?</td>
-                      <td class="wrap">6/6, zero extra-search warnings. Built from a real failure (§3.7).</td>
+                      <td class="wrap">6/6, zero extra-search warnings. Built from a real failure (§3.8).</td>
                     </tr>
                     <tr>
                       <td>calc_traces · 5</td>
@@ -1878,7 +1878,65 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.7 · Hardening</span>Failures became regression suites</h3>
+          <h3><span class="sub">3.7 · Model routing</span>Can a cheaper model do the planning?</h3>
+          <p>
+            The JD asks for model routing that improves unit economics while
+            maintaining output quality. The second half is the constraint, so
+            it was tested first: the source-need and tool-use golden suites
+            were replayed as single bounded JSON completions against four
+            hosted tiers — gpt-5, gpt-5-mini, gpt-5-nano, and the
+            non-reasoning gpt-4.1-mini — and scored by the same deterministic
+            scorers used on the recorded agent traces. 152 completions, zero
+            request errors, every prompt and raw response committed as a run
+            artifact.
+          </p>
+          <p>
+            No tested tier held quality. gpt-5 kept the search/no-search
+            boundary perfect (100%) but still reached only 71.4% strict pass
+            on source-need against 92.9% for the recorded interactive agent.
+            The cheaper reasoning tiers failed closed: gpt-5-mini declined 5
+            of 10 expected searches, gpt-5-nano declined 9 of 10 — answers
+            would silently lose their citations. The non-reasoning tier
+            failed open: gpt-4.1-mini searched on 3 of the 4 no-search
+            controls and returned malformed action objects on 3 of 24
+            tool-use cases. Model family changed the failure direction, not
+            just the rate.
+          </p>
+          <p>
+            The economics were measured, and they are tempting: gpt-4.1-mini
+            runs roughly 10× faster (p50 ~1s versus 5–14s) and ~20× cheaper
+            per case than gpt-5. The quality columns are what disqualify it.
+            Cheap reasoning is also not free: gpt-5-nano spent 45,599
+            completion tokens on the tool-use suite — triple gpt-5-mini — for
+            equal-or-worse results, with latency near gpt-5's.
+          </p>
+          <p class="quiet">
+            Caveat: six tool-use cases failed on every API tier, because
+            their labels expect CLI actions that a bounded completion with
+            the state already inlined will reasonably skip. Part of that
+            suite's gap measures the harness, not the model; source-need is
+            the cleaner tier discriminator. And the recorded-agent reference
+            ran a different harness and provider (Claude operating the CLI
+            interactively), so it is a direction of evidence, not a
+            controlled cross-provider benchmark.
+          </p>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>
+                Nothing routes downward in v1. Planning stays on the strong
+                interactive tier; the real unit-economics lever stays the
+                deterministic CLI, at zero model cost.
+              </p>
+              <p>
+                First downgrade candidates are bounded low-stakes transforms
+                like query-variant phrasing — gated on matching the recorded
+                baseline on the relevant suite.
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="sub">3.8 · Hardening</span>Failures became regression suites</h3>
           <p>
             Beyond the planned experiments, the design was hardened by a blind
             test-fix loop: send realistic turns to acting agents, inspect the
@@ -1999,10 +2057,12 @@
             <div>
               <dt>Model routing</dt>
               <dd>
-                One embedding model and no generation tiering yet — neither
-                embedding model selection nor model routing has been
-                exercised. The eval harness is the prerequisite for doing
-                either honestly, and it now exists.
+                Generation tiering is now measured (§3.7): no tested
+                downgrade held planning quality, so the routing decision is
+                recorded rather than open. Still missing: embedding model
+                selection, and a controlled same-harness cross-provider run —
+                the recorded Claude reference is interactive, the OpenAI
+                tiers are bounded completions.
               </dd>
             </div>
           </dl>
@@ -2040,11 +2100,11 @@
                   </tr>
                   <tr>
                     <td class="wrap">RAG pipelines across Pinecone namespaces — chunking strategy, embedding model selection, hybrid retrieval, reranking</td>
-                    <td class="wrap">A Pinecone-backed store behind a vector-store interface, with the corpus organized as a five-layer namespace taxonomy and the one-vs-five namespace layout benchmarked before choosing a default (§2.4, §3.6); chunking strategy decided by comparison (§3.3); hybrid retrieval with reciprocal-rank fusion as the reranking step (§3.4). Embedding model selection is a named gap — one embedding model so far (§4).</td>
+                    <td class="wrap">A Pinecone-backed store behind a vector-store interface, with the corpus organized as a five-layer namespace taxonomy and the one-vs-five namespace layout benchmarked before choosing a default (§2.4, §3.6); chunking strategy decided by comparison (§3.3); hybrid retrieval with reciprocal-rank fusion as the recorded v1 reranking baseline, with the trigger for a true reranker written down: known-useful chunks landing in the top-20 candidates but missing the top-5 (§3.4). Embedding model selection is a named gap — one embedding model so far (§4).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Evaluation framework — golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, regression detection</td>
-                    <td class="wrap">Nine golden datasets, each with an automated scorer and a written report (§3.1); Hit@3 / Hit@5 / mean-rank retrieval metrics (§3.4); a hosted-vs-local latency benchmark (§3.5); two regression suites and a CLI guard promoted from real failures (§3.7).</td>
+                    <td class="wrap">Nine golden datasets, each with an automated scorer and a written report (§3.1); Hit@3 / Hit@5 / mean-rank retrieval metrics (§3.4); a hosted-vs-local latency benchmark (§3.5); two regression suites and a CLI guard promoted from real failures (§3.8).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Embedding strategies, index management, and retrieval tuning</td>
@@ -2060,7 +2120,7 @@
                   </tr>
                   <tr>
                     <td class="wrap">Model routing and tiering to improve unit economics; multiple LLM providers</td>
-                    <td class="wrap">Not exercised yet (§4). The eval harness exists to make those comparisons with evidence.</td>
+                    <td class="wrap">Measured (§3.7): four OpenAI tiers replayed two golden suites under the same scorers. No downgrade held planning quality, so nothing routes downward and the cost lever stays the deterministic CLI. Family tradeoffs are recorded — reasoning tiers fail closed, the non-reasoning tier fails open and breaks the output contract. A controlled same-harness Anthropic condition is the named next step.</td>
                   </tr>
                   <tr>
                     <td class="wrap">Comfortable in both TypeScript and Python</td>
