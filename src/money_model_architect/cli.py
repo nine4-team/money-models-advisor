@@ -25,7 +25,7 @@ from .embeddings import OpenAIEmbeddingClient
 from .retrieval import CorpusIndex
 from .setup_intake import load_answers, run_setup
 from .snapshot import BusinessSnapshot
-from .vector_store import PineconeVectorStore, VectorStoreError
+from .vector_store import PineconeVectorStore, VectorStoreError, layer_namespaces
 
 LAYERS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
 ACTION_LABELS = {
@@ -77,11 +77,14 @@ def _build_parser() -> argparse.ArgumentParser:
     source_material.add_argument("--top-k", type=int, default=5)
     source_material.add_argument("--backend", choices=RETRIEVAL_BACKENDS, default="bm25")
     source_material.add_argument("--vector-store", choices=VECTOR_STORES, default="local")
+    source_material.add_argument("--namespace-prefix", default="money-models")
 
     index_cmd = subparsers.add_parser("index", help="Manage hosted retrieval indexes")
     index_subparsers = index_cmd.add_subparsers(dest="index_command", required=True)
     pinecone = index_subparsers.add_parser("pinecone", help="Upsert corpus chunks to Pinecone")
     pinecone.add_argument("--namespace", help="Pinecone namespace; defaults to MMA_PINECONE_NAMESPACE or money-models")
+    pinecone.add_argument("--index-layout", choices=("single", "layer"), default="single")
+    pinecone.add_argument("--namespace-prefix", default="money-models")
     pinecone.add_argument("--batch-size", type=int, default=64)
 
     calc = subparsers.add_parser("calculate", help="Run deterministic unit-economics formulas")
@@ -150,11 +153,14 @@ def main(argv: list[str] | None = None) -> int:
                 top_k=args.top_k,
                 retrieval_backend=args.backend,
                 vector_store=args.vector_store,
+                namespace_prefix=args.namespace_prefix,
             )
             payload = {
                 "business_dir": str(paths.business_dir),
                 "retrieval_backend": args.backend,
                 "vector_store": args.vector_store,
+                "namespace_policy": "source_need_target_namespaces",
+                "namespace_prefix": args.namespace_prefix if args.backend in {"vector", "hybrid"} else None,
                 "source_need": _source_need_to_dict(source_need),
                 "queries": [query.to_dict() for query in queries],
                 "source_material": [item.to_dict() for item in evidence],
@@ -165,13 +171,23 @@ def main(argv: list[str] | None = None) -> int:
         if not args.query:
             parser.error("search requires a raw query or --source-need-json")
         index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts")
-        results = _search_index(index, args.query, layer=args.layer, top_k=args.top_k, backend=args.backend, vector_store=args.vector_store)
+        results = _search_index(
+            index,
+            args.query,
+            layer=args.layer,
+            top_k=args.top_k,
+            backend=args.backend,
+            vector_store=args.vector_store,
+            namespace_prefix=args.namespace_prefix,
+        )
         payload = {
             "query": args.query,
             "layer": args.layer,
             "top_k": args.top_k,
             "retrieval_backend": args.backend,
             "vector_store": args.vector_store,
+            "namespace_policy": "raw_debug_default_namespace",
+            "namespace_prefix": args.namespace_prefix if args.backend in {"vector", "hybrid"} else None,
             "source_material": [
                 {
                     "id": result.chunk.id,
@@ -195,14 +211,30 @@ def main(argv: list[str] | None = None) -> int:
         records = index.vector_records(embedding_client)
         store = PineconeVectorStore.from_env()
         upserted = 0
+        namespaces: dict[str, int] = {}
         try:
-            for start in range(0, len(records), args.batch_size):
-                upserted += store.upsert(records[start : start + args.batch_size], namespace=args.namespace)
+            if args.index_layout == "layer":
+                records_by_namespace: dict[str, list] = {}
+                for record in records:
+                    for namespace in layer_namespaces(record.metadata.get("layers", ()), prefix=args.namespace_prefix):
+                        records_by_namespace.setdefault(namespace, []).append(record)
+                for namespace, namespace_records in sorted(records_by_namespace.items()):
+                    namespaces[namespace] = len(namespace_records)
+                    for start in range(0, len(namespace_records), args.batch_size):
+                        upserted += store.upsert(namespace_records[start : start + args.batch_size], namespace=namespace)
+            else:
+                namespace = args.namespace or store.default_namespace
+                namespaces[namespace] = len(records)
+                for start in range(0, len(records), args.batch_size):
+                    upserted += store.upsert(records[start : start + args.batch_size], namespace=args.namespace)
         except VectorStoreError as exc:
             raise SystemExit(str(exc)) from exc
         payload = {
             "vector_store": "pinecone",
-            "namespace": args.namespace or store.default_namespace,
+            "namespace": args.namespace or store.default_namespace if args.index_layout == "single" else None,
+            "index_layout": args.index_layout,
+            "namespace_prefix": args.namespace_prefix if args.index_layout == "layer" else None,
+            "namespaces": namespaces,
             "chunks": len(index.chunks),
             "records_upserted": upserted,
             "embedding_model": embedding_client.model,
@@ -629,6 +661,15 @@ def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> No
     invalid_layers = [layer for layer in layers if layer not in LAYERS]
     if invalid_layers:
         raise SystemExit(f"{label}.layers contain unknown layer(s): {', '.join(invalid_layers)}")
+    target_namespaces = source_need.get("target_namespaces", [])
+    if (
+        not isinstance(target_namespaces, list)
+        or not all(isinstance(namespace, str) and namespace.strip() for namespace in target_namespaces)
+    ):
+        raise SystemExit(f"{label}.target_namespaces must be a list of strings when supplied")
+    invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in LAYERS]
+    if invalid_namespaces:
+        raise SystemExit(f"{label}.target_namespaces contain unknown namespace(s): {', '.join(invalid_namespaces)}")
     focus_terms = source_need.get("focus_terms")
     if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
         raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
@@ -701,6 +742,7 @@ def _parse_source_need(value: Any) -> SourceNeed:
     focus_terms = value.get("focus_terms", [])
     user_turn = value.get("user_turn", "")
     query_variants = value.get("query_variants", [])
+    target_namespaces = value.get("target_namespaces", [])
     if not isinstance(intent, str) or not intent:
         raise SystemExit("source need requires non-empty string field: intent")
     if not isinstance(layers, list) or not all(isinstance(layer, str) for layer in layers):
@@ -711,15 +753,21 @@ def _parse_source_need(value: Any) -> SourceNeed:
         raise SystemExit("source need field user_turn must be a string when supplied")
     if not isinstance(query_variants, list) or not all(isinstance(query, str) for query in query_variants):
         raise SystemExit("source need field query_variants must be a list of strings when supplied")
+    if not isinstance(target_namespaces, list) or not all(isinstance(namespace, str) for namespace in target_namespaces):
+        raise SystemExit("source need field target_namespaces must be a list of strings when supplied")
     invalid_layers = [layer for layer in layers if layer not in LAYERS]
     if invalid_layers:
         raise SystemExit(f"unknown source need layer(s): {', '.join(invalid_layers)}")
+    invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in LAYERS]
+    if invalid_namespaces:
+        raise SystemExit(f"unknown source need target namespace(s): {', '.join(invalid_namespaces)}")
     return SourceNeed(
         intent=intent,
         layers=tuple(layers),
         focus_terms=tuple(focus_terms),
         user_turn=user_turn,
         query_variants=tuple(query_variants),
+        target_namespaces=tuple(target_namespaces),
     )
 
 
@@ -731,13 +779,26 @@ def _search_index(
     top_k: int,
     backend: str,
     vector_store: str = "local",
+    namespace_prefix: str = "money-models",
 ):
     if backend == "bm25":
         return index.search(query, layer=layer, top_k=top_k)
     if backend == "vector":
-        return index.vector_search(query, layer=layer, top_k=top_k, vector_store_name=vector_store)
+        return index.vector_search(
+            query,
+            layer=layer,
+            top_k=top_k,
+            vector_store_name=vector_store,
+            namespace_prefix=namespace_prefix,
+        )
     if backend == "hybrid":
-        return index.hybrid_search(query, layer=layer, top_k=top_k, vector_store_name=vector_store)
+        return index.hybrid_search(
+            query,
+            layer=layer,
+            top_k=top_k,
+            vector_store_name=vector_store,
+            namespace_prefix=namespace_prefix,
+        )
     raise SystemExit(f"unknown retrieval backend: {backend}")
 
 
@@ -748,6 +809,7 @@ def _source_need_to_dict(source_need: SourceNeed) -> dict[str, Any]:
         "focus_terms": list(source_need.focus_terms),
         "user_turn": source_need.user_turn,
         "query_variants": list(source_need.query_variants),
+        "target_namespaces": list(source_need.target_namespaces),
     }
 
 

@@ -52,13 +52,13 @@ class LocalVectorStore:
     name = "local"
 
     def __init__(self, records: Sequence[VectorRecord] | None = None) -> None:
-        self.records: dict[str, VectorRecord] = {}
+        self.records: dict[tuple[str | None, str], VectorRecord] = {}
         if records:
             self.upsert(records)
 
     def upsert(self, records: Sequence[VectorRecord], *, namespace: str | None = None) -> int:
         for record in records:
-            self.records[record.id] = record
+            self.records[(namespace, record.id)] = record
         return len(records)
 
     def query(
@@ -70,12 +70,17 @@ class LocalVectorStore:
         filter: dict[str, Any] | None = None,
     ) -> list[VectorMatch]:
         matches: list[VectorMatch] = []
-        for record in self.records.values():
+        for (record_namespace, _record_id), record in self.records.items():
+            if namespace != record_namespace:
+                continue
             if not _metadata_matches(record.metadata, filter):
                 continue
             score = cosine_similarity(vector, record.values)
             if score > 0:
-                matches.append(VectorMatch(id=record.id, score=score, metadata=record.metadata))
+                metadata = dict(record.metadata)
+                if record_namespace:
+                    metadata["namespace"] = record_namespace
+                matches.append(VectorMatch(id=record.id, score=score, metadata=metadata))
         matches.sort(key=lambda match: match.score, reverse=True)
         return matches[:top_k]
 
@@ -140,14 +145,19 @@ class PineconeVectorStore:
         matches = response.get("matches", [])
         if not isinstance(matches, list):
             raise VectorStoreError("Pinecone query response did not contain matches")
-        return [
-            VectorMatch(
-                id=str(match.get("id", "")),
-                score=float(match.get("score", 0.0)),
-                metadata=match.get("metadata", {}) if isinstance(match.get("metadata"), dict) else {},
+        vector_matches = []
+        for match in matches:
+            metadata = match.get("metadata", {}) if isinstance(match.get("metadata"), dict) else {}
+            metadata = dict(metadata)
+            metadata["namespace"] = namespace or self.default_namespace
+            vector_matches.append(
+                VectorMatch(
+                    id=str(match.get("id", "")),
+                    score=float(match.get("score", 0.0)),
+                    metadata=metadata,
+                )
             )
-            for match in matches
-        ]
+        return vector_matches
 
     def _require_config(self) -> None:
         if not self.api_key:
@@ -174,6 +184,21 @@ class PineconeVectorStore:
         except urllib.error.URLError as exc:
             raise VectorStoreError(f"Pinecone request failed: {exc}") from exc
         return json.loads(body) if body.strip() else {}
+
+
+def layer_namespace(layer: str, *, prefix: str = "money-models") -> str:
+    return f"{prefix}-{layer}"
+
+
+def layer_namespaces(layers: Sequence[str], *, prefix: str = "money-models") -> list[str]:
+    seen: set[str] = set()
+    namespaces: list[str] = []
+    for layer in layers:
+        namespace = layer_namespace(str(layer), prefix=prefix)
+        if namespace not in seen:
+            namespaces.append(namespace)
+            seen.add(namespace)
+    return namespaces
 
 
 def selected_vector_store_name(name: str | None = None) -> str:

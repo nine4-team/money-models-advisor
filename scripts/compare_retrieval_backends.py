@@ -125,6 +125,7 @@ def render_report(
     query_source: str,
     top_k: int,
     vector_store: str,
+    namespace_prefix: str,
     summaries: dict[str, dict[str, object]],
     errors: dict[str, str],
     run_metadata: dict[str, dict[str, object]],
@@ -139,6 +140,8 @@ def render_report(
         f"- Query source: `{query_source}`",
         f"- Top K: `{top_k}`",
         f"- Vector store: `{vector_store}`",
+        "- Namespace policy: `source_need_target_namespaces` for vector/hybrid runs; BM25 does not use vector namespaces.",
+        f"- Namespace prefix: `{namespace_prefix}`",
         "- Vector backend: OpenAI embeddings with disk cache under `.cache/embeddings/`.",
         "- Hybrid backend: reciprocal-rank fusion over BM25 and vector rankings.",
         "",
@@ -211,8 +214,11 @@ def render_report(
             embedding = metadata.get("embedding") if isinstance(metadata, dict) else None
             if not isinstance(embedding, dict) or not embedding.get("model"):
                 continue
+            namespaces = metadata.get("namespaces") if isinstance(metadata.get("namespaces"), list) else []
             lines.append(
                 f"- `{backend}`: vector store `{metadata.get('vector_store')}`, cache mode `{embedding.get('cache_mode')}`, namespace `{embedding.get('cache_namespace')}`, "
+                f"namespace policy `{metadata.get('namespace_policy')}`, "
+                f"query namespaces `{', '.join(f'`{namespace}`' for namespace in namespaces) if namespaces else 'default'}`, "
                 f"query cache complete before run: `{embedding.get('cache_was_complete_for_queries')}`, "
                 f"cache dir `{embedding.get('cache_dir')}`."
             )
@@ -293,6 +299,7 @@ def case_row(result: query_eval.QueryResult, query_source: str, vector_store: st
         "retriever": result.retrieval_backend,
         "query_source": query_source,
         "vector_store": "n/a" if result.retrieval_backend == "bm25" else vector_store,
+        "namespace_policy": "n/a" if result.retrieval_backend == "bm25" else "source_need_target_namespaces",
         "hit_at_3": result.useful_at_3,
         "hit_at_5": result.useful_at_5,
         "rank": result.known_useful_rank,
@@ -331,6 +338,7 @@ def main() -> int:
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "retrieval_backend_comparison.md")
     parser.add_argument("--vector-store", choices=("local", "pinecone"), default="local")
+    parser.add_argument("--namespace-prefix", default="money-models")
     parser.add_argument("--summary-json", type=Path)
     parser.add_argument("--cases-jsonl", type=Path)
     parser.add_argument(
@@ -374,6 +382,7 @@ def main() -> int:
                 retrieval_backend=backend,
                 variants_by_case=variants_by_case,
                 vector_store_name=args.vector_store,
+                namespace_prefix=args.namespace_prefix,
             )
         except (EmbeddingError, VectorStoreError) as exc:
             errors[backend] = str(exc)
@@ -383,7 +392,18 @@ def main() -> int:
         case_rows.extend(case_row(result, args.query_source, args.vector_store) for result in results)
 
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(render_report(args.query_source, args.top_k, args.vector_store, summaries, errors, run_metadata), encoding="utf-8")
+    args.report.write_text(
+        render_report(
+            args.query_source,
+            args.top_k,
+            args.vector_store,
+            args.namespace_prefix,
+            summaries,
+            errors,
+            run_metadata,
+        ),
+        encoding="utf-8",
+    )
     summary_json = args.summary_json or args.report.with_name(f"{args.report.stem}_summary.json")
     cases_jsonl = args.cases_jsonl or args.report.with_name(f"{args.report.stem}_cases.jsonl")
     summary_json.write_text(
@@ -392,6 +412,8 @@ def main() -> int:
                 "cases": len(cases),
                 "query_source": args.query_source,
                 "vector_store": args.vector_store,
+                "namespace_policy": "source_need_target_namespaces",
+                "namespace_prefix": args.namespace_prefix,
                 "top_k": args.top_k,
                 "summaries": summaries,
                 "errors": errors,
@@ -414,6 +436,8 @@ def main() -> int:
                 "query_source": args.query_source,
                 "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
                 "vector_store": args.vector_store,
+                "namespace_policy": "source_need_target_namespaces",
+                "namespace_prefix": args.namespace_prefix,
                 "summaries": summaries,
                 "errors": errors,
                 "report": display_path(args.report),

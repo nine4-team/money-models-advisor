@@ -301,7 +301,7 @@ Validation:
 - require `user_message` and `assistant_message`
 - require `actions` as a non-empty list of known operation labels
 - allow zero `source_events`, because not every turn should search
-- when `source_events` are present, require `source_need.intent`, `source_need.layers`, `source_need.focus_terms`, 2-4 agent-written `query_variants`, at least one executed query, and inspected chunk IDs
+- when `source_events` are present, require `source_need.intent`, `source_need.layers`, `source_need.focus_terms`, optional validated `source_need.target_namespaces`, 2-4 agent-written `query_variants`, at least one executed query, and inspected chunk IDs
 - require every `cited_chunk_id` to appear in at least one source event unless `metadata.external_cited_chunk_ids` explicitly marks it as an external/non-corpus citation
 - warn, but do not fail, when a source event has chunks but no cited chunks; the agent may have inspected material and decided not to cite it
 - include the ending snapshot automatically, as `turn record` already does

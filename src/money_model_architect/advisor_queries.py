@@ -10,12 +10,19 @@ from .snapshot import BusinessSnapshot
 @dataclass(frozen=True)
 class AdvisorQuery:
     intent: str
-    layer: str | None
+    layers: tuple[str, ...]
+    target_namespaces: tuple[str, ...]
     query: str
     reason: str
 
-    def to_dict(self) -> dict[str, str | None]:
-        return asdict(self)
+    @property
+    def layer(self) -> str | None:
+        return self.layers[0] if len(self.layers) == 1 else None
+
+    def to_dict(self) -> dict[str, object]:
+        payload = asdict(self)
+        payload["layer"] = self.layer
+        return payload
 
 
 @dataclass(frozen=True)
@@ -27,6 +34,7 @@ class SourceNeed:
     focus_terms: tuple[str, ...]
     user_turn: str = ""
     query_variants: tuple[str, ...] = ()
+    target_namespaces: tuple[str, ...] = ()
 
 
 def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -> list[AdvisorQuery]:
@@ -37,7 +45,7 @@ def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -
 
 def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -> list[AdvisorQuery]:
     terms = [*source_need.focus_terms, *_compact_context_terms(snapshot)]
-    layer = source_need.layers[0] if len(source_need.layers) == 1 else None
+    target_namespaces = source_need.target_namespaces
 
     queries: list[AdvisorQuery] = []
     for variant in source_need.query_variants:
@@ -47,7 +55,8 @@ def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) ->
         queries.append(
             AdvisorQuery(
                 intent=source_need.intent,
-                layer=layer,
+                layers=source_need.layers,
+                target_namespaces=target_namespaces,
                 query=variant_text,
                 reason="Agent-generated query variant for the selected source need.",
             )
@@ -59,7 +68,8 @@ def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) ->
     queries.append(
         AdvisorQuery(
             intent=source_need.intent,
-            layer=layer,
+            layers=source_need.layers,
+            target_namespaces=target_namespaces,
             query=fallback_text,
             reason="Deterministic fallback query from source-need focus terms and compact business context.",
         )
@@ -115,7 +125,7 @@ def _dedupe_queries(queries: list[AdvisorQuery]) -> list[AdvisorQuery]:
     seen = set()
     deduped = []
     for query in queries:
-        key = (query.layer, query.query.lower())
+        key = (query.layers, query.target_namespaces, query.query.lower())
         if key in seen:
             continue
         seen.add(key)

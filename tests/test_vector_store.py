@@ -9,6 +9,7 @@ from money_model_architect.vector_store import (
     PineconeVectorStore,
     VectorRecord,
     chunk_id_from_vector_id,
+    layer_namespace,
     vector_id,
 )
 
@@ -63,6 +64,34 @@ class VectorStoreTest(unittest.TestCase):
         self.assertEqual([match.id for match in matches], ["a"])
         self.assertEqual(matches[0].metadata["chunk_id"], "a:0")
 
+    def test_local_vector_store_isolates_namespaces(self):
+        store = LocalVectorStore()
+        store.upsert(
+            [
+                VectorRecord(
+                    id="a",
+                    values=[1.0, 0.0],
+                    metadata={"layers": ["unit-economics"], "chunk_id": "a:0"},
+                )
+            ],
+            namespace=layer_namespace("unit-economics"),
+        )
+        store.upsert(
+            [
+                VectorRecord(
+                    id="b",
+                    values=[1.0, 0.0],
+                    metadata={"layers": ["offers"], "chunk_id": "b:0"},
+                )
+            ],
+            namespace=layer_namespace("offers"),
+        )
+
+        matches = store.query([1.0, 0.0], top_k=5, namespace=layer_namespace("offers"))
+
+        self.assertEqual([match.id for match in matches], ["b"])
+        self.assertEqual(matches[0].metadata["namespace"], "money-models-offers")
+
     def test_vector_ids_round_trip_chunk_id(self):
         record_id = vector_id(
             chunking_strategy="heading-aware",
@@ -98,7 +127,9 @@ class VectorStoreTest(unittest.TestCase):
         self.assertEqual(store.requests[1][1], "/query")
         self.assertEqual(store.requests[1][2]["topK"], 5)
         self.assertTrue(store.requests[1][2]["includeMetadata"])
+        self.assertEqual(store.requests[1][2]["namespace"], "test-namespace")
         self.assertEqual(matches[0].metadata["chunk_id"], "cac:0")
+        self.assertEqual(matches[0].metadata["namespace"], "test-namespace")
 
 
 if __name__ == "__main__":

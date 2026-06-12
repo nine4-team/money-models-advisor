@@ -73,6 +73,8 @@ Never commit `.env`, API keys, or `.cache/embeddings/`.
 
 The next JD-aligned work should emphasize:
 
+- model-routing and tiering evals over the existing golden suites, with quality/cost/latency/failure-mode comparison
+- multi-provider comparison evidence where available, especially prompt behavior and trace reliability
 - hosted-vector latency optimization now that Pinecone indexing and parity evals work
 - continued golden-dataset breadth and regression coverage
 - cold-cache reporting only if first-run embedding cost needs to be separated from steady-state warm-cache behavior

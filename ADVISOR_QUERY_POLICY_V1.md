@@ -117,7 +117,9 @@ The goal is to search for fix support, not re-diagnose the economics.
 
 Build recommendation queries just like `diagnosed`. The difference is that stack context is complete enough to choose fixes with less ambiguity.
 
-## Constraint Policy
+## Constraint Guidance For The Agent
+
+These rows are examples to help the acting agent form a `SourceNeed`. They are not CLI routing rules. The CLI must not inspect the user message or snapshot and choose retrieval namespaces from this table. At runtime, the agent selects `SourceNeed.layers`, `SourceNeed.target_namespaces`, focus terms, and query variants; the CLI validates those values, maps logical namespace names to physical Pinecone namespaces when needed, executes the search, and records the trace.
 
 | Diagnosed constraint | Snapshot condition | Layer | Query terms |
 |---|---|---|---|
@@ -131,7 +133,7 @@ Build recommendation queries just like `diagnosed`. The difference is that stack
 | `refund_or_payment_resistance` | any | `downsells` | downsell, payment plan, pay less now, waived fee |
 | `retention_or_churn_issue` | any | `continuity` | continuity offer, retention, recurring value, churn |
 
-If no constraint-specific rule matches, build a fallback `recommendation_evidence` query:
+If no example fits, the agent should form a narrower `recommendation_evidence` source need from the actual conversation and saved snapshot rather than forcing a table match. For manual/debug use only, a broad fallback could look like:
 
 - layer: first `likely_retrieval_layers` value, or `unit-economics`
 - query: diagnosed constraints + business type + core offer + user goal

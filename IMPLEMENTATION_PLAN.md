@@ -2,7 +2,7 @@
 
 This project should be built experiment-first.
 
-The target job description is recorded in `JOB_DESCRIPTION.md`, repo-wide Codex guidance is recorded in `AGENTS.md`, and the golden-dataset suite is mapped in `GOLDEN_DATASET.md`. Implementation priorities should stay aligned with that hiring target: production-grade agent workflows, golden datasets, RAG tuning, cached embeddings, cost-aware design, observability, and regression detection.
+The target job description is recorded in `JOB_DESCRIPTION.md`, the requirement-by-requirement audit is recorded in `JD_REQUIREMENTS_AUDIT.md`, repo-wide Codex guidance is recorded in `AGENTS.md`, and the golden-dataset suite is mapped in `GOLDEN_DATASET.md`. Implementation priorities should stay aligned with that hiring target: production-grade agent workflows, golden datasets, RAG tuning, cached embeddings, cost-aware design, observability, and regression detection.
 
 The architecture docs describe the intended system. The implementation plan keeps the work honest: every major RAG or agent choice should either be part of the minimal runnable slice or justified by an evaluation report.
 
@@ -21,6 +21,53 @@ The goal is not to build every sophisticated component immediately. The goal is 
 For this agent-operated product, semantic judgment belongs to the agent and deterministic bookkeeping belongs to the CLI. The CLI should persist state, run calculations, execute search, capture traces, validate artifact shape, and produce reports. The agent should decide tool use, generate source needs, inspect retrieved chunks, adjudicate semantic coverage, and judge answer quality. When the project needs semantic evals, record agent judgments with rationale and let the CLI score those recorded artifacts.
 
 Refinement: deterministic code may classify numeric/accounting states after the agent has chosen the task. For example, it can compute whether CAC is recovered by first-30-day gross profit. It should not decide broad conversational intent or whether the current user turn is a teaching, diagnosis, recommendation, or source-search turn.
+
+## JD Coverage Priority
+
+The careful JD audit in `JD_REQUIREMENTS_AUDIT.md` should drive priority. The highest-signal immediate gap is model routing and tiering to improve unit economics while maintaining output quality. That should be treated as a first-class eval workstream, not an afterthought.
+
+Use the existing golden suites to compare model/provider tiers on the same tasks:
+
+- next-action/tool-use judgment
+- source-need generation
+- source-event and query-variant trace completion
+- product-smoke advisor turns
+- semantic adjudication tasks where applicable
+
+For each model tier, record:
+
+- pass/fail against the existing scorer
+- trace completeness
+- source-search false positives and misses
+- source-need quality
+- query-variant quality
+- answer usefulness and grounding when manually or agent-adjudicated
+- latency
+- token usage and estimated cost when available, or a clearly labeled cost proxy when using subscription-based acting agents
+- recurring failure modes
+
+The output should be a routing recommendation, not merely a leaderboard. Example decision shape: deterministic CLI for formulas and persistence; cheaper/faster model tier for simple tool-use classification and trace formatting if it passes; stronger model tier for ambiguous source-need generation, claim-support adjudication, and product-smoke recommendation turns if the cheaper tier fails.
+
+This is separate from embedding cost control. Cached embeddings reduce retrieval infrastructure cost; model routing reduces agent/LLM reasoning cost.
+
+Second JD-specific gap: Pinecone namespace coverage. A single Pinecone namespace is a reasonable engineering default for this small corpus, especially with metadata filters. But the JD explicitly says "across multiple Pinecone namespaces," so the portfolio should not leave this invisible. We should either:
+
+- implement and test a small multi-namespace Pinecone layout, or
+- record a clear architecture decision explaining why v1 uses one namespace and what measured condition would justify splitting.
+
+For JD alignment, the better proof is a small namespace experiment using the taxonomy the product already has:
+
+- `money-models-unit-economics`
+- `money-models-offers`
+- `money-models-upsells`
+- `money-models-downsells`
+- `money-models-continuity`
+
+Because the JD calls out multiple Pinecone namespaces, we test whether the existing Money Models layer taxonomy should become the hosted namespace layout. The comparison should be single namespace with metadata filters versus five layer namespaces, using the same golden cases, query variants, cache, and hybrid retrieval path.
+
+The agent owns semantic namespace selection. The CLI must not infer namespaces from keywords, layer labels, or deterministic routing rules at search time. The CLI should validate the agent-selected logical namespace names, map them mechanically to physical Pinecone namespace names, execute the search, and record selected/query/cited namespaces in traces. Eval should score namespace choice separately from query generation and retrieval quality.
+
+The experiment should record namespace names, embedding model, vector counts, upsert behavior, agent-selected namespace behavior, quality, latency, and failure modes. The decision should avoid namespace theater: use multiple namespaces because the job names that operating mode and because it tests index management, not because this tiny corpus inherently needs it. Single namespace may still win if it has comparable quality with lower operational complexity.
 
 ## Current product direction
 

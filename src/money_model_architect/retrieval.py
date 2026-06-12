@@ -18,6 +18,7 @@ from .vector_store import (
     VectorRecord,
     VectorStore,
     chunk_id_from_vector_id,
+    layer_namespaces,
     selected_vector_store_name,
     vector_id,
 )
@@ -203,15 +204,22 @@ class CorpusIndex:
             return 0.0
         return sum(len(tokenize(chunk.text)) for chunk in self.chunks) / len(self.chunks)
 
-    def search(self, query: str, layer: str | None = None, top_k: int = 5) -> list[SearchResult]:
+    def search(
+        self,
+        query: str,
+        layer: str | None = None,
+        top_k: int = 5,
+        layers: tuple[str, ...] | None = None,
+    ) -> list[SearchResult]:
         query_terms = tokenize(query)
         if not query_terms:
             return []
 
         results: list[SearchResult] = []
         query_counts = Counter(query_terms)
+        layer_filter = tuple(layers or ((layer,) if layer else ()))
         for chunk, terms in zip(self.chunks, self._term_freqs, strict=True):
-            if layer and layer not in chunk.layers:
+            if layer_filter and not any(selected_layer in chunk.layers for selected_layer in layer_filter):
                 continue
             score = self._bm25(query_counts, terms)
             if score > 0:
@@ -227,32 +235,44 @@ class CorpusIndex:
         embedding_client: EmbeddingClient | None = None,
         vector_store: VectorStore | None = None,
         vector_store_name: str | None = None,
+        vector_namespaces: tuple[str | None, ...] | None = None,
+        namespace_prefix: str = "money-models",
+        layers: tuple[str, ...] | None = None,
     ) -> list[SearchResult]:
         if not query.strip():
             return []
         client = embedding_client or OpenAIEmbeddingClient()
         query_embedding = client.embed_texts([query], purpose="query")[0]
-        store = vector_store or self._build_vector_store(client, vector_store_name=vector_store_name)
-        filter_payload = {"layers": {"$in": [layer]}} if layer else None
+        store = vector_store or self._build_vector_store(
+            client,
+            vector_store_name=vector_store_name,
+            namespace_prefix=namespace_prefix,
+        )
+        layer_filter = tuple(layers or ((layer,) if layer else ()))
+        filter_payload = {"layers": {"$in": list(layer_filter)}} if layer_filter else None
         requested_top_k = max(top_k * 10, top_k)
-        matches = store.query(
+        matches = self._query_vector_namespaces(
+            store,
             query_embedding,
             top_k=requested_top_k,
-            namespace=None,
-            filter=filter_payload,
+            namespaces=vector_namespaces,
+            filter_payload=filter_payload,
         )
         chunk_by_id = {chunk.id: chunk for chunk in self.chunks}
 
-        results: list[SearchResult] = []
+        best_by_chunk: dict[str, SearchResult] = {}
         for match in matches:
             chunk_id = str(match.metadata.get("chunk_id") or chunk_id_from_vector_id(match.id))
             chunk = chunk_by_id.get(chunk_id)
             if chunk is None:
                 continue
-            if layer and layer not in chunk.layers:
+            if layer_filter and not any(selected_layer in chunk.layers for selected_layer in layer_filter):
                 continue
             if match.score > 0:
-                results.append(SearchResult(chunk=chunk, score=match.score))
+                current = best_by_chunk.get(chunk.id)
+                if current is None or match.score > current.score:
+                    best_by_chunk[chunk.id] = SearchResult(chunk=chunk, score=match.score)
+        results = list(best_by_chunk.values())
         results.sort(key=lambda result: result.score, reverse=True)
         return results[:top_k]
 
@@ -264,9 +284,12 @@ class CorpusIndex:
         embedding_client: EmbeddingClient | None = None,
         vector_store: VectorStore | None = None,
         vector_store_name: str | None = None,
+        vector_namespaces: tuple[str | None, ...] | None = None,
+        namespace_prefix: str = "money-models",
+        layers: tuple[str, ...] | None = None,
         rrf_k: int = 60,
     ) -> list[SearchResult]:
-        bm25_results = self.search(query, layer=layer, top_k=max(top_k * 5, top_k))
+        bm25_results = self.search(query, layer=layer, top_k=max(top_k * 5, top_k), layers=layers)
         vector_results = self.vector_search(
             query,
             layer=layer,
@@ -274,6 +297,9 @@ class CorpusIndex:
             embedding_client=embedding_client,
             vector_store=vector_store,
             vector_store_name=vector_store_name,
+            vector_namespaces=vector_namespaces,
+            namespace_prefix=namespace_prefix,
+            layers=layers,
         )
 
         chunks_by_id = {result.chunk.id: result.chunk for result in [*bm25_results, *vector_results]}
@@ -343,13 +369,44 @@ class CorpusIndex:
         embedding_client: EmbeddingClient,
         *,
         vector_store_name: str | None = None,
+        namespace_prefix: str = "money-models",
     ) -> VectorStore:
         name = selected_vector_store_name(vector_store_name)
         if name == "local":
-            return LocalVectorStore(self.vector_records(embedding_client))
+            records = self.vector_records(embedding_client)
+            store = LocalVectorStore()
+            store.upsert(records)
+            for record in records:
+                for namespace in layer_namespaces(record.metadata.get("layers", ()), prefix=namespace_prefix):
+                    store.upsert([record], namespace=namespace)
+            return store
         if name == "pinecone":
             return PineconeVectorStore.from_env()
         raise ValueError("unknown vector store {!r}; expected one of: local, pinecone".format(name))
+
+    def _query_vector_namespaces(
+        self,
+        store: VectorStore,
+        query_embedding: list[float],
+        *,
+        top_k: int,
+        namespaces: tuple[str | None, ...] | None,
+        filter_payload: dict[str, object] | None,
+    ) -> list:
+        query_namespaces = namespaces or (None,)
+
+        matches = []
+        for namespace in query_namespaces:
+            matches.extend(
+                store.query(
+                    query_embedding,
+                    top_k=top_k,
+                    namespace=namespace,
+                    filter=filter_payload,
+                )
+            )
+        matches.sort(key=lambda match: match.score, reverse=True)
+        return matches[: max(top_k, len(query_namespaces) * top_k)]
 
 
 def _embedding_text(chunk: Chunk) -> str:

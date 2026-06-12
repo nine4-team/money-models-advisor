@@ -5,6 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from money_model_architect.retrieval import Chunk, CorpusIndex
+from money_model_architect.vector_store import layer_namespace
 
 
 class FakeEmbeddingClient:
@@ -70,6 +71,18 @@ class RetrievalBackendTest(unittest.TestCase):
 
         self.assertEqual([result.chunk.id for result in results], ["payback-period:0"])
         self.assertGreater(results[0].score, 0)
+
+    def test_vector_search_uses_explicit_layer_namespaces(self):
+        index = test_index()
+        results = index.vector_search(
+            "customer acquisition payback",
+            layers=("unit-economics",),
+            top_k=3,
+            embedding_client=FakeEmbeddingClient(),
+            vector_namespaces=(layer_namespace("unit-economics"),),
+        )
+
+        self.assertEqual([result.chunk.id for result in results], ["payback-period:0"])
 
     def test_hybrid_search_fuses_unique_results(self):
         index = test_index()

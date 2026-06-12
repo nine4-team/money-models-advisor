@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .advisor_queries import AdvisorQuery
 from .retrieval import CorpusIndex
+from .vector_store import layer_namespaces
 
 
 RETRIEVAL_BACKENDS = ("bm25", "vector", "hybrid")
@@ -31,6 +32,9 @@ class EvidenceChunk:
 class QueryEvidence:
     intent: str
     layer: str | None
+    layers: list[str]
+    target_namespaces: list[str]
+    queried_namespaces: list[str | None]
     query: str
     reason: str
     chunks: list[EvidenceChunk]
@@ -48,6 +52,7 @@ def execute_advisor_queries(
     index: CorpusIndex | None = None,
     retrieval_backend: str = "bm25",
     vector_store: str = "local",
+    namespace_prefix: str = "money-models",
 ) -> list[QueryEvidence]:
     corpus_index = index or CorpusIndex.from_transcripts(transcript_dir)
     evidence: list[QueryEvidence] = []
@@ -55,15 +60,24 @@ def execute_advisor_queries(
         results = _search(
             corpus_index,
             query.query,
-            layer=query.layer,
+            layers=query.layers,
             top_k=top_k,
             retrieval_backend=retrieval_backend,
             vector_store=vector_store,
+            namespace_prefix=namespace_prefix,
+            target_namespaces=query.target_namespaces,
         )
+        queried_namespaces = _physical_namespaces(
+            query.target_namespaces,
+            namespace_prefix=namespace_prefix,
+        ) if retrieval_backend in {"vector", "hybrid"} else []
         evidence.append(
             QueryEvidence(
                 intent=query.intent,
                 layer=query.layer,
+                layers=list(query.layers),
+                target_namespaces=list(query.target_namespaces),
+                queried_namespaces=list(queried_namespaces),
                 query=query.query,
                 reason=query.reason,
                 chunks=[
@@ -87,16 +101,43 @@ def _search(
     index: CorpusIndex,
     query: str,
     *,
-    layer: str | None,
+    layers: tuple[str, ...],
     top_k: int,
     retrieval_backend: str,
     vector_store: str = "local",
+    namespace_prefix: str = "money-models",
+    target_namespaces: tuple[str, ...] = (),
 ):
     if retrieval_backend == "bm25":
-        return index.search(query, layer=layer, top_k=top_k)
+        return index.search(query, layers=layers, top_k=top_k)
+    vector_namespaces = _physical_namespaces(target_namespaces, namespace_prefix=namespace_prefix)
     if retrieval_backend == "vector":
-        return index.vector_search(query, layer=layer, top_k=top_k, vector_store_name=vector_store)
+        return index.vector_search(
+            query,
+            layers=layers,
+            top_k=top_k,
+            vector_store_name=vector_store,
+            vector_namespaces=vector_namespaces,
+            namespace_prefix=namespace_prefix,
+        )
     if retrieval_backend == "hybrid":
-        return index.hybrid_search(query, layer=layer, top_k=top_k, vector_store_name=vector_store)
+        return index.hybrid_search(
+            query,
+            layers=layers,
+            top_k=top_k,
+            vector_store_name=vector_store,
+            vector_namespaces=vector_namespaces,
+            namespace_prefix=namespace_prefix,
+        )
     allowed = ", ".join(RETRIEVAL_BACKENDS)
     raise ValueError(f"unknown retrieval backend {retrieval_backend!r}; expected one of: {allowed}")
+
+
+def _physical_namespaces(
+    target_namespaces: tuple[str, ...],
+    *,
+    namespace_prefix: str,
+) -> tuple[str | None, ...]:
+    if not target_namespaces:
+        return (None,)
+    return tuple(layer_namespaces(target_namespaces, prefix=namespace_prefix))
