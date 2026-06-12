@@ -591,7 +591,9 @@
         max-width: none;
       }
 
-      details pre {
+      details pre,
+      .figure pre,
+      .rows dd pre {
         margin: 14px 0 0;
         padding: 16px 18px;
         background: var(--paper-deep);
@@ -1039,90 +1041,11 @@
           <p>
             V1 stores only what's needed to decide the next advisory action,
             run diagnostics, target retrieval, and explain what's missing
-            before a recommendation:
+            before a recommendation. The whole schema:
           </p>
-          <dl class="rows">
-            <div>
-              <dt>Business identity</dt>
-              <dd>
-                Type, ICP (ideal customer profile), delivery model — they
-                change how examples apply and
-                how fulfillment cost and margin should be read.
-              </dd>
-            </div>
-            <div>
-              <dt>Money-model stack</dt>
-              <dd>
-                The book's five offer types — attraction offer, core offer,
-                upsell, downsell, continuity — each stored as
-                <code>{exists, description, price}</code>.
-                <code>exists</code> alone wouldn't be enough — "add an
-                upsell" is bad advice for a business that has one but priced
-                it too low — so the description and price are stored with it.
-                And <code>exists</code> takes three values: <code>true</code>,
-                <code>false</code> only when there's evidence the offer is
-                really absent, and <code>null</code> when nobody knows yet.
-              </dd>
-            </div>
-            <div>
-              <dt>Economics</dt>
-              <dd>
-                CAC (customer acquisition cost), first-30-day gross profit,
-                recurring gross profit, gross margin, lifetime gross profit,
-                and the derived payback period — recomputed whenever inputs
-                change.
-              </dd>
-            </div>
-            <div>
-              <dt>Problem framing</dt>
-              <dd>
-                The user's goal, their symptoms in their own words ("cash is
-                tight"), and the advisor's diagnosed constraints
-                (<code>slow_payback</code>) — kept in separate fields so what
-                the user reported is never confused with what the advisor
-                concluded.
-              </dd>
-            </div>
-          </dl>
-          <p>
-            Every saved fact records its source: whether it came from a
-            <code>file</code>, the <code>conversation</code>, or a
-            <code>calculation</code>; for file-derived facts, the file's path
-            and a hash of its contents, so the fact is marked stale when the
-            file changes; plus a confidence grade and a timestamp. Merge rules are explicit —
-            inspected evidence beats inference, direct user statements beat
-            weak file inferences, newer direct user statements beat older
-            ones — and conflicts are preserved in the trace rather than
-            silently overwritten.
-          </p>
-          <p>
-            The snapshot also computes status fields the agent can read but
-            not invent. The advisory status moves through four stages:
-          </p>
-          <div class="statusflow">
-            <span>insufficient_context</span><i>→</i>
-            <span>diagnosable</span><i>→</i>
-            <span>diagnosed</span><i>→</i>
-            <span>recommendable</span>
-          </div>
-          <p>
-            Alongside it: readiness checks (a payback diagnosis needs CAC and
-            first-30-day gross profit; an offer-stack diagnosis needs to know
-            which offers exist), the list of still-missing facts — which is
-            what drives the clarifying questions — and which sections of the
-            book are likely relevant. The agent decides whether any of this
-            matters for the current turn.
-          </p>
-          <p class="quiet">
-            The snapshot is also the cache for business context: facts are
-            accepted once and reused every turn after — the advisor remembers
-            the business, advice traces to sourced facts, and docs aren't
-            re-inspected every turn.
-          </p>
-          <details>
-            <summary>BusinessSnapshot v1 schema + a field-source record</summary>
-            <div class="inner">
-              <pre>{
+          <figure class="figure">
+            <figcaption>BusinessSnapshot v1 — full field layout</figcaption>
+            <pre>{
   "business":     { "business_type", "icp", "delivery_model" },
   "money_model":  { "attraction_offer": {exists, description, price},
                     "core_offer": {…}, "upsell": {…},
@@ -1139,19 +1062,104 @@
                     "retrieval_query_terms[]" },
   "field_sources":{ … }
 }</pre>
-              <pre>"economics.cac": {
+          </figure>
+          <p>Block by block:</p>
+          <dl class="rows">
+            <div>
+              <dt><code>business</code></dt>
+              <dd>
+                Who the business is: <code>business_type</code>,
+                <code>icp</code> (ideal customer profile),
+                <code>delivery_model</code>. These change how the book's
+                examples apply and how fulfillment cost and margin should be
+                read.
+              </dd>
+            </div>
+            <div>
+              <dt><code>money_model</code></dt>
+              <dd>
+                The book's five offer types — attraction offer, core offer,
+                upsell, downsell, continuity — each stored as
+                <code>{exists, description, price}</code>.
+                <code>exists</code> alone wouldn't be enough — "add an
+                upsell" is bad advice for a business that has one but priced
+                it too low — so the description and price are stored with it.
+                And <code>exists</code> takes three values: <code>true</code>,
+                <code>false</code> only when there's evidence the offer is
+                really absent, and <code>null</code> when nobody knows yet.
+              </dd>
+            </div>
+            <div>
+              <dt><code>economics</code></dt>
+              <dd>
+                The unit-economics numbers: <code>cac</code> (customer
+                acquisition cost), first-30-day and recurring gross profit,
+                gross margin, lifetime gross profit, and the derived
+                <code>payback_period_months</code> — recomputed whenever
+                inputs change.
+              </dd>
+            </div>
+            <div>
+              <dt><code>problem</code></dt>
+              <dd>
+                The user's goal, their symptoms in their own words
+                (<code>reported_symptoms</code>: "cash is tight"), and the
+                advisor's conclusions
+                (<code>diagnosed_constraints</code>: <code>slow_payback</code>)
+                — separate fields, so what the user reported is never
+                confused with what the advisor concluded.
+              </dd>
+            </div>
+            <div>
+              <dt><code>advisor_state</code></dt>
+              <dd>
+                Status fields the CLI computes and the agent can read but not
+                invent: which diagnoses the saved numbers can support, the
+                still-missing facts — which is what drives the clarifying
+                questions — and which sections of the book are likely
+                relevant. The agent decides whether any of this matters for
+                the current turn. The headline field,
+                <code>advisory_status</code>, moves through four stages:
+                <div class="statusflow">
+                  <span>insufficient_context</span><i>→</i>
+                  <span>diagnosable</span><i>→</i>
+                  <span>diagnosed</span><i>→</i>
+                  <span>recommendable</span>
+                </div>
+              </dd>
+            </div>
+            <div>
+              <dt><code>field_sources</code></dt>
+              <dd>
+                One record per saved fact, naming where it came from
+                (<code>file</code>, <code>conversation</code>, or
+                <code>calculated</code>) with a confidence grade and
+                timestamp. Facts taken from a file keep the file's path and a
+                hash of its contents, so the fact is marked stale when the
+                file changes. The record for a CAC read from a metrics file:
+                <pre>"economics.cac": {
   "source_type": "file",
   "source": "metrics/q1-unit-economics.csv",
   "source_hash": "abc123",
   "confidence": "high",
   "updated_at": "2026-06-05T00:00:00Z"
 }</pre>
-              <p>
-                Full schema, field rationale, readiness and merge rules:
-                <code>BUSINESS_SNAPSHOT_V1.md</code>.
-              </p>
+              </dd>
             </div>
-          </details>
+          </dl>
+          <p>
+            Merge rules are explicit — inspected evidence beats inference,
+            direct user statements beat weak file inferences, newer direct
+            user statements beat older ones — and conflicts are preserved in
+            the trace rather than silently overwritten.
+          </p>
+          <p class="quiet">
+            The snapshot is also the cache for business context: facts are
+            accepted once and reused every turn after — the advisor remembers
+            the business, advice traces to sourced facts, and docs aren't
+            re-inspected every turn. Full schema, field rationale, readiness
+            and merge rules: <code>BUSINESS_SNAPSHOT_V1.md</code>.
+          </p>
 
           <h3><span class="sub">2.3 · Tool use</span>Eight CLI operations, mapped to one advisory turn</h3>
           <p class="lede">
