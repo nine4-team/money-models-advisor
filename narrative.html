@@ -789,7 +789,7 @@
             <p>
               An agent plans each turn; a deterministic CLI persists typed
               business state, runs the math, and executes retrieval. The
-              candidate search path is hybrid (lexical + vector, rank-fused)
+              candidate search path is hybrid (keyword + vector, rank-fused)
               over heading-aware chunks, with agent-written query variants,
               cached embeddings, and a Pinecone-backed vector store behind a
               swappable interface.
@@ -826,7 +826,7 @@
               <span class="c-num">02</span>
               <span>
                 <span class="c-title">Design</span>
-                <span class="c-gist">The operating model, the state, the tools, retrieval, the trace.</span>
+                <span class="c-gist">The agent/CLI split, business state, tool use, the RAG pipeline, traces.</span>
               </span>
             </a>
           </li>
@@ -906,7 +906,7 @@
                 BM25 alone would normally be enough here — but only because
                 of how the queries are built. The system's generated queries
                 carry the book's exact framework terms ("CFA," "rollover
-                upsell"), and when query and corpus share vocabulary, lexical
+                upsell"), and when query and corpus share vocabulary, keyword
                 search is hard to beat. Queries phrased the way real users
                 talk would erode that advantage, which is why the eval suite
                 audits query realism separately (§3.1). Vector and hybrid
@@ -937,16 +937,16 @@
             <div class="rail-num">02</div>
             <div class="rail-title">Design</div>
             <p class="rail-gist">
-              Five decisions: a subscription-agent/CLI operating model, typed
-              business state, an eight-operation command surface, a hybrid
-              retrieval stack, and an enforced trace contract.
+              Five decisions: an agent/CLI split, typed business state,
+              eight CLI tools, hybrid retrieval, and a validated trace for
+              every turn.
             </p>
           </div>
         </div>
         <div class="body">
           <h2>The design</h2>
 
-          <h3><span class="sub">2.1 · Operating model</span>A subscription agent driving a local CLI</h3>
+          <h3><span class="sub">2.1 · Agentic workflow</span>An AI agent driving a local CLI</h3>
           <p class="lede">
             The first architectural decision, and the one everything else
             follows from: the agent makes every judgment call, a local CLI
@@ -1007,11 +1007,11 @@
             first use (§2.4).
           </p>
 
-          <h4 class="block">Reading the firm's Business OS</h4>
+          <h4 class="block">Reading the founder's business files in place</h4>
           <p>
             Running locally also lets the agent read the founder's own
-            business directory in place — the firm's documented operating
-            system, its real files on disk. Pointed at that directory
+            business directory — their real files on disk. Pointed at that
+            directory
             (<code>--business-dir</code>), the agent reads those files when
             saved context is missing and records each accepted fact back to
             its source path and content hash (§2.2). A hosted service would
@@ -1027,11 +1027,11 @@
             vectorization, and the Pinecone vector store (§2.4).
           </p>
 
-          <h3><span class="sub">2.2 · State</span>BusinessSnapshot: typed working state with provenance</h3>
+          <h3><span class="sub">2.2 · Data integration</span>BusinessSnapshot: typed business state, every field tracked to its source</h3>
           <p class="lede">
             The advisor's memory of a business is one typed object —
-            identity, offer stack, economics, problem framing — with
-            provenance on every field.
+            identity, offer stack, economics, problem framing — and every
+            field records where it came from.
           </p>
           <p>
             V1 stores only what's needed to decide the next advisory action,
@@ -1077,7 +1077,7 @@
             </div>
           </dl>
           <p>
-            Every non-null field carries provenance: source type
+            Every non-null field records its source: source type
             (<code>file</code> / <code>conversation</code> /
             <code>calculated</code>), the path and content hash for
             file-derived facts so they invalidate when the file changes, a
@@ -1144,7 +1144,7 @@
             </div>
           </details>
 
-          <h3><span class="sub">2.3 · Tools</span>The command surface, shaped as a turn lifecycle</h3>
+          <h3><span class="sub">2.3 · Tool use</span>Eight CLI operations, mapped to one advisory turn</h3>
           <p class="lede">
             The CLI (§2.1) emits structured JSON for the agent; a project
             skill hides the flags and payloads from humans. Its eight
@@ -1211,7 +1211,7 @@
             </div>
           </dl>
 
-          <h3><span class="sub">2.4 · Retrieval</span>Searching the book for citeable evidence</h3>
+          <h3><span class="sub">2.4 · RAG pipeline</span>Hybrid retrieval over the chunked book</h3>
           <p class="lede">
             Every search starts from a structured request the agent writes — a
             <code>SourceNeed</code> — and runs hybrid: two rankers over the
@@ -1268,7 +1268,7 @@
               <dd>
                 BM25 and embedding-based vector search run over the same
                 chunks; their rankings are combined with reciprocal-rank
-                fusion — the reranking step — so raw lexical and embedding
+                fusion — the reranking step — so raw keyword and vector
                 scores never need to be directly comparable.
               </dd>
             </div>
@@ -1307,7 +1307,7 @@
             each one: how it was measured, and why it was kept or rejected.
           </p>
 
-          <h3><span class="sub">2.5 · Trace</span>The trace contract</h3>
+          <h3><span class="sub">2.5 · Observability</span>Every turn ends as one validated trace</h3>
           <p class="lede">
             Each turn ends as one validated artifact.
             <code>session finish</code> enforces its shape rather than
@@ -1402,7 +1402,7 @@
             <div class="rail-num">03</div>
             <div class="rail-title">Method</div>
             <p class="rail-gist">
-              A golden-dataset ladder scored against blind acting agents.
+              Nine golden datasets scored against blind acting agents.
               Agent judgment gated the retrieval comparisons; each design
               choice was adopted, rejected, or deferred from a measurement.
             </p>
@@ -1411,10 +1411,10 @@
         <div class="body">
           <h2>Method</h2>
 
-          <h3><span class="sub">3.1 · The ladder</span>Five eval layers, nine golden datasets</h3>
+          <h3><span class="sub">3.1 · Evaluation framework</span>Nine golden datasets, five layers</h3>
           <p class="lede">
-            Each layer of the ladder isolates a failure mode the layers below
-            it can't explain — so retrieval comparisons measure retrieval, not
+            Each layer isolates a failure mode the layers below it can't
+            explain — so retrieval comparisons measure retrieval, not
             upstream noise.
           </p>
           <ol class="steps">
@@ -1455,9 +1455,9 @@
             </li>
           </ol>
           <p class="quiet">
-            Five of the nine datasets sit directly on these rungs — tool use,
+            Five of the nine datasets sit directly on these layers — tool use,
             source need, search queries, the strategy comparison built on
-            them, and the obligations labels. The other four check the eval
+            them, and the support-coverage labels. The other four check the eval
             system itself: trace integrity (source events, calculation
             traces), the chunk inventory (chunking comparison), and query
             realism. Every dataset pairs with an automated scorer that writes
@@ -1486,7 +1486,7 @@
                 seed label. Exact focus-term recall is only a debugging signal
                 — "front-end offer" fails a substring match against "front end
                 offer" — so concept coverage judged with rationale is the
-                semantic measure. Misses against seed labels get adjudicated
+                semantic measure. Misses against seed labels get reviewed
                 before they're interpreted.
               </dd>
             </div>
@@ -1507,7 +1507,7 @@
                     <tr>
                       <td>tool_use · 24</td>
                       <td class="wrap">Right next action chosen?</td>
-                      <td class="wrap">24/24 first-action (23/24 before one documented label adjudication), 1.000 required-action recall, 0% false / 0% missed search, 100% trace completeness.</td>
+                      <td class="wrap">24/24 first-action (23/24 before one documented label correction), 1.000 required-action recall, 0% false / 0% missed search, 100% trace completeness.</td>
                     </tr>
                     <tr>
                       <td>source_need · 14</td>
@@ -1559,33 +1559,33 @@
             </div>
           </details>
 
-          <h3><span class="sub">3.2 · Agent judgment</span>Does the agent act on the right turns?</h3>
+          <h3><span class="sub">3.2 · Quality scoring</span>Does the agent act on the right turns?</h3>
           <p>
             Twenty-four tool-use cases — dev and regression traces captured
-            in-thread, scenario holdouts run after prompt freeze by separate
-            acting agents that never saw the labels — and fourteen blind
+            in-thread, held-out scenarios run after the prompts were frozen by
+            separate acting agents that never saw the labels — and fourteen blind
             source-need cases (10 search, 4 no-search controls). Results:
             23/24 strict first-action accuracy, 24/24 after one documented
-            label adjudication, with zero false and zero missed searches;
+            label correction, with zero false and zero missed searches;
             100% search-decision accuracy, with layer exact match on 9 of the
             10 search cases. The misses, case by case:
           </p>
           <dl class="rows">
             <div>
-              <dt>Adjudicated label</dt>
+              <dt>Corrected label</dt>
               <dd>
-                One holdout case required reading logs as the literal first
+                One held-out case required reading logs as the literal first
                 action. Review concluded reading the snapshot first was
                 harmless context-loading — logs were still read before
-                answering — and the label records the adjudication explicitly.
+                answering — and the label records that review explicitly.
               </dd>
             </div>
             <div>
-              <dt>Open residual</dt>
+              <dt>Unresolved miss</dt>
               <dd>
                 On the free-trial case the agent picks the
                 <code>offers</code> layer without also adding
-                <code>downsells</code>. It remains an open residual.
+                <code>downsells</code>. It remains open.
               </dd>
             </div>
             <div>
@@ -1613,7 +1613,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.3 · Chunking</span>Heading-aware kept; framework-aware rejected</h3>
+          <h3><span class="sub">3.3 · Chunking strategy</span>Heading-aware kept; framework-aware rejected</h3>
           <p>
             Two chunking strategies were compared on a labeled set:
             heading-aware scored 81.25% Hit@1 and 0.8917 MRR; a
@@ -1630,14 +1630,14 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.4 · Retrieval strategy</span>Comparing BM25, vector, and hybrid</h3>
+          <h3><span class="sub">3.4 · Hybrid retrieval + reranking</span>Comparing BM25, vector, and hybrid</h3>
           <p>
-            BM25 served as the lexical baseline and control, not the product
+            BM25 served as the keyword baseline and control, not the product
             architecture. Its job was to reveal whether fancier
             retrieval earns its complexity, and it set a high bar — the
             generated queries carry the book's exact framework terms ("CFA,"
             "rollover upsell," "payback period"), and that shared vocabulary
-            makes lexical retrieval unusually competitive. Against it:
+            makes keyword retrieval unusually competitive. Against it:
             vector search and rank-fused hybrid, all over the same chunks.
           </p>
           <p>
@@ -1645,7 +1645,7 @@
             snapshot-only query mode scored 50.0% by repeating one broad
             diagnostic query — the failure that motivated structured source
             needs — and the slice was then expanded from 10 to 30 cases, with
-            newly retrieved citeable chunks adjudicated into the labels.
+            newly retrieved citeable chunks reviewed and added to the labels.
           </p>
           <figure class="figure">
             <figcaption>30-case golden slice · deterministic generated queries · mean useful rank = average rank of the first known-useful chunk</figcaption>
@@ -1694,7 +1694,7 @@
             rollover upsells, waived fees, and continuity bonuses were
             directly citeable and were promoted into the known-useful labels
             after inspection. <code>searchq_v1_001</code> survived
-            adjudication as a true miss. Dashes in these tables are metrics
+            review as a true miss. Dashes in these tables are metrics
             the source reports don't include.
           </p>
           <p>
@@ -1794,7 +1794,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.5 · Hosted retrieval</span>Pinecone parity, and the latency it exposed</h3>
+          <h3><span class="sub">3.5 · Latency benchmarks</span>Pinecone matched local quality, and exposed slow retrieval</h3>
           <p>
             Local retrieval came first so iteration and evals stayed fast.
             Once the strategy was justified, the same 30-case slice was rerun
@@ -1805,10 +1805,10 @@
           </p>
           <p>
             What the latency benchmark exposed instead: the first hosted run
-            executed the 4-per-case variant fanout sequentially, and p50
+            executed each case's four query variants one at a time, and p50
             retrieval landed around 5.3s for hybrid and 5.5s for vector —
-            versus sub-millisecond local BM25. Bounding the fanout with
-            per-case parallelism (8 workers) brought the same 30-case
+            versus sub-millisecond local BM25. Running the variants in
+            parallel (8 workers) brought the same 30-case
             benchmark to roughly 1.4s p50 and 1.8s p95, quality unchanged.
           </p>
           <div class="decision">
@@ -1816,7 +1816,7 @@
             <div>
               <p>
                 Pinecone proves the hosted path and preserves quality;
-                parallelizing the fanout fixed the worst of the latency.
+                parallelizing the variant queries fixed the worst of the latency.
               </p>
               <p>
                 Top-k tuning and request-level observability are still open —
@@ -1825,7 +1825,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.6 · Namespaces</span>One namespace or five</h3>
+          <h3><span class="sub">3.6 · Pinecone namespaces</span>One namespace or five</h3>
           <p>
             The JD names multi-namespace Pinecone operation, and the corpus
             already had a five-layer taxonomy — so the layout was tested
@@ -1878,7 +1878,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.7 · Model routing</span>Can a cheaper model do the planning?</h3>
+          <h3><span class="sub">3.7 · Model routing &amp; tiering</span>Can a cheaper model do the planning?</h3>
           <p>
             The JD asks for model routing that improves unit economics while
             maintaining output quality. The second half is the constraint, so
@@ -1936,12 +1936,12 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.8 · Hardening</span>Failures became regression suites</h3>
+          <h3><span class="sub">3.8 · Regression detection</span>Failures became regression suites</h3>
           <p>
             Beyond the planned experiments, the design was hardened by a blind
             test-fix loop: send realistic turns to acting agents, inspect the
             saved traces — not just the answers — and fix the layer that
-            actually failed (skill guidance, CLI affordance, trace schema, or
+            actually failed (skill guidance, CLI command design, trace schema, or
             eval case). The promotion rule is explicit: one agent confused by
             instructions — patch the skill. Two agents failing the same way —
             regression case. Anything that could corrupt state or hide
@@ -1986,7 +1986,7 @@
               </dd>
             </div>
             <div>
-              <dt>Affordance → command change</dt>
+              <dt>Command design → command change</dt>
               <dd>
                 A realistic offer-sequencing turn exposed that
                 <code>diagnose</code> expected raw JSON instead of reading
@@ -2033,15 +2033,15 @@
               <dt>Hosted latency</dt>
               <dd>
                 ~1.4s p50 / ~1.8s p95 for Pinecone hybrid after parallelizing
-                the variant fanout (down from ~5.3s sequential). Quality
-                parity is proven; top-k tuning and request-level
+                the variant queries (down from ~5.3s sequential). Hosted
+                quality matches local exactly; top-k tuning and request-level
                 observability remain (§3.5).
               </dd>
             </div>
             <div>
               <dt>Answer quality</dt>
               <dd>
-                The thinnest coverage in the ladder. Decisions, traces, and
+                The thinnest coverage in the eval suite. Decisions, traces, and
                 retrieval are well-tested; grounded final-recommendation
                 quality is the next dataset to grow.
               </dd>
@@ -2096,7 +2096,7 @@
                   </tr>
                   <tr>
                     <td class="wrap">Integrate LLMs with internal systems, APIs, and data sources</td>
-                    <td class="wrap">Typed business state with provenance and merge rules (§2.2), a bounded CLI tool surface (§2.3), structured retrieval requests (§2.4), and in-place reads of the firm's own files (§2.1).</td>
+                    <td class="wrap">Typed business state with per-field source tracking and merge rules (§2.2), a bounded CLI tool surface (§2.3), structured retrieval requests (§2.4), and in-place reads of the firm's own files (§2.1).</td>
                   </tr>
                   <tr>
                     <td class="wrap">RAG pipelines across Pinecone namespaces — chunking strategy, embedding model selection, hybrid retrieval, reranking</td>
@@ -2108,7 +2108,7 @@
                   </tr>
                   <tr>
                     <td class="wrap">Embedding strategies, index management, and retrieval tuning</td>
-                    <td class="wrap">Deterministic, cached embeddings (§2.4); <code>index pinecone</code> upsert tooling over the vector-store interface (§2.3–2.4); the strategy comparison, variant fusion, fanout parallelization, and namespace-layout benchmark are measured retrieval tuning, with top-k tuning named as the next step (§3.4–3.6).</td>
+                    <td class="wrap">Deterministic, cached embeddings (§2.4); <code>index pinecone</code> upsert tooling over the vector-store interface (§2.3–2.4); the strategy comparison, variant fusion, query parallelization, and namespace-layout benchmark are measured retrieval tuning, with top-k tuning named as the next step (§3.4–3.6).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Reduce LLM API costs — model routing, caching, token management, or architectural improvements</td>
