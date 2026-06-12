@@ -1,0 +1,2085 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Building a Money Model Advisor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,420;9..144,560;9..144,640&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f6f2e8;
+        --paper-deep: #efe9da;
+        --ink: #1c1914;
+        --muted: #6e6759;
+        --faint: #99917f;
+        --rule: #ddd5c2;
+        --rule-strong: #1c1914;
+        --accent: #8c3318;
+        --accent-soft: #f3e4dc;
+        --serif: "Newsreader", Georgia, serif;
+        --display: "Fraunces", Georgia, serif;
+        --mono: "IBM Plex Mono", Menlo, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--serif);
+        font-size: 1.1rem;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background: var(--accent);
+        color: var(--paper);
+      }
+
+      .page {
+        width: min(1020px, calc(100% - 48px));
+        margin: 0 auto;
+      }
+
+      /* ---------- masthead ---------- */
+
+      .masthead {
+        padding: 56px 0 0;
+      }
+
+      .meta-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid var(--rule-strong);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .meta-row .dot {
+        color: var(--accent);
+      }
+
+      h1 {
+        margin: 40px 0 0;
+        font-family: var(--display);
+        font-weight: 560;
+        font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+        line-height: 1.04;
+        letter-spacing: -0.015em;
+        max-width: 18ch;
+      }
+
+      h1 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+
+      .deck {
+        margin: 26px 0 0;
+        max-width: 58ch;
+        font-size: 1.28rem;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+
+      /* ---------- abstract ---------- */
+
+      .abstract {
+        margin-top: 48px;
+        border-top: 1px solid var(--rule);
+        border-bottom: 1px solid var(--rule);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .abstract > div {
+        padding: 26px 28px 30px 0;
+      }
+
+      .abstract > div + div {
+        border-left: 1px solid var(--rule);
+        padding-left: 28px;
+      }
+
+      .abstract h2 {
+        margin: 0;
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .abstract p {
+        margin: 12px 0 0;
+        font-size: 0.99rem;
+        line-height: 1.55;
+      }
+
+      /* ---------- contents ---------- */
+
+      .contents {
+        margin-top: 0;
+        padding: 30px 0 36px;
+        border-bottom: 2px solid var(--rule-strong);
+      }
+
+      .contents-label {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+
+      .contents ol {
+        margin: 16px 0 0;
+        padding: 0;
+        list-style: none;
+        columns: 2;
+        column-gap: 56px;
+      }
+
+      .contents li {
+        break-inside: avoid;
+        border-top: 1px solid var(--rule);
+      }
+
+      .contents a {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 14px;
+        padding: 10px 2px;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .contents a:hover .c-title {
+        color: var(--accent);
+      }
+
+      .c-num {
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        color: var(--accent);
+        padding-top: 3px;
+      }
+
+      .c-title {
+        font-family: var(--display);
+        font-weight: 560;
+        font-size: 1.02rem;
+        transition: color 120ms ease;
+      }
+
+      .c-gist {
+        display: block;
+        margin-top: 2px;
+        font-family: var(--serif);
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      /* ---------- sections w/ margin rail ---------- */
+
+      section {
+        display: grid;
+        grid-template-columns: 200px minmax(0, 1fr);
+        gap: 52px;
+        padding: 64px 0;
+        border-bottom: 1px solid var(--rule);
+        scroll-margin-top: 24px;
+      }
+
+      .rail {
+        position: relative;
+      }
+
+      .rail-inner {
+        position: sticky;
+        top: 32px;
+      }
+
+      .rail-num {
+        font-family: var(--display);
+        font-weight: 420;
+        font-size: 3.4rem;
+        line-height: 1;
+        color: var(--accent);
+      }
+
+      .rail-title {
+        margin-top: 10px;
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink);
+      }
+
+      .rail-gist {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid var(--rule);
+        font-size: 0.92rem;
+        line-height: 1.5;
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      .body h2 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 560;
+        font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+        max-width: 26ch;
+      }
+
+      .lede {
+        margin: 18px 0 0;
+        font-size: 1.22rem;
+        line-height: 1.5;
+        max-width: 56ch;
+      }
+
+      .body p {
+        margin: 18px 0 0;
+        max-width: 62ch;
+        color: #2e2a22;
+      }
+
+      .body p.quiet {
+        color: var(--muted);
+        font-size: 0.98rem;
+      }
+
+      h3 {
+        margin: 48px 0 0;
+        font-family: var(--display);
+        font-weight: 560;
+        font-size: 1.28rem;
+        line-height: 1.2;
+      }
+
+      h3 .sub {
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        color: var(--accent);
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      h4.block {
+        margin: 34px 0 0;
+        font-family: var(--display);
+        font-weight: 560;
+        font-size: 1.04rem;
+        line-height: 1.2;
+        letter-spacing: -0.005em;
+      }
+
+      h4.block + p,
+      h4.block + .chips,
+      h4.block + dl.rows {
+        margin-top: 12px;
+      }
+
+      code {
+        font-family: var(--mono);
+        font-size: 0.84em;
+        background: var(--paper-deep);
+        border-radius: 3px;
+        padding: 0.08em 0.34em;
+      }
+
+      /* ---------- definition rows: the scan layer ---------- */
+
+      dl.rows {
+        margin: 22px 0 0;
+        border-top: 1px solid var(--rule);
+      }
+
+      dl.rows > div {
+        display: grid;
+        grid-template-columns: 190px minmax(0, 1fr);
+        gap: 20px;
+        padding: 13px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      dl.rows dt {
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.76rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink);
+        padding-top: 4px;
+      }
+
+      dl.rows dd {
+        margin: 0;
+        font-size: 0.98rem;
+        line-height: 1.55;
+        color: #2e2a22;
+      }
+
+      /* ---------- step rail ---------- */
+
+      ol.steps {
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+        border-top: 1px solid var(--rule);
+      }
+
+      ol.steps li {
+        counter-increment: step;
+        display: grid;
+        grid-template-columns: 44px 200px minmax(0, 1fr);
+        gap: 18px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      ol.steps li::before {
+        content: counter(step, decimal-leading-zero);
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        color: var(--accent);
+        padding-top: 4px;
+      }
+
+      ol.steps .s-term {
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.76rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding-top: 4px;
+      }
+
+      ol.steps .s-def {
+        font-size: 0.97rem;
+        line-height: 1.5;
+        color: #2e2a22;
+      }
+
+      /* ---------- runtime loop ---------- */
+
+      .loop {
+        margin: 22px 0 0;
+        border: 1px solid var(--rule);
+        background: var(--paper-deep);
+        padding: 22px 26px;
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        line-height: 2.05;
+        color: var(--muted);
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .loop b {
+        font-weight: 500;
+        color: var(--accent);
+      }
+
+      /* ---------- decision block ---------- */
+
+      .decision {
+        margin: 26px 0 0;
+        max-width: 62ch;
+        border-top: 2px solid var(--rule-strong);
+        padding-top: 14px;
+        display: grid;
+        grid-template-columns: 110px minmax(0, 1fr);
+        gap: 20px;
+      }
+
+      .decision .d-tag {
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        padding-top: 4px;
+      }
+
+      .decision p {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 420;
+        font-size: 1.12rem;
+        line-height: 1.42;
+      }
+
+      .decision p + p {
+        margin-top: 10px;
+        font-family: var(--serif);
+        font-size: 0.96rem;
+        color: var(--muted);
+      }
+
+      /* ---------- chips ---------- */
+
+      .chips {
+        margin: 16px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chips span {
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        letter-spacing: 0.03em;
+        border: 1px solid var(--rule);
+        background: var(--paper-deep);
+        padding: 5px 11px;
+        border-radius: 999px;
+        color: #2e2a22;
+      }
+
+      /* ---------- tables ---------- */
+
+      .figure {
+        margin: 24px 0 0;
+      }
+
+      .figure figcaption {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 10px;
+      }
+
+      .table-scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+      }
+
+      th {
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-align: left;
+        padding: 0 14px 8px 0;
+        border-bottom: 2px solid var(--rule-strong);
+      }
+
+      td {
+        padding: 11px 14px 11px 0;
+        border-bottom: 1px solid var(--rule);
+        vertical-align: top;
+        color: #2e2a22;
+      }
+
+      td:first-child {
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        white-space: nowrap;
+        color: var(--ink);
+      }
+
+      td.wrap:first-child,
+      td.wrap {
+        white-space: normal;
+        font-family: var(--serif);
+        font-size: 0.95rem;
+      }
+
+      th.num,
+      td.num {
+        text-align: right;
+        white-space: nowrap;
+        font-family: var(--mono);
+        font-size: 0.84rem;
+      }
+
+      td.hit {
+        color: var(--accent);
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      /* ---------- details ---------- */
+
+      details {
+        margin: 22px 0 0;
+        border: 1px solid var(--rule);
+        background: #faf7ef;
+      }
+
+      summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 13px 18px;
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.76rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink);
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary::after {
+        content: "+ open";
+        color: var(--accent);
+        flex: none;
+      }
+
+      details[open] summary::after {
+        content: "– close";
+      }
+
+      details .inner {
+        padding: 2px 18px 18px;
+        border-top: 1px solid var(--rule);
+      }
+
+      details .inner p {
+        font-size: 0.92rem;
+        color: var(--muted);
+        max-width: none;
+      }
+
+      details pre {
+        margin: 14px 0 0;
+        padding: 16px 18px;
+        background: var(--paper-deep);
+        border: 1px solid var(--rule);
+        font-family: var(--mono);
+        font-size: 0.76rem;
+        line-height: 1.65;
+        overflow-x: auto;
+      }
+
+      /* ---------- two-col ownership ---------- */
+
+      .split {
+        margin: 22px 0 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 1px solid var(--rule);
+      }
+
+      .split .col {
+        padding: 18px 26px 22px 0;
+      }
+
+      .split .col + .col {
+        border-left: 1px solid var(--rule);
+        padding-left: 26px;
+      }
+
+      .split h4 {
+        margin: 0;
+        font-family: var(--mono);
+        font-weight: 500;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .split ul {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .split li {
+        padding: 7px 0;
+        border-bottom: 1px solid var(--rule);
+        font-size: 0.94rem;
+        color: #2e2a22;
+      }
+
+      .split li:last-child {
+        border-bottom: 0;
+      }
+
+      /* ---------- status flow ---------- */
+
+      .statusflow {
+        margin: 16px 0 0;
+        font-family: var(--mono);
+        font-size: 0.76rem;
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .statusflow span {
+        border: 1px solid var(--rule);
+        background: var(--paper-deep);
+        padding: 5px 11px;
+        border-radius: 999px;
+        color: var(--ink);
+      }
+
+      .statusflow i {
+        font-style: normal;
+        color: var(--accent);
+      }
+
+      /* ---------- appendix / footer ---------- */
+
+      .endmatter {
+        padding: 56px 0 96px;
+      }
+
+      .footnote {
+        margin: 28px 0 0;
+        max-width: 62ch;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      /* ---------- responsive ---------- */
+
+      @media (max-width: 880px) {
+        section {
+          grid-template-columns: 1fr;
+          gap: 24px;
+          padding: 48px 0;
+        }
+
+        .rail-inner {
+          position: static;
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 6px 16px;
+          align-items: baseline;
+        }
+
+        .rail-num {
+          font-size: 2.2rem;
+        }
+
+        .rail-gist {
+          grid-column: 1 / -1;
+          margin-top: 6px;
+        }
+
+        .abstract {
+          grid-template-columns: 1fr;
+        }
+
+        .abstract > div {
+          padding: 20px 0;
+        }
+
+        .abstract > div + div {
+          border-left: 0;
+          border-top: 1px solid var(--rule);
+          padding-left: 0;
+        }
+
+        .contents ol {
+          columns: 1;
+        }
+
+        .split {
+          grid-template-columns: 1fr;
+        }
+
+        .split .col + .col {
+          border-left: 0;
+          border-top: 1px solid var(--rule);
+          padding-left: 0;
+        }
+
+        dl.rows > div,
+        ol.steps li {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+
+        ol.steps li::before {
+          padding-top: 0;
+        }
+
+        .decision {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- ================= MASTHEAD ================= -->
+      <header class="masthead">
+        <div class="meta-row">
+          <span>Portfolio write-up</span>
+          <span>Acquisition.com <span class="dot">·</span> Senior AI Engineer</span>
+        </div>
+        <h1>Building a <em>Money Model</em> Advisor</h1>
+        <p class="deck">
+          An AI advisor built on Alex Hormozi's
+          <em>$100M Money Models</em>: it diagnoses a founder's unit economics
+          and answers with cited passages from the book. This page documents
+          how it was designed and measured.
+        </p>
+
+        <div class="abstract">
+          <div>
+            <h2>Objective</h2>
+            <p>
+              A founder asks for business advice in plain language. The
+              advisor diagnoses their unit economics, teaches the relevant
+              Money Models concepts, and recommends the next change to test —
+              with every claim that needs support cited to the book, and
+              every turn recorded as an auditable trace.
+            </p>
+          </div>
+          <div>
+            <h2>Design</h2>
+            <p>
+              An agent plans each turn; a deterministic CLI persists typed
+              business state, runs the math, and executes retrieval. The
+              candidate search path is hybrid (lexical + vector, rank-fused)
+              over heading-aware chunks, with agent-written query variants,
+              cached embeddings, and a Pinecone-backed vector store behind a
+              swappable interface.
+            </p>
+          </div>
+          <div>
+            <h2>Method</h2>
+            <p>
+              Every architecture choice was decided by measurement: nine
+              golden datasets, ordered so agent judgment is evaluated before
+              the retriever, with the judgment suites scored against blind
+              acting-agent runs. Choices that didn't earn their complexity
+              were rejected and recorded.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= CONTENTS ================= -->
+      <nav class="contents" aria-label="Contents">
+        <span class="contents-label">Contents</span>
+        <ol>
+          <li>
+            <a href="#s1">
+              <span class="c-num">01</span>
+              <span>
+                <span class="c-title">Objective</span>
+                <span class="c-gist">What the advisor does, and what's deliberately overbuilt.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#s2">
+              <span class="c-num">02</span>
+              <span>
+                <span class="c-title">Design</span>
+                <span class="c-gist">The operating model, the state, the tools, retrieval, the trace.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#s3">
+              <span class="c-num">03</span>
+              <span>
+                <span class="c-title">Method</span>
+                <span class="c-gist">Nine golden datasets and the measurement behind each design choice.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#s4">
+              <span class="c-num">04</span>
+              <span>
+                <span class="c-title">Limits &amp; next</span>
+                <span class="c-gist">What this doesn't prove, stated plainly.</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- ================= 01 OBJECTIVE ================= -->
+      <section id="s1">
+        <div class="rail">
+          <div class="rail-inner">
+            <div class="rail-num">01</div>
+            <div class="rail-title">Objective</div>
+            <p class="rail-gist">
+              Plain-language business questions in; a diagnosis, a
+              recommended next test, and cited source passages out.
+            </p>
+          </div>
+        </div>
+        <div class="body">
+          <h2>What the advisor does</h2>
+          <p class="lede">
+            Take a founder's plain-language question, diagnose their money
+            model, and recommend the next change to test — citing the book
+            wherever a claim needs support.
+          </p>
+          <p>
+            The questions arrive as "I think CAC is too high," "cash is
+            tight," "what should I add after the first sale?" Those are
+            different advisory moves — diagnosis, teaching, offer design, a
+            next-step recommendation — and the system has to decide which one
+            a turn needs before any retrieval question matters.
+          </p>
+
+          <h3><span class="sub">1.1 · Scope</span>Where this is deliberately overbuilt</h3>
+          <p class="lede">
+            Parts of this system are heavier than a one-book advisor needs.
+            That's deliberate: this is a portfolio project for a role that
+            builds production RAG infrastructure, so the heavier path is
+            taken where it demonstrates that work.
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>Vector database</dt>
+              <dd>
+                The design started from two hand-built documents: a decision
+                tree distilled from the book's coaching logic and a summary of
+                its frameworks (both in <code>corpus/</code>). For an advisor
+                over this one book, those two documents would probably be
+                sufficient — no vector database required. They still shaped
+                the system: the decision tree inspired the five-layer
+                namespace division, and the frameworks summary seeded the
+                golden eval set. The Pinecone-backed pipeline exists to
+                demonstrate production RAG infrastructure (§2.4, §3.5).
+              </dd>
+            </div>
+            <div>
+              <dt>Semantic retrieval</dt>
+              <dd>
+                BM25 alone would normally be enough here — but only because
+                of how the queries are built. The system's generated queries
+                carry the book's exact framework terms ("CFA," "rollover
+                upsell"), and when query and corpus share vocabulary, lexical
+                search is hard to beat. Queries phrased the way real users
+                talk would erode that advantage, which is why the eval suite
+                audits query realism separately (§3.1). Vector and hybrid
+                retrieval were built to demonstrate semantic-retrieval
+                engineering, and were promoted only after beating the BM25
+                control (§3.4).
+              </dd>
+            </div>
+            <div>
+              <dt>Namespace partitioning</dt>
+              <dd>
+                One namespace with metadata filters is the right default at
+                202 chunks. The five-layer Pinecone split was built and
+                benchmarked anyway, because the JD names multi-namespace
+                operation and the split exercises index management. The test
+                came back honest: identical retrieval, worse tail latency —
+                so the single namespace stays the default (§3.6).
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ================= 02 DESIGN ================= -->
+      <section id="s2">
+        <div class="rail">
+          <div class="rail-inner">
+            <div class="rail-num">02</div>
+            <div class="rail-title">Design</div>
+            <p class="rail-gist">
+              Five decisions: a subscription-agent/CLI operating model, typed
+              business state, an eight-operation command surface, a hybrid
+              retrieval stack, and an enforced trace contract.
+            </p>
+          </div>
+        </div>
+        <div class="body">
+          <h2>The design</h2>
+
+          <h3><span class="sub">2.1 · Operating model</span>A subscription agent driving a local CLI</h3>
+          <p class="lede">
+            The first architectural decision, and the one everything else
+            follows from: the agent makes every judgment call, a local CLI
+            does everything deterministic and repeatable, and nothing calls a
+            hosted model at runtime.
+          </p>
+          <div class="split">
+            <div class="col">
+              <h4>Agent — semantic judgment</h4>
+              <ul>
+                <li>decide the next advisory move</li>
+                <li>inspect local docs when context is missing</li>
+                <li>decide whether source material is needed at all</li>
+                <li>generate <code>SourceNeed</code> objects + query variants</li>
+                <li>judge whether retrieved chunks support a claim</li>
+                <li>synthesize the final answer</li>
+                <li>decide which facts are safe to save</li>
+              </ul>
+            </div>
+            <div class="col">
+              <h4>CLI — deterministic support</h4>
+              <ul>
+                <li>create, locate, and persist advisor state</li>
+                <li>run unit-economics formulas reproducibly</li>
+                <li>execute retrieval, local or Pinecone</li>
+                <li>expose chunks with stable IDs and scores</li>
+                <li>validate and record traces + source events</li>
+                <li>generate eval reports</li>
+              </ul>
+            </div>
+          </div>
+          <p>One advisory turn, with the split in action:</p>
+          <div class="loop"><b>human asks the agent for advice</b>
+→ agent runs <b>session start</b>          loads saved state, missing fields, history
+→ agent inspects local business docs     only if saved context is missing
+→ agent saves accepted facts             to the BusinessSnapshot (§2.2)
+→ agent runs CLI tools                   calculation · diagnosis · source search
+→ agent answers                          citing retrieved chunks where claims need support
+→ agent runs <b>session finish</b>         validates and persists the turn trace (§2.5)</div>
+          <p>
+            This division of labor is what the rest of the page depends on:
+            every judgment the agent makes lands in a recorded trace where it
+            can be audited and scored (§2.5), and everything the CLI does is
+            testable as ordinary code.
+          </p>
+
+          <h4 class="block">Why a local CLI, run by a subscription agent</h4>
+          <p>
+            The deterministic side is a local CLI, and the agent driving it is
+            a subscription coding tool (Codex), not a hosted model API. That
+            shape pays off three ways. Running locally was required anyway,
+            since no hosted model is allowed in the runtime. A CLI gives the
+            agent commands it can run reliably, gives the eval harness output
+            stable enough to score exactly, and lets a developer rerun any
+            turn by hand. And because the agent runs on a Codex subscription
+            rather than a metered generation API, the only per-token charge
+            anywhere in the build-and-eval loop is embeddings — cached after
+            first use (§2.4).
+          </p>
+
+          <h4 class="block">Reading the firm's Business OS</h4>
+          <p>
+            Running locally also lets the agent read the founder's own
+            business directory in place — the firm's documented operating
+            system, its real files on disk. Pointed at that directory
+            (<code>--business-dir</code>), the agent reads those files when
+            saved context is missing and records each accepted fact back to
+            its source path and content hash (§2.2). A hosted service would
+            have to copy the directory in first; the CLI just reads it where
+            it lives.
+          </p>
+          <p class="quiet">
+            Building a hosted web product before the advisor loop and the eval
+            method were proven would have been premature. If one is built
+            later, it is a second surface over the same core (§4) — the stable
+            JSON contract and the vector-store boundary are what make that
+            cheap. The only outside services today are the embedding API, for
+            vectorization, and the Pinecone vector store (§2.4).
+          </p>
+
+          <h3><span class="sub">2.2 · State</span>BusinessSnapshot: typed working state with provenance</h3>
+          <p class="lede">
+            The advisor's memory of a business is one typed object —
+            identity, offer stack, economics, problem framing — with
+            provenance on every field.
+          </p>
+          <p>
+            V1 stores only what's needed to decide the next advisory action,
+            run diagnostics, target retrieval, and explain what's missing
+            before a recommendation:
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>Business identity</dt>
+              <dd>
+                Type, ICP, delivery model — they change how examples apply and
+                how fulfillment cost and margin should be read.
+              </dd>
+            </div>
+            <div>
+              <dt>Money-model stack</dt>
+              <dd>
+                Five positions — attraction offer, core offer, upsell,
+                downsell, continuity — each stored as
+                <code>{exists, description, price}</code>. The flag alone is
+                not enough: "add an upsell" is bad advice when one exists but
+                is underpriced. <code>null</code> means unknown;
+                <code>false</code> requires evidence of absence.
+              </dd>
+            </div>
+            <div>
+              <dt>Economics</dt>
+              <dd>
+                CAC (customer acquisition cost), first-30-day gross profit,
+                recurring gross profit, gross margin, lifetime gross profit,
+                and the derived payback period — recomputed whenever inputs
+                change.
+              </dd>
+            </div>
+            <div>
+              <dt>Problem framing</dt>
+              <dd>
+                The user's goal, their symptoms in their own words ("cash is
+                tight"), and the advisor's stored conclusions
+                (<code>slow_payback</code>) — kept separate so the advisor
+                doesn't optimize the wrong thing.
+              </dd>
+            </div>
+          </dl>
+          <p>
+            Every non-null field carries provenance: source type
+            (<code>file</code> / <code>conversation</code> /
+            <code>calculated</code>), the path and content hash for
+            file-derived facts so they invalidate when the file changes, a
+            confidence grade, and a timestamp. Merge rules are explicit —
+            inspected evidence beats inference, direct user statements beat
+            weak file inferences, newer direct user statements beat older
+            ones — and conflicts are preserved in the trace rather than
+            silently overwritten.
+          </p>
+          <p>
+            The snapshot also computes deterministic hints. The advisory
+            status moves through a four-state machine:
+          </p>
+          <div class="statusflow">
+            <span>insufficient_context</span><i>→</i>
+            <span>diagnosable</span><i>→</i>
+            <span>diagnosed</span><i>→</i>
+            <span>recommendable</span>
+          </div>
+          <p>
+            Readiness flags (payback diagnosis needs CAC and first-30-day
+            gross profit; stack diagnosis needs to know which positions
+            exist), missing-field lists that drive targeted clarifying
+            questions, and candidate retrieval layers all live here too. The
+            agent decides whether any hint matters for the current turn.
+          </p>
+          <p class="quiet">
+            The snapshot is also the cache for business context: facts are
+            accepted once and reused every turn after — the advisor remembers
+            the business, advice traces to sourced facts, and docs aren't
+            re-inspected every turn.
+          </p>
+          <details>
+            <summary>BusinessSnapshot v1 schema + a field-source record</summary>
+            <div class="inner">
+              <pre>{
+  "business":     { "business_type", "icp", "delivery_model" },
+  "money_model":  { "attraction_offer": {exists, description, price},
+                    "core_offer": {…}, "upsell": {…},
+                    "downsell": {…}, "continuity": {…} },
+  "economics":    { "cac", "first_30_day_gross_profit",
+                    "monthly_recurring_gross_profit", "gross_margin",
+                    "lifetime_gross_profit", "payback_period_months" },
+  "problem":      { "user_goal", "reported_symptoms[]",
+                    "diagnosed_constraints[]" },
+  "advisor_state":{ "advisory_status", "missing_fields[]",
+                    "ready_for_payback_diagnosis",
+                    "ready_for_offer_stack_diagnosis",
+                    "likely_retrieval_layers[]",
+                    "retrieval_query_terms[]" },
+  "field_sources":{ … }
+}</pre>
+              <pre>"economics.cac": {
+  "source_type": "file",
+  "source": "metrics/q1-unit-economics.csv",
+  "source_hash": "abc123",
+  "confidence": "high",
+  "updated_at": "2026-06-05T00:00:00Z"
+}</pre>
+              <p>
+                Full schema, field rationale, readiness and merge rules:
+                <code>BUSINESS_SNAPSHOT_V1.md</code>.
+              </p>
+            </div>
+          </details>
+
+          <h3><span class="sub">2.3 · Tools</span>The command surface, shaped as a turn lifecycle</h3>
+          <p class="lede">
+            The CLI (§2.1) emits structured JSON for the agent; a project
+            skill hides the flags and payloads from humans. Its eight
+            operations map onto one advisory turn.
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>session start</dt>
+              <dd>
+                Prepare the turn: load the snapshot; show advisory status,
+                known and missing facts, retrieval hints, recent turns,
+                available operations, and what must be recorded at the end.
+                It does not answer, decide the next action, or search.
+              </dd>
+            </div>
+            <div>
+              <dt>snapshot / snapshot set</dt>
+              <dd>
+                Read and persist accepted facts. Validates field paths,
+                recomputes readiness; never infers facts or decides which
+                matter.
+              </dd>
+            </div>
+            <div>
+              <dt>calculate</dt>
+              <dd>
+                Deterministic formulas — CAC, gross profit, gross margin,
+                lifetime gross profit, payback period, CFA (client-financed
+                acquisition) level. The agent must not do this math from
+                memory.
+              </dd>
+            </div>
+            <div>
+              <dt>diagnose</dt>
+              <dd>
+                Deterministic unit-economics diagnosis from saved numbers.
+                The agent decides whether the result is relevant and how to
+                explain it.
+              </dd>
+            </div>
+            <div>
+              <dt>search</dt>
+              <dd>
+                Retrieve citation-ready chunks from an agent-written
+                <code>SourceNeed</code>, against a selectable retrieval
+                strategy and vector store (§2.4).
+              </dd>
+            </div>
+            <div>
+              <dt>session finish</dt>
+              <dd>
+                Validate and persist the completed turn as one structured
+                artifact: message pair, actions, source events, calculation
+                events, cited chunk IDs, ending snapshot.
+              </dd>
+            </div>
+            <div>
+              <dt>logs</dt>
+              <dd>Inspect prior turns when the conversation depends on earlier context.</dd>
+            </div>
+            <div>
+              <dt>index pinecone</dt>
+              <dd>Index management: upsert corpus vectors into the hosted vector index (§2.4).</dd>
+            </div>
+          </dl>
+
+          <h3><span class="sub">2.4 · Retrieval</span>Searching the book for citeable evidence</h3>
+          <p class="lede">
+            Every search starts from a structured request the agent writes — a
+            <code>SourceNeed</code> — and runs hybrid: two rankers over the
+            same chunked book, keyword (BM25) and meaning-based (vector),
+            combined into one ranked list.
+          </p>
+
+          <h4 class="block">The request: a SourceNeed</h4>
+          <p>
+            A <code>SourceNeed</code> says what a search is for. It carries an
+            intent, the corpus layers to look in, focus terms, the user's turn
+            for context, and 2–4 query variants. Different advisory jobs need
+            different evidence, so each search names its intent:
+          </p>
+          <div class="chips">
+            <span>teaching_evidence</span>
+            <span>diagnostic_evidence</span>
+            <span>comparison_evidence</span>
+            <span>recommendation_evidence</span>
+          </div>
+          <p>
+            A turn can be mixed — an answer may both teach and recommend — but
+            each search does one job. An answer that needs two kinds of
+            evidence runs two searches and records two source events.
+          </p>
+
+          <h4 class="block">The corpus: five retrieval namespaces</h4>
+          <p>
+            The corpus is the book's lessons, one file per lesson, partitioned
+            into five namespaces — the corpus layers. A search is scoped to
+            one or more of them, and the agent names them in its
+            <code>SourceNeed</code>:
+          </p>
+          <div class="chips">
+            <span>unit-economics</span>
+            <span>offers</span>
+            <span>upsells</span>
+            <span>downsells</span>
+            <span>continuity</span>
+          </div>
+
+          <h4 class="block">How a search runs</h4>
+          <dl class="rows">
+            <div>
+              <dt>Chunking</dt>
+              <dd>
+                Heading-aware: preserve transcript sections, fall back to
+                fixed windows. 202 chunks with stable IDs and citation
+                metadata.
+              </dd>
+            </div>
+            <div>
+              <dt>Search</dt>
+              <dd>
+                BM25 and embedding-based vector search run over the same
+                chunks; their rankings are combined with reciprocal-rank
+                fusion — the reranking step — so raw lexical and embedding
+                scores never need to be directly comparable.
+              </dd>
+            </div>
+            <div>
+              <dt>Queries</dt>
+              <dd>
+                The variants are causal and framework phrasings of the same
+                source need, fused with a deterministic flattened fallback
+                query so they can't crowd out the stable baseline.
+              </dd>
+            </div>
+            <div>
+              <dt>Cost control</dt>
+              <dd>
+                Corpus and query embeddings are cached under
+                <code>.cache/embeddings/</code>; warm eval runs make zero
+                external embedding API batches.
+              </dd>
+            </div>
+            <div>
+              <dt>Storage</dt>
+              <dd>
+                A narrow <code>VectorStore</code> interface with two
+                implementations: local in-memory for fast dev and evals, and
+                Pinecone for hosted retrieval. The first Pinecone adapter is a
+                small REST client rather than the official SDK — the interface
+                is what matters; the adapter behind it can move to the SDK
+                without touching advisor or eval logic. The index also
+                supports a five-namespace layer layout; a single namespace
+                with metadata filters is the default (§3.6).
+              </dd>
+            </div>
+          </dl>
+          <p class="quiet">
+            None of these was a default. Section 3 is the methodology behind
+            each one: how it was measured, and why it was kept or rejected.
+          </p>
+
+          <h3><span class="sub">2.5 · Trace</span>The trace contract</h3>
+          <p class="lede">
+            Each turn ends as one validated artifact.
+            <code>session finish</code> enforces its shape rather than
+            trusting the agent's self-report:
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>Actions</dt>
+              <dd>
+                A non-empty list of known operation labels. Zero source events
+                is valid — not every turn should search.
+              </dd>
+            </div>
+            <div>
+              <dt>Source events</dt>
+              <dd>
+                Each must carry the full <code>SourceNeed</code>, the executed
+                queries, and inspected chunks with IDs and scores.
+              </dd>
+            </div>
+            <div>
+              <dt>Citations</dt>
+              <dd>
+                Every cited chunk ID must appear in a source event, unless
+                the trace explicitly marks it as an external, non-corpus
+                citation — the agent cannot quietly cite material it never
+                retrieved. Chunks inspected but not cited only warn: that's
+                legitimate behavior.
+              </dd>
+            </div>
+            <div>
+              <dt>Calculations</dt>
+              <dd>
+                If actions include <code>calculate</code>, the trace must
+                include structured <code>calculation_events</code> with
+                metric, inputs, and output — added after agents were observed
+                claiming math their traces couldn't prove (§3.7).
+              </dd>
+            </div>
+            <div>
+              <dt>State</dt>
+              <dd>The ending snapshot is captured automatically.</dd>
+            </div>
+          </dl>
+          <p class="quiet">
+            One trace answers, mechanically: what the agent did, what it
+            searched for and why, what it inspected, cited, and computed, and
+            what state it left behind. Every eval in §3 reads these traces.
+          </p>
+          <details>
+            <summary>A recorded turn — abridged session-finish artifact</summary>
+            <div class="inner">
+              <pre>{
+  "user_message": "what should we do next?",
+  "assistant_message": "I would fix payback first...",
+  "actions": ["session_start", "read_snapshot", "calculate",
+              "search_source_material", "answer"],
+  "source_events": [{
+    "source_need": {
+      "intent": "diagnostic_evidence",
+      "layers": ["unit-economics"],
+      "focus_terms": ["CAC", "gross profit", "payback period"],
+      "user_turn": "what should we do next?"
+    },
+    "queries": ["CAC gross profit payback period"],
+    "chunks": [{ "id": "payback-period:0", "score": 20.4 }]
+  }],
+  "calculation_events": [{
+    "metric": "payback",
+    "inputs": { "cac": 1000, "month_one_gp": 10000,
+                "monthly_recurring_gp": 0 },
+    "value": 1.0
+  }],
+  "cited_chunk_ids": ["payback-period:0"],
+  "metadata": { "run_type": "manual_agent_turn" }
+}</pre>
+              <p>
+                Saved per business under
+                <code>.money-model-advisor/sessions/</code>, beside
+                <code>business_snapshot.json</code>. Full contract:
+                <code>CLI_DESIGN.md</code>.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ================= 03 HOW DECIDED ================= -->
+      <section id="s3">
+        <div class="rail">
+          <div class="rail-inner">
+            <div class="rail-num">03</div>
+            <div class="rail-title">Method</div>
+            <p class="rail-gist">
+              A golden-dataset ladder scored against blind acting agents.
+              Agent judgment gated the retrieval comparisons; each design
+              choice was adopted, rejected, or deferred from a measurement.
+            </p>
+          </div>
+        </div>
+        <div class="body">
+          <h2>Method</h2>
+
+          <h3><span class="sub">3.1 · The ladder</span>Five eval layers, nine golden datasets</h3>
+          <p class="lede">
+            Each layer of the ladder isolates a failure mode the layers below
+            it can't explain — so retrieval comparisons measure retrieval, not
+            upstream noise.
+          </p>
+          <ol class="steps">
+            <li>
+              <span class="s-term">Tool-use judgment</span>
+              <span class="s-def">
+                Should this turn search source material at all — versus read
+                state, inspect docs, calculate, clarify, or answer directly?
+              </span>
+            </li>
+            <li>
+              <span class="s-term">Source-need generation</span>
+              <span class="s-def">
+                When search is right, what retrieval objective, corpus layers,
+                and focus concepts should guide it?
+              </span>
+            </li>
+            <li>
+              <span class="s-term">Search-query quality</span>
+              <span class="s-def">
+                Does query construction retrieve citeable chunks for that
+                source need?
+              </span>
+            </li>
+            <li>
+              <span class="s-term">Strategy comparison</span>
+              <span class="s-def">
+                Only now do BM25-vs-vector-vs-hybrid comparisons measure
+                retrieval architecture.
+              </span>
+            </li>
+            <li>
+              <span class="s-term">Support coverage</span>
+              <span class="s-def">
+                Do the cited chunks actually support the claims the answer
+                must make?
+              </span>
+            </li>
+          </ol>
+          <p class="quiet">
+            Five of the nine datasets sit directly on these rungs — tool use,
+            source need, search queries, the strategy comparison built on
+            them, and the obligations labels. The other four check the eval
+            system itself: trace integrity (source events, calculation
+            traces), the chunk inventory (chunking comparison), and query
+            realism. Every dataset pairs with an automated scorer that writes
+            an auditable report. Acting agents in the judgment evals are
+            Codex-driven; vector search uses OpenAI embeddings, for
+            vectorization only.
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>Blind, three roles</dt>
+              <dd>
+                An acting agent performs each case using the skill and CLI
+                without seeing expected labels. A trace extractor maps its
+                observable behavior — commands run, files read, snapshot diffs
+                — into recorded actions, keeping weak evidence visible as
+                <code>inferred</code> or <code>missing</code>. A separate
+                scorer compares those actions to the labels. Self-report
+                never becomes the metric.
+              </dd>
+            </div>
+            <div>
+              <dt>Label strength</dt>
+              <dd>
+                "Do not search on this turn" is a strict behavioral
+                expectation. "This chunk is known useful" is a non-exhaustive
+                seed label. Exact focus-term recall is only a debugging signal
+                — "front-end offer" fails a substring match against "front end
+                offer" — so concept coverage judged with rationale is the
+                semantic measure. Misses against seed labels get adjudicated
+                before they're interpreted.
+              </dd>
+            </div>
+          </dl>
+          <details open>
+            <summary>The full suite — nine datasets, results, decisions</summary>
+            <div class="inner">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Dataset</th>
+                      <th>Risk tested</th>
+                      <th>Current result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>tool_use · 24</td>
+                      <td class="wrap">Right next action chosen?</td>
+                      <td class="wrap">24/24 first-action (23/24 before one documented label adjudication), 1.000 required-action recall, 0% false / 0% missed search, 100% trace completeness.</td>
+                    </tr>
+                    <tr>
+                      <td>source_need · 14</td>
+                      <td class="wrap">Right retrieval objective?</td>
+                      <td class="wrap">100% search-decision accuracy, 100% intent match, 90% layer exact match, 0.950 layer recall, 0.750 focus-concept recall.</td>
+                    </tr>
+                    <tr>
+                      <td>source_events · 6</td>
+                      <td class="wrap">Traces record exactly the right searches — including none?</td>
+                      <td class="wrap">6/6, zero extra-search warnings. Built from a real failure (§3.7).</td>
+                    </tr>
+                    <tr>
+                      <td>calc_traces · 5</td>
+                      <td class="wrap">Calculations preserved with metric, inputs, output?</td>
+                      <td class="wrap">5/5 after correcting evaluator labels for the CLI's payback convention.</td>
+                    </tr>
+                    <tr>
+                      <td>search_queries · 30</td>
+                      <td class="wrap">Queries retrieve citeable chunks?</td>
+                      <td class="wrap">Hybrid + variants: 100% Hit@3/Hit@5, mean useful rank 1.17 (§3.4).</td>
+                    </tr>
+                    <tr>
+                      <td>pilot set</td>
+                      <td class="wrap">Local retrieval smoke benchmark.</td>
+                      <td class="wrap">BM25 heading-aware: 81.25% Hit@1, 100% Hit@5, 0.8917 MRR.</td>
+                    </tr>
+                    <tr>
+                      <td>chunking</td>
+                      <td class="wrap">Which strategy earns its complexity?</td>
+                      <td class="wrap">Heading-aware kept; framework-aware rejected (§3.3).</td>
+                    </tr>
+                    <tr>
+                      <td>obligations · 65</td>
+                      <td class="wrap">Chunks support required claims?</td>
+                      <td class="wrap">87.69% support coverage on the BM25 baseline.</td>
+                    </tr>
+                    <tr>
+                      <td>query realism</td>
+                      <td class="wrap">Queries phrased like real users?</td>
+                      <td class="wrap">Kept separate so realism and relevance don't get conflated.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                Files, scorers, and reports for every row:
+                <code>GOLDEN_DATASET.md</code> and <code>evals/reports/</code>.
+              </p>
+            </div>
+          </details>
+
+          <h3><span class="sub">3.2 · Agent judgment</span>Does the agent act on the right turns?</h3>
+          <p>
+            Twenty-four tool-use cases — dev and regression traces captured
+            in-thread, scenario holdouts run after prompt freeze by separate
+            acting agents that never saw the labels — and fourteen blind
+            source-need cases (10 search, 4 no-search controls). Results:
+            23/24 strict first-action accuracy, 24/24 after one documented
+            label adjudication, with zero false and zero missed searches;
+            100% search-decision accuracy, with layer exact match on 9 of the
+            10 search cases. The misses, case by case:
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>Adjudicated label</dt>
+              <dd>
+                One holdout case required reading logs as the literal first
+                action. Review concluded reading the snapshot first was
+                harmless context-loading — logs were still read before
+                answering — and the label records the adjudication explicitly.
+              </dd>
+            </div>
+            <div>
+              <dt>Open residual</dt>
+              <dd>
+                On the free-trial case the agent picks the
+                <code>offers</code> layer without also adding
+                <code>downsells</code>. It remains an open residual.
+              </dd>
+            </div>
+            <div>
+              <dt>Taxonomy, not patches</dt>
+              <dd>
+                Layer disagreements produced general rules: payment plans
+                belong to <code>downsells</code> because their function is
+                reducing purchase friction; a fix-oriented turn keeps
+                <code>recommendation</code> intent even when payback appears
+                as a focus term.
+              </dd>
+            </div>
+          </dl>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>
+                Judgment is good enough to gate the retrieval comparisons.
+              </p>
+              <p>
+                With search/no-search decisions at 100% on the captured sets,
+                differences between retrieval strategies now measure retrieval
+                — not tool-use noise.
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="sub">3.3 · Chunking</span>Heading-aware kept; framework-aware rejected</h3>
+          <p>
+            Two chunking strategies were compared on a labeled set:
+            heading-aware scored 81.25% Hit@1 and 0.8917 MRR; a
+            framework-aware variant scored identical Hit@1 and +0.0041 MRR.
+          </p>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>Keep heading-aware chunking.</p>
+              <p>
+                The gain doesn't clear the adoption threshold; the comparison
+                stays in the repo as a recorded non-adoption.
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="sub">3.4 · Retrieval strategy</span>Comparing BM25, vector, and hybrid</h3>
+          <p>
+            BM25 served as the lexical baseline and control, not the product
+            architecture. Its job was to reveal whether fancier
+            retrieval earns its complexity, and it set a high bar — the
+            generated queries carry the book's exact framework terms ("CFA,"
+            "rollover upsell," "payback period"), and that shared vocabulary
+            makes lexical retrieval unusually competitive. Against it:
+            vector search and rank-fused hybrid, all over the same chunks.
+          </p>
+          <p>
+            The golden slice itself grew with the work. An earlier
+            snapshot-only query mode scored 50.0% by repeating one broad
+            diagnostic query — the failure that motivated structured source
+            needs — and the slice was then expanded from 10 to 30 cases, with
+            newly retrieved citeable chunks adjudicated into the labels.
+          </p>
+          <figure class="figure">
+            <figcaption>30-case golden slice · deterministic generated queries · mean useful rank = average rank of the first known-useful chunk</figcaption>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Strategy</th>
+                    <th class="num">Hit@3</th>
+                    <th class="num">Hit@5</th>
+                    <th class="num">Mean useful rank</th>
+                    <th>Top-5 misses</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BM25 · control</td>
+                    <td class="num">93.3%</td>
+                    <td class="num">100.0%</td>
+                    <td class="num">1.43</td>
+                    <td class="wrap">none</td>
+                  </tr>
+                  <tr>
+                    <td>vector</td>
+                    <td class="num">96.7%</td>
+                    <td class="num">96.7%</td>
+                    <td class="num">—</td>
+                    <td class="wrap"><code>searchq_v1_001</code></td>
+                  </tr>
+                  <tr>
+                    <td>hybrid</td>
+                    <td class="num">96.7%</td>
+                    <td class="num">96.7%</td>
+                    <td class="num">1.21</td>
+                    <td class="wrap"><code>searchq_v1_001</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </figure>
+          <p class="quiet">
+            The first comparison favored the control: vector and hybrid each
+            missed a case at Hit@5 that BM25 found. Several other apparent
+            misses were
+            label-set limitations — retrieved chunks on menu upsells,
+            rollover upsells, waived fees, and continuity bonuses were
+            directly citeable and were promoted into the known-useful labels
+            after inspection. <code>searchq_v1_001</code> survived
+            adjudication as a true miss. Dashes in these tables are metrics
+            the source reports don't include.
+          </p>
+          <p>
+            That miss is what put query variants into the design (§2.4):
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>The case</dt>
+              <dd>
+                The user asks why fulfillment cost matters for paid ads — a
+                causal question.
+              </dd>
+            </div>
+            <div>
+              <dt>The diagnosis</dt>
+              <dd>
+                The v1 query builder flattened the agent's source need into a
+                deterministic bag of terms — a reasonable baseline, since it
+                isolated retrieval execution from agent judgment and gave
+                every eval a stable query to score. But a flat noun list loses
+                the causal shape of the question, so dense retrieval ranked
+                adjacent payback/CAC chunks above the one passage that
+                actually explains gross profit and fulfillment cost. The
+                failure was in query generation, not the retriever.
+              </dd>
+            </div>
+            <div>
+              <dt>The fix</dt>
+              <dd>
+                Deliberately constrained — not one freeform agent query, which
+                would trade away traceability. The agent writes query variants
+                under a constrained schema, the deterministic flattened query
+                stays as a fallback variant, and results are fused with
+                reciprocal-rank fusion so early variants can't crowd out the
+                fallback.
+              </dd>
+            </div>
+          </dl>
+          <figure class="figure">
+            <figcaption>Same 30 cases · constrained query variants + fusion</figcaption>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Strategy</th>
+                    <th class="num">Hit@3</th>
+                    <th class="num">Hit@5</th>
+                    <th class="num">Mean useful rank</th>
+                    <th>Top-5 misses</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BM25 + variants</td>
+                    <td class="num">96.7%</td>
+                    <td class="num">100.0%</td>
+                    <td class="num">—</td>
+                    <td class="wrap">none</td>
+                  </tr>
+                  <tr>
+                    <td>vector + variants</td>
+                    <td class="num">96.7%</td>
+                    <td class="num">100.0%</td>
+                    <td class="num">—</td>
+                    <td class="wrap">none</td>
+                  </tr>
+                  <tr>
+                    <td>hybrid + variants</td>
+                    <td class="num hit">100.0%</td>
+                    <td class="num hit">100.0%</td>
+                    <td class="num hit">1.17</td>
+                    <td class="wrap">none</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </figure>
+          <p class="quiet">
+            Cost reported beside quality: variants average 4.0 queries per
+            case — 120 vector searches across the slice. On warm runs the
+            embedding cache hit 100% for corpus and query vectors, so the
+            vector and hybrid evals made zero external embedding API batches.
+          </p>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>
+                Hybrid retrieval + constrained variants is the candidate
+                product path. BM25 stays as the control.
+              </p>
+              <p>
+                Variants fixed the miss, but they add another agent-authored
+                artifact that can be wrong — which is why the deterministic
+                fallback and the golden slice stay in place as guards, and why
+                this is a candidate default rather than a final claim.
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="sub">3.5 · Hosted retrieval</span>Pinecone parity, and the latency it exposed</h3>
+          <p>
+            Local retrieval came first so iteration and evals stayed fast.
+            Once the strategy was justified, the same 30-case slice was rerun
+            against the Pinecone implementation of the
+            <code>VectorStore</code> interface (§2.4): 100% Hit@3/Hit@5, mean
+            useful rank 1.17, 100% query-cache hit rate, zero embedding API
+            batches. Quality reproduced exactly.
+          </p>
+          <p>
+            What the latency benchmark exposed instead: the first hosted run
+            executed the 4-per-case variant fanout sequentially, and p50
+            retrieval landed around 5.3s for hybrid and 5.5s for vector —
+            versus sub-millisecond local BM25. Bounding the fanout with
+            per-case parallelism (8 workers) brought the same 30-case
+            benchmark to roughly 1.4s p50 and 1.8s p95, quality unchanged.
+          </p>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>
+                Pinecone proves the hosted path and preserves quality;
+                parallelizing the fanout fixed the worst of the latency.
+              </p>
+              <p>
+                Top-k tuning and request-level observability are still open —
+                no claim of production latency readiness before they're done.
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="sub">3.6 · Namespaces</span>One namespace or five</h3>
+          <p>
+            The JD names multi-namespace Pinecone operation, and the corpus
+            already had a five-layer taxonomy — so the layout was tested
+            rather than assumed. The corpus was indexed into five layer
+            namespaces, with the agent selecting which to query, and the same
+            30 cases, variants, cache, and hybrid path ran in both
+            conditions: one namespace with metadata filters versus the
+            five-way split routed from each case's expected layers — better
+            routing than any production router could promise.
+          </p>
+          <p>
+            The two conditions retrieved identically. Not just the same
+            scores: across all 90 case-and-retriever rows, the same top-5
+            chunks in the same order. Namespaces would only help if
+            wrong-layer chunks were crowding out right-layer ones, and on
+            this corpus they are not. Latency got worse where it counts: p50
+            barely moved (~1.45s vs ~1.43s), but p95 went from ~1.76s to
+            ~3.01s, on 140 vector searches instead of 120.
+          </p>
+          <p>
+            The mechanism: at 202 chunks, a Pinecone query is dominated by
+            the network round-trip and fixed per-request overhead, not vector
+            scan time — so searching a smaller namespace saves microseconds.
+            The split instead turns one round-trip into up to five for
+            multi-layer cases, and a case finishes only when its slowest
+            namespace answers. The maximum of five draws from the same
+            latency distribution has a worse tail than a single draw, which
+            is exactly what the p95 shows.
+          </p>
+          <p class="quiet">
+            One scope caveat: this slice is saturated — Hit@5 is 100% for
+            every backend in both conditions — so it cannot detect a quality
+            improvement from anything. The supported claim is "no measurable
+            difference on this slice," not "namespaces never help." If the
+            corpus grows to where layers interfere in ranking, re-test on a
+            harder slice.
+          </p>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>
+                Namespace support stays in; a single namespace with metadata
+                filters stays the default.
+              </p>
+              <p>
+                The five-way split is implemented and verified, loses on tail
+                latency, and wins nothing on quality here. It gets promoted
+                only on a measured win.
+              </p>
+            </div>
+          </div>
+
+          <h3><span class="sub">3.7 · Hardening</span>Failures became regression suites</h3>
+          <p>
+            Beyond the planned experiments, the design was hardened by a blind
+            test-fix loop: send realistic turns to acting agents, inspect the
+            saved traces — not just the answers — and fix the layer that
+            actually failed (skill guidance, CLI affordance, trace schema, or
+            eval case). The promotion rule is explicit: one agent confused by
+            instructions — patch the skill. Two agents failing the same way —
+            regression case. Anything that could corrupt state or hide
+            unsupported advice — CLI guard after a single occurrence.
+          </p>
+          <dl class="rows">
+            <div>
+              <dt>Trace shape → schema guard</dt>
+              <dd>
+                Agents listed <code>calculate</code> in actions while traces
+                didn't preserve the math. Fix: structured
+                <code>calculation_events</code>, required whenever
+                <code>calculate</code> is claimed (§2.5). The 5-case
+                regression suite passes 5/5 — and one agent that nested the
+                events under <code>metadata</code> was correctly rejected by
+                the validator, confirming the guard catches the real failure
+                class.
+              </dd>
+            </div>
+            <div>
+              <dt>Source events → regression suite</dt>
+              <dd>
+                On a "what should we fix first?" turn, the correct answer
+                needs two recorded searches: diagnostic evidence plus
+                recommendation evidence for the chosen fix. Blind runs failed
+                twice, two different ways. After tightening the guidance, the
+                case became a 6-case set covering multi-search,
+                pure-diagnosis, pure-recommendation, no-search, teaching-only,
+                and continuity turns — with counter-cases in both directions
+                so the anti-over-search rule can't overfit. Current: 6/6, zero
+                extra-search warnings.
+              </dd>
+            </div>
+            <div>
+              <dt>Path plumbing → CLI guard</dt>
+              <dd>
+                One acting agent's shell-variable mistake pointed
+                <code>session start</code> at the advisor repo itself. Fix:
+                the skill shows a safe shell pattern, and the CLI refuses to
+                treat the advisor repo as a business directory unless
+                explicitly overridden.
+              </dd>
+            </div>
+            <div>
+              <dt>Affordance → command change</dt>
+              <dd>
+                A realistic offer-sequencing turn exposed that
+                <code>diagnose</code> expected raw JSON instead of reading
+                saved state, and that agents skipped writing query variants.
+                Fix: <code>diagnose --business-dir</code> reads the snapshot
+                directly, and query variants became mandatory — the skill
+                requires 2–4 agent-written variants per search,
+                <code>session finish</code> rejects source events without
+                them, and a second 6/6 source-event pass verified the
+                stricter contract.
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ================= 04 LIMITS ================= -->
+      <section id="s4">
+        <div class="rail">
+          <div class="rail-inner">
+            <div class="rail-num">04</div>
+            <div class="rail-title">Limits &amp; next</div>
+            <p class="rail-gist">
+              Golden sets are portfolio-scale, hosted latency is unsolved,
+              answer-quality coverage is thin, and per-turn token cost is
+              unmeasured.
+            </p>
+          </div>
+        </div>
+        <div class="body">
+          <h2>What this doesn't prove, and what comes next</h2>
+          <dl class="rows">
+            <div>
+              <dt>Scale</dt>
+              <dd>
+                Golden sets are portfolio-scale (5–65 cases each). They drive
+                architecture decisions and catch the failure modes found so
+                far; they are not production benchmarks. The high pass rates
+                read as "the design clears everything that has broken it" —
+                not "nothing will break it."
+              </dd>
+            </div>
+            <div>
+              <dt>Hosted latency</dt>
+              <dd>
+                ~1.4s p50 / ~1.8s p95 for Pinecone hybrid after parallelizing
+                the variant fanout (down from ~5.3s sequential). Quality
+                parity is proven; top-k tuning and request-level
+                observability remain (§3.5).
+              </dd>
+            </div>
+            <div>
+              <dt>Answer quality</dt>
+              <dd>
+                The thinnest coverage in the ladder. Decisions, traces, and
+                retrieval are well-tested; grounded final-recommendation
+                quality is the next dataset to grow.
+              </dd>
+            </div>
+            <div>
+              <dt>Cost reporting</dt>
+              <dd>
+                Embedding cost, cache hit rates, and per-run query counts are
+                instrumented. Agent-side token usage isn't — the acting agent
+                runs outside the API path in this prototype.
+              </dd>
+            </div>
+            <div>
+              <dt>Model routing</dt>
+              <dd>
+                One embedding model and no generation tiering yet — neither
+                embedding model selection nor model routing has been
+                exercised. The eval harness is the prerequisite for doing
+                either honestly, and it now exists.
+              </dd>
+            </div>
+          </dl>
+          <p>
+            The product path forward would reuse what's built: a thin web
+            surface over the same advisor core. That is why retrieval sits
+            behind a vector-store interface, the CLI emits stable JSON, and
+            the advisor logic never learned whether its vectors were local or
+            hosted.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= ENDMATTER ================= -->
+      <div class="endmatter">
+        <details open>
+          <summary>Appendix — how this maps to the role's requirements</summary>
+          <div class="inner">
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>The JD asks for</th>
+                    <th>Where it shows up here</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="wrap">Production-grade AI agents and end-to-end agentic workflows</td>
+                    <td class="wrap">Agent-planned turns over a deterministic CLI tool surface; every turn bounded by session start/finish and recorded as a validated trace (§1, §2.1, §2.5).</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">Integrate LLMs with internal systems, APIs, and data sources</td>
+                    <td class="wrap">Typed business state with provenance and merge rules (§2.2), a bounded CLI tool surface (§2.3), structured retrieval requests (§2.4), and in-place reads of the firm's own files (§2.1).</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">RAG pipelines across Pinecone namespaces — chunking strategy, embedding model selection, hybrid retrieval, reranking</td>
+                    <td class="wrap">A Pinecone-backed store behind a vector-store interface, with the corpus organized as a five-layer namespace taxonomy and the one-vs-five namespace layout benchmarked before choosing a default (§2.4, §3.6); chunking strategy decided by comparison (§3.3); hybrid retrieval with reciprocal-rank fusion as the reranking step (§3.4). Embedding model selection is a named gap — one embedding model so far (§4).</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">Evaluation framework — golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, regression detection</td>
+                    <td class="wrap">Nine golden datasets, each with an automated scorer and a written report (§3.1); Hit@3 / Hit@5 / mean-rank retrieval metrics (§3.4); a hosted-vs-local latency benchmark (§3.5); two regression suites and a CLI guard promoted from real failures (§3.7).</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">Embedding strategies, index management, and retrieval tuning</td>
+                    <td class="wrap">Deterministic, cached embeddings (§2.4); <code>index pinecone</code> upsert tooling over the vector-store interface (§2.3–2.4); the strategy comparison, variant fusion, fanout parallelization, and namespace-layout benchmark are measured retrieval tuning, with top-k tuning named as the next step (§3.4–3.6).</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">Reduce LLM API costs — model routing, caching, token management, or architectural improvements</td>
+                    <td class="wrap">Subscription-operated agent over a local CLI, so the build-and-eval loop's only metered call is embeddings (§2.1); those are cached at 100% warm hit rate, zero API batches on reruns (§2.4, §3.4); BusinessSnapshot prevents repeated context discovery (§2.2).</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">Observability — cost-per-request, token usage, quality signals, anomaly detection</td>
+                    <td class="wrap">Per-turn validated traces (§2.5); per-run cost, cache, and latency accounting (§3.4–3.5); scorer reports as quality signals (§3.1). Token usage and anomaly detection are named gaps (§4).</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">Model routing and tiering to improve unit economics; multiple LLM providers</td>
+                    <td class="wrap">Not exercised yet (§4). The eval harness exists to make those comparisons with evidence.</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">Comfortable in both TypeScript and Python</td>
+                    <td class="wrap">Python throughout this project; TypeScript is not exercised here.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+        <p class="footnote">
+          Every number and design rule above has a source artifact in the
+          repo: <code>DESIGN.md</code> is the canonical narrative,
+          <code>BUSINESS_SNAPSHOT_V1.md</code> and <code>CLI_DESIGN.md</code>
+          define the state and tool contracts, <code>GOLDEN_DATASET.md</code>
+          maps the eval suite, and <code>evals/reports/</code> holds the
+          per-experiment reports, case files, and summaries.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
