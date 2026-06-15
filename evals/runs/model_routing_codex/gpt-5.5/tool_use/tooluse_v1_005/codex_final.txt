@@ -1,0 +1,5 @@
+Yes. We’re working on 1584 Design: a premium full-service interior design firm for short-term rental and second-home projects.
+
+I found and saved the clear local facts: the ICP is owners of large STR properties or second homes, the core offer is full-service STR/second-home design, and there’s a draft STR Design Diagnostic front-end offer priced around `$597-$997`.
+
+The eval trace was completed at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_005/run.json`.

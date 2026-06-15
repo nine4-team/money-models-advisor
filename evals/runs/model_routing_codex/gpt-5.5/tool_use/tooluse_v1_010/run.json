@@ -1,0 +1,115 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command returned saved economics and advisor state",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs command returned two prior session turns",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calculate payback returned value 1.0",
+      "evidence_type": "cli_output",
+      "index": 2
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search returned unit-economics chunks how-businesses-make-money:2, payback-period:0, cfa:0, context:1",
+      "evidence_type": "cli_output",
+      "index": 3
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "20260614T001010.json recorded the final source-backed recommendation",
+      "evidence_type": "session_record",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/business_dir",
+  "case_id": "tooluse_v1_010",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_010",
+    "created_at": "2026-06-14T00:11:03Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 121156.5,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 87582
+  },
+  "completed_at": "2026-06-14T00:10:52Z",
+  "created_at": "2026-06-14T00:09:02Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions/20260614T001010.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c",
+    "start": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Read saved business snapshot with CAC, first-30-day gross profit, gross margin, payback, offer stack, and diagnosed readiness."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Inspected prior turn context showing room to test paid acquisition carefully."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs {cac:1000,month_one_gp:10000,monthly_recurring_gp:0}",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Calculated payback as 1.0 month."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <diagnostic_evidence unit-economics>",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Retrieved Money Models support for CAC, gross profit, payback period, and CFA."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <message> --assistant-message <answer>",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command",
+      "summary": "Recorded final advisor response with source events, cited chunks, actions, and calculation metadata."
+    }
+  ]
+}

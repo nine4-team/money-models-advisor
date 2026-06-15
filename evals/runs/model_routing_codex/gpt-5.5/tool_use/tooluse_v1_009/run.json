@@ -1,0 +1,87 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command returned saved business context and economics",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search command returned teaching_evidence source_material chunks how-businesses-make-money:2, context:1, payback-period:0, cfa:0",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "final answer explained fulfillment cost as the difference between revenue and gross profit for CAC payback",
+      "evidence_type": "assistant_message",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/business_dir",
+  "case_id": "tooluse_v1_009",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_009",
+    "created_at": "2026-06-14T00:09:02Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 69178.2,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 78789
+  },
+  "completed_at": "2026-06-14T00:08:58Z",
+  "created_at": "2026-06-14T00:07:53Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/business_dir/.money-model-advisor/sessions/20260614T000827.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "note": "Loaded saved business context and economics."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <teaching_evidence> --top-k 5",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "note": "Retrieved unit-economics teaching evidence for CAC, gross profit, and payback."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <message> --assistant-message <answer>",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "note": "Recorded completed turn."
+    }
+  ]
+}

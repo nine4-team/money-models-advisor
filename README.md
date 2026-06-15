@@ -181,15 +181,15 @@ python3 scripts/compare_retrieval_backends.py --query-source generated_variants 
 
 The hosted Pinecone namespace benchmark uses bounded per-case parallel retrieval because query variants and multi-layer namespaces create retrieval fanout. The current result supports keeping single namespace plus metadata filters as the v1 default: the two conditions returned identical top-5 results in identical order across all 90 per-case rows, and the namespace split adds hosted vector searches on multi-layer cases. The split also worsens tail latency (p95 retrieval about 3.01s vs 1.76s): at this corpus size, Pinecone query time is round-trip dominated, so scoping a query to a smaller namespace saves nothing while fanning one round-trip out into several — and the case waits for the slowest. See DESIGN.md for the full experiment record.
 
-Run the model-routing/tiering eval (replays the source-need and tool-use golden suites as bounded completions across hosted model tiers, requires `OPENAI_API_KEY`):
+Run the product-harness model-routing baseline. This uses `codex exec`, so the model acts as an agent, can run the local CLI, and writes normal trace artifacts. It does not use `OPENAI_API_KEY`:
 
 ```bash
-python3 scripts/eval_model_routing.py --max-workers 8
-# subset: --models gpt-5 gpt-4.1-mini --suites source_need
-# completions are cached under evals/runs/model_routing/; --force re-runs them
+python3 scripts/eval_codex_model_routing.py
+# subset/smoke: --suites source_need --limit 2
+# traces are cached under evals/runs/model_routing_codex/; --force re-runs them
 ```
 
-The report lands at `evals/reports/model_routing_tiering.md` with a summary JSON beside it. The current decision: no tested cheaper tier maintains agent-planning quality, so deterministic CLI work stays the cost lever and planning stays on the strong interactive tier.
+The report lands at `evals/reports/model_routing_tiering.md` with a summary JSON beside it. The current corrected decision: `gpt-5.5` via Codex CLI is the OpenAI agent baseline; no cheaper Codex tier is promoted because the attempted `gpt-5-mini` Codex run is unsupported for this ChatGPT subscription harness. API replay can still be used as a separately labeled provider experiment, but not as the product-routing result.
 
 Score source-need generation traces:
 

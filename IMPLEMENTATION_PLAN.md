@@ -24,9 +24,9 @@ Refinement: deterministic code may classify numeric/accounting states after the 
 
 ## JD Coverage Priority
 
-The careful JD audit in `JD_REQUIREMENTS_AUDIT.md` should drive priority. The highest-signal immediate gap is model routing and tiering to improve unit economics while maintaining output quality. That should be treated as a first-class eval workstream, not an afterthought.
+The careful JD audit in `JD_REQUIREMENTS_AUDIT.md` should drive priority. Model routing and tiering is now a first-class eval workstream, with an important correction: product-routing evidence must come from the Codex/CLI agent harness, not from a single-call API replay that cannot operate the local tools.
 
-Use the existing golden suites to compare model/provider tiers on the same tasks:
+Use the existing golden suites to compare model/provider tiers on the same tasks when those tiers can run through the same harness:
 
 - next-action/tool-use judgment
 - source-need generation
@@ -46,7 +46,7 @@ For each model tier, record:
 - token usage and estimated cost when available, or a clearly labeled cost proxy when using subscription-based acting agents
 - recurring failure modes
 
-The output should be a routing recommendation, not merely a leaderboard. Example decision shape: deterministic CLI for formulas and persistence; cheaper/faster model tier for simple tool-use classification and trace formatting if it passes; stronger model tier for ambiguous source-need generation, claim-support adjudication, and product-smoke recommendation turns if the cheaper tier fails.
+The output should be a routing recommendation, not merely a leaderboard. Current corrected result: `gpt-5.5` via Codex CLI is the OpenAI agent baseline, and no cheaper tier is promoted because the attempted `gpt-5-mini` Codex run is unsupported for this ChatGPT subscription harness. API replay may remain useful as a separately labeled provider experiment, but it must not replace CLI-backed agent evidence for product-routing decisions.
 
 This is separate from embedding cost control. Cached embeddings reduce retrieval infrastructure cost; model routing reduces agent/LLM reasoning cost.
 

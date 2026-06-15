@@ -1,0 +1,3 @@
+Recorded decision: source search needed.
+
+Source need: `comparison_evidence` over `offers` and `upsells`, focused on attraction/front-end offer vs upsell/post-sale add-on in the STR Design Diagnostic and pre-designed room packages context.

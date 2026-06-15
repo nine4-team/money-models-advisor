@@ -1,0 +1,1664 @@
+2026-06-15T21:43:47.644078Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:43:47.654861Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:43:47.995380Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019ecd3d-9c84-7802-b66a-e3439ad8172a
+--------
+user
+# Next-Action Eval Acting Prompt
+
+You are the acting agent for a Money Model Advisor next-action eval case.
+
+Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir`
+
+Allowed CLI surface:
+
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`
+- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search "raw debug query" --layer <layer>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`
+
+Visible case context:
+
+```json
+{
+  "case_id": "tooluse_v1_022",
+  "conversation_context": "The user asks for a comparison of Money Models concepts.",
+  "scenario_id": "1584_design",
+  "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+}
+```
+
+After acting, record observable steps for `complete`. Do not infer actions from the hidden label.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022 --workflow-steps '<json-array>' --session-paths '<json-array>' --actual-actions '<json-array>' --final-answer '<brief answer or action summary>'
+```
+
+Use the local CLI where the case calls for it. Do not look up expected labels.
+
+2026-06-15T21:43:48.194785Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-06-15T21:43:48.254480Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Server returned error response: invalid_grant: Grant not found
+2026-06-15T21:43:48.254503Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-06-15T21:43:48.714435Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-06-15T21:43:48.714456Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-06-15T21:43:49.073450Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:43:49.073596Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:43:49.074064Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:43:49.078538Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:49.078973Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:43:49.098364Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.098375Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.098775Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.098780Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.099113Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.099117Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.099440Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.099444Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.099800Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.099805Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.100712Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.100718Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:49.537803Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:49.547602Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:49.547634Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:50.149830Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/.staging/marketplace-upgrade-VxhHKl/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:43:50.150008Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/.staging/marketplace-upgrade-VxhHKl/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:43:50.150562Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/.staging/marketplace-upgrade-VxhHKl/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:43:50.200703Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:43:50.200850Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:43:50.201348Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:43:50.201422Z  WARN codex_core_plugins::loader: configured non-curated plugin no longer exists in discovered marketplaces during cache refresh plugin="browser" marketplace="openai-bundled"
+2026-06-15T21:43:50.201425Z  WARN codex_core_plugins::loader: configured non-curated plugin no longer exists in discovered marketplaces during cache refresh plugin="chrome" marketplace="openai-bundled"
+2026-06-15T21:43:50.201426Z  WARN codex_core_plugins::loader: configured non-curated plugin no longer exists in discovered marketplaces during cache refresh plugin="computer-use" marketplace="openai-bundled"
+2026-06-15T21:43:50.201427Z  WARN codex_core_plugins::loader: configured non-curated plugin no longer exists in discovered marketplaces during cache refresh plugin="documents" marketplace="openai-primary-runtime"
+2026-06-15T21:43:50.744171Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:43:50.744377Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:43:50.744983Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:43:50.752701Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:50.753281Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:43:50.771007Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.771022Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.771429Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.771436Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.771797Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.771801Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.772164Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.772168Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.772529Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.772535Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.773349Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:50.773354Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:51.131752Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:51.138917Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:51.138952Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:52.014662Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/.marketplace-plugin-source-staging/marketplace-plugin-source-cxGUGF/plugins/expo/.codex-plugin/plugin.json
+2026-06-15T21:43:52.048736Z  WARN codex_core_plugins::loader: configured non-curated plugin no longer exists in discovered marketplaces during cache refresh plugin="pdf" marketplace="openai-primary-runtime"
+2026-06-15T21:43:52.048758Z  WARN codex_core_plugins::loader: configured non-curated plugin no longer exists in discovered marketplaces during cache refresh plugin="presentations" marketplace="openai-primary-runtime"
+2026-06-15T21:43:52.048760Z  WARN codex_core_plugins::loader: configured non-curated plugin no longer exists in discovered marketplaces during cache refresh plugin="spreadsheets" marketplace="openai-primary-runtime"
+codex
+I’ll use the Money Model Advisor runbook for this eval case, then run only the local CLI actions needed for the visible turn and capture the trace.
+exec
+/bin/zsh -lc "sed -n '1,240p' .codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Search source material when the answer needs Money Models support for a concept, comparison, diagnosis, or recommendation.
+
+Do not search source material as a substitute for missing business facts. If the responsible next move is to get CAC, gross profit, fulfillment cost, current offer details, or prior-session context before making a recommendation, do that first. Search can come later when the agent has enough business context to make a source-backed claim.
+
+Do use source search when the snapshot or prior-session context already contains enough facts for a source-backed explanation, diagnosis, comparison, or recommendation. A missing optional field should not block search when the user is asking for conceptual source support.
+
+Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
+
+Use the smallest source need that can support the answer:
+
+- `teaching_evidence`: explain a Money Models concept.
+- `diagnostic_evidence`: support a diagnosis of the business constraint using known facts.
+- `comparison_evidence`: compare Money Models concepts or options.
+- `recommendation_evidence`: support a recommended next move after the needed business facts are available.
+
+Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+
+For each source-material search, write 2-4 `query_variants` inside the SourceNeed. These are semantic search requests authored by the agent for the specific evidence needed in the current turn. Do not rely on the deterministic fallback query except for manual debugging or as a last-resort safety net. Good variants should be short, source-facing, and focused on the claim being supported, not a pasted user message.
+
+Why 2-4: one query is often too brittle because source material may use different wording than the human. Two variants is the minimum useful fanout, three is the normal target, and four is the cap to avoid noisy spray-and-pray retrieval. If you need more than four variants, split the answer into narrower SourceNeeds instead.
+
+Common split: if the answer needs both unit-economics interpretation and a proposed offer-stack fix, run one `diagnostic_evidence` search on `unit-economics`, then a separate `recommendation_evidence` search on the specific fix layer such as `upsells`, `continuity`, `offers`, or `downsells`. Do not combine broad economics terms and offer-stack layers into one catch-all SourceNeed; that makes retrieval noisy.
+
+Boundary rule: do not label a unit-economics search as `recommendation_evidence` just because the final answer contains a recommendation. If the source material is being used to justify why the economics point in a certain direction, the SourceNeed is `diagnostic_evidence` on `unit-economics`. Then, if you recommend a concrete next move such as a front-end offer, upsell, continuity path, or downsell/payment-plan path, run a separate `recommendation_evidence` search on that concrete fix layer.
+
+Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
+
+Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
+
+Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+Keep source layers minimal. Extra layers make retrieval noisier.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+2026-06-15T21:43:55.645300Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:43:55.662128Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:43:55.682471Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:43:55.682628Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:43:55.683114Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:43:55.688440Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:55.689085Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:43:55.711869Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.711881Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.712222Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.712226Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.712601Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.712606Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.713011Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.713015Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.713504Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.713508Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.714353Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:55.714357Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:43:56.092131Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:56.100688Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:43:56.100719Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The visible turn asks for a concept comparison “in this situation,” so I’m first checking the saved snapshot and prior turn logs to ground what “this situation” refers to before deciding whether source lookup is needed.
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir --full' in /Users/benjaminmackenzie/Dev/money-model-architect
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir",
+  "logs": []
+}
+
+ succeeded in 0ms:
+{
+  "schema_version": "business_snapshot.v1",
+  "business": {
+    "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+    "icp": "STR and second-home owners with $80K-$200K+ project capacity",
+    "delivery_model": "Lisa-led full-service design planning, procurement, and installation"
+  },
+  "money_model": {
+    "attraction_offer": {
+      "exists": true,
+      "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "price": 597
+    },
+    "core_offer": {
+      "exists": true,
+      "description": "full-service STR and second-home design",
+      "price": 15000
+    },
+    "upsell": {
+      "exists": true,
+      "description": "pre-designed room packages sold per room or bundle",
+      "price": 5000
+    },
+    "downsell": {
+      "exists": false,
+      "description": null,
+      "price": null
+    },
+    "continuity": {
+      "exists": false,
+      "description": null,
+      "price": null
+    }
+  },
+  "economics": {
+    "cac": null,
+    "first_30_day_gross_profit": null,
+    "monthly_recurring_gross_profit": null,
+    "gross_margin": null,
+    "lifetime_gross_profit": null,
+    "payback_period_months": null
+  },
+  "problem": {
+    "user_goal": "talk through the money model",
+    "reported_symptoms": [],
+    "diagnosed_constraints": []
+  },
+  "advisor_state": {
+    "advisory_status": "insufficient_context",
+    "missing_fields": [
+      "economics.cac",
+      "economics.first_30_day_gross_profit"
+    ],
+    "ready_for_payback_diagnosis": false,
+    "ready_for_offer_stack_diagnosis": true,
+    "likely_retrieval_layers": [],
+    "retrieval_query_terms": [
+      "premium full-service interior design firm for short-term rental and second-home projects",
+      "STR and second-home owners with $80K-$200K+ project capacity",
+      "full-service STR and second-home design",
+      "talk through the money model"
+    ]
+  },
+  "field_sources": {
+    "business.business_type": {
+      "confidence": "high",
+      "source_type": "local_docs"
+    },
+    "business.icp": {
+      "confidence": "high",
+      "source_type": "local_docs"
+    },
+    "money_model.core_offer.description": {
+      "confidence": "high",
+      "source_type": "local_docs"
+    }
+  }
+}
+
+2026-06-15T21:44:04.785844Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:44:04.786039Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:44:04.786694Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:44:04.792472Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:04.792947Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:44:04.815016Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.815030Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.815401Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.815407Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.815800Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.815804Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.816137Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.816143Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.816639Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.816646Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.817620Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:04.817628Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:05.197539Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:05.206298Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:05.206327Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The snapshot already has enough offer-stack context: a $597 STR Design Diagnostic as the attraction offer, a $15K core design service, and $5K room packages as an upsell. I’m pulling Money Models source support for the comparison rather than doing math, because the user is asking about concept boundaries.
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir --source-need-json '{\"intent\":\"comparison_evidence\",\"layers\":[\"offers\",\"upsells\"],\"focus_terms\":[\"attraction offer\",\"upsell\",\"front-end offer\",\"post-purchase add-on\",\"offer stack\"],\"user_turn\":\"what'''s the difference between an attraction offer and an upsell in this situation?\",\"query_variants\":[\"attraction offer front end offer compared with upsell\",\"upsell after core offer additional purchase offer stack\",\"front end diagnostic offer versus post sale upsell\"]}' --top-k 5" in /Users/benjaminmackenzie/Dev/money-model-architect
+ exited 1 in 0ms:
+zsh:1: unmatched "
+
+2026-06-15T21:44:12.113502Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:44:12.113677Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:44:12.114271Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:44:12.119415Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:12.119876Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:44:12.135908Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.135923Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.136283Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.136289Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.136619Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.136625Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.136963Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.136969Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.137300Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.137304Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.138059Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.138063Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:12.478961Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:12.487373Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:12.487419Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+That search command hit shell quoting on the apostrophe in the user message. I’m rerunning it with the JSON stored separately in the shell so the trace reflects the actual search cleanly.
+exec
+/bin/zsh -lc "SOURCE_NEED_JSON='{\"intent\":\"comparison_evidence\",\"layers\":[\"offers\",\"upsells\"],\"focus_terms\":[\"attraction offer\",\"upsell\",\"front-end offer\",\"post-purchase add-on\",\"offer stack\"],\"user_turn\":\"what is the difference between an attraction offer and an upsell in this situation?\",\"query_variants\":[\"attraction offer front end offer compared with upsell\",\"upsell after core offer additional purchase offer stack\",\"front end diagnostic offer versus post sale upsell\"]}'
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir --source-need-json \""'$SOURCE_NEED_JSON" --top-k 5' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir",
+  "retrieval_backend": "bm25",
+  "vector_store": "local",
+  "namespace_policy": "source_need_target_namespaces",
+  "namespace_prefix": null,
+  "source_need": {
+    "intent": "comparison_evidence",
+    "layers": [
+      "offers",
+      "upsells"
+    ],
+    "focus_terms": [
+      "attraction offer",
+      "upsell",
+      "front-end offer",
+      "post-purchase add-on",
+      "offer stack"
+    ],
+    "user_turn": "what is the difference between an attraction offer and an upsell in this situation?",
+    "query_variants": [
+      "attraction offer front end offer compared with upsell",
+      "upsell after core offer additional purchase offer stack",
+      "front end diagnostic offer versus post sale upsell"
+    ],
+    "target_namespaces": []
+  },
+  "queries": [
+    {
+      "intent": "comparison_evidence",
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "query": "attraction offer front end offer compared with upsell",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "layer": null
+    },
+    {
+      "intent": "comparison_evidence",
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "query": "upsell after core offer additional purchase offer stack",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "layer": null
+    },
+    {
+      "intent": "comparison_evidence",
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "query": "front end diagnostic offer versus post sale upsell",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "layer": null
+    },
+    {
+      "intent": "comparison_evidence",
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "query": "attraction offer upsell front-end offer post-purchase add-on offer stack interior design STR",
+      "reason": "Deterministic fallback query from source-need focus terms and compact business context.",
+      "layer": null
+    }
+  ],
+  "source_material": [
+    {
+      "intent": "comparison_evidence",
+      "layer": null,
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "attraction offer front end offer compared with upsell",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "chunks": [
+        {
+          "id": "make-your-money-model:0",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 13.738,
+          "preview": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)  So we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where ",
+          "text": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)\n\nSo we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where you, need to combine these things in such a way that you can maximize the amount of money that you make in the first 30 days, so you can profitably acquire customers and scale. So let's do a quick putting it all together. So overview. A money model, attraction offer, upsells, downsells, continuity. We have covered all four. If you are starting out, just pick one of the money models to inspire you to do something in your business. All right? If you're more advanced, you can start weaving two together. There are no rules for this. You can stack these. So you absolutely can do an attraction offer that you use as an upsell offer in your business. You can use a continuity offer on the front to attract customers. All of these things are possible. I try to present them in this way in the most logical format that I have tended to use them in my business. But there are no rules in business, as long as it is legal. So I leave that to you. All right, examples. So this is my fitness offer. So I tried to conceptualize this for you. So okay, on the front end, I ran a win-your-money-back offer. Then we would upsell, from a service perspective, for anybody who bought that, we'd upsell buy X get Y- Y free. So this would be them pre-paying time. And then we would upsell the continuity bonus. Great. So that would be the rollover upsell. Now, if someone, uh, didn't wanna do win-your-money-back, then we would downsell the free trial with penalty, and then we would use the menu upsell in terms of supplements, and then we'd do the rollover upsell on the back end. And so this was fundamentally the money model. So I used one, two, three, four, five of the offers that I talked about to make the money model that we had for fitness. This model was superior to other models on the market, which is why our gyms consistently out-compete other gyms in the marketplace. All right, so this is Gym Launch's model. So we used a decoy offer, that was the strategy call, that was the, uh, you could also consider it a free with consumption, uh, depending on how you wanna see it. But we had that offer. Then we did a classic upsell. Then we did the money- menu upsell on the back end into what level of service they wanted for the extended period of time. Did you want these other services that went with, uh, Gym Launch? Or sorry, Gym Legacy, which was the back end that we had. So some people opted for the highest version. Some people said, \"You know what? I don't need, like, agency services. I just want the ads. Like, you don't have to run them. Hey, uh, but I do want you to, uh, train my sales team.\" And so we would basically menu upsell the features that we thought would be best for them. Now, if people didn't take the offer, we had a payment plan, feature downsell, free trial, right? And so this, so this is one, two, three, four, five, six, six of the structures that I went over for this presentation is what created the Gym Launch money model. Now, uh, newsletter and consulting. So I just love this money model. It's just, like, one of my favorite ones, uh, 'cause I mentioned it, uh, during this video, uh, training a couple times. But this was an attraction offer which was a free trial. But you're like, \"Wait, how could you use a free trial as an attraction offer?\" Yes, there are no rules. So we used a free trial as the attraction offer. The thing that made it cash flow was the pay less now, pay more later option of saying, \"Hey, we'll get you the past newsletters.\" And technically, this was combined with a lifetime lower rate. So this is a continuity discount and a pay less, pay less now, pay more later, put together as one. This was the thing that got them to engage. So free trial start, 3.99 a month. Oh wait, let' me give you two years of newsletters today, and give you this discount if you choose to skip your trial. And then, of course, the, uh, the back end on that one was, uh, the business, you know, upsell consulting and things like that. If it were me, this is just that- that particular business, if it were me, I would do buy X get Y free here. So now that I've got the continuity, I would then say, \"Great, now that you're in continuity, if you buy seven, I'll give you five.\" And then I can front load even more cash. Now, if- if I know that people stay on average two years, then I wouldn't do that, 'cause that would lose me money. But if people stay, let's say, on average, another three months, then it makes sense to do buy six get six, 'cause I still double LTV and get that cash up front. So these were actually my original notes. So I, I wanted to show you how mine actually looked. Um, and I've changed some of the names, uh, to make them a little bit more, like, friendly. Uh, but this is actually what it looked like in terms of how I would design, uh, the money models. And so the possibilities really are endless."
+        },
+        {
+          "id": "make-your-money-model:1",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 13.415,
+          "preview": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)  So let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in.",
+          "text": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)\n\nSo let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in. They're coming off win-your-money-back. They're coming on, uh, buy X get Y free. They're coming on, uh, decoy offer. Whatever it is, they're coming on the front end. You say, \"Great, now I'm either gonna do a menu upsell, I'm gonna do an anchor- anchor upsell, I'm gonna do a rollover upsell.\" All of those things you can use as your second, second piece. Then you can pick your downsell offer. So what if they say no to any of these other offers? Well, we have our. entire downsell flow, which is we start with payment plans, uh, then we do a free trial, or we do payment plan to feature downsell. Then we go to free trial. You just pick the ones that you know that you can execute on right? now. Step four, then you' pick a continuity offer. And the result is. that you get your cash back in 30 days, more customers, and make more money."
+        },
+        {
+          "id": "free-trials:1",
+          "chapter": "free-trials",
+          "layer": "downsells",
+          "layers": [
+            "downsells",
+            "offers"
+          ],
+          "score": 8.631,
+          "preview": "## [\u00a75.3.b] Trial with penalty \u2014 definition and logic  I call it a trial. with penalty. That sounds ugly. That's how I' call it internally. You wouldn't say that to somebody. But it's a trial with penalty. So basically, a customer can try out your product or service for free so long as they meet your terms. For comparison, the win-your-money-back offer, the ",
+          "text": "## [\u00a75.3.b] Trial with penalty \u2014 definition and logic\n\nI call it a trial. with penalty. That sounds ugly. That's how I' call it internally. You wouldn't say that to somebody. But it's a trial with penalty. So basically, a customer can try out your product or service for free so long as they meet your terms. For comparison, the win-your-money-back offer, the attraction offer, gives customers the chance to get their money back if they meet the terms. In a trial with penalty offer, customers only pay if they don't meet the terms. So the win-your-money-back and the free trial with penalty are virtually the same offer; we're just changing when they pay and how they pay. So they'll mirror the actions and results that you used in win-your-money-back, but this time, we use avoiding fees rather than winning your money back as the incentive for adherence. So they avoid penalties rather than get or losing their money that they paid originally. All right, so with a trial with penalty, this isn't, \"Here's my thing, see if you like it.\" It's, \"Here's my thing. You get it for free so long as you do this stuff, which makes you a perfect fit for my next offer. And if you don't, then you have to pay for it.\" So it's kind of like a win-win for you, because if they don't do it, then they pay. And if they do do it, then they're gonna be really likely to buy the next thing. Now, I'm gonna give you something like, \"Wait, so if they don't do it, then they pay, and they didn't wanna pay originally?\" I'll cover how to get around that weirdness. Let's say you normally close three out of 10 people on your attraction offer, and now you downsell another four on a trial with penalty. Then, after the trial finishes, you upsell three of them. So you go from three sales to six sales, which doubles your customers. I use this as a downsell, but it could also be used as a front end. So I don't prefer to advertise this; I prefer to present this after someone already said no to giving me money. Some people advertise this as how they get customers. It's up to you. Obviously, that HR company advertised it as how they get customers. So if you really wanna help people, convincing them to put some skin in the game is a great way to do it. And so one of my sales rules is that everyone buys something who's qualified. And so I love that as a concept. It's like everyone should buy. Like, if they're qualified and we have the thing, every person should buy. The terms may change, but everyone should buy. So, here's the difference between trials and penalties and rebates. A trial is they j- you just get a card and then bill them later. A penalty/incentive is you get a card and bill later and also if they don't complete their activation activities. So the fees are associated with non-consumption and not showing up to other sales consultations. Remember the four things we had in the win-your-money-back is you wanna have them advertise your business, you wanna have them show up for sales consults, you wanna do things that, um, that get them results, and... There's another one. I can't remember what it was, but there's four, and those are the main ones. All right? So you want to associate them doing the things that gets them results, because if they get results, then they'll probably wanna buy. All right? So they're not here' for a trial; they're here to solve a problem, so solve it, because trials don't do anything. Them taking action is just what's going to solve their problem. And if someone has a problem with that, it's an easy thing to get around. Think about the logic. If someone says, \"I'm not willing to commit to that,\" you're like, \"Well, do you want the outcome?\" They're gonna say yes. It's like, \"Well, you have to do this stuff to get the outcome.\" So if you don't, if you don't plan on doing this stuff, then you're never going to get the outcome. This is just the easiest way that I can give you all this service for free. If you really do wanna do this, \"I do wanna do this,\" great, then you're not gonna pay anything, 'cause you're gonna follow through, and this just gives you added incentive to do it. And if this doesn't work for you, then certainly nothing else will."
+        },
+        {
+          "id": "upsell-offers:0",
+          "chapter": "upsell-offers",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 8.628,
+          "preview": "All right, so we just covered attraction offers. So these are the first thing that most people are going to see when they're entering your business. This is the stuff that gets leads to engage, that's why they're big, sexy, free things. The upsell offers. are things. that we're going to reposition for them to spend even more money. Now, sometimes this happen",
+          "text": "All right, so we just covered attraction offers. So these are the first thing that most people are going to see when they're entering your business. This is the stuff that gets leads to engage, that's why they're big, sexy, free things. The upsell offers. are things. that we're going to reposition for them to spend even more money. Now, sometimes this happens immediately, sometimes it happens, you know, uh, a few days later, sometimes a few weeks later, sometimes a month later. But either way, we're going to be using four of my favorite upsells. So this is step two in our money. model process. So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a problem, another appears. You upsell the solution to the problem that your first offer reveals. So every offer opens the door to an upsell. Even upsells o- open the door to more upsells. And often, upsells make up the majority of the profits. This is what people don't understand. If the objective is that we can break even, obviously, we wanna make as much money as we want, but you don't wanna make more money on a few customers when you can get 10 times the customers and then make way, more on the second sale, right? And so often, upsells. make up the majority of the profit, even if that's not the thing you' sell the most of. Think about it in terms of volume, I might sell 10 times more of my front-end offer, but 10X of my profit comes from my second sale. They can make or break a money. model. And so let me show you how much. So here's some examples. So this is. a classic burger, fries, and soda store, all right? So this is a, our very sad burger shop owner. He sells a burger for two bucks, his cost on the burger is $1.75. He makes 25 cents of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize"
+        },
+        {
+          "id": "cac:12",
+          "chapter": "cac",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "offers"
+          ],
+          "score": 8.59,
+          "preview": "doing. Um, you splinter out the thing. Now, I talk about this at length in the $100 million offers course. I'm not gonna break it down now, but basically, lots of different components to your offer, you have lots of different features. You take one feature off. You say, \"This feature is 99% off now.\" Great. That's where the discount is. And then you sell the",
+          "text": "doing. Um, you splinter out the thing. Now, I talk about this at length in the $100 million offers course. I'm not gonna break it down now, but basically, lots of different components to your offer, you have lots of different features. You take one feature off. You say, \"This feature is 99% off now.\" Great. That's where the discount is. And then you sell the rest of it. All right? And so whatever you break off, it has to be something that's well-understood or it's not gonna work. All right? That's kind of the thing I was talking about earlier. People have to have an understanding of it. Um, the cons are you got the bargain hoppers, right? People who, you know, complain about this, but really they, they're already, you know, uh, they're already customers. They're easier to upsell though than somebody who's cold. So yeah. All right. So the objective is that attraction offers are the first step in the four prongs because if you don't have interest, you don't have anything, right? And so customer-financed acquisition requires demand. And a big difference between CAC and GP, having low cost or free front ends is a strong way to do it. So lots of demand, free big front ends, drives more in. All right. So these things are going to be interchangeable throughout the remainder of these trainings. So if you see $19 chiropractor visit, it can be just as much a free chiropractor visit. The whole thing will work. But if you're like, you insist on doing this, fine, do that. If you insist on doing this, fine, do that. It does not matter. All the money models that I will show you can have free or discount interchange and they will both work. Kaboom. These are the ways that you can improve your CAC. So with that being said, CAC is covered. Now we go into gross profit."
+        }
+      ]
+    },
+    {
+      "intent": "comparison_evidence",
+      "layer": null,
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "upsell after core offer additional purchase offer stack",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "chunks": [
+        {
+          "id": "ten-years-ten-minutes:1",
+          "chapter": "ten-years-ten-minutes",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 11.752,
+          "preview": "covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' ",
+          "text": "covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' you want from this prospect. After picking a winner, you offer everyone else, uh, the big prize at a discounted price in second place. The decoy offers are also attraction offers where you advertise a free or discounted offer. When the lead asks to learn more, you also present a more valuable premium offer. The premium offer includes more features, benefits, bonuses, guarantees, and so on, and gets more people to buy it. Buy X to get Y free, you offer customers free stuff in exchange for buying stuff for money. The more free stuff and the higher its value, the more people will buy X to get Y free. Pay less now or pay more later, you give people a choice to pay full price later or pay a discounted price now for additional benefits. We also did free with consumption, which I won't Yeah. ... bonus here. But fundamentally, you give away a lot of free value, and that increases the likelihood people buy a very expensive thing from you. The more expensive the thing, the longer and the more free stuff you give them. Then we have upsell offers, which is, are whatever you offer next. That is my very literal scientific thing. Try and brai- like, fight me. An upsell is whatever you offer next. All right, so typically, it's gonna be more, better, or newer version of whatever they just bought. These can get you lots of cash fast. We covered four. The classic upsell, where you offer the solution to the customer's next problem the moment they become aware of it. You can't have X without Y. The menu upsell, you tell customers which options they don't need, then tell them which one they do need and how to get the value from it, prescribe, and, \"You don't need that, you need this.\" The anchor upsells, you offer the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended"
+        },
+        {
+          "id": "pay-less-now:2",
+          "chapter": "pay-less-now",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "downsells"
+          ],
+          "score": 9.726,
+          "preview": "it's like, \"Oh, my God.\" Which also, by the way, shows you the value of delayed payment and guarantees. How much you have to discount and how many bonuses you have to stack shows you the relative value of a guarantee and a delayed payment. So the pay later option allows you to advertise free since you can choose to pay or not. And this gets lots of leads to ",
+          "text": "it's like, \"Oh, my God.\" Which also, by the way, shows you the value of delayed payment and guarantees. How much you have to discount and how many bonuses you have to stack shows you the relative value of a guarantee and a delayed payment. So the pay later option allows you to advertise free since you can choose to pay or not. And this gets lots of leads to engage. But this free offer has an added benefit which is, we get their card on file. So this works just as much online as it does in person. So whether you have either type of business, it works the same way. Because if they choose this option and they hate the product, then they can cancel at any time before the charge goes through. But if they accept the pay later option, then we can make follow-up offer to pay now and the option could provide the, whatever, 20, 50% discount, sometimes two-thirds discount like the 97 example I gave, and greater bonuses. And since we already have their card on file, we make it easier for them to pay because now we already have it, right? And so whether they choose to pay now or pay later, you've got customers and likely some profit. But to take full advantage of this offer, you want something else to sell. So have something more, better, or newer to offer them when the time is right. All right. You wanna market the core value as free, double your reading speed. The prospect puts the card down for the, to consume the service or value. At the end, they're billed for the service at full price. Now again, if you offset your cost you acquired the customers with the $97, whatever. the immediate thing is, then you want, as many people to pay the three times as expensive thing. So it's not that you wanna force everyone to do that. And I'll talk about the balance between the price points later, but the objective is not to get everyone to pay now or everyone to pay later, it's to balance it just enough to offset your cost to acquire customers and then get as many people to then, uh, basically delay payment so you can make three times the amount. All right. And so you can charge more. for the thing. since a delayed purchase to the same degree. People will agree to pay more later than they will now. And so you can also boost the price because also if so- you... If someone... It basically means what's the price of the guaranteed delivery. So when you have someone pay today,"
+        },
+        {
+          "id": "rollover-upsell:7",
+          "chapter": "rollover-upsell",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 9.592,
+          "preview": "cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. Wh",
+          "text": "cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. What to upsell, more of something, better of something, new something new. Just make sure that you make a profit after applying your discount. How to rollover the credit. You can do full or partial purchase, uh, give it upfront, or you can spread it out. We went through examples of all those. You can price your next offer for at least four times higher than the credit. So this makes it a 25% discount. Everything above that is gravy. I wouldn't do less than that. And to get more takers, add urgency. Make your rollover credit a one-time-only offer. And boom, that is the rollover upsell."
+        },
+        {
+          "id": "anchor-upsell:2",
+          "chapter": "anchor-upsell",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 9.523,
+          "preview": "million jet, a $400,000 car feels like, candy on the way out the door. And so everything is relative in terms of what the price, is being positioned against. And so, I was like, \"Man, that was really powerful,\" and it? changed how I saw sales. And so, that is what happens. I spent five times more than my original budget, and ended up spending $300 on' access",
+          "text": "million jet, a $400,000 car feels like, candy on the way out the door. And so everything is relative in terms of what the price, is being positioned against. And so, I was like, \"Man, that was really powerful,\" and it? changed how I saw sales. And so, that is what happens. I spent five times more than my original budget, and ended up spending $300 on' accessories and shirts, which I never normally would have spent, but it felt like, nothing compared to the- the new $2200 suit or whatever that I bought. So, that is how I learned the anchor upsell. Now, here's how it works. So, anchor upsells involve offering premium items first. Key: first. If the customer is shocked by the price, you offer a cheaper alternative by changing secondary features. And this is what's key, about this. So, presenting a premium version first at five to ten times the price makes the other offer, our main offer, the one that we sell to most people, look? like, a better deal. And so, this strategy leads to more people buying the main offer. And so it works best when the lower-priced offer has the same core functions as the premium one. It has the same primary features. So the second $2200 suit still looked good, it still felt good, it still had a good, you know, trim or whatever. It looked expensive, but, it just wasn't Armani or whatever else, whatever other brand he had. And so, for me, the secondary feature of the brand mattered very little, 'cause I was like, \"No one's gonna ask me for the brand of suit, I'm wearing.\" They just wanna... It j- I needed to look cool, right? And so the thing is is that, w- every offer, every product has primary features and secondary features. You want the secondary features to be different between your really expensive one and your minor one. But if it's just a little bit different and it's one-eighth the price, people are like, \"Oh, this is a steal now,\" because of what we showed them first. In the suit example, $2200 suit seemed like, a better deal compared to the $16,000, one. Two additional benefits of anchor upsells that happen as a result. Number one is that customers tend to spend more than they initially planned. I spent five times what I was willing to spend. Two, some customers will still opt for the expensive option. He probably has done that with a lot of guys. And maybe one out of five guys buys the $16,000 suit. And guess what happens? When you take a $16,000 suit and divide it by 5, that"
+        },
+        {
+          "id": "anchor-upsell:7",
+          "chapter": "anchor-upsell",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 8.822,
+          "preview": "with a handkerchief?\" You just move right on in the sale. And you're like, \"Oh God, I got a whale on the line. I'm just gonna keep going.\" To get more people to buy your main offer, make it a better deal. So this is the primary versus secondary features. You want it to be as little different from the main one, from the anchor, as, uh, as possible so that the",
+          "text": "with a handkerchief?\" You just move right on in the sale. And you're like, \"Oh God, I got a whale on the line. I'm just gonna keep going.\" To get more people to buy your main offer, make it a better deal. So this is the primary versus secondary features. You want it to be as little different from the main one, from the anchor, as, uh, as possible so that they justified the price already at this 10 times higher price. And then when they hear this one, they're like, \"Oh, this is a steal.\" Because if you make your good one too different from the core offer that you're ultimately trying to sell 80% of people, then they actually have to reconsider the offer again. They have to recalibrate price-to-value. You want them to basically be able to take the same price-to-value measurement they did here and then here at 80% discount or a 90% discount because the things that you changed were not the things they cared about. But if you all of a sudden have all these things they do care about, then you changed primary features, not secondary features. So if you present a more expensive offer first before a less expensive offer, more people will buy the less expensive offer than they would have on its own. When you present the anchor, get the gasp, come to the rescue, present the core offer, ask for payment. For the most effective anchor, make your premium offer five to 10 times more expensive. Anchored customers spend a bit more than they plan to. And don't treat an anchor like a fake, or the customer will too, and you will lose trust and waste their time. Important, some customers will buy a premium offer. That is where you make way more money on this because, one, more people buy the main thing, and some people will buy the very expensive thing. The expensive premium offer adds outsized profits with fewer sales. So just because you don't sell the most of it doesn't mean you don't make the most profit from it. The main offer and premium offer should have the same primary features. The premium offer has different secondary, AKA premium, features. After anchoring, offering the primary features for one-third or one-fifth or one-tenth the price makes the main offer a great deal and gives them basically the same thing for way less. That is the anchor upsell."
+        }
+      ]
+    },
+    {
+      "intent": "comparison_evidence",
+      "layer": null,
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "front end diagnostic offer versus post sale upsell",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "chunks": [
+        {
+          "id": "make-your-money-model:0",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 8.629,
+          "preview": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)  So we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where ",
+          "text": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)\n\nSo we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where you, need to combine these things in such a way that you can maximize the amount of money that you make in the first 30 days, so you can profitably acquire customers and scale. So let's do a quick putting it all together. So overview. A money model, attraction offer, upsells, downsells, continuity. We have covered all four. If you are starting out, just pick one of the money models to inspire you to do something in your business. All right? If you're more advanced, you can start weaving two together. There are no rules for this. You can stack these. So you absolutely can do an attraction offer that you use as an upsell offer in your business. You can use a continuity offer on the front to attract customers. All of these things are possible. I try to present them in this way in the most logical format that I have tended to use them in my business. But there are no rules in business, as long as it is legal. So I leave that to you. All right, examples. So this is my fitness offer. So I tried to conceptualize this for you. So okay, on the front end, I ran a win-your-money-back offer. Then we would upsell, from a service perspective, for anybody who bought that, we'd upsell buy X get Y- Y free. So this would be them pre-paying time. And then we would upsell the continuity bonus. Great. So that would be the rollover upsell. Now, if someone, uh, didn't wanna do win-your-money-back, then we would downsell the free trial with penalty, and then we would use the menu upsell in terms of supplements, and then we'd do the rollover upsell on the back end. And so this was fundamentally the money model. So I used one, two, three, four, five of the offers that I talked about to make the money model that we had for fitness. This model was superior to other models on the market, which is why our gyms consistently out-compete other gyms in the marketplace. All right, so this is Gym Launch's model. So we used a decoy offer, that was the strategy call, that was the, uh, you could also consider it a free with consumption, uh, depending on how you wanna see it. But we had that offer. Then we did a classic upsell. Then we did the money- menu upsell on the back end into what level of service they wanted for the extended period of time. Did you want these other services that went with, uh, Gym Launch? Or sorry, Gym Legacy, which was the back end that we had. So some people opted for the highest version. Some people said, \"You know what? I don't need, like, agency services. I just want the ads. Like, you don't have to run them. Hey, uh, but I do want you to, uh, train my sales team.\" And so we would basically menu upsell the features that we thought would be best for them. Now, if people didn't take the offer, we had a payment plan, feature downsell, free trial, right? And so this, so this is one, two, three, four, five, six, six of the structures that I went over for this presentation is what created the Gym Launch money model. Now, uh, newsletter and consulting. So I just love this money model. It's just, like, one of my favorite ones, uh, 'cause I mentioned it, uh, during this video, uh, training a couple times. But this was an attraction offer which was a free trial. But you're like, \"Wait, how could you use a free trial as an attraction offer?\" Yes, there are no rules. So we used a free trial as the attraction offer. The thing that made it cash flow was the pay less now, pay more later option of saying, \"Hey, we'll get you the past newsletters.\" And technically, this was combined with a lifetime lower rate. So this is a continuity discount and a pay less, pay less now, pay more later, put together as one. This was the thing that got them to engage. So free trial start, 3.99 a month. Oh wait, let' me give you two years of newsletters today, and give you this discount if you choose to skip your trial. And then, of course, the, uh, the back end on that one was, uh, the business, you know, upsell consulting and things like that. If it were me, this is just that- that particular business, if it were me, I would do buy X get Y free here. So now that I've got the continuity, I would then say, \"Great, now that you're in continuity, if you buy seven, I'll give you five.\" And then I can front load even more cash. Now, if- if I know that people stay on average two years, then I wouldn't do that, 'cause that would lose me money. But if people stay, let's say, on average, another three months, then it makes sense to do buy six get six, 'cause I still double LTV and get that cash up front. So these were actually my original notes. So I, I wanted to show you how mine actually looked. Um, and I've changed some of the names, uh, to make them a little bit more, like, friendly. Uh, but this is actually what it looked like in terms of how I would design, uh, the money models. And so the possibilities really are endless."
+        },
+        {
+          "id": "free-trials:2",
+          "chapter": "free-trials",
+          "layer": "downsells",
+          "layers": [
+            "downsells",
+            "offers"
+          ],
+          "score": 8.216,
+          "preview": "## [\u00a75.3.c] Examples \u2014 B2C, B2B, therapy, fee weighting  So let's walk through some examples. So I'll do a B2C version, so a business to consumer, and then I'll do a B2B. So let's say you do a business to consumer offer, 28-day kick-that-habit blueprint, whatever, right? So you get the trial for free and avoid the penalty fee. You must... Or to get the trial",
+          "text": "## [\u00a75.3.c] Examples \u2014 B2C, B2B, therapy, fee weighting\n\nSo let's walk through some examples. So I'll do a B2C version, so a business to consumer, and then I'll do a B2B. So let's say you do a business to consumer offer, 28-day kick-that-habit blueprint, whatever, right? So you get the trial for free and avoid the penalty fee. You must... Or to get the trial for free and avoid the penalty fee, you must attend all your consulting calls, post your progress in the group once a week, journal daily in our app, and attend feedback sessions and transformation sessions, AKA the upsell opportunities. Business to business offer: five-day get your first five clients challenge. All right? To get the trial for free and avoid the penalty fee, you must send 100 outbound messages per day, report stats on the outbound messages, attend the daily training, post in the group daily once you've done the homework, attend your graduation call, which is the upsell opportunity. And so these look really similar to what the win-your-money-back ones were, because they are the same thing. Now, let's say you had a therapy business. So offer a free 28-day breakthrough therapy, free trial plus penalty. You're gonna need, uh, to do the homework before each session and show up. If you don't do the homework, you're not going to get the results that you want. And if you don't show up, obviously you're not gonna get better. This will give you an added incentive to get better faster. So we charge a $50 non-compliance fee for not doing the homework or not doing the session. If you don't do the homework, then we can't help you in the session. Fair enough? You just explain it, how it works. Now, in this 28-day thing, you can have all the fees add up to the exact same amount of money that you would have charged in a win-your-money-back. So if they have, call it 10 things they have to do over X period of time, and it's a $500 thing, then you charge $50 per thing. Now, if some things are more important than others, let's say sales consultations, then you can make those ones $100 or $150 and the other things 25. You wanna weight the prices based on the importance for you as a business and for them getting results."
+        },
+        {
+          "id": "upsell-offers:1",
+          "chapter": "upsell-offers",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 8.024,
+          "preview": "of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize that? Boo",
+          "text": "of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize that? Boom, upsell one, upsell two. And the thing is, is that when they make this upsell, look at how much more they make per sale, a lot more. And so the end result of this goes from 25 cents to 8X the gross profit per sale. They're making way more, two dol- $1.75 from 25 cents originally. And so the thing is, is that you may just be one upsell offer away from making yours into a dynasty like theirs. You just have to figure out what's your fries and a Coke. And if you don't, someone else will. Let me talk about when they fail. Upsell offers fail or feel cringy when you offer something that they don't want, so that's either too different or doesn't solve their existing problem. You offer it at the wrong time, so it's before they've experienced the problem. You say, \"Hey, you just had a steak. Do you want another steak?\" They're like, \"Well, I'm not really hungry anymore.\" You already solved that, you're trying to solve the same problem. You offer it the wrong way, which is they don't believe you. They're like, \"Sure, that would be nice, but I don't believe you specifically.\" Or it's a combination of the above. This is when it fails. Now, what to sell? Which becomes the next upsell offer question. More of what they just got, think quantity. So that's, uh, one burger to two burgers. Better versions of it, think quality. So this is why have a mystery meat burger, when you could have a sirloin meat burger, organic burger, or newer complimentary stuff? Think different. This is, do you want fries and a soda with that burger? Fundamentally, that's how this works. So the objective of the upsell is to maximize profit per customer and to send clients into backends. Note, these structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end offer. Upsell offers, you can"
+        },
+        {
+          "id": "make-your-money-model:1",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 7.956,
+          "preview": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)  So let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in.",
+          "text": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)\n\nSo let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in. They're coming off win-your-money-back. They're coming on, uh, buy X get Y free. They're coming on, uh, decoy offer. Whatever it is, they're coming on the front end. You say, \"Great, now I'm either gonna do a menu upsell, I'm gonna do an anchor- anchor upsell, I'm gonna do a rollover upsell.\" All of those things you can use as your second, second piece. Then you can pick your downsell offer. So what if they say no to any of these other offers? Well, we have our. entire downsell flow, which is we start with payment plans, uh, then we do a free trial, or we do payment plan to feature downsell. Then we go to free trial. You just pick the ones that you know that you can execute on right? now. Step four, then you' pick a continuity offer. And the result is. that you get your cash back in 30 days, more customers, and make more money."
+        },
+        {
+          "id": "classic-upsell:4",
+          "chapter": "classic-upsell",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 7.386,
+          "preview": "## [\u00a74.2.e] Important points + 80% close rate benchmark  So important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly enco",
+          "text": "## [\u00a74.2.e] Important points + 80% close rate benchmark\n\nSo important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly encourage the thing, but that's fundamentally how it works. All right? So make sure that it doesn't cost you a lot or anything at all, uh, like, that thumb drive that we gave, like, you can y- you want it to be something that's cheap, uh, but still valuable. The next thing is make the upsells the next natural thing that they would need to buy. That's the boxes, the large units, the locks, the, the insurance, things like, that. The weight loss clinic, continuity of service, continuity of supplements, done-for-you meals, hormone treatments, et cetera, all of those things were all part of classic upsells that' went through. You can't have X without Y. You can't have this weight loss service without these supplements. Just think, \"You can't have X without Y,\" as your, as your mental framework for what the next thing I'm gonna offer is. All right, this play works so, well because the perception of how essential or required the next thing is. All right? So, this is the key point. If supplements is core to how someone's gonna get results with the main thing, the likelihood they buy is very high. So, if you, remember the, uh, minimum package for the rental car story I gave you, you want this to, feel as required as possible. Again, you don't wanna make it' required, because then it's, it's, it gets shady, but you want to strongly encourage people to take these things to get the best results, which ethically, they should be able to get better results with whatever your upsell is. All right? And so, how seamless the upsell process is for the prospect, if you make it frictionless, you can get sometimes 80% plus the people to take these upsells. I personally prefer to have upsells that have very little operational drag so, that I can' immediately offset cost to get it, getting a customer, or it becomes that's my major profit stream. It depends on' what the objective is for your business. Boom. Summary, works on' the front end as a back end, works as an internal play, meaning you can just upsell your existing customers. That's basically what the storage thing with, with the fur coats was. Many of those people were existing customers, so you can just upsell those people. Um, if you suck at sales, this is not a hard sale to make. Uh, there's a lot of goodwill in this play, because you just make sure that you close the upsell. Like, it's like, \"Hey, let me give you this thing. I'm giving you this free earmuffs. Why not take it? But, of course, you gotta take this other thing, too.\" Um, and if you aren't getting 80% plus close rates, you're doing it wrong. So that's my big benchmark for you. If you're getting 30% to take it, you're not, you're not making it assumed enough. You're not, it's, it's not clear enough to them that this goes with. So think about it like that. It has to go with. If you go to a McDonald's, I would bet you that 80% of people are getting fries and a Coke. You want, you want a very high uptake rate on' the people who buy the next natural thing. Think of this as the thing that goes with the thing, uh, and give the thing away for free to make sure that all the thing that goes with the thing you can make the money on. All right? And so, the nice thing with this is that it gives you a lot of upfront customers. And that is the classic upsell."
+        }
+      ]
+    },
+    {
+      "intent": "comparison_evidence",
+      "layer": null,
+      "layers": [
+        "offers",
+        "upsells"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "attraction offer upsell front-end offer post-purchase add-on offer stack interior design STR",
+      "reason": "Deterministic fallback query from source-need focus terms and compact business context.",
+      "chunks": [
+        {
+          "id": "make-your-money-model:0",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 14.14,
+          "preview": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)  So we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where ",
+          "text": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)\n\nSo we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where you, need to combine these things in such a way that you can maximize the amount of money that you make in the first 30 days, so you can profitably acquire customers and scale. So let's do a quick putting it all together. So overview. A money model, attraction offer, upsells, downsells, continuity. We have covered all four. If you are starting out, just pick one of the money models to inspire you to do something in your business. All right? If you're more advanced, you can start weaving two together. There are no rules for this. You can stack these. So you absolutely can do an attraction offer that you use as an upsell offer in your business. You can use a continuity offer on the front to attract customers. All of these things are possible. I try to present them in this way in the most logical format that I have tended to use them in my business. But there are no rules in business, as long as it is legal. So I leave that to you. All right, examples. So this is my fitness offer. So I tried to conceptualize this for you. So okay, on the front end, I ran a win-your-money-back offer. Then we would upsell, from a service perspective, for anybody who bought that, we'd upsell buy X get Y- Y free. So this would be them pre-paying time. And then we would upsell the continuity bonus. Great. So that would be the rollover upsell. Now, if someone, uh, didn't wanna do win-your-money-back, then we would downsell the free trial with penalty, and then we would use the menu upsell in terms of supplements, and then we'd do the rollover upsell on the back end. And so this was fundamentally the money model. So I used one, two, three, four, five of the offers that I talked about to make the money model that we had for fitness. This model was superior to other models on the market, which is why our gyms consistently out-compete other gyms in the marketplace. All right, so this is Gym Launch's model. So we used a decoy offer, that was the strategy call, that was the, uh, you could also consider it a free with consumption, uh, depending on how you wanna see it. But we had that offer. Then we did a classic upsell. Then we did the money- menu upsell on the back end into what level of service they wanted for the extended period of time. Did you want these other services that went with, uh, Gym Launch? Or sorry, Gym Legacy, which was the back end that we had. So some people opted for the highest version. Some people said, \"You know what? I don't need, like, agency services. I just want the ads. Like, you don't have to run them. Hey, uh, but I do want you to, uh, train my sales team.\" And so we would basically menu upsell the features that we thought would be best for them. Now, if people didn't take the offer, we had a payment plan, feature downsell, free trial, right? And so this, so this is one, two, three, four, five, six, six of the structures that I went over for this presentation is what created the Gym Launch money model. Now, uh, newsletter and consulting. So I just love this money model. It's just, like, one of my favorite ones, uh, 'cause I mentioned it, uh, during this video, uh, training a couple times. But this was an attraction offer which was a free trial. But you're like, \"Wait, how could you use a free trial as an attraction offer?\" Yes, there are no rules. So we used a free trial as the attraction offer. The thing that made it cash flow was the pay less now, pay more later option of saying, \"Hey, we'll get you the past newsletters.\" And technically, this was combined with a lifetime lower rate. So this is a continuity discount and a pay less, pay less now, pay more later, put together as one. This was the thing that got them to engage. So free trial start, 3.99 a month. Oh wait, let' me give you two years of newsletters today, and give you this discount if you choose to skip your trial. And then, of course, the, uh, the back end on that one was, uh, the business, you know, upsell consulting and things like that. If it were me, this is just that- that particular business, if it were me, I would do buy X get Y free here. So now that I've got the continuity, I would then say, \"Great, now that you're in continuity, if you buy seven, I'll give you five.\" And then I can front load even more cash. Now, if- if I know that people stay on average two years, then I wouldn't do that, 'cause that would lose me money. But if people stay, let's say, on average, another three months, then it makes sense to do buy six get six, 'cause I still double LTV and get that cash up front. So these were actually my original notes. So I, I wanted to show you how mine actually looked. Um, and I've changed some of the names, uh, to make them a little bit more, like, friendly. Uh, but this is actually what it looked like in terms of how I would design, uh, the money models. And so the possibilities really are endless."
+        },
+        {
+          "id": "make-your-money-model:1",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 13.46,
+          "preview": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)  So let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in.",
+          "text": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)\n\nSo let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in. They're coming off win-your-money-back. They're coming on, uh, buy X get Y free. They're coming on, uh, decoy offer. Whatever it is, they're coming on the front end. You say, \"Great, now I'm either gonna do a menu upsell, I'm gonna do an anchor- anchor upsell, I'm gonna do a rollover upsell.\" All of those things you can use as your second, second piece. Then you can pick your downsell offer. So what if they say no to any of these other offers? Well, we have our. entire downsell flow, which is we start with payment plans, uh, then we do a free trial, or we do payment plan to feature downsell. Then we go to free trial. You just pick the ones that you know that you can execute on right? now. Step four, then you' pick a continuity offer. And the result is. that you get your cash back in 30 days, more customers, and make more money."
+        },
+        {
+          "id": "upsell-offers:0",
+          "chapter": "upsell-offers",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 13.019,
+          "preview": "All right, so we just covered attraction offers. So these are the first thing that most people are going to see when they're entering your business. This is the stuff that gets leads to engage, that's why they're big, sexy, free things. The upsell offers. are things. that we're going to reposition for them to spend even more money. Now, sometimes this happen",
+          "text": "All right, so we just covered attraction offers. So these are the first thing that most people are going to see when they're entering your business. This is the stuff that gets leads to engage, that's why they're big, sexy, free things. The upsell offers. are things. that we're going to reposition for them to spend even more money. Now, sometimes this happens immediately, sometimes it happens, you know, uh, a few days later, sometimes a few weeks later, sometimes a month later. But either way, we're going to be using four of my favorite upsells. So this is step two in our money. model process. So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a problem, another appears. You upsell the solution to the problem that your first offer reveals. So every offer opens the door to an upsell. Even upsells o- open the door to more upsells. And often, upsells make up the majority of the profits. This is what people don't understand. If the objective is that we can break even, obviously, we wanna make as much money as we want, but you don't wanna make more money on a few customers when you can get 10 times the customers and then make way, more on the second sale, right? And so often, upsells. make up the majority of the profit, even if that's not the thing you' sell the most of. Think about it in terms of volume, I might sell 10 times more of my front-end offer, but 10X of my profit comes from my second sale. They can make or break a money. model. And so let me show you how much. So here's some examples. So this is. a classic burger, fries, and soda store, all right? So this is a, our very sad burger shop owner. He sells a burger for two bucks, his cost on the burger is $1.75. He makes 25 cents of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize"
+        },
+        {
+          "id": "upsell-offers:2",
+          "chapter": "upsell-offers",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 11.704,
+          "preview": "structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end",
+          "text": "structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end offer. Upsell offers, you can use a front-end offer. I just place them in the places that I use them most commonly. And I think that they work, at least they have worked the best for me. So this is our lineup. We're gonna start with the classic upsell. We'll do the menu upsell, the anchor upsell, and the rollover upsell. I use all of these. I have made so much money on these upsells. And if you follow what I lay out, you probably will too. And I will probably get more animated in these, because I just love these so much. All right, with that being said, the classic upsell."
+        },
+        {
+          "id": "upsell-offers:1",
+          "chapter": "upsell-offers",
+          "layer": "upsells",
+          "layers": [
+            "upsells"
+          ],
+          "score": 9.416,
+          "preview": "of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize that? Boo",
+          "text": "of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize that? Boom, upsell one, upsell two. And the thing is, is that when they make this upsell, look at how much more they make per sale, a lot more. And so the end result of this goes from 25 cents to 8X the gross profit per sale. They're making way more, two dol- $1.75 from 25 cents originally. And so the thing is, is that you may just be one upsell offer away from making yours into a dynasty like theirs. You just have to figure out what's your fries and a Coke. And if you don't, someone else will. Let me talk about when they fail. Upsell offers fail or feel cringy when you offer something that they don't want, so that's either too different or doesn't solve their existing problem. You offer it at the wrong time, so it's before they've experienced the problem. You say, \"Hey, you just had a steak. Do you want another steak?\" They're like, \"Well, I'm not really hungry anymore.\" You already solved that, you're trying to solve the same problem. You offer it the wrong way, which is they don't believe you. They're like, \"Sure, that would be nice, but I don't believe you specifically.\" Or it's a combination of the above. This is when it fails. Now, what to sell? Which becomes the next upsell offer question. More of what they just got, think quantity. So that's, uh, one burger to two burgers. Better versions of it, think quality. So this is why have a mystery meat burger, when you could have a sirloin meat burger, organic burger, or newer complimentary stuff? Think different. This is, do you want fries and a soda with that burger? Fundamentally, that's how this works. So the objective of the upsell is to maximize profit per customer and to send clients into backends. Note, these structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end offer. Upsell offers, you can"
+        }
+      ]
+    }
+  ]
+}
+
+2026-06-15T21:44:18.977175Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:44:18.977325Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:44:18.977774Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:44:18.982249Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:18.982669Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:44:18.998521Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.998535Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.998911Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.998916Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.999259Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.999266Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.999622Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.999626Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.999969Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:18.999973Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:19.000792Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:19.000796Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:19.373034Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:19.381263Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:19.381292Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+I have the supporting chunks now. I’ll record the advisory turn with the answer and the observable actions, then write the eval `run.json` required by the harness.
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli turn record --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: python3.14 -m money_model_architect.cli turn record [-h]
+                                                           --business-dir BUSINESS_DIR
+                                                           --user-message USER_MESSAGE
+                                                           --assistant-message ASSISTANT_MESSAGE
+                                                           [--actions-json ACTIONS_JSON]
+                                                           [--source-events-json SOURCE_EVENTS_JSON]
+                                                           [--cited-chunk-ids-json CITED_CHUNK_IDS_JSON]
+                                                           [--metadata-json METADATA_JSON]
+
+options:
+  -h, --help            show this help message and exit
+  --business-dir BUSINESS_DIR
+                        Directory containing advisor state
+  --user-message USER_MESSAGE
+  --assistant-message ASSISTANT_MESSAGE
+  --actions-json ACTIONS_JSON
+                        JSON array or path to JSON file
+  --source-events-json SOURCE_EVENTS_JSON
+                        JSON array or path to JSON file
+  --cited-chunk-ids-json CITED_CHUNK_IDS_JSON
+                        JSON array or path to JSON file
+  --metadata-json METADATA_JSON
+                        JSON object or path to JSON file
+
+2026-06-15T21:44:23.174000Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:44:23.174137Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:44:23.174547Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:44:23.178760Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:23.179121Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:44:23.195172Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.195186Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.195533Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.195537Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.195879Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.195886Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.196254Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.196260Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.196598Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.196603Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.197326Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.197330Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:23.544931Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:23.553198Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:23.553230Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+I’m saving a compact trace record: snapshot/log inspection, one comparison source search, then the answer with the chunk IDs I actually used.
+exec
+/bin/zsh -lc 'TMPDIR_RUN=/private/tmp/tooluse_v1_022
+mkdir -p "$TMPDIR_RUN"
+cat > "$TMPDIR_RUN/actions.json" <<'"'JSON'
+[
+  {\"type\":\"read_snapshot\",\"reason\":\"Ground the phrase 'in this situation' in saved business and offer-stack context.\"},
+  {\"type\":\"inspect_logs\",\"reason\":\"Check whether prior turns add context for the user's comparison question.\"},
+  {\"type\":\"search_source_material\",\"reason\":\"The user asked for a Money Models concept comparison, so source support was needed.\"},
+  {\"type\":\"answer\",\"reason\":\"Explain the practical difference using the saved STR design offer stack.\"}
+]
+JSON
+cat > \""'$TMPDIR_RUN/source_events.json" <<'"'JSON'
+[
+  {
+    \"source_need\": {
+      \"intent\": \"comparison_evidence\",
+      \"layers\": [\"offers\", \"upsells\"],
+      \"focus_terms\": [\"attraction offer\", \"upsell\", \"front-end offer\", \"post-purchase add-on\", \"offer stack\"],
+      \"user_turn\": \"what is the difference between an attraction offer and an upsell in this situation?\",
+      \"query_variants\": [
+        \"attraction offer front end offer compared with upsell\",
+        \"upsell after core offer additional purchase offer stack\",
+        \"front end diagnostic offer versus post sale upsell\"
+      ]
+    },
+    \"queries\": [
+      \"attraction offer front end offer compared with upsell\",
+      \"upsell after core offer additional purchase offer stack\",
+      \"front end diagnostic offer versus post sale upsell\"
+    ],
+    \"inspected_chunks\": [
+      {\"id\":\"make-your-money-model:1\",\"score\":13.415,\"use\":\"Attraction offer starts engagement; upsell is the second piece after the front-end.\"},
+      {\"id\":\"upsell-offers:0\",\"score\":13.019,\"use\":\"Attraction offers are first thing people see; upsells are what we offer next to maximize 30-day profit.\"},
+      {\"id\":\"upsell-offers:1\",\"score\":9.416,\"use\":\"Upsell should be more, better, or complementary to what they just bought.\"},
+      {\"id\":\"make-your-money-model:0\",\"score\":13.738,\"use\":\"Money Model pieces can be stacked flexibly, but their role in the flow matters.\"}
+    ]
+  }
+]
+JSON
+cat > \""'$TMPDIR_RUN/cited_chunk_ids.json" <<'"'JSON'
+[\"make-your-money-model:1\", \"upsell-offers:0\", \"upsell-offers:1\", \"make-your-money-model:0\"]
+JSON
+cat > \""'$TMPDIR_RUN/metadata.json" <<'"'JSON'
+{\"case_id\":\"tooluse_v1_022\",\"scenario_id\":\"1584_design\",\"eval\":\"model_routing_codex_tool_use\"}
+JSON
+cat > \""'$TMPDIR_RUN/answer.txt" <<'"'TEXT'
+In this situation, the attraction offer is the entry point: the "'$597 STR Design Diagnostic. Its job is to get the right short-term-rental or second-home owner to raise their hand, experience your thinking, and become qualified for the real design conversation. Money Models frames this as step one: the thing that gets leads/customers to engage on the front end [make-your-money-model:1].
+
+The upsell is what you offer after that first commitment or after the core service reveals the next natural need. In your current stack, the $5K pre-designed room packages are not mainly lead generation; they are an ascension/profit lever for someone already moving through the design relationship. The clean test is: "Did this offer get them in the door, or is it the next thing that goes with what they already bought?" Upsells work best when they are more, better, or complementary to the thing they just got [upsell-offers:0] [upsell-offers:1].
+
+So practically: Diagnostic = trust-building front door. Room packages = additional monetization/fulfillment path after intent is established. These can blur in edge cases, because Money Models allows stacking and reusing mechanisms, but I would keep the roles separate here so the diagnostic stays easy to say yes to and the room package is positioned as the obvious next step for owners who want implementation help [make-your-money-model:0].
+TEXT
+ASSISTANT_MESSAGE=$(cat "$TMPDIR_RUN/answer.txt")
+PYTHONPATH=src python3 -m money_model_architect.cli turn record '"\\
+  --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir \\
+  --user-message \"what's the difference between an attraction offer and an upsell in this situation?\" \\
+  --assistant-message \""'$ASSISTANT_MESSAGE" '"\\
+  --actions-json \""'$TMPDIR_RUN/actions.json" '"\\
+  --source-events-json \""'$TMPDIR_RUN/source_events.json" '"\\
+  --cited-chunk-ids-json \""'$TMPDIR_RUN/cited_chunk_ids.json" '"\\
+  --metadata-json \""'$TMPDIR_RUN/metadata.json"' in /Users/benjaminmackenzie/Dev/money-model-architect
+2026-06-15T21:44:49.422456Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:44:49.422773Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:44:49.424862Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:44:49.447208Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:49.448061Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:44:49.465393Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.465404Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.465815Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.465820Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.466151Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.466155Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.466474Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.466478Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.466797Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.466801Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.467645Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:44:49.467650Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+ succeeded in 102ms:
+2026-06-15T21:44:49.865670Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:49.873829Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:44:49.873860Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The advisor turn is recorded in the business directory. I’m now creating the noninteractive eval `run.json` with the workflow steps and actual CLI actions observed.
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022 --workflow-steps '[\"read saved BusinessSnapshot for current business and offer stack\",\"inspect full advisor logs for prior-turn context\",\"search Money Models source material with comparison_evidence for offers and upsells\",\"record final advisor turn with actions, source event, cited chunks, and answer\"]' --session-paths '[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/sessions/20260615T214449.json\"]' --actual-actions '[\"snapshot --business-dir <business_dir>\",\"logs --business-dir <business_dir> --full\",\"search --business-dir <business_dir> --source-need-json <comparison_evidence offers+upsells> --top-k 5\",\"turn record --business-dir <business_dir> --user-message <user_turn> --assistant-message <answer> --actions-json <actions> --source-events-json <source_events> --cited-chunk-ids-json <cited_chunk_ids> --metadata-json <metadata>\"]' --final-answer 'Answered the attraction-offer versus upsell comparison using the saved STR design offer stack and cited Money Models chunks; recorded the advisor turn.'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ exited 1 in 0ms:
+{
+  "valid": false,
+  "errors": [
+    "workflow_steps[0] must be an object",
+    "workflow_steps[1] must be an object",
+    "workflow_steps[2] must be an object",
+    "workflow_steps[3] must be an object",
+    "actual_actions[0] must be an object",
+    "actual_actions[1] must be an object",
+    "actual_actions[2] must be an object",
+    "actual_actions[3] must be an object"
+  ]
+}
+
+2026-06-15T21:45:00.850887Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:45:00.851167Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:45:00.853028Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:45:00.874732Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:00.875596Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:45:00.892863Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.892872Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.893289Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.893295Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.893636Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.893640Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.893953Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.893956Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.894278Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.894283Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.895076Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:00.895080Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:01.261871Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:01.270009Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:01.270037Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Prepare and complete next-action classification trace artifacts.
+
+This is a strict trace recorder, not a planner. `prepare` sets up an isolated
+business directory and an acting prompt that excludes expected labels. `complete`
+turns recorded workflow evidence into `run.json`. It never chooses the advisor's
+next action from the case label.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import shutil
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE_DIR_NAME = ".money-model-advisor"
+SNAPSHOT_FILE = "business_snapshot.json"
+SESSIONS_DIR = "sessions"
+DRAFT_FILE = "run_draft.json"
+RUN_FILE = "run.json"
+
+ACTION_TAXONOMY = {
+    "clarify",
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "compose_answer_from_state",
+    "answer_without_tool",
+}
+
+CONFIDENCE_VALUES = {"direct", "inferred", "missing"}
+
+TOOL_LIKE_ACTIONS = {
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+}
+
+PROMPT_HIDDEN_FIELDS = {
+    "split",
+    "turn_type",
+    "snapshot_fixture_path",
+    "local_docs_fixture_path",
+    "prior_sessions_fixture_path",
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+FORBIDDEN_RUN_FIELDS = {
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+
+def utc_now() -> str:
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            record["_line_number"] = line_number
+            records.append(record)
+    return records
+
+
+def find_case(cases_path: Path, case_id: str) -> dict[str, Any]:
+    for case in load_jsonl(cases_path):
+        if case.get("case_id") == case_id:
+            return case
+    raise SystemExit(f"case not found: {case_id}")
+
+
+def rel_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def sha256_file(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return f"sha256:{digest.hexdigest()}"
+
+
+def read_json_arg(value: str | None, default: Any) -> Any:
+    if value is None:
+        return default
+    candidate = Path(value)
+    if candidate.exists():
+        return json.loads(candidate.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def copy_tree_contents(source: Path, destination: Path) -> None:
+    destination.mkdir(parents=True, exist_ok=True)
+    for item in source.iterdir():
+        target = destination / item.name
+        if item.is_dir():
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.copytree(item, target)
+        else:
+            shutil.copy2(item, target)
+
+
+def prepare_business_dir(case: dict[str, Any], business_dir: Path) -> dict[str, str | None]:
+    state_dir = business_dir / STATE_DIR_NAME
+    sessions_dir = state_dir / SESSIONS_DIR
+    snapshot_path = state_dir / SNAPSHOT_FILE
+
+    business_dir.mkdir(parents=True, exist_ok=True)
+    state_dir.mkdir(parents=True, exist_ok=True)
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+
+    snapshot_fixture = ROOT / case["snapshot_fixture_path"]
+    shutil.copy2(snapshot_fixture, snapshot_path)
+
+    local_docs_fixture = case.get("local_docs_fixture_path")
+    if local_docs_fixture:
+        source = ROOT / local_docs_fixture
+        if source.is_dir():
+            copy_tree_contents(source, business_dir)
+        else:
+            shutil.copy2(source, business_dir / source.name)
+
+    prior_sessions_fixture = case.get("prior_sessions_fixture_path")
+    if prior_sessions_fixture:
+        copy_session_fixture(ROOT / prior_sessions_fixture, sessions_dir)
+
+    return {
+        "business_dir": rel_path(business_dir),
+        "state_dir": rel_path(state_dir),
+        "snapshot": rel_path(snapshot_path),
+        "sessions_dir": rel_path(sessions_dir),
+    }
+
+
+def copy_session_fixture(source: Path, sessions_dir: Path) -> None:
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    fixture_id = payload.get("fixture_id", source.stem)
+    turns = payload.get("turns")
+    if isinstance(turns, list):
+        for index, turn in enumerate(turns, 1):
+            session = {
+                "created_at": turn.get("timestamp"),
+                "user_message": turn.get("user_message"),
+                "assistant_message": turn.get("assistant_message"),
+                "actions": turn.get("actions", []),
+                "retrieval_queries": turn.get("retrieval_queries", []),
+                "evidence": turn.get("evidence", []),
+                "fixture_id": fixture_id,
+            }
+            write_json(sessions_dir / f"{fixture_id}_{index:02d}.json", session)
+        return
+    shutil.copy2(source, sessions_dir / source.name)
+
+
+def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
+    visible_case = {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")}
+    return "\n".join(
+        [
+            "# Next-Action Eval Acting Prompt",
+            "",
+            "You are the acting agent for a Money Model Advisor next-action eval case.",
+            "",
+            "Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.",
+            "",
+            f"Business dir: `{business_dir}`",
+            "",
+            "Allowed CLI surface:",
+            "",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search \"raw debug query\" --layer <layer>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`",
+            "",
+            "Visible case context:",
+            "",
+            "```json",
+            json.dumps(visible_case, indent=2, sort_keys=True),
+            "```",
+            "",
+            "After acting, record observable steps for `complete`. Do not infer actions from the hidden label.",
+            "",
+        ]
+    )
+
+
+def prepare(args: argparse.Namespace) -> int:
+    case = find_case(args.cases, args.case_id)
+    run_dir = args.runs_dir / args.phase / args.case_id
+    if run_dir.exists() and not args.force:
+        raise SystemExit(f"run directory already exists; pass --force to replace: {run_dir}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+
+    business_dir = run_dir / "business_dir"
+    stdout_dir = run_dir / "stdout"
+    stderr_dir = run_dir / "stderr"
+    stdout_dir.mkdir(parents=True, exist_ok=True)
+    stderr_dir.mkdir(parents=True, exist_ok=True)
+    paths = prepare_business_dir(case, business_dir)
+
+    snapshot_path = business_dir / STATE_DIR_NAME / SNAPSHOT_FILE
+    prompt_path = run_dir / "acting_prompt.md"
+    prompt_path.write_text(render_acting_prompt(case, business_dir.resolve()), encoding="utf-8")
+
+    draft = {
+        "case_id": case["case_id"],
+        "split": case["split"],
+        "phase": args.phase,
+        "created_at": utc_now(),
+        "status": "prepared",
+
+2026-06-15T21:45:05.283611Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:45:05.283789Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:45:05.284366Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:45:05.290209Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:05.290743Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:45:05.308435Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.308453Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.308906Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.308914Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.309361Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.309366Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.309746Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.309751Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.310111Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.310116Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.310880Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.310884Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:05.661344Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:05.669522Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:05.669550Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '260,560p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+        "status": "prepared",
+        "business_dir": rel_path(business_dir),
+        "paths": paths,
+        "fixtures": {
+            "snapshot_fixture_path": case["snapshot_fixture_path"],
+            "local_docs_fixture_path": case.get("local_docs_fixture_path"),
+            "prior_sessions_fixture_path": case.get("prior_sessions_fixture_path"),
+        },
+        "snapshot_hash": {
+            "start": sha256_file(snapshot_path),
+            "end": None,
+        },
+        "acting_prompt_path": rel_path(prompt_path),
+        "workflow_steps": [],
+        "session_paths": [],
+        "actual_actions": [],
+        "final_answer_path": None,
+    }
+    write_json(run_dir / DRAFT_FILE, draft)
+    print(json.dumps({"run_dir": rel_path(run_dir), "draft": rel_path(run_dir / DRAFT_FILE), "acting_prompt": rel_path(prompt_path)}, indent=2))
+    return 0
+
+
+def complete(args: argparse.Namespace) -> int:
+    run_dir = args.run_dir
+    draft_path = run_dir / DRAFT_FILE
+    if not draft_path.exists():
+        raise SystemExit(f"missing draft: {draft_path}")
+
+    draft = json.loads(draft_path.read_text(encoding="utf-8"))
+    final_answer_path = None
+    if args.final_answer:
+        final_answer_path = run_dir / "final_answer.txt"
+        final_answer_path.write_text(args.final_answer, encoding="utf-8")
+    elif args.final_answer_file:
+        source = args.final_answer_file
+        final_answer_path = run_dir / "final_answer.txt"
+        shutil.copy2(source, final_answer_path)
+
+    workflow_steps = read_json_arg(args.workflow_steps, draft.get("workflow_steps", []))
+    session_paths = read_json_arg(args.session_paths, draft.get("session_paths", []))
+    actual_actions = read_json_arg(args.actual_actions, draft.get("actual_actions", []))
+
+    snapshot_path = ROOT / draft["paths"]["snapshot"]
+    run = {
+        **draft,
+        "completed_at": utc_now(),
+        "status": "completed",
+        "workflow_steps": workflow_steps,
+        "session_paths": session_paths,
+        "actual_actions": actual_actions,
+        "final_answer_path": rel_path(final_answer_path) if final_answer_path else draft.get("final_answer_path"),
+        "snapshot_hash": {
+            "start": draft["snapshot_hash"]["start"],
+            "end": sha256_file(snapshot_path),
+        },
+    }
+
+    errors = validate_run(run, run_dir)
+    if errors:
+        print(json.dumps({"valid": False, "errors": errors}, indent=2))
+        return 1
+
+    run.pop("status", None)
+    write_json(run_dir / RUN_FILE, run)
+    print(json.dumps({"valid": True, "run": rel_path(run_dir / RUN_FILE)}, indent=2))
+    return 0
+
+
+def validate(args: argparse.Namespace) -> int:
+    run_path = args.run if args.run.is_file() else args.run / RUN_FILE
+    if not run_path.exists():
+        raise SystemExit(f"run not found: {run_path}")
+    run = json.loads(run_path.read_text(encoding="utf-8"))
+    errors = validate_run(run, run_path.parent)
+    print(json.dumps({"valid": not errors, "errors": errors, "run": rel_path(run_path)}, indent=2))
+    return 1 if errors else 0
+
+
+def validate_run(run: dict[str, Any], run_dir: Path) -> list[str]:
+    errors: list[str] = []
+    for field in ("case_id", "split", "phase", "business_dir", "fixtures", "snapshot_hash", "workflow_steps", "session_paths", "actual_actions"):
+        if field not in run:
+            errors.append(f"missing field: {field}")
+
+    if any(field in run for field in FORBIDDEN_RUN_FIELDS):
+        errors.append("run artifact must not contain expected-label fields")
+
+    workflow_steps = run.get("workflow_steps", [])
+    if not isinstance(workflow_steps, list):
+        errors.append("workflow_steps must be a list")
+        workflow_steps = []
+    for index, step in enumerate(workflow_steps):
+        if not isinstance(step, dict):
+            errors.append(f"workflow_steps[{index}] must be an object")
+            continue
+        for field in ("index", "kind"):
+            if field not in step:
+                errors.append(f"workflow_steps[{index}] missing {field}")
+        if step.get("kind") == "cli_command":
+            for field in ("command", "exit_code"):
+                if field not in step:
+                    errors.append(f"workflow_steps[{index}] cli_command missing {field}")
+
+    actual_actions = run.get("actual_actions", [])
+    if not isinstance(actual_actions, list):
+        errors.append("actual_actions must be a list")
+        actual_actions = []
+    if not actual_actions:
+        errors.append("actual_actions must contain at least one action before writing run.json")
+    for index, item in enumerate(actual_actions):
+        if not isinstance(item, dict):
+            errors.append(f"actual_actions[{index}] must be an object")
+            continue
+        action = item.get("action")
+        confidence = item.get("confidence")
+        if action not in ACTION_TAXONOMY:
+            errors.append(f"actual_actions[{index}] unknown action: {action}")
+        if confidence not in CONFIDENCE_VALUES:
+            errors.append(f"actual_actions[{index}] unknown confidence: {confidence}")
+        if item.get("index") != index:
+            errors.append(f"actual_actions[{index}] index must equal {index}")
+        if confidence == "direct" and action in TOOL_LIKE_ACTIONS:
+            if not item.get("evidence_type"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_type")
+            if not item.get("evidence_ref"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_ref")
+        if confidence == "missing" and not item.get("evidence_note"):
+            errors.append(f"actual_actions[{index}] missing-confidence action needs evidence_note")
+
+    prompt_path = run.get("acting_prompt_path")
+    if prompt_path:
+        full_prompt_path = ROOT / prompt_path
+        if full_prompt_path.exists():
+            prompt = full_prompt_path.read_text(encoding="utf-8")
+            leaked = [field for field in PROMPT_HIDDEN_FIELDS if field in prompt]
+            if leaked:
+                errors.append(f"acting prompt leaks expected-label fields: {', '.join(sorted(leaked))}")
+
+    final_answer_path = run.get("final_answer_path")
+    if final_answer_path and not (ROOT / final_answer_path).exists():
+        errors.append(f"final_answer_path does not exist: {final_answer_path}")
+
+    business_dir = run.get("business_dir")
+    if business_dir and not (ROOT / business_dir).exists():
+        errors.append(f"business_dir does not exist: {business_dir}")
+
+    if run_dir.name != run.get("case_id") and run_dir.parent.name != run.get("case_id"):
+        # Allow validating a copied run file, but flag obviously mismatched generated dirs.
+        if "evals/runs/next_action" in rel_path(run_dir):
+            errors.append("run directory does not match case_id")
+
+    return errors
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    prepare_parser = subparsers.add_parser("prepare", help="Prepare an isolated eval case directory")
+    prepare_parser.add_argument("case_id")
+    prepare_parser.add_argument("--phase", default="baseline")
+    prepare_parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_tool_use_cases.jsonl")
+    prepare_parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "next_action")
+    prepare_parser.add_argument("--force", action="store_true")
+    prepare_parser.set_defaults(func=prepare)
+
+    complete_parser = subparsers.add_parser("complete", help="Complete a prepared trace and write run.json")
+    complete_parser.add_argument("run_dir", type=Path)
+    complete_parser.add_argument("--workflow-steps", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--session-paths", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--actual-actions", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--final-answer")
+    complete_parser.add_argument("--final-answer-file", type=Path)
+    complete_parser.set_defaults(func=complete)
+
+    validate_parser = subparsers.add_parser("validate", help="Validate a run.json or run directory")
+    validate_parser.add_argument("run", type=Path)
+    validate_parser.set_defaults(func=validate)
+
+    return parser
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+2026-06-15T21:45:07.851330Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:45:07.851469Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:45:07.851940Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:45:07.857230Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:07.857723Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:45:07.873848Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.873862Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.874227Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.874233Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.874630Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.874635Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.875044Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.875051Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.875442Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.875447Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.876215Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:07.876222Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:08.218214Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:08.226450Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:08.226478Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc 'TMPDIR_RUN=/private/tmp/tooluse_v1_022
+cat > "$TMPDIR_RUN/workflow_steps_complete.json" <<'"'JSON'
+[
+  {\"index\":0,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>\",\"exit_code\":0,\"summary\":\"Read saved BusinessSnapshot for business and offer-stack context.\"},
+  {\"index\":1,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full\",\"exit_code\":0,\"summary\":\"Inspected prior advisor logs; no prior turns were present.\"},
+  {\"index\":2,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <comparison_evidence offers+upsells> --top-k 5\",\"exit_code\":0,\"summary\":\"Retrieved Money Models chunks comparing attraction offers and upsells.\"},
+  {\"index\":3,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <user_turn> --assistant-message <answer> --actions-json <actions> --source-events-json <source_events> --cited-chunk-ids-json <cited_chunk_ids> --metadata-json <metadata>\",\"exit_code\":0,\"summary\":\"Recorded the completed advisor turn with actions, cited chunks, and source event.\"}
+]
+JSON
+cat > \""'$TMPDIR_RUN/session_paths_complete.json" <<'"'JSON'
+[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/sessions/20260615T214449.json\"]
+JSON
+cat > \""'$TMPDIR_RUN/actual_actions_complete.json" <<'"'JSON'
+[
+  {\"index\":0,\"action\":\"read_snapshot\",\"confidence\":\"direct\",\"evidence_type\":\"cli_command\",\"evidence_ref\":\"workflow_steps[0]\"},
+  {\"index\":1,\"action\":\"read_logs\",\"confidence\":\"direct\",\"evidence_type\":\"cli_command\",\"evidence_ref\":\"workflow_steps[1]\"},
+  {\"index\":2,\"action\":\"search_source_material\",\"confidence\":\"direct\",\"evidence_type\":\"cli_command\",\"evidence_ref\":\"workflow_steps[2]\"},
+  {\"index\":3,\"action\":\"compose_answer_from_state\",\"confidence\":\"inferred\",\"evidence_note\":\"Final answer uses snapshot facts and retrieved chunks to explain the concept comparison.\"}
+]
+JSON
+PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022 --workflow-steps \""'$TMPDIR_RUN/workflow_steps_complete.json" --session-paths "$TMPDIR_RUN/session_paths_complete.json" --actual-actions "$TMPDIR_RUN/actual_actions_complete.json" --final-answer-file "$TMPDIR_RUN/answer.txt"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "valid": true,
+  "run": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/run.json"
+}
+
+2026-06-15T21:45:25.099211Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-15T21:45:25.099579Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-15T21:45:25.101683Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-15T21:45:25.125537Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:25.126620Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-15T21:45:25.144942Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.144954Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.145382Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.145388Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.145750Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.145754Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.146107Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.146113Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.146453Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.146458Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.147324Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.147329Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-15T21:45:25.540773Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:25.549153Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-15T21:45:25.549180Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+Completed the eval case.
+
+Created `run.json` at:
+
+`evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/run.json`
+
+Actions taken: read snapshot, read logs, searched source material for attraction-offer vs upsell comparison, recorded the advisor turn, then captured the tool-use trace.
+2026-06-15T21:45:28.656295Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+2026-06-15T21:45:28.656313Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-06-15T21:45:28.657820Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+tokens used
+65,440

@@ -1,0 +1,5 @@
+Gross profit means the money left after you subtract the direct cost of delivering what you sold.
+
+Example: if a customer pays `$100` and it costs `$40` to fulfill the product or service, gross profit is `$60`. It is not final take-home profit yet because it excludes overhead like rent, admin, software, taxes, and owner pay.
+
+Recorded the eval trace at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_020/run.json`.

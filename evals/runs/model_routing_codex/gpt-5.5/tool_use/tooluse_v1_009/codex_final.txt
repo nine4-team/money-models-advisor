@@ -1,0 +1,5 @@
+Completed the eval case and created:
+
+`evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_009/run.json`
+
+Final advisor response recorded: fulfillment cost is needed because ads are paid back from gross profit, not revenue; it determines whether CAC can be recovered quickly enough to scale safely.

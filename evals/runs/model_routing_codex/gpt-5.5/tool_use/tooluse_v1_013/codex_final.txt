@@ -1,0 +1,3 @@
+We decided it was an average on **2026-06-05 at 22:48:51 UTC**. The prior session shows you said, “that works as an average,” and I recorded referral partner acquisition as roughly **$1,000 CAC** for now.
+
+Created the eval trace at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_013/run.json`.

@@ -1,0 +1,10 @@
+Recorded decision: source search needed.
+
+Source need:
+```json
+{
+  "intent": "diagnostic_evidence",
+  "layers": ["unit-economics"],
+  "focus_terms": ["referral partner commission", "CAC", "payback", "gross profit"]
+}
+```

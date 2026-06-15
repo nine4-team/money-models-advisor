@@ -1,0 +1,10 @@
+Recorded decision: `source_search_decision=true`.
+
+Source need:
+```json
+{
+  "intent": "recommendation_evidence",
+  "layers": ["downsells"],
+  "focus_terms": ["payment plans", "cash tight buyer", "pay less now", "design package"]
+}
+```

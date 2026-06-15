@@ -1,0 +1,16 @@
+Recorded source search decision: `true`.
+
+Source need:
+```json
+{
+  "intent": "teaching_evidence",
+  "layers": ["unit-economics"],
+  "focus_terms": [
+    "client-financed acquisition",
+    "CAC",
+    "payback period",
+    "first 30 day gross profit",
+    "cash payback"
+  ]
+}
+```

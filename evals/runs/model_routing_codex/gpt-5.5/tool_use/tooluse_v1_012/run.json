@@ -1,0 +1,67 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "evidence_ref": "Visible case context states the user asks a simple business vocabulary question that does not require saved business state, local business docs, or Money Models corpus search.",
+      "evidence_type": "case_context",
+      "index": 0
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/business_dir",
+  "case_id": "tooluse_v1_012",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_012",
+    "created_at": "2026-06-14T00:12:54Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 39920.5,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 27371
+  },
+  "completed_at": "2026-06-14T00:12:51Z",
+  "created_at": "2026-06-14T00:12:14Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "description": "Classified the user turn as a simple business vocabulary question.",
+      "index": 0,
+      "kind": "decision"
+    },
+    {
+      "description": "Answered directly without reading snapshot state, logs, local docs, calculations, diagnosis, or source search.",
+      "index": 1,
+      "kind": "advisor_action"
+    },
+    {
+      "command": "PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_012 --workflow-steps ... --session-paths ... --actual-actions ... --final-answer ...",
+      "description": "Created the required eval run.json trace artifact.",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

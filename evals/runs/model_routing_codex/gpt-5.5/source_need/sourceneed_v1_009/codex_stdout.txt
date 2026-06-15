@@ -1,0 +1,10 @@
+Recorded source search decision: `true`.
+
+Source need:
+```json
+{
+  "intent": "diagnostic_evidence",
+  "layers": ["unit-economics"],
+  "focus_terms": ["CAC", "gross profit per client", "payback period", "acquisition capacity"]
+}
+```

@@ -1,0 +1,13 @@
+{
+  "case_id": "sourceneed_v1_001",
+  "created_at": "2026-06-13T23:32:57Z",
+  "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/codex_final.txt",
+  "harness": "codex_cli_agent",
+  "latency_ms": 27182.1,
+  "model": "gpt-5.5",
+  "returncode": 0,
+  "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/codex_stderr.txt",
+  "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/codex_stdout.txt",
+  "suite": "source_need",
+  "tokens_used_reported_by_codex": 33852
+}

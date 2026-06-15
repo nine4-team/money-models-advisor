@@ -1,0 +1,3 @@
+Short version: you have a premium STR/second-home design model with a `$597` diagnostic, a `$15k` core offer, and a `$5k` room-package upsell. The economics are strong: about `$1k` CAC, `$10k` first-30-day gross profit, `76.9%` gross margin, and `1.0` month payback.
+
+I recorded the turn and created `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/run.json`.

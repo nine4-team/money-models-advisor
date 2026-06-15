@@ -1,0 +1,1160 @@
+2026-06-14T00:19:07.166476Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:07.180114Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:07.625451Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:07.633460Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019ec37f-18e3-7621-a314-c4992ad9f214
+--------
+user
+# Next-Action Eval Acting Prompt
+
+You are the acting agent for a Money Model Advisor next-action eval case.
+
+Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir`
+
+Allowed CLI surface:
+
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`
+- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search "raw debug query" --layer <layer>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`
+
+Visible case context:
+
+```json
+{
+  "case_id": "tooluse_v1_018",
+  "conversation_context": "The snapshot is diagnosable, but the user asks for business-doc pricing notes.",
+  "scenario_id": "1584_design",
+  "user_turn": "remind me what the design fee range is before we talk ads"
+}
+```
+
+After acting, record observable steps for `complete`. Do not infer actions from the hidden label.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018 --workflow-steps '<json-array>' --session-paths '<json-array>' --actual-actions '<json-array>' --final-answer '<brief answer or action summary>'
+```
+
+Use the local CLI where the case calls for it. Do not look up expected labels.
+
+2026-06-14T00:19:07.776712Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-06-14T00:19:07.854983Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:08.241132Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Server returned error response: invalid_grant: Grant not found
+2026-06-14T00:19:08.241187Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-06-14T00:19:08.556439Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-06-14T00:19:08.556459Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-06-14T00:19:08.933193Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:08.933334Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:08.933782Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:08.937417Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:08.937709Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:08.953408Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.953415Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.953776Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.953783Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.954151Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.954157Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.954530Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.954537Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.954921Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.954926Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.955683Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:08.955687Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:09.304882Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:09.313321Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:09.313347Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:10.321235Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:10.321435Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:10.322027Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:10.328268Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:10.328746Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:10.346240Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.346248Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.346596Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.346601Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.346948Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.346954Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.347294Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.347299Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.347658Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.347663Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.348451Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.348455Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:10.689108Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:10.697277Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:10.697302Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+I’ll use the `money-model-advisor` skill for this eval turn, then run only the allowed local CLI commands needed to answer and capture the trace.
+exec
+/bin/zsh -lc "sed -n '1,240p' .codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Search source material when the answer needs Money Models support for a concept, comparison, diagnosis, or recommendation.
+
+Do not search source material as a substitute for missing business facts. If the responsible next move is to get CAC, gross profit, fulfillment cost, current offer details, or prior-session context before making a recommendation, do that first. Search can come later when the agent has enough business context to make a source-backed claim.
+
+Do use source search when the snapshot or prior-session context already contains enough facts for a source-backed explanation, diagnosis, comparison, or recommendation. A missing optional field should not block search when the user is asking for conceptual source support.
+
+Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
+
+Use the smallest source need that can support the answer:
+
+- `teaching_evidence`: explain a Money Models concept.
+- `diagnostic_evidence`: support a diagnosis of the business constraint using known facts.
+- `comparison_evidence`: compare Money Models concepts or options.
+- `recommendation_evidence`: support a recommended next move after the needed business facts are available.
+
+Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+
+For each source-material search, write 2-4 `query_variants` inside the SourceNeed. These are semantic search requests authored by the agent for the specific evidence needed in the current turn. Do not rely on the deterministic fallback query except for manual debugging or as a last-resort safety net. Good variants should be short, source-facing, and focused on the claim being supported, not a pasted user message.
+
+Why 2-4: one query is often too brittle because source material may use different wording than the human. Two variants is the minimum useful fanout, three is the normal target, and four is the cap to avoid noisy spray-and-pray retrieval. If you need more than four variants, split the answer into narrower SourceNeeds instead.
+
+Common split: if the answer needs both unit-economics interpretation and a proposed offer-stack fix, run one `diagnostic_evidence` search on `unit-economics`, then a separate `recommendation_evidence` search on the specific fix layer such as `upsells`, `continuity`, `offers`, or `downsells`. Do not combine broad economics terms and offer-stack layers into one catch-all SourceNeed; that makes retrieval noisy.
+
+Boundary rule: do not label a unit-economics search as `recommendation_evidence` just because the final answer contains a recommendation. If the source material is being used to justify why the economics point in a certain direction, the SourceNeed is `diagnostic_evidence` on `unit-economics`. Then, if you recommend a concrete next move such as a front-end offer, upsell, continuity path, or downsell/payment-plan path, run a separate `recommendation_evidence` search on that concrete fix layer.
+
+Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
+
+Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
+
+Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+Keep source layers minimal. Extra layers make retrieval noisier.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+2026-06-14T00:19:14.794163Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:14.794326Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:14.794789Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:14.799554Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:14.799905Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:14.814659Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.814669Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.814986Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.814990Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.815291Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.815297Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.815610Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.815615Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.815948Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.815952Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.816618Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:14.816622Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:15.160476Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:15.168606Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:15.168631Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The case says the snapshot is already diagnosable, but the user is asking for a remembered pricing note. I’m checking saved state first, then I’ll search the local material for the design fee range instead of doing calculations.
+exec
+/bin/zsh -lc 'rg --files /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/product-ladder.md
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/services-and-pricing.md
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/business-profile.md
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir"
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "schema_version": "business_snapshot.v1",
+  "business": {
+    "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+    "icp": "STR and second-home owners with $80K-$200K+ project capacity",
+    "delivery_model": "Lisa-led full-service design planning, procurement, and installation"
+  },
+  "money_model": {
+    "attraction_offer": {
+      "exists": true,
+      "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "price": 597
+    },
+    "core_offer": {
+      "exists": true,
+      "description": "full-service STR and second-home design",
+      "price": 15000
+    },
+    "upsell": {
+      "exists": true,
+      "description": "pre-designed room packages sold per room or bundle",
+      "price": 5000
+    },
+    "downsell": {
+      "exists": false,
+      "description": null,
+      "price": null
+    },
+    "continuity": {
+      "exists": false,
+      "description": null,
+      "price": null
+    }
+  },
+  "economics": {
+    "cac": 1000,
+    "first_30_day_gross_profit": 10000,
+    "monthly_recurring_gross_profit": 0,
+    "gross_margin": 0.769,
+    "lifetime_gross_profit": null,
+    "payback_period_months": 1.0
+  },
+  "problem": {
+    "user_goal": "diagnose cash payback",
+    "reported_symptoms": [
+      "wants to understand how much can be spent on acquisition"
+    ],
+    "diagnosed_constraints": []
+  },
+  "advisor_state": {
+    "advisory_status": "diagnosable",
+    "missing_fields": [],
+    "ready_for_payback_diagnosis": true,
+    "ready_for_offer_stack_diagnosis": true,
+    "likely_retrieval_layers": [
+      "unit-economics"
+    ],
+    "retrieval_query_terms": [
+      "premium full-service interior design firm for short-term rental and second-home projects",
+      "STR and second-home owners with $80K-$200K+ project capacity",
+      "full-service STR and second-home design",
+      "diagnose cash payback",
+      "wants to understand how much can be spent on acquisition",
+      "CAC",
+      "first 30 day gross profit",
+      "payback period"
+    ]
+  },
+  "field_sources": {
+    "economics.cac": {
+      "confidence": "medium",
+      "source_type": "user_chat",
+      "value_note": "Referral partner cost averaged to about $1k per client."
+    },
+    "economics.first_30_day_gross_profit": {
+      "confidence": "medium",
+      "source_type": "user_chat"
+    },
+    "economics.payback_period_months": {
+      "source_type": "calculated",
+      "inputs": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit",
+        "economics.monthly_recurring_gross_profit"
+      ],
+      "confidence": "high"
+    }
+  }
+}
+
+2026-06-14T00:19:24.125974Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:24.126119Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:24.126515Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:24.130608Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:24.130905Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:24.146172Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.146180Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.146545Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.146550Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.146901Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.146906Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.147244Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.147250Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.147605Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.147610Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.148412Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.148417Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:24.489748Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:24.498397Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:24.498425Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The snapshot has a core offer price, but the user asked for the design fee range from business notes. I found local pricing docs in the case directory and am reading the relevant ones directly.
+exec
+/bin/zsh -lc "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/services-and-pricing.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Services And Pricing
+
+The core offer is full-service STR and second-home design.
+
+Draft pricing:
+
+- Design fee: $15,000 to $60,000 depending on project scope.
+- Typical project budget: $80,000 to $160,000.
+- Ideal project budget: $150,000 to $200,000 or more.
+
+exec
+/bin/zsh -lc "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/product-ladder.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Product Ladder
+
+Draft ladder:
+
+1. STR Design Diagnostic: listing and photo audit, likely $597 to $997.
+2. Pre-designed room packages: $1,200 to $1,800 per room or $5,000 to $7,000 as a bundle.
+3. Full-service design: planning, procurement, and installation.
+
+exec
+/bin/zsh -lc "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/business-profile.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# 1584 Design Business Profile
+
+1584 Design is a premium full-service interior design firm for short-term rental and second-home projects.
+
+The target client is an owner of large STR properties or second homes with the budget for full-service design, procurement, and installation.
+
+2026-06-14T00:19:32.135601Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:32.135781Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:32.136353Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:32.142490Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:32.142919Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:32.157785Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.157791Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.158121Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.158127Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.158463Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.158469Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.158797Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.158803Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.159116Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.159120Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.159794Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.159798Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:32.521108Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:32.529453Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:32.529477Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+I found the range in `services-and-pricing.md`: design fee is listed as `$15,000 to $60,000` depending on scope. I’m recording the advisory turn and the eval trace now.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir\"
+USER_REQUEST='remind me what the design fee range is before we talk ads'
+ASSISTANT_MESSAGE='The design fee range in your pricing notes is "'$15,000 to $60,000 depending on project scope. The same note lists typical project budgets at $80,000 to $160,000, with ideal projects at $150,000 to $200,000 or more.'"'
+PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir \""'$CONTEXT_DIR" --user-message "$USER_REQUEST" --assistant-message "$ASSISTANT_MESSAGE"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "recorded": true,
+  "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/.money-model-advisor/sessions/20260614T001942.json",
+  "created_at": "2026-06-14T00:19:42Z",
+  "source_event_count": 0,
+  "cited_chunk_ids": []
+}
+
+2026-06-14T00:19:42.177552Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:42.178766Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:42.181669Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:42.202916Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:42.203419Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:42.220600Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.220608Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.221156Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.221160Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.221484Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.221489Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.221789Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.221793Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.222115Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.222119Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.222901Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.222905Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:42.589625Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:42.597310Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:42.597334Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The turn record was written with no source search events or calculations, which matches this pricing-note request. I’m creating the required `run.json` artifact with the observed steps.
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018 --workflow-steps '[\"read money-model-advisor skill\",\"read diagnosable business snapshot\",\"listed local business directory files\",\"inspected services-and-pricing.md, product-ladder.md, and business-profile.md\",\"answered with the design fee range from services-and-pricing.md\",\"recorded the turn with the local CLI\"]' --session-paths '[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/.money-model-advisor/sessions/20260614T001942.json\"]' --actual-actions '[\"snapshot_read\",\"inspect_business_docs\",\"turn_record\"]' --final-answer 'The design fee range in the pricing notes is "'$15,000 to $60,000 depending on project scope.'"'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ exited 1 in 0ms:
+{
+  "valid": false,
+  "errors": [
+    "workflow_steps[0] must be an object",
+    "workflow_steps[1] must be an object",
+    "workflow_steps[2] must be an object",
+    "workflow_steps[3] must be an object",
+    "workflow_steps[4] must be an object",
+    "workflow_steps[5] must be an object",
+    "actual_actions[0] must be an object",
+    "actual_actions[1] must be an object",
+    "actual_actions[2] must be an object"
+  ]
+}
+
+2026-06-14T00:19:49.695046Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:49.696032Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:49.698778Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:49.703482Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:49.703926Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:49.721131Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.721138Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.721681Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.721686Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.722017Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.722021Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.722333Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.722336Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.722671Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.722676Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.723486Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:49.723492Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:50.088270Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:50.096332Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:50.096361Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The capture script expects structured step/action objects rather than strings. I’m checking the expected schema and then I’ll rerun the capture command.
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Prepare and complete next-action classification trace artifacts.
+
+This is a strict trace recorder, not a planner. `prepare` sets up an isolated
+business directory and an acting prompt that excludes expected labels. `complete`
+turns recorded workflow evidence into `run.json`. It never chooses the advisor's
+next action from the case label.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import shutil
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE_DIR_NAME = ".money-model-advisor"
+SNAPSHOT_FILE = "business_snapshot.json"
+SESSIONS_DIR = "sessions"
+DRAFT_FILE = "run_draft.json"
+RUN_FILE = "run.json"
+
+ACTION_TAXONOMY = {
+    "clarify",
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "compose_answer_from_state",
+    "answer_without_tool",
+}
+
+CONFIDENCE_VALUES = {"direct", "inferred", "missing"}
+
+TOOL_LIKE_ACTIONS = {
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+}
+
+PROMPT_HIDDEN_FIELDS = {
+    "split",
+    "turn_type",
+    "snapshot_fixture_path",
+    "local_docs_fixture_path",
+    "prior_sessions_fixture_path",
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+FORBIDDEN_RUN_FIELDS = {
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+
+def utc_now() -> str:
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            record["_line_number"] = line_number
+            records.append(record)
+    return records
+
+
+def find_case(cases_path: Path, case_id: str) -> dict[str, Any]:
+    for case in load_jsonl(cases_path):
+        if case.get("case_id") == case_id:
+            return case
+    raise SystemExit(f"case not found: {case_id}")
+
+
+def rel_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def sha256_file(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return f"sha256:{digest.hexdigest()}"
+
+
+def read_json_arg(value: str | None, default: Any) -> Any:
+    if value is None:
+        return default
+    candidate = Path(value)
+    if candidate.exists():
+        return json.loads(candidate.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def copy_tree_contents(source: Path, destination: Path) -> None:
+    destination.mkdir(parents=True, exist_ok=True)
+    for item in source.iterdir():
+        target = destination / item.name
+        if item.is_dir():
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.copytree(item, target)
+        else:
+            shutil.copy2(item, target)
+
+
+def prepare_business_dir(case: dict[str, Any], business_dir: Path) -> dict[str, str | None]:
+    state_dir = business_dir / STATE_DIR_NAME
+    sessions_dir = state_dir / SESSIONS_DIR
+    snapshot_path = state_dir / SNAPSHOT_FILE
+
+    business_dir.mkdir(parents=True, exist_ok=True)
+    state_dir.mkdir(parents=True, exist_ok=True)
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+
+    snapshot_fixture = ROOT / case["snapshot_fixture_path"]
+    shutil.copy2(snapshot_fixture, snapshot_path)
+
+    local_docs_fixture = case.get("local_docs_fixture_path")
+    if local_docs_fixture:
+        source = ROOT / local_docs_fixture
+        if source.is_dir():
+            copy_tree_contents(source, business_dir)
+        else:
+            shutil.copy2(source, business_dir / source.name)
+
+    prior_sessions_fixture = case.get("prior_sessions_fixture_path")
+    if prior_sessions_fixture:
+        copy_session_fixture(ROOT / prior_sessions_fixture, sessions_dir)
+
+    return {
+        "business_dir": rel_path(business_dir),
+        "state_dir": rel_path(state_dir),
+        "snapshot": rel_path(snapshot_path),
+        "sessions_dir": rel_path(sessions_dir),
+    }
+
+
+def copy_session_fixture(source: Path, sessions_dir: Path) -> None:
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    fixture_id = payload.get("fixture_id", source.stem)
+    turns = payload.get("turns")
+    if isinstance(turns, list):
+        for index, turn in enumerate(turns, 1):
+            session = {
+                "created_at": turn.get("timestamp"),
+                "user_message": turn.get("user_message"),
+                "assistant_message": turn.get("assistant_message"),
+                "actions": turn.get("actions", []),
+                "retrieval_queries": turn.get("retrieval_queries", []),
+                "evidence": turn.get("evidence", []),
+                "fixture_id": fixture_id,
+            }
+            write_json(sessions_dir / f"{fixture_id}_{index:02d}.json", session)
+        return
+    shutil.copy2(source, sessions_dir / source.name)
+
+
+def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
+    visible_case = {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")}
+    return "\n".join(
+        [
+            "# Next-Action Eval Acting Prompt",
+            "",
+            "You are the acting agent for a Money Model Advisor next-action eval case.",
+            "",
+            "Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.",
+            "",
+            f"Business dir: `{business_dir}`",
+            "",
+            "Allowed CLI surface:",
+            "",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search \"raw debug query\" --layer <layer>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`",
+            "",
+            "Visible case context:",
+            "",
+            "```json",
+            json.dumps(visible_case, indent=2, sort_keys=True),
+            "```",
+            "",
+            "After acting, record observable steps for `complete`. Do not infer actions from the hidden label.",
+            "",
+        ]
+    )
+
+
+def prepare(args: argparse.Namespace) -> int:
+    case = find_case(args.cases, args.case_id)
+    run_dir = args.runs_dir / args.phase / args.case_id
+    if run_dir.exists() and not args.force:
+        raise SystemExit(f"run directory already exists; pass --force to replace: {run_dir}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+
+    business_dir = run_dir / "business_dir"
+    stdout_dir = run_dir / "stdout"
+    stderr_dir = run_dir / "stderr"
+    stdout_dir.mkdir(parents=True, exist_ok=True)
+    stderr_dir.mkdir(parents=True, exist_ok=True)
+    paths = prepare_business_dir(case, business_dir)
+
+    snapshot_path = business_dir / STATE_DIR_NAME / SNAPSHOT_FILE
+    prompt_path = run_dir / "acting_prompt.md"
+    prompt_path.write_text(render_acting_prompt(case, business_dir.resolve()), encoding="utf-8")
+
+    draft = {
+        "case_id": case["case_id"],
+        "split": case["split"],
+        "phase": args.phase,
+        "created_at": utc_now(),
+        "status": "prepared",
+
+2026-06-14T00:19:53.582282Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:53.582496Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:53.583238Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:53.590112Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:53.590602Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:53.607945Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.607959Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.608326Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.608331Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.608693Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.608698Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.609091Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.609098Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.609514Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.609520Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.610276Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.610280Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:53.966523Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:53.975040Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:53.975065Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '260,620p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+        "status": "prepared",
+        "business_dir": rel_path(business_dir),
+        "paths": paths,
+        "fixtures": {
+            "snapshot_fixture_path": case["snapshot_fixture_path"],
+            "local_docs_fixture_path": case.get("local_docs_fixture_path"),
+            "prior_sessions_fixture_path": case.get("prior_sessions_fixture_path"),
+        },
+        "snapshot_hash": {
+            "start": sha256_file(snapshot_path),
+            "end": None,
+        },
+        "acting_prompt_path": rel_path(prompt_path),
+        "workflow_steps": [],
+        "session_paths": [],
+        "actual_actions": [],
+        "final_answer_path": None,
+    }
+    write_json(run_dir / DRAFT_FILE, draft)
+    print(json.dumps({"run_dir": rel_path(run_dir), "draft": rel_path(run_dir / DRAFT_FILE), "acting_prompt": rel_path(prompt_path)}, indent=2))
+    return 0
+
+
+def complete(args: argparse.Namespace) -> int:
+    run_dir = args.run_dir
+    draft_path = run_dir / DRAFT_FILE
+    if not draft_path.exists():
+        raise SystemExit(f"missing draft: {draft_path}")
+
+    draft = json.loads(draft_path.read_text(encoding="utf-8"))
+    final_answer_path = None
+    if args.final_answer:
+        final_answer_path = run_dir / "final_answer.txt"
+        final_answer_path.write_text(args.final_answer, encoding="utf-8")
+    elif args.final_answer_file:
+        source = args.final_answer_file
+        final_answer_path = run_dir / "final_answer.txt"
+        shutil.copy2(source, final_answer_path)
+
+    workflow_steps = read_json_arg(args.workflow_steps, draft.get("workflow_steps", []))
+    session_paths = read_json_arg(args.session_paths, draft.get("session_paths", []))
+    actual_actions = read_json_arg(args.actual_actions, draft.get("actual_actions", []))
+
+    snapshot_path = ROOT / draft["paths"]["snapshot"]
+    run = {
+        **draft,
+        "completed_at": utc_now(),
+        "status": "completed",
+        "workflow_steps": workflow_steps,
+        "session_paths": session_paths,
+        "actual_actions": actual_actions,
+        "final_answer_path": rel_path(final_answer_path) if final_answer_path else draft.get("final_answer_path"),
+        "snapshot_hash": {
+            "start": draft["snapshot_hash"]["start"],
+            "end": sha256_file(snapshot_path),
+        },
+    }
+
+    errors = validate_run(run, run_dir)
+    if errors:
+        print(json.dumps({"valid": False, "errors": errors}, indent=2))
+        return 1
+
+    run.pop("status", None)
+    write_json(run_dir / RUN_FILE, run)
+    print(json.dumps({"valid": True, "run": rel_path(run_dir / RUN_FILE)}, indent=2))
+    return 0
+
+
+def validate(args: argparse.Namespace) -> int:
+    run_path = args.run if args.run.is_file() else args.run / RUN_FILE
+    if not run_path.exists():
+        raise SystemExit(f"run not found: {run_path}")
+    run = json.loads(run_path.read_text(encoding="utf-8"))
+    errors = validate_run(run, run_path.parent)
+    print(json.dumps({"valid": not errors, "errors": errors, "run": rel_path(run_path)}, indent=2))
+    return 1 if errors else 0
+
+
+def validate_run(run: dict[str, Any], run_dir: Path) -> list[str]:
+    errors: list[str] = []
+    for field in ("case_id", "split", "phase", "business_dir", "fixtures", "snapshot_hash", "workflow_steps", "session_paths", "actual_actions"):
+        if field not in run:
+            errors.append(f"missing field: {field}")
+
+    if any(field in run for field in FORBIDDEN_RUN_FIELDS):
+        errors.append("run artifact must not contain expected-label fields")
+
+    workflow_steps = run.get("workflow_steps", [])
+    if not isinstance(workflow_steps, list):
+        errors.append("workflow_steps must be a list")
+        workflow_steps = []
+    for index, step in enumerate(workflow_steps):
+        if not isinstance(step, dict):
+            errors.append(f"workflow_steps[{index}] must be an object")
+            continue
+        for field in ("index", "kind"):
+            if field not in step:
+                errors.append(f"workflow_steps[{index}] missing {field}")
+        if step.get("kind") == "cli_command":
+            for field in ("command", "exit_code"):
+                if field not in step:
+                    errors.append(f"workflow_steps[{index}] cli_command missing {field}")
+
+    actual_actions = run.get("actual_actions", [])
+    if not isinstance(actual_actions, list):
+        errors.append("actual_actions must be a list")
+        actual_actions = []
+    if not actual_actions:
+        errors.append("actual_actions must contain at least one action before writing run.json")
+    for index, item in enumerate(actual_actions):
+        if not isinstance(item, dict):
+            errors.append(f"actual_actions[{index}] must be an object")
+            continue
+        action = item.get("action")
+        confidence = item.get("confidence")
+        if action not in ACTION_TAXONOMY:
+            errors.append(f"actual_actions[{index}] unknown action: {action}")
+        if confidence not in CONFIDENCE_VALUES:
+            errors.append(f"actual_actions[{index}] unknown confidence: {confidence}")
+        if item.get("index") != index:
+            errors.append(f"actual_actions[{index}] index must equal {index}")
+        if confidence == "direct" and action in TOOL_LIKE_ACTIONS:
+            if not item.get("evidence_type"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_type")
+            if not item.get("evidence_ref"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_ref")
+        if confidence == "missing" and not item.get("evidence_note"):
+            errors.append(f"actual_actions[{index}] missing-confidence action needs evidence_note")
+
+    prompt_path = run.get("acting_prompt_path")
+    if prompt_path:
+        full_prompt_path = ROOT / prompt_path
+        if full_prompt_path.exists():
+            prompt = full_prompt_path.read_text(encoding="utf-8")
+            leaked = [field for field in PROMPT_HIDDEN_FIELDS if field in prompt]
+            if leaked:
+                errors.append(f"acting prompt leaks expected-label fields: {', '.join(sorted(leaked))}")
+
+    final_answer_path = run.get("final_answer_path")
+    if final_answer_path and not (ROOT / final_answer_path).exists():
+        errors.append(f"final_answer_path does not exist: {final_answer_path}")
+
+    business_dir = run.get("business_dir")
+    if business_dir and not (ROOT / business_dir).exists():
+        errors.append(f"business_dir does not exist: {business_dir}")
+
+    if run_dir.name != run.get("case_id") and run_dir.parent.name != run.get("case_id"):
+        # Allow validating a copied run file, but flag obviously mismatched generated dirs.
+        if "evals/runs/next_action" in rel_path(run_dir):
+            errors.append("run directory does not match case_id")
+
+    return errors
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    prepare_parser = subparsers.add_parser("prepare", help="Prepare an isolated eval case directory")
+    prepare_parser.add_argument("case_id")
+    prepare_parser.add_argument("--phase", default="baseline")
+    prepare_parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_tool_use_cases.jsonl")
+    prepare_parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "next_action")
+    prepare_parser.add_argument("--force", action="store_true")
+    prepare_parser.set_defaults(func=prepare)
+
+    complete_parser = subparsers.add_parser("complete", help="Complete a prepared trace and write run.json")
+    complete_parser.add_argument("run_dir", type=Path)
+    complete_parser.add_argument("--workflow-steps", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--session-paths", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--actual-actions", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--final-answer")
+    complete_parser.add_argument("--final-answer-file", type=Path)
+    complete_parser.set_defaults(func=complete)
+
+    validate_parser = subparsers.add_parser("validate", help="Validate a run.json or run directory")
+    validate_parser.add_argument("run", type=Path)
+    validate_parser.set_defaults(func=validate)
+
+    return parser
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+2026-06-14T00:19:56.151310Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:19:56.151497Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:19:56.152043Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:19:56.157707Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:56.158161Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:19:56.174461Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.174472Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.174836Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.174842Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.175203Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.175208Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.175568Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.175575Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.175905Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.175910Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.176613Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.176618Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:19:56.518565Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:56.526649Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:19:56.526673Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018 --workflow-steps '[{\"index\":0,\"kind\":\"instruction_read\",\"path\":\".codex/skills/money-model-advisor/SKILL.md\"},{\"index\":1,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>\",\"exit_code\":0},{\"index\":2,\"kind\":\"file_discovery\",\"command\":\"rg --files <business_dir>\"},{\"index\":3,\"kind\":\"file_read\",\"paths\":[\"business_dir/services-and-pricing.md\",\"business_dir/product-ladder.md\",\"business_dir/business-profile.md\"]},{\"index\":4,\"kind\":\"compose_answer\",\"basis\":\"services-and-pricing.md lists Design fee: "'$15,000 to $60,000 depending on project scope."},{"index":5,"kind":"cli_command","command":"PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...","exit_code":0}]'"' --session-paths '[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/business_dir/.money-model-advisor/sessions/20260614T001942.json\"]' --actual-actions '[{\"index\":0,\"action\":\"read_snapshot\",\"confidence\":\"direct\",\"evidence_type\":\"cli_stdout\",\"evidence_ref\":\"snapshot command returned diagnosable business snapshot\"},{\"index\":1,\"action\":\"inspect_local_docs\",\"confidence\":\"direct\",\"evidence_type\":\"file_contents\",\"evidence_ref\":\"business_dir/services-and-pricing.md\"},{\"index\":2,\"action\":\"compose_answer_from_state\",\"confidence\":\"direct\",\"evidence_note\":\"Answered from inspected pricing note; no calculation or source search needed.\"}]' --final-answer 'The design fee range in the pricing notes is "'$15,000 to $60,000 depending on project scope.'"'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "valid": true,
+  "run": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/run.json"
+}
+
+2026-06-14T00:20:10.907307Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:20:10.908336Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:20:10.911182Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:20:10.933846Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:10.934644Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:10.952480Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.952493Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.953045Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.953051Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.953406Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.953411Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.953751Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.953755Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.954082Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.954086Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.954887Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:10.954891Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:11.330656Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:11.338940Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:11.338968Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The design fee range in the pricing notes is **$15,000 to $60,000**, depending on project scope.
+
+I recorded the turn and created the required eval artifact at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/run.json`.
+2026-06-14T00:20:14.186452Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+2026-06-14T00:20:14.186482Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-06-14T00:20:14.189314Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+tokens used
+30,563

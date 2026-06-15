@@ -65,7 +65,7 @@ Do not tune only for one visible miss unless the fix is framed as a general beha
 
 BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a retrieval storage boundary. The local backend remains the fast eval baseline. The 30-case expanded search-query slice plus Pinecone parity supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and hosted-vector latency optimization before calling it production-final.
 
-Embedding API use is allowed for deterministic vectorization and cached retrieval experiments. Do not use external model APIs for agent planning, labeling, answer synthesis, or acting-agent eval work — with one carve-out: explicit model/provider comparison experiments (such as `scripts/eval_model_routing.py`) may replay golden cases against external chat models, provided every prompt and raw response is recorded as a run artifact and the results are reported, never silently consumed.
+Embedding API use is allowed for deterministic vectorization and cached retrieval experiments. Do not use external model APIs for agent planning, labeling, answer synthesis, or acting-agent eval work. Product model-routing evidence for agent behavior should use the Codex/CLI harness in `scripts/eval_codex_model_routing.py`. A separate explicit model/provider comparison experiment (such as `scripts/eval_model_routing.py`) may replay golden cases against external chat models only if every prompt and raw response is recorded and the report is clearly labeled as API replay, not the product harness.
 
 Never commit `.env`, API keys, or `.cache/embeddings/`.
 
@@ -73,7 +73,7 @@ Never commit `.env`, API keys, or `.cache/embeddings/`.
 
 The next JD-aligned work should emphasize:
 
-- model-routing and tiering evals over the existing golden suites, with quality/cost/latency/failure-mode comparison
+- continued model-routing and tiering evals over the existing golden suites using the Codex/CLI harness, with quality, latency, token-proxy, and failure-mode comparison
 - multi-provider comparison evidence where available, especially prompt behavior and trace reliability
 - hosted-vector latency optimization now that Pinecone indexing and parity evals work
 - continued golden-dataset breadth and regression coverage

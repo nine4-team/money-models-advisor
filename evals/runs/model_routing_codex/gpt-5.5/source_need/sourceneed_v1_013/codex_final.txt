@@ -1,0 +1,5 @@
+Recorded decision: `source-search-decision=false`.
+
+Source need: `null`.
+
+Rationale: this is a simple vocabulary question about gross profit, answerable directly without Money Models source-material search.

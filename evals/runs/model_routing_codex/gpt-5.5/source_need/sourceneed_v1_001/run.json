@@ -1,0 +1,43 @@
+{
+  "case_id": "sourceneed_v1_001",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_001",
+    "created_at": "2026-06-13T23:32:57Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 27182.1,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 33852
+  },
+  "completed_at": "2026-06-13T23:32:54Z",
+  "created_at": "2026-06-13T23:32:30Z",
+  "notes": "Search is needed for a source-backed explanation of why fulfillment cost changes gross profit and therefore whether CAC can be recovered through paid ads. The snapshot already has CAC and first-30-day gross profit, so this is not using search to fill missing business facts.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "fulfillment cost",
+      "gross profit",
+      "CAC",
+      "payback"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}

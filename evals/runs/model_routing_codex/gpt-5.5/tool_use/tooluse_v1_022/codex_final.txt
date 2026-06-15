@@ -1,0 +1,7 @@
+Completed the eval case.
+
+Created `run.json` at:
+
+`evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_022/run.json`
+
+Actions taken: read snapshot, read logs, searched source material for attraction-offer vs upsell comparison, recorded the advisor turn, then captured the tool-use trace.

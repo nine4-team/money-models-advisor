@@ -1,0 +1,114 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_command",
+      "index": 3
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final answer interprets snapshot, diagnosis, and payback calculation without source search.",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/business_dir",
+  "case_id": "tooluse_v1_008",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_008",
+    "created_at": "2026-06-14T00:07:53Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 124981.6,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 78685
+  },
+  "completed_at": "2026-06-14T00:07:43Z",
+  "created_at": "2026-06-14T00:05:48Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions/20260614T000656.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "observation": "Snapshot was payback-ready with CAC 1000, first_30_day_gross_profit 10000, monthly_recurring_gross_profit 0, gross_margin 0.769, and payback_period_months 1.0."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "observation": "No prior logs were present."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli diagnose --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "observation": "Diagnosis identified gross-margin as the constraint and success metric as service gross margin 80%+."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs {cac:1000,month_one_gp:10000,monthly_recurring_gp:0}",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "observation": "Payback calculation returned 1.0."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command",
+      "observation": "Recorded the advisory turn with actions, calculation event, and diagnosis metadata."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command returned business, money_model, economics, problem, and advisor_state",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "20260614T001135.json recorded assistant recap with no source events",
+      "evidence_type": "turn_record",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir",
+  "case_id": "tooluse_v1_011",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_011",
+    "created_at": "2026-06-14T00:12:14Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 70853.9,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 60744
+  },
+  "completed_at": "2026-06-14T00:12:09Z",
+  "created_at": "2026-06-14T00:11:03Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor/sessions/20260614T001135.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c",
+    "start": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "description": "Read money-model-advisor skill and JOB_DESCRIPTION project north star.",
+      "index": 0,
+      "kind": "instruction_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "description": "Snapshot contained enough context for a short recap; no calculation, logs, diagnosis, or source search needed.",
+      "index": 2,
+      "kind": "agent_decision"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_011/business_dir --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    }
+  ]
+}

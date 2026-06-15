@@ -1,0 +1,3 @@
+Recorded decision: `source_search_decision=false`.
+
+Source need is `null` because the user is asking for deterministic payback math from known snapshot numbers, not a source-backed Money Models explanation, diagnosis, comparison, or recommendation.

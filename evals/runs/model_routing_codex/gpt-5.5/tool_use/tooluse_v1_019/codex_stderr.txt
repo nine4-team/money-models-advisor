@@ -1,0 +1,1754 @@
+2026-06-14T00:20:14.477972Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:14.491842Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:14.823333Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:14.831778Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019ec380-1fd1-7370-9d69-1b0e8b3ab5cc
+--------
+user
+# Next-Action Eval Acting Prompt
+
+You are the acting agent for a Money Model Advisor next-action eval case.
+
+Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir`
+
+Allowed CLI surface:
+
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`
+- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search "raw debug query" --layer <layer>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`
+
+Visible case context:
+
+```json
+{
+  "case_id": "tooluse_v1_019",
+  "conversation_context": "The snapshot is diagnosable and the user asks for a Money Models concept explanation.",
+  "scenario_id": "1584_design",
+  "user_turn": "how should I think about client-financed acquisition here?"
+}
+```
+
+After acting, record observable steps for `complete`. Do not infer actions from the hidden label.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019 --workflow-steps '<json-array>' --session-paths '<json-array>' --actual-actions '<json-array>' --final-answer '<brief answer or action summary>'
+```
+
+Use the local CLI where the case calls for it. Do not look up expected labels.
+
+2026-06-14T00:20:15.006624Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-06-14T00:20:15.061312Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:15.367100Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Server returned error response: invalid_grant: Grant not found
+2026-06-14T00:20:15.367135Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-06-14T00:20:15.487000Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-06-14T00:20:15.487032Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-06-14T00:20:16.085700Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:20:16.086724Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:20:16.089410Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:20:16.093178Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:16.093516Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:16.111344Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.111356Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.111931Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.111938Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.112284Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.112289Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.112639Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.112644Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.112978Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.112982Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.113798Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.113802Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:16.461457Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:16.470067Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:16.470092Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:17.442030Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:20:17.442238Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:20:17.442829Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:20:17.448778Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:17.449322Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:17.467143Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.467155Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.467528Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.467535Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.467868Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.467874Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.468238Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.468244Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.468590Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.468595Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.469377Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.469383Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:17.826890Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:17.835069Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:17.835093Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+I’ll use the `money-model-advisor` skill for this eval turn, then inspect the local business state and record the trace artifact required by the harness.
+exec
+/bin/zsh -lc "sed -n '1,220p' JOB_DESCRIPTION.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+exec
+/bin/zsh -lc "sed -n '1,240p' .codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Target Job Description
+
+This project is being built as a portfolio artifact for the Acquisition.com Senior AI Engineer role.
+
+Source:
+
+- Original posting: https://jobs.ashbyhq.com/acquisition/9789dd49-c6bd-4672-8cd3-9f67f2dea7c1
+- Verbatim posting text below, pulled from the Ashby posting API on 2026-06-11. The Role Summary section further down is an earlier paraphrase; where wording matters (e.g. mapping deliverables to JD phrases), use the verbatim text.
+- Requirement-by-requirement project audit: `JD_REQUIREMENTS_AUDIT.md`
+
+## Verbatim Posting (Ashby, 2026-06-11)
+
+### Role
+
+The Senior AI Engineer builds and deploys production-grade AI agents that power ACQ Vantage. This role exists to turn AI capability into real, usable systems that drive business outcomes, not experiments or prototypes.
+
+You will work inside a lean Technology team to design, build, and ship agentic workflows that interact with internal tools, data systems, and user-facing products. You are responsible for taking ideas from concept to production, with a focus on reliability, speed, and practical value.
+
+This is a hands-on engineering role. You are writing code daily, iterating quickly, and working directly with modern AI tooling. You are expected to understand how LLMs behave in production, not just how they work in theory.
+
+### Responsibilities
+
+- Design, build, and deploy production-grade AI agents and end-to-end agentic workflows that solve real business problems across ACQ Vantage
+- Integrate LLMs with internal systems, APIs, and data sources, ensuring reliability, performance, and clean abstractions
+- Collaborate with product and engineering teams to prioritize, ship, and iterate on AI features quickly
+- Own and improve RAG pipelines across multiple Pinecone namespaces, including chunking strategy, embedding model selection, hybrid retrieval, and reranking
+- Build and maintain an evaluation framework, including golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, and regression detection
+- Optimize model routing and tiering to improve unit economics while maintaining output quality
+- Instrument the AI layer for observability, including cost-per-request, token usage, quality signals, and anomaly detection
+
+### Requirements
+
+- 7+ years shipping production software systems (distributed backends, APIs, deployment pipelines, monitoring)
+- 2+ years building production RAG systems using vector databases (Pinecone, Qdrant, FAISS, or Weaviate), including embedding strategies, index management, and retrieval tuning
+- Built and deployed AI agents or multi-step LLM workflows in production, including tool use, orchestration, and system integrations
+- Built or contributed to an evaluation framework for an LLM-based product (retrieval quality measurement, regression detection, model-switching decisions based on data)
+- Reduced LLM API costs in production through model routing, caching, token management, or architectural improvements
+- Worked across multiple LLM providers (OpenAI, Anthropic, or equivalent) and understands tradeoffs in prompt behavior, token economics, and failure modes
+- Comfortable in both TypeScript and Python (our stack uses both)
+
+### Results
+
+- Production AI agents are deployed and actively used within ACQ Vantage
+- New AI-driven features move from concept to production in weeks, not months
+- Agent performance improves over time through structured testing and iteration
+- AI systems operate reliably with minimal failure or manual intervention
+- Engineering output translates directly into measurable business impact
+
+## Role Summary
+
+The role is a hands-on senior AI engineering role focused on building production-grade AI agents for ACQ Vantage. The job description emphasizes practical systems that drive business outcomes, not isolated demos or prototypes.
+
+Core responsibilities and requirements include:
+
+- design, build, and deploy production-grade AI agents and end-to-end agentic workflows
+- integrate LLMs with internal tools, APIs, data systems, and user-facing products
+- own and improve RAG pipelines, including chunking strategy, embedding model selection, hybrid retrieval, and reranking
+- build and maintain evaluation frameworks with golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, and regression detection
+- optimize model routing and tiering to improve unit economics while maintaining quality
+- instrument the AI layer for observability, including cost per request, token usage, quality signals, and anomaly detection
+- reduce LLM API costs with model routing, caching, token management, or architectural improvements
+- understand tradeoffs across multiple LLM providers
+- work comfortably in Python and TypeScript
+
+## Project North Star
+
+The project should demonstrate senior-level AI engineering judgment for this JD. The goal is not to build the largest possible demo. The goal is to show that we can:
+
+1. Build an agent-operated product loop with clear tool boundaries.
+2. Use retrieval and source grounding in a measurable way.
+3. Build and use golden datasets to drive architecture decisions.
+4. Compare retrieval strategies with explicit metrics and failure analysis.
+5. Cache embeddings and business context to control cost.
+6. Record traces and reports that support regression detection.
+7. Explain why each architectural choice was adopted, rejected, or deferred.
+
+## Current Fit
+
+Strong alignment:
+
+- The advisor is agent-operated and CLI-backed: the agent plans; deterministic tools persist state, calculate, search, and record traces.
+- The project has explicit eval assets for next-action classification, source-need generation, source-event logging, query quality, chunking, and retrieval backend comparison.
+- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; hybrid retrieval with constrained query variants is the candidate product path after a 30-case golden search-query comparison.
+- Embeddings are cached under `.cache/embeddings/` so repeated vector runs reuse corpus and query vectors.
+- The narrative records decisions, metrics, misses, and non-adoptions rather than treating every sophisticated technique as automatically better.
+
+Weak alignment / gaps to close:
+
+- The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
+- The vector backend now has a storage boundary with local and Pinecone implementations. The local backend remains the fast eval baseline; the Pinecone path is indexed and parity-tested on the 30-case generated-variants slice.
+- Query generation v2 is implemented as constrained `SourceNeed.query_variants` with the deterministic flattened query retained as a fallback/control.
+- Observability is now present through traces, Markdown reports, summary JSON, case-level JSONL, latency metrics, cache hit/miss accounting, and estimated embedding cost. Token/cost reporting is explicit for embeddings; agent work remains outside the API path.
+- The biggest remaining JD gap is model routing and tiering. The project has golden datasets and trace scorers, but it has not yet run the same agent tasks across multiple model/provider tiers to decide which tasks can use cheaper/faster models without losing output quality.
+- Multi-provider tradeoff evidence is also missing. The narrative should not merely say "understands OpenAI and Anthropic"; it should show comparable runs, observed failure modes, latency/cost notes, and a routing decision.
+
+## Next JD-Aligned Work
+
+The next highest-signal work is:
+
+1. Run model-routing and tiering evals over the existing golden suites: tool-use judgment, source-need generation, source-event/query-variant traces, and product-smoke turns. Compare at least a strong model tier and a cheaper/faster model tier, and record pass rate, failure modes, latency, and cost or cost proxy.
+2. Convert those results into a routing decision: which tasks require the strongest model, which can safely use a cheaper tier, and which should stay deterministic inside the CLI.
+3. Add multi-provider comparison evidence where available, especially prompt-following behavior, trace completeness, source-need quality, token economics, and failure modes.
+4. Optimize hosted-vector latency by reducing or parallelizing query-variant fanout while preserving hybrid+variants quality.
+5. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
+6. Keep Pinecone quality/latency/cache/cost reports beside local vector-store reports as the hosted retrieval guardrail.
+
+This keeps the work aligned with the JD: model routing must be data-backed, retrieval choices must be measured, and production-oriented infrastructure should support the eval story rather than distract from it.
+
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Search source material when the answer needs Money Models support for a concept, comparison, diagnosis, or recommendation.
+
+Do not search source material as a substitute for missing business facts. If the responsible next move is to get CAC, gross profit, fulfillment cost, current offer details, or prior-session context before making a recommendation, do that first. Search can come later when the agent has enough business context to make a source-backed claim.
+
+Do use source search when the snapshot or prior-session context already contains enough facts for a source-backed explanation, diagnosis, comparison, or recommendation. A missing optional field should not block search when the user is asking for conceptual source support.
+
+Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
+
+Use the smallest source need that can support the answer:
+
+- `teaching_evidence`: explain a Money Models concept.
+- `diagnostic_evidence`: support a diagnosis of the business constraint using known facts.
+- `comparison_evidence`: compare Money Models concepts or options.
+- `recommendation_evidence`: support a recommended next move after the needed business facts are available.
+
+Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+
+For each source-material search, write 2-4 `query_variants` inside the SourceNeed. These are semantic search requests authored by the agent for the specific evidence needed in the current turn. Do not rely on the deterministic fallback query except for manual debugging or as a last-resort safety net. Good variants should be short, source-facing, and focused on the claim being supported, not a pasted user message.
+
+Why 2-4: one query is often too brittle because source material may use different wording than the human. Two variants is the minimum useful fanout, three is the normal target, and four is the cap to avoid noisy spray-and-pray retrieval. If you need more than four variants, split the answer into narrower SourceNeeds instead.
+
+Common split: if the answer needs both unit-economics interpretation and a proposed offer-stack fix, run one `diagnostic_evidence` search on `unit-economics`, then a separate `recommendation_evidence` search on the specific fix layer such as `upsells`, `continuity`, `offers`, or `downsells`. Do not combine broad economics terms and offer-stack layers into one catch-all SourceNeed; that makes retrieval noisy.
+
+Boundary rule: do not label a unit-economics search as `recommendation_evidence` just because the final answer contains a recommendation. If the source material is being used to justify why the economics point in a certain direction, the SourceNeed is `diagnostic_evidence` on `unit-economics`. Then, if you recommend a concrete next move such as a front-end offer, upsell, continuity path, or downsell/payment-plan path, run a separate `recommendation_evidence` search on that concrete fix layer.
+
+Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
+
+Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
+
+Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+Keep source layers minimal. Extra layers make retrieval noisier.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+2026-06-14T00:20:23.213090Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:20:23.213263Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:20:23.213810Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:20:23.219371Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:23.219738Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:23.238188Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.238215Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.238603Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.238609Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.239007Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.239012Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.239492Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.239498Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.239939Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.239943Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.240898Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.240904Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:23.596211Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:23.604684Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:23.604709Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The runbook says concept explanations should use source search when they need Money Models support. I’m checking the saved snapshot first so the explanation can be anchored to this business instead of staying generic.
+exec
+/bin/zsh -lc "CONTEXT_DIR='/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir'
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir \""'$CONTEXT_DIR"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "schema_version": "business_snapshot.v1",
+  "business": {
+    "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+    "icp": "STR and second-home owners with $80K-$200K+ project capacity",
+    "delivery_model": "Lisa-led full-service design planning, procurement, and installation"
+  },
+  "money_model": {
+    "attraction_offer": {
+      "exists": true,
+      "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "price": 597
+    },
+    "core_offer": {
+      "exists": true,
+      "description": "full-service STR and second-home design",
+      "price": 15000
+    },
+    "upsell": {
+      "exists": true,
+      "description": "pre-designed room packages sold per room or bundle",
+      "price": 5000
+    },
+    "downsell": {
+      "exists": false,
+      "description": null,
+      "price": null
+    },
+    "continuity": {
+      "exists": false,
+      "description": null,
+      "price": null
+    }
+  },
+  "economics": {
+    "cac": 1000,
+    "first_30_day_gross_profit": 10000,
+    "monthly_recurring_gross_profit": 0,
+    "gross_margin": 0.769,
+    "lifetime_gross_profit": null,
+    "payback_period_months": 1.0
+  },
+  "problem": {
+    "user_goal": "diagnose cash payback",
+    "reported_symptoms": [
+      "wants to understand how much can be spent on acquisition"
+    ],
+    "diagnosed_constraints": []
+  },
+  "advisor_state": {
+    "advisory_status": "diagnosable",
+    "missing_fields": [],
+    "ready_for_payback_diagnosis": true,
+    "ready_for_offer_stack_diagnosis": true,
+    "likely_retrieval_layers": [
+      "unit-economics"
+    ],
+    "retrieval_query_terms": [
+      "premium full-service interior design firm for short-term rental and second-home projects",
+      "STR and second-home owners with $80K-$200K+ project capacity",
+      "full-service STR and second-home design",
+      "diagnose cash payback",
+      "wants to understand how much can be spent on acquisition",
+      "CAC",
+      "first 30 day gross profit",
+      "payback period"
+    ]
+  },
+  "field_sources": {
+    "economics.cac": {
+      "confidence": "medium",
+      "source_type": "user_chat",
+      "value_note": "Referral partner cost averaged to about $1k per client."
+    },
+    "economics.first_30_day_gross_profit": {
+      "confidence": "medium",
+      "source_type": "user_chat"
+    },
+    "economics.payback_period_months": {
+      "source_type": "calculated",
+      "inputs": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit",
+        "economics.monthly_recurring_gross_profit"
+      ],
+      "confidence": "high"
+    }
+  }
+}
+
+2026-06-14T00:20:29.307007Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:20:29.307180Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:20:29.307716Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:20:29.312840Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:29.313206Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:29.327946Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.327957Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.328304Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.328309Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.328705Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.328711Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.329096Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.329103Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.329490Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.329494Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.330273Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.330278Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:29.695930Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:29.704509Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:29.704539Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The snapshot has enough economics to answer: $1k CAC, about $10k first-30-day gross profit, and 1.0 month payback. I’m pulling source support for the concept rather than asking for more facts.
+exec
+/bin/zsh -lc "CONTEXT_DIR='/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir'
+SOURCE_NEED='{\"intent\":\"teaching_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"client-financed acquisition\",\"CAC\",\"cash payback\",\"gross profit\"],\"user_turn\":\"how should I think about client-financed acquisition here?\",\"query_variants\":[\"client financed acquisition CAC cash payback gross profit\",\"use customer cash flow to fund acquisition payback period\",\"front end cash flow funds customer acquisition\"]}'
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir \""'$CONTEXT_DIR" --source-need-json "$SOURCE_NEED" --top-k 5' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir",
+  "retrieval_backend": "bm25",
+  "vector_store": "local",
+  "namespace_policy": "source_need_target_namespaces",
+  "namespace_prefix": null,
+  "source_need": {
+    "intent": "teaching_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "focus_terms": [
+      "client-financed acquisition",
+      "CAC",
+      "cash payback",
+      "gross profit"
+    ],
+    "user_turn": "how should I think about client-financed acquisition here?",
+    "query_variants": [
+      "client financed acquisition CAC cash payback gross profit",
+      "use customer cash flow to fund acquisition payback period",
+      "front end cash flow funds customer acquisition"
+    ],
+    "target_namespaces": []
+  },
+  "queries": [
+    {
+      "intent": "teaching_evidence",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "query": "client financed acquisition CAC cash payback gross profit",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "layer": "unit-economics"
+    },
+    {
+      "intent": "teaching_evidence",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "query": "use customer cash flow to fund acquisition payback period",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "layer": "unit-economics"
+    },
+    {
+      "intent": "teaching_evidence",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "query": "front end cash flow funds customer acquisition",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "layer": "unit-economics"
+    },
+    {
+      "intent": "teaching_evidence",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "query": "client-financed acquisition CAC cash payback gross profit interior design STR",
+      "reason": "Deterministic fallback query from source-need focus terms and compact business context.",
+      "layer": "unit-economics"
+    }
+  ],
+  "source_material": [
+    {
+      "intent": "teaching_evidence",
+      "layer": "unit-economics",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "client financed acquisition CAC cash payback gross profit",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "chunks": [
+        {
+          "id": "context:1",
+          "chapter": "context",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 19.584,
+          "preview": "## [\u00a71.1.b] The CAC problem & introducing CFA  So, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs ",
+          "text": "## [\u00a71.1.b] The CAC problem & introducing CFA\n\nSo, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs you a hundred dollars to get a customer. That's CAC, cost to acquire a customer, CAC. So LTVG is a thousand, CAC's a hundred, LTVG to CAC, which is a ratio, is 10:1, which means for every dollar you put in, you get $10 back out. Now, you should make that trade every time. But, what if you make the thousand dollars in a bulk payment 12 months later? Well, shoot, so that means you put a hundred dollars out today and then you do all this work and then you get paid a year later. Ew. Well, you should still make the trade, but you're gonna have a lot of cash flow problems , right? So you have your negative 100 day one, or month zero, and then you're still losing money, all this time delivering to the customer, and then finally they pay at the end. It could be equally said that, let's say i- if we had a 10-year LTV and someone paid you a hundred dollars a year for, you know, $8.33 a month for the next 10 years, you should totally make that deal. You're still not gonna have any money even be profitable until month 13. You would either have to burn your own savings, which sucks. You'd have to burn other people's savings through debt and equity, meaning you sell portions of your business in order to get more cash, you do fundraising, right? Or you raise some sort of loan from a bank so that they can basically fund your business while you wait to get this money back from customers, which sucks and it's hard. S- and I get it, because I've been there. But the good news is there is a better way, which is door three. Uh, make more than $100 in profit in the first 30 days, for this particular instance. And so this book is door three. So, if the problem is that most advertising isn't profitable, the solution is something I call client-financed acquisition, or customer-financed acquisition. CFA is sometimes what I refer to it as. And the point of that is to make money faster. This enters the element of speed into the conversation, not just how much do you spend, how much do you make back, but how fast do you make it back? Because how fast you make it back can be the thing that unlocks all the growth in your business or tanks your business overnight.So, customer finance acquisition or client finance acquisition, CFA, is a process in which gross profit generated from a single client within the first 30 days is greater than the cost of acquiring that customer. So where gross profit, the extra cash that you make from somebody coming into your business, from one customer in the first month is more than the cost of getting that customer. Now, if you're listening or following along from the book, this isn't in the book. And the reason for that is that every single... of my proofreaders, as soon as I start getting into math, they're like, \"I don't know if people are gonna be able to, like, follow along with that.\" And so I ended up just cutting the math sections from the book. But they are here because it's important. So, the purpose of this is to accomplish customer finance acquisition."
+        },
+        {
+          "id": "cfa:0",
+          "chapter": "cfa",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 18.553,
+          "preview": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three lev",
+          "text": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three levels of advertising. for you. as a business owner. So let's start with level one. This is where lifetime gross profit is greater than the cost to acquire a customer. This is the dull level. All right? So you've gotta make more money than it costs you to make it over the lifespan of the customer, ideally at least three times more. So, what it costs you to make the money, how much money you make. Fundamentally, that's it. If you don't have that, then you don't have a business. So you need at least this to be a business that can make money and grow. So level two is 30-day gross profit, not lifetime. Notice the big difference here is the time difference. This is forever, and this is in the first month, all right, is greater than CAC. I'll explain why the first month is so important in a second. All right, so we wanna make more money than it costs you to make it in 30 days. And so the result, this is the key part, is that you never spend your own money to grow. And so why is 30, why is 30 days the number? Because that's the amount of time that any business can borrow money with zero interest in the form of a credit card or credit lines. Many businesses, banks will even give you cr- uh, interest-free credit lines for 30, sometimes 60, sometimes 90 days depending on, you know, your relationship with the bank, how much money it is, whatever. But at least every business can get 30-day interest-free money. And so that means that the way the financial system exists right, now, at least in America, you can get money and not pay for it as long as you pay it back in a month, which means that my objective for you, because I've always operated on, I've owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long"
+        },
+        {
+          "id": "how-businesses-make-money:2",
+          "chapter": "how-businesses-make-money",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 17.744,
+          "preview": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period  Which then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math",
+          "text": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period\n\nWhich then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math. So you're here, and you can do math. So if you're looking closely, you may notice that there's three numbers that make the biggest difference here. All right? So number one is CAC, which is the cost of our customer. The second. is the fact that I talk about this 30-day thing. Like, why am I talking about 30 days? And the third is gross profit, which those three, metrics triangulate acquisition, meaning getting new customers. CAC is how much it costs. GP is to make a profit. In short, PPD means payback period. How long it takes you to make that money back. How long it takes you to make your cost back. So ideally, you get, have low CAC, which means you have cheap customers. You have high GP, who pay you lots of money, and then short payback period, which means really fast. Outcome is more money faster. All right. And that's pretty much the training in this book. Like, that's what this is all about. So that's, that's what we accomplished. The rest of this is all about how. Okay? So boom, those are the three numbers that matter, and let's get into the first one in a little bit more detail, 'cause some of you guys are like, \"CAC? Sounds like something my cat threw up.\" Understood. That's the next one."
+        },
+        {
+          "id": "payback-period:0",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ],
+          "score": 17.738,
+          "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A",
+          "text": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. All right, so, we got the definition, why it's important, examples, and then how to improve it. Let's start with definition. So payback period, how long it takes until gross profit, is greater than CAC. In other words, how long does it take to break even? The shorter it is, the easier it is to scale your advertising. So if I break even in a day versus breaking even in five years, it's a lot easier f- for me to scale. Right? 'Cause I get my dollar back tomorrow, then I can spend it again. Some people call this a cash conversion cycle. I probably won't say that again, but just in case you hear it, that's what that means. All right, so that's the definition. Here's the importance. All right, so problem number one, businesses take too long to break even on getting new customers. And so they have to manage cash flow by making a marketing budget. I think this is silly. We solved that problem. Problem number two is that businesses feel guilty making multiple offers in a row because they think that they bother people. They are wrong. The people who feel this way are poorer than they should be. And that's exactly how buyers buy, by the way, is that there's short windows of time that they go super hyper-buying cycle and then they go dormant again. And so if you do not take advantage of this hyper-buying cycle when someone makes a new decision or starts a new lifestyle or make, creates a new identity for themselves, you will miss out, and another business who is intelligent, who makes more money than you, will profit. So, here's a story you probably haven't heard before. So, uh, friend of mine, business owner, decides to lose weight, and, uh, remembers that they like riding bikes, and goes online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner"
+        },
+        {
+          "id": "cfa:1",
+          "chapter": "cfa",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 14.012,
+          "preview": "owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long as I figure out",
+          "text": "owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long as I figure out a, way to pay it back in that first month. All right? And so you can use the credit card to get your customers, then pay the card back, then reuse the money, recycle the cash, and get another customer. All right? As long as your gross profit in the first 30 days is greater than the cost to get them, you can never carry debt while growing your business, which is a sizeable advantage. So, this is what level two advertising. would look like. So 30 days' gross profit. So that means that, like, if I got that first customer, right, if it cost me, uh, 160 to get the customer, and I got 180 back in gross profit, then it's just all free. They're all... It's just all free. That's how it works. And so note is that if you have an XXX limit on your credit card, you'll always be limited by the amount of customers that XXX number buys you before having to pay it back. And so this assumes that you don't reinvest the excess profits after the 30 days on marketing rather than putting it in your pocket. Okay? So once you unlock acquisition this way, typically, you will get limited by your operational constraints before you will get limited by your advertising constraints. You will not be able to handle the amount of customers that you can bring in, and that's what's going to throttle down your advertising more than you can't get more customers. So that's level two is that now your 30-day gross profit is greater than your CAC, which means you're just getting free customers now. Level three is where I like to live, which is that my 30-day gross profit is greater than two times the cost of getting a customer. Okay? So pay attention to what happens here. So you make gross profit more than twice CAC in the first 30 days, and the result is never being limited by money at all. Remember, the first version of this is, like, I'm limited by the amount of credit card that I can, uh, have access to. With this, there are no limits. And this is the goal of everything that I'm gonna basically go"
+        }
+      ]
+    },
+    {
+      "intent": "teaching_evidence",
+      "layer": "unit-economics",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "use customer cash flow to fund acquisition payback period",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "chunks": [
+        {
+          "id": "payback-period:0",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ],
+          "score": 17.133,
+          "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A",
+          "text": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. All right, so, we got the definition, why it's important, examples, and then how to improve it. Let's start with definition. So payback period, how long it takes until gross profit, is greater than CAC. In other words, how long does it take to break even? The shorter it is, the easier it is to scale your advertising. So if I break even in a day versus breaking even in five years, it's a lot easier f- for me to scale. Right? 'Cause I get my dollar back tomorrow, then I can spend it again. Some people call this a cash conversion cycle. I probably won't say that again, but just in case you hear it, that's what that means. All right, so that's the definition. Here's the importance. All right, so problem number one, businesses take too long to break even on getting new customers. And so they have to manage cash flow by making a marketing budget. I think this is silly. We solved that problem. Problem number two is that businesses feel guilty making multiple offers in a row because they think that they bother people. They are wrong. The people who feel this way are poorer than they should be. And that's exactly how buyers buy, by the way, is that there's short windows of time that they go super hyper-buying cycle and then they go dormant again. And so if you do not take advantage of this hyper-buying cycle when someone makes a new decision or starts a new lifestyle or make, creates a new identity for themselves, you will miss out, and another business who is intelligent, who makes more money than you, will profit. So, here's a story you probably haven't heard before. So, uh, friend of mine, business owner, decides to lose weight, and, uh, remembers that they like riding bikes, and goes online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner"
+        },
+        {
+          "id": "context:1",
+          "chapter": "context",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 13.14,
+          "preview": "## [\u00a71.1.b] The CAC problem & introducing CFA  So, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs ",
+          "text": "## [\u00a71.1.b] The CAC problem & introducing CFA\n\nSo, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs you a hundred dollars to get a customer. That's CAC, cost to acquire a customer, CAC. So LTVG is a thousand, CAC's a hundred, LTVG to CAC, which is a ratio, is 10:1, which means for every dollar you put in, you get $10 back out. Now, you should make that trade every time. But, what if you make the thousand dollars in a bulk payment 12 months later? Well, shoot, so that means you put a hundred dollars out today and then you do all this work and then you get paid a year later. Ew. Well, you should still make the trade, but you're gonna have a lot of cash flow problems , right? So you have your negative 100 day one, or month zero, and then you're still losing money, all this time delivering to the customer, and then finally they pay at the end. It could be equally said that, let's say i- if we had a 10-year LTV and someone paid you a hundred dollars a year for, you know, $8.33 a month for the next 10 years, you should totally make that deal. You're still not gonna have any money even be profitable until month 13. You would either have to burn your own savings, which sucks. You'd have to burn other people's savings through debt and equity, meaning you sell portions of your business in order to get more cash, you do fundraising, right? Or you raise some sort of loan from a bank so that they can basically fund your business while you wait to get this money back from customers, which sucks and it's hard. S- and I get it, because I've been there. But the good news is there is a better way, which is door three. Uh, make more than $100 in profit in the first 30 days, for this particular instance. And so this book is door three. So, if the problem is that most advertising isn't profitable, the solution is something I call client-financed acquisition, or customer-financed acquisition. CFA is sometimes what I refer to it as. And the point of that is to make money faster. This enters the element of speed into the conversation, not just how much do you spend, how much do you make back, but how fast do you make it back? Because how fast you make it back can be the thing that unlocks all the growth in your business or tanks your business overnight.So, customer finance acquisition or client finance acquisition, CFA, is a process in which gross profit generated from a single client within the first 30 days is greater than the cost of acquiring that customer. So where gross profit, the extra cash that you make from somebody coming into your business, from one customer in the first month is more than the cost of getting that customer. Now, if you're listening or following along from the book, this isn't in the book. And the reason for that is that every single... of my proofreaders, as soon as I start getting into math, they're like, \"I don't know if people are gonna be able to, like, follow along with that.\" And so I ended up just cutting the math sections from the book. But they are here because it's important. So, the purpose of this is to accomplish customer finance acquisition."
+        },
+        {
+          "id": "how-businesses-make-money:2",
+          "chapter": "how-businesses-make-money",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 13.044,
+          "preview": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period  Which then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math",
+          "text": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period\n\nWhich then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math. So you're here, and you can do math. So if you're looking closely, you may notice that there's three numbers that make the biggest difference here. All right? So number one is CAC, which is the cost of our customer. The second. is the fact that I talk about this 30-day thing. Like, why am I talking about 30 days? And the third is gross profit, which those three, metrics triangulate acquisition, meaning getting new customers. CAC is how much it costs. GP is to make a profit. In short, PPD means payback period. How long it takes you to make that money back. How long it takes you to make your cost back. So ideally, you get, have low CAC, which means you have cheap customers. You have high GP, who pay you lots of money, and then short payback period, which means really fast. Outcome is more money faster. All right. And that's pretty much the training in this book. Like, that's what this is all about. So that's, that's what we accomplished. The rest of this is all about how. Okay? So boom, those are the three numbers that matter, and let's get into the first one in a little bit more detail, 'cause some of you guys are like, \"CAC? Sounds like something my cat threw up.\" Understood. That's the next one."
+        },
+        {
+          "id": "payback-period:1",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ],
+          "score": 9.673,
+          "preview": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you w",
+          "text": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you were like, \"Well, I don't wanna offer a helmet. I don't wanna offer shoes. I don't wanna offer glo- I don't wanna seem pushy,\" she wants to buy them! She signed up for a race. She's going t- she's going to buy them. It's just whether she's gonna buy them from you or the guy down the street. And there's a very big difference between hard selling and letting a customer know the offers you have available. You're making offers available to them. And if you ha- think about it this way. If someone has a problem and you have the ability to solve it, it's my opinion that ethically, you should let them know you can solve it, and what it would cost them for you to do it for them. You make them aware. If they say no, no problem! Fine! But at least tell them. Make the offer. Because you sell 0% of people who don't know you have something to sell. You are making offers. They can choose to take them or not, and if you believe in what you sell solves the problem, then solve more problems. Yes is cool. No, also not... also not cool. Yes, also cool. All right, so that's the importance. So let's do a quick example. So payback periods. So if it costs you $160 to acquire a customer, CAC, and you sell them widget for $100 a month, that costs you 20 bucks gross profit, so $80, what's your payback period? We make $100 from the- for the person who buys their first month. Our gross profit's 80 'cause we have to have 20 bucks better off for cost of goods. So that means that I spent 160 but I made 100 back, but I had another cost of 20 for my cost of goods, so I have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period?"
+        },
+        {
+          "id": "cfa:0",
+          "chapter": "cfa",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 9.595,
+          "preview": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three lev",
+          "text": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three levels of advertising. for you. as a business owner. So let's start with level one. This is where lifetime gross profit is greater than the cost to acquire a customer. This is the dull level. All right? So you've gotta make more money than it costs you to make it over the lifespan of the customer, ideally at least three times more. So, what it costs you to make the money, how much money you make. Fundamentally, that's it. If you don't have that, then you don't have a business. So you need at least this to be a business that can make money and grow. So level two is 30-day gross profit, not lifetime. Notice the big difference here is the time difference. This is forever, and this is in the first month, all right, is greater than CAC. I'll explain why the first month is so important in a second. All right, so we wanna make more money than it costs you to make it in 30 days. And so the result, this is the key part, is that you never spend your own money to grow. And so why is 30, why is 30 days the number? Because that's the amount of time that any business can borrow money with zero interest in the form of a credit card or credit lines. Many businesses, banks will even give you cr- uh, interest-free credit lines for 30, sometimes 60, sometimes 90 days depending on, you know, your relationship with the bank, how much money it is, whatever. But at least every business can get 30-day interest-free money. And so that means that the way the financial system exists right, now, at least in America, you can get money and not pay for it as long as you pay it back in a month, which means that my objective for you, because I've always operated on, I've owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long"
+        }
+      ]
+    },
+    {
+      "intent": "teaching_evidence",
+      "layer": "unit-economics",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "front end cash flow funds customer acquisition",
+      "reason": "Agent-generated query variant for the selected source need.",
+      "chunks": [
+        {
+          "id": "context:1",
+          "chapter": "context",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 10.918,
+          "preview": "## [\u00a71.1.b] The CAC problem & introducing CFA  So, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs ",
+          "text": "## [\u00a71.1.b] The CAC problem & introducing CFA\n\nSo, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs you a hundred dollars to get a customer. That's CAC, cost to acquire a customer, CAC. So LTVG is a thousand, CAC's a hundred, LTVG to CAC, which is a ratio, is 10:1, which means for every dollar you put in, you get $10 back out. Now, you should make that trade every time. But, what if you make the thousand dollars in a bulk payment 12 months later? Well, shoot, so that means you put a hundred dollars out today and then you do all this work and then you get paid a year later. Ew. Well, you should still make the trade, but you're gonna have a lot of cash flow problems , right? So you have your negative 100 day one, or month zero, and then you're still losing money, all this time delivering to the customer, and then finally they pay at the end. It could be equally said that, let's say i- if we had a 10-year LTV and someone paid you a hundred dollars a year for, you know, $8.33 a month for the next 10 years, you should totally make that deal. You're still not gonna have any money even be profitable until month 13. You would either have to burn your own savings, which sucks. You'd have to burn other people's savings through debt and equity, meaning you sell portions of your business in order to get more cash, you do fundraising, right? Or you raise some sort of loan from a bank so that they can basically fund your business while you wait to get this money back from customers, which sucks and it's hard. S- and I get it, because I've been there. But the good news is there is a better way, which is door three. Uh, make more than $100 in profit in the first 30 days, for this particular instance. And so this book is door three. So, if the problem is that most advertising isn't profitable, the solution is something I call client-financed acquisition, or customer-financed acquisition. CFA is sometimes what I refer to it as. And the point of that is to make money faster. This enters the element of speed into the conversation, not just how much do you spend, how much do you make back, but how fast do you make it back? Because how fast you make it back can be the thing that unlocks all the growth in your business or tanks your business overnight.So, customer finance acquisition or client finance acquisition, CFA, is a process in which gross profit generated from a single client within the first 30 days is greater than the cost of acquiring that customer. So where gross profit, the extra cash that you make from somebody coming into your business, from one customer in the first month is more than the cost of getting that customer. Now, if you're listening or following along from the book, this isn't in the book. And the reason for that is that every single... of my proofreaders, as soon as I start getting into math, they're like, \"I don't know if people are gonna be able to, like, follow along with that.\" And so I ended up just cutting the math sections from the book. But they are here because it's important. So, the purpose of this is to accomplish customer finance acquisition."
+        },
+        {
+          "id": "make-your-money-model:1",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 9.375,
+          "preview": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)  So let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in.",
+          "text": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)\n\nSo let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in. They're coming off win-your-money-back. They're coming on, uh, buy X get Y free. They're coming on, uh, decoy offer. Whatever it is, they're coming on the front end. You say, \"Great, now I'm either gonna do a menu upsell, I'm gonna do an anchor- anchor upsell, I'm gonna do a rollover upsell.\" All of those things you can use as your second, second piece. Then you can pick your downsell offer. So what if they say no to any of these other offers? Well, we have our. entire downsell flow, which is we start with payment plans, uh, then we do a free trial, or we do payment plan to feature downsell. Then we go to free trial. You just pick the ones that you know that you can execute on right? now. Step four, then you' pick a continuity offer. And the result is. that you get your cash back in 30 days, more customers, and make more money."
+        },
+        {
+          "id": "make-your-money-model:0",
+          "chapter": "make-your-money-model",
+          "layer": "offers",
+          "layers": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 8.701,
+          "preview": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)  So we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where ",
+          "text": "## [\u00a77.1.a] Overview + three worked examples (fitness, Gym Launch, newsletter)\n\nSo we just finished all of the continuity offers, continuity bonuses, continuity discounts, and the weave fee offer, which leads us to making your money model. So it is now your turn. Remember, there's document, demonstrate, duplicate. This is where I turn. it over to you, where you, need to combine these things in such a way that you can maximize the amount of money that you make in the first 30 days, so you can profitably acquire customers and scale. So let's do a quick putting it all together. So overview. A money model, attraction offer, upsells, downsells, continuity. We have covered all four. If you are starting out, just pick one of the money models to inspire you to do something in your business. All right? If you're more advanced, you can start weaving two together. There are no rules for this. You can stack these. So you absolutely can do an attraction offer that you use as an upsell offer in your business. You can use a continuity offer on the front to attract customers. All of these things are possible. I try to present them in this way in the most logical format that I have tended to use them in my business. But there are no rules in business, as long as it is legal. So I leave that to you. All right, examples. So this is my fitness offer. So I tried to conceptualize this for you. So okay, on the front end, I ran a win-your-money-back offer. Then we would upsell, from a service perspective, for anybody who bought that, we'd upsell buy X get Y- Y free. So this would be them pre-paying time. And then we would upsell the continuity bonus. Great. So that would be the rollover upsell. Now, if someone, uh, didn't wanna do win-your-money-back, then we would downsell the free trial with penalty, and then we would use the menu upsell in terms of supplements, and then we'd do the rollover upsell on the back end. And so this was fundamentally the money model. So I used one, two, three, four, five of the offers that I talked about to make the money model that we had for fitness. This model was superior to other models on the market, which is why our gyms consistently out-compete other gyms in the marketplace. All right, so this is Gym Launch's model. So we used a decoy offer, that was the strategy call, that was the, uh, you could also consider it a free with consumption, uh, depending on how you wanna see it. But we had that offer. Then we did a classic upsell. Then we did the money- menu upsell on the back end into what level of service they wanted for the extended period of time. Did you want these other services that went with, uh, Gym Launch? Or sorry, Gym Legacy, which was the back end that we had. So some people opted for the highest version. Some people said, \"You know what? I don't need, like, agency services. I just want the ads. Like, you don't have to run them. Hey, uh, but I do want you to, uh, train my sales team.\" And so we would basically menu upsell the features that we thought would be best for them. Now, if people didn't take the offer, we had a payment plan, feature downsell, free trial, right? And so this, so this is one, two, three, four, five, six, six of the structures that I went over for this presentation is what created the Gym Launch money model. Now, uh, newsletter and consulting. So I just love this money model. It's just, like, one of my favorite ones, uh, 'cause I mentioned it, uh, during this video, uh, training a couple times. But this was an attraction offer which was a free trial. But you're like, \"Wait, how could you use a free trial as an attraction offer?\" Yes, there are no rules. So we used a free trial as the attraction offer. The thing that made it cash flow was the pay less now, pay more later option of saying, \"Hey, we'll get you the past newsletters.\" And technically, this was combined with a lifetime lower rate. So this is a continuity discount and a pay less, pay less now, pay more later, put together as one. This was the thing that got them to engage. So free trial start, 3.99 a month. Oh wait, let' me give you two years of newsletters today, and give you this discount if you choose to skip your trial. And then, of course, the, uh, the back end on that one was, uh, the business, you know, upsell consulting and things like that. If it were me, this is just that- that particular business, if it were me, I would do buy X get Y free here. So now that I've got the continuity, I would then say, \"Great, now that you're in continuity, if you buy seven, I'll give you five.\" And then I can front load even more cash. Now, if- if I know that people stay on average two years, then I wouldn't do that, 'cause that would lose me money. But if people stay, let's say, on average, another three months, then it makes sense to do buy six get six, 'cause I still double LTV and get that cash up front. So these were actually my original notes. So I, I wanted to show you how mine actually looked. Um, and I've changed some of the names, uh, to make them a little bit more, like, friendly. Uh, but this is actually what it looked like in terms of how I would design, uh, the money models. And so the possibilities really are endless."
+        },
+        {
+          "id": "payback-period:0",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ],
+          "score": 7.494,
+          "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A",
+          "text": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. All right, so, we got the definition, why it's important, examples, and then how to improve it. Let's start with definition. So payback period, how long it takes until gross profit, is greater than CAC. In other words, how long does it take to break even? The shorter it is, the easier it is to scale your advertising. So if I break even in a day versus breaking even in five years, it's a lot easier f- for me to scale. Right? 'Cause I get my dollar back tomorrow, then I can spend it again. Some people call this a cash conversion cycle. I probably won't say that again, but just in case you hear it, that's what that means. All right, so that's the definition. Here's the importance. All right, so problem number one, businesses take too long to break even on getting new customers. And so they have to manage cash flow by making a marketing budget. I think this is silly. We solved that problem. Problem number two is that businesses feel guilty making multiple offers in a row because they think that they bother people. They are wrong. The people who feel this way are poorer than they should be. And that's exactly how buyers buy, by the way, is that there's short windows of time that they go super hyper-buying cycle and then they go dormant again. And so if you do not take advantage of this hyper-buying cycle when someone makes a new decision or starts a new lifestyle or make, creates a new identity for themselves, you will miss out, and another business who is intelligent, who makes more money than you, will profit. So, here's a story you probably haven't heard before. So, uh, friend of mine, business owner, decides to lose weight, and, uh, remembers that they like riding bikes, and goes online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner"
+        },
+        {
+          "id": "ten-years-ten-minutes:3",
+          "chapter": "ten-years-ten-minutes",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 7.095,
+          "preview": "there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-m",
+          "text": "there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program. Then you offer a discount to the entire fee if they commit to the longer term. If they cancel inside the term, they pay you the fee. Freemium, which I didn't, I cut from this one. I'll make a YouTube video about it 'cause I think it really only applies to software, and I thought that was too niche. All right, you build money models one stage at a time. Once I get customers reliably, then I make sure that they pay for themselves reliably. Then I make sure that they pay for other customers reliably. Then I start maximizing each customer's long term value. Then I print as much money as I possibly can. Bottom line, the knowledge in these bullets brought me more free and profitable customers than I've known what to do with. If executed, they will do the same for you. And with that, cash will no longer be a constraint in your business. I hope that this book and this training helps you guys grow your dream as big as you darn well please. And that is 10 years in 10 minutes. So in the next one, we'll just put it all together and put a nice bow on it, and we'll wrap this puppy up."
+        }
+      ]
+    },
+    {
+      "intent": "teaching_evidence",
+      "layer": "unit-economics",
+      "layers": [
+        "unit-economics"
+      ],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "client-financed acquisition CAC cash payback gross profit interior design STR",
+      "reason": "Deterministic fallback query from source-need focus terms and compact business context.",
+      "chunks": [
+        {
+          "id": "context:1",
+          "chapter": "context",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 20.406,
+          "preview": "## [\u00a71.1.b] The CAC problem & introducing CFA  So, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs ",
+          "text": "## [\u00a71.1.b] The CAC problem & introducing CFA\n\nSo, here's the problem this book solves. Most advertising isn't profitable, AKA, people lose money getting customers. And so let me explain how this works. Let's say you make a thousand dollars in profit per customer over their lifetime. So this would be a lifetime gross profit of a thousand bucks. And it costs you a hundred dollars to get a customer. That's CAC, cost to acquire a customer, CAC. So LTVG is a thousand, CAC's a hundred, LTVG to CAC, which is a ratio, is 10:1, which means for every dollar you put in, you get $10 back out. Now, you should make that trade every time. But, what if you make the thousand dollars in a bulk payment 12 months later? Well, shoot, so that means you put a hundred dollars out today and then you do all this work and then you get paid a year later. Ew. Well, you should still make the trade, but you're gonna have a lot of cash flow problems , right? So you have your negative 100 day one, or month zero, and then you're still losing money, all this time delivering to the customer, and then finally they pay at the end. It could be equally said that, let's say i- if we had a 10-year LTV and someone paid you a hundred dollars a year for, you know, $8.33 a month for the next 10 years, you should totally make that deal. You're still not gonna have any money even be profitable until month 13. You would either have to burn your own savings, which sucks. You'd have to burn other people's savings through debt and equity, meaning you sell portions of your business in order to get more cash, you do fundraising, right? Or you raise some sort of loan from a bank so that they can basically fund your business while you wait to get this money back from customers, which sucks and it's hard. S- and I get it, because I've been there. But the good news is there is a better way, which is door three. Uh, make more than $100 in profit in the first 30 days, for this particular instance. And so this book is door three. So, if the problem is that most advertising isn't profitable, the solution is something I call client-financed acquisition, or customer-financed acquisition. CFA is sometimes what I refer to it as. And the point of that is to make money faster. This enters the element of speed into the conversation, not just how much do you spend, how much do you make back, but how fast do you make it back? Because how fast you make it back can be the thing that unlocks all the growth in your business or tanks your business overnight.So, customer finance acquisition or client finance acquisition, CFA, is a process in which gross profit generated from a single client within the first 30 days is greater than the cost of acquiring that customer. So where gross profit, the extra cash that you make from somebody coming into your business, from one customer in the first month is more than the cost of getting that customer. Now, if you're listening or following along from the book, this isn't in the book. And the reason for that is that every single... of my proofreaders, as soon as I start getting into math, they're like, \"I don't know if people are gonna be able to, like, follow along with that.\" And so I ended up just cutting the math sections from the book. But they are here because it's important. So, the purpose of this is to accomplish customer finance acquisition."
+        },
+        {
+          "id": "how-businesses-make-money:2",
+          "chapter": "how-businesses-make-money",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 17.744,
+          "preview": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period  Which then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math",
+          "text": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period\n\nWhich then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math. So you're here, and you can do math. So if you're looking closely, you may notice that there's three numbers that make the biggest difference here. All right? So number one is CAC, which is the cost of our customer. The second. is the fact that I talk about this 30-day thing. Like, why am I talking about 30 days? And the third is gross profit, which those three, metrics triangulate acquisition, meaning getting new customers. CAC is how much it costs. GP is to make a profit. In short, PPD means payback period. How long it takes you to make that money back. How long it takes you to make your cost back. So ideally, you get, have low CAC, which means you have cheap customers. You have high GP, who pay you lots of money, and then short payback period, which means really fast. Outcome is more money faster. All right. And that's pretty much the training in this book. Like, that's what this is all about. So that's, that's what we accomplished. The rest of this is all about how. Okay? So boom, those are the three numbers that matter, and let's get into the first one in a little bit more detail, 'cause some of you guys are like, \"CAC? Sounds like something my cat threw up.\" Understood. That's the next one."
+        },
+        {
+          "id": "payback-period:0",
+          "chapter": "payback-period",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ],
+          "score": 17.738,
+          "preview": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. A",
+          "text": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. All right, so, we got the definition, why it's important, examples, and then how to improve it. Let's start with definition. So payback period, how long it takes until gross profit, is greater than CAC. In other words, how long does it take to break even? The shorter it is, the easier it is to scale your advertising. So if I break even in a day versus breaking even in five years, it's a lot easier f- for me to scale. Right? 'Cause I get my dollar back tomorrow, then I can spend it again. Some people call this a cash conversion cycle. I probably won't say that again, but just in case you hear it, that's what that means. All right, so that's the definition. Here's the importance. All right, so problem number one, businesses take too long to break even on getting new customers. And so they have to manage cash flow by making a marketing budget. I think this is silly. We solved that problem. Problem number two is that businesses feel guilty making multiple offers in a row because they think that they bother people. They are wrong. The people who feel this way are poorer than they should be. And that's exactly how buyers buy, by the way, is that there's short windows of time that they go super hyper-buying cycle and then they go dormant again. And so if you do not take advantage of this hyper-buying cycle when someone makes a new decision or starts a new lifestyle or make, creates a new identity for themselves, you will miss out, and another business who is intelligent, who makes more money than you, will profit. So, here's a story you probably haven't heard before. So, uh, friend of mine, business owner, decides to lose weight, and, uh, remembers that they like riding bikes, and goes online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner"
+        },
+        {
+          "id": "cfa:0",
+          "chapter": "cfa",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 14.557,
+          "preview": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three lev",
+          "text": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three levels of advertising. for you. as a business owner. So let's start with level one. This is where lifetime gross profit is greater than the cost to acquire a customer. This is the dull level. All right? So you've gotta make more money than it costs you to make it over the lifespan of the customer, ideally at least three times more. So, what it costs you to make the money, how much money you make. Fundamentally, that's it. If you don't have that, then you don't have a business. So you need at least this to be a business that can make money and grow. So level two is 30-day gross profit, not lifetime. Notice the big difference here is the time difference. This is forever, and this is in the first month, all right, is greater than CAC. I'll explain why the first month is so important in a second. All right, so we wanna make more money than it costs you to make it in 30 days. And so the result, this is the key part, is that you never spend your own money to grow. And so why is 30, why is 30 days the number? Because that's the amount of time that any business can borrow money with zero interest in the form of a credit card or credit lines. Many businesses, banks will even give you cr- uh, interest-free credit lines for 30, sometimes 60, sometimes 90 days depending on, you know, your relationship with the bank, how much money it is, whatever. But at least every business can get 30-day interest-free money. And so that means that the way the financial system exists right, now, at least in America, you can get money and not pay for it as long as you pay it back in a month, which means that my objective for you, because I've always operated on, I've owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long"
+        },
+        {
+          "id": "cfa:1",
+          "chapter": "cfa",
+          "layer": "unit-economics",
+          "layers": [
+            "unit-economics"
+          ],
+          "score": 14.012,
+          "preview": "owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long as I figure out",
+          "text": "owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long as I figure out a, way to pay it back in that first month. All right? And so you can use the credit card to get your customers, then pay the card back, then reuse the money, recycle the cash, and get another customer. All right? As long as your gross profit in the first 30 days is greater than the cost to get them, you can never carry debt while growing your business, which is a sizeable advantage. So, this is what level two advertising. would look like. So 30 days' gross profit. So that means that, like, if I got that first customer, right, if it cost me, uh, 160 to get the customer, and I got 180 back in gross profit, then it's just all free. They're all... It's just all free. That's how it works. And so note is that if you have an XXX limit on your credit card, you'll always be limited by the amount of customers that XXX number buys you before having to pay it back. And so this assumes that you don't reinvest the excess profits after the 30 days on marketing rather than putting it in your pocket. Okay? So once you unlock acquisition this way, typically, you will get limited by your operational constraints before you will get limited by your advertising constraints. You will not be able to handle the amount of customers that you can bring in, and that's what's going to throttle down your advertising more than you can't get more customers. So that's level two is that now your 30-day gross profit is greater than your CAC, which means you're just getting free customers now. Level three is where I like to live, which is that my 30-day gross profit is greater than two times the cost of getting a customer. Okay? So pay attention to what happens here. So you make gross profit more than twice CAC in the first 30 days, and the result is never being limited by money at all. Remember, the first version of this is, like, I'm limited by the amount of credit card that I can, uh, have access to. With this, there are no limits. And this is the goal of everything that I'm gonna basically go"
+        }
+      ]
+    }
+  ]
+}
+
+2026-06-14T00:20:40.025483Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:20:40.026605Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:20:40.029436Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:20:40.067226Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:40.068752Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:40.088802Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.088808Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.089359Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.089364Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.089714Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.089718Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.090083Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.090087Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.090447Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.090452Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.091335Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.091341Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:40.529203Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:40.538335Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:40.538360Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The retrieved chunks support the CFA definition and the three-number frame: CAC, first-30-day gross profit, and payback period. I’m going to record the advisor turn, then create the eval `run.json` with the exact observable tool steps.
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli turn record --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: python3.14 -m money_model_architect.cli turn record [-h]
+                                                           --business-dir BUSINESS_DIR
+                                                           --user-message USER_MESSAGE
+                                                           --assistant-message ASSISTANT_MESSAGE
+                                                           [--actions-json ACTIONS_JSON]
+                                                           [--source-events-json SOURCE_EVENTS_JSON]
+                                                           [--cited-chunk-ids-json CITED_CHUNK_IDS_JSON]
+                                                           [--metadata-json METADATA_JSON]
+
+options:
+  -h, --help            show this help message and exit
+  --business-dir BUSINESS_DIR
+                        Directory containing advisor state
+  --user-message USER_MESSAGE
+  --assistant-message ASSISTANT_MESSAGE
+  --actions-json ACTIONS_JSON
+                        JSON array or path to JSON file
+  --source-events-json SOURCE_EVENTS_JSON
+                        JSON array or path to JSON file
+  --cited-chunk-ids-json CITED_CHUNK_IDS_JSON
+                        JSON array or path to JSON file
+  --metadata-json METADATA_JSON
+                        JSON object or path to JSON file
+
+2026-06-14T00:20:46.427794Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:20:46.427941Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:20:46.428411Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:20:46.433581Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:46.433924Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:20:46.448960Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.448970Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.449336Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.449340Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.449693Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.449698Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.450061Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.450066Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.450428Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.450434Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.451199Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.451203Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:20:46.802232Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:46.810591Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:20:46.810615Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+I’ve got the answer shape: explain CFA as a cash-speed constraint, apply the saved economics, and avoid overstating it as “unlimited growth” because this service model will likely hit delivery capacity before ad capacity.
+exec
+/bin/zsh -lc "CONTEXT_DIR='/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir'
+USER_MESSAGE='how should I think about client-financed acquisition here?'
+ASSISTANT_MESSAGE='I would think about client-financed acquisition here as: can one new STR design client pay back the cost of acquiring them from first-30-day gross profit, fast enough that growth is funded by customers instead of by your cash reserves? The three numbers are CAC, gross profit, and payback period [how-businesses-make-money:2]. In your snapshot, CAC is about "'$1,000 and first-30-day gross profit is about $10,000, so you are well above the basic CFA threshold where first-30-day gross profit exceeds CAC [context:1]. That means the constraint is probably not whether the economics can support acquisition. The constraint is how confidently and repeatedly you can buy the right STR/second-home owner lead without creating delivery bottlenecks. Practically, I would treat the $597 STR Design Diagnostic as the acquisition-control mechanism: use it to qualify demand, create urgency, and protect sales time, while the full-service design project creates the real 30-day gross profit. Since payback is already around one month, the next question is not “can we afford acquisition?” It is “what acquisition channel can produce enough qualified diagnostic buyers without overwhelming Lisa-led fulfillment?” [payback-period:0]'"'
+ACTIONS='[{\"type\":\"read_snapshot\",\"command\":\"snapshot --business-dir <business_dir>\",\"summary\":\"Loaded diagnosable saved business snapshot with CAC 1000, first_30_day_gross_profit 10000, gross_margin 0.769, and payback_period_months 1.0.\"},{\"type\":\"search_source_material\",\"command\":\"search --business-dir <business_dir> --source-need-json <teaching_evidence>\",\"summary\":\"Searched unit-economics source material for client-financed acquisition, CAC, cash payback, and gross profit.\"},{\"type\":\"turn_record\",\"command\":\"turn record --business-dir <business_dir> --user-message ... --assistant-message ...\",\"summary\":\"Recorded the completed advisor turn with cited chunks.\"}]'
+SOURCE_EVENTS='[{\"source_need\":{\"intent\":\"teaching_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"client-financed acquisition\",\"CAC\",\"cash payback\",\"gross profit\"],\"user_turn\":\"how should I think about client-financed acquisition here?\",\"query_variants\":[\"client financed acquisition CAC cash payback gross profit\",\"use customer cash flow to fund acquisition payback period\",\"front end cash flow funds customer acquisition\"]},\"queries\":[\"client financed acquisition CAC cash payback gross profit\",\"use customer cash flow to fund acquisition payback period\",\"front end cash flow funds customer acquisition\",\"client-financed acquisition CAC cash payback gross profit interior design STR\"],\"inspected_chunks\":[{\"id\":\"context:1\",\"score\":19.584},{\"id\":\"how-businesses-make-money:2\",\"score\":17.744},{\"id\":\"payback-period:0\",\"score\":17.738},{\"id\":\"cfa:0\",\"score\":18.553},{\"id\":\"cfa:1\",\"score\":14.012}]}]'
+CITED='[\"how-businesses-make-money:2\",\"context:1\",\"payback-period:0\"]'
+METADATA='{\"case_id\":\"tooluse_v1_019\",\"scenario_id\":\"1584_design\",\"eval\":\"model_routing_codex\"}'
+PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir \""'$CONTEXT_DIR" --user-message "$USER_MESSAGE" --assistant-message "$ASSISTANT_MESSAGE" --actions-json "$ACTIONS" --source-events-json "$SOURCE_EVENTS" --cited-chunk-ids-json "$CITED" --metadata-json "$METADATA"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "recorded": true,
+  "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions/20260614T002106.json",
+  "created_at": "2026-06-14T00:21:06Z",
+  "source_event_count": 1,
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "context:1",
+    "payback-period:0"
+  ]
+}
+
+2026-06-14T00:21:06.677749Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:21:06.678877Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:21:06.681572Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:21:06.711873Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:06.712983Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:21:06.731980Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.731988Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.732523Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.732529Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.732847Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.732851Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.733180Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.733184Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.733505Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.733508Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.734295Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:06.734299Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:07.148727Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:07.158040Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:07.158065Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+The advisor turn is recorded under the business directory’s session log. I’m creating the required `run.json` now with the same observable sequence rather than inferring anything from hidden labels.
+exec
+/bin/zsh -lc "RUN_DIR='/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019'
+WORKFLOW_STEPS='[{\"step\":\"read_snapshot\",\"status\":\"completed\",\"observable\":\"Ran snapshot for the provided business_dir and found a diagnosable snapshot.\"},{\"step\":\"search_source_material\",\"status\":\"completed\",\"observable\":\"Ran source-material search with a teaching_evidence SourceNeed on unit-economics for client-financed acquisition.\"},{\"step\":\"record_turn\",\"status\":\"completed\",\"observable\":\"Recorded the completed advisor turn with source event and cited chunk ids.\"}]'
+SESSION_PATHS='[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions/20260614T002106.json\"]'
+ACTUAL_ACTIONS='[\"snapshot\",\"search_source_material\",\"turn_record\"]'
+FINAL_ANSWER='Explained client-financed acquisition using the saved economics: CAC about "'$1,000, first-30-day gross profit about $10,000, and payback about one month, with cited unit-economics source support.'"'
+PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete \""'$RUN_DIR" --workflow-steps "$WORKFLOW_STEPS" --session-paths "$SESSION_PATHS" --actual-actions "$ACTUAL_ACTIONS" --final-answer "$FINAL_ANSWER"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ exited 1 in 0ms:
+{
+  "valid": false,
+  "errors": [
+    "workflow_steps[0] missing index",
+    "workflow_steps[0] missing kind",
+    "workflow_steps[1] missing index",
+    "workflow_steps[1] missing kind",
+    "workflow_steps[2] missing index",
+    "workflow_steps[2] missing kind",
+    "actual_actions[0] must be an object",
+    "actual_actions[1] must be an object",
+    "actual_actions[2] must be an object"
+  ]
+}
+
+2026-06-14T00:21:16.695250Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:21:16.695415Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:21:16.695904Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:21:16.701081Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:16.701448Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:21:16.717582Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.717589Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.717964Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.717969Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.718355Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.718365Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.718768Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.718772Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.719128Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.719132Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.719917Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:16.719921Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:17.076973Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:17.085522Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:17.085545Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 scripts/capture_tool_use_trace.py --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: capture_tool_use_trace.py [-h] {prepare,complete,validate} ...
+
+Prepare and complete next-action classification trace artifacts. This is a
+strict trace recorder, not a planner. `prepare` sets up an isolated business
+directory and an acting prompt that excludes expected labels. `complete` turns
+recorded workflow evidence into `run.json`. It never chooses the advisor's
+next action from the case label.
+
+positional arguments:
+  {prepare,complete,validate}
+    prepare             Prepare an isolated eval case directory
+    complete            Complete a prepared trace and write run.json
+    validate            Validate a run.json or run directory
+
+options:
+  -h, --help            show this help message and exit
+
+2026-06-14T00:21:19.891542Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:21:19.891708Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:21:19.892153Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:21:19.896689Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:19.897013Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:21:19.912192Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.912200Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.912551Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.912554Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.912882Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.912887Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.913254Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.913260Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.913604Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.913608Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.914345Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:19.914349Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:20.264187Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:20.273435Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:20.273470Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: capture_tool_use_trace.py complete [-h]
+                                          [--workflow-steps WORKFLOW_STEPS]
+                                          [--session-paths SESSION_PATHS]
+                                          [--actual-actions ACTUAL_ACTIONS]
+                                          [--final-answer FINAL_ANSWER]
+                                          [--final-answer-file FINAL_ANSWER_FILE]
+                                          run_dir
+
+positional arguments:
+  run_dir
+
+options:
+  -h, --help            show this help message and exit
+  --workflow-steps WORKFLOW_STEPS
+                        JSON array or path to JSON array
+  --session-paths SESSION_PATHS
+                        JSON array or path to JSON array
+  --actual-actions ACTUAL_ACTIONS
+                        JSON array or path to JSON array
+  --final-answer FINAL_ANSWER
+  --final-answer-file FINAL_ANSWER_FILE
+
+2026-06-14T00:21:22.719102Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:21:22.719272Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:21:22.719789Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:21:22.724930Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:22.725322Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:21:22.741535Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.741545Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.741921Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.741927Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.742306Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.742311Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.742687Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.742692Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.743109Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.743113Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.743912Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:22.743917Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:23.095174Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:23.103275Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:23.103303Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Prepare and complete next-action classification trace artifacts.
+
+This is a strict trace recorder, not a planner. `prepare` sets up an isolated
+business directory and an acting prompt that excludes expected labels. `complete`
+turns recorded workflow evidence into `run.json`. It never chooses the advisor's
+next action from the case label.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import shutil
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE_DIR_NAME = ".money-model-advisor"
+SNAPSHOT_FILE = "business_snapshot.json"
+SESSIONS_DIR = "sessions"
+DRAFT_FILE = "run_draft.json"
+RUN_FILE = "run.json"
+
+ACTION_TAXONOMY = {
+    "clarify",
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "compose_answer_from_state",
+    "answer_without_tool",
+}
+
+CONFIDENCE_VALUES = {"direct", "inferred", "missing"}
+
+TOOL_LIKE_ACTIONS = {
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+}
+
+PROMPT_HIDDEN_FIELDS = {
+    "split",
+    "turn_type",
+    "snapshot_fixture_path",
+    "local_docs_fixture_path",
+    "prior_sessions_fixture_path",
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+FORBIDDEN_RUN_FIELDS = {
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+
+def utc_now() -> str:
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            record["_line_number"] = line_number
+            records.append(record)
+    return records
+
+
+def find_case(cases_path: Path, case_id: str) -> dict[str, Any]:
+    for case in load_jsonl(cases_path):
+        if case.get("case_id") == case_id:
+            return case
+    raise SystemExit(f"case not found: {case_id}")
+
+
+def rel_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def sha256_file(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return f"sha256:{digest.hexdigest()}"
+
+
+def read_json_arg(value: str | None, default: Any) -> Any:
+    if value is None:
+        return default
+    candidate = Path(value)
+    if candidate.exists():
+        return json.loads(candidate.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def copy_tree_contents(source: Path, destination: Path) -> None:
+    destination.mkdir(parents=True, exist_ok=True)
+    for item in source.iterdir():
+        target = destination / item.name
+        if item.is_dir():
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.copytree(item, target)
+        else:
+            shutil.copy2(item, target)
+
+
+def prepare_business_dir(case: dict[str, Any], business_dir: Path) -> dict[str, str | None]:
+    state_dir = business_dir / STATE_DIR_NAME
+    sessions_dir = state_dir / SESSIONS_DIR
+    snapshot_path = state_dir / SNAPSHOT_FILE
+
+    business_dir.mkdir(parents=True, exist_ok=True)
+    state_dir.mkdir(parents=True, exist_ok=True)
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+
+    snapshot_fixture = ROOT / case["snapshot_fixture_path"]
+    shutil.copy2(snapshot_fixture, snapshot_path)
+
+    local_docs_fixture = case.get("local_docs_fixture_path")
+    if local_docs_fixture:
+        source = ROOT / local_docs_fixture
+        if source.is_dir():
+            copy_tree_contents(source, business_dir)
+        else:
+            shutil.copy2(source, business_dir / source.name)
+
+    prior_sessions_fixture = case.get("prior_sessions_fixture_path")
+    if prior_sessions_fixture:
+        copy_session_fixture(ROOT / prior_sessions_fixture, sessions_dir)
+
+    return {
+        "business_dir": rel_path(business_dir),
+        "state_dir": rel_path(state_dir),
+        "snapshot": rel_path(snapshot_path),
+        "sessions_dir": rel_path(sessions_dir),
+    }
+
+
+def copy_session_fixture(source: Path, sessions_dir: Path) -> None:
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    fixture_id = payload.get("fixture_id", source.stem)
+    turns = payload.get("turns")
+    if isinstance(turns, list):
+        for index, turn in enumerate(turns, 1):
+            session = {
+                "created_at": turn.get("timestamp"),
+                "user_message": turn.get("user_message"),
+                "assistant_message": turn.get("assistant_message"),
+                "actions": turn.get("actions", []),
+                "retrieval_queries": turn.get("retrieval_queries", []),
+                "evidence": turn.get("evidence", []),
+                "fixture_id": fixture_id,
+            }
+            write_json(sessions_dir / f"{fixture_id}_{index:02d}.json", session)
+        return
+    shutil.copy2(source, sessions_dir / source.name)
+
+
+def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
+    visible_case = {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")}
+    return "\n".join(
+        [
+            "# Next-Action Eval Acting Prompt",
+            "",
+            "You are the acting agent for a Money Model Advisor next-action eval case.",
+            "",
+            "Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.",
+            "",
+            f"Business dir: `{business_dir}`",
+            "",
+            "Allowed CLI surface:",
+            "",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search \"raw debug query\" --layer <layer>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`",
+            "",
+            "Visible case context:",
+            "",
+            "```json",
+            json.dumps(visible_case, indent=2, sort_keys=True),
+            "```",
+            "",
+            "After acting, record observable steps for `complete`. Do not infer actions from the hidden label.",
+            "",
+        ]
+    )
+
+
+def prepare(args: argparse.Namespace) -> int:
+    case = find_case(args.cases, args.case_id)
+    run_dir = args.runs_dir / args.phase / args.case_id
+    if run_dir.exists() and not args.force:
+        raise SystemExit(f"run directory already exists; pass --force to replace: {run_dir}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+
+    business_dir = run_dir / "business_dir"
+    stdout_dir = run_dir / "stdout"
+    stderr_dir = run_dir / "stderr"
+    stdout_dir.mkdir(parents=True, exist_ok=True)
+    stderr_dir.mkdir(parents=True, exist_ok=True)
+    paths = prepare_business_dir(case, business_dir)
+
+    snapshot_path = business_dir / STATE_DIR_NAME / SNAPSHOT_FILE
+    prompt_path = run_dir / "acting_prompt.md"
+    prompt_path.write_text(render_acting_prompt(case, business_dir.resolve()), encoding="utf-8")
+
+    draft = {
+        "case_id": case["case_id"],
+        "split": case["split"],
+        "phase": args.phase,
+        "created_at": utc_now(),
+        "status": "prepared",
+
+2026-06-14T00:21:25.777654Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:21:25.777866Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:21:25.778458Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:21:25.784217Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:25.784655Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:21:25.801463Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.801475Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.801834Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.801839Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.802198Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.802203Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.802575Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.802581Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.802992Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.802997Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.803791Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:25.803796Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:26.144532Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:26.152734Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:26.152758Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '260,620p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+        "status": "prepared",
+        "business_dir": rel_path(business_dir),
+        "paths": paths,
+        "fixtures": {
+            "snapshot_fixture_path": case["snapshot_fixture_path"],
+            "local_docs_fixture_path": case.get("local_docs_fixture_path"),
+            "prior_sessions_fixture_path": case.get("prior_sessions_fixture_path"),
+        },
+        "snapshot_hash": {
+            "start": sha256_file(snapshot_path),
+            "end": None,
+        },
+        "acting_prompt_path": rel_path(prompt_path),
+        "workflow_steps": [],
+        "session_paths": [],
+        "actual_actions": [],
+        "final_answer_path": None,
+    }
+    write_json(run_dir / DRAFT_FILE, draft)
+    print(json.dumps({"run_dir": rel_path(run_dir), "draft": rel_path(run_dir / DRAFT_FILE), "acting_prompt": rel_path(prompt_path)}, indent=2))
+    return 0
+
+
+def complete(args: argparse.Namespace) -> int:
+    run_dir = args.run_dir
+    draft_path = run_dir / DRAFT_FILE
+    if not draft_path.exists():
+        raise SystemExit(f"missing draft: {draft_path}")
+
+    draft = json.loads(draft_path.read_text(encoding="utf-8"))
+    final_answer_path = None
+    if args.final_answer:
+        final_answer_path = run_dir / "final_answer.txt"
+        final_answer_path.write_text(args.final_answer, encoding="utf-8")
+    elif args.final_answer_file:
+        source = args.final_answer_file
+        final_answer_path = run_dir / "final_answer.txt"
+        shutil.copy2(source, final_answer_path)
+
+    workflow_steps = read_json_arg(args.workflow_steps, draft.get("workflow_steps", []))
+    session_paths = read_json_arg(args.session_paths, draft.get("session_paths", []))
+    actual_actions = read_json_arg(args.actual_actions, draft.get("actual_actions", []))
+
+    snapshot_path = ROOT / draft["paths"]["snapshot"]
+    run = {
+        **draft,
+        "completed_at": utc_now(),
+        "status": "completed",
+        "workflow_steps": workflow_steps,
+        "session_paths": session_paths,
+        "actual_actions": actual_actions,
+        "final_answer_path": rel_path(final_answer_path) if final_answer_path else draft.get("final_answer_path"),
+        "snapshot_hash": {
+            "start": draft["snapshot_hash"]["start"],
+            "end": sha256_file(snapshot_path),
+        },
+    }
+
+    errors = validate_run(run, run_dir)
+    if errors:
+        print(json.dumps({"valid": False, "errors": errors}, indent=2))
+        return 1
+
+    run.pop("status", None)
+    write_json(run_dir / RUN_FILE, run)
+    print(json.dumps({"valid": True, "run": rel_path(run_dir / RUN_FILE)}, indent=2))
+    return 0
+
+
+def validate(args: argparse.Namespace) -> int:
+    run_path = args.run if args.run.is_file() else args.run / RUN_FILE
+    if not run_path.exists():
+        raise SystemExit(f"run not found: {run_path}")
+    run = json.loads(run_path.read_text(encoding="utf-8"))
+    errors = validate_run(run, run_path.parent)
+    print(json.dumps({"valid": not errors, "errors": errors, "run": rel_path(run_path)}, indent=2))
+    return 1 if errors else 0
+
+
+def validate_run(run: dict[str, Any], run_dir: Path) -> list[str]:
+    errors: list[str] = []
+    for field in ("case_id", "split", "phase", "business_dir", "fixtures", "snapshot_hash", "workflow_steps", "session_paths", "actual_actions"):
+        if field not in run:
+            errors.append(f"missing field: {field}")
+
+    if any(field in run for field in FORBIDDEN_RUN_FIELDS):
+        errors.append("run artifact must not contain expected-label fields")
+
+    workflow_steps = run.get("workflow_steps", [])
+    if not isinstance(workflow_steps, list):
+        errors.append("workflow_steps must be a list")
+        workflow_steps = []
+    for index, step in enumerate(workflow_steps):
+        if not isinstance(step, dict):
+            errors.append(f"workflow_steps[{index}] must be an object")
+            continue
+        for field in ("index", "kind"):
+            if field not in step:
+                errors.append(f"workflow_steps[{index}] missing {field}")
+        if step.get("kind") == "cli_command":
+            for field in ("command", "exit_code"):
+                if field not in step:
+                    errors.append(f"workflow_steps[{index}] cli_command missing {field}")
+
+    actual_actions = run.get("actual_actions", [])
+    if not isinstance(actual_actions, list):
+        errors.append("actual_actions must be a list")
+        actual_actions = []
+    if not actual_actions:
+        errors.append("actual_actions must contain at least one action before writing run.json")
+    for index, item in enumerate(actual_actions):
+        if not isinstance(item, dict):
+            errors.append(f"actual_actions[{index}] must be an object")
+            continue
+        action = item.get("action")
+        confidence = item.get("confidence")
+        if action not in ACTION_TAXONOMY:
+            errors.append(f"actual_actions[{index}] unknown action: {action}")
+        if confidence not in CONFIDENCE_VALUES:
+            errors.append(f"actual_actions[{index}] unknown confidence: {confidence}")
+        if item.get("index") != index:
+            errors.append(f"actual_actions[{index}] index must equal {index}")
+        if confidence == "direct" and action in TOOL_LIKE_ACTIONS:
+            if not item.get("evidence_type"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_type")
+            if not item.get("evidence_ref"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_ref")
+        if confidence == "missing" and not item.get("evidence_note"):
+            errors.append(f"actual_actions[{index}] missing-confidence action needs evidence_note")
+
+    prompt_path = run.get("acting_prompt_path")
+    if prompt_path:
+        full_prompt_path = ROOT / prompt_path
+        if full_prompt_path.exists():
+            prompt = full_prompt_path.read_text(encoding="utf-8")
+            leaked = [field for field in PROMPT_HIDDEN_FIELDS if field in prompt]
+            if leaked:
+                errors.append(f"acting prompt leaks expected-label fields: {', '.join(sorted(leaked))}")
+
+    final_answer_path = run.get("final_answer_path")
+    if final_answer_path and not (ROOT / final_answer_path).exists():
+        errors.append(f"final_answer_path does not exist: {final_answer_path}")
+
+    business_dir = run.get("business_dir")
+    if business_dir and not (ROOT / business_dir).exists():
+        errors.append(f"business_dir does not exist: {business_dir}")
+
+    if run_dir.name != run.get("case_id") and run_dir.parent.name != run.get("case_id"):
+        # Allow validating a copied run file, but flag obviously mismatched generated dirs.
+        if "evals/runs/next_action" in rel_path(run_dir):
+            errors.append("run directory does not match case_id")
+
+    return errors
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    prepare_parser = subparsers.add_parser("prepare", help="Prepare an isolated eval case directory")
+    prepare_parser.add_argument("case_id")
+    prepare_parser.add_argument("--phase", default="baseline")
+    prepare_parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_tool_use_cases.jsonl")
+    prepare_parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "next_action")
+    prepare_parser.add_argument("--force", action="store_true")
+    prepare_parser.set_defaults(func=prepare)
+
+    complete_parser = subparsers.add_parser("complete", help="Complete a prepared trace and write run.json")
+    complete_parser.add_argument("run_dir", type=Path)
+    complete_parser.add_argument("--workflow-steps", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--session-paths", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--actual-actions", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--final-answer")
+    complete_parser.add_argument("--final-answer-file", type=Path)
+    complete_parser.set_defaults(func=complete)
+
+    validate_parser = subparsers.add_parser("validate", help="Validate a run.json or run directory")
+    validate_parser.add_argument("run", type=Path)
+    validate_parser.set_defaults(func=validate)
+
+    return parser
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+2026-06-14T00:21:29.600418Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:21:29.600774Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:21:29.601631Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:21:29.608038Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:29.608517Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:21:29.627017Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.627033Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.627429Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.627437Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.627828Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.627836Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.628202Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.628207Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.628605Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.628610Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.629567Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.629572Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:29.971190Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:29.979328Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:29.979352Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "RUN_DIR='/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019'
+SESSION='/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions/20260614T002106.json'
+WORKFLOW_STEPS='[{\"index\":0,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>\",\"exit_code\":0,\"summary\":\"Loaded diagnosable snapshot with CAC 1000, first_30_day_gross_profit 10000, gross_margin 0.769, and payback_period_months 1.0.\"},{\"index\":1,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <teaching_evidence> --top-k 5\",\"exit_code\":0,\"summary\":\"Searched unit-economics source material for client-financed acquisition, CAC, cash payback, and gross profit.\"},{\"index\":2,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...\",\"exit_code\":0,\"summary\":\"Recorded the completed advisor turn with one source event and cited chunk ids.\"}]'
+SESSION_PATHS='[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions/20260614T002106.json\"]'
+ACTUAL_ACTIONS='[{\"index\":0,\"action\":\"read_snapshot\",\"confidence\":\"direct\",\"evidence_type\":\"cli_command\",\"evidence_ref\":\"workflow_steps[0]\"},{\"index\":1,\"action\":\"search_source_material\",\"confidence\":\"direct\",\"evidence_type\":\"cli_command\",\"evidence_ref\":\"workflow_steps[1]\"},{\"index\":2,\"action\":\"compose_answer_from_state\",\"confidence\":\"inferred\",\"evidence_note\":\"Final answer applies saved economics and retrieved source chunks to explain client-financed acquisition.\"}]'
+FINAL_ANSWER='Explained client-financed acquisition using the saved economics: CAC about "'$1,000, first-30-day gross profit about $10,000, and payback about one month, with cited unit-economics source support.'"'
+PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete \""'$RUN_DIR" --workflow-steps "$WORKFLOW_STEPS" --session-paths "$SESSION_PATHS" --actual-actions "$ACTUAL_ACTIONS" --final-answer "$FINAL_ANSWER"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "valid": true,
+  "run": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/run.json"
+}
+
+2026-06-14T00:21:45.148290Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-06-14T00:21:45.148429Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-06-14T00:21:45.148927Z  WARN codex_core_plugins::marketplace: skipping invalid marketplace plugin path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json marketplace=claude-plugins-official error=invalid plugin name: only ASCII letters, digits, `_`, and `-` are allowed
+2026-06-14T00:21:45.152917Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:45.153226Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.2.0/.codex-plugin/plugin.json
+2026-06-14T00:21:45.168568Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.168577Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.168950Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.168956Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.169295Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.169301Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.169672Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.169677Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.170020Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.170024Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.170831Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.170840Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-06-14T00:21:45.509150Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:45.517192Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-06-14T00:21:45.517217Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+codex
+Completed the eval action and created:
+
+`evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/run.json`
+
+Final advisor answer recorded: client-financed acquisition means first-30-day gross profit pays back CAC fast enough that growth is funded by customers. Here, with about `$1,000` CAC and `$10,000` first-30-day gross profit, the economics clear the CFA threshold; the likely constraint is now channel repeatability and Lisa-led delivery capacity, not basic acquisition affordability.
+2026-06-14T00:21:49.881846Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-06-14T00:21:49.881866Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+2026-06-14T00:21:49.881924Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+tokens used
+78,885

@@ -1,0 +1,3 @@
+The design fee range in the pricing notes is **$15,000 to $60,000**, depending on project scope.
+
+I recorded the turn and created the required eval artifact at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_018/run.json`.

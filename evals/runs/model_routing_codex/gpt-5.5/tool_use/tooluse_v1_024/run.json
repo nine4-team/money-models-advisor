@@ -1,0 +1,83 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot output showing missing economics",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "clarify",
+      "confidence": "inferred",
+      "evidence_note": "Assistant response asks for expected CAC and first-30-day gross profit before deciding on ads.",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final answer uses saved offer-stack and missing-economics state without retrieval or calculation.",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/business_dir",
+  "case_id": "tooluse_v1_024",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_024",
+    "created_at": "2026-06-14T00:31:02Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 50409.1,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 55500
+  },
+  "completed_at": "2026-06-14T00:30:59Z",
+  "created_at": "2026-06-14T00:30:12Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor/sessions/20260614T003033.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "observation": "Snapshot has offer-stack context; economics.cac and economics.first_30_day_gross_profit are null; ready_for_payback_diagnosis is false."
+    },
+    {
+      "index": 1,
+      "kind": "advisor_decision",
+      "observation": "The responsible next action is to clarify missing acquisition and gross-profit economics before recommending a paid ads test."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "observation": "Recorded the user turn and clarifying assistant response; no source events or citations."
+    }
+  ]
+}

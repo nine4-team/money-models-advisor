@@ -1,0 +1,3 @@
+Recorded decision: `source_search_decision=false`.
+
+Rationale: the user asks whether to run ads next month, but the snapshot is missing required economics, including CAC and first-30-day gross profit/payback context. Source search should not substitute for those missing business facts, so `source_need` is `null`.

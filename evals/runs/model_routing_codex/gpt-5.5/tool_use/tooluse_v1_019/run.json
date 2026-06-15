@@ -1,0 +1,86 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final answer applies saved economics and retrieved source chunks to explain client-financed acquisition.",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir",
+  "case_id": "tooluse_v1_019",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_019",
+    "created_at": "2026-06-14T00:21:50Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 95709.4,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 78885
+  },
+  "completed_at": "2026-06-14T00:21:45Z",
+  "created_at": "2026-06-14T00:20:14Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions/20260614T002106.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Loaded diagnosable snapshot with CAC 1000, first_30_day_gross_profit 10000, gross_margin 0.769, and payback_period_months 1.0."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <teaching_evidence> --top-k 5",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Searched unit-economics source material for client-financed acquisition, CAC, cash payback, and gross profit."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Recorded the completed advisor turn with one source event and cited chunk ids."
+    }
+  ]
+}
