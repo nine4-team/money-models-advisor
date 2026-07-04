@@ -1,0 +1,1 @@
+Fulfillment cost sets the gross profit that funds ads: price minus cost to deliver equals gross profit, and CAC, gross profit, and payback period together determine whether paid acquisition works. Here, 1000 dollar CAC against 10000 dollar first-30-day gross profit gives a 1-month payback, but that gross-profit figure only holds because fulfillment cost was netted out first.

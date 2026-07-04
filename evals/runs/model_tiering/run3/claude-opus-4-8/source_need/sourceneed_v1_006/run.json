@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "completed_at": "2026-07-03T20:43:44Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Snapshot is payback-ready (CAC 1000, 30d GP 10000, payback 1.0mo). Frame already established; user asks about a concrete fix mechanism (recurring maintenance/membership = continuity). Per boundary rule, search only the continuity fix layer with payback as a focus term, no separate unit-economics search.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "recurring maintenance",
+      "membership offer",
+      "continuity",
+      "payback period"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "continuity"
+    ],
+    "query_variants": [
+      "recurring maintenance membership continuity offer improves payback",
+      "adding continuity revenue to shorten CAC payback period",
+      "post-purchase recurring service membership to speed cash recovery"
+    ],
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "focus_aliases": {
+      "continuity": [
+        "recurring maintenance",
+        "membership offer"
+      ],
+      "payback period": [
+        "payback"
+      ],
+      "recurring offer": [
+        "recurring maintenance",
+        "membership offer"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

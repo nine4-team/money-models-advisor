@@ -1,0 +1,35 @@
+{
+  "case_id": "sourceneed_v1_002",
+  "completed_at": "2026-07-03T20:26:12Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "User asking for Money Models acquisition framework explanation; snapshot payback-ready; teach client-financed acquisition concept through unit-economics lens",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_002/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "client-financed acquisition",
+      "acquisition capacity",
+      "CAC payback economics",
+      "pre-sale funding"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "how client-financed acquisition works with CAC and payback",
+      "acquisition capacity and funding model strategy",
+      "pre-sale financing CAC payback relationship"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_002",
+    "conversation_context": "The snapshot is payback-ready and the user asks for a Money Models acquisition framework explanation.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about client-financed acquisition here?"
+  }
+}

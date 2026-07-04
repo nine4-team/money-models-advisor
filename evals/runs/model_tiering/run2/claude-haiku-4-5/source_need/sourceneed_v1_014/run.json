@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_014",
+  "completed_at": "2026-07-03T16:06:44Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User asks about running ads next month. This requires CAC and payback analysis to decide acquisition strategy. Snapshot has offer details but is missing economics (cac, first_30_day_gross_profit). Per decision rules, do not search as substitute for missing business facts; the responsible next move is to gather CAC and gross-profit facts first.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_014/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_014/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_014/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_014",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks whether to run ads next month.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we start running ads next month?"
+  }
+}

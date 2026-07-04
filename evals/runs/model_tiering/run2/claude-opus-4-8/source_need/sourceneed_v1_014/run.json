@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_014",
+  "completed_at": "2026-07-03T20:36:09Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User asks whether to run ads next month, but snapshot has no economics (CAC, 30-day GP, payback all null). Running ads is a paid-acquisition decision requiring unit economics to answer responsibly. Per rules, do not use source search as a substitute for missing business facts; the responsible next move is to get CAC and gross profit first. No source-backed claim is possible yet, so source need is null.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_014/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_014/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_014/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_014",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks whether to run ads next month.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we start running ads next month?"
+  }
+}

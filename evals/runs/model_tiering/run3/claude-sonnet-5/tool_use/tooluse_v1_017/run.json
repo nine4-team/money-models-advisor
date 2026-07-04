@@ -1,0 +1,84 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir command output showing advisory_status=diagnosable",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "diagnose --snapshot command output: constraint=gross-margin, gross_margin=0.769",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search --source-need-json (unit-economics, diagnostic_evidence) returning three-numbers and meals-company chunks",
+      "evidence_type": "cli_output",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "turn record output: session_path .../sessions/20260703T202230.json",
+      "evidence_type": "cli_output",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir",
+  "case_id": "tooluse_v1_017",
+  "completed_at": "2026-07-03T20:23:01Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/sessions/20260703T202230.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "diagnose --snapshot <business_dir>/.money-model-advisor/business_snapshot.json",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "search --business-dir <business_dir> --source-need-json '{\"intent\":\"diagnostic_evidence\",\"layers\":[\"unit-economics\"],...}' --top-k 5",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    }
+  ]
+}

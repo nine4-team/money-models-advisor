@@ -1,0 +1,34 @@
+{
+  "case_id": "sourceneed_v1_002",
+  "completed_at": "2026-07-03T16:03:08Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot is payback-ready (CAC $1000, first-30-day gross profit $10000, payback 0.1mo) with no missing fields, so business facts already support a source-backed explanation. User asks how to think about client-financed acquisition -- a Money Models framework question interpreting the business own fast-payback economics, not a request for a concrete offer/upsell/downsell/continuity fix. Kept to unit-economics layer per the boundary rule; intent is diagnostic_evidence since the search supports interpreting known economics, even though the eventual answer may include guidance on spending toward CAC.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_002/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "client-financed acquisition",
+      "CAC payback period",
+      "acquisition capacity from gross profit"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "client-financed acquisition Money Models",
+      "how payback period funds acquisition spend",
+      "using first 30 day gross profit to finance CAC"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_002",
+    "conversation_context": "The snapshot is payback-ready and the user asks for a Money Models acquisition framework explanation.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about client-financed acquisition here?"
+  }
+}

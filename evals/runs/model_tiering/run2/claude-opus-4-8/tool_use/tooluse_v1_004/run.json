@@ -1,0 +1,88 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_004/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calculate gross-profit price=13000 cogs=3000 -> 10000",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set economics.first_30_day_gross_profit=10000",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "clarify",
+      "confidence": "inferred",
+      "evidence_note": "CAC is the last missing field for payback; asked the user for it.",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_004/business_dir",
+  "case_id": "tooluse_v1_004",
+  "completed_at": "2026-07-03T20:38:16Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_004/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_004/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_004/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:76013b9a5cc69d01b0e30c8663077c19b3f7764b69d1a864d489ea3a5b244562",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "note": "Read saved state: economics.cac and economics.first_30_day_gross_profit both null."
+    },
+    {
+      "index": 1,
+      "kind": "reasoning",
+      "note": "User gave $13k first payment and $3k fulfillment cost, enabling first-30-day gross profit."
+    },
+    {
+      "command": "calculate gross-profit --inputs {\"price\":13000,\"cogs\":3000}",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "note": "Result value 10000."
+    },
+    {
+      "command": "snapshot set --business-dir <business_dir> economics.first_30_day_gross_profit=10000",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "note": "Saved first-30-day gross profit; only economics.cac remains missing."
+    },
+    {
+      "index": 4,
+      "kind": "reasoning",
+      "note": "CAC still missing so payback diagnosis not ready. Next move is to ask for CAC. No source search: it would substitute retrieval for a missing business fact, which the source-need rules forbid."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "case_id": "sourceneed_v1_007",
+  "completed_at": "2026-07-03T15:44:21Z",
+  "created_at": "2026-07-03T15:42:03Z",
+  "notes": "Offer-stack facts (core offer $15,000, no existing downsell) are already known from the snapshot, so search proceeds rather than waiting on missing CAC/gross-profit fields. User is asking specifically about a payment-plan / pay-less-now mechanism for a cash-tight buyer, which the rules map to the downsells layer. This is a single retrieval job for a concrete fix mechanism, not a unit-economics interpretation, so unit-economics is not added even though price figures appear in context.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_007/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_007/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_007/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "payment plan",
+      "pay-less-now option",
+      "friction-reducing alternative",
+      "cash-tight buyer"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "downsells"
+    ],
+    "query_variants": [
+      "payment plan option for high-ticket design offer",
+      "pay-less-now downsell for cash-constrained buyer",
+      "reduce friction for expensive core offer without discounting"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_007",
+    "conversation_context": "The snapshot has offer-stack context. The user asks about payment plans for a cash-tight buyer.",
+    "scenario_id": "1584_design",
+    "user_turn": "if someone wants the design package but cash is tight today, how should we think about payment plans?"
+  }
+}

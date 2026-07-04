@@ -1,0 +1,63 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_017/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot read returned CAC=1000, first_30_day_gross_profit=10000, gross_margin=0.769, payback=1.0mo, advisory_status=diagnosable",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "diagnose returned constraint=gross-margin, reason=service gross margin 77% below 80% rule of thumb, prescribed 1.4 Gross Profit",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "summary composed from snapshot + diagnose output",
+      "evidence_type": "cli_command",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_017/business_dir",
+  "case_id": "tooluse_v1_017",
+  "completed_at": "2026-06-27T00:16:49Z",
+  "created_at": "2026-06-27T00:08:48Z",
+  "final_answer_path": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_017/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_017/business_dir",
+    "sessions_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_017/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "diagnose --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    }
+  ]
+}

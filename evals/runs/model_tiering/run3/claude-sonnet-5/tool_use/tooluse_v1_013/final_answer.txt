@@ -1,0 +1,1 @@
+We agreed the referral partner CAC was an average in session turn 1584_referral_partner_context_01 (2026-06-05T22:48:51Z): you said "that works as an average" and I confirmed treating referral partner acquisition as roughly $1,000 CAC. That is also noted in the snapshot field_sources for economics.cac.

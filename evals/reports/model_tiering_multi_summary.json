@@ -1,0 +1,220 @@
+{
+  "claude-haiku-4-5": {
+    "source_need": {
+      "failure_modes_by_run": [
+        {
+          "layer_mismatch": 2,
+          "missed_search": 1
+        },
+        {
+          "layer_mismatch": 1,
+          "missed_search": 1
+        },
+        {
+          "layer_mismatch": 2,
+          "missed_search": 1
+        }
+      ],
+      "mean": {
+        "avg_focus_recall": 0.5796,
+        "layer_exact_match_rate": 0.7333,
+        "search_decision_accuracy": 0.9286,
+        "strict_case_pass_rate": 0.8095
+      },
+      "n_runs": 3,
+      "per_run_strict": [
+        0.7857,
+        0.8571,
+        0.7857
+      ]
+    },
+    "tool_use": {
+      "failure_modes_by_run": [
+        {
+          "false_search": 4,
+          "forbidden_action:search_source_material": 4,
+          "missing_required:calculate,diagnose,read_snapshot": 1,
+          "missing_required:calculate,read_snapshot": 1,
+          "missing_required:clarify,read_snapshot": 1,
+          "missing_required:diagnose,read_snapshot": 1,
+          "missing_required:inspect_local_docs": 2,
+          "missing_required:read_snapshot": 3
+        },
+        {
+          "false_search": 2,
+          "forbidden_action:search_source_material": 2,
+          "missed_search": 1,
+          "missing_required:calculate": 3,
+          "missing_required:calculate,diagnose": 1,
+          "missing_required:compose_answer_from_state": 1,
+          "missing_required:diagnose,read_snapshot": 1,
+          "missing_required:inspect_local_docs": 2,
+          "missing_required:read_snapshot": 3,
+          "missing_required:read_snapshot,search_source_material": 1
+        },
+        {
+          "false_search": 1,
+          "forbidden_action:search_source_material": 1,
+          "missing_actual_actions": 1,
+          "missing_required:calculate": 1,
+          "missing_required:calculate,diagnose,read_snapshot": 1,
+          "missing_required:calculate,read_snapshot": 1,
+          "missing_required:compose_answer_from_state": 1,
+          "missing_required:diagnose": 1,
+          "missing_required:inspect_local_docs": 1,
+          "missing_required:read_snapshot": 4
+        }
+      ],
+      "mean": {
+        "avg_required_recall": 0.6968,
+        "false_search_rate": 0.0972,
+        "forbidden_violation_rate": 0.0972,
+        "missed_search_rate": 0.0139,
+        "strict_case_pass_rate": 0.5417
+      },
+      "n_runs": 3,
+      "per_run_strict": [
+        0.5833,
+        0.5,
+        0.5417
+      ]
+    }
+  },
+  "claude-opus-4-8": {
+    "source_need": {
+      "failure_modes_by_run": [
+        {
+          "false_search": 1,
+          "layer_mismatch": 1
+        },
+        {
+          "false_search": 1,
+          "layer_mismatch": 1
+        },
+        {
+          "false_search": 1,
+          "layer_mismatch": 1
+        }
+      ],
+      "mean": {
+        "avg_focus_recall": 0.7067,
+        "layer_exact_match_rate": 0.9,
+        "search_decision_accuracy": 0.9286,
+        "strict_case_pass_rate": 0.8571
+      },
+      "n_runs": 3,
+      "per_run_strict": [
+        0.8571,
+        0.8571,
+        0.8571
+      ]
+    },
+    "tool_use": {
+      "failure_modes_by_run": [
+        {
+          "false_search": 1,
+          "forbidden_action:search_source_material": 1,
+          "missing_required:calculate": 1,
+          "missing_required:diagnose": 1
+        },
+        {
+          "false_search": 3,
+          "forbidden_action:search_source_material": 3,
+          "missing_required:calculate": 1,
+          "missing_required:clarify": 1,
+          "missing_required:diagnose": 2
+        },
+        {
+          "false_search": 2,
+          "forbidden_action:search_source_material": 2,
+          "missing_required:calculate": 1,
+          "missing_required:calculate,diagnose": 1,
+          "missing_required:clarify": 1,
+          "missing_required:diagnose": 1
+        }
+      ],
+      "mean": {
+        "avg_required_recall": 0.9398,
+        "false_search_rate": 0.0833,
+        "forbidden_violation_rate": 0.0833,
+        "missed_search_rate": 0.0,
+        "strict_case_pass_rate": 0.8472
+      },
+      "n_runs": 3,
+      "per_run_strict": [
+        0.9167,
+        0.7917,
+        0.8333
+      ]
+    }
+  },
+  "claude-sonnet-5": {
+    "source_need": {
+      "failure_modes_by_run": [
+        {
+          "layer_mismatch": 1
+        },
+        {
+          "layer_mismatch": 1
+        },
+        {
+          "layer_mismatch": 1
+        }
+      ],
+      "mean": {
+        "avg_focus_recall": 0.6633,
+        "layer_exact_match_rate": 0.9,
+        "search_decision_accuracy": 1.0,
+        "strict_case_pass_rate": 0.9286
+      },
+      "n_runs": 3,
+      "per_run_strict": [
+        0.9286,
+        0.9286,
+        0.9286
+      ]
+    },
+    "tool_use": {
+      "failure_modes_by_run": [
+        {
+          "false_search": 2,
+          "forbidden_action:read_snapshot": 1,
+          "forbidden_action:search_source_material": 2,
+          "missing_evidence:read_logs": 1,
+          "missing_required:answer_without_tool": 1,
+          "missing_required:compose_answer_from_state": 1,
+          "missing_required:diagnose": 2
+        },
+        {
+          "false_search": 2,
+          "forbidden_action:read_snapshot": 1,
+          "forbidden_action:search_source_material": 2,
+          "missing_required:calculate": 1,
+          "missing_required:clarify": 1,
+          "missing_required:clarify,read_snapshot": 1,
+          "missing_required:diagnose": 1
+        },
+        {
+          "false_search": 3,
+          "forbidden_action:read_snapshot": 1,
+          "forbidden_action:search_source_material": 3,
+          "missing_required:diagnose": 2,
+          "missing_required:inspect_local_docs": 1
+        }
+      ],
+      "mean": {
+        "avg_required_recall": 0.9028,
+        "false_search_rate": 0.0972,
+        "forbidden_violation_rate": 0.1389,
+        "missed_search_rate": 0.0,
+        "strict_case_pass_rate": 0.7778
+      },
+      "n_runs": 3,
+      "per_run_strict": [
+        0.7917,
+        0.75,
+        0.7917
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_009/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot business_dir tooluse_v1_009",
+      "evidence_type": "cli_output",
+      "index": 0,
+      "note": "confirmed economics present before deciding to search"
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "/Users/benjaminmackenzie/.claude/projects/-Users-benjaminmackenzie-Dev-money-model-architect/45d646c7-c112-4e21-a808-699b997c19ae/tool-results/bg24gncke.txt",
+      "evidence_type": "cli_output",
+      "index": 1,
+      "note": "teaching_evidence search on unit-economics for fulfillment cost / gross profit / payback"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "index": 2,
+      "note": "answered conceptual question with cited teaching chunks"
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_009/business_dir",
+  "case_id": "tooluse_v1_009",
+  "completed_at": "2026-07-03T20:48:51Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_009/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_009/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_009/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_009/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_009/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "/Users/benjaminmackenzie/.claude/projects/-Users-benjaminmackenzie-Dev-money-model-architect/45d646c7-c112-4e21-a808-699b997c19ae/tool-results/bg24gncke.txt"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "read saved BusinessSnapshot; full economics present (CAC 1000, GP 10000)"
+    },
+    {
+      "command": "search --source-need-json (teaching_evidence, unit-economics)",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "retrieved unit-economics teaching chunks on gross profit, cost to deliver, and payback"
+    },
+    {
+      "index": 2,
+      "kind": "compose_answer",
+      "summary": "explained fulfillment cost -> gross profit -> CAC payback, with citations"
+    }
+  ]
+}

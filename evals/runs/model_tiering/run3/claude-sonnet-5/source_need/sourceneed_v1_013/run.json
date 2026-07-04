@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_013",
+  "completed_at": "2026-07-03T20:17:50Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Plain vocabulary question (gross profit definition) with empty snapshot; no comparison/diagnosis/recommendation and no business facts to support, so per the rules this is answered without a citation and no search is needed.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_013/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_013/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_013/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_013",
+    "conversation_context": "The snapshot is empty. The user asks a simple business vocabulary question.",
+    "scenario_id": "1584_design",
+    "user_turn": "what does gross profit mean in plain English?"
+  }
+}

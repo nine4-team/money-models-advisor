@@ -1,0 +1,63 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_019/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "advisor_state.advisory_status=diagnosable; economics.cac=1000; economics.first_30_day_gross_profit=10000; economics.payback_period_months=1.0",
+      "evidence_type": "snapshot_field",
+      "index": 0
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "context:1; cfa:0; cfa:2; how-businesses-make-money:2; payback-period:0",
+      "evidence_type": "retrieved_chunk",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "context:1; how-businesses-make-money:2",
+      "evidence_type": "retrieved_chunk",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_019/business_dir",
+  "case_id": "tooluse_v1_019",
+  "completed_at": "2026-06-27T00:19:45Z",
+  "created_at": "2026-06-27T00:08:48Z",
+  "final_answer_path": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_019/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_019/business_dir",
+    "sessions_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_019/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "search --business-dir <business_dir> --source-need-json {teaching_evidence,unit-economics,client-financed acquisition} --top-k 5",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    }
+  ]
+}

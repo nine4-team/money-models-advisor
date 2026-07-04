@@ -1,0 +1,37 @@
+{
+  "case_id": "sourceneed_v1_008",
+  "completed_at": "2026-07-03T20:43:54Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "User asks whether a free trial can serve as a front-end attraction offer with required actions. Snapshot already holds offer-stack context, so this is a conceptual/teaching question about the attraction-offer mechanism -> search offers layer. No fresh economics claim, so no unit-economics search.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_008/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_008/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_008/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "free trial offer",
+      "required actions",
+      "front-end attraction offer",
+      "conversion commitment"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "offers"
+    ],
+    "query_variants": [
+      "free trial as front-end attraction offer with required actions",
+      "committing customers with required actions free trial offer",
+      "free giveaway offer that converts to core offer",
+      "attraction offer structure free trial money model"
+    ],
+    "user_turn": "could a free trial work as a front-end offer if we require the right actions?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_008",
+    "conversation_context": "The snapshot has offer-stack context. The user asks whether a free trial could work with required actions.",
+    "scenario_id": "1584_design",
+    "user_turn": "could a free trial work as a front-end offer if we require the right actions?"
+  }
+}

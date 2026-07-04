@@ -1,0 +1,62 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "evidence_ref": "case_context: vocabulary question does not require saved business state, local docs, or corpus search",
+      "evidence_type": "reasoning",
+      "index": 0,
+      "note": "Answered the definitional question directly from domain knowledge"
+    },
+    {
+      "action": "read_logs",
+      "confidence": "missing",
+      "evidence_note": "No prior session logs existed and none were inspected via the logs command; business_dir contained only an empty snapshot and empty sessions dir",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir",
+  "case_id": "tooluse_v1_012",
+  "completed_at": "2026-07-03T15:47:03Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/sessions/20260703T154639.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "reasoning",
+      "note": "Read case context: simple business vocabulary question, no saved state/docs/search required"
+    },
+    {
+      "index": 1,
+      "kind": "reasoning",
+      "note": "Consulted money-model-advisor skill guardrails: do not turn every message into retrieval or state work"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir --user-message \"what does CAC stand for?\" --assistant-message \"CAC stands for Customer Acquisition Cost \u2014 the total cost of acquiring a new paying customer, including marketing and sales spend.\"",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

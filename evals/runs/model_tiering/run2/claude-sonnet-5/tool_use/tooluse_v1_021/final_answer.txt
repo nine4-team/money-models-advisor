@@ -1,0 +1,1 @@
+Yes: payback is capped at 1 month and CFA level is 3 (GP > 2x CAC), so per the book acquisition cash is no longer the constraint; the bottleneck is likely lead volume, capacity, or referral throughput instead.

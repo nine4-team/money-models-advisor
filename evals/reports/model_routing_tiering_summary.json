@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-15T21:45:28Z",
+  "created_at": "2026-07-01T21:20:45Z",
   "harness": "codex_cli_agent",
   "models": [
     "gpt-5.5"
@@ -32,7 +32,6 @@
           "false_search": 1,
           "layer_mismatch": 1
         },
-        "intent_match_rate": 1.0,
         "layer_exact_match_rate": 0.9,
         "scored": 14,
         "search_decision_accuracy": 0.9285714285714286,
@@ -42,11 +41,9 @@
       "tool_use": {
         "avg_required_recall": 0.9791666666666666,
         "failure_modes": {
-          "missing_required:diagnose": 1,
-          "wrong_first_action": 6
+          "missing_required:diagnose": 1
         },
         "false_search_rate": 0.0,
-        "first_action_accuracy": 0.75,
         "forbidden_violation_rate": 0.0,
         "missed_search_rate": 0.0,
         "scored": 24,
@@ -61,7 +58,6 @@
       "failure_modes": {
         "layer_mismatch": 1
       },
-      "intent_match_rate": 1.0,
       "layer_exact_match_rate": 0.9,
       "scored": 14,
       "search_decision_accuracy": 1.0,
@@ -72,7 +68,6 @@
       "avg_required_recall": 1.0,
       "failure_modes": {},
       "false_search_rate": 0.0,
-      "first_action_accuracy": 1.0,
       "forbidden_violation_rate": 0.0,
       "missed_search_rate": 0.0,
       "scored": 24,

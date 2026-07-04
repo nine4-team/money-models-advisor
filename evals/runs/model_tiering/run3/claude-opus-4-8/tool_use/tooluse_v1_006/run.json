@@ -1,0 +1,69 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_006/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir business_dir",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "services-and-pricing.md,product-ladder.md,business-profile.md",
+      "evidence_type": "file",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_006/business_dir",
+  "case_id": "tooluse_v1_006",
+  "completed_at": "2026-07-03T20:46:14Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_006/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_006/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_006/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "services-and-pricing.md",
+    "product-ladder.md",
+    "business-profile.md"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "index": 1,
+      "kind": "file_read",
+      "note": "read services-and-pricing.md, product-ladder.md, business-profile.md"
+    },
+    {
+      "index": 2,
+      "kind": "compose_answer",
+      "note": "recite pricing from snapshot + docs; no search or calculation"
+    }
+  ]
+}

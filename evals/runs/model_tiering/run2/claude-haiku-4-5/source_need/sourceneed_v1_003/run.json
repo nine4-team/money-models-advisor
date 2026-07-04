@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_003",
+  "completed_at": "2026-07-03T16:06:09Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User asking how to interpret paid acquisition capacity given known CAC (k), first 30-day GP (k), and 1-month payback. Snapshot diagnosed; frame established. Needs Money Models diagnostic support for economics interpretation.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_003/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "paid acquisition capacity",
+      "CAC payback analysis",
+      "acquisition spend limits",
+      "gross profit acquisition ratio"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "how much to spend on paid acquisition based on payback period and CAC",
+      "paid acquisition capacity given first 30 day gross profit and CAC",
+      "acquiring customers profitably within payback constraints"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_003",
+    "conversation_context": "The snapshot is diagnosed and the user asks how much paid acquisition capacity the business has.",
+    "focus_aliases": {
+      "ad spend": [
+        "paid acquisition capacity",
+        "paid acquisition"
+      ],
+      "client financed acquisition": [
+        "CFA"
+      ],
+      "first 30 day gross profit": [
+        "gross profit"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  }
+}

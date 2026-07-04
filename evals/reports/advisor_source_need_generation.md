@@ -32,8 +32,8 @@ This script does not run an agent and does not call external model services. It 
 - Search decision accuracy: 100.0%
 - False search rate: 0.0%
 - Missed search rate: 0.0%
-- Intent match on expected-search cases: 100.0%
 - Layer exact match on expected-search cases: 90.0%
+- Intent match on expected-search cases (recorded annotation, not scored): 100.0%
 - Average layer recall on expected-search cases: 0.950
 - Average focus-term concept recall on expected-search cases: 0.750
 - Correct no-search controls: 100.0%
@@ -45,22 +45,22 @@ This script does not run an agent and does not call external model services. It 
 
 ## Case Table
 
-| Case | Split | Expected Search | Actual Search | Intent Match | Layer Recall | Focus Concept Recall | Status | Failure Reasons |
-|---|---|---:|---:|---:|---:|---:|---|---|
-| `sourceneed_v1_001` | `dev` | true | true | true | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_002` | `dev` | true | true | true | 1.000 | 0.750 | `scored` | - |
-| `sourceneed_v1_003` | `dev` | true | true | true | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_004` | `scenario_holdout` | true | true | true | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_005` | `dev` | true | true | true | 1.000 | 1.000 | `scored` | - |
-| `sourceneed_v1_006` | `dev` | true | true | true | 1.000 | 0.750 | `scored` | - |
-| `sourceneed_v1_007` | `dev` | true | true | true | 1.000 | 0.600 | `scored` | - |
-| `sourceneed_v1_008` | `dev` | true | true | true | 0.500 | 0.600 | `scored` | - |
-| `sourceneed_v1_009` | `dev` | true | true | true | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_010` | `dev` | true | true | true | 1.000 | 0.600 | `scored` | - |
-| `sourceneed_v1_011` | `dev` | false | false | true | 1.000 | 1.000 | `scored` | - |
-| `sourceneed_v1_012` | `dev` | false | false | true | 1.000 | 1.000 | `scored` | - |
-| `sourceneed_v1_013` | `scenario_holdout` | false | false | true | 1.000 | 1.000 | `scored` | - |
-| `sourceneed_v1_014` | `scenario_holdout` | false | false | true | 1.000 | 1.000 | `scored` | - |
+| Case | Split | Expected Search | Actual Search | Intent (recorded) | Layer Recall | Focus Concept Recall | Status | Failure Reasons |
+|---|---|---:|---:|---|---:|---:|---|---|
+| `sourceneed_v1_001` | `dev` | true | true | `teaching_evidence` | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_002` | `dev` | true | true | `teaching_evidence` | 1.000 | 0.750 | `scored` | - |
+| `sourceneed_v1_003` | `dev` | true | true | `diagnostic_evidence` | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_004` | `scenario_holdout` | true | true | `comparison_evidence` | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_005` | `dev` | true | true | `recommendation_evidence` | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_006` | `dev` | true | true | `recommendation_evidence` | 1.000 | 0.750 | `scored` | - |
+| `sourceneed_v1_007` | `dev` | true | true | `recommendation_evidence` | 1.000 | 0.600 | `scored` | - |
+| `sourceneed_v1_008` | `dev` | true | true | `recommendation_evidence` | 0.500 | 0.600 | `scored` | - |
+| `sourceneed_v1_009` | `dev` | true | true | `diagnostic_evidence` | 1.000 | 0.800 | `scored` | - |
+| `sourceneed_v1_010` | `dev` | true | true | `recommendation_evidence` | 1.000 | 0.600 | `scored` | - |
+| `sourceneed_v1_011` | `dev` | false | false | - | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_012` | `dev` | false | false | - | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_013` | `scenario_holdout` | false | false | - | 1.000 | 1.000 | `scored` | - |
+| `sourceneed_v1_014` | `scenario_holdout` | false | false | - | 1.000 | 1.000 | `scored` | - |
 
 ## Decision
 

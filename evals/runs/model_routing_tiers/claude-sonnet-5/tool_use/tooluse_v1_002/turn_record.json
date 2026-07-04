@@ -1,0 +1,16 @@
+{
+  "user_message": "let's talk about money models",
+  "assistant_message": "Good to dig into your money model. I already have your offer stack: the $597 STR Design Diagnostic as the attraction offer, the $15,000 full-service design engagement as the core offer, and $5,000 room packages as an upsell \u2014 no downsell or continuity yet. What I am missing to go further is your unit economics: what is your CAC (blended cost to acquire a client), and what is your gross profit in the first 30 days per client? Once I have those I can check your payback period and tell you where the model is strong or leaking.",
+  "actions": [
+    "read_snapshot"
+  ],
+  "source_events": [],
+  "cited_chunk_ids": [],
+  "metadata": {
+    "advisory_status": "insufficient_context",
+    "next_ask": [
+      "economics.cac",
+      "economics.first_30_day_gross_profit"
+    ]
+  }
+}

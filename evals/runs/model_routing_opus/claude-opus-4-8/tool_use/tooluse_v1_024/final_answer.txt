@@ -1,0 +1,1 @@
+Read the snapshot and found economics empty (cac and first_30_day_gross_profit both null, status insufficient_context). The user is asking a concrete acquisition decision but the numbers that decide it are missing, so I clarified: asked for CAC and first-30-day gross profit before recommending whether to turn on paid ads.

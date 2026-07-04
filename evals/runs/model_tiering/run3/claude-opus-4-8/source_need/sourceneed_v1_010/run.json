@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "completed_at": "2026-07-03T20:44:39Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Snapshot holds full offer-stack context (attraction offer exists). User asks for a concrete front-end offer recommendation to boost engagement -> search offers layer. No unit-economics: frame is the fix mechanism, not an economics interpretation. Intent recommendation_evidence.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "front-end offer",
+      "attraction offer",
+      "lead engagement"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "offers"
+    ],
+    "query_variants": [
+      "front-end attraction offer designs to increase lead engagement",
+      "what makes a front-end offer convert cold prospects",
+      "attraction offer structure to get more owners to engage"
+    ],
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

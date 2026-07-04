@@ -1,0 +1,130 @@
+{
+  "harness": "claude_code_subagent_per_case",
+  "quality": {
+    "claude-haiku-4-5": {
+      "source_need": {
+        "avg_focus_recall": 0.6055555555555556,
+        "failure_modes": {
+          "layer_mismatch": 2,
+          "missed_search": 1
+        },
+        "layer_exact_match_rate": 0.7,
+        "scored": 14,
+        "search_decision_accuracy": 0.9285714285714286,
+        "strict_case_pass_rate": 0.7857142857142857,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.6805555555555555,
+        "failure_modes": {
+          "false_search": 4,
+          "forbidden_action:search_source_material": 4,
+          "missing_required:calculate,diagnose,read_snapshot": 1,
+          "missing_required:calculate,read_snapshot": 1,
+          "missing_required:clarify,read_snapshot": 1,
+          "missing_required:diagnose,read_snapshot": 1,
+          "missing_required:inspect_local_docs": 2,
+          "missing_required:read_snapshot": 3
+        },
+        "false_search_rate": 0.16666666666666666,
+        "forbidden_violation_rate": 0.16666666666666666,
+        "missed_search_rate": 0.0,
+        "scored": 24,
+        "strict_case_pass_rate": 0.5833333333333334,
+        "total": 24
+      }
+    },
+    "claude-opus-4-8": {
+      "source_need": {
+        "avg_focus_recall": 0.645,
+        "failure_modes": {
+          "false_search": 1,
+          "layer_mismatch": 1
+        },
+        "layer_exact_match_rate": 0.9,
+        "scored": 14,
+        "search_decision_accuracy": 0.9285714285714286,
+        "strict_case_pass_rate": 0.8571428571428571,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.9722222222222222,
+        "failure_modes": {
+          "false_search": 1,
+          "forbidden_action:search_source_material": 1,
+          "missing_required:calculate": 1,
+          "missing_required:diagnose": 1
+        },
+        "false_search_rate": 0.041666666666666664,
+        "forbidden_violation_rate": 0.041666666666666664,
+        "missed_search_rate": 0.0,
+        "scored": 24,
+        "strict_case_pass_rate": 0.9166666666666666,
+        "total": 24
+      }
+    },
+    "claude-sonnet-5": {
+      "source_need": {
+        "avg_focus_recall": 0.62,
+        "failure_modes": {
+          "layer_mismatch": 1
+        },
+        "layer_exact_match_rate": 0.9,
+        "scored": 14,
+        "search_decision_accuracy": 1.0,
+        "strict_case_pass_rate": 0.9285714285714286,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.9027777777777778,
+        "failure_modes": {
+          "false_search": 2,
+          "forbidden_action:read_snapshot": 1,
+          "forbidden_action:search_source_material": 2,
+          "missing_evidence:read_logs": 1,
+          "missing_required:answer_without_tool": 1,
+          "missing_required:compose_answer_from_state": 1,
+          "missing_required:diagnose": 2
+        },
+        "false_search_rate": 0.08333333333333333,
+        "forbidden_violation_rate": 0.125,
+        "missed_search_rate": 0.0,
+        "scored": 24,
+        "strict_case_pass_rate": 0.7916666666666666,
+        "total": 24
+      }
+    }
+  },
+  "reference": {
+    "source_need": {
+      "avg_focus_recall": 0.75,
+      "failure_modes": {
+        "layer_mismatch": 1
+      },
+      "layer_exact_match_rate": 0.9,
+      "scored": 14,
+      "search_decision_accuracy": 1.0,
+      "strict_case_pass_rate": 0.9285714285714286,
+      "total": 14
+    },
+    "tool_use": {
+      "avg_required_recall": 1.0,
+      "failure_modes": {},
+      "false_search_rate": 0.0,
+      "forbidden_violation_rate": 0.0,
+      "missed_search_rate": 0.0,
+      "scored": 24,
+      "strict_case_pass_rate": 1.0,
+      "total": 24
+    }
+  },
+  "suites": [
+    "source_need",
+    "tool_use"
+  ],
+  "tiers": [
+    "claude-opus-4-8",
+    "claude-sonnet-5",
+    "claude-haiku-4-5"
+  ]
+}

@@ -1,0 +1,1 @@
+Client-financed acquisition compresses payback by collecting multiple payments in first 30 days, scheduled around when clients get paid. Structure $15K design offer with upfront payment plus bi-weekly installments; use prepayment discount anchor to frame payment plan as savings, not penalty. Confirm client actually wants full offer before engineering the payment sequence.

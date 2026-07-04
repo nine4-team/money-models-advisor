@@ -1,0 +1,13 @@
+{
+  "user_message": "give me the short version of where we are",
+  "assistant_message": "You're a premium interior design firm for short-term rentals and second homes. Your offer stack includes a $597 diagnostic, a $15k core design package, and a $5k upsell for pre-designed room packages. Your CAC is around $1k per client, your first 30-day gross profit is $10k, and you're paying back acquisition cost in 1 month. You can test paid acquisition—the high first-sale margin supports it. That's the state of your business model.",
+  "actions": [
+    "recap_from_snapshot"
+  ],
+  "source_events": [],
+  "calculation_events": [],
+  "metadata": {
+    "action_type": "recap",
+    "reasoning": "Snapshot contains complete business context; user requested brief recap of current state"
+  }
+}

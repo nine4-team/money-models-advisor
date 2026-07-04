@@ -1,0 +1,1 @@
+With CAC at k and first-30-day gross profit at k, you break even on acquisition at k of CAC, so you have k of room — CAC could rise about 10x before you stop recovering it inside 30 days. Payback is 1.0 month (immediate), and this is CFA level 3 (30-day GP is at least 2x CAC), the strongest cash tier.

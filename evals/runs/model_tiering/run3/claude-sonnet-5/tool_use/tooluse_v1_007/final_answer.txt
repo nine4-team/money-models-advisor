@@ -1,0 +1,1 @@
+Payback period is 1.0 months, computed via calculate payback from CAC=1000, first-30-day GP=10000, recurring GP=0.

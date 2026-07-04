@@ -1,0 +1,1 @@
+Asked the user to name the business and the specific goal before advising, since the snapshot is empty, advisor_state.advisory_status is insufficient_context, and no local business docs exist in business_dir to infer facts from.

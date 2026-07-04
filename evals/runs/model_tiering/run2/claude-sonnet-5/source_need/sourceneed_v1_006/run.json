@@ -1,0 +1,48 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "completed_at": "2026-07-03T16:03:23Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot already has CAC, first-30-day GP, and payback (1.0 mo) established; no fresh unit-economics claim needed. User asks about a concrete fix mechanism (continuity/recurring offer), so search stays on the continuity layer per the rule against adding unit-economics merely because known economics appear in the answer.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "recurring maintenance",
+      "membership offer",
+      "payback period"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "continuity"
+    ],
+    "query_variants": [
+      "recurring maintenance offer improve payback",
+      "membership offer recurring gross profit payback period",
+      "continuity offer reduce effective payback"
+    ],
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "focus_aliases": {
+      "continuity": [
+        "recurring maintenance",
+        "membership offer"
+      ],
+      "payback period": [
+        "payback"
+      ],
+      "recurring offer": [
+        "recurring maintenance",
+        "membership offer"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

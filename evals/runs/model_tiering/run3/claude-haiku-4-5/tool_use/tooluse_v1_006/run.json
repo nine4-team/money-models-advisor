@@ -1,0 +1,71 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_006/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "money_model offers: STR Design Diagnostic $597, full-service $15K, pre-designed packages $5K",
+      "evidence_type": "snapshot_inspection",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "services-and-pricing.md: design fee $15K-$60K, typical project $80K-$160K, ideal $150K-$200K+",
+      "evidence_type": "file_inspection",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "pricing sourced from snapshot and local docs without requiring CLI search",
+      "evidence_type": "direct_recall",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir",
+  "case_id": "tooluse_v1_006",
+  "completed_at": "2026-07-03T20:30:34Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_006/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-haiku-4-5",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "description": "read case context from acting prompt",
+      "index": 0,
+      "kind": "reasoning"
+    },
+    {
+      "description": "inspected snapshot to understand current offer structure and pricing state",
+      "index": 1,
+      "kind": "reasoning"
+    },
+    {
+      "description": "read services-and-pricing.md local doc to retrieve current pricing details",
+      "index": 2,
+      "kind": "reasoning"
+    },
+    {
+      "description": "composed answer from snapshot money_model and local docs services-and-pricing.md",
+      "index": 3,
+      "kind": "reasoning"
+    }
+  ]
+}

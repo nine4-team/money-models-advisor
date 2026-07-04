@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_014",
+  "completed_at": "2026-07-03T20:17:57Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "User asks whether to run ads next month, which is a paid-acquisition/payback question. Snapshot shows cac and first_30_day_gross_profit are null and ready_for_payback_diagnosis is false. Per the rules, do not substitute source search for missing business facts -- the responsible next move is to get CAC and gross profit first, not search source material.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_014/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_014/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_014/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_014",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks whether to run ads next month.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we start running ads next month?"
+  }
+}

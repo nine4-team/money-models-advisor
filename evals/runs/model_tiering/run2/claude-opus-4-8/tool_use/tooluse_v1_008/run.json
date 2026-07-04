@@ -1,0 +1,100 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir <bd>",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs --business-dir <bd> --full",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calculate payback -> value 1.0",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search unit-economics diagnostic; chunks payback-period:0, how-businesses-make-money:2, cfa:0, context:1",
+      "evidence_type": "cli_command",
+      "index": 3
+    },
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/business_dir",
+  "case_id": "tooluse_v1_008",
+  "completed_at": "2026-07-03T20:38:48Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions/20260703T203813.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <bd>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "logs --business-dir <bd> --full",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "calculate payback --inputs {cac:1000,month_one_gp:10000,monthly_recurring_gp:0}",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "search --business-dir <bd> --source-need-json {unit-economics diagnostic} --top-k 5",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "turn record --business-dir <bd> ...",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    },
+    {
+      "index": 5,
+      "kind": "note",
+      "note": "composed first-person answer citing payback-period:0, how-businesses-make-money:2, cfa:0, context:1"
+    }
+  ]
+}

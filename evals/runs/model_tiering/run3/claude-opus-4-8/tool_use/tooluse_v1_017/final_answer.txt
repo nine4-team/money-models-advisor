@@ -1,0 +1,1 @@
+Summarized current state from the snapshot: three-layer money model (597 diagnostic / 15000 core / 5000 room-package upsell, no downsell or continuity), CAC ~1000, first-30-day GP 10000, ~77% margin, payback 1.0 month; complete and diagnosable, ready to decide what to test. No search or recalculation needed.

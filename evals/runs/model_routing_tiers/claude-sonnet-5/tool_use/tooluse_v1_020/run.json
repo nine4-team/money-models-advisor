@@ -1,0 +1,76 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0,
+      "note": "Read saved snapshot to summarize business, offer stack, and economics"
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli diagnose --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 1,
+      "note": "Ran diagnosis to surface the current constraint (gross margin at 76.9%, below 80% threshold) for the summary"
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir",
+  "case_id": "tooluse_v1_020",
+  "completed_at": "2026-07-03T15:48:14Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/sessions/20260703T154730.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "reasoning",
+      "note": "Read case context: user asks for a summary of current state before deciding what to test; snapshot marked diagnosable, no new facts or teaching need present"
+    },
+    {
+      "index": 1,
+      "kind": "reasoning",
+      "note": "Consulted money-model-advisor skill: prefer read_snapshot/diagnose for a state summary; do not turn every message into retrieval"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli diagnose --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_017/business_dir --user-message \"ok so summarize the situation before we decide what to test\" --assistant-message \"...\" --actions-json '[{\"action\":\"read_snapshot\"},{\"action\":\"diagnose\"}]'",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    }
+  ]
+}

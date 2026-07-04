@@ -1,0 +1,1 @@
+Compared attraction offer and upsell roles: attraction offer ( diagnostic) generates leads at low cost; upsell (K room packages) maximizes profit post-purchase. Used Money Models framework source material to explain the sequential relationship.

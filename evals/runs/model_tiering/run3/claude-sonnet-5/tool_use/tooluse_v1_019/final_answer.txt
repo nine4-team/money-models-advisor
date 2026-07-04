@@ -1,0 +1,5 @@
+Client-financed acquisition (CFA) means the cash a new client hands you funds the cost of getting the next client, so you're not fronting acquisition spend out of your own capital or waiting on lifetime value to pay you back [context:1]. The idea comes from breaking a business down to three numbers: CAC, first-period gross profit, and payback period [how-businesses-make-money:2].
+
+In your numbers: CAC is $1,000 (referral partner cost) and first-30-day gross profit is $10,000, giving a payback period of 1.0 months. That means the gross profit from a single client in the first month alone covers CAC ten times over. You're already fully client-financed here — you could reinvest that gross profit into acquiring the next client almost immediately, well before the project even wraps, without needing outside cash to grow.
+
+The practical implication: your CAC ceiling isn't really $1,000, it's much higher. Since first-month gross profit clears CAC that fast, you have room to spend more per client on acquisition (better referral terms, paid channels, etc.) and still stay cash-positive within the same month.

@@ -332,20 +332,20 @@ def render_report(
             [
                 f"### source_need ({total} cases)",
                 "",
-                "| Condition | Strict Case Pass | Search Decision | Intent Match | Layer Exact | Focus Concept Recall |",
-                "|---|---:|---:|---:|---:|---:|",
+                "| Condition | Strict Case Pass | Search Decision | Layer Exact | Focus Concept Recall |",
+                "|---|---:|---:|---:|---:|",
             ]
         )
         for model in models:
             q = quality[model]["source_need"]
             lines.append(
                 f"| `{model}` via Codex CLI | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['search_decision_accuracy'])} | "
-                f"{fmt_pct(q['intent_match_rate'])} | {fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
+                f"{fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
             )
         q = recorded["source_need"]
         lines.append(
             f"| recorded acting agent reference | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['search_decision_accuracy'])} | "
-            f"{fmt_pct(q['intent_match_rate'])} | {fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
+            f"{fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
         )
         lines.append("")
 
@@ -355,20 +355,20 @@ def render_report(
             [
                 f"### tool_use ({total} cases)",
                 "",
-                "| Condition | Strict Case Pass | First Action | Required Recall | Forbidden Violations | False Search | Missed Search |",
-                "|---|---:|---:|---:|---:|---:|---:|",
+                "| Condition | Strict Case Pass | Required Recall | Forbidden Violations | False Search | Missed Search |",
+                "|---|---:|---:|---:|---:|---:|",
             ]
         )
         for model in models:
             q = quality[model]["tool_use"]
             lines.append(
-                f"| `{model}` via Codex CLI | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['first_action_accuracy'])} | "
+                f"| `{model}` via Codex CLI | {fmt_pct(q['strict_case_pass_rate'])} | "
                 f"{fmt_num(q['avg_required_recall'], 3)} | {fmt_pct(q['forbidden_violation_rate'])} | "
                 f"{fmt_pct(q['false_search_rate'])} | {fmt_pct(q['missed_search_rate'])} |"
             )
         q = recorded["tool_use"]
         lines.append(
-            f"| recorded acting agent reference | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['first_action_accuracy'])} | "
+            f"| recorded acting agent reference | {fmt_pct(q['strict_case_pass_rate'])} | "
             f"{fmt_num(q['avg_required_recall'], 3)} | {fmt_pct(q['forbidden_violation_rate'])} | "
             f"{fmt_pct(q['false_search_rate'])} | {fmt_pct(q['missed_search_rate'])} |"
         )

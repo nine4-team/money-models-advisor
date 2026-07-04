@@ -1,0 +1,1 @@
+Asked a clarifying question for business type, ICP, and offer stack since the snapshot was empty (advisory_status: insufficient_context) and no local docs existed to infer facts from; did not search or calculate since no business context was available yet.

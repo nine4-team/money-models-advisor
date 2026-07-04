@@ -1,0 +1,1 @@
+Identified the business as 1584 Design (full-service STR/second-home interior design firm) from locally inspected docs, saved business_type/icp/core_offer facts to the snapshot, and answered directly without a source-material search.

@@ -1,0 +1,36 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "completed_at": "2026-07-03T20:44:50Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "The $1k referral partner fee is the recorded CAC; the user is asking to interpret known acquisition economics. Snapshot holds all facts (CAC=1000, payback=1mo), so this is a single diagnostic unit-economics search under the boundary rule, not a missing-fact gather.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "acquisition cost",
+      "referral partner cost",
+      "payback period"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "referral partner fee as customer acquisition cost CAC",
+      "how acquisition spend affects payback and gross profit",
+      "cost to acquire a client CAC payback interpretation"
+    ],
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

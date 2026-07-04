@@ -448,8 +448,8 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
                 f"- Search decision accuracy: {pct(search_decision_accuracy, len(scored))}",
                 f"- False search rate: {pct(false_search_count, len(scored))}",
                 f"- Missed search rate: {pct(missed_search_count, len(scored))}",
-                f"- Intent match on expected-search cases: {pct(intent_matches, len(search_expected))}",
                 f"- Layer exact match on expected-search cases: {pct(layer_exact_matches, len(search_expected))}",
+                f"- Intent match on expected-search cases (recorded annotation, not scored): {pct(intent_matches, len(search_expected))}",
                 f"- Average layer recall on expected-search cases: {fmt(average_layer_recall)}",
                 f"- Average focus-term concept recall on expected-search cases: {fmt(average_focus_recall)}",
                 f"- Correct no-search controls: {pct(correct_no_search, len(no_search_expected))}",
@@ -467,10 +467,10 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             lines.append("- The search/no-search boundary is clean on this eval slice.")
         else:
             lines.append("- The search/no-search boundary still needs instruction or tool-surface work before retrieval-backend comparisons.")
-        if intent_matches == len(search_expected) and layer_exact_matches / len(search_expected) >= 0.9:
+        if layer_exact_matches / len(search_expected) >= 0.9:
             lines.append("- Source-need precision meets the seed gate for retrieval-backend comparison; carry any residual layer misses as caveats.")
-        elif intent_matches < len(search_expected) or layer_exact_matches < len(search_expected):
-            lines.append("- Source-need precision is still partial; inspect intent and layer misses before treating retrieval-backend comparisons as meaningful.")
+        elif layer_exact_matches < len(search_expected):
+            lines.append("- Source-need precision is still partial; inspect layer misses before treating retrieval-backend comparisons as meaningful.")
         if average_focus_recall is not None and average_focus_recall < 0.7:
             lines.append("- Focus-term concept recall is low enough that the metric should be treated as a development signal, not a production-quality semantic score.")
 
@@ -479,8 +479,8 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             "",
             "## Case Table",
             "",
-            "| Case | Split | Expected Search | Actual Search | Intent Match | Layer Recall | Focus Concept Recall | Status | Failure Reasons |",
-            "|---|---|---:|---:|---:|---:|---:|---|---|",
+            "| Case | Split | Expected Search | Actual Search | Intent (recorded) | Layer Recall | Focus Concept Recall | Status | Failure Reasons |",
+            "|---|---|---:|---:|---|---:|---:|---|---|",
         ]
     )
     for result in results:
@@ -488,7 +488,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             "| "
             f"`{result.case_id}` | `{result.split}` | {str(result.expected_search).lower()} | "
             f"{'-' if result.actual_search is None else str(result.actual_search).lower()} | "
-            f"{'-' if result.intent_match is None else str(result.intent_match).lower()} | "
+            f"{'-' if result.actual_source_need is None else f'`{result.actual_source_need.intent}`'} | "
             f"{fmt(result.layer_recall)} | {fmt(result.focus_recall)} | "
             f"`{result.status}` | "
             f"{', '.join(result.failure_reasons) or '-'} |"

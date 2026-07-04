@@ -6,6 +6,11 @@ This eval checks completed advisor-turn traces. It verifies that source-backed a
 
 It does not run an agent and does not call external model services. Acting agents complete traces separately; this scorer validates the resulting `run.json` artifacts.
 
+## Trace Requirement
+
+- Query variants required: no
+- Query variants must be present in executed queries: no
+
 ## Dataset
 
 - Cases: 6

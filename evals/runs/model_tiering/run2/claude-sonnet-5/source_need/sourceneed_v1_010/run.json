@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "completed_at": "2026-07-03T16:03:40Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot already has offer stack (attraction $597, core $15k, upsell $5k) and ICP; ready_for_offer_stack_diagnosis is true, so no missing-fact block. Question is a concrete front-end offer design/engagement mechanism -> single offers-layer search, recommendation_evidence intent since enough facts are known for a concrete next move.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "front-end offer",
+      "attraction offer",
+      "STR owner engagement",
+      "low-friction entry offer"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "offers"
+    ],
+    "query_variants": [
+      "how to design a front-end attraction offer",
+      "low-friction entry offer to drive engagement",
+      "attraction offer for high-ticket service business"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

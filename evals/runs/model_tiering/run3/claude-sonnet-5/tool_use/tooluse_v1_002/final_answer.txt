@@ -1,0 +1,1 @@
+Acknowledged the saved offer stack ($597 diagnostic, $15,000 core offer, $5,000 upsell) and asked for CAC and first-30-day gross profit, since those are the two fields the snapshot marks missing and advisory_status is insufficient_context; no calculation or search was possible without them.

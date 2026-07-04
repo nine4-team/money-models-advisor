@@ -1,0 +1,1 @@
+Ad spend capacity is governed by CAC/gross-profit/payback triangulation: with 1000 dollar CAC and 10000 dollar first-30-day gross profit, payback is 1 month, so acquisition is not cash-constrained; spend up to roughly first-30-day gross profit per client and test channel CAC against that payback ceiling before scaling.

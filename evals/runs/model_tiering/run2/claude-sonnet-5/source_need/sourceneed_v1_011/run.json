@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "completed_at": "2026-07-03T16:03:45Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User is asking what happened to the $1k referral partner cost \u2014 a factual recall of a figure already recorded in the snapshot (economics.cac=1000, field_sources notes \"Referral partner cost averaged to about $1k per client\") and confirmed in prior-session context (assistant treated it as CAC, then folded in fulfillment cost). This is a lookup answerable directly from saved state, not a request for a Money Models concept, comparison, diagnosis, or recommendation. No source search needed.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

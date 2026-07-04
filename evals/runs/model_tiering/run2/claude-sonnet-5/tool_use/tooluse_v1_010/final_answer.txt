@@ -1,0 +1,1 @@
+Framed acquisition spend around payback period: CAC ~$1,000 vs $10,000 first-30-day gross profit means payback_period_months=1.0 (CFA level 2), so ad spend can scale aggressively and is bounded by lead volume/close rate, not cash risk, as long as new cohorts keep paying back within about a month.

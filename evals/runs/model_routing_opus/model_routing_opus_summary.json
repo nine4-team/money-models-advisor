@@ -1,0 +1,61 @@
+{
+  "harness": "claude_code_subagent (Opus 4.8 acting as advisor agent)",
+  "model": "claude-opus-4-8",
+  "quality": {
+    "source_need": {
+      "avg_focus_recall": 0.645,
+      "failure_modes": {
+        "false_search": 1,
+        "layer_mismatch": 1
+      },
+      "layer_exact_match_rate": 0.9,
+      "scored": 14,
+      "search_decision_accuracy": 0.9285714285714286,
+      "strict_case_pass_rate": 0.8571428571428571,
+      "total": 14
+    },
+    "tool_use": {
+      "avg_required_recall": 0.9722222222222222,
+      "failure_modes": {
+        "false_search": 1,
+        "forbidden_action:search_source_material": 1,
+        "missing_required:calculate": 1,
+        "missing_required:diagnose": 1
+      },
+      "false_search_rate": 0.041666666666666664,
+      "forbidden_violation_rate": 0.041666666666666664,
+      "missed_search_rate": 0.0,
+      "scored": 24,
+      "strict_case_pass_rate": 0.9166666666666666,
+      "total": 24
+    }
+  },
+  "recorded_acting_agent_reference": {
+    "source_need": {
+      "avg_focus_recall": 0.75,
+      "failure_modes": {
+        "layer_mismatch": 1
+      },
+      "layer_exact_match_rate": 0.9,
+      "scored": 14,
+      "search_decision_accuracy": 1.0,
+      "strict_case_pass_rate": 0.9285714285714286,
+      "total": 14
+    },
+    "tool_use": {
+      "avg_required_recall": 1.0,
+      "failure_modes": {},
+      "false_search_rate": 0.0,
+      "forbidden_violation_rate": 0.0,
+      "missed_search_rate": 0.0,
+      "scored": 24,
+      "strict_case_pass_rate": 1.0,
+      "total": 24
+    }
+  },
+  "runtime_note": "Latency and token proxies are captured in opus_runtime_proxy.json (Claude Code subagent-reported, not API billing).",
+  "suites": [
+    "source_need",
+    "tool_use"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business_dir/services-and-pricing.md",
+      "evidence_type": "file_read",
+      "index": 0
+    },
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/business_dir",
+  "case_id": "tooluse_v1_018",
+  "completed_at": "2026-07-03T20:50:02Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "detail": "Consulted money-model-advisor SKILL and source_need_rules",
+      "index": 0,
+      "kind": "note"
+    },
+    {
+      "detail": "Read local docs: business-profile.md, product-ladder.md, services-and-pricing.md",
+      "index": 1,
+      "kind": "file_read"
+    },
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "detail": "Confirmed diagnosable state",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "detail": "Design fee range $15,000-$60,000 found in services-and-pricing.md; plain doc recall, no search or calculation warranted",
+      "index": 3,
+      "kind": "note"
+    }
+  ]
+}

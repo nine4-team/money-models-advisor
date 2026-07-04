@@ -1,0 +1,34 @@
+{
+  "case_id": "sourceneed_v1_008",
+  "completed_at": "2026-07-03T20:16:59Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Offer-stack context already established (attraction/core/upsell exist); question is a conceptual/mechanism check on whether a gated free trial works as a front-end offer, not an economics interpretation, so this stays on the offers layer with teaching_evidence intent rather than pulling in unit-economics.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "free trial as front-end offer",
+      "required actions to gate free trial",
+      "friction to prevent free-trial abuse"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "offers"
+    ],
+    "query_variants": [
+      "free trial as an attraction offer",
+      "requiring actions before a free trial converts",
+      "gating a free trial to avoid low-intent signups"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_008",
+    "conversation_context": "The snapshot has offer-stack context. The user asks whether a free trial could work with required actions.",
+    "scenario_id": "1584_design",
+    "user_turn": "could a free trial work as a front-end offer if we require the right actions?"
+  }
+}

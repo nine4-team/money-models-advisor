@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "completed_at": "2026-07-03T15:44:17Z",
+  "created_at": "2026-07-03T15:42:03Z",
+  "notes": "Payback is already computed (CAC, 30-day GP known, payback_period_months=0.1); no missing-fact blocker. User asks whether adding recurring maintenance/membership (continuity) helps payback -- a concrete fix-mechanism question, not a fresh unit-economics claim, so layer stays continuity per the boundary rule rather than adding unit-economics.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "recurring maintenance offer",
+      "membership offer",
+      "payback period impact"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "continuity"
+    ],
+    "query_variants": [
+      "recurring maintenance offer improve payback",
+      "membership offer payback period",
+      "continuity offer cash payback impact"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "focus_aliases": {
+      "continuity": [
+        "recurring maintenance",
+        "membership offer"
+      ],
+      "payback period": [
+        "payback"
+      ],
+      "recurring offer": [
+        "recurring maintenance",
+        "membership offer"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

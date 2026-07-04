@@ -1,0 +1,78 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business_dir/business-profile.md, business_dir/product-ladder.md, business_dir/services-and-pricing.md",
+      "evidence_type": "file_read",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "business_dir/.money-model-advisor/business_snapshot.json (business.business_type, business.icp, money_model.core_offer)",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir command output",
+      "evidence_type": "cli_output",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "business_dir/.money-model-advisor/sessions/20260703T160500.json",
+      "evidence_type": "session_record",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "completed_at": "2026-07-03T16:13:13Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions/20260703T160500.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:b9f6f773ba4ea0ec2b17552bcf4e08c02e7e389b756546a56c31561ff49a5898",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "cat business-profile.md product-ladder.md services-and-pricing.md",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

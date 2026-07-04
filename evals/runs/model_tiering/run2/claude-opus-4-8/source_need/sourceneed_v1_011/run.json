@@ -1,0 +1,34 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "completed_at": "2026-07-03T20:36:09Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User asks where the known $1k referral cost lands in the model. Snapshot already records it as CAC=1000; this is interpretation of known economics (CAC/payback), so unit-economics per the layers and boundary rules. No missing facts to fetch first.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "referral partner cost as CAC",
+      "acquisition cost in the money model",
+      "CAC role in payback"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "how referral partner fees count as customer acquisition cost",
+      "where acquisition spend sits in the money model",
+      "CAC and cash payback treatment of paid referrals"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

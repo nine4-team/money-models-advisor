@@ -1,0 +1,1 @@
+We decided that in our earlier session on 2026-06-05: you said the referral partner CAC works as an average, and I confirmed I would treat referral partner acquisition as roughly $1,000 CAC per client. It is logged in field_sources.economics.cac with the note that referral partner cost averaged to about $1k per client.

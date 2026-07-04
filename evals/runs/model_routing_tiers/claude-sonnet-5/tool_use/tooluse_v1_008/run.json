@@ -1,0 +1,112 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0,
+      "note": "Confirmed payback-ready snapshot: CAC 1000, first-30-day GP 10000, payback 1.0 month"
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}'",
+      "evidence_type": "cli_command",
+      "index": 1,
+      "note": "Verified payback period value of 1.0 month"
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli calculate cfa-level --inputs '{\"cac\":1000,\"first_30_day_gp\":10000}'",
+      "evidence_type": "cli_command",
+      "index": 2,
+      "note": "Computed CFA level 3 to interpret acquisition capacity"
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json '{...diagnostic_evidence, unit-economics...}'",
+      "evidence_type": "cli_command",
+      "index": 3,
+      "note": "Retrieved payback-period:0, cfa:0, cfa:1 to support the interpretation of the 1-month payback and CFA level 3"
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir <business_dir> --record-json <record.json>",
+      "evidence_type": "cli_command",
+      "index": 4,
+      "note": "Recorded the completed turn with calculation_events and cited_chunk_ids"
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir",
+  "case_id": "tooluse_v1_008",
+  "completed_at": "2026-07-03T15:48:57Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions/20260703T154807.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "reasoning",
+      "note": "User asks what the payback-ready numbers mean economically; snapshot already has CAC, first-30-day GP, and payback computed. This is a diagnostic interpretation question, not a missing-fact or concrete-fix question."
+    },
+    {
+      "index": 1,
+      "kind": "reasoning",
+      "note": "Consulted money-model-advisor skill and source_need_rules.md: interpreting known economics stays on unit-economics layer with intent diagnostic_evidence."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}'",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate cfa-level --inputs '{\"cac\":1000,\"first_30_day_gp\":10000}'",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir --source-need-json '{\"intent\":\"diagnostic_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"payback period\",\"CFA\",\"acquisition capacity\",\"gross profit\"],\"user_turn\":\"where does this leave us economically?\",\"query_variants\":[\"what a one month payback period means for acquisition spend\",\"CFA level and how fast payback lets you reinvest in acquisition\",\"interpreting first 30 day gross profit versus CAC\"]}' --top-k 5",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/business_dir --record-json <record.json>",
+      "exit_code": 0,
+      "index": 6,
+      "kind": "cli_command"
+    }
+  ]
+}

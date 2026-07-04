@@ -757,6 +757,41 @@
           gap: 8px;
         }
       }
+
+      .info {
+        cursor: help;
+        white-space: nowrap;
+      }
+      .info::after {
+        content: "\24D8";
+        margin-left: 4px;
+        font-size: 0.9em;
+        color: var(--accent);
+        opacity: 0.55;
+      }
+      .info:hover::after,
+      .info:focus::after {
+        opacity: 1;
+        outline: none;
+      }
+      #tip {
+        position: fixed;
+        z-index: 60;
+        max-width: 260px;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        line-height: 1.45;
+        box-shadow: 0 6px 20px rgba(28, 25, 20, 0.28);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.1s ease;
+      }
+      #tip.on {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -1263,11 +1298,10 @@
           </div>
           <h4 class="block">The request: a SourceNeed</h4>
           <p>
-            A <code>SourceNeed</code> says what a search is for. It carries an
-            intent, the namespaces to look in, focus terms, the user's turn
-            for context, and the query variants described next. Different
-            advisory jobs need different evidence, so each search names its
-            intent:
+            A <code>SourceNeed</code> says what a search is for. It carries the
+            layers to look in, focus terms, the user's turn for context, the
+            query variants described next, and an <code>intent</code> recorded
+            for the trace. The intent names the retrieval job:
           </p>
           <div class="chips">
             <span>teaching_evidence</span>
@@ -1276,9 +1310,11 @@
             <span>recommendation_evidence</span>
           </div>
           <p>
-            A turn can be mixed — an answer may both teach and recommend — but
-            each search does one job. An answer that needs two kinds of
-            evidence runs two searches and records two source events.
+            Intent is an annotation, not a control: retrieval is driven by
+            layers, focus terms, and variants, so the label is recorded for
+            readability and is not scored (see §3.8). What still holds is one
+            job per search — a turn that needs two kinds of evidence runs two
+            searches, on two layers, and records two source events.
           </p>
 
           <h4 class="block">Query generation: agent-written variants + a deterministic fallback</h4>
@@ -1596,12 +1632,12 @@
                     <tr>
                       <td>tool_use · 24</td>
                       <td class="wrap">Right next action chosen?</td>
-                      <td class="wrap">24/24 first-action (23/24 before one documented label correction), 1.000 required-action recall, 0% false / 0% missed search, 100% trace completeness.</td>
+                      <td class="wrap">1.000 required-action recall, 100% full-sequence pass, 0% false / 0% missed search, 100% trace completeness.</td>
                     </tr>
                     <tr>
                       <td>source_need · 14</td>
                       <td class="wrap">Right retrieval objective?</td>
-                      <td class="wrap">100% search-decision accuracy, 100% intent match, 90% layer exact match, 0.950 layer recall, 0.750 focus-concept recall.</td>
+                      <td class="wrap">100% search-decision accuracy, 90% layer exact match, 0.950 layer recall, 0.750 focus-concept recall. (Intent recorded but not scored — it steers no retrieval.)</td>
                     </tr>
                     <tr>
                       <td>source_events · 6</td>
@@ -1655,9 +1691,8 @@
             scenarios, run after the instructions were frozen, by acting
             agents that never saw the expected answers. The source-need suite
             has 14 cases: 10 where the right move is to search, 4 controls
-            where it isn't. Results: 23 of 24 tool-use cases passed on strict
-            first-action accuracy — 24 of 24 after one documented label
-            correction — with zero false and zero missed searches.
+            where it isn't. Results: all 24 tool-use cases passed with full
+            required-action recall and zero false and zero missed searches.
             Source-need scored 100% on the search/no-search decision and
             matched the expected namespaces exactly on 9 of the 10 search
             cases. The misses, case by case:
@@ -1687,11 +1722,11 @@
                 general rule, not a one-case patch. Two examples: payment
                 plans are labeled <code>downsells</code> — they look like
                 pricing, but their function is reducing purchase friction.
-                And a turn asking how to <em>fix</em> payback gets
-                <code>recommendation_evidence</code>, not
-                <code>diagnostic_evidence</code>: the user already wants a
-                fix, so the search exists to support the recommendation, even
-                though "payback" sounds diagnostic.
+                And a search that interprets the business's economics stays on
+                the <code>unit-economics</code> layer even when the answer will
+                recommend something; the recommended move gets its own search
+                on its own fix layer. One answer, two searches — which keeps
+                each search's retrieval clean.
               </dd>
             </div>
           </dl>
@@ -2002,95 +2037,219 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.8 · Model routing &amp; tiering</span>Can a cheaper model match the planning tier?</h3>
+          <h3><span class="sub">3.8 · Platform selection</span>Which platform should the hosted agent run on?</h3>
           <p>
-            The JD asks for routing that improves unit economics while keeping
-            output quality. The first version of this experiment got the
-            harness wrong: it replayed cases as single API calls with state
-            inlined, but this product is agent-operated and CLI-backed. That
-            means a real routing test has to let the model act through Codex,
-            inspect saved state, run the local CLI, and write the same trace
-            artifacts as the normal advisor workflow.
+            The hosted advisor is a separate product, and it needs a provider to
+            run its planning brain — the part that decides when to search, when
+            to calculate, and when to answer from saved state. Both frontier
+            tiers I can reach, OpenAI's <code>gpt-5.5</code> and Anthropic's
+            <code>claude-opus-4-8</code>, can do that job. This experiment
+            decides which one to build on, and on what evidence.
           </p>
           <p>
-            I replaced the API replay with
-            <code>scripts/eval_codex_model_routing.py</code>. It prepares each
-            golden case, invokes <code>codex exec</code>, and scores the
-            resulting <code>run.json</code> files with the same deterministic
-            source-need and tool-use scorers. In this environment the supported
-            OpenAI Codex model is <code>gpt-5.5</code>; an attempted
-            <code>gpt-5-mini</code> Codex run failed as unsupported for this
-            ChatGPT subscription harness, so the corrected result is a
-            same-harness baseline, not a completed cheap-tier promotion.
+            To keep the comparison honest, each model operates the actual
+            CLI-backed advisor — same prep code, same 14 source-need and 24
+            tool-use golden cases, same deterministic scorers.
+            <code>gpt-5.5</code> acts via <code>codex exec</code>;
+            <code>claude-opus-4-8</code> acts as a Claude Code agent. Both
+            inspect state, run the local CLI, and write the same trace artifacts
+            a normal turn would. (An earlier version replayed each case as one
+            bounded API call with state inlined; that is not the product's task,
+            so it is kept only as a labeled provider experiment, not a routing
+            result.)
           </p>
           <figure class="figure">
-            <figcaption>Codex CLI harness · source-need 14 cases, tool-use 24 cases · report: <code>evals/reports/model_routing_tiering.md</code></figcaption>
+            <figcaption>Quality and cost · same 38 golden cases, same scorers · hover or tap the ⓘ by any metric for its definition · higher is better except the rate and latency/token rows, where lower is better · latency is p50 per suite; tokens are per-suite totals and harness-reported proxies (Codex tokens-used vs Claude Code subagent tokens), a ballpark not billed dollars · reports: <code>evals/reports/model_routing_tiering.md</code>, <code>evals/reports/model_routing_opus.md</code></figcaption>
             <div class="table-scroll">
               <table>
                 <thead>
                   <tr>
-                    <th>Condition</th>
-                    <th>Harness</th>
-                    <th class="num">Source-need strict</th>
-                    <th class="num">Tool-use strict</th>
-                    <th class="num">p50 latency</th>
-                    <th class="num">Token proxy</th>
+                    <th>Metric</th>
+                    <th class="num"><code>gpt-5.5</code></th>
+                    <th class="num"><code>claude-opus-4-8</code></th>
+                    <th class="num">Reference</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Recorded acting-agent reference</td>
-                    <td>CLI traces</td>
+                    <td><span class="info" tabindex="0" data-tip="Whole case correct: the right search / no-search call, and on search cases the exact right corpus layers. Any single miss fails the case.">source-need · strict case pass</span></td>
+                    <td class="num">85.7%</td>
+                    <td class="num">85.7%</td>
+                    <td class="num">92.9%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Share of cases where the model correctly chose to search or not search the corpus this turn.">source-need · search decision</span></td>
+                    <td class="num">92.9%</td>
                     <td class="num">92.9%</td>
                     <td class="num">100.0%</td>
-                    <td class="num">—</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="On cases that should search, the share where the model picked exactly the right corpus layers — none missing, none extra.">source-need · layer exact</span></td>
+                    <td class="num">90.0%</td>
+                    <td class="num">90.0%</td>
+                    <td class="num">90.0%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Of the key terms a search should include, the share the model covered (0–1). Partial credit, judged with alias tolerance.">source-need · focus concept recall</span></td>
+                    <td class="num">0.690</td>
+                    <td class="num">0.645</td>
+                    <td class="num">0.750</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Whole case correct: every required action taken, no forbidden action, and a complete recorded trace. Any single miss fails the case.">tool-use · strict case pass</span></td>
+                    <td class="num">95.8%</td>
+                    <td class="num">91.7%</td>
+                    <td class="num">100.0%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Of the actions a case required, the share the model actually took (0–1). Partial credit.">tool-use · required recall</span></td>
+                    <td class="num">0.979</td>
+                    <td class="num">0.972</td>
+                    <td class="num">1.000</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Share of cases where the model took an action the case explicitly forbade. Lower is better.">tool-use · forbidden violations</span> <span class="quiet">(lower better)</span></td>
+                    <td class="num">0.0%</td>
+                    <td class="num">4.2%</td>
+                    <td class="num">0.0%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Share of cases where the model searched the corpus when it should not have. Lower is better.">tool-use · false search</span> <span class="quiet">(lower better)</span></td>
+                    <td class="num">0.0%</td>
+                    <td class="num">4.2%</td>
+                    <td class="num">0.0%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Share of cases where the model failed to search the corpus when it should have. Lower is better.">tool-use · missed search</span> <span class="quiet">(lower better)</span></td>
+                    <td class="num">0.0%</td>
+                    <td class="num">0.0%</td>
+                    <td class="num">0.0%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Median time per case (half faster, half slower). Harness-reported, not billed. Lower is better.">source-need · p50 latency</span></td>
+                    <td class="num">29.4 s</td>
+                    <td class="num">27.3 s</td>
                     <td class="num">—</td>
                   </tr>
                   <tr>
+                    <td><span class="info" tabindex="0" data-tip="Median time per case (half faster, half slower). Harness-reported, not billed. Lower is better.">tool-use · p50 latency</span></td>
+                    <td class="num">71.5 s</td>
+                    <td class="num">43.0 s</td>
+                    <td class="num">—</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Rough tokens the whole suite burned. Harness-reported proxy (Codex tokens-used vs Claude Code subagent tokens), not billed dollars. Lower is better.">source-need · tokens (proxy)</span></td>
+                    <td class="num">400k</td>
+                    <td class="num">555k</td>
+                    <td class="num">—</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Rough tokens the whole suite burned. Harness-reported proxy (Codex tokens-used vs Claude Code subagent tokens), not billed dollars. Lower is better.">tool-use · tokens (proxy)</span></td>
+                    <td class="num">1.25M</td>
+                    <td class="num">1.04M</td>
+                    <td class="num">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </figure>
+          <h4 class="block">Quality</h4>
+          <p>
+            The two models tie on source-need strict pass (85.7%), and
+            <code>gpt-5.5</code> leads tool-use by a single case (95.8% vs
+            91.7%). Both sit just under the recorded reference. At 14 and 24
+            single-shot cases with no repeated sampling, a one-case gap is inside
+            the noise floor — so this reads as "both clear the planning bar,"
+            not "gpt-5.5 &gt; Opus."
+          </p>
+          <h4 class="block">Latency</h4>
+          <p>
+            These are the latencies of doing the real thing — loading the skill,
+            inspecting state, running CLI commands, recording traces — so they
+            run in seconds, not the milliseconds of a bounded API call. On
+            source-need the two are close (p50 27–29 s). On tool-use Opus has the
+            faster median (43 s vs 71.5 s) but a heavier tail (p95 154 s vs
+            124 s), from a few long cases.
+          </p>
+          <h4 class="block">Cost</h4>
+          <p>
+            Token use splits: Opus spends more on source-need (555k vs 400k) and
+            fewer on tool-use (1.04M vs 1.25M). These are harness-reported
+            proxies from two different tools — read them as ballparks, not billed
+            dollars; per-case figures are in
+            <code>evals/runs/model_routing_opus/opus_runtime_proxy.json</code>.
+            The cost lever that is already proven is architectural, not model
+            choice: the deterministic work — calculations, persistence, retrieval
+            execution, trace recording — stays in the CLI on either platform, so
+            none of it is billed as model tokens.
+          </p>
+          <h4 class="block">Where they differ</h4>
+          <p>
+            The strict-pass gap is a handful of specific cases, and they cut both
+            ways.
+          </p>
+          <figure class="figure">
+            <figcaption>Where the two models diverge · every case one passed and the other missed, plus the two both missed</figcaption>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Case · turn</th>
+                    <th>Missed by</th>
+                    <th>What happened</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="wrap">tool-use 008 · "where does this leave us economically?"</td>
+                    <td>Opus</td>
+                    <td class="wrap">Skipped the required diagnosis <em>and</em> ran a forbidden source search; <code>gpt-5.5</code> did neither. Real miss.</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">tool-use 010 · "how much can we spend on ads?"</td>
+                    <td>Opus</td>
+                    <td class="wrap">Skipped the required calculation before advising on spend capacity. Real miss.</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">tool-use 021 · "is acquisition not the bottleneck?"</td>
                     <td><code>gpt-5.5</code></td>
-                    <td>Codex CLI agent</td>
-                    <td class="num">85.7%</td>
-                    <td class="num">95.8%</td>
-                    <td class="num">29.4 s / 71.5 s</td>
-                    <td class="num">400k / 1.25M</td>
+                    <td class="wrap">Ran a calculation instead of the required diagnosis; Opus ran the diagnosis. Real miss.</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">source-need 008 · "could a free trial be a front-end offer?"</td>
+                    <td>Both</td>
+                    <td class="wrap">Both used only the <code>offers</code> layer and dropped <code>downsells</code>. The known-noisy free-trial case.</td>
+                  </tr>
+                  <tr>
+                    <td class="wrap">source-need 011 · "what happened to the $1k to referral partners?"</td>
+                    <td>Both</td>
+                    <td class="wrap">Both searched the corpus for a recall question that saved state already answers. Over-search.</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </figure>
           <p>
-            The corrected result is more useful and more modest. The OpenAI
-            Codex baseline is strong but not perfect: one source-need false
-            search, one source-need layer miss, six wrong-first-action misses,
-            and one missing diagnosis action. It is also much slower than the
-            API replay because it is doing the real thing: loading
-            instructions, inspecting state, running CLI commands, and
-            recording traces. Codex-reported token counts are a
-            subscription-harness proxy, not API billing, but they still expose
-            the cost shape of agentic planning.
-          </p>
-          <p class="quiet">
-            The old API replay is kept only as a separately labeled
-            provider-experiment artifact. It should not be used to decide
-            product routing, because a bounded completion that cannot operate
-            the CLI is not the same task as an advisor agent choosing tools in
-            a real turn.
+            Both of Opus's losses are real — one over-search, one skipped
+            calculation. <code>gpt-5.5</code>'s single loss is a required
+            diagnosis it skipped and Opus got right, so neither model dominates.
+            The two shared failures point at those cases and labels, not at the
+            models.
           </p>
           <div class="decision">
             <span class="d-tag">Decision</span>
             <div>
               <p>
-                <code>gpt-5.5</code> via Codex CLI is the current OpenAI
-                agent baseline. No cheaper model routes into planning in v1,
-                because no cheaper supported Codex tier has passed the same
-                CLI-backed golden suite.
+                Either frontier provider is a defensible platform for the hosted
+                agent's planning brain: they tie on quality and split on cost,
+                and this eval does not force the choice. Pick on platform fit,
+                ecosystem, and price at scale — then keep validating that choice
+                in this same harness.
               </p>
               <p>
-                The cost lever that is already proven is architectural:
-                deterministic calculations, persistence, retrieval execution,
-                and trace recording stay in the CLI. Future model downgrades
-                must be tested in the same harness, or clearly labeled as
-                separate API/provider experiments.
+                Whether a cheaper tier can hold part of the planning role is
+                a separate, provider-internal question, answered in §3.10.
+                Whatever the platform, the deterministic work stays in the CLI.
               </p>
             </div>
           </div>
@@ -2160,6 +2319,117 @@
               </dd>
             </div>
           </dl>
+
+          <h3><span class="sub">3.10 · Model tiering</span>Can a cheaper Claude tier hold the planning role?</h3>
+          <p>
+            §3.8 picked between two frontier providers for the hosted agent's
+            planning brain. This experiment asks the next question inside one
+            provider: does the planning role need a frontier tier at all, or
+            can Sonnet or Haiku hold it at a lower price-per-token? Every tier
+            — Opus, Sonnet, Haiku — ran the same 38 golden cases through the
+            same CLI-backed harness as §3.8 (one Claude Code subagent per
+            case, reading only the prepared prompt and the case's own saved
+            state). Because all three tiers are measured by the same tool,
+            tokens and latency are directly comparable here, not the
+            cross-provider ballpark in §3.8.
+          </p>
+          <p>
+            Each tier ran the full suite three times (K=3) to separate a real
+            gap from single-run noise. Runs and reports:
+            <code>evals/runs/model_tiering/</code>,
+            <code>evals/reports/model_tiering_multi_summary.json</code>.
+          </p>
+          <figure class="figure">
+            <figcaption>Mean of 3 runs per tier · same 38 golden cases, same scorers as §3.8 · tokens and latency are per-case means, same measuring tool across all three tiers</figcaption>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th class="num"><code>claude-opus-4-8</code></th>
+                    <th class="num"><code>claude-sonnet-5</code></th>
+                    <th class="num"><code>claude-haiku-4-5</code></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Mean strict case pass across 3 independent runs of the same 14 cases. Whole case correct — the right search / no-search call, and on search cases the exact right corpus layers.">source-need · strict case pass</span></td>
+                    <td class="num">85.7%</td>
+                    <td class="num">92.9%</td>
+                    <td class="num">81.0%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Mean strict case pass across 3 independent runs of the same 24 cases. Whole case correct — every required action taken, no forbidden action, complete trace.">tool-use · strict case pass</span></td>
+                    <td class="num">84.7%</td>
+                    <td class="num">77.8%</td>
+                    <td class="num">54.2%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Mean tokens per case across 3 runs, harness-reported (Claude Code subagent), not billed dollars.">source-need · tokens/case</span></td>
+                    <td class="num">46.0k</td>
+                    <td class="num">54.5k</td>
+                    <td class="num">37.4k</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Median time per case, mean across 3 runs. Harness-reported, not billed.">source-need · p50 latency</span></td>
+                    <td class="num">28.2 s</td>
+                    <td class="num">34.2 s</td>
+                    <td class="num">30.0 s</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Mean tokens per case across 3 runs, harness-reported (Claude Code subagent), not billed dollars.">tool-use · tokens/case</span></td>
+                    <td class="num">53.0k</td>
+                    <td class="num">67.4k</td>
+                    <td class="num">48.5k</td>
+                  </tr>
+                  <tr>
+                    <td><span class="info" tabindex="0" data-tip="Median time per case, mean across 3 runs. Harness-reported, not billed.">tool-use · p50 latency</span></td>
+                    <td class="num">64.4 s</td>
+                    <td class="num">73.6 s</td>
+                    <td class="num">67.9 s</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </figure>
+          <h4 class="block">Quality</h4>
+          <p>
+            The two suites split cleanly, and the split holds up across all 3
+            runs. On source-need, Sonnet beat Opus every run by an identical
+            margin (92.9% vs 85.7%) — the same one case fails for Sonnet and
+            the same two fail for Opus each time, so this is a real
+            classification edge, not noise. On tool-use, Opus beat Sonnet in
+            all 3 runs too, though the margin moved (Opus 91.7/79.2/83.3 vs
+            Sonnet 79.2/75.0/79.2) — Opus is the more reliable tier at
+            sequencing the multi-step orchestration this suite tests. Haiku trails both
+            tiers on every metric, and its tool-use score (54.2%) rules it out
+            for the planning role: roughly half its runs miss a required step
+            or fire a forbidden search.
+          </p>
+          <h4 class="block">Cost</h4>
+          <p>
+            Cheaper is not the same as fewer tokens. Opus used the fewest
+            tokens per case in <em>both</em> suites — Sonnet spent more
+            compute than Opus here, not less. Any dollar saving from routing
+            to Sonnet comes from its lower price-per-token, not from shorter
+            runs. Haiku is the cheapest by token count, but that saving is
+            moot once its quality rules it out of the planning role.
+          </p>
+          <div class="decision">
+            <span class="d-tag">Decision</span>
+            <div>
+              <p>
+                Don't put one tier on the whole planning role: route the
+                source-need decision (search or not, which layer — a single
+                classification call) to Sonnet, and keep tool-use
+                orchestration (sequencing read / calculate / diagnose /
+                search across a turn) on Opus. Haiku is not promoted to the
+                planning role on either suite. Deterministic work —
+                persistence, formulas, retrieval execution, trace validation
+                — stays in the CLI regardless of tier.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -2221,10 +2491,12 @@
               <dd>
                 The corrected baseline is now measured in the actual
                 Codex/CLI harness (§3.8). <code>gpt-5.5</code> is the current
-                OpenAI agent baseline; no cheaper tier is promoted because the
-                available subscription harness did not support the attempted
-                cheaper model. Still missing: embedding model selection and a
-                true same-harness downgrade or cross-provider run.
+                OpenAI agent baseline; a cross-provider run — Claude Opus 4.8
+                through the same harness (§3.8) — lands within noise of it. A
+                same-harness tier sweep (Opus, Sonnet, Haiku, K=3 runs) now
+                exists inside Claude: Sonnet is promoted for the source-need
+                decision, Opus stays on tool-use orchestration, Haiku is not
+                promoted (§3.10). Still missing: embedding model selection.
               </dd>
             </div>
           </dl>
@@ -2274,7 +2546,7 @@
                   </tr>
                   <tr>
                     <td class="wrap">Reduce LLM API costs — model routing, caching, token management, or architectural improvements</td>
-                    <td class="wrap">Subscription-operated agent over a local CLI, so the build-and-eval loop's only metered API call is embeddings (§2.1); those are cached at 100% warm hit rate, zero API batches on reruns (§2.4, §3.4); BusinessSnapshot prevents repeated context discovery (§2.2); model-routing now records Codex token proxies and refuses unsupported cheap-tier promotion (§3.8).</td>
+                    <td class="wrap">Subscription-operated agent over a local CLI, so the build-and-eval loop's only metered API call is embeddings (§2.1); those are cached at 100% warm hit rate, zero API batches on reruns (§2.4, §3.4); BusinessSnapshot prevents repeated context discovery (§2.2); model-routing records token/latency proxies from the same harness and a same-provider tier sweep promotes Sonnet for the light decision, keeping Opus on orchestration (§3.8, §3.10).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Observability — cost-per-request, token usage, quality signals, anomaly detection</td>
@@ -2282,7 +2554,7 @@
                   </tr>
                   <tr>
                     <td class="wrap">Model routing and tiering to improve unit economics; multiple LLM providers</td>
-                    <td class="wrap">Corrected (§3.8): model-routing evidence now uses <code>codex exec</code>, not API replay, so the model can operate the same CLI-backed workflow as the product. <code>gpt-5.5</code> is the OpenAI Codex baseline; cheaper routing remains unpromoted until a supported tier passes the same harness. Cross-provider evidence is still a named gap, not overclaimed.</td>
+                    <td class="wrap">Corrected (§3.8): model-routing evidence now uses <code>codex exec</code>, not API replay, so the model can operate the same CLI-backed workflow as the product. <code>gpt-5.5</code> is the OpenAI Codex baseline; a second provider, Claude Opus 4.8, was run through the same harness and lands within noise of it. A same-provider tier sweep (§3.10) then tested cheaper routing directly: Sonnet is promoted for the source-need decision, Opus stays on tool-use orchestration, Haiku is not promoted.</td>
                   </tr>
                   <tr>
                     <td class="wrap">Comfortable in both TypeScript and Python</td>
@@ -2303,5 +2575,58 @@
         </p>
       </div>
     </div>
+    <script>
+      (function () {
+        var tip = document.createElement("div");
+        tip.id = "tip";
+        document.body.appendChild(tip);
+        var current = null;
+        function place(el) {
+          tip.textContent = el.getAttribute("data-tip");
+          tip.classList.add("on");
+          var r = el.getBoundingClientRect();
+          var w = tip.offsetWidth;
+          var left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8));
+          var top = r.bottom + 8;
+          if (top + tip.offsetHeight > window.innerHeight - 8) {
+            top = r.top - tip.offsetHeight - 8;
+          }
+          tip.style.left = left + "px";
+          tip.style.top = top + "px";
+        }
+        function show(el) {
+          current = el;
+          place(el);
+        }
+        function hide() {
+          current = null;
+          tip.classList.remove("on");
+        }
+        // Tap / click toggles: tap an icon to open, tap it again (or tap
+        // away) to close. Same behavior on touch and mouse.
+        document.addEventListener("click", function (e) {
+          var t = e.target.closest(".info");
+          if (t) {
+            if (current === t) hide();
+            else show(t);
+          } else {
+            hide();
+          }
+        });
+        // Hover is a desktop convenience only, and never overrides or
+        // closes a tooltip that was opened by tapping.
+        document.addEventListener("mouseover", function (e) {
+          var t = e.target.closest(".info");
+          if (t && !current) place(t);
+        });
+        document.addEventListener("mouseout", function (e) {
+          if (e.target.closest(".info") && !current) tip.classList.remove("on");
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") hide();
+        });
+        window.addEventListener("scroll", hide, true);
+      })();
+    </script>
   </body>
 </html>

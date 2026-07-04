@@ -1,0 +1,52 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_023/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "summarized prior conversation from logs",
+      "evidence_type": "conversation_history",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_023/business_dir",
+  "case_id": "tooluse_v1_023",
+  "completed_at": "2026-07-03T20:33:25Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_023/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_023/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-haiku-4-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_024/business_dir"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c",
+    "start": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "logs --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    }
+  ]
+}

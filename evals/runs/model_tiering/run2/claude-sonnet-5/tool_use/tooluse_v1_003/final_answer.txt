@@ -1,0 +1,1 @@
+Saved economics.cac=1000 to the snapshot (fully loaded CAC including referral partner payments); no calculation or search performed since first_30_day_gross_profit is still missing for payback; recorded the turn and asked for that next missing fact.

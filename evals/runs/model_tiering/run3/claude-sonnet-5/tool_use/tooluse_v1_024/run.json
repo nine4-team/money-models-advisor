@@ -1,0 +1,63 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.cac",
+      "evidence_type": "snapshot_field",
+      "index": 0
+    },
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "economics.first_30_day_gross_profit",
+      "evidence_type": "snapshot_field",
+      "index": 1
+    },
+    {
+      "action": "clarify",
+      "confidence": "direct",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/business_dir",
+  "case_id": "tooluse_v1_024",
+  "completed_at": "2026-07-03T20:24:58Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_024/business_dir/.money-model-advisor/sessions/20260703T202420.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "money_model_architect.cli session start --business-dir <business_dir> --user-message \"should we start running ads next month?\"",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "money_model_architect.cli turn record (via session finish --record-json)",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir --source-need-json '{...intent:diagnostic_evidence, layers:[unit-economics]...}' --top-k 5; cited chunks cfa:3, payback-period:0, how-businesses-make-money:2",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calculate cfa-level --inputs '{\"cac\":1000,\"first_30_day_gp\":10000}' -> value 3",
+      "evidence_type": "cli_stdout",
+      "index": 2
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}' -> value 1.0",
+      "evidence_type": "cli_stdout",
+      "index": 3
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor/sessions/20260703T154819.json",
+      "evidence_type": "session_record",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir",
+  "case_id": "tooluse_v1_021",
+  "completed_at": "2026-07-03T15:49:34Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor/sessions/20260703T154819.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "reasoning",
+      "note": "User asks whether the payback-ready economics mean acquisition is not the bottleneck. Snapshot already has CAC, first-30-day GP, and payback computed -- this is a diagnostic interpretation question, not a missing-fact question."
+    },
+    {
+      "index": 1,
+      "kind": "reasoning",
+      "note": "Consulted money-model-advisor skill and source_need_rules.md: interpreting known economics stays on unit-economics layer with intent diagnostic_evidence."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir --source-need-json '{\"intent\":\"diagnostic_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"payback period\",\"acquisition bottleneck\",\"CAC capacity\"],\"user_turn\":\"does this mean acquisition is probably not the bottleneck?\",\"query_variants\":[\"fast payback period means acquisition is not the constraint\",\"when unit economics are strong what becomes the bottleneck instead of acquisition\",\"payback period speed and how much can be spent on acquisition\"]}' --top-k 5",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate cfa-level --inputs '{\"cac\":1000,\"first_30_day_gp\":10000}'",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}'",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/business_dir --user-message \"does this mean acquisition is probably not the bottleneck?\" --assistant-message \"Yes. Payback is 1 month and first-30-day gross profit ($10,000) is more than 10x CAC ($1,000) -- CFA Level 3, where money stops being the limit on acquisition. So acquisition capacity is probably not the bottleneck; look at fulfillment capacity, sales conversion, or lead volume instead.\"",
+      "exit_code": 0,
+      "index": 6,
+      "kind": "cli_command"
+    }
+  ]
+}

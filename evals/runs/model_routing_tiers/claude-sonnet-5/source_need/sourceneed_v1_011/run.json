@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "completed_at": "2026-07-03T15:44:30Z",
+  "created_at": "2026-07-03T15:42:03Z",
+  "notes": "User asks what happened to the $1k referral partner cost \u2014 this is a recall question about economics already saved to the snapshot (CAC=1000, sourced from prior-session chat in 1584_referral_partner_context_01/02). No new Money Models concept, comparison, diagnosis, or recommendation is being requested, so no source search is needed; answer directly from snapshot/session context.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

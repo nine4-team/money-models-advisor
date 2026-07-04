@@ -1,0 +1,28 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_010/acting_prompt.md",
+  "actual_actions": [],
+  "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir",
+  "case_id": "tooluse_v1_010",
+  "created_at": "2026-06-27T00:08:48Z",
+  "final_answer_path": null,
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir",
+    "sessions_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_opus/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": null,
+    "start": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c"
+  },
+  "split": "dev",
+  "status": "prepared",
+  "workflow_steps": []
+}

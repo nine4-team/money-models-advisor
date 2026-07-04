@@ -1,0 +1,15 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "created_at": "2026-07-03T20:16:04Z",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

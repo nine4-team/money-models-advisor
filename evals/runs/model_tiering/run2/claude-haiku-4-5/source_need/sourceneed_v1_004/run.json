@@ -1,0 +1,45 @@
+{
+  "case_id": "sourceneed_v1_004",
+  "completed_at": "2026-07-03T16:06:07Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User compares two Money Models concepts (attraction vs. upsell) with concrete offer-stack context present but no economics. Comparison is conceptual rather than diagnostic. Search supports framework clarity on layer distinction.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_004/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "attraction offer",
+      "upsell",
+      "front-end offer vs post-sale offer"
+    ],
+    "intent": "comparison_evidence",
+    "layers": [
+      "offers",
+      "upsells"
+    ],
+    "query_variants": [
+      "difference between attraction offer and upsell in Money Models",
+      "when to use an attraction offer versus an upsell",
+      "front-end offer versus post-purchase add-on in customer acquisition"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_004",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks to compare two Money Models concepts.",
+    "focus_aliases": {
+      "after first sale": [
+        "post-sale add-on",
+        "pre-designed room packages"
+      ],
+      "front end": [
+        "front-end offer",
+        "STR Design Diagnostic"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_012",
+  "completed_at": "2026-07-03T16:06:38Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User asks for payback period calculation. Snapshot has CAC ($1,000) and first-30-day GP ($10,000); payback period already calculated (0.1 months). This is deterministic math requiring no Money Models source citation.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_012/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_012/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_012/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_012",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks for deterministic math.",
+    "scenario_id": "1584_design",
+    "user_turn": "what is the payback period with these numbers?"
+  }
+}

@@ -1,0 +1,1 @@
+Asked the human for CAC and first-30-day gross profit before diagnosing payback; no search or calculation, since missing business facts must not be replaced by retrieval.

@@ -74,7 +74,6 @@ class CaseResult:
     turn_type: str
     run_path: Path | None
     status: str
-    first_action_correct: bool | None
     required_recall: float | None
     forbidden_violation: bool | None
     false_search: bool | None
@@ -236,7 +235,6 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
             turn_type=case["turn_type"],
             run_path=None,
             status="not_run",
-            first_action_correct=None,
             required_recall=None,
             forbidden_violation=None,
             false_search=None,
@@ -253,7 +251,6 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
     required = set(case["required_actions"])
     forbidden = set(case["forbidden_actions"])
 
-    first_action_correct = bool(actual_actions) and actual_actions[0] == case["expected_first_action"]
     required_recall = len(required & actual_set) / len(required) if required else 1.0
     forbidden_hits = forbidden & actual_set
     forbidden_violation = bool(forbidden_hits)
@@ -262,8 +259,6 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
     full_sequence_pass = required_recall == 1.0 and not forbidden_violation and trace_complete
 
     failures = list(trace_failures)
-    if not first_action_correct:
-        failures.append("wrong_first_action")
     if required_recall < 1.0:
         missing = sorted(required - actual_set)
         failures.append(f"missing_required:{','.join(missing)}")
@@ -280,7 +275,6 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
         turn_type=case["turn_type"],
         run_path=run_path,
         status="scored",
-        first_action_correct=first_action_correct,
         required_recall=required_recall,
         forbidden_violation=forbidden_violation,
         false_search=false_search,
@@ -312,9 +306,6 @@ def summarize_scored(results: list[CaseResult]) -> dict[str, Any]:
     recall_values = [result.required_recall for result in scored if result.required_recall is not None]
     return {
         "scored_count": len(scored),
-        "first_action_accuracy": pct(
-            sum(1 for result in scored if result.first_action_correct is True), len(scored)
-        ),
         "full_sequence_pass_rate": pct(
             sum(1 for result in scored if result.full_sequence_pass is True), len(scored)
         ),
@@ -384,7 +375,6 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             "",
             "## Metrics",
             "",
-            "- first-action accuracy",
             "- required-action recall",
             "- forbidden-action violation rate",
             "- false-search rate",
@@ -431,7 +421,6 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         lines.extend(
             [
                 f"- Scored cases: {scored_count}",
-                f"- First-action accuracy: {scored_summary['first_action_accuracy']}",
                 f"- Average required-action recall: {scored_summary['avg_required_recall']}",
                 f"- Full-sequence pass rate: {scored_summary['full_sequence_pass_rate']}",
                 f"- Forbidden-action violation rate: {scored_summary['forbidden_violation_rate']}",

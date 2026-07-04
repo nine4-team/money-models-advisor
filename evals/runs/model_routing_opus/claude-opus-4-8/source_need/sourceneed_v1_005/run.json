@@ -1,0 +1,46 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "completed_at": "2026-06-27T00:10:32Z",
+  "created_at": "2026-06-27T00:08:48Z",
+  "notes": "Offer stack is known (diagnostic front-end, core, upsell defined). User asks conceptually what to offer next after the first sale to lift 30-day profit \u2014 a concrete next-move recommendation, the post-sale upsell mechanism. Missing CAC/first-30-day-profit are optional here and do not block conceptual source support. Layers kept to upsells only.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "post-sale upsell",
+      "first-month profit",
+      "first 30 day gross profit",
+      "next offer after first sale"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "upsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "focus_aliases": {
+      "first sale": [
+        "diagnostic offer"
+      ],
+      "maximize 30 day profits": [
+        "first-month profit",
+        "first 30 day gross profit"
+      ],
+      "next offer": [
+        "pre-designed room packages"
+      ],
+      "upsell after first sale": [
+        "post-sale upsell",
+        "post-sale add-on"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

@@ -1,0 +1,1 @@
+Summarized business context, offer stack, and unit economics from the saved snapshot; diagnose flagged gross margin (76.9%, below the 80% rule of thumb) as the current constraint per section 1.4 Gross Profit, with payback at 1.0 month.

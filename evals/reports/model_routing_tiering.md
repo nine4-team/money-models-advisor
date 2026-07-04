@@ -10,17 +10,17 @@ The current ChatGPT subscription exposes `gpt-5.5` as the supported OpenAI Codex
 
 ### source_need (14 cases)
 
-| Condition | Strict Case Pass | Search Decision | Intent Match | Layer Exact | Focus Concept Recall |
-|---|---:|---:|---:|---:|---:|
-| `gpt-5.5` via Codex CLI | 85.7% | 92.9% | 100.0% | 90.0% | 0.690 |
-| recorded acting agent reference | 92.9% | 100.0% | 100.0% | 90.0% | 0.750 |
+| Condition | Strict Case Pass | Search Decision | Layer Exact | Focus Concept Recall |
+|---|---:|---:|---:|---:|
+| `gpt-5.5` via Codex CLI | 85.7% | 92.9% | 90.0% | 0.690 |
+| recorded acting agent reference | 92.9% | 100.0% | 90.0% | 0.750 |
 
 ### tool_use (24 cases)
 
-| Condition | Strict Case Pass | First Action | Required Recall | Forbidden Violations | False Search | Missed Search |
-|---|---:|---:|---:|---:|---:|---:|
-| `gpt-5.5` via Codex CLI | 95.8% | 75.0% | 0.979 | 0.0% | 0.0% | 0.0% |
-| recorded acting agent reference | 100.0% | 100.0% | 1.000 | 0.0% | 0.0% | 0.0% |
+| Condition | Strict Case Pass | Required Recall | Forbidden Violations | False Search | Missed Search |
+|---|---:|---:|---:|---:|---:|
+| `gpt-5.5` via Codex CLI | 95.8% | 0.979 | 0.0% | 0.0% | 0.0% |
+| recorded acting agent reference | 100.0% | 1.000 | 0.0% | 0.0% | 0.0% |
 
 ## Runtime
 
@@ -34,7 +34,7 @@ Token counts are the `tokens used` values printed by Codex CLI, not provider bil
 ## Failure Modes
 
 - `gpt-5.5` via Codex CLI / `source_need`: `layer_mismatch` x1, `false_search` x1
-- `gpt-5.5` via Codex CLI / `tool_use`: `wrong_first_action` x6, `missing_required:diagnose` x1
+- `gpt-5.5` via Codex CLI / `tool_use`: `missing_required:diagnose` x1
 - recorded acting agent reference / `source_need`: `layer_mismatch` x1
 - recorded acting agent reference / `tool_use`: none
 
@@ -50,10 +50,4 @@ The practical v1 routing policy remains: deterministic calculations, persistence
 |---|---|---|---|
 | `gpt-5.5` | `source_need` | `sourceneed_v1_008` | layer_mismatch |
 | `gpt-5.5` | `source_need` | `sourceneed_v1_011` | false_search |
-| `gpt-5.5` | `tool_use` | `tooluse_v1_004` | wrong_first_action |
-| `gpt-5.5` | `tool_use` | `tooluse_v1_005` | wrong_first_action |
-| `gpt-5.5` | `tool_use` | `tooluse_v1_006` | wrong_first_action |
-| `gpt-5.5` | `tool_use` | `tooluse_v1_013` | wrong_first_action |
-| `gpt-5.5` | `tool_use` | `tooluse_v1_014` | wrong_first_action |
-| `gpt-5.5` | `tool_use` | `tooluse_v1_018` | wrong_first_action |
 | `gpt-5.5` | `tool_use` | `tooluse_v1_021` | missing_required:diagnose |

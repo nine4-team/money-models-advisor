@@ -1,0 +1,77 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/business_dir",
+  "case_id": "tooluse_v1_010",
+  "completed_at": "2026-07-03T16:14:24Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions/20260703T161345.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c",
+    "start": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json '{\"intent\":\"diagnostic_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"CAC\",\"payback period\",\"acquisition spend capacity\",\"gross profit\"],\"user_turn\":\"how should I think about how much we can spend on ads if we run them?\",\"query_variants\":[\"how much can we spend on paid acquisition given payback period\",\"CAC and first 30 day gross profit determine ad spend capacity\",\"acquisition spend limits from payback period Money Models\"]}' --top-k 5",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ... --actions-json actions.json --source-events-json source_events.json --cited-chunk-ids-json cited_chunks.json",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    }
+  ]
+}

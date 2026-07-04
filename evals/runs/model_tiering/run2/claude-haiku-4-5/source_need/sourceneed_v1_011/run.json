@@ -1,0 +1,19 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "completed_at": "2026-07-03T16:06:41Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User asks where the referral partner $1k went. This is a tracking question about a known CAC value already in the snapshot. The $1k is the referral partner acquisition cost that fed into the payback calculation (0.1 months). No source-material support needed\u2014answer is direct from snapshot.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

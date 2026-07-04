@@ -1,0 +1,1 @@
+Explained that fulfillment cost determines gross profit, which is the only figure that can pay back CAC/ad spend, and cited unit-economics source material (gross-profit:0, how-businesses-make-money:2, cac:0, payback-period:0).

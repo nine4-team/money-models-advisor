@@ -1,0 +1,92 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "field": "economics.first_30_day_gross_profit",
+      "index": 1,
+      "value": 10000
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2,
+      "inputs": {
+        "cogs": 3000,
+        "price": 13000
+      },
+      "metric": "gross-profit",
+      "value": 10000
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_command",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/business_dir",
+  "case_id": "tooluse_v1_004",
+  "completed_at": "2026-07-03T16:05:08Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/sessions/20260703T160436.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:7b7091c8334da9616cd154e3760e6e93d9ba15872f3c6e0f3189ca5a9fefc9eb",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "snapshot set --business-dir <business_dir> economics.first_30_day_gross_profit=10000",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "calculate gross-profit --inputs {\"price\":13000,\"cogs\":3000}",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    }
+  ]
+}

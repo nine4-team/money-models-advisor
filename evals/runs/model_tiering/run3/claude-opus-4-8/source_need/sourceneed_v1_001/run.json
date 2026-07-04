@@ -1,0 +1,37 @@
+{
+  "case_id": "sourceneed_v1_001",
+  "completed_at": "2026-07-03T20:43:30Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Conceptual why-question explaining how fulfillment cost feeds gross profit, which against CAC determines acquisition capacity/whether ads work. Business facts (CAC, 30-day GP) already present, so search supports the concept rather than substituting for missing facts. Single unit-economics retrieval job per the layer/boundary rules.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "fulfillment cost",
+      "gross profit",
+      "CAC",
+      "payback period",
+      "acquisition capacity"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "why fulfillment cost lowers gross profit and limits CAC",
+      "cost to deliver gross profit paid acquisition payback",
+      "how much can you spend on ads relative to gross profit CAC"
+    ],
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}

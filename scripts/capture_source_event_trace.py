@@ -123,7 +123,7 @@ def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
             "",
             "You are the acting agent for a Money Model Advisor source-event trace eval case.",
             "",
-            "Use the money-model-advisor skill and local CLI as needed. Expected source events are intentionally hidden.",
+            "Consult the money-model-advisor skill before you act, then use the local CLI to carry out the workflow. The skill is the authoritative rulebook for search decisions, intents, and layers, and its rules decide the close calls. Expected source events are intentionally hidden.",
             "",
             "Task: answer the user's turn using the post-refactor agent-operated workflow. If the answer needs source-material support, generate SourceNeeds, run source-material search, inspect chunks, answer with citations, and record the completed turn with `turn record`.",
             "",

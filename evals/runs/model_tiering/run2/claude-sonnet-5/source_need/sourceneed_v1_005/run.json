@@ -1,0 +1,50 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "completed_at": "2026-07-03T16:03:24Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot already has a defined upsell (pre-designed room packages) positioned as the next offer after the diagnostic; user asks for a concrete next-offer recommendation to raise first-month profit, not an economics interpretation. Missing CAC/first-30-day-gross-profit fields are not blocking since the ask is about the concrete offer-stack mechanism, not payback/CAC math. Frame is already established so this stays on the fix layer (upsells) per the boundary rule rather than unit-economics.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "post-sale upsell timing",
+      "first-month profit maximization",
+      "next offer after front-end diagnostic"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "upsells"
+    ],
+    "query_variants": [
+      "best post-sale upsell to maximize first-month profit",
+      "sequencing an upsell right after a diagnostic offer sells",
+      "premium next offer to increase 30-day gross profit"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "focus_aliases": {
+      "first sale": [
+        "diagnostic offer"
+      ],
+      "maximize 30 day profits": [
+        "first-month profit",
+        "first 30 day gross profit"
+      ],
+      "next offer": [
+        "pre-designed room packages"
+      ],
+      "upsell after first sale": [
+        "post-sale upsell",
+        "post-sale add-on"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

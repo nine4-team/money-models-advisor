@@ -1,0 +1,48 @@
+{
+  "case_id": "sourceneed_v1_003",
+  "completed_at": "2026-07-03T20:43:46Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Snapshot fully diagnosed (CAC 1000, 30-day GP 10000, payback 1mo). User asks how to think about ad spend = interpretation of known unit economics. Boundary rule keeps this on unit-economics/diagnostic_evidence; no separate fix-layer search since user wants interpretation, not a concrete offer build.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_003/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "first 30 day gross profit",
+      "payback period",
+      "paid acquisition capacity"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "how much can you spend on ads based on CAC and 30 day gross profit",
+      "paid acquisition capacity from payback period and gross profit",
+      "client financed acquisition ad spend ceiling from unit economics"
+    ],
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_003",
+    "conversation_context": "The snapshot is diagnosed and the user asks how much paid acquisition capacity the business has.",
+    "focus_aliases": {
+      "ad spend": [
+        "paid acquisition capacity",
+        "paid acquisition"
+      ],
+      "client financed acquisition": [
+        "CFA"
+      ],
+      "first 30 day gross profit": [
+        "gross profit"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "case_id": "tooluse_v1_005",
+  "created_at": "2026-07-03T20:29:21Z",
+  "completed_at": "2026-07-03T20:29:36Z",
+  "actions": [
+    {
+      "type": "session_start",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_005/business_dir --user-message 'do you know what business we are working on?'"
+    },
+    {
+      "type": "update_snapshot",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_005/business_dir business.business_type='interior design' business.icp='STR property owners and second-home owners with budget for full-service design' money_model.core_offer.description='full-service STR and second-home design with planning, procurement, installation'"
+    },
+    {
+      "type": "turn_record",
+      "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions/20260703T202936.json"
+    }
+  ],
+  "source_events": [],
+  "cited_chunk_ids": [],
+  "paths": {
+    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json"
+  },
+  "notes": "Answered user question about business identity by reading local docs (business-profile.md, product-ladder.md, services-and-pricing.md) and saving clear facts to snapshot."
+}

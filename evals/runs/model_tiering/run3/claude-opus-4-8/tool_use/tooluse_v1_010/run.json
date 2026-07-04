@@ -1,0 +1,65 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir",
+  "case_id": "tooluse_v1_010",
+  "completed_at": "2026-07-03T20:48:47Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_010/business_dir"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c",
+    "start": "sha256:d8626a958ed8409a9a4a8b726e7ed0b08e48118c04ccfdc76ad08c37babd036c"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "search --business-dir <business_dir> --source-need-json {intent:diagnostic_evidence,layers:[unit-economics],focus_terms:[CAC,payback period,gross profit,paid acquisition capacity]} --top-k 5",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    }
+  ]
+}

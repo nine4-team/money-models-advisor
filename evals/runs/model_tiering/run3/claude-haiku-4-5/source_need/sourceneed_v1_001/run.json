@@ -1,0 +1,37 @@
+{
+  "case_id": "sourceneed_v1_001",
+  "completed_at": "2026-07-03T20:26:10Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Search needed. User asks diagnostic question about fulfillment cost's role in acquisition economics. Snapshot has CAC and first-30-day GP. This is unit-economics diagnostic evidence supporting why fulfillment cost is material to acquisition capacity.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "fulfillment cost",
+      "gross profit",
+      "CAC",
+      "payback period",
+      "acquisition viability"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "how fulfillment cost impacts gross profit and payback period for acquisition",
+      "fulfillment cost affects acquisition viability CAC payback",
+      "why fulfillment cost matters for customer acquisition economics"
+    ],
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}

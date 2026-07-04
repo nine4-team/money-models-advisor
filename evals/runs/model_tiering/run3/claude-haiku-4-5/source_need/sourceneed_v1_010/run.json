@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "completed_at": "2026-07-03T20:27:23Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "User asks what front-end offer should attract STR owners. Snapshot has business type, ICP, and current offer ( diagnostic). This needs source material on effective front-end offer design for property owner engagement, not economics interpretation. Single offers-layer search.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "front-end offer",
+      "attraction offer design",
+      "low-friction entry",
+      "STR owner engagement"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "offers"
+    ],
+    "query_variants": [
+      "what front-end offer attracts STR owners to engage with a design firm",
+      "low-friction front-end offer for property owner engagement",
+      "diagnostic offer to get property owners interested in design services"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

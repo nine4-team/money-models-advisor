@@ -1,0 +1,41 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "completed_at": "2026-06-27T00:10:56Z",
+  "created_at": "2026-06-27T00:08:48Z",
+  "notes": "Snapshot already has the front-end offer (STR Design Diagnostic, $597) and full offer stack, so offer-stack facts are sufficient to give source-backed guidance on the attraction-offer mechanism. Missing CAC/gross-profit do not block a conceptual offer-design recommendation. Intent recommendation_evidence; single layer offers; focus on front-end attraction offer and engagement.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "front-end attraction offer",
+      "lead engagement",
+      "STR owners"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "offers"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

@@ -1,0 +1,1 @@
+Saved economics.cac=1000 from the user's stated fact, then plan to ask for first_30_day_gross_profit next since payback still cannot be computed.

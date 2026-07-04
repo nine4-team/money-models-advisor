@@ -1,0 +1,1 @@
+The referral partner cost is saved in the model as the $1k CAC value, which determines the payback period of 1 month at current gross profit levels.

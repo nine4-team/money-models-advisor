@@ -65,6 +65,7 @@ PROMPT_HIDDEN_FIELDS = {
     "label_rationale",
     "ambiguity",
     "severity_if_wrong",
+    "adjudication_note",
 }
 
 FORBIDDEN_RUN_FIELDS = {
@@ -206,7 +207,7 @@ def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
             "",
             "You are the acting agent for a Money Model Advisor next-action eval case.",
             "",
-            "Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.",
+            "Consult the money-model-advisor skill, then use the local CLI to act. The skill is the authoritative rulebook and its rules decide the close calls. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.",
             "",
             f"Business dir: `{business_dir}`",
             "",

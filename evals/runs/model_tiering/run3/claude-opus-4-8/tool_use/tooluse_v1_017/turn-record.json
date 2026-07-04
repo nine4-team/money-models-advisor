@@ -1,0 +1,18 @@
+{
+  "user_message": "ok so summarize the situation before we decide what to test",
+  "assistant_message": "Here's where we stand. You're a premium full-service interior design firm targeting STR and second-home owners with $80K-$200K+ project capacity, delivered as Lisa-led planning, procurement, and installation. Your money model has three live layers: a $597 STR Design Diagnostic as the attraction offer, a $15,000 full-service core offer, and a $5,000 pre-designed room-package upsell. You have no downsell and no continuity offer yet. On the economics: CAC is about $1,000 (referral-partner cost averaged per client, medium confidence), first-30-day gross profit is $10,000, gross margin is ~77%, and there's no recurring gross profit. That gives a payback of 1.0 month — you recover acquisition cost inside the first month, which means acquisition capacity is strong and cash-constrained growth isn't your bottleneck. State is complete and diagnosable, so we're ready to decide what to test from here.",
+  "actions": [
+    "read_snapshot",
+    "inspect_logs",
+    "answer"
+  ],
+  "source_events": [],
+  "cited_chunk_ids": [],
+  "calculation_events": [],
+  "metadata": {
+    "next_action": "answer",
+    "rationale": "Snapshot is complete and diagnosable with payback already computed (1.0 month). The user asked for a summary of current state, not for a source-backed Money Models claim, so no retrieval and no recalculation is warranted. Answer directly from saved state.",
+    "no_search_reason": "Summarizing known facts, not making a fresh source-backed claim; per source_need_rules do not turn every message into retrieval.",
+    "no_calc_reason": "Payback and gross margin already stored in snapshot; nothing new to compute."
+  }
+}

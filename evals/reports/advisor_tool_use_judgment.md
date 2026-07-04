@@ -18,7 +18,6 @@ These are product-behavior cases. Harness/operability questions about eval termi
 
 ## Metrics
 
-- first-action accuracy
 - required-action recall
 - forbidden-action violation rate
 - false-search rate
@@ -35,7 +34,6 @@ All cases have completed `run.json` artifacts.
 Trace-capture note: these artifacts are auditable workflow traces. Dev/regression traces were captured in-thread by Codex; scenario_holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. This is stronger than the dev/regression traces, but still not a production-grade independent benchmark.
 
 - Scored cases: 24
-- First-action accuracy: 100.0%
 - Average required-action recall: 1.000
 - Full-sequence pass rate: 100.0%
 - Forbidden-action violation rate: 0.0%

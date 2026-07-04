@@ -1,0 +1,37 @@
+{
+  "case_id": "sourceneed_v1_007",
+  "completed_at": "2026-07-03T20:34:56Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot holds full offer-stack context and a defined $15K core offer, so there is enough business fact to make a source-backed claim. User asks conceptually how to think about payment plans for a cash-tight buyer -> a pay-less-now, friction-reducing alternative, which maps to the downsells layer. Not a unit-economics interpretation and not blocked by missing CAC/GP.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_007/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_007/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_007/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "payment plan",
+      "downsell",
+      "pay-less-now option",
+      "cash-tight buyer",
+      "split payments"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "downsells"
+    ],
+    "query_variants": [
+      "payment plan downsell for buyer who cannot pay full price now",
+      "split payment pay-less-now option to reduce cash friction on core offer",
+      "structuring payment terms so cash-tight buyer can still buy"
+    ],
+    "user_turn": "if someone wants the design package but cash is tight today, how should we think about payment plans?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_007",
+    "conversation_context": "The snapshot has offer-stack context. The user asks about payment plans for a cash-tight buyer.",
+    "scenario_id": "1584_design",
+    "user_turn": "if someone wants the design package but cash is tight today, how should we think about payment plans?"
+  }
+}

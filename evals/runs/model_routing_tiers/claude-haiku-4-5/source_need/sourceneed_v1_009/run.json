@@ -1,0 +1,46 @@
+{
+  "case_id": "sourceneed_v1_009",
+  "completed_at": "2026-07-03T15:45:26Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "notes": "Snapshot is payback-ready with CAC=$1000, first-30-day-GP=$10k, payback=0.1mo. User asks whether CAC or gross profit per client is the real bottleneck. This is a diagnostic interpretation of known economics needing source-backed guidance on which metric constrains growth.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_009/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_009/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_009/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC bottleneck",
+      "gross profit per client bottleneck",
+      "acquisition capacity vs production capacity",
+      "CAC payback relationship"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "is CAC the bottleneck or gross profit per client with short payback",
+      "when CAC is low and payback fast should we focus on acquisition or production capacity",
+      "how to diagnose if acquisition cost or gross profit limits growth"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_009",
+    "conversation_context": "The snapshot is payback-ready. The user asks whether CAC or gross profit is the real bottleneck.",
+    "focus_aliases": {
+      "acquisition": [
+        "acquisition capacity"
+      ],
+      "gross profit": [
+        "gross profit per client"
+      ],
+      "make more per customer": [
+        "gross profit per client"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "is the problem really CAC, or do we mostly need to make more gross profit per client?"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_022/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir <case>/business_dir",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search --source-need-json (comparison_evidence, layers offers+upsells)",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "/Users/benjaminmackenzie/.claude/projects/-Users-benjaminmackenzie-Dev-money-model-architect/45d646c7-c112-4e21-a808-699b997c19ae/tool-results/boz4mvnj9.txt",
+      "evidence_type": "cli_command",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir",
+  "case_id": "tooluse_v1_022",
+  "completed_at": "2026-07-03T20:51:27Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_022/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "read_snapshot",
+      "summary": "Read business snapshot; confirmed both attraction offer ($597 diagnostic) and upsell ($5000 room packages) exist"
+    },
+    {
+      "index": 1,
+      "kind": "search_source_material",
+      "summary": "Ran one comparison_evidence search over offers+upsells layers"
+    },
+    {
+      "index": 2,
+      "kind": "compose_answer",
+      "summary": "Composed grounded comparison citing attraction-offers:0, upsell-offers:0, offer-types:4"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "case_id": "sourceneed_v1_002",
+  "completed_at": "2026-07-03T15:43:39Z",
+  "created_at": "2026-07-03T15:42:03Z",
+  "notes": "Snapshot is payback-ready (CAC=1000, payback=0.1mo); user asks a conceptual question about client-financed acquisition. This is interpreting known economics (payback speed enabling acquisition spend), not a concrete fix mechanism, so it stays diagnostic_evidence on unit-economics per the boundary rule.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_002/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "client-financed acquisition",
+      "payback period",
+      "CAC",
+      "acquisition capacity"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "client-financed acquisition Money Models",
+      "using payback speed to fund acquisition",
+      "how fast payback increases acquisition spend"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_002",
+    "conversation_context": "The snapshot is payback-ready and the user asks for a Money Models acquisition framework explanation.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about client-financed acquisition here?"
+  }
+}

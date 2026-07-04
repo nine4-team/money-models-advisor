@@ -1,0 +1,86 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot returned all-null fields with advisory_status insufficient_context",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business-profile.md, product-ladder.md, services-and-pricing.md name 1584 Design",
+      "evidence_type": "local_doc",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set wrote business.business_type, business.icp, money_model.core_offer.exists/description",
+      "evidence_type": "cli_output",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "final answer identifies 1584 Design from saved snapshot facts",
+      "evidence_type": "session_record",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "completed_at": "2026-07-03T20:38:06Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "business_dir/business-profile.md",
+    "business_dir/product-ladder.md",
+    "business_dir/services-and-pricing.md"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:08c412463d8b2161f757cdbb075ebdd7896a63b6610af8ce10474f1756c44055",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Read saved snapshot; all business/economics fields null, advisory_status insufficient_context."
+    },
+    {
+      "index": 1,
+      "kind": "inspect_local_docs",
+      "summary": "Read business-profile.md, product-ladder.md, services-and-pricing.md identifying 1584 Design, an STR/second-home interior design firm."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> business.business_type=... business.icp=... money_model.core_offer.exists=true money_model.core_offer.description=...",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Saved clear business_type, icp, and core offer facts from the docs."
+    },
+    {
+      "index": 3,
+      "kind": "compose_answer",
+      "summary": "Answered the identity question from saved state in first person."
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Your CAC is $1,000 because that is the average cost per client from your referral partner acquisition channel, which you confirmed earlier as a reasonable average and I saved as the CAC figure (field_sources.economics.cac.value_note).

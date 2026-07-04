@@ -1,0 +1,74 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot returned diagnosable state with cac 1000 and first_30_day_gross_profit 10000",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calculate cfa-level returned value 3 for cac 1000, first_30_day_gp 10000",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "20260703T204826.json recorded the deterministic break-even answer",
+      "evidence_type": "session_record",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/business_dir",
+  "case_id": "tooluse_v1_016",
+  "completed_at": "2026-07-03T20:48:39Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_016/business_dir/.money-model-advisor/sessions/20260703T204826.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Read saved snapshot: diagnosable, CAC 1000, first-30-day GP 10000, gross margin 0.769, payback 1.0 month, monthly recurring GP 0."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate cfa-level --inputs {cac:1000,first_30_day_gp:10000}",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Calculated CFA level as 3 (first-30-day GP >= 2x CAC), and derived break-even room GP-CAC = 9000 with a 10000 CAC ceiling."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <message> --assistant-message <answer>",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Recorded final advisor turn with the deterministic break-even answer and CFA-level calculation metadata."
+    }
+  ]
+}

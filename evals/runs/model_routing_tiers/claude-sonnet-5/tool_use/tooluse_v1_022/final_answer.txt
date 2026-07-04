@@ -1,0 +1,1 @@
+Explained that the STR Design Diagnostic ($597) is the attraction offer (liquidates CAC, easy first yes) and the pre-designed room packages ($5,000) are the upsell (maximize 30-day profit from an existing customer), citing offer-types:4, upsell-offers:0, and make-your-money-model:1.

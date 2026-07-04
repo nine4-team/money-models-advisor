@@ -1,0 +1,102 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "detail": "Confirmed attraction offer (STR Design Diagnostic, $597) and upsell (room packages, $5000) already exist",
+      "evidence_ref": "snapshot business_dir",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "search_source_material",
+      "cited_chunk_ids": [
+        "make-your-money-model:1",
+        "make-your-money-model:0"
+      ],
+      "confidence": "direct",
+      "evidence_ref": "search layers=offers",
+      "evidence_type": "cli_output",
+      "index": 1,
+      "intent": "comparison_evidence",
+      "layers": [
+        "offers"
+      ]
+    },
+    {
+      "action": "search_source_material",
+      "cited_chunk_ids": [
+        "anchor-upsell:3",
+        "rollover-upsell:7"
+      ],
+      "confidence": "direct",
+      "evidence_ref": "search layers=upsells",
+      "evidence_type": "cli_output",
+      "index": 2,
+      "intent": "comparison_evidence",
+      "layers": [
+        "upsells"
+      ]
+    },
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "detail": "Explained attraction-offer-vs-upsell contrast grounded in this firm's own offers",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir",
+  "case_id": "tooluse_v1_022",
+  "completed_at": "2026-07-03T20:42:57Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_022/business_dir"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "note": "read snapshot; attraction offer ($597) and upsell ($5000) already exist"
+    },
+    {
+      "command": "search --source-need-json layers=offers comparison_evidence",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "note": "attraction/front-end offer evidence"
+    },
+    {
+      "command": "search --source-need-json layers=upsells comparison_evidence",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "note": "upsell post-purchase evidence"
+    },
+    {
+      "index": 3,
+      "kind": "answer",
+      "note": "composed first-person comparison grounded in this firm's offers"
+    }
+  ]
+}

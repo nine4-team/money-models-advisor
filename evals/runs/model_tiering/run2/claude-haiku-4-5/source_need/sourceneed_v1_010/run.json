@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "completed_at": "2026-07-03T16:06:38Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "User asks for concrete front-end offer recommendation. Snapshot has sufficient offer-stack context and ICP. Search on offers layer for attraction-offer mechanisms.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "attraction offer",
+      "engagement",
+      "STR owners",
+      "front-end offer structure"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "offers"
+    ],
+    "query_variants": [
+      "how to structure front-end offer to get STR owners engaged",
+      "attraction offer design for short-term rental owner engagement",
+      "front-end offer mechanisms to drive STR owner interest and signup"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

@@ -192,40 +192,12 @@ This is required so the trace shows not only that math happened, but what math w
 
 ## When To Search
 
-Search source material when the answer needs Money Models support for a concept, comparison, diagnosis, or recommendation.
-
-Do not search source material as a substitute for missing business facts. If the responsible next move is to get CAC, gross profit, fulfillment cost, current offer details, or prior-session context before making a recommendation, do that first. Search can come later when the agent has enough business context to make a source-backed claim.
-
-Do use source search when the snapshot or prior-session context already contains enough facts for a source-backed explanation, diagnosis, comparison, or recommendation. A missing optional field should not block search when the user is asking for conceptual source support.
-
-Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
-
-Use the smallest source need that can support the answer:
-
-- `teaching_evidence`: explain a Money Models concept.
-- `diagnostic_evidence`: support a diagnosis of the business constraint using known facts.
-- `comparison_evidence`: compare Money Models concepts or options.
-- `recommendation_evidence`: support a recommended next move after the needed business facts are available.
-
-Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
-
-For each source-material search, write 2-4 `query_variants` inside the SourceNeed. These are semantic search requests authored by the agent for the specific evidence needed in the current turn. Do not rely on the deterministic fallback query except for manual debugging or as a last-resort safety net. Good variants should be short, source-facing, and focused on the claim being supported, not a pasted user message.
-
-Why 2-4: one query is often too brittle because source material may use different wording than the human. Two variants is the minimum useful fanout, three is the normal target, and four is the cap to avoid noisy spray-and-pray retrieval. If you need more than four variants, split the answer into narrower SourceNeeds instead.
-
-Common split: if the answer needs both unit-economics interpretation and a proposed offer-stack fix, run one `diagnostic_evidence` search on `unit-economics`, then a separate `recommendation_evidence` search on the specific fix layer such as `upsells`, `continuity`, `offers`, or `downsells`. Do not combine broad economics terms and offer-stack layers into one catch-all SourceNeed; that makes retrieval noisy.
-
-Boundary rule: do not label a unit-economics search as `recommendation_evidence` just because the final answer contains a recommendation. If the source material is being used to justify why the economics point in a certain direction, the SourceNeed is `diagnostic_evidence` on `unit-economics`. Then, if you recommend a concrete next move such as a front-end offer, upsell, continuity path, or downsell/payment-plan path, run a separate `recommendation_evidence` search on that concrete fix layer.
-
-Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
-
-Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
-
-Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.
+Follow the source-need decision rules in `source_need_rules.md` (same directory). That
+file is the single source of truth for when to search, how to choose layers, how to split
+one answer into multiple source needs, how to write `query_variants`, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
 
 When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
-
-Keep source layers minimal. Extra layers make retrieval noisier.
 
 ## Guardrails
 

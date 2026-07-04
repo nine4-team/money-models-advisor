@@ -1,0 +1,1 @@
+Found the origin in session 1584_referral_partner_context_01 (2026-06-05T22:48:51Z): the human said 'that works as an average' and the advisor confirmed treating referral partner acquisition as roughly $1,000 CAC; corroborated by the snapshot's economics.cac field_sources note.

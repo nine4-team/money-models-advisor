@@ -1,0 +1,46 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_020/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "evidence_note": "Plain-English definition question answered directly; no CLI tool call was needed or made.",
+      "index": 0
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir",
+  "case_id": "tooluse_v1_020",
+  "completed_at": "2026-07-03T16:15:18Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_020/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "reasoning",
+      "note": "Case context states the user turn is a plain business-vocabulary question needing no saved state, local docs, or corpus search."
+    },
+    {
+      "index": 1,
+      "kind": "reasoning",
+      "note": "Answered directly in plain English without invoking snapshot, calculate, diagnose, or search CLI commands."
+    }
+  ]
+}

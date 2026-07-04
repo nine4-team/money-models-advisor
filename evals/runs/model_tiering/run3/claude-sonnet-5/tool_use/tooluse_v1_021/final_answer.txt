@@ -1,0 +1,1 @@
+Yes, acquisition is likely not the bottleneck: payback is about 0.1 months (10x CAC recovered within 30 days), so cash is not constraining acquisition spend; source material confirms that once profit reinvests fast enough to fund new acquisition, advertising is no longer the bottleneck [cfa:3]. Likely constraint is elsewhere (lead flow, sales conversion, or fulfillment capacity).

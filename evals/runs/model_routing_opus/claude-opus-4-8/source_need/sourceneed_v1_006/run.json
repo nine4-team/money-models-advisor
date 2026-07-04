@@ -1,0 +1,42 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "completed_at": "2026-06-27T00:10:33Z",
+  "created_at": "2026-06-27T00:08:48Z",
+  "notes": "Payback diagnosis is ready (CAC 1000, 30-day GP 10000, payback 1.0mo). User asks a conceptual question about whether adding a continuity (recurring maintenance/membership) offer would help payback. Missing monthly_recurring_gross_profit is the subject of the question, not a blocking fact, so source support is appropriate. Mechanism is continuity; payback stays a focus term without adding unit-economics per the fix-mechanism rule. Intent is recommendation_evidence since payback economics are known and the user asks if a concrete next move helps.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "recurring maintenance",
+      "membership offer",
+      "payback"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "continuity"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "focus_aliases": {
+      "continuity": [
+        "recurring maintenance",
+        "membership offer"
+      ],
+      "payback period": [
+        "payback"
+      ],
+      "recurring offer": [
+        "recurring maintenance",
+        "membership offer"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

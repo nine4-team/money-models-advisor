@@ -1,0 +1,93 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir business_dir",
+      "evidence_type": "cli_command",
+      "index": 0,
+      "note": "Read the empty BusinessSnapshot to see what facts were already known."
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business-profile.md, product-ladder.md, services-and-pricing.md",
+      "evidence_type": "file_inspection",
+      "index": 1,
+      "note": "Snapshot was empty and the user expects the advisor to know the business, so inspected local docs in business_dir before asking the human anything."
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set --business-dir business_dir business.business_type=... business.icp=... money_model.core_offer.description=... money_model.core_offer.exists=true",
+      "evidence_type": "cli_command",
+      "index": 2,
+      "note": "Saved only the facts clearly stated in the local docs: business type, ICP, and core offer description/existence."
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "turn record --business-dir business_dir --user-message \"do you know what business we're working on?\" --assistant-message \"...\"",
+      "evidence_type": "cli_command",
+      "index": 3,
+      "note": "Answered in first person from the saved snapshot facts and recorded the turn; no calculation or source search was needed since the user asked only whether the business context is known."
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "completed_at": "2026-07-03T15:47:18Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions/20260703T154628.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:6bcbbc3366261fd0b68c9aab711ded88f1d254818386e1e8a7e2b62635b67066",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "description": "Read local docs business-profile.md, product-ladder.md, services-and-pricing.md in business_dir",
+      "index": 1,
+      "kind": "file_inspection"
+    },
+    {
+      "command": "snapshot set --business-dir business_dir business.business_type=... business.icp=... money_model.core_offer.description=... money_model.core_offer.exists=true",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "logs --business-dir business_dir --full",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "turn record --business-dir business_dir --user-message \"do you know what business we're working on?\" --assistant-message \"...\" --actions-json [...]",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    }
+  ]
+}

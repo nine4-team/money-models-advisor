@@ -1,0 +1,48 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "completed_at": "2026-07-03T16:06:14Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot has payback-ready economics (CAC=$1k, first 30-day GP=$10k, payback=0.1mo). User asks diagnostic question about whether continuity mechanism helps payback. Search needed on continuity layer to support interpretation of how recurring maintenance/membership affects existing cash payback timeline.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "recurring maintenance",
+      "membership offer",
+      "payback period"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "continuity"
+    ],
+    "query_variants": [
+      "how recurring maintenance membership helps payback period CAC recovery",
+      "recurring offer strategy to improve cash payback",
+      "does post-purchase recurring service improve payback"
+    ],
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "focus_aliases": {
+      "continuity": [
+        "recurring maintenance",
+        "membership offer"
+      ],
+      "payback period": [
+        "payback"
+      ],
+      "recurring offer": [
+        "recurring maintenance",
+        "membership offer"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

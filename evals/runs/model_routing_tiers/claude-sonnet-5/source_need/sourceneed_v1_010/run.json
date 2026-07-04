@@ -1,0 +1,46 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "completed_at": "2026-07-03T15:44:26Z",
+  "created_at": "2026-07-03T15:42:03Z",
+  "notes": "Offer-stack context (ICP, existing attraction offer, core offer) is already known; missing CAC/gross-profit do not block this. Question asks for a concrete front-end offer recommendation, mapping to the offers layer, not unit-economics.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "front-end attraction offer",
+      "STR owner engagement",
+      "offer stack entry point"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "offers"
+    ],
+    "query_variants": [
+      "best front-end attraction offer for STR owners",
+      "attraction offer design for engagement",
+      "low-friction front-end offer to drive engagement"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

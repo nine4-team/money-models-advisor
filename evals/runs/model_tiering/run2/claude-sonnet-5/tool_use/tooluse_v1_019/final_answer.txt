@@ -1,0 +1,1 @@
+Explained client-financed acquisition as the CAC/gross-profit/payback triangulation, cited cfa:0, payback-period:0, and how-businesses-make-money:2, and calculated CFA level 3 from CAC 1000 and first-30-day GP 10000, showing acquisition is cash-funded and the real constraint is delivery capacity.

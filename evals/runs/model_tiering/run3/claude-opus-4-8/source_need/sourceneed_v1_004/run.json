@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_004",
+  "completed_at": "2026-07-03T20:43:37Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "notes": "Comparison of two Money Models concepts (attraction offer vs upsell) grounded in the existing offer stack (STR Design Diagnostic front-end; pre-designed room packages upsell). Snapshot holds enough offer facts for a source-backed comparison; no economics involved. Layers offers+upsells cover both compared mechanisms. Intent comparison_evidence.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_004/business",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "attraction offer",
+      "upsell",
+      "front-end offer",
+      "post-sale add-on"
+    ],
+    "intent": "comparison_evidence",
+    "layers": [
+      "offers",
+      "upsells"
+    ],
+    "query_variants": [
+      "attraction offer versus upsell role in the money model",
+      "front-end attraction offer purpose acquire new customers",
+      "upsell post-sale add-on increase order value existing buyer"
+    ],
+    "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_004",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks to compare two Money Models concepts.",
+    "focus_aliases": {
+      "after first sale": [
+        "post-sale add-on",
+        "pre-designed room packages"
+      ],
+      "front end": [
+        "front-end offer",
+        "STR Design Diagnostic"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+  }
+}

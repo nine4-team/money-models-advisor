@@ -1,0 +1,45 @@
+{
+  "case_id": "sourceneed_v1_009",
+  "completed_at": "2026-07-03T16:03:36Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot already has CAC ($1,000), first_30_day_gross_profit ($10,000), and payback (0.1 months) \u2014 payback-ready per advisor_state. User is asking to interpret which known lever (CAC or gross profit per client) is the real constraint on acquisition capacity, not requesting a concrete fix yet. This is an interpretation of known economics, so it stays a unit-economics diagnostic_evidence search per the boundary rule, even though the answer will likely point toward one lever. No missing fields block this; search supports the interpretation with source material rather than substituting for missing facts.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_009/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_009/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_009/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC vs gross profit per client bottleneck",
+      "acquisition capacity",
+      "gross profit per client"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "is CAC or gross profit per client the payback bottleneck",
+      "how to tell if CAC or gross profit is limiting acquisition capacity",
+      "diagnosing acquisition capacity from CAC and gross profit per client"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_009",
+    "conversation_context": "The snapshot is payback-ready. The user asks whether CAC or gross profit is the real bottleneck.",
+    "focus_aliases": {
+      "acquisition": [
+        "acquisition capacity"
+      ],
+      "gross profit": [
+        "gross profit per client"
+      ],
+      "make more per customer": [
+        "gross profit per client"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "is the problem really CAC, or do we mostly need to make more gross profit per client?"
+  }
+}

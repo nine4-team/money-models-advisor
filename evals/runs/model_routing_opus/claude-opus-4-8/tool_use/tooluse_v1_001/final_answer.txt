@@ -1,0 +1,1 @@
+That k per referral-partner client is your customer acquisition cost (CAC). It is saved in state as economics.cac = ,000 (medium confidence, from your chat: referral partner cost averaged to about k per client), and we already accepted it last session as roughly ,000 CAC. With first-30-day gross profit at ,000, that gives a payback period of about 1 month.

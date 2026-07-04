@@ -1,0 +1,36 @@
+{
+  "case_id": "sourceneed_v1_002",
+  "completed_at": "2026-07-03T15:44:54Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "notes": "User is asking for a Money Models framework explanation of client-financed acquisition. Snapshot is payback-ready with complete economics (CAC=$1k, 30d GP=$10k, payback=0.1mo). Teaching evidence on unit-economics layer needed to explain acquisition-capacity concept.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_002/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "client-financed acquisition",
+      "acquisition spend",
+      "payback period",
+      "CAC",
+      "acquisition capacity"
+    ],
+    "intent": "teaching_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "client-financed acquisition what does it mean for payback",
+      "how much can you spend on acquisition based on payback period",
+      "acquisition spend CAC payback relationship"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_002",
+    "conversation_context": "The snapshot is payback-ready and the user asks for a Money Models acquisition framework explanation.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about client-financed acquisition here?"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "evidence_note": "Answered the vocabulary question directly; no calculation, search, or snapshot update was needed per source_need_rules.md guidance not to search simple vocabulary answers.",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir",
+  "case_id": "tooluse_v1_012",
+  "completed_at": "2026-07-03T16:05:24Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/sessions/20260703T160450.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message \"what does CAC stand for?\" --assistant-message \"CAC stands for Customer Acquisition Cost...\"",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    }
+  ]
+}

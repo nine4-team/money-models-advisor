@@ -1,0 +1,63 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir business_dir output shows CAC=1000 and payback_period_months=1.0",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs --business-dir business_dir shows prior sessions accepting referral partner CAC at $1000",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search --business-dir business_dir --source-need-json retrieved chunks from how-businesses-make-money:2 and payback-period:0 explaining CAC and payback mechanism",
+      "evidence_type": "cli_output",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir",
+  "case_id": "tooluse_v1_006",
+  "completed_at": "2026-07-03T15:49:40Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-haiku-4-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/sessions/20260703T154838.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "description": "Read snapshot and prior session logs to understand case context",
+      "index": 0,
+      "kind": "read_state"
+    },
+    {
+      "description": "Search source material for Money Models on CAC and payback period",
+      "index": 1,
+      "kind": "search"
+    }
+  ]
+}

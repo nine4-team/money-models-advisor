@@ -1,0 +1,63 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "composed diagnostic summary using snapshot data",
+      "evidence_type": "reasoning",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir",
+  "case_id": "tooluse_v1_017",
+  "completed_at": "2026-07-03T16:23:04Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "final_answer_path": "evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-haiku-4-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/sessions/20260703T162233.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "description": "Composed diagnostic summary from snapshot state",
+      "index": 1,
+      "kind": "reasoning"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/tool_use/tooluse_v1_017/business_dir --user-message 'ok so summarize the situation before we decide what to test' --assistant-message '...' --actions-json '[\"snapshot.read\", \"summary.compose\"]' --source-events-json '[]' --cited-chunk-ids-json '[]' --metadata-json '{\"case_id\": \"tooluse_v1_017\", \"intent\": \"diagnostic_summary\"}'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

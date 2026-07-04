@@ -1,0 +1,35 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "completed_at": "2026-07-03T15:45:16Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "notes": "User asks for concrete next offer to increase first-month profit. Snapshot lacks first_30_day_gross_profit for the diagnostic\u2014the key metric needed to make economics claims about which offer layer optimizes first-month profit. Responsible next move is to get the missing economics fact, not to search source material. Retrieval would substitute for missing business context per rule: 'Do not use source search as a substitute for missing business facts.'",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "focus_aliases": {
+      "first sale": [
+        "diagnostic offer"
+      ],
+      "maximize 30 day profits": [
+        "first-month profit",
+        "first 30 day gross profit"
+      ],
+      "next offer": [
+        "pre-designed room packages"
+      ],
+      "upsell after first sale": [
+        "post-sale upsell",
+        "post-sale add-on"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

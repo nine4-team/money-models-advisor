@@ -1,0 +1,76 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_006/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business_dir/services-and-pricing.md",
+      "evidence_type": "file_read",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set money_model.attraction_offer.description / money_model.core_offer.description / money_model.upsell.description",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "final answer text",
+      "evidence_type": "final_answer",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_006/business_dir",
+  "case_id": "tooluse_v1_006",
+  "completed_at": "2026-07-03T15:47:07Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_006/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_006/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "business-profile.md",
+    "product-ladder.md",
+    "services-and-pricing.md"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:cc1d98faf64278e84cbacb6ab14d0fafd3cac8ed239e685ba78fbc2e4d31399a",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "file_read",
+      "path": "business_dir/business-profile.md"
+    },
+    {
+      "index": 1,
+      "kind": "file_read",
+      "path": "business_dir/product-ladder.md"
+    },
+    {
+      "index": 2,
+      "kind": "file_read",
+      "path": "business_dir/services-and-pricing.md"
+    },
+    {
+      "command": "snapshot set money_model.attraction_offer.description=... money_model.core_offer.description=... money_model.upsell.description=...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    }
+  ]
+}

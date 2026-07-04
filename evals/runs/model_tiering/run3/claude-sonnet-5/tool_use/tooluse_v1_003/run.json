@@ -1,0 +1,64 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set --business-dir <business_dir> economics.cac=1000",
+      "evidence_type": "cli_command",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/business_dir",
+  "case_id": "tooluse_v1_003",
+  "completed_at": "2026-07-03T20:19:47Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-sonnet-5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/sessions/20260703T201919.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:dc08100656eb68e4cda2e250b1b96cd357851d745f9a66fb32241d4ec6968873",
+    "start": "sha256:d53664667a25918ec05983ce5dbe659ad36e7caf7db62cd6f9e2b64d519106f4"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "snapshot set --business-dir <business_dir> economics.cac=1000",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

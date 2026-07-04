@@ -1,0 +1,1 @@
+Before running ads, I need CAC and first-30-day gross profit; asked the user for those numbers instead of calculating or searching without them.

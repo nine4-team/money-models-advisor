@@ -1,0 +1,72 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir/.money-model-advisor/business_snapshot.json",
+      "evidence_type": "cli_output",
+      "index": 0,
+      "note": "economics.cac=1000; field_sources.economics.cac.value_note references referral partner cost."
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "1584_referral_partner_context_01.json,1584_referral_partner_context_02.json",
+      "evidence_type": "session_file",
+      "index": 1,
+      "note": "Prior turns show the $1k referral average accepted and saved as CAC."
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "index": 2,
+      "note": "Recalled saved fact; no search needed, nothing missing."
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir",
+  "case_id": "tooluse_v1_001",
+  "completed_at": "2026-07-03T20:46:37Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_referral_partner_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir/.money-model-advisor/sessions/1584_referral_partner_context_01.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_001/business_dir/.money-model-advisor/sessions/1584_referral_partner_context_02.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "note": "Read saved snapshot; CAC=1000 with field_sources note tying it to referral partner cost."
+    },
+    {
+      "index": 1,
+      "kind": "read_prior_sessions",
+      "note": "Inspected two prior session turns confirming the ~$1k referral partner average was accepted and saved as CAC."
+    },
+    {
+      "index": 2,
+      "kind": "compose_answer_from_state",
+      "note": "Traceability question; answered from saved state without source search or clarifying question."
+    }
+  ]
+}

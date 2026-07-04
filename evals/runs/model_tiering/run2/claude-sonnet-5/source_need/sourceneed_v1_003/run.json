@@ -1,0 +1,47 @@
+{
+  "case_id": "sourceneed_v1_003",
+  "completed_at": "2026-07-03T16:03:07Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot is diagnosed with CAC ($1000), first-30-day gross profit ($10000), and payback (1.0 month) already known; user asks how to think about paid acquisition capacity, which is a unit-economics interpretation of known figures, not a request for a concrete fix mechanism. Per the boundary rule this stays diagnostic_evidence/unit-economics.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "first 30 day gross profit",
+      "payback period",
+      "paid acquisition capacity"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "how much can you spend on paid acquisition given payback period",
+      "CAC versus first 30 day gross profit paid ad spend capacity",
+      "using payback period to size paid acquisition budget"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_003",
+    "conversation_context": "The snapshot is diagnosed and the user asks how much paid acquisition capacity the business has.",
+    "focus_aliases": {
+      "ad spend": [
+        "paid acquisition capacity",
+        "paid acquisition"
+      ],
+      "client financed acquisition": [
+        "CFA"
+      ],
+      "first 30 day gross profit": [
+        "gross profit"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  }
+}

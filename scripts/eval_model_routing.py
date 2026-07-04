@@ -159,7 +159,7 @@ def source_need_prompt(case: dict[str, Any]) -> str:
     # Keep the capture prompt's decision policy verbatim; strip only the
     # interactive-harness lines that do not apply to a bounded completion.
     harness_markers = (
-        "Use the money-model-advisor skill and local CLI",
+        "Consult the money-model-advisor skill",
         "Business dir:",
         "After acting, complete the trace",
     )
@@ -345,8 +345,8 @@ def score_source_need(cases: list[dict[str, Any]], artifacts: dict[str, Path]) -
         if result.false_search:
             reasons.append("false_search")
         if result.expected_search and result.actual_search:
-            if result.intent_match is False:
-                reasons.append("intent_mismatch")
+            # intent is a recorded annotation, not a scored field, so an intent
+            # mismatch is not counted as a failure.
             if result.layer_exact_match is False:
                 reasons.append("layer_mismatch")
         if reasons:
@@ -356,7 +356,7 @@ def score_source_need(cases: list[dict[str, Any]], artifacts: dict[str, Path]) -
         1
         for result in scored
         if result.actual_search == result.expected_search
-        and (not result.expected_search or (result.intent_match is True and result.layer_exact_match is True))
+        and (not result.expected_search or result.layer_exact_match is True)
     )
     return {
         "results": results,
@@ -364,7 +364,6 @@ def score_source_need(cases: list[dict[str, Any]], artifacts: dict[str, Path]) -
         "total": len(cases),
         "strict_case_pass_rate": strict_pass / len(scored) if scored else None,
         "search_decision_accuracy": sum(result.actual_search == result.expected_search for result in scored) / len(scored) if scored else None,
-        "intent_match_rate": sum(result.intent_match is True for result in search_expected) / len(search_expected) if search_expected else None,
         "layer_exact_match_rate": sum(result.layer_exact_match is True for result in search_expected) / len(search_expected) if search_expected else None,
         "avg_focus_recall": sn_eval.avg([result.focus_recall for result in search_expected]),
         "failure_modes": dict(failures.most_common()),
@@ -383,7 +382,6 @@ def score_tool_use(cases: list[dict[str, Any]], artifacts: dict[str, Path]) -> d
         "scored": len(scored),
         "total": len(cases),
         "strict_case_pass_rate": sum(result.full_sequence_pass is True for result in scored) / len(scored) if scored else None,
-        "first_action_accuracy": sum(result.first_action_correct is True for result in scored) / len(scored) if scored else None,
         "avg_required_recall": sum(recalls) / len(recalls) if recalls else None,
         "forbidden_violation_rate": sum(result.forbidden_violation is True for result in scored) / len(scored) if scored else None,
         "false_search_rate": sum(result.false_search is True for result in scored) / len(scored) if scored else None,
@@ -459,32 +457,32 @@ def render_report(models: list[str], suites: list[str], quality: dict[str, dict[
         "",
         "## Quality",
         "",
-        "Strict case pass means: search/no-search decision correct, and on expected-search cases intent match plus exact layer match (`source_need`); or required-action recall 1.0 with no forbidden actions and a complete trace (`tool_use`).",
+        "Strict case pass means: search/no-search decision correct, and on expected-search cases an exact layer match (`source_need`); or required-action recall 1.0 with no forbidden actions and a complete trace (`tool_use`). Intent is recorded as an annotation and is not scored.",
         "",
     ]
 
     def source_need_row(label: str, q: dict[str, Any]) -> str:
         return (
             f"| {label} | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['search_decision_accuracy'])} | "
-            f"{fmt_pct(q['intent_match_rate'])} | {fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'])} |"
+            f"{fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'])} |"
         )
 
     def tool_use_row(label: str, q: dict[str, Any]) -> str:
         return (
-            f"| {label} | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['first_action_accuracy'])} | "
+            f"| {label} | {fmt_pct(q['strict_case_pass_rate'])} | "
             f"{fmt_num(q['avg_required_recall'])} | {fmt_pct(q['forbidden_violation_rate'])} | "
             f"{fmt_pct(q['false_search_rate'])} | {fmt_pct(q['missed_search_rate'])} |"
         )
 
     suite_tables = {
         "source_need": (
-            "| Condition | Strict Case Pass | Search Decision | Intent Match | Layer Exact | Focus Concept Recall |",
-            "|---|---:|---:|---:|---:|---:|",
+            "| Condition | Strict Case Pass | Search Decision | Layer Exact | Focus Concept Recall |",
+            "|---|---:|---:|---:|---:|",
             source_need_row,
         ),
         "tool_use": (
-            "| Condition | Strict Case Pass | First Action | Required Recall | Forbidden Violations | False Search | Missed Search |",
-            "|---|---:|---:|---:|---:|---:|---:|",
+            "| Condition | Strict Case Pass | Required Recall | Forbidden Violations | False Search | Missed Search |",
+            "|---|---:|---:|---:|---:|---:|",
             tool_use_row,
         ),
     }

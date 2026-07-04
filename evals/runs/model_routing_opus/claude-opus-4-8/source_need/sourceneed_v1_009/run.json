@@ -1,0 +1,40 @@
+{
+  "case_id": "sourceneed_v1_009",
+  "completed_at": "2026-06-27T00:10:50Z",
+  "created_at": "2026-06-27T00:08:48Z",
+  "notes": "Snapshot is payback-ready (CAC=1000, 30d GP=10000, payback=1.0mo, no missing fields). User asks which of two known economic factors is the real bottleneck \u2014 interpreting known economics, so diagnostic_evidence on unit-economics. Both CAC and gross profit are facets of acquisition unit-economics; one minimal layer suffices.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_009/business",
+    "sessions_dir": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_009/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_opus/claude-opus-4-8/source_need/sourceneed_v1_009/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "gross profit per client",
+      "payback"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_009",
+    "conversation_context": "The snapshot is payback-ready. The user asks whether CAC or gross profit is the real bottleneck.",
+    "focus_aliases": {
+      "acquisition": [
+        "acquisition capacity"
+      ],
+      "gross profit": [
+        "gross profit per client"
+      ],
+      "make more per customer": [
+        "gross profit per client"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "is the problem really CAC, or do we mostly need to make more gross profit per client?"
+  }
+}

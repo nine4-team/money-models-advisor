@@ -1,0 +1,45 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_021/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search --business-dir ... --source-need-json {diagnostic_evidence on unit-economics layer}",
+      "evidence_type": "cli_command",
+      "index": 0,
+      "rationale": "User asked about payback-acquisition relationship implication. Search retrieval required to support Money Models diagnostic interpretation."
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "cited chunks payback-period:0 and cfa:0",
+      "evidence_type": "source_inspection",
+      "index": 1,
+      "rationale": "Composed diagnostic answer using inspected source material on payback and acquisition capacity."
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_021/business_dir",
+  "case_id": "tooluse_v1_021",
+  "completed_at": "2026-07-03T15:50:47Z",
+  "created_at": "2026-07-03T15:42:04Z",
+  "final_answer_path": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_021/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_021/business_dir",
+    "sessions_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_021/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-haiku-4-5",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37",
+    "start": "sha256:70ee5b8bb382609ae27c929be618265c5eadc484cf98b5352491f8d753a71e37"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": []
+}

@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_003",
+  "completed_at": "2026-07-03T20:34:54Z",
+  "created_at": "2026-07-03T16:02:08Z",
+  "notes": "Snapshot fully diagnosed (CAC=1000, first-30-day GP=10000, payback=1.0mo, no missing fields). User asks how to bound ad spend/paid acquisition capacity - an interpretation of known unit economics. Per layers rule, acquisition-capacity/CAC/payback interpretation -> unit-economics; single retrieval job, diagnostic_evidence intent.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_003/business",
+    "sessions_dir": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "first 30 day gross profit",
+      "payback period",
+      "client financed acquisition",
+      "paid acquisition capacity"
+    ],
+    "intent": "diagnostic_evidence",
+    "layers": [
+      "unit-economics"
+    ],
+    "query_variants": [
+      "how much can you spend to acquire a customer CAC payback",
+      "client financed acquisition ad spend limit gross profit",
+      "paid acquisition capacity from first 30 day gross profit and CAC"
+    ],
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_003",
+    "conversation_context": "The snapshot is diagnosed and the user asks how much paid acquisition capacity the business has.",
+    "focus_aliases": {
+      "ad spend": [
+        "paid acquisition capacity",
+        "paid acquisition"
+      ],
+      "client financed acquisition": [
+        "CFA"
+      ],
+      "first 30 day gross profit": [
+        "gross profit"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  }
+}

@@ -1,0 +1,1 @@
+Saved CAC=1000 to the snapshot from the user-provided fact and asked for first-30-day gross profit next, since that is the remaining field blocking payback diagnosis.

@@ -1,0 +1,80 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business_dir/business-profile.md, business_dir/product-ladder.md, business_dir/services-and-pricing.md",
+      "evidence_type": "file_read",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set: business.business_type, business.icp, money_model.core_offer.exists, money_model.core_offer.description",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "completed_at": "2026-07-03T20:46:28Z",
+  "created_at": "2026-07-03T20:16:04Z",
+  "final_answer_path": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_claude-opus-4-8",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:2c20a95f1b1f80a4be6cd484d6739ebc525edc3fb580f7d46118bda465c055e0",
+    "start": "sha256:d08e0a45ac4f770758bd99b2c2c829c31bb8cf0d1cfdc4b38cd5eb01cb0a0941"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "note": "Read snapshot: empty, advisory_status=insufficient_context"
+    },
+    {
+      "index": 1,
+      "kind": "inspect_local_docs",
+      "note": "Read business-profile.md, product-ladder.md, services-and-pricing.md to identify the business"
+    },
+    {
+      "command": "snapshot set --business-dir <business_dir> business.business_type=... business.icp=... money_model.core_offer.exists=true money_model.core_offer.description=...",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "note": "Saved clear inspected facts"
+    },
+    {
+      "index": 3,
+      "kind": "compose_answer",
+      "note": "Answered in first person confirming the business identity from saved state"
+    }
+  ]
+}

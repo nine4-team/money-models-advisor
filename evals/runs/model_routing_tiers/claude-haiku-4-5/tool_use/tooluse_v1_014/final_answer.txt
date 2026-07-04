@@ -1,0 +1,1 @@
+Snapshot was empty with insufficient business context. Asked user for: (1) business type, (2) core offer details, (3) specific improvement goal. No source search or calculation was warranted without these essential facts.
