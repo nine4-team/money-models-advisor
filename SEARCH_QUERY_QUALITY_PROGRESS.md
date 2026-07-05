@@ -107,4 +107,19 @@ For the first v1 pass:
 
 ## Next Work
 
+Methodology weakness — addressed. The 30-case slice looked saturated because it
+was graded at Hit@5, where every backend scores ~100%. Re-scoring the existing
+runs at Hit@1 separates the methods, and a fair label cleanup (adjudicate every
+backend's non-rank-1 misses, add the genuinely-good unlabeled chunks, re-score
+all three) confirms it: hybrid+variants 96.7% Hit@1, BM25 control 90.0%, vector
+86.7%; residual real weaknesses hybrid 1, BM25 3, vector 4. So hybrid+variants
+genuinely leads on this corpus — not the flat tie the loose grade showed — while
+the BM25 control stays strong. No new retrieval was run. Full record:
+`evals/reports/retrieval_hit_at_1_rescore.md` (Step 1) and
+`evals/reports/retrieval_hit_at_1_enriched_rescore.md` (fair re-score); enriched
+labels in `evals/advisor_search_query_cases_enriched_labels.jsonl` (originals
+untouched); plan and status in `EVAL_METHODOLOGY_PLAN.md`. One universal weakness
+survives (026: an anecdotal chunk outranks the explanatory ones for every
+backend) — the top candidate if we add deliberately-hard cases later.
+
 Pinecone parity is complete for the 30-case generated-variants slice. The corpus was indexed as 202 heading-aware chunk vectors. `--vector-store pinecone` preserves the local quality direction: hybrid+variants reaches 100.0% Hit@3, 100.0% Hit@5, mean known-useful rank 1.17, and no top-5 misses. Cached embeddings kept the comparison at zero external embedding API batches. The remaining retrieval-engineering question is hosted-vector latency: the current sequential variant harness performs 120 Pinecone vector searches and shows roughly 5.3s p50 retrieval latency for hybrid, so the next optimization is reducing or parallelizing query fanout without losing quality.

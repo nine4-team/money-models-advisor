@@ -818,7 +818,7 @@
               advisor diagnoses their unit economics, teaches the relevant
               Money Models concepts, and recommends the next change to test —
               with every claim that needs support cited to the book, and
-              every turn recorded as an auditable trace.
+              every turn recorded so it can be checked later.
             </p>
           </div>
           <div>
@@ -839,10 +839,10 @@
             <p>
               Every architecture choice was decided by measurement: nine
               golden datasets, ordered so agent judgment is evaluated before
-              the retriever, with the judgment suites scored against agents
-              that never saw the expected answers. Anything more complex than
-              the baseline had to beat the baseline on a measurement to be
-              adopted; what didn't was rejected and recorded.
+              the retriever, with the suites that grade the agent's judgment
+              scored against agents that never saw the expected answers.
+              Anything more complex than the baseline had to beat the baseline
+              to be adopted; what didn't was rejected and recorded.
             </p>
           </div>
         </div>
@@ -884,7 +884,7 @@
               <span class="c-num">04</span>
               <span>
                 <span class="c-title">Limits &amp; next</span>
-                <span class="c-gist">What this doesn't prove, stated plainly.</span>
+                <span class="c-gist">The limits of this evidence, stated plainly.</span>
               </span>
             </a>
           </li>
@@ -921,10 +921,10 @@
           <h3><span class="sub">1.1 · Scope</span>Where this is deliberately overbuilt</h3>
           <p class="lede">
             Three parts of this system — the vector database, semantic
-            retrieval, and namespace partitioning — are more infrastructure
-            than an advisor over one book needs. They were built anyway,
-            because the target role builds production RAG infrastructure and
-            each one demonstrates part of that work.
+            retrieval, and namespace partitioning — are more than an advisor
+            over one book needs. They were built anyway, because the target
+            role builds each of these, and each one demonstrates part of that
+            work.
           </p>
           <dl class="rows">
             <div>
@@ -936,9 +936,11 @@
                 over this one book, those two documents would probably be
                 sufficient — no vector database required. They still shaped
                 the system: the decision tree inspired the five-layer
-                namespace division, and the frameworks summary seeded the
-                golden eval set. The Pinecone-backed pipeline exists to
-                demonstrate production RAG infrastructure (§2.4, §3.6).
+                namespace division, and the frameworks summary became the
+                first cases in the golden eval set — the datasets used to
+                score each design choice (§3). The Pinecone-backed pipeline
+                exists to demonstrate the vector database, hybrid search, and
+                namespaces the role calls for (§2.4, §3.6).
               </dd>
             </div>
             <div>
@@ -989,10 +991,9 @@
 
           <h3><span class="sub">2.1 · Agentic workflow</span>An AI agent driving a local CLI</h3>
           <p class="lede">
-            The first architectural decision, and the one everything else
-            follows from: the agent makes every judgment call, a local CLI
-            does everything deterministic and repeatable, and nothing calls a
-            hosted model at runtime.
+            The first architectural decision: the agent makes every judgment
+            call, a local CLI does everything deterministic and repeatable,
+            and nothing calls a hosted model at runtime.
           </p>
           <div class="split">
             <div class="col">
@@ -1028,10 +1029,9 @@
 → agent answers                          citing retrieved chunks where claims need support
 → agent runs <b>session finish</b>         validates and persists the turn trace (§2.5)</div>
           <p>
-            This division of labor is what the rest of the page depends on:
-            every judgment the agent makes lands in a recorded trace where it
-            can be audited and scored (§2.5), and everything the CLI does is
-            testable as ordinary code.
+            This split is what makes the rest work: every judgment the agent
+            makes lands in a recorded trace where it can be checked and scored
+            (§2.5), and everything the CLI does is testable as ordinary code.
           </p>
 
           <h4 class="block">Why a local CLI, run by a subscription agent</h4>
@@ -1041,10 +1041,10 @@
             runtime makes no hosted model calls — a constraint chosen for
             cost: the agent runs on a subscription, so the only per-token
             charge anywhere in the build-and-eval loop is embeddings, cached
-            after first use (§2.4). The CLI shape pays off three ways: the
-            agent gets commands it can run reliably, the eval harness gets
-            output stable enough to score exactly, and a developer can rerun
-            any turn by hand.
+            after first use (§2.4). Making the deterministic side a CLI pays
+            off three ways: the agent gets commands it can run reliably, the
+            eval harness gets output stable enough to score exactly, and a
+            developer can rerun any turn by hand.
           </p>
 
           <h4 class="block">The skill</h4>
@@ -1367,11 +1367,11 @@
               <dt>Search</dt>
               <dd>
                 BM25 and embedding-based vector search run over the same
-                chunks, and their results are merged by position, not score —
-                reciprocal-rank fusion, the reranking step. Merging by raw
-                score would mean calibrating two unrelated scales against
-                each other, a common source of fragile hybrid search; merging
-                by rank sidesteps it.
+                chunks, and their two ranked lists are merged by position, not
+                score — reciprocal-rank fusion. Merging by raw score would mean
+                calibrating two unrelated scales against each other, a common
+                source of fragile hybrid search; merging by position avoids
+                that calibration entirely.
               </dd>
             </div>
             <div>
@@ -1536,7 +1536,7 @@
           <p class="lede">
             The evals are layered so a failure points at one component.
             Agent judgment is tested before query writing, and query writing
-            before the retriever — so when two retrieval strategies differ,
+            before the retriever. So when two retrieval strategies differ,
             the difference is about retrieval, not a bad query or a wrong
             decision upstream.
           </p>
@@ -1551,8 +1551,8 @@
             <li>
               <span class="s-term">Source-need generation</span>
               <span class="s-def">
-                When search is right, what retrieval objective, corpus layers,
-                and focus concepts should guide it?
+                When search is right, what should guide it: what to look for,
+                which corpus layers to search, and which concepts to cover?
               </span>
             </li>
             <li>
@@ -1565,8 +1565,8 @@
             <li>
               <span class="s-term">Strategy comparison</span>
               <span class="s-def">
-                Only now do BM25-vs-vector-vs-hybrid comparisons measure
-                retrieval architecture.
+                Only now do BM25-vs-vector-vs-hybrid comparisons measure which
+                method ranks the right passage higher.
               </span>
             </li>
             <li>
@@ -1596,10 +1596,11 @@
                 An acting agent performs each case using the skill and CLI
                 without seeing expected labels. A trace extractor maps its
                 observable behavior — commands run, files read, snapshot diffs
-                — into recorded actions, keeping weak evidence visible as
-                <code>inferred</code> or <code>missing</code>. A separate
-                scorer compares those actions to the labels. Self-report
-                never becomes the metric.
+                — into recorded actions, marking weak evidence as
+                <code>inferred</code> or <code>missing</code> so it stays
+                visible. A separate scorer compares those actions to the
+                labels. The score comes from what the agent did, not from
+                what it says it did.
               </dd>
             </div>
             <div>
@@ -1652,7 +1653,7 @@
                     <tr>
                       <td>search_queries · 30</td>
                       <td class="wrap">Queries retrieve citeable chunks?</td>
-                      <td class="wrap">Hybrid + variants: 100% Hit@3/Hit@5, mean useful rank 1.17 (§3.4).</td>
+                      <td class="wrap">Hybrid + variants leads at Hit@1 (96.7%), mean useful rank 1.03 (§3.4).</td>
                     </tr>
                     <tr>
                       <td>pilot set</td>
@@ -1694,7 +1695,7 @@
             where it isn't. Results: all 24 tool-use cases passed with full
             required-action recall and zero false and zero missed searches.
             Source-need scored 100% on the search/no-search decision and
-            matched the expected namespaces exactly on 9 of the 10 search
+            matched the expected layers exactly on 9 of the 10 search
             cases. The misses, case by case:
           </p>
           <dl class="rows">
@@ -1702,9 +1703,9 @@
               <dt>Corrected label</dt>
               <dd>
                 One held-out case required reading logs as the literal first
-                action. Review concluded reading the snapshot first was
-                harmless context-loading — logs were still read before
-                answering — and the label records that review explicitly.
+                action. Review concluded that reading the snapshot first did
+                no harm — the logs were still read before answering — and the
+                label records that review explicitly.
               </dd>
             </div>
             <div>
@@ -1725,8 +1726,8 @@
                 And a search that interprets the business's economics stays on
                 the <code>unit-economics</code> layer even when the answer will
                 recommend something; the recommended move gets its own search
-                on its own fix layer. One answer, two searches — which keeps
-                each search's retrieval clean.
+                on its own fix layer. One answer, two searches — so each
+                search ranks against only its own layer's passages.
               </dd>
             </div>
           </dl>
@@ -1739,8 +1740,8 @@
               </p>
               <p>
                 With search/no-search decisions at 100% on the captured sets,
-                differences between retrieval strategies now measure retrieval
-                — not tool-use noise.
+                the agent reliably picks the right action, so differences
+                between retrieval strategies reflect the retrieval itself.
               </p>
             </div>
           </div>
@@ -1775,191 +1776,147 @@
             retrieval actually beat the simple thing, and it set a high bar — the
             generated queries carry the book's exact framework terms ("CFA,"
             "rollover upsell," "payback period"), and that shared vocabulary
-            makes keyword retrieval unusually competitive. Against it:
-            vector search and rank-fused hybrid, all over the same chunks.
+            makes keyword retrieval unusually competitive. Against it: vector
+            search and rank-fused hybrid, over the same chunks, each running the
+            agent-written constrained query variants described in §3.5.
           </p>
           <p>
-            The golden set itself grew with the work. The first version of
-            query generation was the deliberately simple baseline: one query
-            built from the saved business state, before SourceNeeds existed.
-            The eval exposed it — nearly every search produced the same broad
-            diagnostic query, and only half the cases found a useful chunk
-            (50.0%). That measurement is what created the structured
-            SourceNeed (§2.4). The case set was then expanded from 10 to 30,
-            and chunks the new searches surfaced were reviewed and added to
-            the labels where they were genuinely citeable.
+            The comparison is graded at Hit@1 — did the single best labeled
+            chunk come back first — which is stricter than Hit@3/Hit@5 and has
+            the room to separate methods that a looser cutoff hides. The
+            known-useful labels are non-exhaustive, so before trusting that
+            grade, every case where a backend did not rank a labeled chunk first
+            was checked by reading the chunk that actually came back. Where that
+            chunk directly answered the turn but had never been labeled, it was
+            added to the answer key — the same correction applied to BM25,
+            vector, and hybrid alike, so no backend got a friendlier key.
           </p>
           <figure class="figure">
-            <figcaption>30-case golden set · deterministic generated queries · mean useful rank = average rank of the first known-useful chunk</figcaption>
+            <figcaption>30-case golden set · constrained query variants + fusion · graded at Hit@1 · answer key corrected for unlabeled-but-citeable chunks across all backends</figcaption>
             <div class="table-scroll">
               <table>
                 <thead>
                   <tr>
                     <th>Strategy</th>
+                    <th class="num">Hit@1</th>
                     <th class="num">Hit@3</th>
                     <th class="num">Hit@5</th>
                     <th class="num">Mean useful rank</th>
-                    <th>Top-5 misses</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>BM25 · control</td>
-                    <td class="num">93.3%</td>
+                    <td class="num">90.0%</td>
                     <td class="num">100.0%</td>
-                    <td class="num">1.43</td>
-                    <td class="wrap">none</td>
+                    <td class="num">100.0%</td>
+                    <td class="num">1.13</td>
                   </tr>
                   <tr>
-                    <td>vector</td>
+                    <td>vector + variants</td>
+                    <td class="num">86.7%</td>
                     <td class="num">96.7%</td>
-                    <td class="num">96.7%</td>
-                    <td class="num">—</td>
-                    <td class="wrap"><code>searchq_v1_001</code></td>
+                    <td class="num">100.0%</td>
+                    <td class="num">1.20</td>
                   </tr>
                   <tr>
-                    <td>hybrid</td>
-                    <td class="num">96.7%</td>
-                    <td class="num">96.7%</td>
-                    <td class="num">1.21</td>
-                    <td class="wrap"><code>searchq_v1_001</code></td>
+                    <td>hybrid + variants</td>
+                    <td class="num hit">96.7%</td>
+                    <td class="num hit">100.0%</td>
+                    <td class="num hit">100.0%</td>
+                    <td class="num hit">1.03</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </figure>
           <p class="quiet">
-            The first comparison favored the control: vector and hybrid each
-            missed a case at Hit@5 that BM25 found. Several other apparent
-            misses were
-            label-set limitations — retrieved chunks on menu upsells,
-            rollover upsells, waived fees, and continuity bonuses were
-            directly citeable and were promoted into the known-useful labels
-            after inspection. <code>searchq_v1_001</code> survived
-            review as a true miss. Dashes in these tables are metrics
-            the source reports don't include.
+            At Hit@5 the methods tie near 100%, which on a corpus this size says
+            little. Hit@1 is where they separate: hybrid + variants ranks the
+            right chunk first on nearly every case (mean rank 1.03), ahead of the
+            BM25 control and vector. After the answer-key correction, hybrid
+            carries one genuine remaining weakness against BM25's three and
+            vector's four. The one weakness shared by all three is a case where
+            an anecdotal passage outranks the explanatory one — a content issue,
+            not a retriever one. On 30 cases the percentage gap is only a few
+            cases, so the mean rank and the count of real weaknesses carry the
+            claim more than the headline number.
           </p>
           <div class="decision">
             <span class="d-tag">Decision</span>
             <div>
               <p>
-                No retriever change from this table alone.
+                Hybrid retrieval + constrained query variants is the candidate
+                product path. BM25 stays as the control, and it stays strong —
+                the honest read on a small corpus with strong framework
+                vocabulary is that hybrid wins, but not by a landslide.
               </p>
               <p>
-                Vector and hybrid each missed a case the keyword control
-                found, and that miss traced to how the query was built — not
-                to which retriever ran it. Fixing it is the next section.
+                Variants add an agent-authored artifact that can be wrong, so
+                the deterministic fallback and the golden set stay in place as
+                guards. Candidate default, not a final claim.
               </p>
             </div>
           </div>
 
-          <h3><span class="sub">3.5 · Query generation</span>One flattened query lost to agent-written variants</h3>
+          <h3><span class="sub">3.5 · Query generation</span>Why the agent writes several search queries, not one</h3>
           <p>
-            The <code>searchq_v1_001</code> miss is what put query variants
-            into the design (§2.4):
+            Once the agent decides what to search for, that decision has to
+            become an actual search query. The first version did the simplest
+            thing — take the key terms and run them as one query. It worked on
+            most turns and failed on one clear kind of question (§2.4):
           </p>
           <dl class="rows">
             <div>
-              <dt>The case</dt>
+              <dt>The question</dt>
               <dd>
-                The user asks why fulfillment cost matters for paid ads — a
-                causal question.
+                "Why does fulfillment cost matter for whether ads can work?" The
+                user is asking why one thing affects another, not just for a
+                definition.
               </dd>
             </div>
             <div>
-              <dt>The diagnosis</dt>
+              <dt>What went wrong</dt>
               <dd>
-                The v1 query builder collapsed the agent's source need into
-                one fixed list of its terms — a reasonable baseline, since it
-                kept agent judgment out of the comparison and gave every eval
-                the same query to score. But a list of nouns loses the
-                cause-and-effect shape of the question, so vector search
-                ranked nearby payback/CAC chunks above the one passage that
-                actually explains gross profit and fulfillment cost. The
-                failure was in how the query was built, not in the retriever.
+                The one-query builder just strung the terms together — gross
+                profit, fulfillment cost, CAC, payback. A bare list doesn't say
+                the user wants the link between them, so the search brought back
+                nearby chunks about payback and CAC and ranked the one passage
+                that actually explains the fulfillment-cost-to-gross-profit
+                connection too far down. The right chunk existed; the query just
+                didn't surface it. The problem was the query, not the search
+                engine.
               </dd>
             </div>
             <div>
               <dt>The fix</dt>
               <dd>
-                Deliberately constrained — not one freeform agent query, which
-                would trade away traceability. The agent writes 2–4 query
-                variants in a fixed format, the mechanical query stays in the
-                set as a fallback, and all results are merged with
-                reciprocal-rank fusion so no variant can push the fallback
-                out.
+                Instead of one keyword list, the agent writes two to four short
+                rephrasings of the search. The plain keyword version stays in as
+                a safety net. All of them run, and chunks that keep showing up
+                across the rephrasings rise to the top (reciprocal-rank fusion).
+                Every query is written down, so the search stays auditable —
+                rather than handing the agent one free-form query no one can
+                check.
               </dd>
             </div>
           </dl>
-          <figure class="figure">
-            <figcaption>Same 30 cases · constrained query variants + fusion</figcaption>
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Strategy</th>
-                    <th class="num">Hit@3</th>
-                    <th class="num">Hit@5</th>
-                    <th class="num">Mean useful rank</th>
-                    <th>Top-5 misses</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>BM25 + variants</td>
-                    <td class="num">96.7%</td>
-                    <td class="num">100.0%</td>
-                    <td class="num">—</td>
-                    <td class="wrap">none</td>
-                  </tr>
-                  <tr>
-                    <td>vector + variants</td>
-                    <td class="num">96.7%</td>
-                    <td class="num">100.0%</td>
-                    <td class="num">—</td>
-                    <td class="wrap">none</td>
-                  </tr>
-                  <tr>
-                    <td>hybrid + variants</td>
-                    <td class="num hit">100.0%</td>
-                    <td class="num hit">100.0%</td>
-                    <td class="num hit">1.17</td>
-                    <td class="wrap">none</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </figure>
           <p class="quiet">
-            Cost reported beside quality: variants average 4.0 queries per
-            case — 120 vector searches across the set. On warm runs the
-            embedding cache hit 100% for corpus and query vectors, so the
-            vector and hybrid evals made zero external embedding API batches.
+            §3.4 compares how BM25, vector, and hybrid retrieval do with these
+            variants. Cost: about four searches per case, 120 across the 30-case
+            set. Embeddings are cached, so on repeat runs those searches made no
+            new embedding API calls.
           </p>
-          <div class="decision">
-            <span class="d-tag">Decision</span>
-            <div>
-              <p>
-                Hybrid retrieval + constrained variants is the candidate
-                product path. BM25 stays as the control.
-              </p>
-              <p>
-                Variants fixed the miss, but they add another agent-authored
-                artifact that can be wrong — which is why the deterministic
-                fallback and the golden set stay in place as guards, and why
-                this is a candidate default rather than a final claim.
-              </p>
-            </div>
-          </div>
 
-          <h3><span class="sub">3.6 · Latency benchmarks</span>Pinecone matched local quality, and exposed slow retrieval</h3>
+          <h3><span class="sub">3.6 · Latency benchmarks</span>Pinecone matched local quality; parallel queries fixed the slow retrieval it exposed</h3>
           <p>
             Local retrieval came first so iteration and evals stayed fast.
             Once the strategy was justified, the same 30-case set was rerun
             against the Pinecone implementation of the
             <code>VectorStore</code> interface (§2.4): 100% Hit@3/Hit@5, mean
-            useful rank 1.17, 100% query-cache hit rate, zero embedding API
-            batches. Quality reproduced exactly.
+            useful rank 1.17, 100% query-cache hit rate, and no new embedding
+            API calls — the cache served every query. Quality reproduced
+            exactly.
           </p>
           <p>
             What the latency benchmark exposed instead: the first hosted run
@@ -1984,23 +1941,24 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.7 · Pinecone namespaces</span>One namespace or five</h3>
+          <h3><span class="sub">3.7 · Pinecone namespaces</span>Splitting the corpus into five namespaces cost tail latency and won nothing</h3>
           <p>
-            The JD names multi-namespace Pinecone operation, and the corpus
-            already had a five-layer taxonomy — so the layout was tested
-            rather than assumed. The corpus was indexed into five layer
-            namespaces, with the agent selecting which to query, and the same
-            30 cases, variants, cache, and hybrid path ran in both
-            conditions: one namespace with metadata filters versus the
-            five-way split routed from each case's expected layers — better
-            routing than any production router could promise.
+            A Pinecone namespace is a partition of the index you can query on
+            its own. The JD names multi-namespace Pinecone operation, and the
+            corpus already had a five-layer taxonomy — so the layout was tested
+            rather than assumed. The corpus was indexed into one namespace per
+            layer, with the agent selecting which to query, and the same 30
+            cases, variants, cache, and hybrid path ran in both conditions: one
+            namespace with metadata filters versus the five-way split. The
+            split was routed straight from each case's expected layers, giving
+            it the best-case routing to beat.
           </p>
           <p>
             The two conditions retrieved identically. Not just the same
             scores: across all 90 case-and-retriever rows, the same top-5
             chunks in the same order. Namespaces would only help if
             wrong-layer chunks were crowding out right-layer ones, and on
-            this corpus they are not. Latency got worse where it counts: p50
+            this corpus they are not. Tail latency got worse: p50
             barely moved (~1.45s vs ~1.43s), but p95 went from ~1.76s to
             ~3.01s, on 140 vector searches instead of 120.
           </p>
@@ -2037,7 +1995,7 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.8 · Platform selection</span>Which platform should the hosted agent run on?</h3>
+          <h3><span class="sub">3.8 · Platform selection</span>Which LLM provider should the hosted agent run on?</h3>
           <p>
             The hosted advisor is a separate product, and it needs a provider to
             run its planning brain — the part that decides when to search, when
@@ -2159,8 +2117,8 @@
             <code>gpt-5.5</code> leads tool-use by a single case (95.8% vs
             91.7%). Both sit just under the recorded reference. At 14 and 24
             single-shot cases with no repeated sampling, a one-case gap is inside
-            the noise floor — so this reads as "both clear the planning bar,"
-            not "gpt-5.5 &gt; Opus."
+            the noise floor. Both clear the planning bar; the eval does not put
+            one model above the other.
           </p>
           <h4 class="block">Latency</h4>
           <p>
@@ -2178,7 +2136,7 @@
             proxies from two different tools — read them as ballparks, not billed
             dollars; per-case figures are in
             <code>evals/runs/model_routing_opus/opus_runtime_proxy.json</code>.
-            The cost lever that is already proven is architectural, not model
+            The proven cost saving comes from the architecture, not the model
             choice: the deterministic work — calculations, persistence, retrieval
             execution, trace recording — stays in the CLI on either platform, so
             none of it is billed as model tokens.
@@ -2254,16 +2212,18 @@
             </div>
           </div>
 
-          <h3><span class="sub">3.9 · Regression detection</span>Failures became regression suites</h3>
+          <h3><span class="sub">3.9 · Regression detection</span>Real failures became permanent test cases</h3>
           <p>
-            Beyond the planned experiments, the design was hardened by a blind
-            test-fix loop: send realistic turns to acting agents, inspect the
-            saved traces — not just the answers — and fix the layer that
-            actually failed (skill guidance, CLI command design, trace schema, or
-            eval case). The promotion rule is explicit: one agent confused by
-            instructions — patch the skill. Two agents failing the same way —
-            regression case. Anything that could corrupt state or hide
-            unsupported advice — CLI guard after a single occurrence.
+            Beyond the planned experiments, the design was hardened by a
+            test-fix loop against acting agents that don't know they're being
+            tested and are graded on their saved traces, not their answers.
+            Send realistic turns, inspect the traces, and fix the layer that
+            actually failed: skill guidance, CLI command design, trace schema,
+            or eval case. The rule for acting on a failure is explicit: if one
+            agent is confused by the instructions, patch the skill; if two
+            agents fail the same way, add a regression case; anything that
+            could corrupt state or hide unsupported advice gets a CLI guard
+            after a single occurrence.
           </p>
           <dl class="rows">
             <div>
@@ -2447,7 +2407,7 @@
           </div>
         </div>
         <div class="body">
-          <h2>What this doesn't prove, and what comes next</h2>
+          <h2>The limits of this evidence, and what comes next</h2>
           <dl class="rows">
             <div>
               <dt>Scale</dt>
@@ -2482,21 +2442,22 @@
                 Embedding cost, cache hit rates, and per-run query counts are
                 instrumented. Agent-side API billing is intentionally absent
                 because the advisor runs through a subscription Codex harness,
-                but the corrected model-routing report records Codex's
-                reported token-usage proxy and latency by suite (§3.8).
+                but the model-routing report records Codex's reported
+                token-usage proxy and latency by suite (§3.8).
               </dd>
             </div>
             <div>
               <dt>Model routing</dt>
               <dd>
-                The corrected baseline is now measured in the actual
-                Codex/CLI harness (§3.8). <code>gpt-5.5</code> is the current
-                OpenAI agent baseline; a cross-provider run — Claude Opus 4.8
-                through the same harness (§3.8) — lands within noise of it. A
-                same-harness tier sweep (Opus, Sonnet, Haiku, K=3 runs) now
-                exists inside Claude: Sonnet is promoted for the source-need
-                decision, Opus stays on tool-use orchestration, Haiku is not
-                promoted (§3.10). Still missing: embedding model selection.
+                Routing is measured in the actual Codex/CLI harness, where the
+                model operates the same advisor the product uses (§3.8).
+                <code>gpt-5.5</code> is the current OpenAI agent baseline; a
+                cross-provider run — Claude Opus 4.8 through the same harness
+                (§3.8) — lands within noise of it. A same-harness tier sweep
+                (Opus, Sonnet, Haiku, K=3 runs) now exists inside Claude: Sonnet
+                is promoted for the source-need decision, Opus stays on tool-use
+                orchestration, Haiku is not promoted (§3.10). Still missing:
+                embedding model selection.
               </dd>
             </div>
           </dl>
@@ -2504,7 +2465,7 @@
             The product path forward would reuse what's built: a thin web
             surface over the same advisor core. That is why retrieval sits
             behind a vector-store interface, the CLI emits stable JSON, and
-            the advisor logic never learned whether its vectors were local or
+            the advisor logic can't tell whether its vectors are local or
             hosted.
           </p>
         </div>
@@ -2534,7 +2495,7 @@
                   </tr>
                   <tr>
                     <td class="wrap">RAG pipelines across Pinecone namespaces — chunking strategy, embedding model selection, hybrid retrieval, reranking</td>
-                    <td class="wrap">A Pinecone-backed store behind a vector-store interface, with the corpus organized as a five-layer namespace taxonomy and the one-vs-five namespace layout benchmarked before choosing a default (§2.4, §3.7); chunking strategy decided by comparison (§3.3); hybrid retrieval with reciprocal-rank fusion as the recorded v1 reranking baseline, with the trigger for a true reranker written down: known-useful chunks landing in the top-20 candidates but missing the top-5 (§3.4–3.5). Agent-generated query variants with a deterministic fallback are the query-construction layer (§2.4, §3.5). Embedding model selection is a named gap — one model so far, <code>text-embedding-3-small</code> (§4).</td>
+                    <td class="wrap">A Pinecone-backed store sits behind a vector-store interface, with the corpus split into five namespace layers. The one-vs-five namespace layout was benchmarked before choosing a default (§2.4, §3.7), and the chunking strategy was chosen by comparison (§3.3). Hybrid retrieval merges its two ranked lists with reciprocal-rank fusion, the recorded v1 baseline; the trigger for adding a true reranker is written down — known-useful chunks landing in the top-20 candidates but missing the top-5 (§3.4–3.5). The query-construction layer is agent-generated query variants with a deterministic fallback (§2.4, §3.5). Embedding model selection is a named gap: one model so far, <code>text-embedding-3-small</code> (§4).</td>
                   </tr>
                   <tr>
                     <td class="wrap">Evaluation framework — golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, regression detection</td>
@@ -2554,7 +2515,7 @@
                   </tr>
                   <tr>
                     <td class="wrap">Model routing and tiering to improve unit economics; multiple LLM providers</td>
-                    <td class="wrap">Corrected (§3.8): model-routing evidence now uses <code>codex exec</code>, not API replay, so the model can operate the same CLI-backed workflow as the product. <code>gpt-5.5</code> is the OpenAI Codex baseline; a second provider, Claude Opus 4.8, was run through the same harness and lands within noise of it. A same-provider tier sweep (§3.10) then tested cheaper routing directly: Sonnet is promoted for the source-need decision, Opus stays on tool-use orchestration, Haiku is not promoted.</td>
+                    <td class="wrap">Model-routing evidence uses <code>codex exec</code> (§3.8), so the model operates the same CLI-backed workflow as the product. <code>gpt-5.5</code> is the OpenAI Codex baseline; a second provider, Claude Opus 4.8, was run through the same harness and lands within noise of it. A same-provider tier sweep (§3.10) then tested cheaper routing directly: Sonnet is promoted for the source-need decision, Opus stays on tool-use orchestration, Haiku is not promoted.</td>
                   </tr>
                   <tr>
                     <td class="wrap">Comfortable in both TypeScript and Python</td>
