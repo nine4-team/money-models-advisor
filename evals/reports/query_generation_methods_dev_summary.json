@@ -5,7 +5,7 @@
   ],
   "case_count": 30,
   "cases_file": "evals/advisor_search_query_cases_enriched_labels.jsonl",
-  "created_at": "2026-08-10T18:59:38Z",
+  "created_at": "2026-08-10T21:08:16Z",
   "generation": {
     "guided_model_rewrite": {
       "cases": 30,
@@ -30,12 +30,22 @@
     }
   },
   "method_version": "single-query-methods.v1",
+  "method_versions": {
+    "guided_model_rewrite": "single-query-methods.v1",
+    "model_rewrite": "single-query-methods.v1",
+    "raw_question": "single-query-methods.v1"
+  },
   "methods": [
     "raw_question",
     "model_rewrite",
     "guided_model_rewrite"
   ],
   "model": "gpt-5.5",
+  "prompt_versions": {
+    "guided_model_rewrite": "query-generation-prompt.v1",
+    "model_rewrite": "query-generation-prompt.v1",
+    "raw_question": null
+  },
   "results": {
     "guided_model_rewrite": {
       "bm25": {
@@ -47,12 +57,11 @@
         "hit_at_1_pct": 66.7,
         "hit_at_3": 27,
         "hit_at_3_pct": 90.0,
-        "hit_at_5": 28,
-        "hit_at_5_pct": 93.3,
-        "mean_first_useful_rank": 1.429,
+        "hit_at_5": 29,
+        "hit_at_5_pct": 96.7,
+        "mean_first_useful_rank": 1.517,
         "mean_retrieval_latency_ms": 91.7,
         "misses": [
-          "searchq_v1_010",
           "searchq_v1_020"
         ],
         "missing_cases": []
@@ -62,13 +71,13 @@
         "completed_cases": 30,
         "coverage_pct": 100.0,
         "execution_errors": 0,
-        "hit_at_1": 22,
-        "hit_at_1_pct": 73.3,
+        "hit_at_1": 23,
+        "hit_at_1_pct": 76.7,
         "hit_at_3": 28,
         "hit_at_3_pct": 93.3,
         "hit_at_5": 28,
         "hit_at_5_pct": 93.3,
-        "mean_first_useful_rank": 1.214,
+        "mean_first_useful_rank": 1.179,
         "mean_retrieval_latency_ms": 791.2,
         "misses": [
           "searchq_v1_010",
@@ -83,13 +92,13 @@
         "completed_cases": 30,
         "coverage_pct": 100.0,
         "execution_errors": 0,
-        "hit_at_1": 15,
-        "hit_at_1_pct": 50.0,
-        "hit_at_3": 21,
-        "hit_at_3_pct": 70.0,
+        "hit_at_1": 16,
+        "hit_at_1_pct": 53.3,
+        "hit_at_3": 22,
+        "hit_at_3_pct": 73.3,
         "hit_at_5": 27,
         "hit_at_5_pct": 90.0,
-        "mean_first_useful_rank": 2.037,
+        "mean_first_useful_rank": 1.889,
         "mean_retrieval_latency_ms": 90.2,
         "misses": [
           "searchq_v1_014",
@@ -103,13 +112,13 @@
         "completed_cases": 30,
         "coverage_pct": 100.0,
         "execution_errors": 0,
-        "hit_at_1": 19,
-        "hit_at_1_pct": 63.3,
-        "hit_at_3": 27,
-        "hit_at_3_pct": 90.0,
+        "hit_at_1": 20,
+        "hit_at_1_pct": 66.7,
+        "hit_at_3": 28,
+        "hit_at_3_pct": 93.3,
         "hit_at_5": 29,
         "hit_at_5_pct": 96.7,
-        "mean_first_useful_rank": 1.552,
+        "mean_first_useful_rank": 1.448,
         "mean_retrieval_latency_ms": 809.3,
         "misses": [
           "searchq_v1_022"
@@ -129,7 +138,7 @@
         "hit_at_3_pct": 66.7,
         "hit_at_5": 23,
         "hit_at_5_pct": 76.7,
-        "mean_first_useful_rank": 1.783,
+        "mean_first_useful_rank": 1.739,
         "mean_retrieval_latency_ms": 92.8,
         "misses": [
           "searchq_v1_003",

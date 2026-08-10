@@ -1724,7 +1724,7 @@
                   <tr>
                     <td>query_generation · 30 dev + 16 holdout</td>
                     <td class="wrap">Can the product create a useful query from the real question and saved snapshot?</td>
-                    <td class="wrap">Guided v2 reaches 86.7% Hit@1, 96.7% Hit@3, and 100% Hit@5 with one unfiltered query. Development finalist; no promotion before holdout review (§3.4).</td>
+                    <td class="wrap">After a method-neutral relevance-label audit, guided v2 reaches 93.3% Hit@1, 96.7% Hit@3, and 100% Hit@5 with one unfiltered query. Development finalist; no promotion before holdout review (§3.4).</td>
                   </tr>
                   <tr>
                     <td>pilot set</td>
@@ -1919,19 +1919,19 @@
                 </tr>
                 <tr>
                   <td>unguided model rewrite · one query · no filter</td>
-                  <td class="num">63.3%</td>
-                  <td class="num">90.0%</td>
+                  <td class="num">66.7%</td>
+                  <td class="num">93.3%</td>
                   <td class="num">96.7%</td>
                 </tr>
                 <tr>
                   <td>guided v1 rewrite · one query · no filter</td>
-                  <td class="num">73.3%</td>
+                  <td class="num">76.7%</td>
                   <td class="num">93.3%</td>
                   <td class="num">93.3%</td>
                 </tr>
                 <tr>
                   <td>guided v2 rewrite · one query · no filter</td>
-                  <td class="num hit">86.7%</td>
+                  <td class="num hit">93.3%</td>
                   <td class="num hit">96.7%</td>
                   <td class="num hit">100.0%</td>
                 </tr>
@@ -1944,11 +1944,13 @@
           the guide as a translation reference, preserve however many concepts
           the user's mechanism or relationship actually needs, and omit only
           concepts added because they are nearby in the guide. Against v1 it
-          tied 23 cases, improved four ranks, repaired both top-five misses,
-          and regressed one case from rank 1 to rank 2. It clears the declared
-          development gate and closes much of the gap to the old four-query
-          ceiling while using one query and no subject filter. It is now a
-          holdout finalist—not a production decision. The 16-case holdout
+          tied 24 cases, improved four ranks, repaired both top-five misses,
+          and regressed none after a method-neutral label sanity check. That
+          audit accepted six directly citeable chunks across five cases and
+          rejected neighboring passages that did not answer the question. V2
+          now reaches 93.3% Hit@1 and closes most of the gap to the old
+          four-query ceiling while using one query and no subject filter. It
+          is a holdout finalist—not a production decision. The 16-case holdout
           remains unopened until its relevance labels are human-reviewed.
         </p>
         <p class="quiet">

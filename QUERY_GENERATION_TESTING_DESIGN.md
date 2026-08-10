@@ -86,17 +86,17 @@ The complete BM25 control produced:
 
 | Method | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank |
 |---|---:|---:|---:|---:|
-| Raw question | 46.7% | 66.7% | 76.7% | 1.783 |
-| Unguided model rewrite | 50.0% | 70.0% | 90.0% | 2.037 |
-| Guided model rewrite | 66.7% | 90.0% | 93.3% | 1.429 |
+| Raw question | 46.7% | 66.7% | 76.7% | 1.739 |
+| Unguided model rewrite | 53.3% | 73.3% | 90.0% | 1.889 |
+| Guided model rewrite | 66.7% | 90.0% | 96.7% | 1.517 |
 
 The complete hybrid comparison produced:
 
 | Method | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank |
 |---|---:|---:|---:|---:|
 | Raw question | 66.7% | 86.7% | 90.0% | 1.407 |
-| Unguided model rewrite | 63.3% | 90.0% | 96.7% | 1.552 |
-| Guided model rewrite | 73.3% | 93.3% | 93.3% | 1.214 |
+| Unguided model rewrite | 66.7% | 93.3% | 96.7% | 1.448 |
+| Guided model rewrite | 76.7% | 93.3% | 93.3% | 1.179 |
 
 The guided method ranked useful evidence first most often and had the best mean first
 useful rank. The unguided method had the best Hit@5, missing one case versus two for
@@ -114,9 +114,9 @@ the same enriched 30-case labels, the direct numerical comparison is:
 |---|---:|---:|---:|
 | Earlier hybrid + three fixed variants + fallback | 96.7% | 100.0% | 100.0% |
 | Raw user question + hybrid | 66.7% | 86.7% | 90.0% |
-| Unguided single rewrite + hybrid | 63.3% | 90.0% | 96.7% |
-| Guided single rewrite + hybrid | 73.3% | 93.3% | 93.3% |
-| Guided v2 single rewrite + hybrid | 86.7% | 96.7% | 100.0% |
+| Unguided single rewrite + hybrid | 66.7% | 93.3% | 96.7% |
+| Guided single rewrite + hybrid | 76.7% | 93.3% | 93.3% |
+| Guided v2 single rewrite + hybrid | 93.3% | 96.7% | 100.0% |
 
 The earlier condition is numerically stronger, but it is not a valid head-to-head
 query-generation result. It begins after reviewer-selected `focus_terms` and
@@ -147,18 +147,18 @@ All 30 outputs were valid. The complete result was:
 
 | Backend | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank |
 |---|---:|---:|---:|---:|
-| BM25 | 73.3% | 93.3% | 96.7% | 1.345 |
-| Hybrid | 86.7% | 96.7% | 100.0% | 1.200 |
+| BM25 | 86.7% | 96.7% | 96.7% | 1.103 |
+| Hybrid | 93.3% | 96.7% | 100.0% | 1.133 |
 
-On hybrid, v2 tied guided v1 on 23 cases, improved four existing ranks, repaired both
-v1 top-five misses, and regressed one case from rank 1 to rank 2. Case 010 moved from
-a top-five miss to rank 1. Case 020 moved from a miss to rank 4 and is the only v2
-case outside the top three. V2 therefore clears the predeclared 22/30 Hit@1, 28/30
-Hit@3, and 29/30 Hit@5 development frontier. It becomes a holdout finalist, not a
-production choice.
+After the method-neutral label sanity check, hybrid v2 ties guided v1 on 24 cases,
+improves four existing ranks, repairs both v1 top-five misses, and regresses none.
+Case 010 moved from a top-five miss to rank 1. Case 020 moved from a miss to rank 4 and
+is the only v2 case outside the top three. V2 therefore clears the predeclared 22/30
+Hit@1, 28/30 Hit@3, and 29/30 Hit@5 development frontier. It becomes a holdout
+finalist, not a production choice.
 
 Compared with the older information-assisted four-query ceiling, v2 closes much of
-the gap while using one query and no subject filter: 86.7% versus 96.7% Hit@1, 96.7%
+the gap while using one query and no subject filter: 93.3% versus 96.7% Hit@1, 96.7%
 versus 100.0% Hit@3, and an equal 100.0% Hit@5. That remaining comparison still does
 not isolate query count because the old condition also receives reviewer fields.
 
@@ -171,6 +171,7 @@ The results and case artifacts are preserved in:
 - `evals/reports/query_generation_guided_v2_dev.md`
 - `evals/reports/query_generation_guided_v2_dev_summary.json`
 - `evals/reports/query_generation_guided_v2_dev_cases.jsonl`
+- `evals/reports/query_generation_guided_v2_label_audit.md`
 - `evals/runs/query_generation/v2/`
 
 These are development results, not an adoption decision. The 16-case multi-scenario
