@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "what would it mean if our first 30 days gross profit were more than twice CAC?",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 91.4,
+  "returncode": 0,
+  "stderr": ""
+}

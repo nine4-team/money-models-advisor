@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "why can't we judge ad viability from revenue if delivery is expensive?",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 732.3,
+  "returncode": 0,
+  "stderr": ""
+}

@@ -1,0 +1,176 @@
+{
+  "backends": [
+    "bm25",
+    "hybrid"
+  ],
+  "case_count": 30,
+  "cases_file": "evals/advisor_search_query_cases_enriched_labels.jsonl",
+  "created_at": "2026-08-10T18:35:21Z",
+  "generation": {
+    "guided_model_rewrite": {
+      "cases": 30,
+      "mean_latency_ms": 8455.1,
+      "p50_latency_ms": 7732.6,
+      "total_codex_reported_tokens": 174530,
+      "valid_cases": 30
+    },
+    "model_rewrite": {
+      "cases": 30,
+      "mean_latency_ms": 9762.3,
+      "p50_latency_ms": 8367.5,
+      "total_codex_reported_tokens": 95253,
+      "valid_cases": 30
+    },
+    "raw_question": {
+      "cases": 30,
+      "mean_latency_ms": 0.0,
+      "p50_latency_ms": 0.0,
+      "total_codex_reported_tokens": null,
+      "valid_cases": 30
+    }
+  },
+  "method_version": "single-query-methods.v1",
+  "methods": [
+    "raw_question",
+    "model_rewrite",
+    "guided_model_rewrite"
+  ],
+  "model": "gpt-5.5",
+  "results": {
+    "guided_model_rewrite": {
+      "bm25": {
+        "cases": 30,
+        "completed_cases": 30,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 20,
+        "hit_at_1_pct": 66.7,
+        "hit_at_3": 27,
+        "hit_at_3_pct": 90.0,
+        "hit_at_5": 28,
+        "hit_at_5_pct": 93.3,
+        "mean_first_useful_rank": 1.429,
+        "mean_retrieval_latency_ms": 91.7,
+        "misses": [
+          "searchq_v1_010",
+          "searchq_v1_020"
+        ],
+        "missing_cases": []
+      },
+      "hybrid": {
+        "cases": 30,
+        "completed_cases": 24,
+        "coverage_pct": 80.0,
+        "execution_errors": 6,
+        "hit_at_1": 16,
+        "hit_at_1_pct": 66.7,
+        "hit_at_3": 22,
+        "hit_at_3_pct": 91.7,
+        "hit_at_5": 22,
+        "hit_at_5_pct": 91.7,
+        "mean_first_useful_rank": 1.273,
+        "mean_retrieval_latency_ms": 692.3,
+        "misses": [
+          "searchq_v1_010",
+          "searchq_v1_020"
+        ],
+        "missing_cases": [
+          "searchq_v1_025",
+          "searchq_v1_026",
+          "searchq_v1_027",
+          "searchq_v1_028",
+          "searchq_v1_029",
+          "searchq_v1_030"
+        ]
+      }
+    },
+    "model_rewrite": {
+      "bm25": {
+        "cases": 30,
+        "completed_cases": 30,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 15,
+        "hit_at_1_pct": 50.0,
+        "hit_at_3": 21,
+        "hit_at_3_pct": 70.0,
+        "hit_at_5": 27,
+        "hit_at_5_pct": 90.0,
+        "mean_first_useful_rank": 2.037,
+        "mean_retrieval_latency_ms": 90.2,
+        "misses": [
+          "searchq_v1_014",
+          "searchq_v1_022",
+          "searchq_v1_026"
+        ],
+        "missing_cases": []
+      },
+      "hybrid": {
+        "cases": 30,
+        "completed_cases": 30,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 19,
+        "hit_at_1_pct": 63.3,
+        "hit_at_3": 27,
+        "hit_at_3_pct": 90.0,
+        "hit_at_5": 29,
+        "hit_at_5_pct": 96.7,
+        "mean_first_useful_rank": 1.552,
+        "mean_retrieval_latency_ms": 809.3,
+        "misses": [
+          "searchq_v1_022"
+        ],
+        "missing_cases": []
+      }
+    },
+    "raw_question": {
+      "bm25": {
+        "cases": 30,
+        "completed_cases": 30,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 14,
+        "hit_at_1_pct": 46.7,
+        "hit_at_3": 20,
+        "hit_at_3_pct": 66.7,
+        "hit_at_5": 23,
+        "hit_at_5_pct": 76.7,
+        "mean_first_useful_rank": 1.783,
+        "mean_retrieval_latency_ms": 92.8,
+        "misses": [
+          "searchq_v1_003",
+          "searchq_v1_013",
+          "searchq_v1_014",
+          "searchq_v1_020",
+          "searchq_v1_022",
+          "searchq_v1_025",
+          "searchq_v1_026"
+        ],
+        "missing_cases": []
+      },
+      "hybrid": {
+        "cases": 30,
+        "completed_cases": 30,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 20,
+        "hit_at_1_pct": 66.7,
+        "hit_at_3": 26,
+        "hit_at_3_pct": 86.7,
+        "hit_at_5": 27,
+        "hit_at_5_pct": 90.0,
+        "mean_first_useful_rank": 1.407,
+        "mean_retrieval_latency_ms": 826.6,
+        "misses": [
+          "searchq_v1_003",
+          "searchq_v1_010",
+          "searchq_v1_020"
+        ],
+        "missing_cases": []
+      }
+    }
+  },
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "could waiving a design fee create continuity revenue later?",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "waived-fee",
+      "char_end": 6484,
+      "char_start": 3979,
+      "id": "waived-fee:2",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk year to year by waiving those fees. And if they commit and they wanna quit early, then okay, they pay the fee as though they had paid month to month from the beginning. Very simple. Bottom line is that customers will stay longer if leaving costs more than staying. And to make this equitable, if they stay the full term, they can cancel if they choose with no fee. That's what makes it fair to both parties. So if you need to feel better about yourself for charging these things, uh, whether real or made up, you should get that looked at. But if you need a reason why, well, here's a perfectly reasonable also made up reason for you. You can say this. \"Whenever we onboard a new customer, it always takes more resources than an existing customer who's been with us for multiple months. So in order to give you the best experience, we charge a one-time onboarding fee, setup, activation, engagement, enrollment,\" whatever made up thing you wanna say, \"to give you the experience, that experience. So you'll never have to pay it again and it's for your own benefit so you get the most out of your experience. Now, we know that if you learn how to use our services the right. way, you'll be 23.7X times more successful.\" So you can say initiation, onboarding, enrollment, startup, setup, processing, activation, build, commencement. You can just use whatever words you want and then put the word \"fee\" afterwards, and that's what it. can be. So that is our description. Let me give you some examples. So we'll use all combinations, but we'll assume $5,000 onboarding fee and a thousand dollars a month for all of them. Okay? So waived fee with commitment. This is my personal favorite. It's clean and simple. Commitment's 12 months, monthly rate's a thousand dollars a month, fee is $5,000 if they pay month to month. Option A, pay one time five grand plus a thousand dollars for the first month, then pay $1,000 a month thereafter, cancel whenever you want. Option B, waive the $5,000 if you commit to 12, pay $1,000 per month, only pay the $5,000 fee if you break your commitment early. Boom. Very simple, very straightforward. There's the"
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2407,
+      "char_start": 0,
+      "id": "waived-fee:0",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "All right, so we just covered continuity bonuses and continuity discounts. Now, we go to a special continuity offer that I really like a lot. And it's, the other two are like big amorphous versions. This is a very specific play. It'll be the shortest of the three, but for many of you people who have services or anything that's on continuity, especially if you have onboarding or some sort of getting client's results quickly, this thing is a beast. All right. So here's how I learned it. So after a long career in business, a friend of mine entered, uh, the consulting space with the intention of creating a lifestyle business. So he said, \"Hey, I'd just rather make five million bucks a year with no employees and, than have some big company.\" Um, and he said, \"You know, I don't really lose anyone, so I don't really need to market.\" And I was like, \"That's really interesting.\" A weird thing to say. I was like, \"So I assume like...\" All right, so you just collect payments upfront. Whenever somebody says, \"Oh, I don't have any churn,\" I usually just assume, well, you have no churn if you only have pre-payments. He said, \"No, I've got mostly payment plans.\" I was like, \"Huh. How do you do that?\" He said, \"Well, once you hear it, you're gonna kick yourself for not doing this all along.\" I was like, \"All right, so what do you do?\" He said, \"I just say that you could pay $25,000 to start and then go month to month after that for $4,000 a month. Or you can go to $4,000 a month if you commit to the year. So just about everyone takes the year. Then I just have them initial on their contract that they understand that if they exit early, they have to cover the $25,000 onboarding fee. So if someone calls to quit, I just say, 'Oh yeah, no worries. Just wire over the onboarding fee and I'll get you canceled right, away.' And that usually keeps people in it. It also gets people the, through the emotional ups and downs of business.\" And I was like, \"That's pretty sweet.\" So if you look at this visual here, if you had a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is,"
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2363,
+      "char_start": 49,
+      "id": "waived-fee:1",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is, but because we pair it as a price on the front end, it becomes a very strong sales thing too. So with the other version, we use the three, months free or whatever to get someone in, and then we say, \"Cool, you have to pay the difference if you cancel early.\" Here, we sell them on the vacation and we say, \"We have this massive onboarding fee, but I'll waive it if you sign up for a commitment.\" Then that' also hangs as a knife, if they don't wanna pay it today, they're not gonna pay it in six months either. And so the same reason they signed up is the same reason they'll keep paying. Here's our description. So the waived fee offers work like this. First, you ask customers to pay a startup fee as a part of joining a month to month program. Typically, you wanna do that to three to five times the monthly rate. All right? So if it was a thousand dollar thing, you'd want it to be a $5,000, uh, front fee. For, you know, the example it was $4,000 a month and $25,000 signup fee. That's the idea. All right. Then you offer a discount on the entire fee if they commit to the longer term. And the commitment period should be minimum of six months, ideally 12 plus. If it's less than that, it doesn't really make any sense. So if they cancel inside the term, they pay the fee. Customers can choose to pay the big fee and keep the option to quit at any time, or they can commit to 12 months and get the fee waived. And many will commit to avoid the big fee. There's also a clear point after four, five, six months where if they paid the fee, it's the same as staying, in which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 19915,
+      "char_start": 17975,
+      "id": "continuity-discounts:11",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "That's not gonna work. You wanna tell, you wanna let them vent. You wanna feel, have them feel validated. You wanna be more upset than them. You wanna have them calm you down. You say that you made the mistake and that's unacceptable. Ask them to, see if you can make it up to them. Then you do a rollover and you get a do-over. That's the idea. Those are the important points. Whoo. All right. Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5035,
+      "char_start": 2627,
+      "id": "continuity-discounts:4",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "at your monthly recurring revenue, if you would like to put that in your pocket this month, for example, you can guarantee that you put it in your pocket by just changing your billing from monthly to every four weeks. Now, some people say, \"Hey, well, you said weekly.\" It's more that there's, you can present the price as weekly, but you still bill on a four-week cadence. Because I found this out the hard way. If you bill weekly, you get a bunch of financial pain in the butts of people changing cards, and they're like, \"Hey, can I pause for one week?\" Pain in the butt. So present it as, whatever, call it 50 bucks a week, but you bill at $200 every four weeks. All right? Just to be clear. So this is fundamentally how it works. That gives you 8.3% more revenue. So that may not sound like much, but if you run a, a 20% profit business, if you go from 20 to 28%, it's going to make you a lot more money. That's almost a 50% increase in revenue, so I think, there it is, 41%. Right? Kinda nifty. And the best part is, you don't do any more work. You just change a few words in your contract and how you present the price. That's it. In my experience, I've never had any difference in take rates between every four weeks versus every month, but you make a lot more money. So you're welcome. 3% more revenue for four extra words. Yeah, it's X plus a 3% processing fee. Now, I've never had anyone not buy because of the processing fee. The 3% added to your top line for no extra work goes straight to your bottom line. If you run a 10% profit business and add 3%, you just added 30% to your profit. Pretty worth it. And this works especially well when paired with the get two forms of payment. Recurring businesses lose mounds of cash because payment processing problems. So basically, people's card goes, you know, their, their numbers change, they, they move states, there's some guy in Nigeria who tries to bill them, whatever. Right? They've got something, and they have to change their card. And so first, customers don't cancel, but their payment information changes or expires. Second, customers max out cards or have insufficient funds. Fix both issues with the same solution. And so what we do is we say, \"Hey, now that I told you about this 3% fee, remember kind of the rental car, like, 'Hey, there's this fee, you wanna avoid this fee that I made up anyways? Yeah, that's what we're gonna do.'\""
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

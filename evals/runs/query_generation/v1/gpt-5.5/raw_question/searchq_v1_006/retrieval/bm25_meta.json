@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "would a recurring maintenance or membership offer help our payback?",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 88.6,
+  "returncode": 0,
+  "stderr": ""
+}

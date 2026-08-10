@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "attraction offer free versus paid discounted premium service diagnostic audit high ticket core offer",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 91.2,
+  "returncode": 0,
+  "stderr": ""
+}

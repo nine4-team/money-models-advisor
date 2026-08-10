@@ -1,0 +1,79 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "credit diagnostic fee toward larger package upsell attraction offer core offer fee credit",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 15037,
+      "char_start": 14088,
+      "id": "rollover-upsell:7",
+      "score": 0.031,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. What to upsell, more of something, better of something, new something new. Just make sure that you make a profit after applying your discount. How to rollover the credit. You can do full or partial purchase, uh, give it upfront, or you can spread it out. We went through examples of all those. You can price your next offer for at least four times higher than the credit. So this makes it a 25% discount. Everything above that is gravy. I wouldn't do less than that. And to get more takers, add urgency. Make your rollover credit a one-time-only offer. And boom, that is the rollover upsell."
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3166,
+      "char_start": 682,
+      "id": "ten-years-ten-minutes:1",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' you want from this prospect. After picking a winner, you offer everyone else, uh, the big prize at a discounted price in second place. The decoy offers are also attraction offers where you advertise a free or discounted offer. When the lead asks to learn more, you also present a more valuable premium offer. The premium offer includes more features, benefits, bonuses, guarantees, and so on, and gets more people to buy it. Buy X to get Y free, you offer customers free stuff in exchange for buying stuff for money. The more free stuff and the higher its value, the more people will buy X to get Y free. Pay less now or pay more later, you give people a choice to pay full price later or pay a discounted price now for additional benefits. We also did free with consumption, which I won't Yeah. ... bonus here. But fundamentally, you give away a lot of free value, and that increases the likelihood people buy a very expensive thing from you. The more expensive the thing, the longer and the more free stuff you give them. Then we have upsell offers, which is, are whatever you offer next. That is my very literal scientific thing. Try and brai- like, fight me. An upsell is whatever you offer next. All right, so typically, it's gonna be more, better, or newer version of whatever they just bought. These can get you lots of cash fast. We covered four. The classic upsell, where you offer the solution to the customer's next problem the moment they become aware of it. You can't have X without Y. The menu upsell, you tell customers which options they don't need, then tell them which one they do need and how to get the value from it, prescribe, and, \"You don't need that, you need this.\" The anchor upsells, you offer the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended"
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3308,
+      "char_start": 786,
+      "id": "ten-years-ten-minutes:2",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 2343,
+      "char_start": 0,
+      "id": "rollover-upsell:0",
+      "score": 0.029,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "All right, so we just crushed the classic upsell, the menu upsell, the anchor upsell. Now, let's talk about the rollover upsell. Rollover upsell, of these four upsells is probably my most used upsell, not necessarily my favorite, but my most commonly used. So let's break down how this came to be. So I learned this from when I was doing the Win Your Money Back as the attraction offer. So everyone kept cr- crediting their money towards the membership, but I would put it all up front, right? The membership was, for me, uh, $150 a month. And so 600 bucks was four months of free service. So, you know, they did six weeks, and then they would essentially get another four months for free. And it would almost take me a half year to get my, like, first payment from people coming in the door, which was- which sucked, right? So the thing is, is for them, they didn't feel the payments so they stopped coming. And so I needed a way to upsell, people into something paid. And so I drove to a friend of mine's, actually here in Vegas now, uh, to learn more about how he ran his gym. And, and the thing is, I studied everything he was doing 'cause he was just doing way better than I was. And, uh, he said in this off-handed comment that he was getting 70% plus people stay on afterwards and pay. And I was like, \"How are you doing that?\" He's like, \"Oh, yeah.\" He's like, \"I just take their winnings and credit it towards a year.\" And he said it just like that. And I was like, \"That's it.\" All you do is you take whatever they just paid for and you roll it. And so that's the upsell. It's whatever you paid for, I'll just credit it towards the next thing. So let's get in the description. Here's how it works. So rollover upsells credit some or all of a customer's previous purchase towards your next offer. And this, in my experience, gets way more people to take it. So once I know how much credit to give, I figure out three things. One, who to upsell, two, what to upsell, and three, how to roll over the credit. So for the who, I use rollover upsells in four situations. First is to reengage customers who left a while ago. I call this a win back campaign. You reach out to old customers and say, \"Hey, Sandra, you haven't been up- you haven't been back in six months, uh, but I saw that I owed you some money.\" And so the subject would be,"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 10534,
+      "char_start": 8200,
+      "id": "rollover-upsell:5",
+      "score": 0.029,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "to return. Add urgency to rollover upsells, so make them one-time only. So this is a key point. So this is optional. It's up to you, but this is how I prefer to do it. Make the moment you present the offer the only time to take the offer so they don't get to sleep on it. So you wanna surprise and delight them with this credit or this discount. So if they want the credit, they gotta take it now. If not, no big deal. They can always pay full price later. How to price a rollover upsell. So to make money on a discounted offer, you have to have profit leftover in order to discount it, right? So I try to make the upsell at least four times more than the rollover credit. So that gives me a 25% discount at most if it's four times more expensive. Remember, the rules of discounting apply. Bigger discounts make you less profit but... per sale, but they get you more sales. Now, you don't need to credit the entire amount. I just like to highlight this again because people do this and then they ruin their businesses, so I'm telling you, don't do that. Like, you can just take as much or as little as you want. The goal is to simply get as much of a discount that you get responses. So if you find out that $200 is enough to move the needle and the average person spend $2,000 a year, then you can say, \"Hey, your last purchase with me, uh, the 2,000 you spent last year was this thing.\" And that's what you choose to credit. You don't have to credit everything. If you have small, if, if the person's spent a very small time with you and you have really big packages, credit the whole thing. If they spend a really long time with you and you have small tickets, credit the last one. So I rollover whatever I think would incentivize to buy the next thing. And you can just test to find the sweet spot. From the beginning it's $500. You can test 300, whatever. This is my famous gift card play. The way that this works, and this is a savage play, and it basically is a rollover just, like, packaged differently, is that you say, \"Hey, this works great for, like, holiday seasons, things like that.\" You say, \"Hey,\" this also crushes for Black Friday, \"I'm giving $200 gift cards away for 90% off.\" Limit two per person, and you can only use them on someone else 'cause it's the holiday season. So you can do this for Christmas and you"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

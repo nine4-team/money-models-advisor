@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_018",
+  "created_at": "2026-08-10T18:20:30Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 5439.1,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "attraction offer free versus paid discounted premium service diagnostic audit high ticket core offer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 1238,
+  "valid": true
+}

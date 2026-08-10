@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "what's the difference between an attraction offer and an upsell in this situation?",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 1130.3,
+  "returncode": 0,
+  "stderr": ""
+}

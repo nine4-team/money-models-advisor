@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "why ad viability should be judged by gross profit contribution margin cash payback not revenue when fulfillment delivery costs are high",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "continuity-offers",
+      "char_end": 4828,
+      "char_start": 2344,
+      "id": "continuity-offers:2",
+      "score": 0.032,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments and contracts. They can significantly increase LTV if you deliver value. So that's downsell the upsell. Now let's talk about calculating back of napkin LTV. So the simplest way to do this is look at your price, divide it by your monthly churn, and that gives you your lifetime revenue. Remember, we still have margin on this. We still have some cost of delivery. Now, the gross margin times lifetime revenue equals your lifetime gross profit. So for example, let's say our price minus our cost of goods times 100% equals our gross margins. So let's say we have a $100 price, $20 cost of goods, times 100 equals 80% gross margins. Okay. So now we take our 80% gross margins, we multiply it by our lifetime revenue, and we get $800 of lifetime gross profit. That's how much we make per customer. over lifetime. That is what you can calculate for yourself given whatever it is you have. So you divide your price by your churn, that gives you the revenue, then you basically just figure out what your gross margin is, multiply that by that, and there you go. So getting people into continuity automatically extends LTV. Even with a company that does one-time transactions, most recurring stuff that has basically no added value, I'm just being super real with you, the recurring is usually three months, which still 3X your new LTV. So if you sell physical products, which maybe have one-time use, if you just get someone into a subscription, it usually triples the value of the customer. So if half the people do that thing, then you've got half the people doing 3X and half of them doing 1X, which means you double the revenue of your business, not bad, just by making it available. So the valuable money lesson is people think more about price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to"
+    },
+    {
+      "chapter": "gross-profit",
+      "char_end": 6743,
+      "char_start": 4272,
+      "id": "gross-profit:3",
+      "score": 0.031,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "of attention, he would outbid me every time. And our goal is to do the same to our competitors. All right? So you need to look at both sides, getting customers for less, but also making them worth more. All right? And before we improve it, we gotta know how to calculate it. So here's gross profit, how we calculate it. So here's a product example. So if I sell a widget for $100, it costs me 20 bucks to manufacture it and ship the widget to the end customer. All right? So my gross profit is 100, where it is, 100 minus 20, 80 bucks. This is what's left over. This is my gross profit. Okay. Here's a service example. Let's say I deliver services monthly and I have one account representative per ten customers. If my clients pay me $3,000 per month each and my reps cost me $6,000 per month, we can then figure out the gross profit margin. Okay.So the rep salary is six thousand dollars. The clients per rep is ten. The cost per client means it's six hundred dollars per client. Remember, we make six thousand dollars, divided by ten clients, six hundred dollars per client. Gross profit, all right, is now three thousand dollars, what they' pay us, minus my cost per client, which means twenty-four hundred left over. The reason I'm going through this is that many of you, guys watching this are service-based businesses and don't know your costs. These, are your costs. So my gross margins are twenty-four hundred divided by three thousand dollars, which is 80%. Rule of thumb from Alex, if you run a service-based business, local brick and mortar or national, you want at least an 80% gross profit margin. Now that- that may sound crazy to you, but it is very unlikely that you will scale in service unless you have 80 or higher. So not just eight- that means that if it cost you a hundred, you gotta sell it for five hundred. Now you might think, 'cause if you're a newer business owner, you're like, \"No, I- that's- that seems unreasonable.\" That's your gross profit, not your net profit. You still have rent. You've got, you've got your fixed admin cost, you've got insurance, you've got utilities, you've got break-fix that happens within your business. You've got all these other costs that go into doing business. You're not running 80% net margins. You're just saying this is now all the money I have left over to run the re- I still gotta spend advertising dollars. Like there's all this money that I still gotta spend. And so if you're- if you're at 80, you"
+    },
+    {
+      "chapter": "gross-profit",
+      "char_end": 2439,
+      "char_start": 0,
+      "id": "gross-profit:0",
+      "score": 0.031,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "Gross profit. All right, let's rock in. So this is the second of the three metrics that we look at to triangulate acquisition. We started with CAC. You have to have cheap customers. We talked about the different ways to improve it, free or discount, different ways to display discounts. Uh, but now we're gonna talk about gross profit. Okay? So we're gonna define what it. is, why it's important, examples, calculating and improving it. All right, let's rock. So gross profit, the difference between the price and the cost of goods sold. So cost of goods or COGS is what it costs you to deliver the thing. All right? So if it cost me $9 to deliver meals and I sell it for 10, then I got $1 in. gross profit. All right? Very straightforward. Now, here's why this is important. So the problem is that most businesses think they need cheaper leads, when in reality they need to make more money per customer. And so my observation is that the CAC... This is, this is me, like high level, 'cause I see lots of businesses. CAC. between competitors is often fairly similar. So a lot of people are, you know, obsessing about how they're like, you know, they wanna improve their ads and things like that. And sometimes you do need to do that. But the ranges are actually much tighter than you'd think. So you might see somebody who's, you know, acquiring customers. at $2,500. Somebody and somebody else in the marketplace might be $3,500. Rarely would you see somebody at like $6,000 unless they're like just getting into the market. But the CAC for specific avatars is usually pretty tight in terms of ranges when I see many businesses in the same industry. Now that may surprise you, but that just like kind of is what it, is. But the difference between how much money these, these companies make is often how much customers are worth. Now that is where the huge discrepancy between businesses exists. So this is the difference between the whales and the minnows, is how much they make per customer, gross profit. All right? So let me tell you a quick story. So I did a consulting day years and years and years ago. This might have been the first five I've ever done in my whole life. Um, and a guy was in the same space as me. And you're like, \"Wait, Alex, why would you help someone who's a quote competitor?\" I don't see the world that way. So guy came in and he was selling the same number of units per month as me. All right? Same number of"
+    },
+    {
+      "chapter": "gross-profit",
+      "char_end": 10343,
+      "char_start": 7968,
+      "id": "gross-profit:4",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "you've got utilities, you've got break-fix that happens within your business. You've got all these other costs that go into doing business. You're not running 80% net margins. You're just saying this is now all the money I have left over to run the re- I still gotta spend advertising dollars. Like there's all this money that I still gotta spend. And so if you're- if you're at 80, you might be running a 30% net margin business, right? So just to give you context on this. Okay. And so the pro tip is that gross margin equals gross profit times a hundred percent. So if you ever hear me say gross profit versus gross margin, uh, it's just, this is a percentage, this is an absolute, that's all it is. So gross profit's the absolute, uh, gross margin is the percentage. That's all it is. Okay? So if I say it's 80 bucks in gross profit, it's 80% gross margins. I just, I, I clarify this because if you've ever like read stuff and been like, \"Wait a second, is this different?\" It's just a different way of measuring the same thing. That's all it is. All right, cool. So big picture, this is what the business was, uh, this is the example I gave visually. This is the correct visual. Uh, all right? And you can note that gross profit is not net profit, all right? This is the cost limited to the, that what the business incurs directly from delivering the thing. So if you had an administrative assistant and you sell cups for ten dollars that cost you two dollars, we wouldn't factor in your administrative assistant into the eight dollars of gross profit. It's off the gross profit that we eventually pay for everything else in the business to create our net profit, AKA, what's left over at the end of the month. All right, so your rent doesn't go into your gross profit. Your admin costs don't go into your gross profit. Your utilities don't go into your gross profit. It's just the cost of, okay, if I sold another one of these, if I sold another customer, what are the variable costs? What are the costs that go up per unit sold? If your rent doesn't go up per unit sold, if your admin cost doesn't go up per unit sold, then it is not factored into gross profit. But if my hard cost of cups, if I sell another cup, I still have to incur that cost. If I, if I have, uh, if I have to sell another client, then a certain portion of my resources of client delivery is gonna"
+    },
+    {
+      "chapter": "cfa",
+      "char_end": 2368,
+      "char_start": 0,
+      "id": "cfa:0",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three levels of advertising. for you. as a business owner. So let's start with level one. This is where lifetime gross profit is greater than the cost to acquire a customer. This is the dull level. All right? So you've gotta make more money than it costs you to make it over the lifespan of the customer, ideally at least three times more. So, what it costs you to make the money, how much money you make. Fundamentally, that's it. If you don't have that, then you don't have a business. So you need at least this to be a business that can make money and grow. So level two is 30-day gross profit, not lifetime. Notice the big difference here is the time difference. This is forever, and this is in the first month, all right, is greater than CAC. I'll explain why the first month is so important in a second. All right, so we wanna make more money than it costs you to make it in 30 days. And so the result, this is the key part, is that you never spend your own money to grow. And so why is 30, why is 30 days the number? Because that's the amount of time that any business can borrow money with zero interest in the form of a credit card or credit lines. Many businesses, banks will even give you cr- uh, interest-free credit lines for 30, sometimes 60, sometimes 90 days depending on, you know, your relationship with the bank, how much money it is, whatever. But at least every business can get 30-day interest-free money. And so that means that the way the financial system exists right, now, at least in America, you can get money and not pay for it as long as you pay it back in a month, which means that my objective for you, because I've always operated on, I've owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

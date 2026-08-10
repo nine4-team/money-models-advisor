@@ -1,0 +1,78 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "if the diagnostic sells, what should we offer next to increase first-month profit?",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "upsell-offers",
+      "char_end": 2366,
+      "char_start": 0,
+      "id": "upsell-offers:0",
+      "score": 0.032,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "All right, so we just covered attraction offers. So these are the first thing that most people are going to see when they're entering your business. This is the stuff that gets leads to engage, that's why they're big, sexy, free things. The upsell offers. are things. that we're going to reposition for them to spend even more money. Now, sometimes this happens immediately, sometimes it happens, you know, uh, a few days later, sometimes a few weeks later, sometimes a month later. But either way, we're going to be using four of my favorite upsells. So this is step two in our money. model process. So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a problem, another appears. You upsell the solution to the problem that your first offer reveals. So every offer opens the door to an upsell. Even upsells o- open the door to more upsells. And often, upsells make up the majority of the profits. This is what people don't understand. If the objective is that we can break even, obviously, we wanna make as much money as we want, but you don't wanna make more money on a few customers when you can get 10 times the customers and then make way, more on the second sale, right? And so often, upsells. make up the majority of the profit, even if that's not the thing you' sell the most of. Think about it in terms of volume, I might sell 10 times more of my front-end offer, but 10X of my profit comes from my second sale. They can make or break a money. model. And so let me show you how much. So here's some examples. So this is. a classic burger, fries, and soda store, all right? So this is a, our very sad burger shop owner. He sells a burger for two bucks, his cost on the burger is $1.75. He makes 25 cents of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize"
+    },
+    {
+      "chapter": "decoy-offers",
+      "char_end": 16507,
+      "char_start": 14437,
+      "id": "decoy-offers:8",
+      "score": 0.031,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "that you do wanna actually help them, so it- it's aligned with the scripting in the sale, right? So this builds goodwill, it over-delivers, and it increases the chance that they take your upsell offer later. Remember, they're still a lead and if they bought the decoy, if it's a free thing that they haven't bought yet, if it's not a free thing, they paid. They're still a customer. And if you've followed any of my stuff, you absolutely should still upsell them halfway through whatever this thing is, and if you give them some stuff now, that's good, they will probably increase the likelihood that they will take more of your stuff that's good later. So, in summary, decoy offers. Advertise something for free or discounted, then when the leads ask to learn more, you also present a more valuable premium offer. Make the premium offer far more valuable than the decoy option by adding more features, benefits, bonuses, and guarantees. Strip down your decoy- your main offer to your decoy offer as much as is reasonable. When leads ask about the decoy offer, present your premium offer right next to it. All right? Ask if they're here for free stuff or lasting results to get permission to put the premium offer first. If you still don't want that, then you put the decoy offer and then kind of like, like, \"I mean, you can do that, but this is what people get the best results on.\" And you can still make money from the leads who pick the decoy option. You'll just learn the best way to deliver your decoy product and maximize upsells from it. Expect to make money fast. If you're not, then make the contrast between the offers bigger. By the way, if you're a company doing over a million dollars or more in profit and want us to invest as a partner to help you scale, you can go to acquisition.com and hit the Sell button. If you just want help scaling, you can hit the Scale button. If you don't have a business, hit the Start a Business one, which I'll just tell you will route you to school.com. So, that concludes the decoy offers. Let's get to buy X get Y free."
+    },
+    {
+      "chapter": "money-models-offer-stacks",
+      "char_end": 2268,
+      "char_start": 0,
+      "id": "money-models-offer-stacks:0",
+      "score": 0.026,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that some of the things are a little bit different from the book, and that's done on purpose because I like to think through things differently in different mediums. All right? Because I can say things here that I couldn't normally say in the book. So we'll go definition, rental car story, and the gym launch example. All right. So a money model is a series of offers. That's it. The reason I had to start with the offers book before talking about the money model book is that an offer is one unit. A money model is sequencing these things. It's putting them in a series of offers deliberately to maximize gross profit collected in the first 30 days. So I will say this all together. A money model is a series of offers. A good money model, which is the objective of this book, or this training, is a series of offers structured to minimize CAC, how much it costs to get a customer, maximize gross profit, how much they pay you, collected in the first 30 days, how fast they pay you. That's the point... [Content continues with rental car counter story example including late checkout, insurance upgrade, minimum package, prepaid gas, and late return fees explanation] ...describing how rental car companies engineer their offers sequentially. The story illustrates 9 different upsells that occurred during a single reservation transaction. This is followed by the Gym Launch case study detailing how the company grew from $1,000 in the bank to $17 million in profit in 20 months through their money model approach. The transcript covers their specific offer stack including: free book/podcast lead magnet, free strategy call, $16,000 premium offer with payment terms, free supplement training, and free feedback call with continuity upsell. The lesson emphasizes how understanding offer sequencing and psychology can dramatically increase customer lifetime value and enable rapid scaling without external funding."
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 8424,
+      "char_start": 5975,
+      "id": "continuity-bonus:3",
+      "score": 0.025,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "join right now. Also, you can offer the bonus as a standalone purchase or you can only make it available if they buy your continuity. So either of them work. And I'm gonna show you some really cool math examples at' the end of this video of price tests we've run to generate more cash up front or more people taking continuity. So there's actually some signs I can show you of like how much cash do you want up front versus how many people do you want to take continuity, and then what percentage is the right percentage to offer so you can get the right distribution you want? And we tested this across a lot of Okay. ... locations, so I feel pretty confident about it. So on their own, continuity offers get less cash now, remember, less cash now, and that makes it tough for getting customers profitably. But the way that I use them, we can still hit our 30-day profit goals, which I'll explain in a second. So first, I do all my big cash attraction, upsell and downsell offers, so I should already be profitable, I should already have cash from all those original offers. Then continuity offers get a little bit of cash from the first month's payments. Then I offer people who bought that one month a discount for pre-paying more months. This further boosts 30-day profits, giving me more cash to advertise and stacks recurring revenue. So think about how that goes.Big attraction offer, buy X, get Y' free, win your money back, whatever. Got it. Then we do our up-sells. Got it. Then we do our down-sells. Got it. Then we get them into continuity, really soft pitch. We got them on continuity, we gave them some bonuses in order to say yes. Now that they're on continuity, we already have the commitment, we then say, \"Hey, you're already committed. Let's just pre-pay and save some money.\" We stack even more cash forward. And that's how you just stack, stack, stack, stack, stack. You front-load the money so that you can scale your advertising and go to the moon. All right, let's do some examples. So physical products. Let's use pet food. All right, so one-time bonus, get every dog toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the"
+    },
+    {
+      "chapter": "offer-types",
+      "char_end": 2832,
+      "char_start": 1927,
+      "id": "offer-types:1",
+      "score": 0.016,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a72.2.b] Old LBO math \u2014 $600 gross profit per 10 walk-ins\n\nSo the old way that people did low barrier offers was that they would run trials. So they'd run $19 months, $21, 21 days, things like that. And so right off the bat, if you had 10 people walk in the door, two would not buy. So now you got eight left who buy a trial or buy the discount offer at 29 bucks, 19 bucks, $21, whatever. Now this guy doesn't convert, this guy doesn't convert, this guy doesn't convert, this guy doesn't convert, this guy doesn't convert. We get three, 'cause the industry average is 35% of trials would convert. So not 35% of people who showed up, 35% of people who started the trial. So being, being generous on this one, three out of the eight continue on. All right? So this is what the math looks like. So 30 days later, our total gross profit is $600. Our revenue per show up is $60. Our revenue per trial is 75."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

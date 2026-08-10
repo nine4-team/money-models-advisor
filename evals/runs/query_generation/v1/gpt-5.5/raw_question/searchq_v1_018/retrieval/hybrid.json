@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "should our attraction offer be free or discounted?",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "attraction-offers",
+      "char_end": 1485,
+      "char_start": 0,
+      "id": "attraction-offers:0",
+      "score": 0.033,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "So we are now officially in our apprenticeship, our digital apprenticeship, or virtual apprenticeship. Let us begin with attraction offers. So, what does an attraction offer, the free versus discounted continuum, and the lineup. All right. So, an attraction offer generates leads and converts them into customers. That's what it does. They turn advertising into money by offering something free or at a discount. We do this because everyone wants a great deal. In a great deal, customers get far more value than the price they pay. Strangers can only take your word on the value, but they absolutely understand the price. For that reason, discounts make anything a great deal to just about anyone. And the greater the discount, the better the deal. So, the greatest discount of all being free. So, free to discounted continue. This is a visual representation of what I alluded to earlier, but 100% off versus 0% off. So this is free, this is, uh, full price, and then this is the also lowest demand when you have full price versus highest demand, which is free. So the more you move this way, the higher the demand, the more you have, you give off. Pretty much that's how it works. The lineup. So, this is the lineup. These are the plays that I'm going to explain to you. We've got our win your money back, giveaways, decoy offer, buy X get Y free, pay less now or pay more later, and then free with consumption. This one is not in the book, FYI. So with that being said, let us begin."
+    },
+    {
+      "chapter": "decoy-offers",
+      "char_end": 10587,
+      "char_start": 8105,
+      "id": "decoy-offers:4",
+      "score": 0.029,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "Okay, so the attraction offer was a free six-week stress release, uh, or, um, as... you could say a $6 six-week stress release. Either way, that free or discount. Decoy option, you get one float per month with at home do it yourself stress relief exercises or premium option is two a week floats for six weeks, one-on-one consulting, journal, sleep routine, and a satisfaction guarantee. Guess what everyone took? This one. All right. Now, the gym offer. This is a local one. So this, this is basically the breakdown of what we did. So free 21-day transformation or $21 day transformation, uh, workouts done in a school.com group once a day and a general nutrition plan. So it's like, we're a local business. You can get one workout here, the rest of the workouts you can just do online, right? You can watch the recordings, you get no support, you get no guarantee or you get unlimited workouts, a personalized nutrition plan, accountability, results guarantee or you can another 21-days free. So now important points. All right. So how to make your decoy offer. Offer fewer components, older models or less personalized versions of your premium offer 'cause some of you guys are like, \"I don't know how I can think make my, my decoy offer.\" Think about what you have, make it less personal. Make... Uh, if you have an older version of what you did, give them that. Like, these are... You just peel off features that cost you the most money. All right? And then the thing is, is your attraction offer only has to get people to engage, nothing more. You just need people to get opt-ins for, it, which is why you want to talk, more about the outcome and less about the vehicle. Now, yeah, advertise the benefits, not the features. I already covered that one. All right. So now you can advertise discounts in four ways. We already covered that one earlier, but as a reminder, uh, if you have year-long thing and you give... and it's a hundred bucks a month and you wanted them to pay $900 for the year, you could say 25% off, you could say $300 off, you could say three months free or you could say one year for $900, 1200 bucks. All different ways of saying the same thing. So these are all useful, especially with decoy offers 'cause oftentimes they are discounts. All right. So the key to making this work is that the contrast has to be huge. All right? The bigger the contrast, the better the deal, the more customers will take it. If people keep taking your free offer, your free"
+    },
+    {
+      "chapter": "decoy-offers",
+      "char_end": 6455,
+      "char_start": 3978,
+      "id": "decoy-offers:3",
+      "score": 0.029,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "of the bonuses from the premium and toss them in because you're like, \"Hey, I know you're only taking the, the one workout a week thing, but let me do some personal nutrition for you. Come back in a week or come back in two days.\" And guess what we do at the personal nutrition consult today? Sell them $300 of supplements. Right? And so it's, it's all good. All right? But either way, here's the thing is you close everyone, and this makes it cheap and profitable to get new customers. And any business can do this. You literally just take what you have. Well, I'll get into what it is. Okay. So here are the steps to make a decoy offer. One, advertise a lesser, smaller, or simpler version of your premium offer as the decoy offer. Then, when leads engage, offer both options, but emphasize the premium one. And use the bonuses, the premium value, and the guarantees to close the additional people. All right. Now, let's do some examples. So let's say I have a lemonade stand. This is to prove the point that it works with literally any business. All right, so you, the attraction offer is, uh, this is, like, what the headline of the ad might be. So you'd say, \"Hey, free week of lemonade for all first-time customers.\" Okay? Now, I'm not giving any features. I just said, \"Free week of lemonade.\"Now, option A, this is the free week, is that you can have this free plus water and powder, uh, this warm water, right? And artificially sweetened and it may give you digestive issues, uh, but you can absolutely have this free lemonade or you could have the organic, all natural, vegan, gluten-free imported Italian lemons which are cold distilled and shipped straight to your door so you never waste time coming into the store. And so it's like, which one do you want? Right? Of course you want this one. You want the premium one. And so that's what people take. So let's say you've got, um... This is actually a, so a float tank center. I had an agency that did float tank stuff for a minute, uh, in Allen. So they used a free six-week stress release challenge. Okay, so the attraction offer was a free six-week stress release, uh, or, um, as... you could say a $6 six-week stress release. Either way, that free or discount. Decoy option, you get one float per month with at home do it yourself stress relief exercises or premium option is two a week floats for six weeks, one-on-one consulting, journal, sleep routine, and a satisfaction guarantee. Guess what everyone took?"
+    },
+    {
+      "chapter": "free-giveaways",
+      "char_end": 20735,
+      "char_start": 16290,
+      "id": "free-giveaways:3",
+      "score": 0.029,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "## [\u00a73.3.d] Promotional offer math \u2014 10-30% of gross margin, value anchoring\n\nSo I'm gonna give you a little bit of math on how to, like, kind of walk through this. So when you're explaining the promotional offer to winners, you wanna use like kind of cost of value using their discount, their store credit, the, the partial scholarship, um, that you're giving them, right? And so my rule of thumb is to make your promotional offer equal to 10 to 30% of your gross margins. All right? And so for example, let's say we advertise a grand prize with a $5,000 value but a $2,000 retail price tag. All right? So the promotional offer winner gets, uh, gets it for 1,800 bucks. That's 10% off retail. All right? But when we let them know they won the promotional offer, we explain that they get $5,000 in value for an $1,800 price tag. All right? Very exceptional. So if I'm that travel agent, for example, I might say, \"If you were to book this vacation not through me, without all the discounts I can get, this would cost you $5,000 to do.\" Now, if somebody goes through my traditional services, I, I might say, \"Okay, well, I can get this thing for $2,000,\" um, and that's what I might be able to retail it for, but my participation trophy winners will get 10, 20, 30% off, so that would be somewhere b- between $200 and $600 off my normal $2,000 offer. But when I'm comparing it, I always have my baked in efficiencies of what they would have to do to get this on their own if they were to just, you know, get it true retail, not through my services as a travel agent. And so $5,000 gets discounted or they can see the discrepancy in value between 5,000 and 1,800. So now it seems like a screaming hot deal, which just makes it more likely for them to take it, right? And so you can just compare the difference between a 10% discount to a 64%. Very big difference and so we wanna talk in those terms. All right, beyond that, bottom line is that remember everyone entered the giveaway showed interest in your thing. If you remember nothing else, this is the most important point. We want to sell the hell out of our grand prize because we want people to just be super interested and because there's a chance to win, so many more people want to dream about it. They want to imagine what life will be like. And so a lot of the persuasive techniques, because there's a chance at winning it for free, tend to be even more effective in this setting. All right? So I can't under, like, I can't undersell this value to you. Like, this is one of the things that makes this so powerful, also one of the reasons it's regulated. All right? And so if anybody shows interest in your thing, you should have an offer to give to them. That's the point. All right? And so that's how it works. I'll give you a couple examples real quick. So, um, if I were a dentist, I might do a pre, uh, free perfect smile giveaway. So grand prize might be a free set of invisible braces, $6,000 retail price. My promotional offer might be $2,000 gift card for my braces, right? Okay. Uh, if I have a physical products business, I might be doing a year of organic dog food subscription. All right? So the grand prize, your, your food, $1,000 retail price, and the promotional offer might be a $300 gift card for food only usable with a one-year subscription, right? Or only usable if you prepay it upfront. Like, you can put terms on these things. Um, the next is services offer. So let's say you have the free ultimate giveaway for whatever services you have. All right? So, uh, free one-year package, $5,000 retail price, your promotional offer is a $2,000 voucher redeemable towards one year of service. Now, if you have, you know, really crappy margins, then you're gonna cut this voucher down. That's okay. Um, I prefer to tend to, I, I prefer to sell higher, higher margin, uh, services, um, but these type of things really drive behavior. Uh, if you had a consulting offer like a free 16-week turnaround, which could be f- business, it could be health, it could be relationship, it could be whatever, right? So let's say that's a $12,000 retail price. It's my mega Cadillac super, super-duper version. Uh, my promotional offer might be a, a partial, which might either be half the time or half the price or the same duration with one piece removed. No matter what, um, these things all combine together, um, and make a really compelling offer. Those are some of the examples."
+    },
+    {
+      "chapter": "free-with-consumption",
+      "char_end": 17658,
+      "char_start": 16762,
+      "id": "free-with-consumption:11",
+      "score": 0.028,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "So I'll, I'll explain it like this, is that once you can create educational products, if you will, that you would give away for free, you can insert them. So if you have multiple sales in a process, between call one and call two, you can give them a video. If you want them to watch something prior to getting on a call before call one, you can force them to watch a video. You can have someone watch five videos before they talk to you. Like all of this is just, how much friction do we want? Uh, or how little friction do we need to provide to get people to buy? We wanna have as much as needed, but no more. And there you go. I already made my, my CTA for you. But you can go to acquisition.com if you want to grow your business. But that's my, my cutesy way of doing it. That being said, that completes free with consumption and our attraction offers section. Now we move on to upsell offers."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "diagnostic attraction offer sells what next offer increase first 30 day gross profit upsell rollover classic upsell shorten payback money model",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 712.7,
+  "returncode": 0,
+  "stderr": ""
+}

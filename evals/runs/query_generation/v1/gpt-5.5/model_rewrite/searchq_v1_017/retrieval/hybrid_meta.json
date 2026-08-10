@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "credit diagnostic fee toward larger package upsell attraction offer core offer fee credit",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 3530.4,
+  "returncode": 0,
+  "stderr": ""
+}

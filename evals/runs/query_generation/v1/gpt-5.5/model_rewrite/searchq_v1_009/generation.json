@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_009",
+  "created_at": "2026-08-10T18:19:26Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 9147.6,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "CAC payback gross profit per customer customer acquisition cost versus gross profit per client diagnosis",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 1337,
+  "valid": true
+}

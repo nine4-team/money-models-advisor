@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "client-financed acquisition CFA levels first-30-day gross profit above CAC first-30-day gross profit above twice CAC payback period",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 95.4,
+  "returncode": 0,
+  "stderr": ""
+}

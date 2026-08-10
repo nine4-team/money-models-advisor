@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "how to determine maximum ad spend CAC allowable acquisition cost from gross profit payback period first sale margin",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 90.5,
+  "returncode": 0,
+  "stderr": ""
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "business_snapshot.v1",
+  "business": {
+    "business_type": "B2B cybersecurity compliance consultancy",
+    "icp": "regional healthcare and financial-services firms preparing for audits",
+    "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring"
+  },
+  "money_model": {
+    "attraction_offer": {
+      "exists": true,
+      "description": "compliance readiness audit",
+      "price": 1500
+    },
+    "core_offer": {
+      "exists": true,
+      "description": "compliance implementation engagement",
+      "price": 30000
+    },
+    "upsell": {
+      "exists": true,
+      "description": "tabletop exercise and policy package",
+      "price": 8000
+    },
+    "downsell": {
+      "exists": true,
+      "description": "self-directed remediation plan",
+      "price": 5000
+    },
+    "continuity": {
+      "exists": true,
+      "description": "ongoing compliance monitoring",
+      "price": 2500
+    }
+  },
+  "economics": {
+    "cac": 4500,
+    "first_30_day_gross_profit": 9000,
+    "monthly_recurring_gross_profit": 1800,
+    "gross_margin": 0.68,
+    "lifetime_gross_profit": 42000,
+    "payback_period_months": 1.0
+  },
+  "problem": {
+    "user_goal": "turn more qualified conversations into profitable long-term clients",
+    "reported_symptoms": [
+      "not enough qualified prospects enter sales conversations",
+      "the team is considering several offer changes at the same time"
+    ],
+    "diagnosed_constraints": []
+  },
+  "advisor_state": {},
+  "field_sources": {}
+}

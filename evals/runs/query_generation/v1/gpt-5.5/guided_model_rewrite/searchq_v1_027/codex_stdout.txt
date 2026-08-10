@@ -1,0 +1,1 @@
+{"query":"Waived Fee Offers implementation fee waived for commitment cancellation activates the fee continuity recurring revenue"}

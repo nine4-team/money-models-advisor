@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_022",
+  "created_at": "2026-08-10T18:24:26Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 9081.5,
+  "method": "guided_model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "Free with Consumption free education before the sale how much consumption is needed as price and complexity rise to make a buyer ready for the paid offer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4284,
+  "valid": true
+}

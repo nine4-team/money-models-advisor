@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_025",
+  "created_at": "2026-08-10T18:21:23Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7835.9,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "selling a smaller room-by-room version as a lower-friction downsell before full-service interior design project",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 1245,
+  "valid": true
+}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "giveaway contest grand prize room refresh lead magnet qualified leads high ticket interior design offer",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 728.8,
+  "returncode": 0,
+  "stderr": ""
+}

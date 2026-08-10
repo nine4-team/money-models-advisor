@@ -1,0 +1,1 @@
+{"query":"diagnose whether growth constraint is CAC or gross profit per client using lifetime gross profit to CAC, first-30-day gross profit, payback period, and client-financed acquisition thresholds"}

@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "continuity discounts reduce cancellations retention membership recurring offer",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5969,
+      "char_start": 3663,
+      "id": "continuity-discounts:7",
+      "score": 0.032,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if they stay past Y or X period, and you make the Y or X period the month that the average customer drops off. So first time I saw this was on Amazon. Um, they had a continuity for rice packets. I buy rice. And, uh, they had 5% off if you go on continuity, and 15% off if you stay past five months. And so this is the idea is that you want to... And it was five months to the same address. Like they were pretty particular about it. But you can get a lifetime discount, and if they know, and I'm sure they did the math that they knew that people would stop paying at, call it the four-month point. And so they say, \"Okay, well, let's put a big nugget after the four-month point where they get a lifetime lower rate after that point.\" And so you can think through your own business the same way and hang the carrot, and you can also use this in the advertising. So let's say you know every customer stays four months on average. You tell everyone up front they get a lifetime discount after month four. So a lot of times people are willing to pay more up front if they know it's eventually going to go down. But this does two things. One is it gets people to buy at higher rates than they otherwise would, because they know it's gonna go down. And two, it gets them to stay longer because they know when it's going to go down. So as the time approaches, tell them the newer lower rate is right around the corner. This is key. So if you do know that it's at month four, month five or whatever that they're gonna start getting a lower rate, at month two, at month three, be like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations."
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 17746,
+      "char_start": 15384,
+      "id": "continuity-bonus:9",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "I'm kind of this way. So if someone says, \"Hey, do you wanna sign up for membership or do you just wanna sign up for one month? One a- month is twice the price.\" I might be like, \"I don't feel like dealing with the cancellation. Just like, just put me on the one-month thing.\" And so offer a higher one-time payment option. This way some customers will make you more money today while other customers stack recurring revenue for tomorrow. So we change the price depending on our goals. I've tested this a ton, at least for me, and the data in this range looks really clear. So this is basically the take rates, um, based on the price. So this is the price. So if you're three times the price, you're gonna have almost 90, you know, 90% of people taking continuity. If you are, you know, 1.3 times the price, then you're gonna have 50% of people taking continuity and 50% of people taking the one-time offer. So this is the actual data as it broke out. So if you wanna get 50% of people to take continuity, then you make the standalone offer 1.33 times, which in my personal experience feels about right. So the example is, hey, this one-time program is 400 bucks, which would then equate to 266 a month if it was six weeks, or 199 a month membership. So I say, \"Pay 400 for six weeks, or you can become a member for 199 a month.\" At that point, at that price point, 50-50 will take the, uh, $400 offer versus doing 199 a month, even though this is 1.33 times more expensive. And so for me, I find this the most important number because that tells you the break even price on the market. So people basically value, at least in this particular setting when we tested this, that people value not being on continuity as a 33% premium that they're willing to pay on the price to not have to deal. with cancellations or anything like that. I find that to be very interesting. So if we want 60% to choose continuity, we make it 1.66 times more. If we want 70%, we double it. If we want 80% to choose continuity, we 2.3x it. If we want 90% of people to choose continuity, we 2.66x it. So basically once you're at about 3x the price of what they would have to pay, almost everybody takes the continuity. But if you're like, \"Shoot, I would rather get some of that cash up front because, you know, these, these $600 payments, they add up, it's not bad.\" Well, fine, if you"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 12538,
+      "char_start": 10131,
+      "id": "continuity-offers:6",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This is, again, this is not in the book. So this is me giving you bonus stuff. Um, there's a difference. between recurring and reoccurring revenue. So Netflix is recurring. Think memberships. Coca-Cola is reoccurring. I am a Coca-Cola product buyer. I buy lots of their drinks and I do that on a regular basis, but I don't have a fixed membership, but I reoccur. Both are great. The key with this one is that you just need to demonstrate that, hey, I... For example, there's a sauce company that I like and I bu- I bought their sauce for like four straight years and I use it every single month. I go through three or four bottles a month and I've been using for years and sure as hell you can bet that they can calculate that the average person who buys a bottle over time buys another 20 bottles. That makes it a very valuable business. Company one, let's say that's got top line of $10 million EBITDA3. Company two is 10 million and 3 million in EBITDA. Okay, this one's all transactional. You might get a 4X multiple. This is all recurring and based on how much you retain it, it might be worth eight to 15 times. So it's 24 to 45 million. So between 12 and 24 to 45, that's a hell of a lot more money. So this is problems worth solving. And so if they stay, buyers will pay. And when I say buyers, I mean investors. So my personal note is that you sleep great, this is me telling you personally, when you know in the first of the month that all your bills are paid and your profit's already locked in and everything else you have is gravy. And so recurring/continuity equals stability, which is why it's the fourth pillar of this. It's also the thing that will usually make your company the most valuable. So have I sold you? Hopefully on adding some recurring element to your business. Great. So let's get to the three best combinations that I've seen and used. Continuity. bonus offers, continuity discount offers, and then the waived fee offer. All right? So let's rock and roll. And now we do bonus offer."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 19915,
+      "char_start": 17975,
+      "id": "continuity-discounts:11",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "That's not gonna work. You wanna tell, you wanna let them vent. You wanna feel, have them feel validated. You wanna be more upset than them. You wanna have them calm you down. You say that you made the mistake and that's unacceptable. Ask them to, see if you can make it up to them. Then you do a rollover and you get a do-over. That's the idea. Those are the important points. Whoo. All right. Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 22579,
+      "char_start": 20162,
+      "id": "continuity-bonus:10",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "choose continuity, we 2.3x it. If we want 90% of people to choose continuity, we 2.66x it. So basically once you're at about 3x the price of what they would have to pay, almost everybody takes the continuity. But if you're like, \"Shoot, I would rather get some of that cash up front because, you know, these, these $600 payments, they add up, it's not bad.\" Well, fine, if you have 70% of people choosing continuity, but 30% take something that's twice as expensive, you're actually getting a decent amount of cash up front. And so you just need to play with, how much cash do I need so that I can offset my cost to acquire customers? And then I can stack as much recurring as I want. And this is the actual data that we have. The exact numbers for this matter less than the principle. The smaller the standalone price compared to the continuity price, the more people buy the standalone. The larger the standalone price, the bonus price compared to the continuity price, the more people choose continuity. So-If you want more cash up front, make bonuses and continuity plus bonuses separate offers. Make the bonus offer only a single payment. That's 33 to 266% more expensive than the first month continuity plus bonus. The bigger the price difference, the fewer standalone purchases you'll have, but the more money you'll make up front from each of them. And based on the data that I shared, people paid 33% more to avoid continuity. In other words, if you charge 33% more for the one-time bonus, half will buy it. If you want even more cash, offer bulk prepaid discounts. So bulk continuity upsells boost 30-day profits by a lot. All right? And I alluded to it earlier, but I'm saying it again 'cause it's so freaking important. So you offer buy five months, get one free. Only one out of every eight people have to take the upsell to raise 30-day profits by 50%. That can make or break your money model. So think about that. Only one out of eight people need to take your buy five get one free for you to raise by 50% the cash they make in the first 30 days. Make the damn offer. Note, the laws of discounting apply. The larger the discount, the more people will take it. So if I say, \"Buy five, get, uh, get one,\" I could also say, \"Buy six, get six,\" and I'll bet you I'd get a hell of a lot more people take it. And I might double or triple my up-front cash. So this actually takes continuity and turns it into"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,383 @@
+You generate one query for searching a source corpus.
+
+The system has already decided that source search is appropriate. Write the single
+query most likely to retrieve passages that directly answer the user's current
+question.
+
+Use saved business facts only when they change what evidence is needed. Do not stuff
+the query with background details merely because they are available. Do not answer the
+question. Do not provide a rationale, subject label, namespace, filter, or multiple
+queries. Do not invent facts. Do not use tools.
+
+Return only the JSON object required by the response schema.
+
+## Current user question
+
+could setup or onboarding fees help us get cash back faster?
+
+## Saved business facts
+
+```json
+{
+  "business": {
+    "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+    "delivery_model": "Lisa-led full-service design planning, procurement, and installation",
+    "icp": "STR and second-home owners with $80K-$200K+ project capacity"
+  },
+  "economics": {
+    "cac": 1000,
+    "first_30_day_gross_profit": 10000,
+    "gross_margin": 0.769,
+    "monthly_recurring_gross_profit": 0,
+    "payback_period_months": 1.0
+  },
+  "money_model": {
+    "attraction_offer": {
+      "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "exists": true,
+      "price": 597
+    },
+    "continuity": {
+      "exists": false
+    },
+    "core_offer": {
+      "description": "full-service STR and second-home design",
+      "exists": true,
+      "price": 15000
+    },
+    "downsell": {
+      "exists": false
+    },
+    "upsell": {
+      "description": "pre-designed room packages sold per room or bundle",
+      "exists": true,
+      "price": 5000
+    }
+  },
+  "problem": {
+    "reported_symptoms": [
+      "wants to understand how much can be spent on acquisition"
+    ],
+    "user_goal": "diagnose cash payback"
+  }
+}
+```
+
+Use the corpus guide below when it is relevant. It describes the
+source's vocabulary and the relationships between its concepts. Translate ordinary
+user language into source terminology when that will help retrieval, but do not copy
+irrelevant guide terms into the query.
+
+## Corpus guide
+
+```json
+{
+  "entries": [
+    {
+      "aliases": [
+        "LTGP to CAC",
+        "customer value versus acquisition cost",
+        "3-to-1 viability"
+      ],
+      "name": "Lifetime gross profit compared with customer acquisition cost",
+      "relationships": "Lifetime gross profit should exceed CAC; roughly three times CAC is the source's basic viability threshold. Gross profit, not revenue, is the value side of the comparison.",
+      "use_when": "Assessing whether acquiring a customer is economically worthwhile rather than merely generating revenue."
+    },
+    {
+      "aliases": [
+        "CAC",
+        "cost to acquire a customer",
+        "media CAC",
+        "fully loaded CAC",
+        "ad acquisition cost"
+      ],
+      "name": "Customer acquisition cost",
+      "relationships": "CAC is evaluated alongside gross profit and payback period. Fully loaded CAC includes acquisition labor and overhead, while media CAC covers advertising spend.",
+      "use_when": "Understanding how much it costs to acquire a customer or why lead flow changes with free and discounted offers."
+    },
+    {
+      "aliases": [
+        "GP",
+        "price minus cost of goods sold",
+        "profit after fulfillment",
+        "delivery-adjusted value",
+        "gross margin"
+      ],
+      "name": "Gross profit",
+      "relationships": "Gross profit equals price minus cost of goods sold. It determines how much CAC can be recovered and how quickly payback occurs; revenue alone cannot answer either question.",
+      "use_when": "Revenue looks healthy but fulfillment or delivery costs may make acquisition unattractive."
+    },
+    {
+      "aliases": [
+        "CAC recovery time",
+        "time to break even on acquisition",
+        "cash payback",
+        "months to recover CAC"
+      ],
+      "name": "Payback period",
+      "relationships": "Payback depends on CAC, first-30-day gross profit, and recurring gross profit. Front-loaded fees, earlier upsells, prepayment, and recurring profit can shorten it.",
+      "use_when": "A business may be profitable over a customer's life but lacks enough cash to fund continued growth."
+    },
+    {
+      "aliases": [
+        "CFA",
+        "customers fund growth",
+        "self-funded acquisition",
+        "first-30-day acquisition economics"
+      ],
+      "name": "Client-financed acquisition",
+      "relationships": "Level 1 has lifetime gross profit above CAC, Level 2 has first-30-day gross profit above CAC, and Level 3 has first-30-day gross profit above twice CAC.",
+      "use_when": "Determining whether new-customer gross profit can fund continued customer acquisition."
+    },
+    {
+      "aliases": [
+        "money model stack",
+        "offer sequence",
+        "customer journey of offers",
+        "how the offers fit together"
+      ],
+      "name": "Money model and offer stack",
+      "relationships": "A money model is a sequence of offers designed to minimize CAC and maximize early gross profit. Use as few offers as needed and make the sequence feel natural rather than like a sales gauntlet.",
+      "use_when": "Combining acquisition and monetization offers into a coherent customer journey."
+    },
+    {
+      "aliases": [
+        "attraction upsell downsell continuity",
+        "four offer types",
+        "offer stack roles"
+      ],
+      "name": "Four offer functions",
+      "relationships": "Attraction offers liquidate CAC, upsells maximize profit, downsells maximize conversion after a no, and continuity stabilizes recurring cash flow.",
+      "use_when": "Classifying what each part of a money model is supposed to accomplish."
+    },
+    {
+      "aliases": [
+        "front-end offer",
+        "first-purchase offer",
+        "customer acquisition offer",
+        "lead-to-customer offer"
+      ],
+      "name": "Attraction offers",
+      "relationships": "Attraction offers sit at the start of the stack and aim to liquidate or exceed CAC. The specific mechanic should match the barrier to first purchase.",
+      "use_when": "The constraint is getting enough prospects to engage or buy for the first time at a viable CAC."
+    },
+    {
+      "aliases": [
+        "goal-based refund",
+        "results-based refund",
+        "earn the fee back",
+        "refund for completing a transformation"
+      ],
+      "name": "Win Your Money Back",
+      "relationships": "The customer pays upfront and earns a refund or credit by achieving the defined result. The resulting proof can be worth more than the refund.",
+      "use_when": "A transformation has a measurable outcome and accountability, risk reversal, or before-and-after proof is valuable."
+    },
+    {
+      "aliases": [
+        "grand-prize giveaway",
+        "contest offer",
+        "participation prize",
+        "scholarship giveaway"
+      ],
+      "name": "Free Giveaways",
+      "relationships": "Advertise a grand prize, then make a relevant participation offer to non-winners. Application questions can also qualify and segment leads.",
+      "use_when": "A business needs a large lead pool and has a compelling signature prize or offer to showcase."
+    },
+    {
+      "aliases": [
+        "advertise the stripped-down option",
+        "starter offer leading to premium",
+        "cheap option versus premium"
+      ],
+      "name": "Decoy Offers",
+      "relationships": "The decoy starts the conversation; the premium offer is then presented side by side so the contrast makes its additional value clear.",
+      "use_when": "A premium offer is difficult to advertise directly but becomes compelling once prospects can compare it with a deliberately limited option."
+    },
+    {
+      "aliases": [
+        "buy one get more free",
+        "prepay and receive bonus months",
+        "quantity or duration bundle"
+      ],
+      "name": "Buy X Get Y Free",
+      "relationships": "It can have the same economics as a percentage discount but stronger presentation. Fulfillment cost, cash obligations, and the share of customers prepaid constrain safe use.",
+      "use_when": "A recurring product or service can exchange a longer commitment or prepayment for free quantity or duration."
+    },
+    {
+      "aliases": [
+        "zero down versus discounted upfront",
+        "pay later after delivery",
+        "timing-based price choice"
+      ],
+      "name": "Pay Less Now or Pay More Later",
+      "relationships": "The buyer chooses between paying less upfront now or paying the full amount later after delivery, creating agency and risk reversal rather than an unexplained discount.",
+      "use_when": "A physical product or one-time service buyer hesitates at paying full price before receiving value."
+    },
+    {
+      "aliases": [
+        "free education before the sale",
+        "experience value before buying",
+        "content-led trust building",
+        "challenge or webinar before offer"
+      ],
+      "name": "Free with Consumption",
+      "relationships": "Useful free consumption builds trust and breaks limiting beliefs; the amount of consumption generally rises with the price and complexity of the paid offer.",
+      "use_when": "A higher-ticket buyer needs education, trust, or belief change before being ready for the paid offer."
+    },
+    {
+      "aliases": [
+        "next offer after the sale",
+        "add-on",
+        "increase profit per customer",
+        "post-purchase offer"
+      ],
+      "name": "Upsell offers",
+      "relationships": "Upsells occur after the initial sale and maximize profit per customer. Timing them when the next problem or need appears can also shorten payback.",
+      "use_when": "Customers buy, but gross profit per customer or first-30-day profit is too low."
+    },
+    {
+      "aliases": [
+        "you cannot have X without Y",
+        "essential complement",
+        "next natural thing",
+        "required accessory"
+      ],
+      "name": "Classic Upsell",
+      "relationships": "The accompaniment should feel necessary for success rather than arbitrary. It follows the initial product as the obvious next purchase.",
+      "use_when": "The first purchase naturally requires a complementary product or service to deliver the desired result."
+    },
+    {
+      "aliases": [
+        "prescribed add-on menu",
+        "consultative add-ons",
+        "unsell prescribe preference card on file"
+      ],
+      "name": "Menu Upsell",
+      "relationships": "The four steps are unsell irrelevant choices, prescribe what fits, ask a preference question, and use the card already on file to remove closing friction.",
+      "use_when": "Several add-ons can be prescribed during a consultation or other high-trust sales interaction."
+    },
+    {
+      "aliases": [
+        "premium option first",
+        "high-price anchor",
+        "make the standard option feel inexpensive"
+      ],
+      "name": "Anchor Upsell",
+      "relationships": "Present a premium option around five to ten times the normal price, then show the standard option with the important core value preserved.",
+      "use_when": "A legitimate premium tier can establish value before presenting the standard offer."
+    },
+    {
+      "aliases": [
+        "credit the prior purchase",
+        "apply the first fee to a larger package",
+        "trade up",
+        "I owe you money offer"
+      ],
+      "name": "Rollover Upsell",
+      "relationships": "The prior payment becomes credit toward the next offer. The larger offer generally needs to be several times the credited amount for the economics to work.",
+      "use_when": "Moving a current, former, upset, or competitor's customer into a larger offer by crediting an earlier purchase."
+    },
+    {
+      "aliases": [
+        "offer after a no",
+        "lower-friction alternative",
+        "save the sale",
+        "conversion offer"
+      ],
+      "name": "Downsell offers",
+      "relationships": "A downsell changes what the customer receives or when they pay; it should not simply reduce the price for the identical offer without receiving something in return.",
+      "use_when": "A prospect rejects the main offer and a different structure could convert the no without destroying value."
+    },
+    {
+      "aliases": [
+        "spread payments",
+        "installments",
+        "financing",
+        "cannot afford it today"
+      ],
+      "name": "Payment Plans",
+      "relationships": "Payment plans spread the timing of the pain rather than reducing the offer's total value. They differ from feature downsells, which reduce what the buyer receives.",
+      "use_when": "The buyer wants the full offer but cannot afford the entire price today."
+    },
+    {
+      "aliases": [
+        "free if requirements are met",
+        "card-backed trial",
+        "fees for non-use",
+        "accountability trial"
+      ],
+      "name": "Free Trials or Trial with Penalty",
+      "relationships": "The trial stays free when agreed consumption or action requirements are met; a card is collected upfront and fees apply to non-consumption.",
+      "use_when": "A recurring product requires customer participation and a structured last chance can overcome uncertainty after a no."
+    },
+    {
+      "aliases": [
+        "reduced-scope offer",
+        "remove features to lower price",
+        "smaller package",
+        "change quantity or service level"
+      ],
+      "name": "Feature Downsells",
+      "relationships": "Lower price must be paired with lower value or a valuable barter such as advertising. Removing a valued feature can also cause the buyer to reselect the original offer.",
+      "use_when": "Price remains the objection and the business can legitimately remove quantity, quality, service, or guarantees."
+    },
+    {
+      "aliases": [
+        "recurring revenue",
+        "membership",
+        "subscription",
+        "maintenance plan",
+        "retention offer"
+      ],
+      "name": "Continuity offers",
+      "relationships": "Continuity adds ongoing value and recurring gross profit. Lower churn raises lifetime value, and upfront value followed by a long tail can increase commitment.",
+      "use_when": "Customers buy once and leave, cash flow is unstable, or greater lifetime value and enterprise value are priorities."
+    },
+    {
+      "aliases": [
+        "subscription bonus",
+        "join for the bonus",
+        "membership gift",
+        "bonus worth more than month one"
+      ],
+      "name": "Continuity Bonus Offers",
+      "relationships": "Advertise the bonus rather than the subscription. The bonus should exceed the first month's perceived value and can be priced separately to clarify the continuity advantage.",
+      "use_when": "A valuable bonus can make joining continuity feel more attractive than buying transactionally."
+    },
+    {
+      "aliases": [
+        "earn a lifetime discount",
+        "retention milestone discount",
+        "discount after the churn point",
+        "commitment discount"
+      ],
+      "name": "Continuity Discount Offers",
+      "relationships": "The discount can be front-loaded, back-loaded, spread, or delivered as credit. A promised lifetime discount after the usual churn point gives customers a reason to stay until then.",
+      "use_when": "Churn predictably rises at a particular time or the business wants to reward longer commitment."
+    },
+    {
+      "aliases": [
+        "waived setup fee",
+        "implementation fee waived for commitment",
+        "cancellation activates the fee",
+        "startup fee"
+      ],
+      "name": "Waived Fee Offers",
+      "relationships": "A meaningful startup fee is waived while the customer remains committed but becomes due upon early cancellation, creating sunk-cost and commitment effects.",
+      "use_when": "A service or subscription needs stronger commitment without relying on a conventional long-term contract."
+    },
+    {
+      "aliases": [
+        "make your own money model",
+        "what to add next",
+        "simple scales fancy fails",
+        "offer rollout order"
+      ],
+      "name": "Build the money model one offer at a time",
+      "relationships": "Build attraction, upsell, downsell, and continuity deliberately, perfecting one before adding the next. Choose the next offer based on the observed constraint and use the fewest offers needed.",
+      "use_when": "Designing the whole stack or deciding which missing offer to implement next."
+    }
+  ],
+  "version": "money-models-corpus-guide.v1"
+}
+```

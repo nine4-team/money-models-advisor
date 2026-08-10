@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "why fulfillment cost cost of goods sold gross profit price minus COGS determines whether advertising customer acquisition cost CAC can work revenue alone cannot answer",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 669.9,
+  "returncode": 0,
+  "stderr": ""
+}

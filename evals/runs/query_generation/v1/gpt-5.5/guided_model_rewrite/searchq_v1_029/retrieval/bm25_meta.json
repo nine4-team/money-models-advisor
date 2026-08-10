@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Continuity Bonus Offers membership bonus bonus worth more than first month perceived value advertise the bonus rather than the subscription maintenance plan",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 89.3,
+  "returncode": 0,
+  "stderr": ""
+}

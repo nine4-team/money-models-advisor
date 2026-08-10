@@ -1,0 +1,81 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "buy X get Y free promotion expensive fulfillment offer economics free bonus versus discount",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 4114,
+      "char_start": 1714,
+      "id": "buy-x-get-y:2",
+      "score": 0.032,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "this, they tend to lean on discounts. All right? Most businesses do. So they run sales relying on holidays, seasonal changes, or whatever, as, you know, reasons to temporarily lower the price for whatever the thing is to get more customers. But by selling more than one thing at once, you can turn discount offers into even stronger free offers. This is the magic of buy X get Y free. It will take a 33% discount, and it can make it into buy two get one free, which is far more compelling. And rather than getting two-thirds of one ticket, you still get someone to buy two full-priced items. But you still effectively gave them a one-third discount, which you would never advertise, because why would you advertise that when you could buy two and get one free? It's more strong. All right, so I'm gonna give you a lot of different ways to slice this, 'cause this is what... I wanna help you match this to your business. So when you have more than one item, you can make the discount value large enough that it covers the price of more stuff. For example, I could sell three T-shirts for $30, right? So $10 each. Or I could sell one T-shirt for 30 and get two free. In both situations, I give away three shirts and get $30, but the perception... Think about the difference here. If I said, \"Hey, buy three shirts for $10 each,\" how compelling is that? Not that compelling. If I said, \"Buy one shirt, get two free,\" I'm gonna for sure get way more attention, but the economics are the same. Powerful. Now, I'm gonna give you another example. Now, if I wanted to offer a discount rather than only reframe the price, so the example here, I just reframe the price. I'm still getting the same $10 per shirt. Zero discount here. I just re- reframed how I'm, how I'm pricing my offer. If I wanted to also use this plus a discount, I could sell three shirts for $6.67, so it's like buy three shirts for $20. That would be the discount version. Or I could now say, \"Buy one shirt for 20 and get two free.\" Same thing. It's still effectively a, uh, uh, uh, a one-third discount, but it accomplishes the same objective. Okay, so those are two examples. Or sorry, this... That's the description. Now I have more examples for you. All right, so buy one get two physical products offers. This is the Boot Factory offer. One pair is $200. Buy X get Y free. Buy one pair for 600, get two pairs free. So the end result"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 10380,
+      "char_start": 8043,
+      "id": "buy-x-get-y:4",
+      "score": 0.032,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "wrinkle and that's very high margin for me. So for a gym, I'd- I might say, \"You get text access to me,\" which by the way, I probably would give all my first customers anyways. I just wouldn't promise that in the sale. I might for a grand opening. So raise prices when we're giving stuff away to preserve profits. Obviously, if you can only afford a certain amount of margin, then don't give away your margin. That's just like my big obvious disclaimer. Now buy X, get Y free works better if you have more free stuff than paid stuff. All right? So giveaway, give more free than you ask people to buy. Just play with the pricing until it makes sense for you. So buy one, get two instead of buy two to get one. So these are the same economics, but this one's stronger. That's how it works. Okay. Now, the free things can be different from the paid things. So this is key. So you just wanna make sure that the free stuff still makes the offer compelling. Let's say that, uh, socks have a $10 value. If they buy one shirt for 10 bucks but get $20 of free socks, it may seem like a better deal. Now alternatively, here if we're looking at like buy one sh- let's say shirts are 20 bucks. If I say buy one shirt for 20 and get another shirt free, that may seem like less valuable than buy one shirt, get two pairs of socks free, because what someone's gonna translate it into is buy one thing, get two things free versus buy one thing, get one thing free. Now this is a testable proposition. In some, some offers, two pairs of socks may convert better than one shirt, depending on if the way that that buyer buys, the next logical thing they would need would be socks. So more free cheaper things can work better than fewer free expensive things. Okay? So let's say I could only afford to give one shirt away for free, but now the same, for the same cost, I give three pairs of socks. I would probably test buy one shirt, get one shirt versus buy one shirt, get three socks for free. And even though the socks cost less than a shirt, it's still buy one, get three. And sometimes that converts better, so I test this. Rather than offer a 33% discount, try buy one, get two free. This here will convert more than this, but they're still one thirds off. All right? So I just like to... If you are gonna use a discount, this structure still makes a"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 12351,
+      "char_start": 10812,
+      "id": "buy-x-get-y:7",
+      "score": 0.031,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "as big as you can if you're only gonna get one shot. Summarizing buy X, get Y, free. In buy X, get Y free, customers buy something, they get other stuff for free. Buy X, get Y free. works, uh, for stuff that makes sense to buy more of or get longer access to. Basic buy X, get Y free, offers reframe pricing. Buy one, get two free, costs the same as buying three except customers see the free offer. as more valuable. Remember the 18-month service example I gave. So always try to give more free things than paid things and you can pair different free things with paid things as well, which you can just test. All right. So buy X, get Y free can lengthen the amount of time customers stay. If normal customers stay for three, months, then buy two, get two customers will keep them for four months. So whatever you sell, try and extend whatever the normal customer duration is by saying, saying like, \"If I know customers stay for three, I do buy two, get two and I price it' so that it's still four, I make more money. I make 33% more money.\" It's a great deal. Uh, if you use buy X, get Y to generate a lot of cash fast, make sure you manage it. and you can deliver on your promises. If you need fast cash and your business is healthy, make sure, make this offer to existing customers, uh, and just cap how many you sell it to. If you have recurring, I recommend 10% is the cap. Um, keep selling customers who prepay for long durations because they are the most likely people to buy again. With that being said, that is buy X, get Y free."
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 2469,
+      "char_start": 130,
+      "id": "buy-x-get-y:1",
+      "score": 0.03,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "to college out of high school knowing literally nothing about anything, I assumed that I was more intelligent than the store owner who obviously was doing very well. And so, uh, I came back 10 years later, and they had expanded. And so I was like, \"Huh, that's interesting.\" Now, 10 years later, I had a lot more business. acumen. And so I went in, and I, like, looked around poked around, and I saw that the pairs of boots had... each of them had multiple markdowns on the price down to $600 for one pair, at least the ones that I looked at. And so it was... instead of saying, \"Buy one fairly priced boots,\" or, \"Buy 20% off,\" they had, \"Buy one, get two free.\" But if you bought three pairs of boots for $200 each, that's still, like, a pretty normal price for leather boots. And so the ones that I... like the ones I was looking at were not like Stingray or, you know, Hippopotamus or something like. They were, they were normal leather. And so I realized that they had just fully baked the cost of three into one pair and then said, \"Buy one, get two free.\" And the thing is, is that because of that, all the bachelorette parties would pile in because the bride would get one, and then the other two friends would get them for free. Or one of the friends would buy a pair and give one to the bride and one to her maid of honor or whatever, and they just milked it. And so that is how I learned this more valuable way of doing buy X get Y free. So let's get into it. So in buy X get Y free offers, customers buy something to get other stuff free. Cool. Makes sense. The more free stuff they get and the higher its value, the better it works. Buy one get two free works better than buy two get one free. Free offers get way more attention than discount offers. But if you only have one thing to sell and give it away, then obviously, you go hungry. If you just say, like, \"Buy... Here's free boots,\" that's not gonna work, right? So in situations like this, they tend to lean on discounts. All right? Most businesses do. So they run sales relying on holidays, seasonal changes, or whatever, as, you know, reasons to temporarily lower the price for whatever the thing is to get more customers. But by selling more than one thing at once, you can turn discount offers into even stronger free offers. This is the magic of buy X get Y free."
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 8410,
+      "char_start": 6062,
+      "id": "buy-x-get-y:3",
+      "score": 0.029,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "a, uh, uh, uh, a one-third discount, but it accomplishes the same objective. Okay, so those are two examples. Or sorry, this... That's the description. Now I have more examples for you. All right, so buy one get two physical products offers. This is the Boot Factory offer. One pair is $200. Buy X get Y free. Buy one pair for 600, get two pairs free. So the end result is to still buy three pairs of $200 boots. All right? Now, here's three versions of this that I wanna break down for you to show you the power of this. So if you said, \"Buy 12 months, get 6 months free for eight hundr- $1800,\" okay, that's an offer and a lot of people might take that. Like, that's a, that's a, it's a good offer.A better offer would be buy nine months, get nine months free. Still $1,800. A crazy offer would be buy six months, get 12 months free for $1,800. In all three situations, they get 18, 18 months for $1,800. That's what it works. Everyone pays the same price for the same amount of service, but the third option will be the most compelling because it has the most free stuff. So important points. Buy X, get Y free gets people to buy more stuff and provides more value. So it used to take a whole year for some of my service businesses to make the money to cash flow the acquisition. But if you do buy six, get six, for example, on the front end to attract customers or as a, \"Hey, it's our grand opening, buy six months, get six months,\" you can attract a boatload of customers and get six months' prepayments from all of them at full price. Now, guess what happens? If I have a full price or even a higher than full price thing that I add some little tiny differentiator during my grand opening special, which allows me to say that this service was higher than what I would then normally offer later, then it justifies me having an even higher price. So when I say buy six, get six, I might just get prepayments at basically the full price for the year because I added this extra wrinkle and that's very high margin for me. So for a gym, I'd- I might say, \"You get text access to me,\" which by the way, I probably would give all my first customers anyways. I just wouldn't promise that in the sale. I might for a grand opening. So raise prices when we're giving stuff away to preserve profits. Obviously, if you can only afford a certain amount of"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

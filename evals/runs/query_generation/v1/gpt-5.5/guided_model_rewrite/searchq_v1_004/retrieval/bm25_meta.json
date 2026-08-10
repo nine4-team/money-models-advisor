@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "difference between attraction offers and upsell offers in a money model offer stack: attraction offers liquidate CAC at first purchase, upsells happen after initial sale to maximize profit per customer",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 91.4,
+  "returncode": 0,
+  "stderr": ""
+}

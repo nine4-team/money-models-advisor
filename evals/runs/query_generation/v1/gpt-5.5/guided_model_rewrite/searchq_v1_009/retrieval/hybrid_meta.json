@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "diagnose whether growth constraint is CAC or gross profit per client using lifetime gross profit to CAC, first-30-day gross profit, payback period, and client-financed acquisition thresholds",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 755.6,
+  "returncode": 0,
+  "stderr": ""
+}

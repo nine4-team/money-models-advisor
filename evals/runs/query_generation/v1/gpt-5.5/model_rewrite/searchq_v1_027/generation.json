@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_027",
+  "created_at": "2026-08-10T18:21:42Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 10634.1,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "waiving upfront setup or design fee to create continuity recurring revenue later examples risks",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 1240,
+  "valid": true
+}

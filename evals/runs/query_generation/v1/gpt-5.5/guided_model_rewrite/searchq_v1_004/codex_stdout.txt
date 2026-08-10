@@ -1,0 +1,1 @@
+{"query":"difference between attraction offers and upsell offers in a money model offer stack: attraction offers liquidate CAC at first purchase, upsells happen after initial sale to maximize profit per customer"}

@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "attraction offer free versus paid discounted premium service diagnostic audit high ticket core offer",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "attraction-offers",
+      "char_end": 1485,
+      "char_start": 0,
+      "id": "attraction-offers:0",
+      "score": 15.382,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "So we are now officially in our apprenticeship, our digital apprenticeship, or virtual apprenticeship. Let us begin with attraction offers. So, what does an attraction offer, the free versus discounted continuum, and the lineup. All right. So, an attraction offer generates leads and converts them into customers. That's what it does. They turn advertising into money by offering something free or at a discount. We do this because everyone wants a great deal. In a great deal, customers get far more value than the price they pay. Strangers can only take your word on the value, but they absolutely understand the price. For that reason, discounts make anything a great deal to just about anyone. And the greater the discount, the better the deal. So, the greatest discount of all being free. So, free to discounted continue. This is a visual representation of what I alluded to earlier, but 100% off versus 0% off. So this is free, this is, uh, full price, and then this is the also lowest demand when you have full price versus highest demand, which is free. So the more you move this way, the higher the demand, the more you have, you give off. Pretty much that's how it works. The lineup. So, this is the lineup. These are the plays that I'm going to explain to you. We've got our win your money back, giveaways, decoy offer, buy X get Y free, pay less now or pay more later, and then free with consumption. This one is not in the book, FYI. So with that being said, let us begin."
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3166,
+      "char_start": 682,
+      "id": "ten-years-ten-minutes:1",
+      "score": 13.642,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' you want from this prospect. After picking a winner, you offer everyone else, uh, the big prize at a discounted price in second place. The decoy offers are also attraction offers where you advertise a free or discounted offer. When the lead asks to learn more, you also present a more valuable premium offer. The premium offer includes more features, benefits, bonuses, guarantees, and so on, and gets more people to buy it. Buy X to get Y free, you offer customers free stuff in exchange for buying stuff for money. The more free stuff and the higher its value, the more people will buy X to get Y free. Pay less now or pay more later, you give people a choice to pay full price later or pay a discounted price now for additional benefits. We also did free with consumption, which I won't Yeah. ... bonus here. But fundamentally, you give away a lot of free value, and that increases the likelihood people buy a very expensive thing from you. The more expensive the thing, the longer and the more free stuff you give them. Then we have upsell offers, which is, are whatever you offer next. That is my very literal scientific thing. Try and brai- like, fight me. An upsell is whatever you offer next. All right, so typically, it's gonna be more, better, or newer version of whatever they just bought. These can get you lots of cash fast. We covered four. The classic upsell, where you offer the solution to the customer's next problem the moment they become aware of it. You can't have X without Y. The menu upsell, you tell customers which options they don't need, then tell them which one they do need and how to get the value from it, prescribe, and, \"You don't need that, you need this.\" The anchor upsells, you offer the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended"
+    },
+    {
+      "chapter": "anchor-upsell",
+      "char_end": 16423,
+      "char_start": 14145,
+      "id": "anchor-upsell:7",
+      "score": 13.248,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "with a handkerchief?\" You just move right on in the sale. And you're like, \"Oh God, I got a whale on the line. I'm just gonna keep going.\" To get more people to buy your main offer, make it a better deal. So this is the primary versus secondary features. You want it to be as little different from the main one, from the anchor, as, uh, as possible so that they justified the price already at this 10 times higher price. And then when they hear this one, they're like, \"Oh, this is a steal.\" Because if you make your good one too different from the core offer that you're ultimately trying to sell 80% of people, then they actually have to reconsider the offer again. They have to recalibrate price-to-value. You want them to basically be able to take the same price-to-value measurement they did here and then here at 80% discount or a 90% discount because the things that you changed were not the things they cared about. But if you all of a sudden have all these things they do care about, then you changed primary features, not secondary features. So if you present a more expensive offer first before a less expensive offer, more people will buy the less expensive offer than they would have on its own. When you present the anchor, get the gasp, come to the rescue, present the core offer, ask for payment. For the most effective anchor, make your premium offer five to 10 times more expensive. Anchored customers spend a bit more than they plan to. And don't treat an anchor like a fake, or the customer will too, and you will lose trust and waste their time. Important, some customers will buy a premium offer. That is where you make way more money on this because, one, more people buy the main thing, and some people will buy the very expensive thing. The expensive premium offer adds outsized profits with fewer sales. So just because you don't sell the most of it doesn't mean you don't make the most profit from it. The main offer and premium offer should have the same primary features. The premium offer has different secondary, AKA premium, features. After anchoring, offering the primary features for one-third or one-fifth or one-tenth the price makes the main offer a great deal and gives them basically the same thing for way less. That is the anchor upsell."
+    },
+    {
+      "chapter": "decoy-offers",
+      "char_end": 10659,
+      "char_start": 8290,
+      "id": "decoy-offers:5",
+      "score": 13.18,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "one year for $900, 1200 bucks. All different ways of saying the same thing. So these are all useful, especially with decoy offers 'cause oftentimes they are discounts. All right. So the key to making this work is that the contrast has to be huge. All right? The bigger the contrast, the better the deal, the more customers will take it. If people keep taking your free offer, your free offer is too good and your paid offer is not good enough. So you want to keep doing this until the obvious offer is to take the premium offer. All right? Discount offers have high upshare rates than free offers. Just as a pro tip, if you do have these issues, you can do the $21 thing if you have sharp rate issues in your market. If possible, present the premium offer first. Now, if they ask for the decoy offer, most people don't, you then present it. But I'll show you how to do this. Okay? So what you wanna do is get them to give you permission to sell them. So if they asked to peer about the decoy, then you're legally obligated to present it. On the other hand, some of you guys might be a little bit weak in the stomach about just offering something straight for the, the h- high value thing. But here's... Let me just share a little bit of, like, advertising scars and, like, years of doing this. Almost no one remembers what they opted in for. They barely remember the ad. And so they just f-... They will remember that this thing solved the problem that they have. And then when you... they come in, you can just make the offer that you wanna make them. Now, if they do remember that thing, then by, all means tell them about it. But if you are somebody who's like, \"I want to always offer the, really cheap thing first,\" fine. This works in the opposite way, of price anchoring, but fine. Have it. your way. So if you're gonna do it' that way, here's how you' do it. So you ask them a sorting question first. You say, \"Are you here for free stuff or lasting results?\" Everybody's gonna say lasting results. Some people will say free stuff and those people suck and you can just kick 'em out basically. Um, but as soon as they say results, which most people do, you skip straight to premium. So this way you've gotten permission to then sell them the premium offer. Now, if they say free, then you say the free thing and then you present the premium. So this way you can"
+    },
+    {
+      "chapter": "decoy-offers",
+      "char_end": 6403,
+      "char_start": 3968,
+      "id": "decoy-offers:2",
+      "score": 12.82,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "those two offers, they came in for the free 21-day transformation. But when they were presented the premium version, they said, \"You know what? I'd rather do that.\" Upselling is as American as apple pie. There is nothing wrong with having an upsell as long as you still offer something that is free that complies with what your original promise was in the advertisement. So if someone comes in... And the key point of making this work is that you can advertise the free 21-day transformation, not also you get all this stuff. If you say you get this other stuff too, then you have to deliver on it. And so the key is, and this is one of the benefits of advertising results rather than the, the vehicle, because then you can choose the vehicle and associate price however you want in the sales presentation. All right? And so this offer structure, right, this money model is 100% based on the upsell. This is how all of the money of this works. And the key, if you have the structure properly, is 70 to 80% of people should take the premium version. So description. So decoy offers advertise something free or discounted. So I could just as easily say, \"$19 or $21 21-day transformation.\" They come in, and they say, \"Cool, you can do the $21 one. You already paid for it. Or I'll credit your $21 towards a $421 thing, which we'll roll it towards, and now you can pay an extra 400 bucks today, and you're in,\" right? So then, when leads ask to learn more, you also present the more valuable premium offer. And the premium offer provides more features, benefits, a bonus, guarantees, and so on. So by putting your decoy offer and premium offers next to each other, they can see how much more valuable your premium offer is. And so I like, decoy offers so much because they get more customers overall. And so they either take the decoy version, or they get the premium version. This is an assumed close. That means everybody buys. I like, that. Now, if they take the premium version, great. If they take the decoy offer, also great. And guess what? You can also grab a couple of the bonuses from the premium and toss them in because you're like, \"Hey, I know you're only taking the, the one workout a week thing, but let me do some personal nutrition for you. Come back in a week or come back in two days.\" And guess what we do at the personal nutrition consult today? Sell them $300 of supplements. Right? And so it's, it's all good. All"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

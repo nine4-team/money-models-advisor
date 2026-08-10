@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_004",
+  "created_at": "2026-08-10T18:22:21Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 12126.2,
+  "method": "guided_model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "difference between attraction offers and upsell offers in a money model offer stack: attraction offers liquidate CAC at first purchase, upsells happen after initial sale to maximize profit per customer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 15559,
+  "valid": true
+}

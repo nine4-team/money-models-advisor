@@ -1,0 +1,53 @@
+{
+  "schema_version": "business_snapshot.v1",
+  "business": {
+    "business_type": "B2B inventory-planning SaaS",
+    "icp": "multi-location specialty retailers with small operations teams",
+    "delivery_model": "cloud software with guided onboarding and customer success"
+  },
+  "money_model": {
+    "attraction_offer": {
+      "exists": true,
+      "description": "paid inventory cleanup pilot",
+      "price": 500
+    },
+    "core_offer": {
+      "exists": true,
+      "description": "inventory planning software subscription",
+      "price": 1200
+    },
+    "upsell": {
+      "exists": true,
+      "description": "implementation and analytics package",
+      "price": 4000
+    },
+    "downsell": {
+      "exists": false,
+      "description": null,
+      "price": null
+    },
+    "continuity": {
+      "exists": true,
+      "description": "monthly software and customer-success subscription",
+      "price": 1200
+    }
+  },
+  "economics": {
+    "cac": 2800,
+    "first_30_day_gross_profit": 1100,
+    "monthly_recurring_gross_profit": 900,
+    "gross_margin": 0.75,
+    "lifetime_gross_profit": 18000,
+    "payback_period_months": 2.888888888888889
+  },
+  "problem": {
+    "user_goal": "reduce month-four churn and improve acquisition payback",
+    "reported_symptoms": [
+      "many customers cancel during the fourth month",
+      "new-customer acquisition requires more cash than month-one gross profit"
+    ],
+    "diagnosed_constraints": []
+  },
+  "advisor_state": {},
+  "field_sources": {}
+}

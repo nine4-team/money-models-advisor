@@ -1,0 +1,76 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "when should we pitch an add-on after someone buys the diagnostic?",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "payback-period",
+      "char_end": 5457,
+      "char_start": 2991,
+      "id": "payback-period:3",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they come in for nutrition orientations, and then I would walk through their food. And so with the food, then I would say, \"Oh, you're not eating these things. You should probably add this stuff in.\" I created a new problem which I could then solve with supplements. And so the thing is, is that you wanna be able to offer it at the right time. You sell at the point of greatest deprivation, not at the point of greatest satisfaction. But re- like, advanced people know what I just said. Beginners, please hear that again. You sell at the point of greatest deprivation, at the point of greatest pain, not at the point of greatest satisfaction. If I just had a big steak dinner-And then you say, \"Do you want another steak? You might have amazing steak. I don't need any more steak. I'm satisfied.\" And a lot of you guys are trying to make your upsell offer after I already ate a steak. Now, I might have a dessert stomach that's open, but my steak stomach is full. So we create deprivation, we make offers at the moment of deprivation. If somebody's really thirsty in the desert, after you give them the cup of water, they don't want the second cup as much as they wanted the first one. So the timing matters. So these are the times that I think through when I tend to incorporate upsells, and this is important for decreasing payback period. So one is right immediately after the first sale. Sometimes this works great. So to be clear, if I'm selling... If, if that new... If I solved one problem that then naturally creates the next problem, immediately upselling works. If you have to create another kind of problem in someone's head or guide them through awareness, then that's where you have what I call the next step. So the version I just gave you with the orientation, the nutritional orientation, that's like, great, that's the next step in the process. So this is usually a 24, 48, 72-hour difference between first sale and next step. The next time period, where I think about selling a customer or upselling is after they have a big win. This is a milestone. Someone says, you know,"
+    },
+    {
+      "chapter": "free-trials",
+      "char_end": 22323,
+      "char_start": 19393,
+      "id": "free-trials:4",
+      "score": 0.03,
+      "subject": "downsells",
+      "subjects": [
+        "downsells",
+        "offers"
+      ],
+      "text": "## [\u00a75.3.e] Upselling from a trial \u2014 like / hate / don't-use scenarios\n\nSo when someone takes a trial, one of three things happen. They like it, they hate it, or they don't use it. So here's how I upsell in each of those scenarios. So if they like it, this is the easy one. You already set them up for automatic billing, 'cause it's a trial. Great. So meet with them anyways during the transformation meeting or whatever meeting you wanna have close to the middle or close to the end, and you still offer, the l- the longer term or higher value version of your- service, or both. All right? So again, they just didn't trust you enough in the beginning. So let's say you have three sales consultations where you sell different stuff or have potentials for upgrades. At the first and the second, you should still absolutely pitch the next thing, 'cause now they're in. They've had a taste. The, the whole dynamic com- completely have shifted. All right? And so successful customers tend to get even more value, um, out of your- better and more profitable stuff. So it's ethical for you to make the offer to them. If you can help, help. Now, let's say they hate it. Turn the frown upside down. So ask them what they would have liked to be different. Tell them they're totally right, and that you're angry at yourself for missing this. Do not blame them. Only one person can be angry. And it needs to be you. Ask if they'll give you a chance to make it up to them because of how outraged you are at their terrible experience. And now, since you better understand their needs, that they're a better fit for your new higher level thing. Then offer them that. Yes, this is a sale. And yes, about half of people, believe it or not, buy this. They come in for this free trial. They wanted more everything, whatever. And you say, \"That's on me. I suck. I'm so pissed for you. That should never have happened. I should have offered you this, and that's 'cause I didn't listen. And I should have listened better. So let me, make it up to you.\" Sell this thing. Now, let's say they didn't use it. You reach out to people multiple times before you get to this point ideally. But when you do that, you explain that you need to meet with them. You offer to waive the fees, 'cause remember they signed that they were gonna do stuff. I don't want the $50 fees. Don't care at all. I do that just to hold them accountable. And I tell them that. I offer to waive the fee if they get back on track. Right? So now you can get them back on track or, again, offer something better. So I say, me personally, I don't like billing non-starters 'cause it's like a great way to get one-star reviews. I prefer not to have great ways to get one-star reviews. And a small fee isn't worth that. But it's your choice. It's up to you. So I personally just use the fees as leverage to get them back in, because that's where I'm gonna get the long-term lifetime value."
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 8424,
+      "char_start": 5975,
+      "id": "continuity-bonus:3",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "join right now. Also, you can offer the bonus as a standalone purchase or you can only make it available if they buy your continuity. So either of them work. And I'm gonna show you some really cool math examples at' the end of this video of price tests we've run to generate more cash up front or more people taking continuity. So there's actually some signs I can show you of like how much cash do you want up front versus how many people do you want to take continuity, and then what percentage is the right percentage to offer so you can get the right distribution you want? And we tested this across a lot of Okay. ... locations, so I feel pretty confident about it. So on their own, continuity offers get less cash now, remember, less cash now, and that makes it tough for getting customers profitably. But the way that I use them, we can still hit our 30-day profit goals, which I'll explain in a second. So first, I do all my big cash attraction, upsell and downsell offers, so I should already be profitable, I should already have cash from all those original offers. Then continuity offers get a little bit of cash from the first month's payments. Then I offer people who bought that one month a discount for pre-paying more months. This further boosts 30-day profits, giving me more cash to advertise and stacks recurring revenue. So think about how that goes.Big attraction offer, buy X, get Y' free, win your money back, whatever. Got it. Then we do our up-sells. Got it. Then we do our down-sells. Got it. Then we get them into continuity, really soft pitch. We got them on continuity, we gave them some bonuses in order to say yes. Now that they're on continuity, we already have the commitment, we then say, \"Hey, you're already committed. Let's just pre-pay and save some money.\" We stack even more cash forward. And that's how you just stack, stack, stack, stack, stack. You front-load the money so that you can scale your advertising and go to the moon. All right, let's do some examples. So physical products. Let's use pet food. All right, so one-time bonus, get every dog toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the"
+    },
+    {
+      "chapter": "decoy-offers",
+      "char_end": 6403,
+      "char_start": 3968,
+      "id": "decoy-offers:2",
+      "score": 0.029,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "those two offers, they came in for the free 21-day transformation. But when they were presented the premium version, they said, \"You know what? I'd rather do that.\" Upselling is as American as apple pie. There is nothing wrong with having an upsell as long as you still offer something that is free that complies with what your original promise was in the advertisement. So if someone comes in... And the key point of making this work is that you can advertise the free 21-day transformation, not also you get all this stuff. If you say you get this other stuff too, then you have to deliver on it. And so the key is, and this is one of the benefits of advertising results rather than the, the vehicle, because then you can choose the vehicle and associate price however you want in the sales presentation. All right? And so this offer structure, right, this money model is 100% based on the upsell. This is how all of the money of this works. And the key, if you have the structure properly, is 70 to 80% of people should take the premium version. So description. So decoy offers advertise something free or discounted. So I could just as easily say, \"$19 or $21 21-day transformation.\" They come in, and they say, \"Cool, you can do the $21 one. You already paid for it. Or I'll credit your $21 towards a $421 thing, which we'll roll it towards, and now you can pay an extra 400 bucks today, and you're in,\" right? So then, when leads ask to learn more, you also present the more valuable premium offer. And the premium offer provides more features, benefits, a bonus, guarantees, and so on. So by putting your decoy offer and premium offers next to each other, they can see how much more valuable your premium offer is. And so I like, decoy offers so much because they get more customers overall. And so they either take the decoy version, or they get the premium version. This is an assumed close. That means everybody buys. I like, that. Now, if they take the premium version, great. If they take the decoy offer, also great. And guess what? You can also grab a couple of the bonuses from the premium and toss them in because you're like, \"Hey, I know you're only taking the, the one workout a week thing, but let me do some personal nutrition for you. Come back in a week or come back in two days.\" And guess what we do at the personal nutrition consult today? Sell them $300 of supplements. Right? And so it's, it's all good. All"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 5416,
+      "char_start": 3000,
+      "id": "payback-period:4",
+      "score": 0.029,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "call the next step. So the version I just gave you with the orientation, the nutritional orientation, that's like, great, that's the next step in the process. So this is usually a 24, 48, 72-hour difference between first sale and next step. The next time period, where I think about selling a customer or upselling is after they have a big win. This is a milestone. Someone says, you know, they have some big success. Now you're like, \"Wait, I thought you said that you sell at the point of greatest deprivation.\" Yes. So if they have a big success, then it means we fully solved one problem, which typically means a fully formed new problem also opens. So great, you got to $10,000 a month. You probably have all these tax problems now and you probably need employees to help you take all this time because now that you're working all the time and you're making this money, you probably don't have time. You have money but not time. So let me solve the next problem for you, right? And so you can o- there's always... If you're a good entrepreneur, you're always solving problems, and fully solved problems always create more problems. After they have a big win, then I like to think about the halfway point. This is just me historically seeing that people at a halfway point tend to be very open to upselling. And finally, I call this the last chance. Now if you're like, \"Wait a second, at the end of a, of a period with a customer is the last chance, not when I should upsell?\" Yeah. If you haven't upsold them here, s- so many of you guys are trying to make your upsell at the end of the first thing. You've already lost them. Like this is your last shot. You missed all of the other times that you were supposed to sell them, and notice, four out of the five are before the halfway point. So you're losing out. So I can almost guarantee... Well, I'll say it this way. I have never not had this work. So I can't guarantee it, but I've never not had it work. Which is, if this is when you're upselling people or attempting to upselling, because I already know you're probably failing at it, if you move it forward in the sales process, in my opinion, you have an incomplete buying cycle. So I don't want to reopen something. I want to just ride the one I'm already on. It's like, \"Hey, you're halfway through. Let's keep the party going. Hey, you're doing great. Let's, let's keep it going. Let's, let's add this"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

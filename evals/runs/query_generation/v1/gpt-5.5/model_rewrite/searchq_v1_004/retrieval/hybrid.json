@@ -1,0 +1,82 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "difference between attraction offer and upsell in money model",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "upsell-offers",
+      "char_end": 2366,
+      "char_start": 0,
+      "id": "upsell-offers:0",
+      "score": 0.033,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "All right, so we just covered attraction offers. So these are the first thing that most people are going to see when they're entering your business. This is the stuff that gets leads to engage, that's why they're big, sexy, free things. The upsell offers. are things. that we're going to reposition for them to spend even more money. Now, sometimes this happens immediately, sometimes it happens, you know, uh, a few days later, sometimes a few weeks later, sometimes a month later. But either way, we're going to be using four of my favorite upsells. So this is step two in our money. model process. So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a problem, another appears. You upsell the solution to the problem that your first offer reveals. So every offer opens the door to an upsell. Even upsells o- open the door to more upsells. And often, upsells make up the majority of the profits. This is what people don't understand. If the objective is that we can break even, obviously, we wanna make as much money as we want, but you don't wanna make more money on a few customers when you can get 10 times the customers and then make way, more on the second sale, right? And so often, upsells. make up the majority of the profit, even if that's not the thing you' sell the most of. Think about it in terms of volume, I might sell 10 times more of my front-end offer, but 10X of my profit comes from my second sale. They can make or break a money. model. And so let me show you how much. So here's some examples. So this is. a classic burger, fries, and soda store, all right? So this is a, our very sad burger shop owner. He sells a burger for two bucks, his cost on the burger is $1.75. He makes 25 cents of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize"
+    },
+    {
+      "chapter": "offer-types",
+      "char_end": 11296,
+      "char_start": 8319,
+      "id": "offer-types:4",
+      "score": 0.031,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a72.2.e] The four offer types \u2014 Attraction, Upsell, Downsell, Continuity\n\nSo now let's talk about all the things that I just did, but we're gonna chunk up so that you can apply it to any business. All right? So there's attraction offers, upsell offers, downsell offers and continuity offers. The objective of each of these. Attraction offers is to liquidate how much it costs you to cus- get a customer. Upsell offers are to maximize profit. Downsell offers are to maximize conversion. Continuity offers are to stabilize cash flow in the business. There are many ways to accomplish CFA. Some businesses can do it with only one offer. Some businesses get funding so they don't need to break even to get customers 'cause they have outside money that's injected into their system. But for everyone else probably watching this, I will explain a model that I have seen emerge over and over and over again within the businesses that I built. So when I look at every single amazing business that I've built that's made a lot of money, they had these things pretty much in this sequence. And it doesn't happen all at once. It just often becomes something that you build towards. So to be very clear, I'm not saying you start with a fully fledged money model, 'cause it will break your b- whole business in half. You wanna start with one, you start adding in layers, like layers of paint. You just keep putting more and more layers on it. And so again, you can build an amazing business with just one or two of these things. And sometimes it's worth keeping it simple and just doing that. If you can scale with... I wanna scale with as few offers as humanly possible. But I still wanna maximize how much money I make in the shortest period of time. So if I have to add more, I will, to enable me scaling. But I wanna have as few as I can, 'cause I wanna have as little operational drag as possible. All right? And so it has four prongs or four different vectors and different offers that correspond to each objective. All right? So this beautiful little image took me a very long time to figure out. Right? And so we have attraction offers that bring people in the door. We have upsell offers that typically happen immediately after that get people to buy more stuff. We have downsell offers for people who, who don't say yes to either of these things, so we can still get conversions and then potentially upsell them later. And then we have continuity offers on the back, which get them into a recurring cash flow payment to the business. And so let's explain how they all work together to make a symphony of CFA. All right. So here, we turn strangers into customers, get, come spend more money. Lower CAC is to get people... Excuse me, is to get people to say yes when they would have said no, which is what you offer when they say no. And then with continuity, you keep people buying. All right? Which is meaning you get them to buy again. All right? So those are the four prongs."
+    },
+    {
+      "chapter": "money-models-offer-stacks",
+      "char_end": 2268,
+      "char_start": 0,
+      "id": "money-models-offer-stacks:0",
+      "score": 0.03,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that some of the things are a little bit different from the book, and that's done on purpose because I like to think through things differently in different mediums. All right? Because I can say things here that I couldn't normally say in the book. So we'll go definition, rental car story, and the gym launch example. All right. So a money model is a series of offers. That's it. The reason I had to start with the offers book before talking about the money model book is that an offer is one unit. A money model is sequencing these things. It's putting them in a series of offers deliberately to maximize gross profit collected in the first 30 days. So I will say this all together. A money model is a series of offers. A good money model, which is the objective of this book, or this training, is a series of offers structured to minimize CAC, how much it costs to get a customer, maximize gross profit, how much they pay you, collected in the first 30 days, how fast they pay you. That's the point... [Content continues with rental car counter story example including late checkout, insurance upgrade, minimum package, prepaid gas, and late return fees explanation] ...describing how rental car companies engineer their offers sequentially. The story illustrates 9 different upsells that occurred during a single reservation transaction. This is followed by the Gym Launch case study detailing how the company grew from $1,000 in the bank to $17 million in profit in 20 months through their money model approach. The transcript covers their specific offer stack including: free book/podcast lead magnet, free strategy call, $16,000 premium offer with payment terms, free supplement training, and free feedback call with continuity upsell. The lesson emphasizes how understanding offer sequencing and psychology can dramatically increase customer lifetime value and enable rapid scaling without external funding."
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 2417,
+      "char_start": 0,
+      "id": "ten-years-ten-minutes:0",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "So we just walked through how to make your own money model. Now, we're gonna do 10 years of my life, more like 13 or 14, uh, but 10 years in 10 minutes sounds sexier, so we're gonna call it that. All right, so where our money model. fits in the grand scheme of things. So my first book, 100 Million Offers, answered the question, \"What should I sell?\" Answer, an offer so good people feel stupid saying no. My second book, 100 Million Dollar Leads, answered the next natural question, \"How do I find these people?\" Answer, you advertise. This book, 100 Million Dollar Money Models, answers the next natural question, \"How do we' get them to buy?\" Answer, a money model. So what we' covered. A money model is a series of offers, designed to increase how many customers you get, how much they pay, and how fast they pay it. It's a deliberate series of offers. A good money model makes more profit from a customer than it costs to get and service them in the first 30 days. That's the bare minimum. A $100 million money model makes more profit from one customer than it costs to get and service many customers in the first 30 days, which removes cash as a limiter to scaling your business. This is what gives you limitless scale. This is how I've scaled... Let's see. I got Alan from zero to $1.7 million a month in six months. I got Gym Launch from zero to $4.4 million a month in 20 months. Uh, we've gotten... I can't tell you the school metrics. I'll just say that they're even better. Uh , and, um, we have other companies in the portfolio that we've scaled at that same level of speed. All right? And so if you can master this skill, this may be the single most valuable thing that I can give you, which is why the sub headline of this book, is How to Make Money. Money models, have four types of offers: attraction offers, upsell offers, downsell offers, and continuity offers. Attraction offers get customers by offering something free or at a discount. Often, they also make money by offering a better deal at a higher price that we covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' you want from this"
+    },
+    {
+      "chapter": "upsell-offers",
+      "char_end": 5003,
+      "char_start": 4063,
+      "id": "upsell-offers:2",
+      "score": 0.03,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end offer. Upsell offers, you can use a front-end offer. I just place them in the places that I use them most commonly. And I think that they work, at least they have worked the best for me. So this is our lineup. We're gonna start with the classic upsell. We'll do the menu upsell, the anchor upsell, and the rollover upsell. I use all of these. I have made so much money on these upsells. And if you follow what I lay out, you probably will too. And I will probably get more animated in these, because I just love these so much. All right, with that being said, the classic upsell."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,76 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "continuity offers membership maintenance plan recurring gross profit payback period first 30 day gross profit CAC recovery time",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "payback-period",
+      "char_end": 4329,
+      "char_start": 2067,
+      "id": "payback-period:1",
+      "score": 0.031,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you were like, \"Well, I don't wanna offer a helmet. I don't wanna offer shoes. I don't wanna offer glo- I don't wanna seem pushy,\" she wants to buy them! She signed up for a race. She's going t- she's going to buy them. It's just whether she's gonna buy them from you or the guy down the street. And there's a very big difference between hard selling and letting a customer know the offers you have available. You're making offers available to them. And if you ha- think about it this way. If someone has a problem and you have the ability to solve it, it's my opinion that ethically, you should let them know you can solve it, and what it would cost them for you to do it for them. You make them aware. If they say no, no problem! Fine! But at least tell them. Make the offer. Because you sell 0% of people who don't know you have something to sell. You are making offers. They can choose to take them or not, and if you believe in what you sell solves the problem, then solve more problems. Yes is cool. No, also not... also not cool. Yes, also cool. All right, so that's the importance. So let's do a quick example. So payback periods. So if it costs you $160 to acquire a customer, CAC, and you sell them widget for $100 a month, that costs you 20 bucks gross profit, so $80, what's your payback period? We make $100 from the- for the person who buys their first month. Our gross profit's 80 'cause we have to have 20 bucks better off for cost of goods. So that means that I spent 160 but I made 100 back, but I had another cost of 20 for my cost of goods, so I have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period?"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 3907,
+      "char_start": 3126,
+      "id": "payback-period:6",
+      "score": 0.031,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "I had earlier, if I didn't want to wait two months, I would say, \"Great, we pay first and last. That's how we've always done it.\" And then I could offset... Now notice, the fee is all gross profit. So now I'm actually up 80 on my first transaction, and now I've got half the cost to get a new customer already back in my pocket before I even? have the next payment 30 days later. So every two customers buys me another one before even having to wait for the recurring to hit. All right? And this is, how you really scale. This is just one structure. There's a gazillion that I'm gonna show you. All right. So we went from two months to one and a half, right? Within 30 days. All right? So that's how you improve it, and that is about shortening payback period, making money faster."
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 4828,
+      "char_start": 2344,
+      "id": "continuity-offers:2",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments and contracts. They can significantly increase LTV if you deliver value. So that's downsell the upsell. Now let's talk about calculating back of napkin LTV. So the simplest way to do this is look at your price, divide it by your monthly churn, and that gives you your lifetime revenue. Remember, we still have margin on this. We still have some cost of delivery. Now, the gross margin times lifetime revenue equals your lifetime gross profit. So for example, let's say our price minus our cost of goods times 100% equals our gross margins. So let's say we have a $100 price, $20 cost of goods, times 100 equals 80% gross margins. Okay. So now we take our 80% gross margins, we multiply it by our lifetime revenue, and we get $800 of lifetime gross profit. That's how much we make per customer. over lifetime. That is what you can calculate for yourself given whatever it is you have. So you divide your price by your churn, that gives you the revenue, then you basically just figure out what your gross margin is, multiply that by that, and there you go. So getting people into continuity automatically extends LTV. Even with a company that does one-time transactions, most recurring stuff that has basically no added value, I'm just being super real with you, the recurring is usually three months, which still 3X your new LTV. So if you sell physical products, which maybe have one-time use, if you just get someone into a subscription, it usually triples the value of the customer. So if half the people do that thing, then you've got half the people doing 3X and half of them doing 1X, which means you double the revenue of your business, not bad, just by making it available. So the valuable money lesson is people think more about price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 12538,
+      "char_start": 10131,
+      "id": "continuity-offers:6",
+      "score": 0.029,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This is, again, this is not in the book. So this is me giving you bonus stuff. Um, there's a difference. between recurring and reoccurring revenue. So Netflix is recurring. Think memberships. Coca-Cola is reoccurring. I am a Coca-Cola product buyer. I buy lots of their drinks and I do that on a regular basis, but I don't have a fixed membership, but I reoccur. Both are great. The key with this one is that you just need to demonstrate that, hey, I... For example, there's a sauce company that I like and I bu- I bought their sauce for like four straight years and I use it every single month. I go through three or four bottles a month and I've been using for years and sure as hell you can bet that they can calculate that the average person who buys a bottle over time buys another 20 bottles. That makes it a very valuable business. Company one, let's say that's got top line of $10 million EBITDA3. Company two is 10 million and 3 million in EBITDA. Okay, this one's all transactional. You might get a 4X multiple. This is all recurring and based on how much you retain it, it might be worth eight to 15 times. So it's 24 to 45 million. So between 12 and 24 to 45, that's a hell of a lot more money. So this is problems worth solving. And so if they stay, buyers will pay. And when I say buyers, I mean investors. So my personal note is that you sleep great, this is me telling you personally, when you know in the first of the month that all your bills are paid and your profit's already locked in and everything else you have is gravy. And so recurring/continuity equals stability, which is why it's the fourth pillar of this. It's also the thing that will usually make your company the most valuable. So have I sold you? Hopefully on adding some recurring element to your business. Great. So let's get to the three best combinations that I've seen and used. Continuity. bonus offers, continuity discount offers, and then the waived fee offer. All right? So let's rock and roll. And now we do bonus offer."
+    },
+    {
+      "chapter": "cac",
+      "char_end": 25820,
+      "char_start": 24040,
+      "id": "cac:12",
+      "score": 0.027,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers"
+      ],
+      "text": "doing. Um, you splinter out the thing. Now, I talk about this at length in the $100 million offers course. I'm not gonna break it down now, but basically, lots of different components to your offer, you have lots of different features. You take one feature off. You say, \"This feature is 99% off now.\" Great. That's where the discount is. And then you sell the rest of it. All right? And so whatever you break off, it has to be something that's well-understood or it's not gonna work. All right? That's kind of the thing I was talking about earlier. People have to have an understanding of it. Um, the cons are you got the bargain hoppers, right? People who, you know, complain about this, but really they, they're already, you know, uh, they're already customers. They're easier to upsell though than somebody who's cold. So yeah. All right. So the objective is that attraction offers are the first step in the four prongs because if you don't have interest, you don't have anything, right? And so customer-financed acquisition requires demand. And a big difference between CAC and GP, having low cost or free front ends is a strong way to do it. So lots of demand, free big front ends, drives more in. All right. So these things are going to be interchangeable throughout the remainder of these trainings. So if you see $19 chiropractor visit, it can be just as much a free chiropractor visit. The whole thing will work. But if you're like, you insist on doing this, fine, do that. If you insist on doing this, fine, do that. It does not matter. All the money models that I will show you can have free or discount interchange and they will both work. Kaboom. These are the ways that you can improve your CAC. So with that being said, CAC is covered. Now we go into gross profit."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "buy X get Y free promotion expensive fulfillment offer economics free bonus versus discount",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 94.9,
+  "returncode": 0,
+  "stderr": ""
+}

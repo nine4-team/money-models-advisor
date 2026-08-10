@@ -1,0 +1,77 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "setup onboarding fees increase upfront cash payback customer acquisition payback period",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "waived-fee",
+      "char_end": 8446,
+      "char_start": 5953,
+      "id": "waived-fee:4",
+      "score": 0.032,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "of like guardrails to keep someone on point during the rough months can help them overall see success. And I believe that. So that's not just not, that's not just wordsmithing. That's true. Um, and this vehicle or pricing structure, money model, allows you to build incentives around that. All right. So fees get them to start. People get value out of committing immediately because they avoid a fee. People want to avoid fees, so more people sign up to continuity. Mission accomplished. Hooray. That's how this works. Fees also get them to stick, which is lovely. So people will stick for the same reason they started, by sticking to avoid the fee. So people quit for millions of reasons, but by incurring an additional cost, a larger fee, in order to cancel, their original reason for quitting immediately shrinks compared to the value of avoiding the fee. In English, if the cost to quit exceeds the cost to stay, they will probably stay. Presenting the fee. Justify the fee by explaining the cost of taking on new customers for longer term programs. Basically, if they want short term flexibility, they pay their own setup costs. If they commit to staying long term, we'll pay their setup costs for them. All right? If someone asks for additional reason, just say, \"It costs us money to get you started. If you only want to test this out, you cover those costs. If you commit to longer, I'll cover them.\" Now, if more than 5% of people want to cancel early, look into that. Pricing incentivizes sticking, but it can't and shouldn't overcome a terrible product. You want to nudge them, not handcuff people into paying for something they hate, 'cause then they'll just hate you. Now, if you want more upfront cash, have a smaller fee. A smaller fee encourages more people to go month-to-month. This is the same, uh, difference we had with the earlier version with the continuity bonus offer. Same idea, except this is just a fee rather than a program, but some people will pay, and I'll tell you what my guess would be to get 50/50 to sign up, which would be a 33% increase, uh, a smaller fee will get more people to go month-to-month. A larger fee will encourage more people to make the commitment. But if you need more cash upfront, then you can make the fee one and a half to three times the monthly rate, and that will get more people to choose that more flexible option. And when you do this, more people will take it. Great. And you get more cash upfront. So you can drop the fee after"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 2417,
+      "char_start": 0,
+      "id": "payback-period:0",
+      "score": 0.031,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. All right, so, we got the definition, why it's important, examples, and then how to improve it. Let's start with definition. So payback period, how long it takes until gross profit, is greater than CAC. In other words, how long does it take to break even? The shorter it is, the easier it is to scale your advertising. So if I break even in a day versus breaking even in five years, it's a lot easier f- for me to scale. Right? 'Cause I get my dollar back tomorrow, then I can spend it again. Some people call this a cash conversion cycle. I probably won't say that again, but just in case you hear it, that's what that means. All right, so that's the definition. Here's the importance. All right, so problem number one, businesses take too long to break even on getting new customers. And so they have to manage cash flow by making a marketing budget. I think this is silly. We solved that problem. Problem number two is that businesses feel guilty making multiple offers in a row because they think that they bother people. They are wrong. The people who feel this way are poorer than they should be. And that's exactly how buyers buy, by the way, is that there's short windows of time that they go super hyper-buying cycle and then they go dormant again. And so if you do not take advantage of this hyper-buying cycle when someone makes a new decision or starts a new lifestyle or make, creates a new identity for themselves, you will miss out, and another business who is intelligent, who makes more money than you, will profit. So, here's a story you probably haven't heard before. So, uh, friend of mine, business owner, decides to lose weight, and, uh, remembers that they like riding bikes, and goes online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 4329,
+      "char_start": 2067,
+      "id": "payback-period:1",
+      "score": 0.031,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you were like, \"Well, I don't wanna offer a helmet. I don't wanna offer shoes. I don't wanna offer glo- I don't wanna seem pushy,\" she wants to buy them! She signed up for a race. She's going t- she's going to buy them. It's just whether she's gonna buy them from you or the guy down the street. And there's a very big difference between hard selling and letting a customer know the offers you have available. You're making offers available to them. And if you ha- think about it this way. If someone has a problem and you have the ability to solve it, it's my opinion that ethically, you should let them know you can solve it, and what it would cost them for you to do it for them. You make them aware. If they say no, no problem! Fine! But at least tell them. Make the offer. Because you sell 0% of people who don't know you have something to sell. You are making offers. They can choose to take them or not, and if you believe in what you sell solves the problem, then solve more problems. Yes is cool. No, also not... also not cool. Yes, also cool. All right, so that's the importance. So let's do a quick example. So payback periods. So if it costs you $160 to acquire a customer, CAC, and you sell them widget for $100 a month, that costs you 20 bucks gross profit, so $80, what's your payback period? We make $100 from the- for the person who buys their first month. Our gross profit's 80 'cause we have to have 20 bucks better off for cost of goods. So that means that I spent 160 but I made 100 back, but I had another cost of 20 for my cost of goods, so I have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period?"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 3907,
+      "char_start": 3126,
+      "id": "payback-period:6",
+      "score": 0.031,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "I had earlier, if I didn't want to wait two months, I would say, \"Great, we pay first and last. That's how we've always done it.\" And then I could offset... Now notice, the fee is all gross profit. So now I'm actually up 80 on my first transaction, and now I've got half the cost to get a new customer already back in my pocket before I even? have the next payment 30 days later. So every two customers buys me another one before even having to wait for the recurring to hit. All right? And this is, how you really scale. This is just one structure. There's a gazillion that I'm gonna show you. All right. So we went from two months to one and a half, right? Within 30 days. All right? So that's how you improve it, and that is about shortening payback period, making money faster."
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 6484,
+      "char_start": 3979,
+      "id": "waived-fee:2",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk year to year by waiving those fees. And if they commit and they wanna quit early, then okay, they pay the fee as though they had paid month to month from the beginning. Very simple. Bottom line is that customers will stay longer if leaving costs more than staying. And to make this equitable, if they stay the full term, they can cancel if they choose with no fee. That's what makes it fair to both parties. So if you need to feel better about yourself for charging these things, uh, whether real or made up, you should get that looked at. But if you need a reason why, well, here's a perfectly reasonable also made up reason for you. You can say this. \"Whenever we onboard a new customer, it always takes more resources than an existing customer who's been with us for multiple months. So in order to give you the best experience, we charge a one-time onboarding fee, setup, activation, engagement, enrollment,\" whatever made up thing you wanna say, \"to give you the experience, that experience. So you'll never have to pay it again and it's for your own benefit so you get the most out of your experience. Now, we know that if you learn how to use our services the right. way, you'll be 23.7X times more successful.\" So you can say initiation, onboarding, enrollment, startup, setup, processing, activation, build, commencement. You can just use whatever words you want and then put the word \"fee\" afterwards, and that's what it. can be. So that is our description. Let me give you some examples. So we'll use all combinations, but we'll assume $5,000 onboarding fee and a thousand dollars a month for all of them. Okay? So waived fee with commitment. This is my personal favorite. It's clean and simple. Commitment's 12 months, monthly rate's a thousand dollars a month, fee is $5,000 if they pay month to month. Option A, pay one time five grand plus a thousand dollars for the first month, then pay $1,000 a month thereafter, cancel whenever you want. Option B, waive the $5,000 if you commit to 12, pay $1,000 per month, only pay the $5,000 fee if you break your commitment early. Boom. Very simple, very straightforward. There's the"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,1 @@
+{"query":"first 30 days gross profit more than twice customer acquisition cost CAC payback spend on acquisition"}

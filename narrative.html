@@ -401,10 +401,9 @@
       padding: 22px 26px;
       font-family: var(--mono);
       font-size: 0.8rem;
-      line-height: 2.05;
+      line-height: 1.85;
       color: var(--muted);
-      overflow-x: auto;
-      white-space: pre;
+      white-space: normal;
     }
 
     .loop b {
@@ -554,6 +553,9 @@
     /* anatomy overview */
     .anatomy {
       margin: 26px 0 8px;
+    }
+    h4.block + .anatomy {
+      margin-top: 14px;
     }
     .an-zone {
       margin: 0 0 16px;
@@ -987,6 +989,26 @@
           This is the design of the hosted advisor. The agent makes every
           judgment call; a deterministic core does everything else.
         </p>
+        <h3 id="s2-1"><span class="sub">2.1</span>Workflow</h3>
+        <p>
+          One advisory turn starts with a founder's question and ends with an
+          answer plus an auditable record of how the answer was produced.
+        </p>
+        <div class="loop"><b>Founder asks a business question</b>
+          → agent reads what the advisor already knows about the business
+          → agent decides whether to clarify, calculate, diagnose, or consult the book
+          → deterministic services perform the repeatable work
+          → agent judges the results and writes the answer
+          → the system validates the evidence and records the turn</div>
+        <p>
+          The boundary is the central design rule: the agent owns meaning and
+          judgment; the deterministic core owns state, formulas, retrieval,
+          validation, and recording. The component map below shows where each
+          responsibility lives; the sections after it unpack those components
+          in the same order.
+        </p>
+
+        <h4 class="block">Component map</h4>
         <div class="anatomy">
           <div class="an-zone agent">
             <div class="an-zone-h"><span class="lead">The agent</span> — judgment</div>
@@ -1052,58 +1074,6 @@
             </div>
           </div>
         </div>
-
-        <h3 id="s2-1"><span class="sub">2.1</span>Workflow</h3>
-        <div class="split">
-          <div class="col">
-            <h4>Agent — semantic judgment</h4>
-            <ul>
-              <li>decide the next advisory move</li>
-              <li>inspect local docs when context is missing</li>
-              <li>decide whether source material is needed at all</li>
-              <li>generate <code>SourceNeed</code> objects + query variants</li>
-              <li>judge whether retrieved chunks support a claim</li>
-              <li>synthesize the final answer</li>
-              <li>decide which facts are safe to save</li>
-            </ul>
-          </div>
-          <div class="col">
-            <h4>Deterministic core — repeatable work</h4>
-            <ul>
-              <li>create, locate, and persist advisor state</li>
-              <li>run unit-economics formulas reproducibly</li>
-              <li>execute retrieval, local or Pinecone</li>
-              <li>expose chunks with stable IDs and scores</li>
-              <li>validate and record the turn trace</li>
-            </ul>
-          </div>
-        </div>
-        <p>How those two sides play out across one advisory turn:</p>
-        <div class="loop"><b>human asks the agent for advice</b>
-          → agent runs <b>session start</b> loads saved state, missing fields, history
-          → agent inspects the founder's docs only if saved context is missing
-          → agent saves accepted facts to the BusinessSnapshot (§2.5)
-          → agent calls tools calculation · diagnosis · source search
-          → agent answers citing retrieved chunks where claims need support
-          → agent runs <b>session finish</b> validates and persists the turn trace (§2.8)</div>
-        <p>
-          Every judgment the agent makes lands in a recorded trace where it can
-          be checked and scored (§2.8), and everything the core does is
-          deterministic and repeatable.
-        </p>
-
-        <h4 class="block">Tested today as a local CLI</h4>
-        <p>
-          Today the core runs as a local command-line tool, not a hosted
-          service. Two coding agents operate it: Codex and Claude Code. The CLI
-          came first because it's a cheap way to settle the
-          provider choice before building the hosted version — running the same
-          core through both agents compares OpenAI and Anthropic on the same
-          workflow (§3.8). The hosted version will run this same core on the
-          OpenAI Agents SDK (§2.9). Because the agents are flat-rate subscriptions
-          rather than per-token API calls, embeddings are the only per-use cost,
-          cached after first use (§2.6).
-        </p>
 
         <h3 id="s2-2"><span class="sub">2.2</span>Model</h3>
         <p>
@@ -1602,6 +1572,17 @@
           when saved context is missing and records each accepted fact back to
           its source path and content hash (§2.5). A hosted service would copy
           the directory in first; the local CLI just reads it where it lives.
+        </p>
+        <h4 class="block">Tested today as a local CLI</h4>
+        <p>
+          Two coding agents operate the local core: Codex and Claude Code. The
+          CLI came first because it is a cheap way to settle the provider choice
+          before building the hosted version — running the same core through
+          both agents compares OpenAI and Anthropic on the same workflow
+          (§3.8). The hosted version will run this core on the OpenAI Agents SDK.
+          Because the coding agents are flat-rate subscriptions rather than
+          per-token API calls, embeddings are the only per-use cost today,
+          cached after first use (§2.6).
         </p>
         <p class="quiet">
           The only outside services today are the embedding API and the

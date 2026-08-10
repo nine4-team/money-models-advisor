@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Money Models full stack how attraction offer core offer upsell downsell continuity fit together acquisition payback gross profit premium service business",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 677.8,
+  "returncode": 0,
+  "stderr": ""
+}

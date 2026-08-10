@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Downsell offers after a prospect rejects the main offer: payment plans, feature downsells, lower-friction alternative, changing what the customer receives or when they pay without discounting the identical offer",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 97.3,
+  "returncode": 0,
+  "stderr": ""
+}

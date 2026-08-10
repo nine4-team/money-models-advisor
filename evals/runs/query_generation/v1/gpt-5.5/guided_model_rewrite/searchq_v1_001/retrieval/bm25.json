@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "why fulfillment cost cost of goods sold gross profit price minus COGS determines whether advertising customer acquisition cost CAC can work revenue alone cannot answer",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "gross-profit",
+      "char_end": 2439,
+      "char_start": 0,
+      "id": "gross-profit:0",
+      "score": 36.813,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "Gross profit. All right, let's rock in. So this is the second of the three metrics that we look at to triangulate acquisition. We started with CAC. You have to have cheap customers. We talked about the different ways to improve it, free or discount, different ways to display discounts. Uh, but now we're gonna talk about gross profit. Okay? So we're gonna define what it. is, why it's important, examples, calculating and improving it. All right, let's rock. So gross profit, the difference between the price and the cost of goods sold. So cost of goods or COGS is what it costs you to deliver the thing. All right? So if it cost me $9 to deliver meals and I sell it for 10, then I got $1 in. gross profit. All right? Very straightforward. Now, here's why this is important. So the problem is that most businesses think they need cheaper leads, when in reality they need to make more money per customer. And so my observation is that the CAC... This is, this is me, like high level, 'cause I see lots of businesses. CAC. between competitors is often fairly similar. So a lot of people are, you know, obsessing about how they're like, you know, they wanna improve their ads and things like that. And sometimes you do need to do that. But the ranges are actually much tighter than you'd think. So you might see somebody who's, you know, acquiring customers. at $2,500. Somebody and somebody else in the marketplace might be $3,500. Rarely would you see somebody at like $6,000 unless they're like just getting into the market. But the CAC for specific avatars is usually pretty tight in terms of ranges when I see many businesses in the same industry. Now that may surprise you, but that just like kind of is what it, is. But the difference between how much money these, these companies make is often how much customers are worth. Now that is where the huge discrepancy between businesses exists. So this is the difference between the whales and the minnows, is how much they make per customer, gross profit. All right? So let me tell you a quick story. So I did a consulting day years and years and years ago. This might have been the first five I've ever done in my whole life. Um, and a guy was in the same space as me. And you're like, \"Wait, Alex, why would you help someone who's a quote competitor?\" I don't see the world that way. So guy came in and he was selling the same number of units per month as me. All right? Same number of"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 4828,
+      "char_start": 2344,
+      "id": "continuity-offers:2",
+      "score": 30.589,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments and contracts. They can significantly increase LTV if you deliver value. So that's downsell the upsell. Now let's talk about calculating back of napkin LTV. So the simplest way to do this is look at your price, divide it by your monthly churn, and that gives you your lifetime revenue. Remember, we still have margin on this. We still have some cost of delivery. Now, the gross margin times lifetime revenue equals your lifetime gross profit. So for example, let's say our price minus our cost of goods times 100% equals our gross margins. So let's say we have a $100 price, $20 cost of goods, times 100 equals 80% gross margins. Okay. So now we take our 80% gross margins, we multiply it by our lifetime revenue, and we get $800 of lifetime gross profit. That's how much we make per customer. over lifetime. That is what you can calculate for yourself given whatever it is you have. So you divide your price by your churn, that gives you the revenue, then you basically just figure out what your gross margin is, multiply that by that, and there you go. So getting people into continuity automatically extends LTV. Even with a company that does one-time transactions, most recurring stuff that has basically no added value, I'm just being super real with you, the recurring is usually three months, which still 3X your new LTV. So if you sell physical products, which maybe have one-time use, if you just get someone into a subscription, it usually triples the value of the customer. So if half the people do that thing, then you've got half the people doing 3X and half of them doing 1X, which means you double the revenue of your business, not bad, just by making it available. So the valuable money lesson is people think more about price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 4329,
+      "char_start": 2067,
+      "id": "payback-period:1",
+      "score": 29.893,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you were like, \"Well, I don't wanna offer a helmet. I don't wanna offer shoes. I don't wanna offer glo- I don't wanna seem pushy,\" she wants to buy them! She signed up for a race. She's going t- she's going to buy them. It's just whether she's gonna buy them from you or the guy down the street. And there's a very big difference between hard selling and letting a customer know the offers you have available. You're making offers available to them. And if you ha- think about it this way. If someone has a problem and you have the ability to solve it, it's my opinion that ethically, you should let them know you can solve it, and what it would cost them for you to do it for them. You make them aware. If they say no, no problem! Fine! But at least tell them. Make the offer. Because you sell 0% of people who don't know you have something to sell. You are making offers. They can choose to take them or not, and if you believe in what you sell solves the problem, then solve more problems. Yes is cool. No, also not... also not cool. Yes, also cool. All right, so that's the importance. So let's do a quick example. So payback periods. So if it costs you $160 to acquire a customer, CAC, and you sell them widget for $100 a month, that costs you 20 bucks gross profit, so $80, what's your payback period? We make $100 from the- for the person who buys their first month. Our gross profit's 80 'cause we have to have 20 bucks better off for cost of goods. So that means that I spent 160 but I made 100 back, but I had another cost of 20 for my cost of goods, so I have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period?"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 5097,
+      "char_start": 2816,
+      "id": "payback-period:2",
+      "score": 26.242,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period? Two months. Also, to be really clear here, if it costs you 160 bucks to acquire a customer, some people are like, \"It takes me one and a half months to break even here,\" because they see $100 in revenue and they say, \"Oh, it's one and a half months.\" You have to take out your cost of goods in the payback period. If it costs me $9 in meals and I sell 10 bucks for the meal, I make a dollar. I can't say, \"Oh, you know, they paid me 20 bucks. It cost me 20. I break even in two months.\" You have to do it off gross profit. All right, so here's how to improve it. You can make them more, better, or new offers, and here's the key part, in the first 30 days. And the key part is to do- to do it at the right, moment. The reason that somebody will not take an upsell from you is 'cause you did it the wrong way or at the wrong time or you described it poorly, or they're the wrong person. Right? And so, let' me give you this supplement sale example. This is just, uh, zoned in on. timing, presenting it at the right time. So I say this because some of you might have an amazing upsell offer. You're just, you're just presenting it not when the problem, uh, exists, all right, or creates itself. So I tried to sell supplements after people bought services from me, and it didn't work. Now, I could give you a whole bunch of theories around that. Someone comes in saying they wanna lose weight, and I say, \"Awesome, let's get you signed up.\" And then right then after they signed up, I say, \"Oh, by the way, buy these supplements.\" And you might think, \"Wait, isn't that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they"
+    },
+    {
+      "chapter": "cfa",
+      "char_end": 4379,
+      "char_start": 2024,
+      "id": "cfa:1",
+      "score": 26.231,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long as I figure out a, way to pay it back in that first month. All right? And so you can use the credit card to get your customers, then pay the card back, then reuse the money, recycle the cash, and get another customer. All right? As long as your gross profit in the first 30 days is greater than the cost to get them, you can never carry debt while growing your business, which is a sizeable advantage. So, this is what level two advertising. would look like. So 30 days' gross profit. So that means that, like, if I got that first customer, right, if it cost me, uh, 160 to get the customer, and I got 180 back in gross profit, then it's just all free. They're all... It's just all free. That's how it works. And so note is that if you have an XXX limit on your credit card, you'll always be limited by the amount of customers that XXX number buys you before having to pay it back. And so this assumes that you don't reinvest the excess profits after the 30 days on marketing rather than putting it in your pocket. Okay? So once you unlock acquisition this way, typically, you will get limited by your operational constraints before you will get limited by your advertising constraints. You will not be able to handle the amount of customers that you can bring in, and that's what's going to throttle down your advertising more than you can't get more customers. So that's level two is that now your 30-day gross profit is greater than your CAC, which means you're just getting free customers now. Level three is where I like to live, which is that my 30-day gross profit is greater than two times the cost of getting a customer. Okay? So pay attention to what happens here. So you make gross profit more than twice CAC in the first 30 days, and the result is never being limited by money at all. Remember, the first version of this is, like, I'm limited by the amount of credit card that I can, uh, have access to. With this, there are no limits. And this is the goal of everything that I'm gonna basically go"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

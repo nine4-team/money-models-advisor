@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "why ad viability should be judged by gross profit contribution margin cash payback not revenue when fulfillment delivery costs are high",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 638.0,
+  "returncode": 0,
+  "stderr": ""
+}

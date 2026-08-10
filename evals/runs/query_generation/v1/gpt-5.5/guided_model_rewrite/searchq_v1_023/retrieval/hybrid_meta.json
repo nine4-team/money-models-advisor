@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Decoy Offers premium offer difficult to advertise directly compare deliberately limited option side by side additional value clear",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 599.0,
+  "returncode": 0,
+  "stderr": ""
+}

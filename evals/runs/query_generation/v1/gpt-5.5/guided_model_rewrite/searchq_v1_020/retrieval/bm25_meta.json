@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Win Your Money Back goal-based refund results-based refund customer pays upfront earns refund or credit by achieving defined result proof worth more than refund service business measurable outcome accountability risk reversal before-and-after proof",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 88.5,
+  "returncode": 0,
+  "stderr": ""
+}

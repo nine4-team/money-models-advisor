@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Anchor Upsell premium option first high-price anchor five to ten times normal price standard option core value preserved why it makes normal offer feel less expensive",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 648.0,
+  "returncode": 0,
+  "stderr": ""
+}
