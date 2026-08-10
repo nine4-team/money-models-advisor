@@ -1,0 +1,5 @@
+Short version: you have a premium STR and second-home design model with strong first-sale economics. Core offer is about `$15k`, gross margin is roughly `77%`, CAC is about `$1k`, and first-30-day gross profit is about `$10k`, so payback is effectively one month.
+
+That means paid acquisition is worth testing. The main gap is offer-stack depth: attraction offer and upsell exist, but downsell and continuity are still missing.
+
+Recorded the eval trace at `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/run.json`.

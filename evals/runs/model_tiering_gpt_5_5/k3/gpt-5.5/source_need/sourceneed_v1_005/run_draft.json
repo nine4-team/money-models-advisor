@@ -1,0 +1,31 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "created_at": "2026-07-08T23:55:42Z",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "focus_aliases": {
+      "first sale": [
+        "diagnostic offer"
+      ],
+      "maximize 30 day profits": [
+        "first-month profit",
+        "first 30 day gross profit"
+      ],
+      "next offer": [
+        "pre-designed room packages"
+      ],
+      "upsell after first sale": [
+        "post-sale upsell",
+        "post-sale add-on"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

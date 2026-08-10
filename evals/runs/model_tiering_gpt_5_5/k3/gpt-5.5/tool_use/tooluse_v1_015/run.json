@@ -1,0 +1,94 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot CLI output included economics.cac=1000 and field_sources.economics.cac.value_note",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs CLI output included prior accepted-average turn",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "final answer used saved snapshot field source and prior logs",
+      "evidence_type": "assistant_message",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/business_dir",
+  "case_id": "tooluse_v1_015",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_015",
+    "created_at": "2026-07-09T00:20:23Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 55829.7,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 23316
+  },
+  "completed_at": "2026-07-09T00:20:17Z",
+  "created_at": "2026-07-09T00:19:27Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_referral_partner_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/business_dir/.money-model-advisor/sessions/20260709T001953.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18",
+    "start": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "instruction_read",
+      "note": "Read money-model-advisor skill and source-need rules"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "index": 3,
+      "kind": "decision",
+      "note": "Answered from saved field_sources and prior logs; no source search or calculation was needed"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    }
+  ]
+}

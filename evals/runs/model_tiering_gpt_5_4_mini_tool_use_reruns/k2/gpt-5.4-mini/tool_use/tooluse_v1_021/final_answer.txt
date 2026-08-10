@@ -1,0 +1,1 @@
+No. Based on the current numbers, acquisition is not the bottleneck on unit economics. CAC is about k, first-30-day gross profit is about k, and payback is about 1 month, so acquisition looks economically workable. The more likely constraints are somewhere else in the system, not the cash payback math.

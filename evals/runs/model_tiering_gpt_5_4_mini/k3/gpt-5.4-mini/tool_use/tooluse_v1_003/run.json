@@ -1,0 +1,95 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir <business_dir> returned business_snapshot.v1 with CAC missing before the update.",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set --business-dir <business_dir> economics.cac=1000 updated the saved snapshot.",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "I saved CAC at $1,000, counting referral partner payments.",
+      "evidence_type": "assistant_message",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir",
+  "case_id": "tooluse_v1_003",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_003",
+    "created_at": "2026-07-08T18:09:00Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 133683.9,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 77986
+  },
+  "completed_at": "2026-07-08T18:08:56Z",
+  "created_at": "2026-07-08T18:06:46Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/business_snapshot.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/sessions/20260708T180809.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:e20ef325119846f9be334e9921d1af78563eaf5cc51f17060521a8624cb79193",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Loaded the saved advisor snapshot and confirmed CAC was missing."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> economics.cac=1000",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Saved the user-provided CAC estimate, including referral partner payments."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Recorded the advisor turn with the saved CAC fact."
+    },
+    {
+      "command": "python3 scripts/capture_tool_use_trace.py complete ...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Wrote the completion trace artifact for the eval run."
+    }
+  ]
+}

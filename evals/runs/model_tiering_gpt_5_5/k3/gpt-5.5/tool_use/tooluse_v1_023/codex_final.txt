@@ -1,0 +1,3 @@
+Earlier, we said CAC was roughly `$1,000` from referral partners and Google Business Profile, not paid ads. We also said that with `$10,000` in first-30-day gross profit and `$1,000` CAC, there is room to test paid acquisition carefully.
+
+I recorded the turn and created `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_023/run.json`.

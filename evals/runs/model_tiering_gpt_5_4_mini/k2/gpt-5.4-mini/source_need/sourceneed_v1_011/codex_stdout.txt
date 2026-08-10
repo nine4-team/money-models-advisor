@@ -1,0 +1,8 @@
+Recorded: source search needed = `true`.
+
+Source need:
+- `intent`: `diagnostic_evidence`
+- `subjects`: `unit-economics`
+- `focus_terms`: `referral partner payments`, `$1k per client`, `CAC`, `acquisition cost`
+
+Saved at [run.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/run.json)

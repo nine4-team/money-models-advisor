@@ -1,0 +1,60 @@
+{
+  "case_id": "sourceneed_v1_004",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_004",
+    "created_at": "2026-07-07T21:43:14Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 71199.5,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 30429
+  },
+  "completed_at": "2026-07-07T21:43:06Z",
+  "created_at": "2026-07-07T21:42:03Z",
+  "notes": "Conceptual comparison with enough offer-stack context to support a source-backed distinction between the front-end attraction offer and the post-sale upsell.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/business",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "front-end attraction offer",
+      "post-sale add-on",
+      "premium next offer",
+      "after first sale",
+      "front-end offer vs upsell"
+    ],
+    "intent": "comparison_evidence",
+    "query_variants": [
+      "attraction offer vs upsell front-end post-sale",
+      "front-end offer and post-sale add-on difference",
+      "attraction offer upsell after first sale"
+    ],
+    "subjects": [
+      "offers",
+      "upsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_004",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks to compare two Money Models concepts.",
+    "focus_aliases": {
+      "after first sale": [
+        "post-sale add-on",
+        "pre-designed room packages"
+      ],
+      "front end": [
+        "front-end offer",
+        "STR Design Diagnostic"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+  }
+}

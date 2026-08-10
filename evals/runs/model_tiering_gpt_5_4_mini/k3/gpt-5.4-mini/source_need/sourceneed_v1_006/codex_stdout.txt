@@ -1,0 +1,6 @@
+Recorded `source-search-decision: true` for `sourceneed_v1_006` and wrote [`run.json`](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_006/run.json) with:
+
+- `intent`: `diagnostic_evidence`
+- `subjects`: `["continuity"]`
+- `focus_terms`: recurring maintenance, membership offer, payback period, recurring gross profit
+- `query_variants`: 3 continuity-focused variants

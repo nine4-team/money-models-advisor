@@ -27,20 +27,20 @@ It does not run an agent and does not call external model services. Acting agent
 
 ## Metrics
 
-- Case pass rate: 100.0%
-- Expected source events matched: 6 / 6
-- Extra source-event warnings: 0 cases / 0 events
+- Case pass rate: 16.7%
+- Expected source events matched: 0 / 6
+- Extra source-event warnings: 5 cases / 6 events
 
 ## Case Table
 
 | Case | Split | Expected Events | Actual Events | Matched Events | Status | Findings |
 |---|---|---:|---:|---:|---|---|
-| `sourceevents_v1_001` | `post_hardening_regression` | 2 | 2 | 2 | `passed` | - |
-| `sourceevents_v1_002` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
-| `sourceevents_v1_003` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
+| `sourceevents_v1_001` | `post_hardening_regression` | 2 | 2 | 0 | `failed` | missing_intent:diagnostic_evidence, subject_miss:diagnostic_evidence, focus_miss:diagnostic_evidence, missing_chunks:diagnostic_evidence, missing_intent:recommendation_evidence, subject_miss:recommendation_evidence, focus_miss:recommendation_evidence, missing_chunks:recommendation_evidence, extra_events:2 |
+| `sourceevents_v1_002` | `post_hardening_regression` | 1 | 1 | 0 | `failed` | missing_intent:diagnostic_evidence, subject_miss:diagnostic_evidence, focus_miss:diagnostic_evidence, missing_chunks:diagnostic_evidence, extra_events:1 |
+| `sourceevents_v1_003` | `post_hardening_regression` | 1 | 1 | 0 | `failed` | missing_intent:recommendation_evidence, subject_miss:recommendation_evidence, focus_miss:recommendation_evidence, missing_chunks:recommendation_evidence, extra_events:1 |
 | `sourceevents_v1_004` | `post_hardening_regression` | 0 | 0 | 0 | `passed` | - |
-| `sourceevents_v1_005` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
-| `sourceevents_v1_006` | `post_hardening_regression` | 1 | 1 | 1 | `passed` | - |
+| `sourceevents_v1_005` | `post_hardening_regression` | 1 | 1 | 0 | `failed` | missing_intent:teaching_evidence, subject_miss:teaching_evidence, focus_miss:teaching_evidence, missing_chunks:teaching_evidence, extra_events:1 |
+| `sourceevents_v1_006` | `post_hardening_regression` | 1 | 1 | 0 | `failed` | missing_intent:recommendation_evidence, subject_miss:recommendation_evidence, focus_miss:recommendation_evidence, missing_chunks:recommendation_evidence, extra_events:1 |
 
 ## Decision
 

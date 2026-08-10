@@ -1,0 +1,103 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot output showing empty business context",
+      "evidence_type": "cli",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business-profile.md, product-ladder.md, services-and-pricing.md",
+      "evidence_type": "file",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set output with business facts",
+      "evidence_type": "cli",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_005",
+    "created_at": "2026-07-07T23:21:44Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 104911.9,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 21691
+  },
+  "completed_at": "2026-07-07T23:21:38Z",
+  "created_at": "2026-07-07T23:19:59Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/business-profile.md",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/product-ladder.md",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/services-and-pricing.md"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:e8aa7ecb97d27eec986daca8ee2fdaaef5511f204d38d764b663b78be4578fc4",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "index": 1,
+      "kind": "file_read"
+    },
+    {
+      "index": 2,
+      "kind": "file_read"
+    },
+    {
+      "index": 3,
+      "kind": "file_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> business.business_type=... business.icp=... business.delivery_model=... money_model.core_offer.exists=true money_model.core_offer.description=... money_model.attraction_offer.exists=true money_model.attraction_offer.description=...",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    },
+    {
+      "command": "python3 scripts/capture_tool_use_trace.py complete <run_dir> ...",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+Recorded decision: `source_search_decision=true`.
+
+Source need:
+- `intent`: `recommendation_evidence`
+- `subjects`: `["downsells"]`
+- `focus_terms`: `["payment plans","cash-tight buyer","lower upfront cash","deferred payment option","conversion friction"]`
+
+Saved to `evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_007/run.json`.

@@ -1,0 +1,3 @@
+We decided it in the prior referral partner context turn at `2026-06-05T22:48:51Z`. In that turn, you said “that works as an average,” and I treated referral partner acquisition as roughly `$1,000 CAC` for now.
+
+I also recorded the advisor turn and created the required eval trace at `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_013/run.json`.

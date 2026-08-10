@@ -1,0 +1,3 @@
+I’m seeing the draft design fee range at $15,000 to $60,000, depending on project scope, in [services-and-pricing.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_018/business_dir/services-and-pricing.md).
+
+If you want, I can next help you translate that into an ad budget ceiling.

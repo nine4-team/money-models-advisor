@@ -1,0 +1,5 @@
+Recorded the source-need decision in `run.json`.
+
+Decision: `source_search_decision: true`
+
+Source need: `unit-economics` with `teaching_evidence`, focused on fulfillment cost, gross profit, CAC, ad payback, and paid acquisition capacity.

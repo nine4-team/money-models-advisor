@@ -10,18 +10,18 @@ from .snapshot import BusinessSnapshot
 @dataclass(frozen=True)
 class AdvisorQuery:
     intent: str
-    layers: tuple[str, ...]
+    subjects: tuple[str, ...]
     target_namespaces: tuple[str, ...]
     query: str
     reason: str
 
     @property
-    def layer(self) -> str | None:
-        return self.layers[0] if len(self.layers) == 1 else None
+    def subject(self) -> str | None:
+        return self.subjects[0] if len(self.subjects) == 1 else None
 
     def to_dict(self) -> dict[str, object]:
         payload = asdict(self)
-        payload["layer"] = self.layer
+        payload["subject"] = self.subject
         return payload
 
 
@@ -30,7 +30,7 @@ class SourceNeed:
     """Planner-selected source support for one source-material search call."""
 
     intent: str
-    layers: tuple[str, ...]
+    subjects: tuple[str, ...]
     focus_terms: tuple[str, ...]
     user_turn: str = ""
     query_variants: tuple[str, ...] = ()
@@ -55,7 +55,7 @@ def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) ->
         queries.append(
             AdvisorQuery(
                 intent=source_need.intent,
-                layers=source_need.layers,
+                subjects=source_need.subjects,
                 target_namespaces=target_namespaces,
                 query=variant_text,
                 reason="Agent-generated query variant for the selected source need.",
@@ -68,7 +68,7 @@ def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) ->
     queries.append(
         AdvisorQuery(
             intent=source_need.intent,
-            layers=source_need.layers,
+            subjects=source_need.subjects,
             target_namespaces=target_namespaces,
             query=fallback_text,
             reason="Deterministic fallback query from source-need focus terms and compact business context.",
@@ -125,7 +125,7 @@ def _dedupe_queries(queries: list[AdvisorQuery]) -> list[AdvisorQuery]:
     seen = set()
     deduped = []
     for query in queries:
-        key = (query.layers, query.target_namespaces, query.query.lower())
+        key = (query.subjects, query.target_namespaces, query.query.lower())
         if key in seen:
             continue
         seen.add(key)

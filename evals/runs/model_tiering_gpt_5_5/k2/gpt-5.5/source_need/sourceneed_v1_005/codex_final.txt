@@ -1,0 +1,5 @@
+Recorded decision: source search needed.
+
+Source need: `recommendation_evidence` for `upsells`, focused on the diagnostic offer, post-sale upsell/add-on, next offer, pre-designed room packages, and first-month/first-30-day gross profit.
+
+Trace written to `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_005/run.json`.

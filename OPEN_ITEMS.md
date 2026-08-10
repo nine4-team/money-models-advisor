@@ -46,6 +46,15 @@ harder confirmation (n=30 gives thin margins). Not needed to break the tie.
 Record and plan in `EVAL_METHODOLOGY_PLAN.md` and the two
 `evals/reports/retrieval_hit_at_1_*` reports.
 
+## Report writing
+
+### Finish the narrative clarity + compression pass
+The `narrative.html` report is mid-edit. A compression pass removed duplicated
+summary layers and cross-section echoes; still open are a full clarity re-pass
+(hold every line to "a cold reader understands it," not just "no jargon"),
+tightening the remaining content-heavy prose, and deleting dead CSS. Detail and
+status: `NARRATIVE_CLARITY_PASS.md` (Round 2).
+
 ## Cheap cleanup
 
 ### Reconcile the stale docs

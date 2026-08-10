@@ -157,7 +157,7 @@ def write_report(run: dict[str, Any], report_path: Path) -> None:
         [
             "## Labeling Rule",
             "",
-            "The fields `target_layer_hint` and `candidate_chapters` are reviewer orientation only. They are not final relevance labels.",
+            "The fields `target_subject_hint` and `candidate_chapters` are reviewer orientation only. They are not final relevance labels.",
             "",
             "Final retrieval selection should use chunk-level judgments:",
             "",

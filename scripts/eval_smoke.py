@@ -28,7 +28,7 @@ def main() -> int:
                 continue
             record = json.loads(line)
             total += 1
-            results = index.search(record["query"], layer=record.get("layer"), top_k=5)
+            results = index.search(record["query"], subject=record.get("subject"), top_k=5)
             chapters = [result.chunk.chapter for result in results]
             ok = any(chapter in chapters for chapter in record["must_chapters"])
             passed += int(ok)

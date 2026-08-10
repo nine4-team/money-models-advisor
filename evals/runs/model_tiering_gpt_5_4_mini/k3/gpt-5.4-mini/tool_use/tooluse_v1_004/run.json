@@ -1,0 +1,82 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot-before-update",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "gross-profit-10000",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot-after-update",
+      "evidence_type": "cli_output",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir",
+  "case_id": "tooluse_v1_004",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_004",
+    "created_at": "2026-07-08T18:11:12Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 132356.2,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 41008
+  },
+  "completed_at": "2026-07-08T18:10:41Z",
+  "created_at": "2026-07-08T18:09:00Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:3fd17efe80e96a62bfb57fafe67ec129c14edfee133cec59697bd8e8e13893d9",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate gross-profit --inputs {\"price\":13000,\"cogs\":3000}",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir economics.first_30_day_gross_profit=10000",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

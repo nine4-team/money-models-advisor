@@ -57,7 +57,7 @@ TIERS = {
 }
 
 KEYS = {
-    "source_need": ["strict_case_pass_rate", "search_decision_accuracy", "layer_exact_match_rate", "avg_focus_recall"],
+    "source_need": ["strict_case_pass_rate", "search_decision_accuracy", "subject_exact_match_rate", "avg_focus_recall"],
     "tool_use": ["strict_case_pass_rate", "avg_required_recall", "forbidden_violation_rate", "false_search_rate", "missed_search_rate"],
 }
 

@@ -1,0 +1,10 @@
+In this setup, the attraction offer is the front-end entry point: the `$597` STR Design Diagnostic. Its job is to get the right prospect in the door, create trust, and qualify them.
+
+The upsell is the add-on after someone has already said yes: the `$5,000` pre-designed room packages. Its job is to increase the transaction size after conversion.
+
+So the clean distinction is:
+
+- Attraction offer: brings the lead in
+- Upsell: expands the sale after the lead is already bought in
+
+The `$15,000` full-service design sits in the middle as the core offer.

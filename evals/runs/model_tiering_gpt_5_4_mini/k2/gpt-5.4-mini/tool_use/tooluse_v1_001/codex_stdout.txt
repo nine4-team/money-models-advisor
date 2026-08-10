@@ -1,0 +1,3 @@
+It is the referral-partner CAC. I’ve got it saved as `$1,000` per client in `economics.cac`, and that is the acquisition cost I use in the payback math.
+
+If you want, I can also show how that $1k flows through to payback period and allowable acquisition spend.

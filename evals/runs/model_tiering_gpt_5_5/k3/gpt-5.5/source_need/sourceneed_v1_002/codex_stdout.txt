@@ -1,0 +1,15 @@
+Recorded `source_search_decision: true`.
+
+Source need:
+```json
+{
+  "intent": "teaching_evidence",
+  "subjects": ["unit-economics"],
+  "focus_terms": [
+    "client-financed acquisition",
+    "CAC payback",
+    "first 30 day gross profit",
+    "acquisition capacity"
+  ]
+}
+```

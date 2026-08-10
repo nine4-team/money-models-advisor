@@ -1,0 +1,90 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "shell_stdout",
+      "index": 1
+    },
+    {
+      "action": "clarify",
+      "confidence": "direct",
+      "evidence_ref": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions/20260709T001850.json",
+      "evidence_type": "session_record",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir",
+  "case_id": "tooluse_v1_014",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_014",
+    "created_at": "2026-07-09T00:19:27Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 61797.0,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 20496
+  },
+  "completed_at": "2026-07-09T00:19:24Z",
+  "created_at": "2026-07-09T00:18:25Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions/20260709T001850.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "instruction_read",
+      "summary": "Read .codex/skills/money-model-advisor/SKILL.md, source_need_rules.md, and JOB_DESCRIPTION.md guidance."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Loaded empty BusinessSnapshot; advisor_state was insufficient_context with missing business, goal, offer, and economics fields."
+    },
+    {
+      "index": 2,
+      "kind": "file_inspection",
+      "summary": "Inspected business_dir files and found only .money-model-advisor/business_snapshot.json, so there were no local business docs to extract facts from."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_014/business_dir --user-message <message> --assistant-message <clarifying_question>",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Recorded a final turn asking for the business, customer, and desired money-model outcome; no search or calculation was appropriate."
+    }
+  ]
+}

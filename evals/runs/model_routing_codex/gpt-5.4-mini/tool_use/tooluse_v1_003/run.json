@@ -1,0 +1,75 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir economics.cac=1000",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final response summarizes the saved CAC fact and the remaining missing economics fields.",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir",
+  "case_id": "tooluse_v1_003",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_003",
+    "created_at": "2026-07-07T21:55:26Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 114907.7,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 46490
+  },
+  "completed_at": "2026-07-07T21:55:12Z",
+  "created_at": "2026-07-07T21:53:31Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:58eb6fec9fe3627fb5055174ab4f34384d4e2b4a3160d061ac1f12fe3b220a33",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_003/business_dir economics.cac=1000",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    }
+  ]
+}

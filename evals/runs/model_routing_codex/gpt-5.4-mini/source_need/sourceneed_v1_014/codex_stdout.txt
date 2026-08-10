@@ -1,0 +1,3 @@
+Recorded `source-search-decision: false` with `source-need: null`.
+
+Reason: the turn is missing the business facts needed for a source-backed ads recommendation, especially CAC, gross profit, fulfillment cost, and current offer economics.

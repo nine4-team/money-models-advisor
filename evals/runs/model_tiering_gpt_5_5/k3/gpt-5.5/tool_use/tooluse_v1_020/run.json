@@ -1,0 +1,75 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "evidence_note": "The user asked a simple vocabulary question, and source_need_rules.md explicitly says not to search for simple vocabulary answers that can be answered without a citation.",
+      "index": 0
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/business_dir",
+  "case_id": "tooluse_v1_020",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_020",
+    "created_at": "2026-07-09T00:26:29Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 50539.1,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 39185
+  },
+  "completed_at": "2026-07-09T00:26:24Z",
+  "created_at": "2026-07-09T00:25:38Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/sessions/20260709T002601.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "file_read",
+      "note": "consulted advisor operating rules",
+      "path": ".codex/skills/money-model-advisor/SKILL.md"
+    },
+    {
+      "index": 1,
+      "kind": "file_read",
+      "note": "confirmed simple vocabulary answers do not require source search",
+      "path": ".codex/skills/money-model-advisor/source_need_rules.md"
+    },
+    {
+      "index": 2,
+      "kind": "decision",
+      "note": "answered directly; no saved business state, calculation, diagnosis, logs, local docs, or source-material search needed"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <user_turn> --assistant-message <answer> --actions-json [...] --source-events-json [] --cited-chunk-ids-json []",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "note": "recorded completed advisor turn"
+    }
+  ]
+}

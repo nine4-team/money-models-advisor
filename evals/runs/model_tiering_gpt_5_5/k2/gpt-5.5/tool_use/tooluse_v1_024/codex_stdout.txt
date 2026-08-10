@@ -1,0 +1,3 @@
+I completed the eval case and created `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_024/run.json`.
+
+Final advisory action: clarify before recommending ads. The snapshot had offer-stack context but no `economics.cac` or `economics.first_30_day_gross_profit`, so no payback calculation or source search was appropriate. I recorded the turn asking for those two numbers before deciding whether to run paid ads next month.

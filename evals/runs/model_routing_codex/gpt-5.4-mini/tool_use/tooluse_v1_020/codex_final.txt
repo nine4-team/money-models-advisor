@@ -1,0 +1,8 @@
+Gross profit is what I have left after subtracting the direct cost of delivering what I sold from the revenue I brought in.
+
+In plain English:
+- Revenue = money in
+- Direct costs = the stuff it takes to make or deliver the thing
+- Gross profit = what’s left before overhead like rent, admin payroll, or marketing
+
+Example: if I bring in $100 and it costs me $40 to deliver, gross profit is $60.

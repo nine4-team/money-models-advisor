@@ -1,0 +1,1 @@
+Used snapshot economics and Money Models unit-economics retrieval to recommend testing paid ads against CAC payback: keep CAC well below the $10,000 first-30-day gross profit, initially around $3,000-$5,000, while proving repeatability and delivery capacity.

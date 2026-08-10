@@ -20,12 +20,12 @@ class SourceEventTraceEvalTest(unittest.TestCase):
             "expected_source_events": [
                 {
                     "intent": "diagnostic_evidence",
-                    "layers": ["unit-economics"],
+                    "subjects": ["unit-economics"],
                     "focus_terms": ["CAC", "payback period"],
                 },
                 {
                     "intent": "recommendation_evidence",
-                    "layers": ["upsells"],
+                    "subjects": ["upsells"],
                     "focus_terms": ["upsell", "first 30 day gross profit"],
                 },
             ],
@@ -35,7 +35,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "diagnostic_evidence",
-                        "layers": ["unit-economics"],
+                        "subjects": ["unit-economics"],
                         "focus_terms": ["CAC", "payback period", "gross margin"],
                     },
                     "chunks": [{"id": "payback-period:0"}],
@@ -43,7 +43,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "recommendation_evidence",
-                        "layers": ["upsells"],
+                        "subjects": ["upsells"],
                         "focus_terms": ["upsell", "first 30 day gross profit"],
                     },
                     "chunks": [{"id": "upsells:0"}],
@@ -65,12 +65,12 @@ class SourceEventTraceEvalTest(unittest.TestCase):
             "expected_source_events": [
                 {
                     "intent": "diagnostic_evidence",
-                    "layers": ["unit-economics"],
+                    "subjects": ["unit-economics"],
                     "focus_terms": ["CAC", "payback period"],
                 },
                 {
                     "intent": "recommendation_evidence",
-                    "layers": ["upsells"],
+                    "subjects": ["upsells"],
                     "focus_terms": ["upsell", "first 30 day gross profit"],
                 },
             ],
@@ -80,7 +80,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "recommendation_evidence",
-                        "layers": ["unit-economics", "offers", "upsells"],
+                        "subjects": ["unit-economics", "offers", "upsells"],
                         "focus_terms": ["CAC", "payback period", "upsell", "first 30 day gross profit"],
                     },
                     "chunks": [{"id": "payback-period:0"}],
@@ -102,7 +102,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
             "expected_source_events": [
                 {
                     "intent": "diagnostic_evidence",
-                    "layers": ["unit-economics"],
+                    "subjects": ["unit-economics"],
                     "focus_terms": ["CAC", "payback period"],
                 }
             ],
@@ -112,7 +112,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "diagnostic_evidence",
-                        "layers": ["unit-economics"],
+                        "subjects": ["unit-economics"],
                         "focus_terms": ["CAC", "payback period"],
                     },
                     "inspected_chunks": [{"id": "payback-period:0"}],
@@ -132,7 +132,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
             "expected_source_events": [
                 {
                     "intent": "recommendation_evidence",
-                    "layers": ["offers"],
+                    "subjects": ["offers"],
                     "focus_terms": ["front-end offer", "paid acquisition"],
                 }
             ],
@@ -142,7 +142,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "recommendation_evidence",
-                        "layers": ["offers"],
+                        "subjects": ["offers"],
                         "focus_terms": ["front end offer", "paid acquisition test"],
                     },
                     "chunks": [{"id": "make-your-money-model:0"}],
@@ -162,7 +162,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
             "expected_source_events": [
                 {
                     "intent": "diagnostic_evidence",
-                    "layers": ["unit-economics"],
+                    "subjects": ["unit-economics"],
                     "focus_terms": ["CAC", "payback period"],
                 }
             ],
@@ -172,7 +172,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "diagnostic_evidence",
-                        "layers": ["unit-economics"],
+                        "subjects": ["unit-economics"],
                         "focus_terms": ["CAC", "payback period"],
                     },
                     "chunks": [{"id": "payback-period:0"}],
@@ -180,7 +180,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "recommendation_evidence",
-                        "layers": ["offers"],
+                        "subjects": ["offers"],
                         "focus_terms": ["front end offer"],
                     },
                     "chunks": [{"id": "make-your-money-model:0"}],
@@ -219,7 +219,7 @@ class SourceEventTraceEvalTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "teaching_evidence",
-                        "layers": ["offers"],
+                        "subjects": ["offers"],
                         "focus_terms": ["front end offer"],
                     },
                     "chunks": [{"id": "make-your-money-model:0"}],

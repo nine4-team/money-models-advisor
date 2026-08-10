@@ -4,7 +4,7 @@
 
 This eval checks the step between next-action classification and query construction. Given conversation context, snapshot state, and the current user turn, the acting agent should decide whether source-material search is needed and, if it is, generate a structured source need.
 
-A source need contains retrieval intent, corpus layer or layers, and focus terms. The query builder then turns that structure into a concrete search query.
+A source need contains retrieval intent, corpus subject or subjects, and focus terms. The query builder then turns that structure into a concrete search query.
 
 Some labeled cases may include `acceptable_intents`. That is eval-only label tolerance for turns where more than one primary retrieval objective is defensible; runtime source needs still emit one intent per source-material search call.
 
@@ -32,31 +32,31 @@ This script does not run an agent and does not call external model services. It 
 - Search decision accuracy: 100.0%
 - False search rate: 0.0%
 - Missed search rate: 0.0%
-- Layer exact match on expected-search cases: 90.0%
-- Intent match on expected-search cases (recorded annotation, not scored): 100.0%
-- Average layer recall on expected-search cases: 0.950
-- Average focus-term concept recall on expected-search cases: 0.750
+- Subject exact match on expected-search cases: 0.0%
+- Intent match on expected-search cases (recorded annotation, not scored): 0.0%
+- Average subject recall on expected-search cases: -
+- Average focus-term concept recall on expected-search cases: -
 - Correct no-search controls: 100.0%
 
 ## Interpretation
 
 - The search/no-search boundary is clean on this eval slice.
-- Source-need precision meets the seed gate for retrieval-backend comparison; carry any residual layer misses as caveats.
+- Source-need precision is still partial; inspect subject misses before treating retrieval-backend comparisons as meaningful.
 
 ## Case Table
 
-| Case | Split | Expected Search | Actual Search | Intent (recorded) | Layer Recall | Focus Concept Recall | Status | Failure Reasons |
+| Case | Split | Expected Search | Actual Search | Intent (recorded) | Subject Recall | Focus Concept Recall | Status | Failure Reasons |
 |---|---|---:|---:|---|---:|---:|---|---|
-| `sourceneed_v1_001` | `dev` | true | true | `teaching_evidence` | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_002` | `dev` | true | true | `teaching_evidence` | 1.000 | 0.750 | `scored` | - |
-| `sourceneed_v1_003` | `dev` | true | true | `diagnostic_evidence` | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_004` | `scenario_holdout` | true | true | `comparison_evidence` | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_005` | `dev` | true | true | `recommendation_evidence` | 1.000 | 1.000 | `scored` | - |
-| `sourceneed_v1_006` | `dev` | true | true | `recommendation_evidence` | 1.000 | 0.750 | `scored` | - |
-| `sourceneed_v1_007` | `dev` | true | true | `recommendation_evidence` | 1.000 | 0.600 | `scored` | - |
-| `sourceneed_v1_008` | `dev` | true | true | `recommendation_evidence` | 0.500 | 0.600 | `scored` | - |
-| `sourceneed_v1_009` | `dev` | true | true | `diagnostic_evidence` | 1.000 | 0.800 | `scored` | - |
-| `sourceneed_v1_010` | `dev` | true | true | `recommendation_evidence` | 1.000 | 0.600 | `scored` | - |
+| `sourceneed_v1_001` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_002` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_003` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_004` | `scenario_holdout` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_005` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_006` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_007` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_008` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_009` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
+| `sourceneed_v1_010` | `dev` | true | true | - | - | - | `scored_with_trace_issues` | missing_valid_subjects, search_true_but_no_valid_source_need |
 | `sourceneed_v1_011` | `dev` | false | false | - | 1.000 | 1.000 | `scored` | - |
 | `sourceneed_v1_012` | `dev` | false | false | - | 1.000 | 1.000 | `scored` | - |
 | `sourceneed_v1_013` | `scenario_holdout` | false | false | - | 1.000 | 1.000 | `scored` | - |
@@ -74,7 +74,7 @@ Use this eval before comparing BM25, dense, or hybrid retrieval. If the acting a
   "source_search_decision": true,
   "source_need": {
     "intent": "teaching_evidence",
-    "layers": [
+    "subjects": [
       "unit-economics"
     ],
     "focus_terms": [

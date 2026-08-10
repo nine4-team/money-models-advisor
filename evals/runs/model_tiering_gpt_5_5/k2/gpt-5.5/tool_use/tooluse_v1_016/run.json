@@ -1,0 +1,102 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command exited 0 and returned business_snapshot.v1 with economics.cac=1000 and economics.first_30_day_gross_profit=10000",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "calculate payback command exited 0 and returned metric payback value 1.0 for CAC 1000 and month_one_gp 10000",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final answer used the calculation result and derived break-even CAC/headroom from supplied numbers.",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/business_dir",
+  "case_id": "tooluse_v1_016",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_016",
+    "created_at": "2026-07-08T23:38:55Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 68002.3,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 28892
+  },
+  "completed_at": "2026-07-08T23:38:51Z",
+  "created_at": "2026-07-08T23:37:47Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/business_dir/.money-model-advisor/sessions/20260708T233809.json",
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_016/business_dir/.money-model-advisor/sessions/20260708T233839.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18",
+    "start": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "instruction_read",
+      "summary": "Read money-model-advisor skill and project guidance."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Loaded diagnosable business snapshot with CAC and first-30-day gross profit context."
+    },
+    {
+      "index": 2,
+      "kind": "decision",
+      "summary": "Chose deterministic calculation because the user supplied CAC and first-month gross profit and asked for break-even room."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs <cac/month_one_gp/monthly_recurring_gp>",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Calculated payback from CAC 1000, month-one gross profit 10000, and recurring gross profit 0; CLI returned 1.0 month."
+    },
+    {
+      "index": 4,
+      "kind": "compose",
+      "summary": "Derived first-month break-even CAC as 10000 and remaining CAC headroom as 9000."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ... --actions-json ... --metadata-json ...",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command",
+      "summary": "Recorded the advisor turn with actions and calculation metadata; no source events or citations were used."
+    }
+  ]
+}

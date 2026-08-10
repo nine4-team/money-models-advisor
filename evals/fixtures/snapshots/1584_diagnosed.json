@@ -1,7 +1,7 @@
 {
   "advisor_state": {
     "advisory_status": "recommendable",
-    "likely_retrieval_layers": [
+    "likely_retrieval_subjects": [
       "unit-economics",
       "offers"
     ],

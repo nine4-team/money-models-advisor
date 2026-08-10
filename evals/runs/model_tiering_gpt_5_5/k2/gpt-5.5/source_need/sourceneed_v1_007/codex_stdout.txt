@@ -1,0 +1,6 @@
+Recorded `source_search_decision: true` in `run.json`.
+
+Source need:
+- `intent`: `recommendation_evidence`
+- `subjects`: `["downsells"]`
+- Focus: payment plans / pay-less-now option for a cash-tight buyer considering the design package.

@@ -1,0 +1,7 @@
+Completed the eval case.
+
+Created and validated:
+
+[run.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/run.json)
+
+Actions taken: read snapshot, read logs, searched Money Models unit-economics source material, calculated payback, recorded the advisory turn, then captured the trace with `capture_tool_use_trace.py complete`.

@@ -1,0 +1,107 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "actor_reported_command",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "actor_reported_command",
+      "index": 1
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[5]",
+      "evidence_type": "actor_reported_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir",
+  "case_id": "tooluse_v1_022",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_022",
+    "created_at": "2026-07-07T23:04:08Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 127494.9,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 51290
+  },
+  "completed_at": "2026-07-07T23:03:55Z",
+  "created_at": "2026-07-07T23:01:05Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "sed -n '1,240p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+      "index": 0,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/JOB_DESCRIPTION.md",
+      "index": 1,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir\"",
+      "index": 2,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir\" --full",
+      "index": 3,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "sed -n '1,260p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/source_need_rules.md",
+      "index": 4,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/tool_use/tooluse_v1_022/business_dir\" --source-need-json '{\"intent\":\"comparison_evidence\",\"layers\":[\"offers\",\"upsells\"],\"focus_terms\":[\"attraction offer\",\"upsell\",\"front-end offer\",\"post-sale offer\"],\"user_turn\":\"what\u2019s the difference between an attraction offer and an upsell in this situation?\",\"query_variants\":[\"attraction offer vs upsell front-end offer post-sale offer\",\"difference between attraction offer and upsell\",\"money models attraction offer upsell\"]}' --top-k 5",
+      "index": 5,
+      "kind": "actor_reported_command",
+      "source": "actor_output.json"
+    }
+  ]
+}

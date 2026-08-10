@@ -1,0 +1,19 @@
+Recorded the source-search decision as `true`.
+
+Source need:
+```json
+{
+  "intent": "diagnostic_evidence",
+  "subjects": ["unit-economics"],
+  "focus_terms": [
+    "paid acquisition capacity",
+    "ad spend",
+    "CAC",
+    "first 30 day gross profit",
+    "payback period",
+    "client financed acquisition"
+  ]
+}
+```
+
+Rationale: the snapshot already has the needed economics, and the user is asking how to interpret paid acquisition capacity, so this needs Money Models unit-economics support rather than a clarifying question.

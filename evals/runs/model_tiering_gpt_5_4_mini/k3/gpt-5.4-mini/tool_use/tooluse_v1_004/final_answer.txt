@@ -1,0 +1,1 @@
+Calculated first-30-day gross profit at $10k from a $13k first payment and $3k fulfillment cost; saved it to the snapshot.

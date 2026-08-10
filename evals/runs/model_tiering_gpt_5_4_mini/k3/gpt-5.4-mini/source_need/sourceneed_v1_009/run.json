@@ -1,0 +1,60 @@
+{
+  "case_id": "sourceneed_v1_009",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_009",
+    "created_at": "2026-07-07T22:51:10Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 50166.7,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 9228
+  },
+  "completed_at": "2026-07-07T22:51:01Z",
+  "created_at": "2026-07-07T22:50:20Z",
+  "notes": "Snapshot is payback-ready, so this is a unit-economics diagnosis of whether CAC or gross profit per client is the bottleneck.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "gross profit per client",
+      "payback period",
+      "acquisition capacity"
+    ],
+    "intent": "diagnostic_evidence",
+    "query_variants": [
+      "CAC vs gross profit per client bottleneck",
+      "is the constraint CAC or gross profit per client",
+      "gross profit per client acquisition capacity payback period"
+    ],
+    "subjects": [
+      "unit-economics"
+    ],
+    "user_turn": "is the problem really CAC, or do we mostly need to make more gross profit per client?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_009",
+    "conversation_context": "The snapshot is payback-ready. The user asks whether CAC or gross profit is the real bottleneck.",
+    "focus_aliases": {
+      "acquisition": [
+        "acquisition capacity"
+      ],
+      "gross profit": [
+        "gross profit per client"
+      ],
+      "make more per customer": [
+        "gross profit per client"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "is the problem really CAC, or do we mostly need to make more gross profit per client?"
+  }
+}

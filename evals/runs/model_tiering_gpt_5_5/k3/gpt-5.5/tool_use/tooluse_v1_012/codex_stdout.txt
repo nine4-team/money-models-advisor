@@ -1,0 +1,3 @@
+CAC stands for **Customer Acquisition Cost**: the average amount it costs to acquire one new customer.
+
+I recorded the eval turn and created the required trace artifact at [run.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_012/run.json).

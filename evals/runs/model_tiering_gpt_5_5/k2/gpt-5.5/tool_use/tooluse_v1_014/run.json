@@ -1,0 +1,82 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "clarify",
+      "confidence": "direct",
+      "evidence_note": "Final advisor answer asks for the business, customer, and current improvement goal before diagnosing the money model.",
+      "index": 0
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir",
+  "case_id": "tooluse_v1_014",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_014",
+    "created_at": "2026-07-08T23:36:53Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 80742.6,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 35047
+  },
+  "completed_at": "2026-07-08T23:36:46Z",
+  "created_at": "2026-07-08T23:35:32Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions/20260708T233602.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "instruction_read",
+      "summary": "Consulted money-model-advisor skill and JOB_DESCRIPTION north star."
+    },
+    {
+      "command": "find evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir -maxdepth 2 -type f | sort",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "shell_command",
+      "summary": "Found only .money-model-advisor/business_snapshot.json; no local business docs to inspect for facts."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Snapshot showed null business context, null offer/economics fields, and advisory_status insufficient_context."
+    },
+    {
+      "index": 3,
+      "kind": "decision",
+      "summary": "With no business, customer, goal, economics, or local docs, chose one clarifying question rather than calculation, diagnosis, or retrieval."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_014/business_dir --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command",
+      "summary": "Recorded the final advisor turn with empty source events and cited chunk IDs."
+    }
+  ]
+}

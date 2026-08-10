@@ -1,0 +1,8 @@
+Recorded `source-search-decision: true`.
+
+Source need:
+- `intent`: `recommendation_evidence`
+- `subjects`: `["upsells"]`
+- `focus_terms`: `["post-sale upsell", "next offer", "first-month profit", "pre-designed room packages"]`
+- `query_variants`: 3 upsell-focused variants targeting the post-sale next offer
+

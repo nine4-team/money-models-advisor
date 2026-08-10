@@ -1,0 +1,120 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_stdout",
+      "index": 2
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[4]",
+      "evidence_type": "cli_stdout",
+      "index": 3
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions/20260709T001520.json",
+      "evidence_type": "session_record",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir",
+  "case_id": "tooluse_v1_010",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_010",
+    "created_at": "2026-07-09T00:16:03Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 88032.9,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 34857
+  },
+  "completed_at": "2026-07-09T00:15:57Z",
+  "created_at": "2026-07-09T00:14:35Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions/20260709T001520.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f",
+    "start": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "instruction_read",
+      "summary": "Read .codex/skills/money-model-advisor/SKILL.md and source_need_rules.md."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Loaded diagnosed business snapshot."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir --full",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Inspected prior acquisition-spend context."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_010/business_dir --source-need-json <unit-economics recommendation evidence> --top-k 5",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Retrieved Money Models source chunks for CAC, gross profit, payback, and CFA."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs {\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command",
+      "summary": "Confirmed payback value of 1.0 month."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <message> --assistant-message <answer> --actions-json <actions> --source-events-json <source_events> --cited-chunk-ids-json <chunks> --metadata-json <metadata>",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command",
+      "summary": "Recorded final advisory turn."
+    }
+  ]
+}

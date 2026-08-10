@@ -1,0 +1,60 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "evidence_ref": "case_context",
+      "evidence_type": "visible_context",
+      "index": 0
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/business_dir",
+  "case_id": "tooluse_v1_020",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_020",
+    "created_at": "2026-07-08T18:41:20Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 96087.5,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 34033
+  },
+  "completed_at": "2026-07-08T18:41:15Z",
+  "created_at": "2026-07-08T18:39:44Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_020/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "detail": "Used the visible case context and confirmed the question is a plain vocabulary definition.",
+      "index": 0,
+      "kind": "read_context"
+    },
+    {
+      "detail": "Recorded the completed turn in the local advisor log.",
+      "index": 1,
+      "kind": "turn_record"
+    }
+  ]
+}

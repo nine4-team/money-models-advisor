@@ -21,11 +21,11 @@ def run_cli(args: list[str]) -> str:
 
 class CliTest(unittest.TestCase):
     def test_search_returns_source_material(self):
-        output = run_cli(["search", "CAC payback", "--layer", "unit-economics", "--top-k", "1"])
+        output = run_cli(["search", "CAC payback", "--subject", "unit-economics", "--top-k", "1"])
         payload = json.loads(output)
 
         self.assertEqual(payload["query"], "CAC payback")
-        self.assertEqual(payload["layer"], "unit-economics")
+        self.assertEqual(payload["subject"], "unit-economics")
         self.assertEqual(len(payload["source_material"]), 1)
         self.assertIn("text", payload["source_material"][0])
         self.assertIn("id", payload["source_material"][0])
@@ -44,7 +44,7 @@ class CliTest(unittest.TestCase):
             )
             source_need = {
                 "intent": "teaching_evidence",
-                "layers": ["unit-economics"],
+                "subjects": ["unit-economics"],
                 "focus_terms": ["CAC", "payback period", "gross profit"],
                 "user_turn": "why do we need fulfillment cost?",
                 "query_variants": ["why cost to deliver affects gross profit CAC payback ads"],
@@ -64,7 +64,7 @@ class CliTest(unittest.TestCase):
 
             self.assertEqual(payload["source_need"]["intent"], "teaching_evidence")
             self.assertEqual(payload["source_need"]["query_variants"], ["why cost to deliver affects gross profit CAC payback ads"])
-            self.assertEqual(payload["queries"][0]["layer"], "unit-economics")
+            self.assertEqual(payload["queries"][0]["subject"], "unit-economics")
             self.assertEqual(payload["queries"][0]["query"], "why cost to deliver affects gross profit CAC payback ads")
             self.assertIn("CAC", payload["queries"][1]["query"])
             self.assertEqual(len(payload["source_material"]), 2)
@@ -85,7 +85,7 @@ class CliTest(unittest.TestCase):
             )
             source_need = {
                 "intent": "teaching_evidence",
-                "layers": ["unit-economics"],
+                "subjects": ["unit-economics"],
                 "target_namespaces": ["unit-economics"],
                 "focus_terms": ["CAC", "payback period", "gross profit"],
                 "query_variants": ["CAC first 30 day gross profit payback period"],
@@ -183,7 +183,7 @@ class CliTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "diagnostic_evidence",
-                        "layers": ["unit-economics"],
+                        "subjects": ["unit-economics"],
                         "focus_terms": ["CAC", "payback period"],
                     },
                     "query": "CAC payback period coaching business",
@@ -192,7 +192,7 @@ class CliTest(unittest.TestCase):
                 {
                     "source_need": {
                         "intent": "recommendation_evidence",
-                        "layers": ["upsells"],
+                        "subjects": ["upsells"],
                         "focus_terms": ["upsell", "first 30 day gross profit"],
                     },
                     "query": "upsell first 30 day gross profit coaching business",
@@ -293,7 +293,7 @@ class CliTest(unittest.TestCase):
                     {
                         "source_need": {
                             "intent": "diagnostic_evidence",
-                            "layers": ["unit-economics"],
+                            "subjects": ["unit-economics"],
                             "focus_terms": ["CAC", "gross profit", "payback period"],
                             "user_turn": "what should we do next?",
                             "query_variants": [
@@ -343,7 +343,7 @@ class CliTest(unittest.TestCase):
                     {
                         "source_need": {
                             "intent": "teaching_evidence",
-                            "layers": ["unit-economics"],
+                            "subjects": ["unit-economics"],
                             "focus_terms": ["payback period"],
                             "query_variants": [
                                 "payback period recover CAC",
@@ -383,7 +383,7 @@ class CliTest(unittest.TestCase):
                     {
                         "source_need": {
                             "intent": "teaching_evidence",
-                            "layers": ["unit-economics"],
+                            "subjects": ["unit-economics"],
                             "focus_terms": ["payback period"],
                             "query_variants": [
                                 "payback period recover CAC",
@@ -473,7 +473,7 @@ class CliTest(unittest.TestCase):
                     {
                         "source_need": {
                             "intent": "teaching_evidence",
-                            "layers": ["unit-economics"],
+                            "subjects": ["unit-economics"],
                             "focus_terms": ["payback period"],
                         },
                         "queries": ["payback period"],
@@ -504,7 +504,7 @@ class CliTest(unittest.TestCase):
                     {
                         "source_need": {
                             "intent": "teaching_evidence",
-                            "layers": ["unit-economics"],
+                            "subjects": ["unit-economics"],
                             "focus_terms": ["payback period"],
                             "query_variants": [
                                 "payback period recover CAC",

@@ -1,0 +1,32 @@
+{
+  "case_id": "sourceneed_v1_013",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_013",
+    "created_at": "2026-07-07T22:54:34Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 40872.2,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 17201
+  },
+  "completed_at": "2026-07-07T22:54:31Z",
+  "created_at": "2026-07-07T22:53:53Z",
+  "notes": "Simple vocabulary question; no Money Models source-material search needed.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_013",
+    "conversation_context": "The snapshot is empty. The user asks a simple business vocabulary question.",
+    "scenario_id": "1584_design",
+    "user_turn": "what does gross profit mean in plain English?"
+  }
+}

@@ -1,0 +1,1 @@
+CAC is $1k because referral partner acquisition was accepted as roughly $1,000 per client; the snapshot stores that as a user-chat fact.

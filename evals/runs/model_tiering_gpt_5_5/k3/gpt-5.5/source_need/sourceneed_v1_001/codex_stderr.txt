@@ -1,0 +1,977 @@
+2026-07-08T23:52:46.985161Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T23:52:47.012959Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T23:52:47.027357Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-08T23:52:47.029219Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-08T23:52:47.487794Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:52:47.487993Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:52:47.730301Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T23:52:47.741924Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T23:52:47.751266Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-08T23:52:47.751966Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+OpenAI Codex v0.143.0
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019f4425-f864-7663-b632-bc9fda977823
+--------
+user
+# Source-Need Generation Acting Prompt
+
+You are the acting agent for a Money Model Advisor source-need generation eval case.
+
+Consult the money-model-advisor skill before you decide, then use the local CLI to act. The skill is the authoritative rulebook for the search decision, intents, and subjects; where a case is a close call, its rules decide it, including the rule that a unit-economics search stays `diagnostic_evidence` even when the final answer contains a recommendation. This prompt only summarizes the skill. Expected labels are intentionally hidden.
+
+Task: decide whether Money Models source-material search is needed for the current turn. If search is needed, generate a structured source need with `intent`, `subjects`, and `focus_terms`. If search is not needed, set source need to null.
+
+Apply the decision rules below exactly. They are inlined verbatim from the
+authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+skill points to, so there is one source of truth.
+
+# Source-Need Decision Rules
+
+Single source of truth for deciding whether to run a source-material search and how
+to structure the source need. The operating skill and the eval acting prompts both
+pull these rules from this file. Do not restate them anywhere else — change them here.
+
+## When to search
+
+- Search source material when the answer needs Money Models support for a concept,
+  comparison, diagnosis, or recommendation, and the snapshot or prior-session context
+  already holds enough business facts to make a source-backed claim.
+- Do not use source search as a substitute for missing business facts. If the
+  responsible next move is to get CAC, gross profit, fulfillment cost, current offer
+  details, or prior-session context first, do that instead and do not search this step.
+- Do not search for simple vocabulary answers that can be answered without a citation.
+- A missing optional field should not block search when the user is asking for
+  conceptual source support.
+
+## Layers (these drive retrieval — choose carefully)
+
+Choose layers by the mechanism the source material must support:
+
+- front-end attraction offer -> `offers`
+- post-sale add-on or premium next offer -> `upsells`
+- payment plan, pay-less-now option, or friction-reducing alternative -> `downsells`
+- recurring maintenance, membership, or repeat post-purchase service -> `continuity`
+- CAC, gross profit, payback, or acquisition-capacity interpretation -> `unit-economics`
+
+Keep layers minimal; extra layers make retrieval noisier. Use payback or CAC as focus
+terms without adding `unit-economics` when the source claim is about a concrete fix
+mechanism such as continuity or upsells.
+
+## One retrieval job per search (this drives layer and focus-term choice)
+
+- Generate one source need per search. If an answer needs two retrieval jobs, run two
+  searches with two source needs instead of mixing them into one.
+- Boundary rule: a search that interprets the business's economics stays on
+  `unit-economics` even when the final answer contains a recommendation. If the source
+  is justifying why the economics point a certain way, keep it a `unit-economics`
+  search; then run a separate search on the concrete fix layer (`offers`, `upsells`,
+  `continuity`, `downsells`) for the recommended move.
+- Do not add a `unit-economics` search merely because known economics appear in the
+  answer. If the frame is already established and the user asks for a concrete fix,
+  search only for the fix mechanism unless the answer makes a fresh source-backed
+  economics claim.
+
+## Focus terms and query variants
+
+- `focus_terms`: the specific evidence the search must surface.
+- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+  the current turn. Three is the normal target; four is the cap. If you need more than
+  four, split the answer into narrower source needs. Do not rely on the deterministic
+  fallback query except for debugging.
+
+## Intent (recorded annotation, not scored)
+
+Record the retrieval job as `intent` for traceability. Intent does not change retrieval
+— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+closest fit and move on:
+
+- `teaching_evidence`: explain a Money Models concept or framework.
+- `diagnostic_evidence`: support interpretation of known business economics or constraints.
+- `comparison_evidence`: compare two concepts, options, or layers.
+- `recommendation_evidence`: support a concrete next move after enough business facts are known.
+
+Allowed intents: `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, `recommendation_evidence`.
+Allowed subjects: `unit-economics`, `offers`, `upsells`, `downsells`, `continuity`.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business`
+
+Visible case context:
+
+```json
+{
+  "case_id": "sourceneed_v1_001",
+  "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+  "scenario_id": "1584_design",
+  "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+}
+```
+
+After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+```
+
+Your final response should only summarize the recorded decision.
+
+2026-07-08T23:52:49.044931Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-07-08T23:52:53.223287Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-07-08T23:52:53.223401Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-08T23:52:53.247384Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:52:53.251799Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:52:53.252228Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:52:53.254941Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T23:52:54.045697Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:52:54.047631Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:52:54.047902Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:52:54.049242Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ll use the `money-model-advisor` skill for the source-need decision, then record the trace with the required CLI command.
+exec
+/bin/zsh -lc "sed -n '1,240p' JOB_DESCRIPTION.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Target Job Description
+
+This project is being built as a portfolio artifact for the Acquisition.com Senior AI Engineer role.
+
+Source:
+
+- Original posting: https://jobs.ashbyhq.com/acquisition/9789dd49-c6bd-4672-8cd3-9f67f2dea7c1
+- Verbatim posting text below, pulled from the Ashby posting API on 2026-06-11. The Role Summary section further down is an earlier paraphrase; where wording matters (e.g. mapping deliverables to JD phrases), use the verbatim text.
+- Requirement-by-requirement project audit: `JD_REQUIREMENTS_AUDIT.md`
+
+## Verbatim Posting (Ashby, 2026-06-11)
+
+### Role
+
+The Senior AI Engineer builds and deploys production-grade AI agents that power ACQ Vantage. This role exists to turn AI capability into real, usable systems that drive business outcomes, not experiments or prototypes.
+
+You will work inside a lean Technology team to design, build, and ship agentic workflows that interact with internal tools, data systems, and user-facing products. You are responsible for taking ideas from concept to production, with a focus on reliability, speed, and practical value.
+
+This is a hands-on engineering role. You are writing code daily, iterating quickly, and working directly with modern AI tooling. You are expected to understand how LLMs behave in production, not just how they work in theory.
+
+### Responsibilities
+
+- Design, build, and deploy production-grade AI agents and end-to-end agentic workflows that solve real business problems across ACQ Vantage
+- Integrate LLMs with internal systems, APIs, and data sources, ensuring reliability, performance, and clean abstractions
+- Collaborate with product and engineering teams to prioritize, ship, and iterate on AI features quickly
+- Own and improve RAG pipelines across multiple Pinecone namespaces, including chunking strategy, embedding model selection, hybrid retrieval, and reranking
+- Build and maintain an evaluation framework, including golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, and regression detection
+- Optimize model routing and tiering to improve unit economics while maintaining output quality
+- Instrument the AI layer for observability, including cost-per-request, token usage, quality signals, and anomaly detection
+
+### Requirements
+
+- 7+ years shipping production software systems (distributed backends, APIs, deployment pipelines, monitoring)
+- 2+ years building production RAG systems using vector databases (Pinecone, Qdrant, FAISS, or Weaviate), including embedding strategies, index management, and retrieval tuning
+- Built and deployed AI agents or multi-step LLM workflows in production, including tool use, orchestration, and system integrations
+- Built or contributed to an evaluation framework for an LLM-based product (retrieval quality measurement, regression detection, model-switching decisions based on data)
+- Reduced LLM API costs in production through model routing, caching, token management, or architectural improvements
+- Worked across multiple LLM providers (OpenAI, Anthropic, or equivalent) and understands tradeoffs in prompt behavior, token economics, and failure modes
+- Comfortable in both TypeScript and Python (our stack uses both)
+
+### Results
+
+- Production AI agents are deployed and actively used within ACQ Vantage
+- New AI-driven features move from concept to production in weeks, not months
+- Agent performance improves over time through structured testing and iteration
+- AI systems operate reliably with minimal failure or manual intervention
+- Engineering output translates directly into measurable business impact
+
+## Role Summary
+
+The role is a hands-on senior AI engineering role focused on building production-grade AI agents for ACQ Vantage. The job description emphasizes practical systems that drive business outcomes, not isolated demos or prototypes.
+
+Core responsibilities and requirements include:
+
+- design, build, and deploy production-grade AI agents and end-to-end agentic workflows
+- integrate LLMs with internal tools, APIs, data systems, and user-facing products
+- own and improve RAG pipelines, including chunking strategy, embedding model selection, hybrid retrieval, and reranking
+- build and maintain evaluation frameworks with golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, and regression detection
+- optimize model routing and tiering to improve unit economics while maintaining quality
+- instrument the AI layer for observability, including cost per request, token usage, quality signals, and anomaly detection
+- reduce LLM API costs with model routing, caching, token management, or architectural improvements
+- understand tradeoffs across multiple LLM providers
+- work comfortably in Python and TypeScript
+
+## Project North Star
+
+The project should demonstrate senior-level AI engineering judgment for this JD. The goal is not to build the largest possible demo. The goal is to show that we can:
+
+1. Build an agent-operated product loop with clear tool boundaries.
+2. Use retrieval and source grounding in a measurable way.
+3. Build and use golden datasets to drive architecture decisions.
+4. Compare retrieval strategies with explicit metrics and failure analysis.
+5. Cache embeddings and business context to control cost.
+6. Record traces and reports that support regression detection.
+7. Explain why each architectural choice was adopted, rejected, or deferred.
+
+## Current Fit
+
+Strong alignment:
+
+- The advisor is agent-operated and CLI-backed: the agent plans; deterministic tools persist state, calculate, search, and record traces.
+- The project has explicit eval assets for next-action classification, source-need generation, source-event logging, query quality, chunking, and retrieval backend comparison.
+- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; hybrid retrieval with constrained query variants is the candidate product path after a 30-case golden search-query comparison.
+- Embeddings are cached under `.cache/embeddings/` so repeated vector runs reuse corpus and query vectors.
+- The narrative records decisions, metrics, misses, and non-adoptions rather than treating every sophisticated technique as automatically better.
+
+Weak alignment / gaps to close:
+
+- The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
+- The vector backend now has a storage boundary with local and Pinecone implementations. The local backend remains the fast eval baseline; the Pinecone path is indexed and parity-tested on the 30-case generated-variants slice.
+- Query generation v2 is implemented as constrained `SourceNeed.query_variants` with the deterministic flattened query retained as a fallback/control.
+- Observability is now present through traces, Markdown reports, summary JSON, case-level JSONL, latency metrics, cache hit/miss accounting, and estimated embedding cost. Token/cost reporting is explicit for embeddings; agent work remains outside the API path.
+- The biggest remaining JD gap is model routing and tiering. The project has golden datasets and trace scorers, but it has not yet run the same agent tasks across multiple model/provider tiers to decide which tasks can use cheaper/faster models without losing output quality.
+- Multi-provider tradeoff evidence is also missing. The narrative should not merely say "understands OpenAI and Anthropic"; it should show comparable runs, observed failure modes, latency/cost notes, and a routing decision.
+
+## Next JD-Aligned Work
+
+The next highest-signal work is:
+
+1. Run model-routing and tiering evals over the existing golden suites: tool-use judgment, source-need generation, source-event/query-variant traces, and product-smoke turns. Compare at least a strong model tier and a cheaper/faster model tier, and record pass rate, failure modes, latency, and cost or cost proxy.
+2. Convert those results into a routing decision: which tasks require the strongest model, which can safely use a cheaper tier, and which should stay deterministic inside the CLI.
+3. Add multi-provider comparison evidence where available, especially prompt-following behavior, trace completeness, source-need quality, token economics, and failure modes.
+4. Optimize hosted-vector latency by reducing or parallelizing query-variant fanout while preserving hybrid+variants quality.
+5. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
+6. Keep Pinecone quality/latency/cache/cost reports beside local vector-store reports as the hosted retrieval guardrail.
+
+This keeps the work aligned with the JD: model routing must be data-backed, retrieval choices must be measured, and production-oriented infrastructure should support the eval story rather than distract from it.
+
+exec
+/bin/zsh -lc "sed -n '1,260p' .codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Follow the source-need decision rules in `source_need_rules.md` (same directory). That
+file is the single source of truth for when to search, how to choose layers, how to split
+one answer into multiple source needs, how to write `query_variants`, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+2026-07-08T23:52:57.286465Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:52:57.288130Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:52:57.288375Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:52:57.289733Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ve loaded the operating skill and project north star. Next I’m reading the specific source-need rules file the skill delegates to, then I’ll complete the trace artifact.
+exec
+/bin/zsh -lc "sed -n '1,240p' .codex/skills/money-model-advisor/source_need_rules.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Source-Need Decision Rules
+
+Single source of truth for deciding whether to run a source-material search and how
+to structure the source need. The operating skill and the eval acting prompts both
+pull these rules from this file. Do not restate them anywhere else — change them here.
+
+## When to search
+
+- Search source material when the answer needs Money Models support for a concept,
+  comparison, diagnosis, or recommendation, and the snapshot or prior-session context
+  already holds enough business facts to make a source-backed claim.
+- Do not use source search as a substitute for missing business facts. If the
+  responsible next move is to get CAC, gross profit, fulfillment cost, current offer
+  details, or prior-session context first, do that instead and do not search this step.
+- Do not search for simple vocabulary answers that can be answered without a citation.
+- A missing optional field should not block search when the user is asking for
+  conceptual source support.
+
+## Layers (these drive retrieval — choose carefully)
+
+Choose layers by the mechanism the source material must support:
+
+- front-end attraction offer -> `offers`
+- post-sale add-on or premium next offer -> `upsells`
+- payment plan, pay-less-now option, or friction-reducing alternative -> `downsells`
+- recurring maintenance, membership, or repeat post-purchase service -> `continuity`
+- CAC, gross profit, payback, or acquisition-capacity interpretation -> `unit-economics`
+
+Keep layers minimal; extra layers make retrieval noisier. Use payback or CAC as focus
+terms without adding `unit-economics` when the source claim is about a concrete fix
+mechanism such as continuity or upsells.
+
+## One retrieval job per search (this drives layer and focus-term choice)
+
+- Generate one source need per search. If an answer needs two retrieval jobs, run two
+  searches with two source needs instead of mixing them into one.
+- Boundary rule: a search that interprets the business's economics stays on
+  `unit-economics` even when the final answer contains a recommendation. If the source
+  is justifying why the economics point a certain way, keep it a `unit-economics`
+  search; then run a separate search on the concrete fix layer (`offers`, `upsells`,
+  `continuity`, `downsells`) for the recommended move.
+- Do not add a `unit-economics` search merely because known economics appear in the
+  answer. If the frame is already established and the user asks for a concrete fix,
+  search only for the fix mechanism unless the answer makes a fresh source-backed
+  economics claim.
+
+## Focus terms and query variants
+
+- `focus_terms`: the specific evidence the search must surface.
+- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+  the current turn. Three is the normal target; four is the cap. If you need more than
+  four, split the answer into narrower source needs. Do not rely on the deterministic
+  fallback query except for debugging.
+
+## Intent (recorded annotation, not scored)
+
+Record the retrieval job as `intent` for traceability. Intent does not change retrieval
+— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+closest fit and move on:
+
+- `teaching_evidence`: explain a Money Models concept or framework.
+- `diagnostic_evidence`: support interpretation of known business economics or constraints.
+- `comparison_evidence`: compare two concepts, options, or layers.
+- `recommendation_evidence`: support a concrete next move after enough business facts are known.
+
+2026-07-08T23:53:00.250892Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:53:00.253070Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:53:00.253354Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:53:00.255169Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The case is about explaining how fulfillment cost changes gross profit, payback, and ad viability. Because the snapshot already has CAC and first-30-day gross profit, this is a source-backed unit-economics interpretation rather than a request to collect missing numbers.
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/capture_source_need_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Prepare and complete source-need generation trace artifacts."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import shutil
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_NEED_RULES_PATH = ROOT / ".codex" / "skills" / "money-model-advisor" / "source_need_rules.md"
+STATE_DIR_NAME = ".money-model-advisor"
+SNAPSHOT_FILE = "business_snapshot.json"
+SESSIONS_DIR = "sessions"
+RUN_FILE = "run.json"
+
+PROMPT_HIDDEN_FIELDS = {
+    "split",
+    "snapshot_fixture_path",
+    "prior_sessions_fixture_path",
+    "expected_search",
+    "expected_source_need",
+    "acceptable_intents",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+
+def utc_now() -> str:
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            record["_line_number"] = line_number
+            records.append(record)
+    return records
+
+
+def find_case(cases_path: Path, case_id: str) -> dict[str, Any]:
+    for case in load_jsonl(cases_path):
+        if case.get("case_id") == case_id:
+            return case
+    raise SystemExit(f"case not found: {case_id}")
+
+
+def rel_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def copy_session_fixture(source: Path, sessions_dir: Path) -> None:
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    fixture_id = payload.get("fixture_id", source.stem)
+    turns = payload.get("turns")
+    if isinstance(turns, list):
+        for index, turn in enumerate(turns, 1):
+            session = {
+                "created_at": turn.get("timestamp"),
+                "user_message": turn.get("user_message"),
+                "assistant_message": turn.get("assistant_message"),
+                "actions": turn.get("actions", []),
+                "retrieval_queries": turn.get("retrieval_queries", []),
+                "evidence": turn.get("evidence", []),
+                "fixture_id": fixture_id,
+            }
+            write_json(sessions_dir / f"{fixture_id}_{index:02d}.json", session)
+        return
+    shutil.copy2(source, sessions_dir / source.name)
+
+
+def prepare_business_dir(case: dict[str, Any], business_dir: Path) -> dict[str, str]:
+    state_dir = business_dir / STATE_DIR_NAME
+    sessions_dir = state_dir / SESSIONS_DIR
+    snapshot_path = state_dir / SNAPSHOT_FILE
+
+    state_dir.mkdir(parents=True, exist_ok=True)
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(ROOT / case["snapshot_fixture_path"], snapshot_path)
+
+    prior_sessions_fixture = case.get("prior_sessions_fixture_path")
+    if prior_sessions_fixture:
+        copy_session_fixture(ROOT / prior_sessions_fixture, sessions_dir)
+
+    return {
+        "business_dir": rel_path(business_dir),
+        "snapshot": rel_path(snapshot_path),
+        "sessions_dir": rel_path(sessions_dir),
+    }
+
+
+def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
+    visible_case = {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")}
+    return "\n".join(
+        [
+            "# Source-Need Generation Acting Prompt",
+            "",
+            "You are the acting agent for a Money Model Advisor source-need generation eval case.",
+            "",
+            "Consult the money-model-advisor skill before you decide, then use the local CLI to act. The skill is the authoritative rulebook for the search decision, intents, and subjects; where a case is a close call, its rules decide it, including the rule that a unit-economics search stays `diagnostic_evidence` even when the final answer contains a recommendation. This prompt only summarizes the skill. Expected labels are intentionally hidden.",
+            "",
+            "Task: decide whether Money Models source-material search is needed for the current turn. If search is needed, generate a structured source need with `intent`, `subjects`, and `focus_terms`. If search is not needed, set source need to null.",
+            "",
+            "Apply the decision rules below exactly. They are inlined verbatim from the",
+            "authoritative rulebook (`source_need_rules.md`); this is the same file the operating",
+            "skill points to, so there is one source of truth.",
+            "",
+            SOURCE_NEED_RULES_PATH.read_text(encoding="utf-8").strip(),
+            "",
+            "Allowed intents: `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, `recommendation_evidence`.",
+            "Allowed subjects: `unit-economics`, `offers`, `upsells`, `downsells`, `continuity`.",
+            "",
+            f"Business dir: `{business_dir}`",
+            "",
+            "Visible case context:",
+            "",
+            "```json",
+            json.dumps(visible_case, indent=2, sort_keys=True),
+            "```",
+            "",
+            "After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.",
+            "",
+        ]
+    )
+
+
+def read_json_value(value: str | None) -> Any:
+    if value is None:
+        return None
+    candidate = Path(value)
+    if candidate.exists():
+        return json.loads(candidate.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def prepare(args: argparse.Namespace) -> int:
+    case = find_case(args.cases, args.case_id)
+    run_dir = args.runs_dir / args.phase / args.case_id
+    if run_dir.exists() and not args.force:
+        raise SystemExit(f"run directory already exists; pass --force to replace: {run_dir}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    business_dir = run_dir / "business"
+    paths = prepare_business_dir(case, business_dir)
+    prompt = render_acting_prompt(case, business_dir)
+    (run_dir / "acting_prompt.md").write_text(prompt, encoding="utf-8")
+    write_json(
+        run_dir / "run_draft.json",
+        {
+            "case_id": case["case_id"],
+            "created_at": utc_now(),
+            "paths": paths,
+            "visible_context": {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")},
+        },
+    )
+    print(json.dumps({"run_dir": rel_path(run_dir), "acting_prompt": rel_path(run_dir / "acting_prompt.md")}, indent=2))
+    return 0
+
+
+def complete(args: argparse.Namespace) -> int:
+    run_dir = args.run_dir
+    draft_path = run_dir / "run_draft.json"
+    if not draft_path.exists():
+        raise SystemExit(f"missing run_draft.json: {draft_path}")
+    draft = json.loads(draft_path.read_text(encoding="utf-8"))
+    source_need = read_json_value(args.source_need)
+    source_search_decision = args.source_search_decision.lower() == "true"
+    if not source_search_decision:
+        source_need = None
+
+    payload = {
+        **draft,
+        "completed_at": utc_now(),
+        "source_search_decision": source_search_decision,
+        "source_need": source_need,
+        "notes": args.notes,
+    }
+    write_json(run_dir / RUN_FILE, payload)
+    print(json.dumps({"run": rel_path(run_dir / RUN_FILE)}, indent=2))
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    prepare_parser = subparsers.add_parser("prepare")
+    prepare_parser.add_argument("case_id")
+    prepare_parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_source_need_cases.jsonl")
+    prepare_parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "source_need")
+    prepare_parser.add_argument("--phase", default="pilot")
+    prepare_parser.add_argument("--force", action="store_true")
+    prepare_parser.set_defaults(func=prepare)
+
+    complete_parser = subparsers.add_parser("complete")
+    complete_parser.add_argument("run_dir", type=Path)
+    complete_parser.add_argument("--source-search-decision", required=True, choices=("true", "false"))
+    complete_parser.add_argument("--source-need", help="JSON object or path to JSON file. Omit when source search decision is false.")
+    complete_parser.add_argument("--notes")
+    complete_parser.set_defaults(func=complete)
+
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+exec
+/bin/zsh -lc "rg \"source-need|source_need|subjects|layers\" tests scripts src evals -g '*.py' -g '*.jsonl' | head -n 120" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+src/money_model_architect/vector_store.py:def subject_namespaces(subjects: Sequence[str], *, prefix: str = "money-models") -> list[str]:
+src/money_model_architect/vector_store.py:    for subject in subjects:
+tests/test_eval_source_event_traces.py:                    "subjects": ["unit-economics"],
+tests/test_eval_source_event_traces.py:                    "subjects": ["upsells"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["unit-economics"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["upsells"],
+tests/test_eval_source_event_traces.py:                    "subjects": ["unit-economics"],
+tests/test_eval_source_event_traces.py:                    "subjects": ["upsells"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["unit-economics", "offers", "upsells"],
+tests/test_eval_source_event_traces.py:                    "subjects": ["unit-economics"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["unit-economics"],
+tests/test_eval_source_event_traces.py:                    "subjects": ["offers"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["offers"],
+tests/test_eval_source_event_traces.py:                    "subjects": ["unit-economics"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["unit-economics"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["offers"],
+tests/test_eval_source_event_traces.py:                    "source_need": {
+tests/test_eval_source_event_traces.py:                        "subjects": ["offers"],
+scripts/eval_search_query_quality.py:    "expected_subjects",
+scripts/eval_search_query_quality.py:    query_subjects: tuple[str | None, ...]
+scripts/eval_search_query_quality.py:    expected_subjects: tuple[str, ...]
+scripts/eval_search_query_quality.py:        expected_subjects = case.get("expected_subjects")
+scripts/eval_search_query_quality.py:        if not isinstance(expected_subjects, list) or not expected_subjects:
+scripts/eval_search_query_quality.py:            errors.append(f"{ref}: expected_subjects must be a non-empty list")
+scripts/eval_search_query_quality.py:            unknown_subjects = sorted(set(expected_subjects) - SUBJECTS)
+scripts/eval_search_query_quality.py:            if unknown_subjects:
+scripts/eval_search_query_quality.py:                errors.append(f"{ref}: unknown expected_subjects: {', '.join(unknown_subjects)}")
+scripts/eval_search_query_quality.py:        expected_subjects = case["expected_subjects"]
+scripts/eval_search_query_quality.py:        subjects = tuple(expected_subjects)
+scripts/eval_search_query_quality.py:        return [(subjects, target_namespaces, case["reference_query"], "Reviewer-authored source-specific reference query.")]
+scripts/eval_search_query_quality.py:    source_need = SourceNeed(
+scripts/eval_search_query_quality.py:        subjects=tuple(case["expected_subjects"]),
+scripts/eval_search_query_quality.py:        (query.subjects, query.target_namespaces, query.query, query.reason)
+scripts/eval_search_query_quality.py:        for query in build_advisor_queries(snapshot, source_need=source_need)
+scripts/eval_search_query_quality.py:    if target_namespace_source == "expected_subjects":
+scripts/eval_search_query_quality.py:        return tuple(case["expected_subjects"])
+scripts/eval_search_query_quality.py:    subjects: tuple[str, ...],
+scripts/eval_search_query_quality.py:        return index.search(query, subjects=subjects, top_k=top_k)
+scripts/eval_search_query_quality.py:            subjects=subjects,
+scripts/eval_search_query_quality.py:            subjects=subjects,
+scripts/eval_search_query_quality.py:        expected_subjects = tuple(case["expected_subjects"])
+scripts/eval_search_query_quality.py:        returned_subjects = [set(result.chunk.subjects) for result in search_results]
+scripts/eval_search_query_quality.py:        expected_subject_set = set(expected_subjects)
+scripts/eval_search_query_quality.py:                queries=tuple(query for _subjects, _target_namespaces, query, _reason in query_specs),
+scripts/eval_search_query_quality.py:                query_reasons=tuple(reason for _subjects, _target_namespaces, _query, reason in query_specs),
+scripts/eval_search_query_quality.py:                query_subjects=tuple(
+scripts/eval_search_query_quality.py:                    subjects[0] if len(subjects) == 1 else None
+scripts/eval_search_query_quality.py:                    for subjects, _target_namespaces, _query, _reason in query_specs
+scripts/eval_search_query_quality.py:                    target_namespaces for _subjects, target_namespaces, _query, _reason in query_specs
+scripts/eval_search_query_quality.py:                expected_subjects=expected_subjects,
+scripts/eval_search_query_quality.py:                top1_subject_match=bool(returned_subjects) and bool(returned_subjects[0] & expected_subject_set),
+scripts/eval_search_query_quality.py:                any_subject_match_at_5=any(subjects & expected_subject_set for subjects in returned_subjects[:5]),
+scripts/eval_search_query_quality.py:                    " ".join(query for _subjects, _target_namespaces, query, _reason in query_specs),
+scripts/eval_search_query_quality.py:        "namespace_policy": "source_need_target_namespaces" if retrieval_backend in {"vector", "hybrid"} else "n/a",
+scripts/eval_search_query_quality.py:    subjects, target_namespaces, query, _reason = query_spec
+scripts/eval_search_query_quality.py:        subjects=subjects,
+scripts/eval_search_query_quality.py:    return sum(len(_namespaces_for_query_specs([(subjects, target_namespaces, query, reason)], namespace_prefix)) for subjects, target_namespaces, query, reason in query_specs)
+scripts/eval_search_query_quality.py:    for _subjects, target_namespaces, _query, _reason in query_specs:
+scripts/eval_search_query_quality.py:            for _subjects, _target_namespaces, query, _reason in query_specs_for_case(
+scripts/eval_search_query_quality.py:            f"{', '.join(result.expected_subjects)} | "
+scripts/eval_search_query_quality.py:            f"{', '.join(subject or 'none' for subject in result.query_subjects) or '-'} | "
+scripts/eval_search_query_quality.py:        choices=("none", "expected_subjects"),
+scripts/eval_search_query_quality.py:        help="How to populate SourceNeed.target_namespaces for namespace-layout experiments. 'expected_subjects' is an oracle condition, not an agent namespace-selection result.",
+scripts/eval_search_query_quality.py:                "namespace_policy": "source_need_target_namespaces" if args.retrieval_backend in {"vector", "hybrid"} else "n/a",
+src/money_model_architect/namespaces.py:    secondary_subjects: tuple[str, ...] = ()
+src/money_model_architect/namespaces.py:    def subjects(self) -> tuple[str, ...]:
+src/money_model_architect/namespaces.py:        return (self.primary_subject, *self.secondary_subjects)
+src/money_model_architect/snapshot.py:    likely_retrieval_subjects: list[str] = field(default_factory=list)
+src/money_model_architect/snapshot.py:        self.advisor_state.likely_retrieval_subjects = self._likely_subjects()
+src/money_model_architect/snapshot.py:    def _likely_subjects(self) -> list[str]:
+src/money_model_architect/snapshot.py:        subjects: list[str] = []
+src/money_model_architect/snapshot.py:            subjects.append("unit-economics")
+src/money_model_architect/snapshot.py:            subjects.append("offers")
+src/money_model_architect/snapshot.py:            subjects.append("upsells")
+src/money_model_architect/snapshot.py:            subjects.append("downsells")
+src/money_model_architect/snapshot.py:            subjects.append("continuity")
+src/money_model_architect/snapshot.py:        return _dedupe(subjects)
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_001", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 202, "cache_misses": 0, "elapsed_ms": 130.024, "estimated_api_input_tokens": 0, "input_chars": 537158}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.203, "estimated_api_input_tokens": 0, "input_chars": 268}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 56, "index": 1, "query": "why cost to deliver affects gross profit CAC payback ads"}, {"chars": 71, "index": 2, "query": "gross profit after fulfillment cost pays back customer acquisition cost"}, {"chars": 59, "index": 3, "query": "first 30 days gross profit versus CAC advertising viability"}, {"chars": 82, "index": 4, "query": "gross profit fulfillment cost CAC payback period first 30 days interior design STR"}], "embedding_ms": 133.227, "hit_at_3": false, "hit_at_5": true, "merge_rank_ms": 0.03, "merged_result_count": 33, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.053, "query_count": 4, "query_source": "generated_variants", "rank": 4, "retrieval_ms": 164.675, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["cac:1", "cac:0", "cac:12", "gross-profit:0", "payback-period:1"], "total_ms": 164.8, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_002", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.891, "estimated_api_input_tokens": 0, "input_chars": 231}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 58, "index": 1, "query": "client financed acquisition first 30 days gross profit CAC"}, {"chars": 46, "index": 2, "query": "CFA level first 30 day gross profit covers CAC"}, {"chars": 49, "index": 3, "query": "how customer gross profit funds acquisition spend"}, {"chars": 78, "index": 4, "query": "client financed acquisition first 30 days gross profit CAC interior design STR"}], "embedding_ms": 2.891, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.03, "merged_result_count": 30, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.118, "query_count": 4, "query_source": "generated_variants", "rank": 2, "retrieval_ms": 33.655, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["cac:12", "context:1", "gross-profit:0", "cfa:1", "cfa:0"], "total_ms": 33.841, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_003", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.314, "estimated_api_input_tokens": 0, "input_chars": 268}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 55, "index": 1, "query": "how much can spend on ads first 30 day gross profit CAC"}, {"chars": 57, "index": 2, "query": "ad spend capacity CAC payback client financed acquisition"}, {"chars": 55, "index": 3, "query": "first 30 day gross profit determines advertising budget"}, {"chars": 101, "index": 4, "query": "ad spend CAC first 30 day gross profit payback period client financed acquisition interior design STR"}], "embedding_ms": 3.314, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.028, "merged_result_count": 32, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.127, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 35.437, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["cfa:1", "cfa:0", "cac:12", "cfa:2", "cac:1"], "total_ms": 35.632, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_004", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.651, "estimated_api_input_tokens": 0, "input_chars": 249}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 57, "index": 1, "query": "attraction offer versus upsell front end after first sale"}, {"chars": 55, "index": 2, "query": "money model sequence attraction offer core offer upsell"}, {"chars": 55, "index": 3, "query": "difference between front end offer and post sale upsell"}, {"chars": 82, "index": 4, "query": "attraction offer upsell front end after first sale money model interior design STR"}], "embedding_ms": 2.651, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.032, "merged_result_count": 39, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.11, "query_count": 4, "query_source": "generated_variants", "rank": 2, "retrieval_ms": 70.804, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["upsell-offers:2", "upsell-offers:0", "upsell-offers:1", "anchor-upsell:7", "free-with-consumption:11"], "total_ms": 70.983, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_005", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.878, "estimated_api_input_tokens": 0, "input_chars": 242}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 58, "index": 1, "query": "upsell after first sale next offer maximize 30 day profits"}, {"chars": 50, "index": 2, "query": "post sale upsell increase first month gross profit"}, {"chars": 45, "index": 3, "query": "what to offer after front end diagnostic sale"}, {"chars": 89, "index": 4, "query": "upsell after first sale next offer maximize 30 day profits first sale interior design STR"}], "embedding_ms": 2.878, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.035, "merged_result_count": 37, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.122, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 41.089, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["upsell-offers:0", "upsell-offers:1", "payback-period:5", "payback-period:3", "upsell-offers:2"], "total_ms": 41.28, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_006", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.49, "estimated_api_input_tokens": 0, "input_chars": 248}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 54, "index": 1, "query": "continuity offer recurring gross profit payback period"}, {"chars": 55, "index": 2, "query": "recurring revenue improves CAC payback after first sale"}, {"chars": 55, "index": 3, "query": "continuity after initial sale adds monthly gross profit"}, {"chars": 84, "index": 4, "query": "continuity recurring gross profit payback period recurring offer interior design STR"}], "embedding_ms": 3.49, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.034, "merged_result_count": 37, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.14, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 45.352, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["continuity-offers:2", "continuity-offers:6", "continuity-offers:5", "continuity-offers:1", "payback-period:6"], "total_ms": 45.564, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_007", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.804, "estimated_api_input_tokens": 0, "input_chars": 223}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 51, "index": 1, "query": "payment plan reduces purchase friction pay less now"}, {"chars": 42, "index": 2, "query": "downsell payment terms lower upfront price"}, {"chars": 49, "index": 3, "query": "payment plans help customers decide payment terms"}, {"chars": 81, "index": 4, "query": "payment plan downsell pay less now payment terms same product interior design STR"}], "embedding_ms": 2.804, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.028, "merged_result_count": 29, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.153, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 35.696, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["payment-plans:10", "payment-plans:1", "payment-plans:6", "payment-plans:0", "payment-plans:5"], "total_ms": 35.917, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_008", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.144, "estimated_api_input_tokens": 0, "input_chars": 233}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 41, "index": 1, "query": "free trial as front end offer reduce risk"}, {"chars": 43, "index": 2, "query": "free trial downsell try before buying offer"}, {"chars": 53, "index": 3, "query": "free trial creates leads and lowers purchase friction"}, {"chars": 96, "index": 4, "query": "free trial trial with penalty attraction offer required actions card on file interior design STR"}], "embedding_ms": 3.144, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.037, "merged_result_count": 47, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.163, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 71.665, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["free-trials:2", "free-trials:5", "free-trials:0", "free-trials:4", "free-trials:1"], "total_ms": 71.904, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_009", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.307, "estimated_api_input_tokens": 0, "input_chars": 248}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 46, "index": 1, "query": "CAC versus gross profit make more per customer"}, {"chars": 50, "index": 2, "query": "customer worth depends on gross profit not revenue"}, {"chars": 66, "index": 3, "query": "make more gross profit per client before lowering acquisition cost"}, {"chars": 86, "index": 4, "query": "CAC gross profit make more per customer customer worth acquisition interior design STR"}], "embedding_ms": 3.307, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.03, "merged_result_count": 31, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.156, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 34.109, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["gross-profit:0", "gross-profit:2", "gross-profit:5", "cac:12", "gross-profit:3"], "total_ms": 34.34, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_010", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.273, "estimated_api_input_tokens": 0, "input_chars": 242}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 45, "index": 1, "query": "low cost front end offer to get leads engaged"}, {"chars": 59, "index": 2, "query": "attraction offer gets prospects to engage before core offer"}, {"chars": 52, "index": 3, "query": "front end offer low price lead generation attraction"}, {"chars": 86, "index": 4, "query": "attraction offer front end offer get leads to engage free discount interior design STR"}], "embedding_ms": 3.273, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.033, "merged_result_count": 38, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.158, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 52.994, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["attraction-offers:0", "free-with-consumption:11", "decoy-offers:8", "decoy-offers:4", "decoy-offers:5"], "total_ms": 53.221, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_011", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.003, "estimated_api_input_tokens": 0, "input_chars": 221}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 51, "index": 1, "query": "why revenue can hide bad gross profit CAC economics"}, {"chars": 50, "index": 2, "query": "gross margin delivery cost determines ad viability"}, {"chars": 49, "index": 3, "query": "lifetime revenue versus lifetime gross profit CAC"}, {"chars": 71, "index": 4, "query": "revenue gross profit gross margin CAC delivery cost interior design STR"}], "embedding_ms": 3.003, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.032, "merged_result_count": 36, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.111, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 33.511, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["gross-profit:0", "cac:12", "gross-profit:2", "gross-profit:3", "gross-profit:5"], "total_ms": 33.689, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_012", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.222, "estimated_api_input_tokens": 0, "input_chars": 270}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 60, "index": 1, "query": "CFA level 3 first 30 day gross profit greater than twice CAC"}, {"chars": 56, "index": 2, "query": "make 2x CAC in first 30 days reinvest advertising profit"}, {"chars": 65, "index": 3, "query": "gross profit more than twice acquisition cost removes money limit"}, {"chars": 89, "index": 4, "query": "CFA level 3 first 30 day gross profit twice CAC reinvest growth limit interior design STR"}], "embedding_ms": 3.222, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.029, "merged_result_count": 32, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.147, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 35.015, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["cfa:1", "cac:12", "cfa:0", "cfa:2", "gross-profit:0"], "total_ms": 35.227, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_013", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.553, "estimated_api_input_tokens": 0, "input_chars": 269}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 61, "index": 1, "query": "front loaded setup onboarding activation fees shorten payback"}, {"chars": 61, "index": 2, "query": "first and last month creates gross profit before next payment"}, {"chars": 52, "index": 3, "query": "fees up front reduce payback period in first 30 days"}, {"chars": 95, "index": 4, "query": "setup fee onboarding fee activation fee first and last month payback period interior design STR"}], "embedding_ms": 3.553, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.033, "merged_result_count": 36, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.131, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 34.104, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["payback-period:6", "payback-period:5", "payback-period:1", "ten-years-ten-minutes:2", "payback-period:2"], "total_ms": 34.302, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_014", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.854, "estimated_api_input_tokens": 0, "input_chars": 236}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 49, "index": 1, "query": "when to upsell after first sale next step big win"}, {"chars": 51, "index": 2, "query": "upsell timing point of deprivation not satisfaction"}, {"chars": 54, "index": 3, "query": "first 30 days upsell immediate next step halfway point"}, {"chars": 82, "index": 4, "query": "upsell timing after first sale next step big win halfway point interior design STR"}], "embedding_ms": 2.854, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.03, "merged_result_count": 32, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.132, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 42.172, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["payback-period:3", "payback-period:4", "payback-period:5", "upsell-offers:0", "upsell-offers:1"], "total_ms": 42.374, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_015", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.279, "estimated_api_input_tokens": 0, "input_chars": 249}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 64, "index": 1, "query": "classic upsell versus menu upsell next problem prescribe options"}, {"chars": 59, "index": 2, "query": "menu upsell prescribe what customer needs and does not need"}, {"chars": 49, "index": 3, "query": "classic upsell solves next problem after purchase"}, {"chars": 77, "index": 4, "query": "classic upsell menu upsell next problem prescribe options interior design STR"}], "embedding_ms": 3.279, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.029, "merged_result_count": 30, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.136, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 46.074, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["menu-upsell:6", "classic-upsell:1", "upsell-offers:1", "menu-upsell:5", "upsell-offers:2"], "total_ms": 46.274, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_016", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.233, "estimated_api_input_tokens": 0, "input_chars": 289}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 64, "index": 1, "query": "anchor upsell expensive premium option first cheaper alternative"}, {"chars": 58, "index": 2, "query": "high ticket premium offer makes core offer feel affordable"}, {"chars": 60, "index": 3, "query": "offer most expensive thing first then acceptable alternative"}, {"chars": 107, "index": 4, "query": "anchor upsell premium option expensive offer first cheaper alternative price perception interior design STR"}], "embedding_ms": 3.233, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.029, "merged_result_count": 34, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.123, "query_count": 4, "query_source": "generated_variants", "rank": 2, "retrieval_ms": 41.613, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["anchor-upsell:4", "anchor-upsell:7", "anchor-upsell:3", "anchor-upsell:5", "anchor-upsell:2"], "total_ms": 41.8, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_017", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.257, "estimated_api_input_tokens": 0, "input_chars": 257}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 58, "index": 1, "query": "rollover upsell credit previous purchase toward next offer"}, {"chars": 50, "index": 2, "query": "credit diagnostic fee toward bigger package upsell"}, {"chars": 48, "index": 3, "query": "prior purchase applied to annual or larger offer"}, {"chars": 101, "index": 4, "query": "rollover upsell credit previous purchase diagnostic fee bigger package next offer interior design STR"}], "embedding_ms": 3.257, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.031, "merged_result_count": 37, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.105, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 41.483, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["rollover-upsell:7", "rollover-upsell:5", "rollover-upsell:2", "rollover-upsell:4", "rollover-upsell:3"], "total_ms": 41.653, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_018", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 4.044, "estimated_api_input_tokens": 0, "input_chars": 233}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 59, "index": 1, "query": "attraction offer free or discount front end lead generation"}, {"chars": 44, "index": 2, "query": "free discount offer gets customers to engage"}, {"chars": 54, "index": 3, "query": "front end attraction offer creates leads and customers"}, {"chars": 76, "index": 4, "query": "attraction offer free discount lead generation front end interior design STR"}], "embedding_ms": 4.044, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.034, "merged_result_count": 37, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.128, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 54.604, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["attraction-offers:0", "decoy-offers:4", "free-with-consumption:11", "decoy-offers:3", "free-with-consumption:0"], "total_ms": 54.804, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_019", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.275, "estimated_api_input_tokens": 0, "input_chars": 253}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 58, "index": 1, "query": "free giveaway grand prize participation offer lead capture"}, {"chars": 57, "index": 2, "query": "giveaway big prize then discounted offer to everyone else"}, {"chars": 52, "index": 3, "query": "grand prize room refresh collect contact information"}, {"chars": 86, "index": 4, "query": "giveaway grand prize participation offer room refresh lead capture interior design STR"}], "embedding_ms": 3.275, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.035, "merged_result_count": 46, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.162, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 52.568, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["free-giveaways:3", "free-giveaways:2", "free-giveaways:1", "free-giveaways:4", "free-giveaways:0"], "total_ms": 52.796, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_020", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 5.063, "estimated_api_input_tokens": 0, "input_chars": 249}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 54, "index": 1, "query": "win your money back goal store credit attraction offer"}, {"chars": 52, "index": 2, "query": "set customer goal refund or store credit if achieved"}, {"chars": 52, "index": 3, "query": "service business win your money back offer mechanism"}, {"chars": 91, "index": 4, "query": "win your money back goal store credit service business attraction offer interior design STR"}], "embedding_ms": 5.063, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.034, "merged_result_count": 40, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.105, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 54.83, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["win-your-money-back:1", "win-your-money-back:0", "ten-years-ten-minutes:1", "buy-x-get-y:5", "make-your-money-model:1"], "total_ms": 55.008, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_021", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.809, "estimated_api_input_tokens": 0, "input_chars": 253}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 53, "index": 1, "query": "buy X get Y free fulfillment cost cash management fit"}, {"chars": 57, "index": 2, "query": "buy more units or access get free bonus gross margin risk"}, {"chars": 57, "index": 3, "query": "buy X get Y works when fulfillment discipline supports it"}, {"chars": 86, "index": 4, "query": "buy X get Y free fulfillment cost cash management gross margin fit interior design STR"}], "embedding_ms": 2.809, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.036, "merged_result_count": 43, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.167, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 53.419, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["buy-x-get-y:7", "buy-x-get-y:4", "buy-x-get-y:5", "buy-x-get-y:3", "buy-x-get-y:2"], "total_ms": 53.66, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_022", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 4.657, "estimated_api_input_tokens": 0, "input_chars": 237}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 62, "index": 1, "query": "free with consumption education builds trust before paid offer"}, {"chars": 49, "index": 2, "query": "give free value break beliefs leads to next offer"}, {"chars": 50, "index": 3, "query": "educational content creates ideal prospect and CTA"}, {"chars": 76, "index": 4, "query": "free with consumption education trust beliefs paid offer interior design STR"}], "embedding_ms": 4.657, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.036, "merged_result_count": 42, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.162, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 69.301, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["free-with-consumption:11", "free-with-consumption:1", "free-with-consumption:10", "cac:6", "free-with-consumption:0"], "total_ms": 69.543, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_023", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.216, "estimated_api_input_tokens": 0, "input_chars": 236}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 51, "index": 1, "query": "decoy offer free discounted front end premium offer"}, {"chars": 50, "index": 2, "query": "decoy offer presents more valuable premium package"}, {"chars": 49, "index": 3, "query": "lead asks about discount then sees premium option"}, {"chars": 86, "index": 4, "query": "decoy offer premium offer free or discounted more valuable package interior design STR"}], "embedding_ms": 3.216, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.032, "merged_result_count": 37, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.165, "query_count": 4, "query_source": "generated_variants", "rank": 2, "retrieval_ms": 55.9, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["decoy-offers:2", "decoy-offers:3", "decoy-offers:5", "decoy-offers:8", "decoy-offers:7"], "total_ms": 56.132, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_024", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.95, "estimated_api_input_tokens": 0, "input_chars": 233}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 54, "index": 1, "query": "downsell path payment plan feature downsell free trial"}, {"chars": 54, "index": 2, "query": "if customer says no offer same product different terms"}, {"chars": 44, "index": 3, "query": "payment plan feature downsell trial sequence"}, {"chars": 81, "index": 4, "query": "downsell path payment plan feature downsell free trial say no interior design STR"}], "embedding_ms": 2.95, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.032, "merged_result_count": 37, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.125, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 35.571, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["downsells:0", "feature-downsells:5", "payment-plans:1", "downsells:1", "feature-downsells:0"], "total_ms": 35.766, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_025", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.587, "estimated_api_input_tokens": 0, "input_chars": 233}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 57, "index": 1, "query": "feature downsell reduced scope fewer rooms lower friction"}, {"chars": 42, "index": 2, "query": "sell fewer features same offer lower price"}, {"chars": 46, "index": 3, "query": "remove features not outcome to create downsell"}, {"chars": 88, "index": 4, "query": "feature downsell fewer rooms lower friction same offer reduced scope interior design STR"}], "embedding_ms": 2.587, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.031, "merged_result_count": 31, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.144, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 48.492, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["feature-downsells:0", "feature-downsells:2", "downsells:1", "feature-downsells:5", "downsells:0"], "total_ms": 48.71, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_026", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.717, "estimated_api_input_tokens": 0, "input_chars": 231}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 43, "index": 1, "query": "pay less now pay more later discount choice"}, {"chars": 56, "index": 2, "query": "discount now additional benefits versus full price later"}, {"chars": 50, "index": 3, "query": "pay less now structure compared to normal discount"}, {"chars": 82, "index": 4, "query": "pay less now pay more later discount additional benefit choice interior design STR"}], "embedding_ms": 2.717, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.03, "merged_result_count": 33, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.154, "query_count": 4, "query_source": "generated_variants", "rank": 3, "retrieval_ms": 36.421, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["pay-less-now:8", "pay-less-now:9", "pay-less-now:2", "pay-less-now:1", "pay-less-now:6"], "total_ms": 36.647, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_027", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.774, "estimated_api_input_tokens": 0, "input_chars": 206}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 45, "index": 1, "query": "waived fee continuity recurring revenue later"}, {"chars": 48, "index": 2, "query": "waive upfront fee to create recurring membership"}, {"chars": 37, "index": 3, "query": "continuity offer waived fee structure"}, {"chars": 76, "index": 4, "query": "waived fee continuity recurring revenue design fee later interior design STR"}], "embedding_ms": 2.774, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.029, "merged_result_count": 37, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.156, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 44.043, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["waived-fee:1", "waived-fee:0", "waived-fee:2", "waived-fee:5", "waived-fee:4"], "total_ms": 44.26, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_028", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.081, "estimated_api_input_tokens": 0, "input_chars": 237}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 50, "index": 1, "query": "continuity discount retention earn point reminders"}, {"chars": 50, "index": 2, "query": "discount that customer earns by staying subscribed"}, {"chars": 57, "index": 3, "query": "remind customers before earn point to reduce cancellation"}, {"chars": 80, "index": 4, "query": "continuity discount retention canceling earn point reminders interior design STR"}], "embedding_ms": 3.081, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.034, "merged_result_count": 40, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.092, "query_count": 4, "query_source": "generated_variants", "rank": 2, "retrieval_ms": 46.14, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["continuity-discounts:7", "continuity-discounts:11", "continuity-discounts:6", "continuity-discounts:1", "continuity-bonus:11"], "total_ms": 46.304, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_029", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 5.219, "estimated_api_input_tokens": 0, "input_chars": 234}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 57, "index": 1, "query": "continuity bonus makes membership more valuable retention"}, {"chars": 50, "index": 2, "query": "bonus attached to recurring maintenance membership"}, {"chars": 43, "index": 3, "query": "continuity bonus increases value of staying"}, {"chars": 84, "index": 4, "query": "continuity bonus maintenance membership bonus retention valuable interior design STR"}], "embedding_ms": 5.219, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.029, "merged_result_count": 33, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.159, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 47.55, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["continuity-bonus:11", "continuity-bonus:12", "continuity-bonus:6", "continuity-offers:6", "continuity-bonus:3"], "total_ms": 47.772, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_030", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.123, "estimated_api_input_tokens": 0, "input_chars": 273}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 55, "index": 1, "query": "money model stack attraction upsell downsell continuity"}, {"chars": 65, "index": 2, "query": "combine attraction offer upsell downsell continuity first 30 days"}, {"chars": 72, "index": 3, "query": "build process attraction offer then upsell then downsell then continuity"}, {"chars": 81, "index": 4, "query": "money model stack attraction offer upsell downsell continuity interior design STR"}], "embedding_ms": 3.123, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.035, "merged_result_count": 43, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.146, "query_count": 4, "query_source": "generated_variants", "rank": 2, "retrieval_ms": 104.607, "retriever": "vector", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["upsell-offers:2", "make-your-money-model:1", "continuity-offers:0", "continuity-bonus:3", "upsell-offers:0"], "total_ms": 104.826, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_001", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 202, "cache_misses": 0, "elapsed_ms": 109.6, "estimated_api_input_tokens": 0, "input_chars": 537158}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.004, "estimated_api_input_tokens": 0, "input_chars": 268}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 56, "index": 1, "query": "why cost to deliver affects gross profit CAC payback ads"}, {"chars": 71, "index": 2, "query": "gross profit after fulfillment cost pays back customer acquisition cost"}, {"chars": 59, "index": 3, "query": "first 30 days gross profit versus CAC advertising viability"}, {"chars": 82, "index": 4, "query": "gross profit fulfillment cost CAC payback period first 30 days interior design STR"}], "embedding_ms": 111.604, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.025, "merged_result_count": 31, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.062, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 145.477, "retriever": "hybrid", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["gross-profit:0", "cfa:0", "cfa:1", "payback-period:1", "context:1"], "total_ms": 145.597, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_002", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 1.954, "estimated_api_input_tokens": 0, "input_chars": 231}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 58, "index": 1, "query": "client financed acquisition first 30 days gross profit CAC"}, {"chars": 46, "index": 2, "query": "CFA level first 30 day gross profit covers CAC"}, {"chars": 49, "index": 3, "query": "how customer gross profit funds acquisition spend"}, {"chars": 78, "index": 4, "query": "client financed acquisition first 30 days gross profit CAC interior design STR"}], "embedding_ms": 1.954, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.024, "merged_result_count": 29, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.114, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 33.624, "retriever": "hybrid", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["context:1", "cfa:0", "cfa:1", "gross-profit:0", "cac:12"], "total_ms": 33.796, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_003", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.696, "estimated_api_input_tokens": 0, "input_chars": 268}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 55, "index": 1, "query": "how much can spend on ads first 30 day gross profit CAC"}, {"chars": 57, "index": 2, "query": "ad spend capacity CAC payback client financed acquisition"}, {"chars": 55, "index": 3, "query": "first 30 day gross profit determines advertising budget"}, {"chars": 101, "index": 4, "query": "ad spend CAC first 30 day gross profit payback period client financed acquisition interior design STR"}], "embedding_ms": 2.696, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.025, "merged_result_count": 32, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.098, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 36.857, "retriever": "hybrid", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["cfa:0", "context:1", "cfa:1", "cfa:2", "payback-period:0"], "total_ms": 37.013, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_004", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 2.118, "estimated_api_input_tokens": 0, "input_chars": 249}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 57, "index": 1, "query": "attraction offer versus upsell front end after first sale"}, {"chars": 55, "index": 2, "query": "money model sequence attraction offer core offer upsell"}, {"chars": 55, "index": 3, "query": "difference between front end offer and post sale upsell"}, {"chars": 82, "index": 4, "query": "attraction offer upsell front end after first sale money model interior design STR"}], "embedding_ms": 2.118, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.028, "merged_result_count": 39, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.119, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 73.065, "retriever": "hybrid", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["upsell-offers:0", "upsell-offers:1", "make-your-money-model:1", "rollover-upsell:0", "anchor-upsell:7"], "total_ms": 73.243, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_005", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 1.988, "estimated_api_input_tokens": 0, "input_chars": 242}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 58, "index": 1, "query": "upsell after first sale next offer maximize 30 day profits"}, {"chars": 50, "index": 2, "query": "post sale upsell increase first month gross profit"}, {"chars": 45, "index": 3, "query": "what to offer after front end diagnostic sale"}, {"chars": 89, "index": 4, "query": "upsell after first sale next offer maximize 30 day profits first sale interior design STR"}], "embedding_ms": 1.988, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.031, "merged_result_count": 45, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.11, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 40.963, "retriever": "hybrid", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["upsell-offers:1", "upsell-offers:0", "payback-period:3", "payback-period:4", "anchor-upsell:7"], "total_ms": 41.138, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+evals/reports/retrieval_backend_comparison_generated_variants_local_single_namespace_cases.jsonl:{"case_id": "searchq_v1_006", "embedding_delta": {"by_purpose": {"corpus": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 0, "cache_misses": 0, "elapsed_ms": 0.0, "estimated_api_input_tokens": 0, "input_chars": 0}, "query": {"api_batches": 0, "api_input_chars": 0, "api_inputs": 0, "cache_hit_rate": 1.0, "cache_hits": 4, "cache_misses": 0, "elapsed_ms": 3.466, "estimated_api_input_tokens": 0, "input_chars": 248}}, "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small", "cache_namespace": "openai/text-embedding-3-small", "model": "text-embedding-3-small"}, "embedding_inputs_by_variant": [{"chars": 54, "index": 1, "query": "continuity offer recurring gross profit payback period"}, {"chars": 55, "index": 2, "query": "recurring revenue improves CAC payback after first sale"}, {"chars": 55, "index": 3, "query": "continuity after initial sale adds monthly gross profit"}, {"chars": 84, "index": 4, "query": "continuity recurring gross profit payback period recurring offer interior design STR"}], "embedding_ms": 3.466, "hit_at_3": true, "hit_at_5": true, "merge_rank_ms": 0.028, "merged_result_count": 38, "namespace_policy": "source_need_target_namespaces", "query_build_ms": 0.13, "query_count": 4, "query_source": "generated_variants", "rank": 1, "retrieval_ms": 47.608, "retriever": "hybrid", "target_namespaces_by_query": [[], [], [], []], "top_chunk_ids": ["continuity-offers:2", "continuity-offers:6", "payback-period:6", "payback-period:1", "continuity-bonus:3"], "total_ms": 47.799, "variant_count": 3, "vector_search_count": 4, "vector_store": "local"}
+
+2026-07-08T23:53:08.570042Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:53:08.571848Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:53:08.572086Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:53:08.573505Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business\"
+USER_REQUEST='why do we need fulfillment cost to understand whether ads can work?'
+PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir \""'$CONTEXT_DIR" --user-message "$USER_REQUEST"' in /Users/benjaminmackenzie/Dev/money-model-architect
+2026-07-08T23:53:13.404428Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:53:13.406211Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:53:13.406473Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:53:13.408076Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+ succeeded in 105ms:
+codex
+The CLI state confirms the business is diagnosable, has CAC and first-30-day gross profit, and points likely retrieval at `unit-economics`. I’m recording one source need with diagnostic intent and narrow unit-economics focus.
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001 --source-search-decision true --source-need '{\"intent\":\"diagnostic_evidence\",\"subjects\":[\"unit-economics\"],\"focus_terms\":[\"fulfillment cost\",\"gross profit\",\"CAC\",\"payback period\",\"advertising viability\"],\"query_variants\":[\"why cost to deliver affects gross profit CAC payback ads\",\"gross profit after fulfillment cost pays back customer acquisition cost\",\"first 30 day gross profit versus CAC advertising viability\"]}' --notes 'Search is needed because the user asks for Money Models support explaining how fulfillment cost affects gross profit, CAC payback, and whether ads can work; known CAC and first-30-day gross profit make this a unit-economics diagnostic, not a missing-facts step.'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "run": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/run.json"
+}
+
+2026-07-08T23:53:21.587998Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:53:21.589886Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:53:21.590144Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:53:21.591562Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '1,220p' evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/run.json" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "case_id": "sourceneed_v1_001",
+  "completed_at": "2026-07-08T23:53:21Z",
+  "created_at": "2026-07-08T23:52:46Z",
+  "notes": "Search is needed because the user asks for Money Models support explaining how fulfillment cost affects gross profit, CAC payback, and whether ads can work; known CAC and first-30-day gross profit make this a unit-economics diagnostic, not a missing-facts step.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "fulfillment cost",
+      "gross profit",
+      "CAC",
+      "payback period",
+      "advertising viability"
+    ],
+    "intent": "diagnostic_evidence",
+    "query_variants": [
+      "why cost to deliver affects gross profit CAC payback ads",
+      "gross profit after fulfillment cost pays back customer acquisition cost",
+      "first 30 day gross profit versus CAC advertising viability"
+    ],
+    "subjects": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}
+
+2026-07-08T23:53:26.587727Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T23:53:26.590061Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T23:53:26.590421Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T23:53:26.592201Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+Recorded decision: source search needed.
+
+Source need: `diagnostic_evidence` for `unit-economics`, focused on fulfillment cost, gross profit, CAC, payback period, and advertising viability. The trace was written to `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/run.json`.
+2026-07-08T23:53:30.095778Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-07-08T23:53:30.095867Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+tokens used
+28,752

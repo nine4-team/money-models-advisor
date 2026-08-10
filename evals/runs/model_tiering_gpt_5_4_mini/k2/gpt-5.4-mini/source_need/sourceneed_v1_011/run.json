@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_011",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_011",
+    "created_at": "2026-07-07T22:53:15Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 108028.2,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 104139
+  },
+  "completed_at": "2026-07-07T22:53:01Z",
+  "created_at": "2026-07-07T22:51:27Z",
+  "notes": "Search is needed because the turn asks for a source-backed interpretation of known economics; the snapshot already has enough context to support a unit-economics diagnostic.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "referral partner payments",
+      "$1k per client",
+      "CAC",
+      "acquisition cost"
+    ],
+    "intent": "diagnostic_evidence",
+    "query_variants": [
+      "referral partner payments CAC $1k per client",
+      "what happened to the $1k paid to referral partners",
+      "referral partner cost acquisition cost"
+    ],
+    "subjects": [
+      "unit-economics"
+    ],
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_011",
+    "conversation_context": "The snapshot has current economics and prior-session context has the referral partner discussion.",
+    "scenario_id": "1584_design",
+    "user_turn": "what happened to the $1k we pay to referral partners?"
+  }
+}

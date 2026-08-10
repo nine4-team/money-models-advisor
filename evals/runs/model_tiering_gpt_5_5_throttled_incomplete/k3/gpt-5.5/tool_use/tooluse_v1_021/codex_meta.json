@@ -1,0 +1,14 @@
+{
+  "case_id": "tooluse_v1_021",
+  "created_at": "2026-07-07T23:32:09Z",
+  "error": "codex_exec_failed",
+  "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_021/codex_final.txt",
+  "harness": "codex_cli_agent",
+  "latency_ms": 5611.5,
+  "model": "gpt-5.5",
+  "returncode": 1,
+  "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_021/codex_stderr.txt",
+  "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_021/codex_stdout.txt",
+  "suite": "tool_use",
+  "tokens_used_reported_by_codex": null
+}

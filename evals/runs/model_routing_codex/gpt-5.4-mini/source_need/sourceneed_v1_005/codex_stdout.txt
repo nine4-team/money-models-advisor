@@ -1,0 +1,2 @@
+Recorded `source-search-decision: true` with source need:
+`intent=recommendation_evidence`, `subjects=["upsells"]`, `layers=["upsells"]`, focused on the post-sale upsell / pre-designed room package mechanism to increase first-month profit after the diagnostic sells.

@@ -1,0 +1,62 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "answer_without_tool",
+      "confidence": "direct",
+      "index": 0
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir",
+  "case_id": "tooluse_v1_012",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_012",
+    "created_at": "2026-07-07T22:05:54Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 93804.7,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 44486
+  },
+  "completed_at": "2026-07-07T22:05:51Z",
+  "created_at": "2026-07-07T22:04:20Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir/.money-model-advisor/sessions/20260707T220507.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir --user-message what does CAC stand for?",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_012/business_dir --user-message what does CAC stand for? --assistant-message CAC stands for customer acquisition cost.",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    }
+  ]
+}

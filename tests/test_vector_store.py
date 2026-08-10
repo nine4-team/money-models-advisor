@@ -9,7 +9,7 @@ from money_model_architect.vector_store import (
     PineconeVectorStore,
     VectorRecord,
     chunk_id_from_vector_id,
-    layer_namespace,
+    subject_namespace,
     vector_id,
 )
 
@@ -31,7 +31,7 @@ class CapturingPineconeVectorStore(PineconeVectorStore):
                     {
                         "id": "heading-aware:text-embedding-3-small:cac:0",
                         "score": 0.98,
-                        "metadata": {"chunk_id": "cac:0", "layers": ["unit-economics"]},
+                        "metadata": {"chunk_id": "cac:0", "subjects": ["unit-economics"]},
                     }
                 ]
             }
@@ -45,12 +45,12 @@ class VectorStoreTest(unittest.TestCase):
                 VectorRecord(
                     id="a",
                     values=[1.0, 0.0],
-                    metadata={"layers": ["unit-economics"], "chunk_id": "a:0"},
+                    metadata={"subjects": ["unit-economics"], "chunk_id": "a:0"},
                 ),
                 VectorRecord(
                     id="b",
                     values=[0.0, 1.0],
-                    metadata={"layers": ["upsells"], "chunk_id": "b:0"},
+                    metadata={"subjects": ["upsells"], "chunk_id": "b:0"},
                 ),
             ]
         )
@@ -58,7 +58,7 @@ class VectorStoreTest(unittest.TestCase):
         matches = store.query(
             [1.0, 0.0],
             top_k=2,
-            filter={"layers": {"$in": ["unit-economics"]}},
+            filter={"subjects": {"$in": ["unit-economics"]}},
         )
 
         self.assertEqual([match.id for match in matches], ["a"])
@@ -71,23 +71,23 @@ class VectorStoreTest(unittest.TestCase):
                 VectorRecord(
                     id="a",
                     values=[1.0, 0.0],
-                    metadata={"layers": ["unit-economics"], "chunk_id": "a:0"},
+                    metadata={"subjects": ["unit-economics"], "chunk_id": "a:0"},
                 )
             ],
-            namespace=layer_namespace("unit-economics"),
+            namespace=subject_namespace("unit-economics"),
         )
         store.upsert(
             [
                 VectorRecord(
                     id="b",
                     values=[1.0, 0.0],
-                    metadata={"layers": ["offers"], "chunk_id": "b:0"},
+                    metadata={"subjects": ["offers"], "chunk_id": "b:0"},
                 )
             ],
-            namespace=layer_namespace("offers"),
+            namespace=subject_namespace("offers"),
         )
 
-        matches = store.query([1.0, 0.0], top_k=5, namespace=layer_namespace("offers"))
+        matches = store.query([1.0, 0.0], top_k=5, namespace=subject_namespace("offers"))
 
         self.assertEqual([match.id for match in matches], ["b"])
         self.assertEqual(matches[0].metadata["namespace"], "money-models-offers")
@@ -110,14 +110,14 @@ class VectorStoreTest(unittest.TestCase):
                 VectorRecord(
                     id="heading-aware:text-embedding-3-small:cac:0",
                     values=[0.1, 0.2],
-                    metadata={"chunk_id": "cac:0", "layers": ["unit-economics"]},
+                    metadata={"chunk_id": "cac:0", "subjects": ["unit-economics"]},
                 )
             ]
         )
         matches = store.query(
             [0.1, 0.2],
             top_k=5,
-            filter={"layers": {"$in": ["unit-economics"]}},
+            filter={"subjects": {"$in": ["unit-economics"]}},
         )
 
         self.assertEqual(upserted, 1)

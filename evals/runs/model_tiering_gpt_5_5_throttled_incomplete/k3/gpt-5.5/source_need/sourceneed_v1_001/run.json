@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_001",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_001",
+    "created_at": "2026-07-07T23:25:57Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 33049.9,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 23355
+  },
+  "completed_at": "2026-07-07T23:25:51Z",
+  "created_at": "2026-07-07T23:25:24Z",
+  "notes": "Search is needed because the user asks for Money Models conceptual support on why fulfillment cost affects whether ads can work. The retrieval job is unit-economics because the claim turns on gross profit, CAC, and payback interpretation, not a concrete fix mechanism.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "fulfillment cost",
+      "gross profit",
+      "CAC",
+      "ad payback",
+      "paid acquisition capacity"
+    ],
+    "intent": "teaching_evidence",
+    "query_variants": [
+      "fulfillment cost gross profit CAC ad payback",
+      "why fulfillment cost matters for paid acquisition economics",
+      "gross profit after fulfillment cost determines whether ads can work"
+    ],
+    "subjects": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}

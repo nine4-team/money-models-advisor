@@ -1,0 +1,43 @@
+{
+  "case_id": "sourceneed_v1_008",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_008",
+    "created_at": "2026-07-07T21:46:15Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 48282.7,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 35424
+  },
+  "completed_at": "2026-07-07T21:46:05Z",
+  "created_at": "2026-07-07T21:45:26Z",
+  "notes": "Offer-design question with enough snapshot context to support a source-backed recommendation; search the offers layer rather than waiting for missing business facts.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/business",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "free trial",
+      "required actions",
+      "front-end offer",
+      "activation criteria"
+    ],
+    "intent": "recommendation_evidence",
+    "subjects": [
+      "offers"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_008",
+    "conversation_context": "The snapshot has offer-stack context. The user asks whether a free trial could work with required actions.",
+    "scenario_id": "1584_design",
+    "user_turn": "could a free trial work as a front-end offer if we require the right actions?"
+  }
+}

@@ -1,0 +1,11 @@
+I’d treat the attraction offer as the front-end entry point and the upsell as the post-purchase add-on.
+
+In this business:
+- Attraction offer = the `$597` STR Design Diagnostic. It gets the right lead in the door, builds trust, and qualifies demand.
+- Upsell = the `$5,000` pre-designed room packages. It increases order value after someone has already bought.
+
+So the difference is:
+- Attraction offer: pull people in
+- Upsell: increase value after they raise their hand
+
+If helpful, I can also map where the `$15,000` full-service design offer fits in the stack.

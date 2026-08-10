@@ -59,7 +59,7 @@ class AdvisorState:
     missing_fields: list[str] = field(default_factory=list)
     ready_for_payback_diagnosis: bool = False
     ready_for_offer_stack_diagnosis: bool = False
-    likely_retrieval_layers: list[str] = field(default_factory=list)
+    likely_retrieval_subjects: list[str] = field(default_factory=list)
     retrieval_query_terms: list[str] = field(default_factory=list)
 
 
@@ -102,7 +102,7 @@ class BusinessSnapshot:
             )
         )
         self.advisor_state.advisory_status = self._advisory_status()
-        self.advisor_state.likely_retrieval_layers = self._likely_layers()
+        self.advisor_state.likely_retrieval_subjects = self._likely_subjects()
         self.advisor_state.retrieval_query_terms = self._query_terms()
 
     def to_dict(self) -> dict[str, Any]:
@@ -183,20 +183,20 @@ class BusinessSnapshot:
             return "diagnosable"
         return "insufficient_context"
 
-    def _likely_layers(self) -> list[str]:
-        layers: list[str] = []
+    def _likely_subjects(self) -> list[str]:
+        subjects: list[str] = []
         text = " ".join([self.problem.user_goal or "", *self.problem.reported_symptoms]).lower()
         if any(term in text for term in ("cac", "payback", "cash", "margin", "gross profit", "ltv", "economics")):
-            layers.append("unit-economics")
+            subjects.append("unit-economics")
         if any(term in text for term in ("lead", "ad", "attraction", "free", "trial", "front end")):
-            layers.append("offers")
+            subjects.append("offers")
         if any(term in text for term in ("upsell", "backend", "after first sale")):
-            layers.append("upsells")
+            subjects.append("upsells")
         if any(term in text for term in ("downsell", "refund", "payment plan", "financing")):
-            layers.append("downsells")
+            subjects.append("downsells")
         if any(term in text for term in ("continuity", "recurring", "churn", "retention", "subscription")):
-            layers.append("continuity")
-        return _dedupe(layers)
+            subjects.append("continuity")
+        return _dedupe(subjects)
 
     def _query_terms(self) -> list[str]:
         terms: list[str] = []

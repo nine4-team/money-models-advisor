@@ -1,0 +1,61 @@
+{
+  "case_id": "sourceneed_v1_004",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_004",
+    "created_at": "2026-07-07T22:46:00Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 65344.6,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 10695
+  },
+  "completed_at": "2026-07-07T22:45:52Z",
+  "created_at": "2026-07-07T22:44:55Z",
+  "notes": "Comparison case with enough offer-stack context in the snapshot; search is needed to support the conceptual distinction between the front-end attraction offer and the post-sale upsell.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "attraction offer",
+      "upsell",
+      "front-end offer",
+      "after first sale",
+      "STR Design Diagnostic",
+      "pre-designed room packages"
+    ],
+    "intent": "comparison_evidence",
+    "query_variants": [
+      "attraction offer vs upsell in Money Models",
+      "front-end offer after first sale upsell",
+      "STR Design Diagnostic pre-designed room packages"
+    ],
+    "subjects": [
+      "offers",
+      "upsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_004",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks to compare two Money Models concepts.",
+    "focus_aliases": {
+      "after first sale": [
+        "post-sale add-on",
+        "pre-designed room packages"
+      ],
+      "front end": [
+        "front-end offer",
+        "STR Design Diagnostic"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what's the difference between an attraction offer and an upsell in this situation?"
+  }
+}

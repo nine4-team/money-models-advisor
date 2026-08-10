@@ -1,0 +1,5 @@
+Gross profit is the money left after you subtract the direct cost of making or fulfilling what you sold.
+
+Plain English: `revenue - cost to deliver the sale`.
+
+It comes before overhead, marketing, taxes, and owner pay. The eval trace was recorded at `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_020/run.json`.

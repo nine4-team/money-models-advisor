@@ -1,0 +1,28 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/acting_prompt.md",
+  "actual_actions": [],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir",
+  "case_id": "tooluse_v1_014",
+  "created_at": "2026-07-08T18:27:59Z",
+  "final_answer_path": null,
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": null,
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "status": "prepared",
+  "workflow_steps": []
+}

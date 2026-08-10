@@ -1,0 +1,107 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command returned an empty snapshot with missing business context",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set saved problem.user_goal",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs command returned no prior turns",
+      "evidence_type": "cli_stdout",
+      "index": 2
+    },
+    {
+      "action": "clarify",
+      "confidence": "direct",
+      "evidence_ref": "final answer asks for business type, customer, core offer, CAC, and first-30-day gross profit",
+      "evidence_type": "turn_record",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir",
+  "case_id": "tooluse_v1_014",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_014",
+    "created_at": "2026-07-07T22:09:14Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 110178.4,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 36759
+  },
+  "completed_at": "2026-07-07T22:09:09Z",
+  "created_at": "2026-07-07T22:07:23Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions/20260707T220845.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:0580350573f9d0a6637d45f2b662a79a0173866ce39be6e222c2ba5492d8c189",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "description": "Read the money-model-advisor skill, source-need rules, and JOB_DESCRIPTION north star.",
+      "index": 0,
+      "kind": "instruction_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir problem.user_goal=\"help me improve my money model\"",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir --full",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "description": "The snapshot was empty, so the right next move was to ask for the missing business context instead of searching or calculating.",
+      "index": 4,
+      "kind": "agent_decision"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir --user-message \"help me improve my money model\" --assistant-message \"I can help, but I need the business context first. What business is this, who is the customer, what is the core offer, and do you know CAC and first-30-day gross profit?\"",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command"
+    }
+  ]
+}

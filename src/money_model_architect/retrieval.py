@@ -18,7 +18,7 @@ from .vector_store import (
     VectorRecord,
     VectorStore,
     chunk_id_from_vector_id,
-    layer_namespaces,
+    subject_namespaces,
     selected_vector_store_name,
     vector_id,
 )
@@ -54,8 +54,8 @@ CHUNKING_STRATEGIES: dict[str, ChunkingStrategy] = {
 class Chunk:
     id: str
     chapter: str
-    layer: str
-    layers: tuple[str, ...]
+    subject: str
+    subjects: tuple[str, ...]
     text: str
     char_start: int
     char_end: int
@@ -190,8 +190,8 @@ class CorpusIndex:
                     Chunk(
                         id=f"{chapter}:{index}",
                         chapter=chapter,
-                        layer=route.primary_layer,
-                        layers=route.layers,
+                        subject=route.primary_subject,
+                        subjects=route.subjects,
                         text=chunk_text,
                         char_start=char_start,
                         char_end=char_end,
@@ -207,9 +207,9 @@ class CorpusIndex:
     def search(
         self,
         query: str,
-        layer: str | None = None,
+        subject: str | None = None,
         top_k: int = 5,
-        layers: tuple[str, ...] | None = None,
+        subjects: tuple[str, ...] | None = None,
     ) -> list[SearchResult]:
         query_terms = tokenize(query)
         if not query_terms:
@@ -217,9 +217,9 @@ class CorpusIndex:
 
         results: list[SearchResult] = []
         query_counts = Counter(query_terms)
-        layer_filter = tuple(layers or ((layer,) if layer else ()))
+        subject_filter = tuple(subjects or ((subject,) if subject else ()))
         for chunk, terms in zip(self.chunks, self._term_freqs, strict=True):
-            if layer_filter and not any(selected_layer in chunk.layers for selected_layer in layer_filter):
+            if subject_filter and not any(selected_subject in chunk.subjects for selected_subject in subject_filter):
                 continue
             score = self._bm25(query_counts, terms)
             if score > 0:
@@ -230,14 +230,14 @@ class CorpusIndex:
     def vector_search(
         self,
         query: str,
-        layer: str | None = None,
+        subject: str | None = None,
         top_k: int = 5,
         embedding_client: EmbeddingClient | None = None,
         vector_store: VectorStore | None = None,
         vector_store_name: str | None = None,
         vector_namespaces: tuple[str | None, ...] | None = None,
         namespace_prefix: str = "money-models",
-        layers: tuple[str, ...] | None = None,
+        subjects: tuple[str, ...] | None = None,
     ) -> list[SearchResult]:
         if not query.strip():
             return []
@@ -248,8 +248,8 @@ class CorpusIndex:
             vector_store_name=vector_store_name,
             namespace_prefix=namespace_prefix,
         )
-        layer_filter = tuple(layers or ((layer,) if layer else ()))
-        filter_payload = {"layers": {"$in": list(layer_filter)}} if layer_filter else None
+        subject_filter = tuple(subjects or ((subject,) if subject else ()))
+        filter_payload = {"subjects": {"$in": list(subject_filter)}} if subject_filter else None
         requested_top_k = max(top_k * 10, top_k)
         matches = self._query_vector_namespaces(
             store,
@@ -266,7 +266,7 @@ class CorpusIndex:
             chunk = chunk_by_id.get(chunk_id)
             if chunk is None:
                 continue
-            if layer_filter and not any(selected_layer in chunk.layers for selected_layer in layer_filter):
+            if subject_filter and not any(selected_subject in chunk.subjects for selected_subject in subject_filter):
                 continue
             if match.score > 0:
                 current = best_by_chunk.get(chunk.id)
@@ -279,27 +279,27 @@ class CorpusIndex:
     def hybrid_search(
         self,
         query: str,
-        layer: str | None = None,
+        subject: str | None = None,
         top_k: int = 5,
         embedding_client: EmbeddingClient | None = None,
         vector_store: VectorStore | None = None,
         vector_store_name: str | None = None,
         vector_namespaces: tuple[str | None, ...] | None = None,
         namespace_prefix: str = "money-models",
-        layers: tuple[str, ...] | None = None,
+        subjects: tuple[str, ...] | None = None,
         rrf_k: int = 60,
     ) -> list[SearchResult]:
-        bm25_results = self.search(query, layer=layer, top_k=max(top_k * 5, top_k), layers=layers)
+        bm25_results = self.search(query, subject=subject, top_k=max(top_k * 5, top_k), subjects=subjects)
         vector_results = self.vector_search(
             query,
-            layer=layer,
+            subject=subject,
             top_k=max(top_k * 5, top_k),
             embedding_client=embedding_client,
             vector_store=vector_store,
             vector_store_name=vector_store_name,
             vector_namespaces=vector_namespaces,
             namespace_prefix=namespace_prefix,
-            layers=layers,
+            subjects=subjects,
         )
 
         chunks_by_id = {result.chunk.id: result.chunk for result in [*bm25_results, *vector_results]}
@@ -377,7 +377,7 @@ class CorpusIndex:
             store = LocalVectorStore()
             store.upsert(records)
             for record in records:
-                for namespace in layer_namespaces(record.metadata.get("layers", ()), prefix=namespace_prefix):
+                for namespace in subject_namespaces(record.metadata.get("subjects", ()), prefix=namespace_prefix):
                     store.upsert([record], namespace=namespace)
             return store
         if name == "pinecone":
@@ -410,16 +410,16 @@ class CorpusIndex:
 
 
 def _embedding_text(chunk: Chunk) -> str:
-    layers = ", ".join(chunk.layers)
-    return f"chapter: {chunk.chapter}\nlayers: {layers}\n\n{chunk.text}"
+    subjects = ", ".join(chunk.subjects)
+    return f"chapter: {chunk.chapter}\nsubjects: {subjects}\n\n{chunk.text}"
 
 
 def chunk_metadata(chunk: Chunk, chunking_strategy: str, embedding_model: str) -> dict[str, object]:
     return {
         "chunk_id": chunk.id,
         "chapter": chunk.chapter,
-        "layer": chunk.layer,
-        "layers": list(chunk.layers),
+        "subject": chunk.subject,
+        "subjects": list(chunk.subjects),
         "char_start": chunk.char_start,
         "char_end": chunk.char_end,
         "embedding_model": embedding_model,

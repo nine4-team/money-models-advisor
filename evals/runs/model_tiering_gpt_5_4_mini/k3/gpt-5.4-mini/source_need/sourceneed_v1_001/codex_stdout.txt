@@ -1,0 +1,6 @@
+Recorded `source_search_decision=true` in [run.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/run.json).
+
+Source need:
+- `intent`: `diagnostic_evidence`
+- `subjects`: `["unit-economics"]`
+- `focus_terms`: `["fulfillment cost","gross profit","CAC","payback period","ads"]`

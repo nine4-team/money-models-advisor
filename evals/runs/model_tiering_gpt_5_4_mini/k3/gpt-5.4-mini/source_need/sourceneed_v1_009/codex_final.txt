@@ -1,0 +1,8 @@
+Recorded decision: `true` for source search.
+
+Source need:
+- `intent`: `diagnostic_evidence`
+- `subjects`: `["unit-economics"]`
+- `focus_terms`: `["CAC", "gross profit per client", "payback period", "acquisition capacity"]`
+
+Trace written to `evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/run.json`.

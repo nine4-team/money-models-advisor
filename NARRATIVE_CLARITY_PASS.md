@@ -199,3 +199,66 @@ Plan: retitle H2 to name the subject (the limits); trim the "corrected" framing 
 state what the eval does now; break the RAG appendix cell into 2–3 sentences;
 "can't tell whether its vectors are local or hosted". Keep the four gap rows and the
 honest pass-rate caveat.
+
+---
+
+## Round 2 — compression + clarity re-pass
+
+Triggered by a read-through for redundant / non-additive language. Two problems
+surfaced: the report summarizes itself across stacked layers (deck, hero
+abstract, contents gist, section rail-gist, section lede) and repeats claims
+across sections; and Round 1 left "plain words, still opaque" lines standing
+(e.g. "intent is an annotation, not a control") because its bar was "no
+metaphors, no obvious jargon," which is too low.
+
+### Compression — done
+- **Hero abstract (Objective/Design/Method) cut.** Deck + the three section
+  rail-gists already carry it.
+- **§1 opening** — folded the examples into the lede, dropped the job the
+  rail-gist already states.
+- **§1.1** — fixed the circular lede ("the target role *requires* each one, so
+  they were built to demonstrate the skill") and stripped the repeated "because
+  the role calls for it" from all three rows.
+- **§2.1 quiet** — dropped the future-web-product story (kept in §4, its home);
+  kept the outside-services fact.
+- **§2.5 quiet** — cut the sentence re-listing the trace-contents dl above it.
+- **§3.8 + §3.10 decision boxes** — cut the "deterministic work stays in the
+  CLI" echoes; kept it where the cost argument is made (§2.1, §3.8 Cost).
+- **§4 "Model routing" row** — was re-narrating §3.8+§3.10; now states the
+  settled result + the one open gap.
+- Net ≈485 words / 64 lines vs commit 3de7cb3.
+
+### Compression — remaining
+- Tighten content-bearing prose (not duplication — real judgment): the RRF
+  justification (§2.4 Search dd), the mechanism paragraph (§3.7), the §3.8
+  latency/cost write-ups.
+- Decide the borderline repeat left in on purpose: the BM25 shared-vocabulary
+  premise appears in §1.1 and again in §3.4. Kept both because §3.4 needs the
+  premise to stand alone — confirm or collapse.
+
+### Clarity re-pass — remaining (the main job)
+New bar: **every line readable by someone who has never seen this project** —
+not just "no metaphors, no jargon." Re-scan the whole doc for "plain words,
+still opaque" lines and fix them. Known survivor already fixed: §2.4 intent
+("The intent label doesn't change what the search returns…").
+
+### Cleanup
+- Delete the dead `.abstract` CSS (~30 lines) left after removing the abstract
+  block. **Done.**
+
+### The lesson (why passes keep missing things)
+Two failure habits, both of which let bad lines survive:
+
+1. **Scanning by term, not by reading cold.** Grepping for where a jargon noun
+   first appears catches a late *word* but is blind to a presupposed *frame*
+   made of plain words. "answers with cited passages from the book" (the deck)
+   has no jargon token to grep, yet it assumes a Q&A setup the reader was never
+   given. Read every sentence as a stranger who started at that sentence.
+2. **Category exemptions.** "It's the deck / a preview / the audience knows it"
+   is how presupposition survives — the block gets excused instead of tested.
+   No line gets a pass for where it sits.
+
+Presupposition pattern fixed this round: deck ("A founder brings it a business
+question; it…"), §1 lede (dropped "any retrieval question" / "which one a turn
+needs" before those exist), §1.1 namespace row (now introduces "namespace" and
+"~200 passages" in plain terms instead of assuming them).

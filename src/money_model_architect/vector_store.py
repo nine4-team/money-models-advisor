@@ -186,15 +186,15 @@ class PineconeVectorStore:
         return json.loads(body) if body.strip() else {}
 
 
-def layer_namespace(layer: str, *, prefix: str = "money-models") -> str:
-    return f"{prefix}-{layer}"
+def subject_namespace(subject: str, *, prefix: str = "money-models") -> str:
+    return f"{prefix}-{subject}"
 
 
-def layer_namespaces(layers: Sequence[str], *, prefix: str = "money-models") -> list[str]:
+def subject_namespaces(subjects: Sequence[str], *, prefix: str = "money-models") -> list[str]:
     seen: set[str] = set()
     namespaces: list[str] = []
-    for layer in layers:
-        namespace = layer_namespace(str(layer), prefix=prefix)
+    for subject in subjects:
+        namespace = subject_namespace(str(subject), prefix=prefix)
         if namespace not in seen:
             namespaces.append(namespace)
             seen.add(namespace)

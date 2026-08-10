@@ -1,0 +1,59 @@
+{
+  "case_id": "sourceneed_v1_009",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_009",
+    "created_at": "2026-07-08T23:59:51Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_009/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 32492.2,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_009/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_009/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 16228
+  },
+  "completed_at": "2026-07-08T23:59:44Z",
+  "created_at": "2026-07-08T23:59:19Z",
+  "notes": "Snapshot is payback-ready and the user asks for interpretation of CAC versus gross profit, so the source need is a unit-economics diagnostic rather than a concrete fix-layer recommendation.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_009/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_009/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_009/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "CAC",
+      "gross profit per client",
+      "payback period",
+      "acquisition capacity"
+    ],
+    "intent": "diagnostic_evidence",
+    "query_variants": [
+      "CAC versus gross profit per client payback bottleneck",
+      "gross profit per client acquisition capacity CAC payback",
+      "diagnose whether CAC or gross profit limits paid acquisition"
+    ],
+    "subjects": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_009",
+    "conversation_context": "The snapshot is payback-ready. The user asks whether CAC or gross profit is the real bottleneck.",
+    "focus_aliases": {
+      "acquisition": [
+        "acquisition capacity"
+      ],
+      "gross profit": [
+        "gross profit per client"
+      ],
+      "make more per customer": [
+        "gross profit per client"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "is the problem really CAC, or do we mostly need to make more gross profit per client?"
+  }
+}

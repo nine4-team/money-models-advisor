@@ -61,7 +61,7 @@ def evaluate_strategy(records: list[dict[str, Any]], strategy: str, top_k: int) 
 
     for record in records:
         query_started = time.perf_counter()
-        results = index.search(record["query"], layer=record.get("layer"), top_k=top_k)
+        results = index.search(record["query"], subject=record.get("subject"), top_k=top_k)
         latency_ms = (time.perf_counter() - query_started) * 1000
         latencies.append(latency_ms)
 
@@ -71,7 +71,7 @@ def evaluate_strategy(records: list[dict[str, Any]], strategy: str, top_k: int) 
         query_results.append(
             {
                 "id": record["id"],
-                "layer": record.get("layer"),
+                "subject": record.get("subject"),
                 "expected_chapters": record["must_chapters"],
                 "retrieved_chapters": chapters,
                 "rank": rank,

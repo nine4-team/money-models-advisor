@@ -1,0 +1,1 @@
+Current state is diagnosable. The business has a $597 diagnostic offer, $15k core offer, and $5k room-package upsell; CAC is $1k, first-30-day gross profit is $10k, gross margin is 76.9%, and payback is 1 month. There are no prior logs, so the next test should focus on acquisition spend ceiling or offer-stack sensitivity rather than basic viability.

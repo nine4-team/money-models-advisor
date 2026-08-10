@@ -1,0 +1,15 @@
+Current state is already diagnosable.
+
+- Business: premium full-service interior design for STR and second-home projects.
+- Offer stack: $597 STR Design Diagnostic, $15k core full-service design, $5k room-package upsell.
+- Unit economics in snapshot: CAC is $1,000, first-30-day gross profit is $10,000, gross margin is 76.9%, payback is 1.0 month.
+- Logs: none yet.
+- Constraint picture: there are no diagnosed blockers; this is not a “missing facts” case.
+
+So the real question is not viability. It’s which assumption we want to pressure next.
+
+Most useful tests from here are:
+1. Acquisition spend ceiling sensitivity against the $1k CAC and $10k first-30-day GP.
+2. Offer-stack sensitivity, especially whether the $597 diagnostic reliably feeds the $15k core offer.
+3. Conversion fragility, if we want to test what happens when the diagnostic underperforms.
+

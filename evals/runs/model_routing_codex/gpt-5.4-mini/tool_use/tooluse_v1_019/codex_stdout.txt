@@ -1,0 +1,11 @@
+I’d think about client-financed acquisition as self-liquidating acquisition: the first client should generate enough gross profit and collected cash to fund the next one fast enough that growth compounds instead of draining cash.
+
+In your case, the economics are strong. With about `$1k` CAC and about `$10k` of first-30-day gross profit, payback is roughly `1 month`. That means the main constraint is not unit economics; it’s cash timing and delivery capacity.
+
+So the practical rule is:
+
+- If the client’s upfront payment and early gross profit cover acquisition spend quickly, the acquisition is effectively financed by the client.
+- If you have to front spend before cash collects, you still need working capital.
+- But with these numbers, the model supports fairly aggressive acquisition as long as fulfillment can keep up.
+
+If you want, I can turn that into a concrete “max CAC” rule based on your cash buffer.

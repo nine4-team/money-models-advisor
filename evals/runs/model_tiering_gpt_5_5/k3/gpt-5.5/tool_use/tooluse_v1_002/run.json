@@ -1,0 +1,96 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command output: missing economics.cac and economics.first_30_day_gross_profit",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs --full output: empty logs array",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "clarify",
+      "confidence": "inferred",
+      "evidence_note": "Assistant asked for CAC and first-30-day gross profit instead of calculating or searching.",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir",
+  "case_id": "tooluse_v1_002",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_002",
+    "created_at": "2026-07-09T00:05:18Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 60079.6,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 22563
+  },
+  "completed_at": "2026-07-09T00:05:09Z",
+  "created_at": "2026-07-09T00:04:18Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir/.money-model-advisor/sessions/20260709T000445.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "detail": "Consulted .codex/skills/money-model-advisor/SKILL.md before acting.",
+      "index": 0,
+      "kind": "instruction_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir",
+      "detail": "Snapshot showed business and offer-stack context with economics.cac and economics.first_30_day_gross_profit missing.",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir --full",
+      "detail": "Logs were empty; no prior turn supplied the missing economics.",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "detail": "Chose clarification because CAC and first-30-day gross profit are required before payback calculation or diagnosis.",
+      "index": 3,
+      "kind": "decision"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_002/business_dir --user-message ... --assistant-message ...",
+      "detail": "Recorded final assistant turn with actions and no source events.",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    }
+  ]
+}

@@ -41,8 +41,8 @@ def summarize(results: list[query_eval.QueryResult]) -> dict[str, object]:
         "cases": total,
         "known_useful_hit_at_3": pct(sum(result.useful_at_3 for result in results), total),
         "known_useful_hit_at_5": pct(sum(result.useful_at_5 for result in results), total),
-        "top1_layer_match": pct(sum(result.top1_layer_match for result in results), total),
-        "any_expected_layer_at_5": pct(sum(result.any_layer_match_at_5 for result in results), total),
+        "top1_subject_match": pct(sum(result.top1_subject_match for result in results), total),
+        "any_expected_subject_at_5": pct(sum(result.any_subject_match_at_5 for result in results), total),
         "mean_known_useful_rank": round(sum(ranks) / len(ranks), 2) if ranks else None,
         "misses_at_5": misses,
         "p50_total_ms": round(statistics.median(total_ms), 3) if total_ms else 0.0,
@@ -153,7 +153,7 @@ def render_report(
         "",
         "## Metrics",
         "",
-        "| Backend | Cases | Hit@3 | Hit@5 | Top-1 Layer | Any Expected Layer @5 | Mean Known-Useful Rank | Misses @5 |",
+        "| Backend | Cases | Hit@3 | Hit@5 | Top-1 Subject | Any Expected Subject @5 | Mean Known-Useful Rank | Misses @5 |",
         "|---|---:|---:|---:|---:|---:|---:|---|",
     ]
 
@@ -169,8 +169,8 @@ def render_report(
             f"{summary['cases']} | "
             f"{summary['known_useful_hit_at_3']} | "
             f"{summary['known_useful_hit_at_5']} | "
-            f"{summary['top1_layer_match']} | "
-            f"{summary['any_expected_layer_at_5']} | "
+            f"{summary['top1_subject_match']} | "
+            f"{summary['any_expected_subject_at_5']} | "
             f"{summary['mean_known_useful_rank'] if summary['mean_known_useful_rank'] is not None else '-'} | "
             f"{', '.join(f'`{case_id}`' for case_id in misses) if misses else 'none'} |"
         )
@@ -348,9 +348,9 @@ def main() -> int:
     parser.add_argument("--namespace-prefix", default="money-models")
     parser.add_argument(
         "--target-namespace-source",
-        choices=("none", "expected_layers"),
+        choices=("none", "expected_subjects"),
         default="none",
-        help="How to populate SourceNeed.target_namespaces for vector/hybrid namespace experiments. 'expected_layers' is an oracle condition.",
+        help="How to populate SourceNeed.target_namespaces for vector/hybrid namespace experiments. 'expected_subjects' is an oracle condition.",
     )
     parser.add_argument(
         "--max-workers",

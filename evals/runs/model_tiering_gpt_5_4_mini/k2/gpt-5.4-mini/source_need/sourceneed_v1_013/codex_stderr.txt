@@ -1,0 +1,1038 @@
+2026-07-07T22:53:53.981478Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T22:53:53.995108Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T22:53:54.013865Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T22:53:54.014643Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T22:53:54.712776Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T22:53:54.724286Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T22:53:54.743376Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T22:53:54.744181Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T22:53:54.775908Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T22:53:54.777193Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+OpenAI Codex v0.142.5
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019f3ec9-b391-7150-89b8-ca13e7384c54
+--------
+user
+# Source-Need Generation Acting Prompt
+
+You are the acting agent for a Money Model Advisor source-need generation eval case.
+
+Consult the money-model-advisor skill before you decide, then use the local CLI to act. The skill is the authoritative rulebook for the search decision, intents, and subjects; where a case is a close call, its rules decide it, including the rule that a unit-economics search stays `diagnostic_evidence` even when the final answer contains a recommendation. This prompt only summarizes the skill. Expected labels are intentionally hidden.
+
+Task: decide whether Money Models source-material search is needed for the current turn. If search is needed, generate a structured source need with `intent`, `subjects`, and `focus_terms`. If search is not needed, set source need to null.
+
+Apply the decision rules below exactly. They are inlined verbatim from the
+authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+skill points to, so there is one source of truth.
+
+# Source-Need Decision Rules
+
+Single source of truth for deciding whether to run a source-material search and how
+to structure the source need. The operating skill and the eval acting prompts both
+pull these rules from this file. Do not restate them anywhere else — change them here.
+
+## When to search
+
+- Search source material when the answer needs Money Models support for a concept,
+  comparison, diagnosis, or recommendation, and the snapshot or prior-session context
+  already holds enough business facts to make a source-backed claim.
+- Do not use source search as a substitute for missing business facts. If the
+  responsible next move is to get CAC, gross profit, fulfillment cost, current offer
+  details, or prior-session context first, do that instead and do not search this step.
+- Do not search for simple vocabulary answers that can be answered without a citation.
+- A missing optional field should not block search when the user is asking for
+  conceptual source support.
+
+## Layers (these drive retrieval — choose carefully)
+
+Choose layers by the mechanism the source material must support:
+
+- front-end attraction offer -> `offers`
+- post-sale add-on or premium next offer -> `upsells`
+- payment plan, pay-less-now option, or friction-reducing alternative -> `downsells`
+- recurring maintenance, membership, or repeat post-purchase service -> `continuity`
+- CAC, gross profit, payback, or acquisition-capacity interpretation -> `unit-economics`
+
+Keep layers minimal; extra layers make retrieval noisier. Use payback or CAC as focus
+terms without adding `unit-economics` when the source claim is about a concrete fix
+mechanism such as continuity or upsells.
+
+## One retrieval job per search (this drives layer and focus-term choice)
+
+- Generate one source need per search. If an answer needs two retrieval jobs, run two
+  searches with two source needs instead of mixing them into one.
+- Boundary rule: a search that interprets the business's economics stays on
+  `unit-economics` even when the final answer contains a recommendation. If the source
+  is justifying why the economics point a certain way, keep it a `unit-economics`
+  search; then run a separate search on the concrete fix layer (`offers`, `upsells`,
+  `continuity`, `downsells`) for the recommended move.
+- Do not add a `unit-economics` search merely because known economics appear in the
+  answer. If the frame is already established and the user asks for a concrete fix,
+  search only for the fix mechanism unless the answer makes a fresh source-backed
+  economics claim.
+
+## Focus terms and query variants
+
+- `focus_terms`: the specific evidence the search must surface.
+- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+  the current turn. Three is the normal target; four is the cap. If you need more than
+  four, split the answer into narrower source needs. Do not rely on the deterministic
+  fallback query except for debugging.
+
+## Intent (recorded annotation, not scored)
+
+Record the retrieval job as `intent` for traceability. Intent does not change retrieval
+— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+closest fit and move on:
+
+- `teaching_evidence`: explain a Money Models concept or framework.
+- `diagnostic_evidence`: support interpretation of known business economics or constraints.
+- `comparison_evidence`: compare two concepts, options, or layers.
+- `recommendation_evidence`: support a concrete next move after enough business facts are known.
+
+Allowed intents: `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, `recommendation_evidence`.
+Allowed subjects: `unit-economics`, `offers`, `upsells`, `downsells`, `continuity`.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business`
+
+Visible case context:
+
+```json
+{
+  "case_id": "sourceneed_v1_013",
+  "conversation_context": "The snapshot is empty. The user asks a simple business vocabulary question.",
+  "scenario_id": "1584_design",
+  "user_turn": "what does gross profit mean in plain English?"
+}
+```
+
+After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+```
+
+Your final response should only summarize the recorded decision.
+
+2026-07-07T22:53:56.179986Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-07-07T22:53:56.426258Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-07-07T22:53:56.426278Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-07T22:53:57.476232Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Server returned error response: invalid_grant: Grant not found
+2026-07-07T22:53:57.476259Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-07T22:53:58.099639Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T22:53:58.100890Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T22:53:58.101062Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T22:53:58.106595Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T22:53:58.107103Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T22:53:58.119484Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.119492Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.119910Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.119914Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.120250Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.120253Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.120574Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.120579Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.120870Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.120874Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.121586Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T22:53:58.121590Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+warning: Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-07-07T22:53:59.143827Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T22:53:59.145291Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T22:53:59.145494Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T22:53:59.152058Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T22:53:59.152772Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’m checking the advisor runbook and the source-need rules first, then I’ll record the decision in the trace file and return the minimal result.
+exec
+/bin/zsh -lc "sed -n '1,240p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Follow the source-need decision rules in `source_need_rules.md` (same directory). That
+file is the single source of truth for when to search, how to choose layers, how to split
+one answer into multiple source needs, how to write `query_variants`, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+exec
+/bin/zsh -lc "sed -n '1,240p' /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business/source_need_rules.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ exited 1 in 0ms:
+sed: /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business/source_need_rules.md: No such file or directory
+
+2026-07-07T22:54:04.984941Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T22:54:04.986483Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T22:54:04.986722Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T22:54:04.993354Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T22:54:04.993995Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The runbook is clear. I hit a path mismatch on the rules file, so I’m locating the canonical copy and then I’ll write the trace artifact with a no-search decision.
+exec
+/bin/zsh -lc "rg --files /Users/benjaminmackenzie/Dev/money-model-architect | rg 'source_need_rules\\.md"'$'"'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ exited 1 in 0ms:
+exec
+/bin/zsh -lc 'rg --files /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/run_draft.json
+
+2026-07-07T22:54:18.640429Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T22:54:18.641924Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T22:54:18.642162Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T22:54:18.647911Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T22:54:18.648528Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I found the case directory, but not the standalone rules file. I’m checking the local eval assets next so I can follow the exact case format without guessing.
+exec
+/bin/zsh -lc "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Source-Need Generation Acting Prompt
+
+You are the acting agent for a Money Model Advisor source-need generation eval case.
+
+Consult the money-model-advisor skill before you decide, then use the local CLI to act. The skill is the authoritative rulebook for the search decision, intents, and subjects; where a case is a close call, its rules decide it, including the rule that a unit-economics search stays `diagnostic_evidence` even when the final answer contains a recommendation. This prompt only summarizes the skill. Expected labels are intentionally hidden.
+
+Task: decide whether Money Models source-material search is needed for the current turn. If search is needed, generate a structured source need with `intent`, `subjects`, and `focus_terms`. If search is not needed, set source need to null.
+
+Apply the decision rules below exactly. They are inlined verbatim from the
+authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+skill points to, so there is one source of truth.
+
+# Source-Need Decision Rules
+
+Single source of truth for deciding whether to run a source-material search and how
+to structure the source need. The operating skill and the eval acting prompts both
+pull these rules from this file. Do not restate them anywhere else — change them here.
+
+## When to search
+
+- Search source material when the answer needs Money Models support for a concept,
+  comparison, diagnosis, or recommendation, and the snapshot or prior-session context
+  already holds enough business facts to make a source-backed claim.
+- Do not use source search as a substitute for missing business facts. If the
+  responsible next move is to get CAC, gross profit, fulfillment cost, current offer
+  details, or prior-session context first, do that instead and do not search this step.
+- Do not search for simple vocabulary answers that can be answered without a citation.
+- A missing optional field should not block search when the user is asking for
+  conceptual source support.
+
+## Layers (these drive retrieval — choose carefully)
+
+Choose layers by the mechanism the source material must support:
+
+- front-end attraction offer -> `offers`
+- post-sale add-on or premium next offer -> `upsells`
+- payment plan, pay-less-now option, or friction-reducing alternative -> `downsells`
+- recurring maintenance, membership, or repeat post-purchase service -> `continuity`
+- CAC, gross profit, payback, or acquisition-capacity interpretation -> `unit-economics`
+
+Keep layers minimal; extra layers make retrieval noisier. Use payback or CAC as focus
+terms without adding `unit-economics` when the source claim is about a concrete fix
+mechanism such as continuity or upsells.
+
+## One retrieval job per search (this drives layer and focus-term choice)
+
+- Generate one source need per search. If an answer needs two retrieval jobs, run two
+  searches with two source needs instead of mixing them into one.
+- Boundary rule: a search that interprets the business's economics stays on
+  `unit-economics` even when the final answer contains a recommendation. If the source
+  is justifying why the economics point a certain way, keep it a `unit-economics`
+  search; then run a separate search on the concrete fix layer (`offers`, `upsells`,
+  `continuity`, `downsells`) for the recommended move.
+- Do not add a `unit-economics` search merely because known economics appear in the
+  answer. If the frame is already established and the user asks for a concrete fix,
+  search only for the fix mechanism unless the answer makes a fresh source-backed
+  economics claim.
+
+## Focus terms and query variants
+
+- `focus_terms`: the specific evidence the search must surface.
+- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+  the current turn. Three is the normal target; four is the cap. If you need more than
+  four, split the answer into narrower source needs. Do not rely on the deterministic
+  fallback query except for debugging.
+
+## Intent (recorded annotation, not scored)
+
+Record the retrieval job as `intent` for traceability. Intent does not change retrieval
+— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+closest fit and move on:
+
+- `teaching_evidence`: explain a Money Models concept or framework.
+- `diagnostic_evidence`: support interpretation of known business economics or constraints.
+- `comparison_evidence`: compare two concepts, options, or layers.
+- `recommendation_evidence`: support a concrete next move after enough business facts are known.
+
+Allowed intents: `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, `recommendation_evidence`.
+Allowed subjects: `unit-economics`, `offers`, `upsells`, `downsells`, `continuity`.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business`
+
+Visible case context:
+
+```json
+{
+  "case_id": "sourceneed_v1_013",
+  "conversation_context": "The snapshot is empty. The user asks a simple business vocabulary question.",
+  "scenario_id": "1584_design",
+  "user_turn": "what does gross profit mean in plain English?"
+}
+```
+
+After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+```
+
+Your final response should only summarize the recorded decision.
+
+exec
+/bin/zsh -lc "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/run_draft.json" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "case_id": "sourceneed_v1_013",
+  "created_at": "2026-07-07T22:53:53Z",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceneed_v1_013",
+    "conversation_context": "The snapshot is empty. The user asks a simple business vocabulary question.",
+    "scenario_id": "1584_design",
+    "user_turn": "what does gross profit mean in plain English?"
+  }
+}
+
+exec
+/bin/zsh -lc "rg -n \"source_need_rules|When to search|One retrieval job\" /Users/benjaminmackenzie/Dev/money-model-architect/evals /Users/benjaminmackenzie/Dev/money-model-architect/.codex -g '*.md' -g '*.json'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+/Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md:195:Follow the source-need decision rules in `source_need_rules.md` (same directory). That
+/Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/source_need_rules.md:7:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/source_need_rules.md:33:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_008/run.json:79:      "note": "Consulted money-model-advisor skill and source_need_rules.md: interpreting known economics stays on unit-economics layer with intent diagnostic_evidence."
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_024/run.json:55:      "note": "Consulted money-model-advisor skill and source_need_rules.md: do not use source search to avoid asking for missing numbers; prefer one clear clarifying question over premature recommendation when economics needed for the decision are absent"
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_022/run.json:59:      "note": "Read case context: user asks a conceptual comparison (attraction offer vs upsell) 'in this situation'; consulted skill and source_need_rules.md"
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_022/run.json:64:      "note": "Snapshot already had both offers defined (STR Design Diagnostic attraction offer $597, room packages upsell $5000); missing CAC/GP fields do not block a conceptual comparison per source_need_rules.md, so answered instead of asking for missing facts"
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_010/run.json:5:  "notes": "Offer stack (attraction/core/upsell with prices) and ICP are already known; the question is about redesigning the front-end/attraction offer to drive engagement, a concrete offers-layer mechanism, not a unit-economics interpretation. CAC and gross profit are missing but not required to answer this question, so search proceeds rather than blocking on those fields. One retrieval job, offers layer only, recommendation_evidence intent since enough business facts are already known.",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-sonnet-5/tool_use/tooluse_v1_021/run.json:74:      "note": "Consulted money-model-advisor skill and source_need_rules.md: interpreting known economics stays on unit-economics layer with intent diagnostic_evidence."
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_020/run.json:37:      "note": "Consulted money-model-advisor SKILL.md and source_need_rules.md; rules say do not search for simple vocabulary answers and do not turn every message into retrieval."
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_004/run.json:81:      "note": "CAC is the only remaining field for payback; ask for it. No source search: getting the missing number is the responsible next move per source_need_rules."
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_015/run.json:44:      "detail": "Read money-model-advisor SKILL.md and source_need_rules.md; confirmed a saved-fact recall does not warrant source search.",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_018/run.json:49:      "detail": "Consulted money-model-advisor SKILL and source_need_rules",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-opus-4-8/tool_use/tooluse_v1_017/turn-record.json:15:    "no_search_reason": "Summarizing known facts, not making a fresh source-backed claim; per source_need_rules do not turn every message into retrieval.",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_009/run.json:72:      "note": "Consulted money-model-advisor skill and source_need_rules.md: interpreting known economics stays on unit-economics layer with intent diagnostic_evidence."
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_004/run.json:5:  "notes": "Snapshot has full offer-stack facts (attraction offer $597, upsell pre-designed room packages $5000) but no economics; user asks a conceptual comparison between two Money Models concepts grounded in those known offers. One retrieval job comparing offers vs upsells layers, intent comparison_evidence. No unit-economics needed since no economics claim is being made.",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/run.json:5:  "notes": "User asks how to think about payment plans for a cash-tight buyer of the $15K core offer. Snapshot has full offer-stack context (core offer exists), so business facts are sufficient \u2014 no need to gather CAC/gross profit first. Payment plan / pay-less-now alternative is the downsells mechanism per the layer rules, so layers=[downsells] only, no unit-economics since this is not an economics interpretation. One retrieval job: source support for the concrete downsell recommendation.",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_014/run.json:10:      "rationale": "User request lacks business context. Per source_need_rules, source search is premature without core facts. The responsible next move is to ask for essential context."
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_012/run.json:14:      "evidence_note": "Answered the vocabulary question directly; no calculation, search, or snapshot update was needed per source_need_rules.md guidance not to search simple vocabulary answers.",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_002/run.json:14:      "evidence_ref": "source_need_rules.md: do not use search as substitute for missing business facts; clarify first",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_tiers/claude-haiku-4-5/tool_use/tooluse_v1_012/run.json:7:      "evidence_ref": "CAC is a standard business term; no sources required per source_need_rules",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-haiku-4-5/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_008/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_008/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_008/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_005/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_005/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_005/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_002/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_002/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_002/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_011/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_011/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_011/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_010/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_010/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_010/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_006/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_006/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_006/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_004/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_004/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_004/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_003/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_003/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_003/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_013/run.json:49:      "note": "Consulted the money-model-advisor skill and source_need_rules; classified the turn as a memory-recall question about a prior decision, not a retrieval or calculation need."
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_001/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_001/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_001/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_012/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_012/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_012/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_014/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_014/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_014/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_009/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_009/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_009/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_013/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_013/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_013/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_007/acting_prompt.md:10:authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_007/acting_prompt.md:19:## When to search
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/source_need/sourceneed_v1_007/acting_prompt.md:45:## One retrieval job per search (this drives layer and focus-term choice)
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_006/run.json:53:      "detail": "Read money-model-advisor skill and source_need_rules; pricing recall is not a Money Models concept search",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_015/run.json:42:      "detail": "Read money-model-advisor SKILL.md and source_need_rules.md",
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-opus-4-8/tool_use/tooluse_v1_020/run.json:37:      "note": "Consulted the money-model-advisor skill and source_need_rules. This is a simple business-vocabulary question needing no saved state, local docs, calculation, or corpus search. Rule: do not search simple vocabulary answers."
+
+2026-07-07T22:54:26.151762Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T22:54:26.152929Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T22:54:26.153090Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T22:54:26.158087Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T22:54:26.158602Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+This is a simple vocabulary question with an empty snapshot, so source search is not needed. I’m writing the required trace artifact now with a null source need.
+exec
+/bin/zsh -lc "cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013 --source-search-decision false --source-need 'null' --notes 'Simple vocabulary question; no Money Models source-material search needed.'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "run": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_013/run.json"
+}
+
+2026-07-07T22:54:31.683939Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T22:54:31.685293Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T22:54:31.685462Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T22:54:31.690692Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T22:54:31.691326Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+Recorded decision: `source-search-decision=false`; `source-need=null`.
+2026-07-07T22:54:33.957554Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-07-07T22:54:33.957617Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-07-07T22:54:33.957693Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+tokens used
+17,201

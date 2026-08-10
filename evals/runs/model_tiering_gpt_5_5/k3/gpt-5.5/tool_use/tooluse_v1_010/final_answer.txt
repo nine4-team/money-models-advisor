@@ -1,0 +1,1 @@
+Recommended treating ad spend as a CAC/payback ceiling: test paid ads while fully loaded CAC stays well below first-30-day gross profit and payback remains inside 30 days; start around a $2k-$3k CAC target, separate media CAC from total CAC, and slow down if CAC rises toward $5k+ without stable lead quality and cash timing.

@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_007",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_007",
+    "created_at": "2026-07-07T21:45:26Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 51566.1,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 31927
+  },
+  "completed_at": "2026-07-07T21:45:22Z",
+  "created_at": "2026-07-07T21:44:35Z",
+  "notes": "Cash-tight buyer asking about the same design package calls for downsell/payment-terms evidence, so I selected recommendation_evidence on downsells and excluded unit-economics.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/business",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_007/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "payment plan",
+      "downsell",
+      "pay less now",
+      "payment terms",
+      "same product"
+    ],
+    "intent": "recommendation_evidence",
+    "query_variants": [
+      "payment plan reduces upfront cash friction same product",
+      "downsell payment terms pay less now cash tight buyer",
+      "same product different terms payment plan"
+    ],
+    "subjects": [
+      "downsells"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_007",
+    "conversation_context": "The snapshot has offer-stack context. The user asks about payment plans for a cash-tight buyer.",
+    "scenario_id": "1584_design",
+    "user_turn": "if someone wants the design package but cash is tight today, how should we think about payment plans?"
+  }
+}

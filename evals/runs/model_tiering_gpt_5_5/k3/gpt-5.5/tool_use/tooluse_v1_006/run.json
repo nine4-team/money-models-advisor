@@ -1,0 +1,110 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command exit 0",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "services-and-pricing.md and product-ladder.md",
+      "evidence_type": "file_read",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot set command exit 0",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final answer was composed from inspected local docs and updated snapshot state; no Money Models source search was needed.",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/business_dir",
+  "case_id": "tooluse_v1_006",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_006",
+    "created_at": "2026-07-09T00:10:07Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 93230.5,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 39637
+  },
+  "completed_at": "2026-07-09T00:10:01Z",
+  "created_at": "2026-07-09T00:08:34Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/sessions/20260709T000925.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:c84ff081a0e6e73440b4c6366628aae43ccafd9ae4e2b8815ccfc8dbc7f28312",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "instruction_read",
+      "summary": "Read money-model-advisor skill and source-need rules."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Loaded business snapshot; offer price anchors existed but richer pricing detail was needed from local docs."
+    },
+    {
+      "index": 2,
+      "kind": "file_read",
+      "path": "services-and-pricing.md",
+      "summary": "Inspected core full-service design pricing and project-budget ranges."
+    },
+    {
+      "index": 3,
+      "kind": "file_read",
+      "path": "product-ladder.md",
+      "summary": "Inspected diagnostic and pre-designed room package ladder pricing ranges."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> <pricing fields>",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command",
+      "summary": "Persisted doc-confirmed pricing ranges in offer descriptions and numeric anchor price fields."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <message> --assistant-message <answer>",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command",
+      "summary": "Recorded completed advisor turn with no source events or citations."
+    }
+  ]
+}

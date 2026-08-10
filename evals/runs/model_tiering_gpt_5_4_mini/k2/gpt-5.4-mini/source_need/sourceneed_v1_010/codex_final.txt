@@ -1,0 +1,8 @@
+Recorded `source_search_decision=true`.
+
+Source need:
+- `intent`: `recommendation_evidence`
+- `subjects`: `["offers"]`
+- `focus_terms`: `["front-end offer", "attraction offer", "STR owners", "engage", "free", "discount"]`
+
+Trace saved to `evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/run.json`.

@@ -45,7 +45,7 @@ def load_obligations(path: Path, include_proposed: bool) -> list[dict[str, Any]]
 def score_obligation(index: CorpusIndex, golden: dict[str, dict[str, Any]], obligation: dict[str, Any], top_k: int) -> dict[str, Any]:
     record = golden[obligation["record_id"]]
     started = time.perf_counter()
-    results = index.search(record["query"], layer=record.get("layer"), top_k=top_k)
+    results = index.search(record["query"], subject=record.get("subject"), top_k=top_k)
     latency_ms = (time.perf_counter() - started) * 1000
     retrieved_ids = [result.chunk.id for result in results]
     supporting = set(obligation["supporting_chunk_ids"])

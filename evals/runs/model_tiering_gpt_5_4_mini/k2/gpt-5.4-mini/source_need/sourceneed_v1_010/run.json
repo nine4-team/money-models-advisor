@@ -1,0 +1,62 @@
+{
+  "case_id": "sourceneed_v1_010",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_010",
+    "created_at": "2026-07-07T22:51:27Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 58315.0,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 34970
+  },
+  "completed_at": "2026-07-07T22:51:14Z",
+  "created_at": "2026-07-07T22:50:29Z",
+  "notes": "Enough business context is present to justify a source-backed recommendation on an attraction/front-end offer. This stays on the offers layer; no unit-economics search is needed.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_010/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "front-end offer",
+      "attraction offer",
+      "STR owners",
+      "engage",
+      "free",
+      "discount"
+    ],
+    "intent": "recommendation_evidence",
+    "query_variants": [
+      "front-end offer for STR owners engagement",
+      "attraction offer to get STR owners to engage",
+      "free or discount front-end offer for STR owners"
+    ],
+    "subjects": [
+      "offers"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_010",
+    "conversation_context": "The snapshot has offer-stack context. The user asks what front-end offer should get more STR owners to engage.",
+    "focus_aliases": {
+      "attraction offer": [
+        "front-end offer"
+      ],
+      "front end offer": [
+        "front-end offer"
+      ],
+      "get leads to engage": [
+        "engagement",
+        "STR owners"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "what kind of front-end offer should we use to get more STR owners to engage?"
+  }
+}

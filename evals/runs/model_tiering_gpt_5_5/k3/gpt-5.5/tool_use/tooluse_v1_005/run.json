@@ -1,0 +1,98 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "money_model_architect.cli snapshot --business-dir <business_dir>",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "business-profile.md; services-and-pricing.md; product-ladder.md",
+      "evidence_type": "local_files",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "money_model_architect.cli snapshot set saved explicit business and offer facts",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "After local docs identified 1584 Design and the snapshot was updated, the user question could be answered from saved state.",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_005",
+    "created_at": "2026-07-09T00:08:34Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 71396.7,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 26605
+  },
+  "completed_at": "2026-07-09T00:08:23Z",
+  "created_at": "2026-07-09T00:07:22Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions/20260709T000756.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:e5bb2de6ef3f2699272023956ed873ce96d0f6bef2bc7afea4f7fdb0c202f9c1",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Loaded current snapshot and confirmed business context was empty."
+    },
+    {
+      "index": 1,
+      "kind": "file_read",
+      "summary": "Listed and inspected local fixture docs: business-profile.md, services-and-pricing.md, and product-ladder.md."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> business.business_type=... business.icp=... business.delivery_model=... money_model.core_offer.* money_model.attraction_offer.*",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Persisted explicit business identity, ICP, delivery model, core offer, and attraction offer facts from local docs."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Recorded the final advisor response turn."
+    }
+  ]
+}

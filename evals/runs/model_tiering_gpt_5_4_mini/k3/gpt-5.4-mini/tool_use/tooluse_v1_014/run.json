@@ -1,0 +1,78 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command returned an empty snapshot with missing business context",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "clarify",
+      "confidence": "direct",
+      "evidence_ref": "final answer asks for the business and the first improvement priority",
+      "evidence_type": "turn_record",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir",
+  "case_id": "tooluse_v1_014",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_014",
+    "created_at": "2026-07-08T18:30:24Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 145458.7,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 49948
+  },
+  "completed_at": "2026-07-08T18:30:18Z",
+  "created_at": "2026-07-08T18:27:59Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_014/business_dir/.money-model-advisor/sessions/20260708T182901.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "description": "Read the money-model-advisor skill and source-need rules.",
+      "index": 0,
+      "kind": "instruction_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "note": "Loaded the empty snapshot and confirmed missing business context."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <message> --assistant-message <clarification>",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "note": "Recorded the clarification turn."
+    }
+  ]
+}

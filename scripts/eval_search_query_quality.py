@@ -26,7 +26,7 @@ from money_model_architect.advisor_queries import SourceNeed, build_advisor_quer
 from money_model_architect.embeddings import OpenAIEmbeddingClient  # noqa: E402
 from money_model_architect.retrieval import CorpusIndex, SearchResult  # noqa: E402
 from money_model_architect.snapshot import BusinessSnapshot  # noqa: E402
-from money_model_architect.vector_store import PineconeVectorStore, VectorStore, layer_namespaces, selected_vector_store_name  # noqa: E402
+from money_model_architect.vector_store import PineconeVectorStore, VectorStore, subject_namespaces, selected_vector_store_name  # noqa: E402
 
 
 REQUIRED_FIELDS = {
@@ -36,7 +36,7 @@ REQUIRED_FIELDS = {
     "source_tool_use_case_id",
     "user_turn",
     "retrieval_purpose",
-    "expected_layers",
+    "expected_subjects",
     "focus_terms",
     "reference_query",
     "query_rationale",
@@ -52,7 +52,7 @@ PURPOSES = {
     "recommendation_evidence",
 }
 
-LAYERS = {"unit-economics", "offers", "upsells", "downsells", "continuity"}
+SUBJECTS = {"unit-economics", "offers", "upsells", "downsells", "continuity"}
 
 
 @dataclass(frozen=True)
@@ -64,15 +64,15 @@ class QueryResult:
     retrieval_backend: str
     queries: tuple[str, ...]
     query_reasons: tuple[str, ...]
-    query_layers: tuple[str | None, ...]
+    query_subjects: tuple[str | None, ...]
     query_target_namespaces: tuple[tuple[str, ...], ...]
-    expected_layers: tuple[str, ...]
+    expected_subjects: tuple[str, ...]
     returned_ids: tuple[str, ...]
     known_useful_rank: int | None
     useful_at_3: bool
     useful_at_5: bool
-    top1_layer_match: bool
-    any_layer_match_at_5: bool
+    top1_subject_match: bool
+    any_subject_match_at_5: bool
     focus_term_recall: float
     query_build_ms: float = 0.0
     retrieval_ms: float = 0.0
@@ -116,13 +116,13 @@ def validate_cases(cases: list[dict[str, Any]]) -> list[str]:
         if case.get("retrieval_purpose") not in PURPOSES:
             errors.append(f"{ref}: unknown retrieval_purpose: {case.get('retrieval_purpose')}")
 
-        expected_layers = case.get("expected_layers")
-        if not isinstance(expected_layers, list) or not expected_layers:
-            errors.append(f"{ref}: expected_layers must be a non-empty list")
+        expected_subjects = case.get("expected_subjects")
+        if not isinstance(expected_subjects, list) or not expected_subjects:
+            errors.append(f"{ref}: expected_subjects must be a non-empty list")
         else:
-            unknown_layers = sorted(set(expected_layers) - LAYERS)
-            if unknown_layers:
-                errors.append(f"{ref}: unknown expected_layers: {', '.join(unknown_layers)}")
+            unknown_subjects = sorted(set(expected_subjects) - SUBJECTS)
+            if unknown_subjects:
+                errors.append(f"{ref}: unknown expected_subjects: {', '.join(unknown_subjects)}")
 
         for field in ("focus_terms", "known_useful_chunk_ids"):
             if not isinstance(case.get(field), list):
@@ -172,33 +172,40 @@ def query_specs_for_case(
 ) -> list[tuple[tuple[str, ...], tuple[str, ...], str, str]]:
     target_namespaces = target_namespaces_for_case(case, target_namespace_source)
     if query_source == "reference":
-        expected_layers = case["expected_layers"]
-        layers = tuple(expected_layers)
-        return [(layers, target_namespaces, case["reference_query"], "Reviewer-authored source-specific reference query.")]
+        expected_subjects = case["expected_subjects"]
+        subjects = tuple(expected_subjects)
+        return [(subjects, target_namespaces, case["reference_query"], "Reviewer-authored source-specific reference query.")]
 
     snapshot = BusinessSnapshot.load(ROOT / case["snapshot_fixture_path"])
     query_variants = ()
-    if query_source == "generated_variants":
+    if query_source in {"generated_variants", "generated_variants_only"}:
         query_variants = tuple((variants_by_case or {}).get(case["case_id"], ()))
     source_need = SourceNeed(
         intent=case["retrieval_purpose"],
-        layers=tuple(case["expected_layers"]),
+        subjects=tuple(case["expected_subjects"]),
         focus_terms=tuple(case["focus_terms"]),
         user_turn=case["user_turn"],
         query_variants=query_variants,
         target_namespaces=target_namespaces,
     )
-    return [
-        (query.layers, query.target_namespaces, query.query, query.reason)
+    specs = [
+        (query.subjects, query.target_namespaces, query.query, query.reason)
         for query in build_advisor_queries(snapshot, source_need=source_need)
     ]
+    # generated_variants_only isolates the agent-written variants from the
+    # CLI-appended deterministic keyword query (the "fallback"), so the three
+    # query-generation methods can be compared head to head: keyword-only
+    # (generated), variants-only (this), and RAG-fusion (generated_variants).
+    if query_source == "generated_variants_only":
+        specs = [spec for spec in specs if spec[3].startswith("Agent-generated")]
+    return specs
 
 
 def target_namespaces_for_case(case: dict[str, Any], target_namespace_source: str) -> tuple[str, ...]:
     if target_namespace_source == "none":
         return ()
-    if target_namespace_source == "expected_layers":
-        return tuple(case["expected_layers"])
+    if target_namespace_source == "expected_subjects":
+        return tuple(case["expected_subjects"])
     raise ValueError(f"unknown target namespace source: {target_namespace_source}")
 
 
@@ -206,7 +213,7 @@ def search_index(
     index: CorpusIndex,
     query: str,
     *,
-    layers: tuple[str, ...],
+    subjects: tuple[str, ...],
     top_k: int,
     backend: str,
     embedding_client: Any | None = None,
@@ -216,11 +223,11 @@ def search_index(
     vector_namespaces: tuple[str | None, ...] | None = None,
 ):
     if backend == "bm25":
-        return index.search(query, layers=layers, top_k=top_k)
+        return index.search(query, subjects=subjects, top_k=top_k)
     if backend == "vector":
         return index.vector_search(
             query,
-            layers=layers,
+            subjects=subjects,
             top_k=top_k,
             embedding_client=embedding_client,
             vector_store=vector_store,
@@ -231,7 +238,7 @@ def search_index(
     if backend == "hybrid":
         return index.hybrid_search(
             query,
-            layers=layers,
+            subjects=subjects,
             top_k=top_k,
             embedding_client=embedding_client,
             vector_store=vector_store,
@@ -305,7 +312,7 @@ def score_cases_with_metrics(
 
     for case in cases:
         case_started = time.perf_counter()
-        expected_layers = tuple(case["expected_layers"])
+        expected_subjects = tuple(case["expected_subjects"])
         query_started = time.perf_counter()
         query_specs = query_specs_for_case(
             case,
@@ -335,7 +342,7 @@ def score_cases_with_metrics(
         embedding_delta = _embedding_stats_delta(embedding_before, embedding_after)
 
         returned_ids = tuple(result.chunk.id for result in search_results)
-        returned_layers = [set(result.chunk.layers) for result in search_results]
+        returned_subjects = [set(result.chunk.subjects) for result in search_results]
         known_useful = set(case["known_useful_chunk_ids"])
 
         known_useful_rank = None
@@ -344,7 +351,7 @@ def score_cases_with_metrics(
                 known_useful_rank = index_position
                 break
 
-        expected_layer_set = set(expected_layers)
+        expected_subject_set = set(expected_subjects)
         results.append(
             QueryResult(
                 case_id=case["case_id"],
@@ -352,24 +359,24 @@ def score_cases_with_metrics(
                 purpose=case["retrieval_purpose"],
                 query_source=query_source,
                 retrieval_backend=retrieval_backend,
-                queries=tuple(query for _layers, _target_namespaces, query, _reason in query_specs),
-                query_reasons=tuple(reason for _layers, _target_namespaces, _query, reason in query_specs),
-                query_layers=tuple(
-                    layers[0] if len(layers) == 1 else None
-                    for layers, _target_namespaces, _query, _reason in query_specs
+                queries=tuple(query for _subjects, _target_namespaces, query, _reason in query_specs),
+                query_reasons=tuple(reason for _subjects, _target_namespaces, _query, reason in query_specs),
+                query_subjects=tuple(
+                    subjects[0] if len(subjects) == 1 else None
+                    for subjects, _target_namespaces, _query, _reason in query_specs
                 ),
                 query_target_namespaces=tuple(
-                    target_namespaces for _layers, target_namespaces, _query, _reason in query_specs
+                    target_namespaces for _subjects, target_namespaces, _query, _reason in query_specs
                 ),
-                expected_layers=expected_layers,
+                expected_subjects=expected_subjects,
                 returned_ids=returned_ids,
                 known_useful_rank=known_useful_rank,
                 useful_at_3=known_useful_rank is not None and known_useful_rank <= 3,
                 useful_at_5=known_useful_rank is not None and known_useful_rank <= 5,
-                top1_layer_match=bool(returned_layers) and bool(returned_layers[0] & expected_layer_set),
-                any_layer_match_at_5=any(layers & expected_layer_set for layers in returned_layers[:5]),
+                top1_subject_match=bool(returned_subjects) and bool(returned_subjects[0] & expected_subject_set),
+                any_subject_match_at_5=any(subjects & expected_subject_set for subjects in returned_subjects[:5]),
                 focus_term_recall=focus_term_recall(
-                    " ".join(query for _layers, _target_namespaces, query, _reason in query_specs),
+                    " ".join(query for _subjects, _target_namespaces, query, _reason in query_specs),
                     case["focus_terms"],
                 ),
                 query_build_ms=round(query_build_ms, 3),
@@ -378,7 +385,13 @@ def score_cases_with_metrics(
                 total_ms=round((time.perf_counter() - case_started) * 1000, 3),
                 embedding_ms=round(_embedding_elapsed_ms(embedding_delta), 3),
                 query_count=len(query_specs),
-                variant_count=max(0, len(query_specs) - 1) if query_source == "generated_variants" else 0,
+                variant_count=(
+                    max(0, len(query_specs) - 1)
+                    if query_source == "generated_variants"
+                    else len(query_specs)
+                    if query_source == "generated_variants_only"
+                    else 0
+                ),
                 vector_search_count=_vector_search_count(query_specs, retrieval_backend, namespace_prefix),
                 merged_result_count=len({result.chunk.id for result_set in query_result_sets for result in result_set}),
                 embedding_delta=embedding_delta,
@@ -467,12 +480,12 @@ def execute_query_spec(
     vector_store_name: str,
     namespace_prefix: str,
 ) -> list[SearchResult]:
-    layers, target_namespaces, query, _reason = query_spec
-    vector_namespaces = tuple(layer_namespaces(target_namespaces, prefix=namespace_prefix)) if target_namespaces else None
+    subjects, target_namespaces, query, _reason = query_spec
+    vector_namespaces = tuple(subject_namespaces(target_namespaces, prefix=namespace_prefix)) if target_namespaces else None
     return search_index(
         index,
         query,
-        layers=layers,
+        subjects=subjects,
         top_k=top_k,
         backend=backend,
         embedding_client=embedding_client,
@@ -490,7 +503,7 @@ def _vector_search_count(
 ) -> int:
     if retrieval_backend not in {"vector", "hybrid"}:
         return 0
-    return sum(len(_namespaces_for_query_specs([(layers, target_namespaces, query, reason)], namespace_prefix)) for layers, target_namespaces, query, reason in query_specs)
+    return sum(len(_namespaces_for_query_specs([(subjects, target_namespaces, query, reason)], namespace_prefix)) for subjects, target_namespaces, query, reason in query_specs)
 
 
 def _namespaces_for_query_specs(
@@ -499,12 +512,12 @@ def _namespaces_for_query_specs(
 ) -> list[str | None]:
     namespaces: list[str | None] = []
     seen: set[str] = set()
-    for _layers, target_namespaces, _query, _reason in query_specs:
+    for _subjects, target_namespaces, _query, _reason in query_specs:
         if not target_namespaces:
             if None not in namespaces:
                 namespaces.append(None)
             continue
-        for namespace in layer_namespaces(target_namespaces, prefix=namespace_prefix):
+        for namespace in subject_namespaces(target_namespaces, prefix=namespace_prefix):
             if namespace not in seen:
                 namespaces.append(namespace)
                 seen.add(namespace)
@@ -521,7 +534,7 @@ def all_query_texts(
     for case in cases:
         texts.extend(
             query
-            for _layers, _target_namespaces, query, _reason in query_specs_for_case(
+            for _subjects, _target_namespaces, query, _reason in query_specs_for_case(
                 case,
                 query_source,
                 variants_by_case=variants_by_case,
@@ -687,15 +700,15 @@ def render_report(
             "",
             f"- Known-useful Hit@3: {pct(sum(result.useful_at_3 for result in results), total)}",
             f"- Known-useful Hit@5: {pct(sum(result.useful_at_5 for result in results), total)}",
-            f"- Top-1 layer match: {pct(sum(result.top1_layer_match for result in results), total)}",
-            f"- Any expected-layer chunk in top 5: {pct(sum(result.any_layer_match_at_5 for result in results), total)}",
+            f"- Top-1 subject match: {pct(sum(result.top1_subject_match for result in results), total)}",
+            f"- Any expected-subject chunk in top 5: {pct(sum(result.any_subject_match_at_5 for result in results), total)}",
             f"- Average focus-term recall in query text: {avg_focus:.3f}",
             f"- Duplicate query strings: {duplicate_queries or 'none'}",
             f"- Average queries per case: {(sum(len(result.queries) for result in results) / total) if total else 0:.2f}",
             "",
             "## Case Table",
             "",
-            "| Case | Split | Purpose | Expected Layers | Query Layers | Queries | Top Chunks | Known Useful Rank | Focus Recall |",
+            "| Case | Split | Purpose | Expected Subjects | Query Subjects | Queries | Top Chunks | Known Useful Rank | Focus Recall |",
             "|---|---|---|---|---|---|---|---:|---:|",
         ]
     )
@@ -705,8 +718,8 @@ def render_report(
         lines.append(
             "| "
             f"`{result.case_id}` | `{result.split}` | `{result.purpose}` | "
-            f"{', '.join(result.expected_layers)} | "
-            f"{', '.join(layer or 'none' for layer in result.query_layers) or '-'} | "
+            f"{', '.join(result.expected_subjects)} | "
+            f"{', '.join(subject or 'none' for subject in result.query_subjects) or '-'} | "
             f"{'<br>'.join(result.queries) or '-'} | "
             f"{', '.join(f'`{chunk_id}`' for chunk_id in result.returned_ids) or '-'} | "
             f"{rank} | {result.focus_term_recall:.2f} |"
@@ -736,9 +749,9 @@ def main() -> int:
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument(
         "--query-source",
-        choices=("reference", "generated", "generated_variants"),
+        choices=("reference", "generated", "generated_variants", "generated_variants_only"),
         default="reference",
-        help="Use hand-authored reference queries or runtime-generated advisor queries.",
+        help="reference=reviewer query; generated=keyword-only fallback; generated_variants=variants+fallback (RAG-fusion); generated_variants_only=agent variants without the fallback.",
     )
     parser.add_argument(
         "--query-variants",
@@ -761,9 +774,9 @@ def main() -> int:
     parser.add_argument("--namespace-prefix", default="money-models")
     parser.add_argument(
         "--target-namespace-source",
-        choices=("none", "expected_layers"),
+        choices=("none", "expected_subjects"),
         default="none",
-        help="How to populate SourceNeed.target_namespaces for namespace-layout experiments. 'expected_layers' is an oracle condition, not an agent namespace-selection result.",
+        help="How to populate SourceNeed.target_namespaces for namespace-layout experiments. 'expected_subjects' is an oracle condition, not an agent namespace-selection result.",
     )
     parser.add_argument(
         "--max-workers",
@@ -776,7 +789,7 @@ def main() -> int:
     cases = load_jsonl(args.cases)
     validation_errors = validate_cases(cases)
     variants_by_case: dict[str, list[str]] = {}
-    if not validation_errors and args.query_source == "generated_variants":
+    if not validation_errors and args.query_source in {"generated_variants", "generated_variants_only"}:
         try:
             variants_by_case = load_variant_rows(args.query_variants)
         except ValueError as exc:

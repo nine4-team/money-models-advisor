@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_007",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_007",
+    "created_at": "2026-07-07T22:48:33Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 25965.5,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 4954
+  },
+  "completed_at": "2026-07-07T22:48:29Z",
+  "created_at": "2026-07-07T22:48:07Z",
+  "notes": "Cash-tight buyer payment plans are a downsell/friction-reduction question; enough offer-stack context exists to support a source-backed recommendation.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_007/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "payment plan",
+      "cash-tight buyer",
+      "cash flow friction",
+      "design package"
+    ],
+    "intent": "recommendation_evidence",
+    "query_variants": [
+      "payment plan cash tight buyer design package",
+      "design package payment plan down payment alternative",
+      "cash constrained buyer pay less now payment plan"
+    ],
+    "subjects": [
+      "downsells"
+    ],
+    "user_turn": "if someone wants the design package but cash is tight today, how should we think about payment plans?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_007",
+    "conversation_context": "The snapshot has offer-stack context. The user asks about payment plans for a cash-tight buyer.",
+    "scenario_id": "1584_design",
+    "user_turn": "if someone wants the design package but cash is tight today, how should we think about payment plans?"
+  }
+}

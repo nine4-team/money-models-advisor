@@ -1,0 +1,1 @@
+The design fee range is $15,000 to $60,000 depending on project scope. The pricing note also says the typical project budget is $80,000 to $160,000. [services-and-pricing.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_018/business_dir/services-and-pricing.md#L7)

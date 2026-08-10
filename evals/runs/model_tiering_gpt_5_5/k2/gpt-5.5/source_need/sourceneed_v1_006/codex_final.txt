@@ -1,0 +1,3 @@
+Recorded `source_search_decision: true`.
+
+Source need: `recommendation_evidence` for `continuity`, focused on recurring maintenance, membership/recurring offers, and payback period.

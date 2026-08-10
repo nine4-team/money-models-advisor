@@ -1,7 +1,7 @@
 {
   "advisor_state": {
     "advisory_status": "diagnosable",
-    "likely_retrieval_layers": [
+    "likely_retrieval_subjects": [
       "unit-economics"
     ],
     "missing_fields": [],

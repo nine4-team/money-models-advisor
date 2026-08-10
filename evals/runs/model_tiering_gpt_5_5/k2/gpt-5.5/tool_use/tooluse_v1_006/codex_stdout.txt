@@ -1,0 +1,9 @@
+Current draft pricing is:
+
+- STR Design Diagnostic: likely `$597-$997`
+- Pre-designed room packages: `$1,200-$1,800` per room, or `$5,000-$7,000` as a bundle
+- Full-service STR / second-home design: `$15,000-$60,000` design fee depending on scope
+- Typical project budget: `$80,000-$160,000`
+- Ideal project budget: `$150,000-$200,000+`
+
+I saved the pricing ranges into the snapshot and created the required eval trace at `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_006/run.json`.

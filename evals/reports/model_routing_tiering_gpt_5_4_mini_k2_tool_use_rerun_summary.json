@@ -1,0 +1,53 @@
+{
+  "created_at": "2026-07-08T15:31:49Z",
+  "harness": "codex_cli_agent",
+  "models": [
+    "gpt-5.4-mini"
+  ],
+  "performance": {
+    "gpt-5.4-mini": {
+      "tool_use": {
+        "avg_codex_reported_tokens": 51847.2,
+        "execution_errors": 0,
+        "p50_latency_ms": 123542.5,
+        "p95_latency_ms": 301109.0,
+        "requests": 24,
+        "total_codex_reported_tokens": 1244334
+      }
+    }
+  },
+  "quality": {
+    "gpt-5.4-mini": {
+      "tool_use": {
+        "avg_required_recall": 0.8680555555555555,
+        "failure_modes": {
+          "missed_search": 3,
+          "missing_required:diagnose": 2,
+          "missing_required:inspect_local_docs": 1,
+          "missing_required:search_source_material": 3
+        },
+        "false_search_rate": 0.0,
+        "forbidden_violation_rate": 0.0,
+        "missed_search_rate": 0.125,
+        "scored": 24,
+        "strict_case_pass_rate": 0.75,
+        "total": 24
+      }
+    }
+  },
+  "recorded_acting_agent_reference": {
+    "tool_use": {
+      "avg_required_recall": 1.0,
+      "failure_modes": {},
+      "false_search_rate": 0.0,
+      "forbidden_violation_rate": 0.0,
+      "missed_search_rate": 0.0,
+      "scored": 24,
+      "strict_case_pass_rate": 1.0,
+      "total": 24
+    }
+  },
+  "suites": [
+    "tool_use"
+  ]
+}

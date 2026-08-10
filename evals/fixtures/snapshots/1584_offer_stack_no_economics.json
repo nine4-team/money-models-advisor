@@ -1,7 +1,7 @@
 {
   "advisor_state": {
     "advisory_status": "insufficient_context",
-    "likely_retrieval_layers": [],
+    "likely_retrieval_subjects": [],
     "missing_fields": [
       "economics.cac",
       "economics.first_30_day_gross_profit"

@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_001",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_001",
+    "created_at": "2026-07-07T22:43:40Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 54188.9,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 38181
+  },
+  "completed_at": "2026-07-07T22:43:36Z",
+  "created_at": "2026-07-07T22:42:46Z",
+  "notes": "Snapshot already has CAC and first-30-day gross profit, so this is not missing-facts triage. The user asks why fulfillment cost matters for ad viability, which needs source-backed unit-economics diagnosis because fulfillment cost changes gross profit and therefore CAC payback and acquisition capacity.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "fulfillment cost",
+      "gross profit",
+      "CAC",
+      "payback period",
+      "ads"
+    ],
+    "intent": "diagnostic_evidence",
+    "query_variants": [
+      "fulfillment cost gross profit ads work",
+      "fulfillment cost CAC payback period",
+      "cost to deliver changes gross profit and acquisition capacity"
+    ],
+    "subjects": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}

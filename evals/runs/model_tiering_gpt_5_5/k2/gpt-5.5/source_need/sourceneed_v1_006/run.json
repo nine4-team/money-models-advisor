@@ -1,0 +1,61 @@
+{
+  "case_id": "sourceneed_v1_006",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_006",
+    "created_at": "2026-07-08T20:46:12Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_006/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 29892.5,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_006/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_006/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 12804
+  },
+  "completed_at": "2026-07-08T20:46:09Z",
+  "created_at": "2026-07-08T20:45:42Z",
+  "notes": "Search is needed because the user asks whether a continuity mechanism would help payback and the snapshot is payback-ready. Missing saved recurring gross profit does not block conceptual source support; keep retrieval on continuity and use payback as a focus term rather than adding unit-economics.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_006/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "recurring maintenance",
+      "membership offer",
+      "recurring offer",
+      "payback period"
+    ],
+    "intent": "recommendation_evidence",
+    "query_variants": [
+      "recurring maintenance membership offer improves payback period",
+      "continuity offer recurring gross profit CAC payback",
+      "membership recurring offer acquisition payback"
+    ],
+    "subjects": [
+      "continuity"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_006",
+    "conversation_context": "The snapshot is payback-ready and lacks saved recurring gross profit. The user asks whether recurring maintenance would help payback.",
+    "focus_aliases": {
+      "continuity": [
+        "recurring maintenance",
+        "membership offer"
+      ],
+      "payback period": [
+        "payback"
+      ],
+      "recurring offer": [
+        "recurring maintenance",
+        "membership offer"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "would a recurring maintenance or membership offer help our payback?"
+  }
+}

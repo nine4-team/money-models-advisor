@@ -29,7 +29,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         snapshot = diagnosable_snapshot()
         source_need = SourceNeed(
             intent="diagnostic_evidence",
-            layers=("unit-economics",),
+            subjects=("unit-economics",),
             focus_terms=("CAC", "first 30 day gross profit", "payback period"),
             user_turn="does this mean acquisition is probably not the bottleneck?",
         )
@@ -40,7 +40,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         self.assertEqual(len(evidence), 1)
         self.assertEqual(evidence[0].intent, "diagnostic_evidence")
         self.assertTrue(evidence[0].chunks)
-        self.assertTrue(all("unit-economics" in chunk.layers for chunk in evidence[0].chunks))
+        self.assertTrue(all("unit-economics" in chunk.subjects for chunk in evidence[0].chunks))
 
     def test_recommendation_queries_retrieve_local_evidence(self):
         snapshot = diagnosable_snapshot()
@@ -52,7 +52,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         snapshot.refresh()
         source_need = SourceNeed(
             intent="recommendation_evidence",
-            layers=("upsells", "continuity"),
+            subjects=("upsells", "continuity"),
             focus_terms=("upsell after first sale", "continuity recurring gross profit", "improve payback period"),
             user_turn="what should I fix first?",
         )
@@ -60,14 +60,14 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
 
         evidence = execute_advisor_queries(queries, TRANSCRIPT_DIR, top_k=2)
 
-        self.assertEqual([item.layer for item in evidence], [None])
+        self.assertEqual([item.subject for item in evidence], [None])
         self.assertTrue(all(item.chunks for item in evidence))
 
     def test_source_need_overrides_snapshot_status(self):
         snapshot = diagnosable_snapshot()
         source_need = SourceNeed(
             intent="recommendation_evidence",
-            layers=("downsells",),
+            subjects=("downsells",),
             focus_terms=("payment plan", "downsell", "pay less now", "payment terms"),
             user_turn="if cash is tight today, how should we think about payment plans?",
         )
@@ -76,7 +76,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
 
         self.assertEqual(len(queries), 1)
         self.assertEqual(queries[0].intent, "recommendation_evidence")
-        self.assertEqual(queries[0].layer, "downsells")
+        self.assertEqual(queries[0].subject, "downsells")
         self.assertIn("payment plan", queries[0].query)
         self.assertIn("downsell", queries[0].query)
         self.assertNotIn("client financed acquisition", queries[0].query)
@@ -85,13 +85,13 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         snapshot = diagnosable_snapshot()
         teaching_need = SourceNeed(
             intent="teaching_evidence",
-            layers=("unit-economics",),
+            subjects=("unit-economics",),
             focus_terms=("gross profit", "fulfillment cost", "CAC", "payback period"),
             user_turn="why do we need fulfillment cost?",
         )
         comparison_need = SourceNeed(
             intent="comparison_evidence",
-            layers=("offers", "upsells"),
+            subjects=("offers", "upsells"),
             focus_terms=("attraction offer", "upsell", "front end", "after first sale"),
             user_turn="what is the difference between an attraction offer and an upsell?",
         )
@@ -100,8 +100,8 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         comparison_query = build_advisor_queries(snapshot, comparison_need)[0]
 
         self.assertNotEqual(teaching_query.query, comparison_query.query)
-        self.assertEqual(teaching_query.layer, "unit-economics")
-        self.assertIsNone(comparison_query.layer)
+        self.assertEqual(teaching_query.subject, "unit-economics")
+        self.assertIsNone(comparison_query.subject)
         self.assertIn("gross profit", teaching_query.query)
         self.assertIn("attraction offer", comparison_query.query)
 
@@ -109,7 +109,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         snapshot = diagnosable_snapshot()
         source_need = SourceNeed(
             intent="teaching_evidence",
-            layers=("unit-economics",),
+            subjects=("unit-economics",),
             focus_terms=("gross profit", "fulfillment cost", "CAC"),
             user_turn="why do we need fulfillment cost?",
             query_variants=(
@@ -128,7 +128,7 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
             ],
         )
         self.assertEqual(queries[-1].reason, "Deterministic fallback query from source-need focus terms and compact business context.")
-        self.assertEqual(queries[0].layer, "unit-economics")
+        self.assertEqual(queries[0].subject, "unit-economics")
         self.assertIn("fulfillment cost", queries[-1].query)
 
 

@@ -5,7 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from money_model_architect.retrieval import Chunk, CorpusIndex
-from money_model_architect.vector_store import layer_namespace
+from money_model_architect.vector_store import subject_namespace
 
 
 class FakeEmbeddingClient:
@@ -31,8 +31,8 @@ def test_index() -> CorpusIndex:
             Chunk(
                 id="payback-period:0",
                 chapter="payback-period",
-                layer="unit-economics",
-                layers=("unit-economics",),
+                subject="unit-economics",
+                subjects=("unit-economics",),
                 text="CAC and payback period determine whether acquisition is recovered.",
                 char_start=0,
                 char_end=72,
@@ -40,8 +40,8 @@ def test_index() -> CorpusIndex:
             Chunk(
                 id="upsells:0",
                 chapter="upsells",
-                layer="upsells",
-                layers=("upsells",),
+                subject="upsells",
+                subjects=("upsells",),
                 text="An upsell happens after the first sale and can improve first 30 day gross profit.",
                 char_start=0,
                 char_end=82,
@@ -49,8 +49,8 @@ def test_index() -> CorpusIndex:
             Chunk(
                 id="continuity:0",
                 chapter="continuity",
-                layer="continuity",
-                layers=("continuity",),
+                subject="continuity",
+                subjects=("continuity",),
                 text="Continuity adds recurring revenue after the initial transaction.",
                 char_start=0,
                 char_end=63,
@@ -60,11 +60,11 @@ def test_index() -> CorpusIndex:
 
 
 class RetrievalBackendTest(unittest.TestCase):
-    def test_vector_search_uses_embeddings_and_layer_filter(self):
+    def test_vector_search_uses_embeddings_and_subject_filter(self):
         index = test_index()
         results = index.vector_search(
             "customer acquisition payback",
-            layer="unit-economics",
+            subject="unit-economics",
             top_k=3,
             embedding_client=FakeEmbeddingClient(),
         )
@@ -72,14 +72,14 @@ class RetrievalBackendTest(unittest.TestCase):
         self.assertEqual([result.chunk.id for result in results], ["payback-period:0"])
         self.assertGreater(results[0].score, 0)
 
-    def test_vector_search_uses_explicit_layer_namespaces(self):
+    def test_vector_search_uses_explicit_subject_namespaces(self):
         index = test_index()
         results = index.vector_search(
             "customer acquisition payback",
-            layers=("unit-economics",),
+            subjects=("unit-economics",),
             top_k=3,
             embedding_client=FakeEmbeddingClient(),
-            vector_namespaces=(layer_namespace("unit-economics"),),
+            vector_namespaces=(subject_namespace("unit-economics"),),
         )
 
         self.assertEqual([result.chunk.id for result in results], ["payback-period:0"])

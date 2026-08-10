@@ -1,0 +1,3 @@
+Recorded decision: `source_search_decision=false`, `source_need=null`.
+
+Reason: the user asked for deterministic payback math, and the snapshot already contains the needed CAC and first-30-day gross profit.

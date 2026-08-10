@@ -1,0 +1,3 @@
+It’s already saved as CAC in the snapshot. I’m treating the referral-partner spend as about `$1,000` per client, so that $1k is the acquisition cost used in the payback math, and the current payback stays at `1.0` month.
+
+I also recorded the eval trace at [run.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_001/run.json).

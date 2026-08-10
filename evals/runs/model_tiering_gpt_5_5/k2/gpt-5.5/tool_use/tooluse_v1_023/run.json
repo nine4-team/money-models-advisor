@@ -1,0 +1,93 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs --full output contained prior sessions 1584_ad_spend_context_01 and _02",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot output contained CAC 1000, first_30_day_gross_profit 10000, payback_period_months 1.0",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final answer summarized prior logs and saved economics without additional search or calculation.",
+      "index": 2
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir",
+  "case_id": "tooluse_v1_023",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_023",
+    "created_at": "2026-07-08T23:47:15Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 56441.9,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 19669
+  },
+  "completed_at": "2026-07-08T23:47:10Z",
+  "created_at": "2026-07-08T23:46:18Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor/sessions/1584_ad_spend_context_02.json",
+    "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor/sessions/1584_ad_spend_context_01.json",
+    "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_023/business_dir/.money-model-advisor/sessions/20260708T234640.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f",
+    "start": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Recovered the prior ad-spend discussion from saved sessions."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Confirmed the current saved economics context."
+    },
+    {
+      "index": 2,
+      "kind": "reasoning",
+      "summary": "Determined the user wanted prior conversation recall, so no retrieval, calculation, or snapshot mutation was needed."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Recorded the completed turn."
+    }
+  ]
+}

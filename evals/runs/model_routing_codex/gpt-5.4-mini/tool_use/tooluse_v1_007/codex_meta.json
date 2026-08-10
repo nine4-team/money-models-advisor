@@ -1,0 +1,13 @@
+{
+  "case_id": "tooluse_v1_007",
+  "created_at": "2026-07-08T20:36:14Z",
+  "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_007/codex_final.txt",
+  "harness": "codex_cli_agent",
+  "latency_ms": 82035.2,
+  "model": "gpt-5.4-mini",
+  "returncode": 0,
+  "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_007/codex_stderr.txt",
+  "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_007/codex_stdout.txt",
+  "suite": "tool_use",
+  "tokens_used_reported_by_codex": 56652
+}

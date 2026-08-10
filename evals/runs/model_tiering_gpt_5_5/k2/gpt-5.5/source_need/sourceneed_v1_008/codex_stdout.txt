@@ -1,0 +1,5 @@
+Recorded the source-need decision in `run.json`.
+
+Decision: search needed.
+
+Source need: `recommendation_evidence` on `offers`, focused on a free trial as a front-end attraction offer, required trial actions, and qualifying buyers through action-based trial design.

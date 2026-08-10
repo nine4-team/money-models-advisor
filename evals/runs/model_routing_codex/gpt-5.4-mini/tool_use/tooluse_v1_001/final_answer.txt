@@ -1,0 +1,1 @@
+I’m treating the $1k we pay referral partners as CAC. It is already saved in the snapshot as `economics.cac = 1000`, so nothing was lost; it is part of the acquisition model.

@@ -1,0 +1,110 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot output showed STR Design Diagnostic attraction offer and pre-designed room packages upsell.",
+      "evidence_type": "cli_stdout",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "logs output returned an empty logs array.",
+      "evidence_type": "cli_stdout",
+      "index": 1
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "search output returned comparison_evidence chunks including make-your-money-model:0, make-your-money-model:1, and upsell-offers:0.",
+      "evidence_type": "cli_stdout",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_note": "Final answer used snapshot offer details plus inspected search chunks to explain the distinction.",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/business_dir",
+  "case_id": "tooluse_v1_022",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_022",
+    "created_at": "2026-07-09T00:29:39Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 74281.4,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 63921
+  },
+  "completed_at": "2026-07-09T00:29:35Z",
+  "created_at": "2026-07-09T00:28:25Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_022/business_dir/.money-model-advisor/sessions/20260709T002912.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "scenario_holdout",
+  "workflow_steps": [
+    {
+      "description": "Read .codex/skills/money-model-advisor/SKILL.md.",
+      "index": 0,
+      "kind": "instruction_read"
+    },
+    {
+      "description": "Read source_need_rules.md to decide whether this comparison needed retrieval.",
+      "index": 1,
+      "kind": "instruction_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>",
+      "description": "Loaded saved business snapshot with attraction offer and upsell details.",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full",
+      "description": "Checked prior logs; no prior turns were present.",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <comparison_evidence> --top-k 5",
+      "description": "Searched Money Models source material for attraction offer versus upsell comparison evidence.",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message <message> --assistant-message <answer>",
+      "description": "Recorded the completed advisor turn with one source event and cited chunks.",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command"
+    }
+  ]
+}

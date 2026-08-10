@@ -1,0 +1,49 @@
+{
+  "case_id": "sourceneed_v1_002",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_002",
+    "created_at": "2026-07-07T21:41:27Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 30582.2,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 18038
+  },
+  "completed_at": "2026-07-07T21:41:22Z",
+  "created_at": "2026-07-07T21:40:56Z",
+  "notes": "Snapshot context is already payback-ready, and the turn asks for a conceptual explanation of client-financed acquisition. This needs source-backed unit-economics framing rather than missing-facts collection.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/business",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "client-financed acquisition",
+      "payback period",
+      "CAC",
+      "cash flow"
+    ],
+    "intent": "teaching_evidence",
+    "query_variants": [
+      "client financed acquisition payback period",
+      "client financed acquisition unit economics cash flow",
+      "CAC payback client financed acquisition"
+    ],
+    "subjects": [
+      "unit-economics"
+    ],
+    "user_turn": "how should I think about client-financed acquisition here?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_002",
+    "conversation_context": "The snapshot is payback-ready and the user asks for a Money Models acquisition framework explanation.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about client-financed acquisition here?"
+  }
+}

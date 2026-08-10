@@ -64,7 +64,7 @@ SOURCE_NEED_OUTPUT_INSTRUCTIONS = """All business state is provided inline below
 
 Respond with only one JSON object and no prose, in this shape:
 
-{"source_search_decision": true, "source_need": {"intent": "...", "layers": ["..."], "focus_terms": ["..."]}}
+{"source_search_decision": true, "source_need": {"intent": "...", "subjects": ["..."], "focus_terms": ["..."]}}
 
 or, when source search is not needed:
 
@@ -347,8 +347,8 @@ def score_source_need(cases: list[dict[str, Any]], artifacts: dict[str, Path]) -
         if result.expected_search and result.actual_search:
             # intent is a recorded annotation, not a scored field, so an intent
             # mismatch is not counted as a failure.
-            if result.layer_exact_match is False:
-                reasons.append("layer_mismatch")
+            if result.subject_exact_match is False:
+                reasons.append("subject_mismatch")
         if reasons:
             case_failures[result.case_id] = reasons
     failures = Counter(reason for reasons in case_failures.values() for reason in reasons)
@@ -356,7 +356,7 @@ def score_source_need(cases: list[dict[str, Any]], artifacts: dict[str, Path]) -
         1
         for result in scored
         if result.actual_search == result.expected_search
-        and (not result.expected_search or result.layer_exact_match is True)
+        and (not result.expected_search or result.subject_exact_match is True)
     )
     return {
         "results": results,
@@ -364,7 +364,7 @@ def score_source_need(cases: list[dict[str, Any]], artifacts: dict[str, Path]) -
         "total": len(cases),
         "strict_case_pass_rate": strict_pass / len(scored) if scored else None,
         "search_decision_accuracy": sum(result.actual_search == result.expected_search for result in scored) / len(scored) if scored else None,
-        "layer_exact_match_rate": sum(result.layer_exact_match is True for result in search_expected) / len(search_expected) if search_expected else None,
+        "subject_exact_match_rate": sum(result.subject_exact_match is True for result in search_expected) / len(search_expected) if search_expected else None,
         "avg_focus_recall": sn_eval.avg([result.focus_recall for result in search_expected]),
         "failure_modes": dict(failures.most_common()),
         "case_failures": case_failures,
@@ -457,14 +457,14 @@ def render_report(models: list[str], suites: list[str], quality: dict[str, dict[
         "",
         "## Quality",
         "",
-        "Strict case pass means: search/no-search decision correct, and on expected-search cases an exact layer match (`source_need`); or required-action recall 1.0 with no forbidden actions and a complete trace (`tool_use`). Intent is recorded as an annotation and is not scored.",
+        "Strict case pass means: search/no-search decision correct, and on expected-search cases an exact subject match (`source_need`); or required-action recall 1.0 with no forbidden actions and a complete trace (`tool_use`). Intent is recorded as an annotation and is not scored.",
         "",
     ]
 
     def source_need_row(label: str, q: dict[str, Any]) -> str:
         return (
             f"| {label} | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['search_decision_accuracy'])} | "
-            f"{fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'])} |"
+            f"{fmt_pct(q['subject_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'])} |"
         )
 
     def tool_use_row(label: str, q: dict[str, Any]) -> str:
@@ -476,7 +476,7 @@ def render_report(models: list[str], suites: list[str], quality: dict[str, dict[
 
     suite_tables = {
         "source_need": (
-            "| Condition | Strict Case Pass | Search Decision | Layer Exact | Focus Concept Recall |",
+            "| Condition | Strict Case Pass | Search Decision | Subject Exact | Focus Concept Recall |",
             "|---|---:|---:|---:|---:|",
             source_need_row,
         ),

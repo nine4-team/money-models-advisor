@@ -1,0 +1,1 @@
+Referral partner CAC is still saved as $1,000 and supported by prior-session context; no overwrite was needed.

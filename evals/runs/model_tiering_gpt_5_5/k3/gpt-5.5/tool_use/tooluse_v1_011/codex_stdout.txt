@@ -1,0 +1,5 @@
+Short version: you have a premium STR / second-home design business with a `$597` diagnostic, a `$15k` core offer, and a `$5k` room-package upsell. The saved economics show about `$1k` CAC, `$10k` first-30-day gross profit, roughly `77%` gross margin, and a `1.0` month payback.
+
+That means the model is ready to test paid acquisition. The main constraint now is proving a repeatable acquisition channel, not fixing payback.
+
+Recorded the turn and created `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_011/run.json`.

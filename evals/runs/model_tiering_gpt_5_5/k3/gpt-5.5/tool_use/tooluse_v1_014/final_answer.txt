@@ -1,0 +1,1 @@
+Asked for the business, customer, and target outcome because the snapshot was empty and no business or goal was provided.

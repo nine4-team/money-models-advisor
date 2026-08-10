@@ -1,0 +1,84 @@
+{
+  "created_at": "2026-07-08T23:48:03Z",
+  "harness": "codex_cli_agent",
+  "models": [
+    "gpt-5.5"
+  ],
+  "performance": {
+    "gpt-5.5": {
+      "source_need": {
+        "avg_codex_reported_tokens": 25659.4,
+        "execution_errors": 0,
+        "p50_latency_ms": 34583.2,
+        "p95_latency_ms": 50079.7,
+        "requests": 14,
+        "total_codex_reported_tokens": 359232
+      },
+      "tool_use": {
+        "avg_codex_reported_tokens": 29330.9,
+        "execution_errors": 0,
+        "p50_latency_ms": 60771.9,
+        "p95_latency_ms": 94836.9,
+        "requests": 24,
+        "total_codex_reported_tokens": 703942
+      }
+    }
+  },
+  "quality": {
+    "gpt-5.5": {
+      "source_need": {
+        "avg_focus_recall": 0.77,
+        "failure_modes": {
+          "subject_mismatch": 1
+        },
+        "scored": 14,
+        "search_decision_accuracy": 1.0,
+        "strict_case_pass_rate": 0.9285714285714286,
+        "subject_exact_match_rate": 0.9,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.9652777777777778,
+        "failure_modes": {
+          "false_search": 2,
+          "forbidden_action:search_source_material": 2,
+          "missing_required:diagnose": 2
+        },
+        "false_search_rate": 0.08333333333333333,
+        "forbidden_violation_rate": 0.08333333333333333,
+        "missed_search_rate": 0.0,
+        "scored": 24,
+        "strict_case_pass_rate": 0.875,
+        "total": 24
+      }
+    }
+  },
+  "recorded_acting_agent_reference": {
+    "source_need": {
+      "avg_focus_recall": null,
+      "failure_modes": {
+        "missing_valid_subjects": 10,
+        "search_true_but_no_valid_source_need": 10
+      },
+      "scored": 14,
+      "search_decision_accuracy": 1.0,
+      "strict_case_pass_rate": 0.2857142857142857,
+      "subject_exact_match_rate": 0.0,
+      "total": 14
+    },
+    "tool_use": {
+      "avg_required_recall": 1.0,
+      "failure_modes": {},
+      "false_search_rate": 0.0,
+      "forbidden_violation_rate": 0.0,
+      "missed_search_rate": 0.0,
+      "scored": 24,
+      "strict_case_pass_rate": 1.0,
+      "total": 24
+    }
+  },
+  "suites": [
+    "source_need",
+    "tool_use"
+  ]
+}

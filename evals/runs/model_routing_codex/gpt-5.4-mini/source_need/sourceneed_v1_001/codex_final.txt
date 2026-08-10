@@ -1,0 +1,7 @@
+Recorded decision: `true`.
+
+Source need:
+- `intent`: `diagnostic_evidence`
+- `subjects`: `["unit-economics"]`
+- `focus_terms`: `["fulfillment cost", "gross profit", "CAC", "payback period", "acquisition capacity", "ads can work"]`
+- `query_variants`: `["why fulfillment cost matters for CAC and payback", "fulfillment cost gross profit ads can work", "acquisition capacity after fulfillment cost and CAC"]`

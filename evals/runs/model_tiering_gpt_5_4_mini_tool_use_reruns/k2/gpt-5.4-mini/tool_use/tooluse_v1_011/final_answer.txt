@@ -1,0 +1,1 @@
+Short version: we’re in good shape. CAC is about $1k, the first 30-day gross profit is about $10k, gross margin is about 76.9%, and payback is about 1 month. There are no missing fields in the snapshot, so this is already enough to size acquisition spend and keep testing paid acquisition.

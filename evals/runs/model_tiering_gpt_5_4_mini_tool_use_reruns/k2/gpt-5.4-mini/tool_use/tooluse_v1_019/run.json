@@ -1,0 +1,111 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "search_source_material",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_command",
+      "index": 3
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/business_dir",
+  "case_id": "tooluse_v1_019",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_019",
+    "created_at": "2026-07-08T15:22:44Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 145881.7,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 66421
+  },
+  "completed_at": "2026-07-08T15:22:36Z",
+  "created_at": "2026-07-08T15:20:18Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18",
+    "start": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Read the saved BusinessSnapshot and confirmed the business is diagnosable with CAC, first-30-day gross profit, gross margin, and payback already populated."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate cfa-level --inputs '{\"cac\":1000,\"first_30_day_gp\":10000}'",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Calculated CFA level from the snapshot economics and confirmed the business is in level 3 territory."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "summary": "Verified the payback calculation using the saved CAC and first-month gross profit."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_019/business_dir --source-need-json '{\"intent\":\"teaching_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"CAC payback\",\"cash payback\",\"client-financed acquisition\",\"acquisition capacity\"],\"user_turn\":\"how should I think about client-financed acquisition here?\",\"query_variants\":[\"client financed acquisition CAC payback cash flow\",\"cash payback acquisition capacity gross profit\",\"customer funded acquisition payback period\"]}' --top-k 5",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Searched the unit-economics source material for CFA, payback, and cash-flow framing to ground the explanation."
+    },
+    {
+      "index": 4,
+      "kind": "reasoning",
+      "summary": "Composed the answer as a first-person explanation of client-financed acquisition, emphasizing that the constraint is cash timing rather than the raw CAC/GP economics."
+    }
+  ]
+}

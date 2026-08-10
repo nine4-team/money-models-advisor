@@ -1,0 +1,8 @@
+I checked the snapshot and logs. Current state is:
+
+- Business: premium full-service interior design for STR and second-home projects
+- Offers: `+$597` diagnostic, `+$15k` core design, `+$5k` upsell
+- Economics: about `+$1k` CAC, `+$10k` first-30-day gross profit, `76.9%` gross margin, `1.0` month payback
+- Logs: empty, so there is no prior advisor activity to reconcile
+
+So the situation is already diagnosable, and the main question now is not “what is happening?” but “what should we stress-test next.” I have also recorded the required trace artifact for this turn.

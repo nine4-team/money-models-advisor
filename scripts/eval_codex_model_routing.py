@@ -36,6 +36,16 @@ from eval_model_routing import score_source_need, score_tool_use  # noqa: E402
 
 DEFAULT_MODELS = ("gpt-5.5",)
 TOKEN_RE = re.compile(r"tokens used\s+([0-9,]+)", re.IGNORECASE)
+INFRA_FAILURE_PATTERNS = (
+    "you've hit your usage limit",
+    "usage limit",
+    "rate limit",
+    "quota",
+    "authorizationrequired",
+    "authorization required",
+    "missing authorization header",
+    "invalid_grant",
+)
 
 
 SUITES = {
@@ -56,6 +66,17 @@ SUITES = {
         "capture": tu_capture,
     },
 }
+
+
+class CodexInfraFailure(RuntimeError):
+    """Raised when Codex CLI failed for account/quota/auth reasons."""
+
+    def __init__(self, meta: dict[str, Any]):
+        self.meta = meta
+        super().__init__(
+            f"{meta['model']} {meta['suite']} {meta['case_id']} failed due to "
+            f"{meta.get('infra_failure_reason', 'codex infrastructure failure')}"
+        )
 
 
 def utc_now() -> str:
@@ -80,6 +101,42 @@ def decode_timeout_stream(value: bytes | str | None) -> str:
     if isinstance(value, bytes):
         return value.decode("utf-8", errors="replace")
     return value
+
+
+def detect_infra_failure(returncode: int, stderr: str) -> str | None:
+    if returncode == 0:
+        return None
+    lowered = stderr.lower()
+    for pattern in INFRA_FAILURE_PATTERNS:
+        if pattern in lowered:
+            return pattern
+    return None
+
+
+def meta_for_run_dir(run_dir: Path) -> dict[str, Any] | None:
+    meta_path = run_dir / "codex_meta.json"
+    if meta_path.exists():
+        return json.loads(meta_path.read_text(encoding="utf-8"))
+    run_path = run_dir / "run.json"
+    if run_path.exists():
+        payload = json.loads(run_path.read_text(encoding="utf-8"))
+        meta = payload.get("codex_model_meta")
+        if isinstance(meta, dict):
+            return meta
+    return None
+
+
+def is_infra_failed_run(run_dir: Path) -> bool:
+    meta = meta_for_run_dir(run_dir)
+    if not meta:
+        return False
+    if meta.get("infra_failure"):
+        return True
+    if not meta.get("error") and meta.get("returncode") in (None, 0):
+        return False
+    stderr_path = run_dir / "codex_stderr.txt"
+    stderr = stderr_path.read_text(encoding="utf-8") if stderr_path.exists() else ""
+    return detect_infra_failure(int(meta.get("returncode") or 1), stderr) is not None
 
 
 def run_prepare(suite: str, case: dict[str, Any], model: str, runs_dir: Path, force: bool) -> Path:
@@ -197,8 +254,23 @@ def codex_command(model: str, output_path: Path) -> list[str]:
     ]
 
 
-def run_codex_case(model: str, suite: str, case: dict[str, Any], runs_dir: Path, force: bool, timeout: int) -> Path:
-    run_dir = run_prepare(suite, case, model, runs_dir, force=force)
+def run_codex_case(
+    model: str,
+    suite: str,
+    case: dict[str, Any],
+    runs_dir: Path,
+    force: bool,
+    timeout: int,
+    resume_infra_failures: bool,
+) -> Path:
+    existing_run_dir = runs_dir / model / suite / case["case_id"]
+    rerun_infra_failure = (
+        resume_infra_failures
+        and not force
+        and existing_run_dir.exists()
+        and is_infra_failed_run(existing_run_dir)
+    )
+    run_dir = run_prepare(suite, case, model, runs_dir, force=force or rerun_infra_failure)
     run_path = run_dir / "run.json"
     if run_path.exists() and not force:
         return run_path
@@ -250,9 +322,17 @@ def run_codex_case(model: str, suite: str, case: dict[str, Any], runs_dir: Path,
         meta["timeout_seconds"] = timeout
     elif returncode != 0:
         meta["error"] = "codex_exec_failed"
+    infra_failure_reason = detect_infra_failure(returncode, stderr)
+    if infra_failure_reason:
+        meta["error"] = "codex_infra_failure"
+        meta["infra_failure"] = True
+        meta["infra_failure_reason"] = infra_failure_reason
     if not run_path.exists():
         meta["error"] = meta.get("error", "missing_run_json")
     write_json(run_dir / "codex_meta.json", meta)
+
+    if meta.get("infra_failure"):
+        raise CodexInfraFailure(meta)
 
     if not run_path.exists():
         write_json(
@@ -332,7 +412,7 @@ def render_report(
             [
                 f"### source_need ({total} cases)",
                 "",
-                "| Condition | Strict Case Pass | Search Decision | Layer Exact | Focus Concept Recall |",
+                "| Condition | Strict Case Pass | Search Decision | Subject Exact | Focus Concept Recall |",
                 "|---|---:|---:|---:|---:|",
             ]
         )
@@ -340,12 +420,12 @@ def render_report(
             q = quality[model]["source_need"]
             lines.append(
                 f"| `{model}` via Codex CLI | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['search_decision_accuracy'])} | "
-                f"{fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
+                f"{fmt_pct(q['subject_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
             )
         q = recorded["source_need"]
         lines.append(
             f"| recorded acting agent reference | {fmt_pct(q['strict_case_pass_rate'])} | {fmt_pct(q['search_decision_accuracy'])} | "
-            f"{fmt_pct(q['layer_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
+            f"{fmt_pct(q['subject_exact_match_rate'])} | {fmt_num(q['avg_focus_recall'], 3)} |"
         )
         lines.append("")
 
@@ -443,9 +523,25 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--limit", type=int, help="Run only the first N cases per suite for smoke testing.")
+    parser.add_argument("--case-ids", nargs="+", help="Run only these case IDs after suite filtering.")
+    parser.add_argument(
+        "--resume-infra-failures",
+        action="store_true",
+        help="Rerun existing cases only when their Codex metadata shows quota/auth infrastructure failure.",
+    )
     args = parser.parse_args()
 
     suite_cases = {suite: SUITES[suite]["loader"](SUITES[suite]["cases_path"]) for suite in args.suites}
+    if args.case_ids is not None:
+        requested = set(args.case_ids)
+        suite_cases = {
+            suite: [case for case in cases if case["case_id"] in requested]
+            for suite, cases in suite_cases.items()
+        }
+        found = {case["case_id"] for cases in suite_cases.values() for case in cases}
+        missing = sorted(requested - found)
+        if missing:
+            parser.error(f"--case-ids not found in selected suites: {', '.join(missing)}")
     if args.limit is not None:
         suite_cases = {suite: cases[: args.limit] for suite, cases in suite_cases.items()}
 
@@ -453,7 +549,23 @@ def main() -> int:
         for suite in args.suites:
             for case in suite_cases[suite]:
                 print(f"running {model} {suite} {case['case_id']}", file=sys.stderr)
-                run_codex_case(model, suite, case, args.runs_dir, force=args.force, timeout=args.timeout)
+                try:
+                    run_codex_case(
+                        model,
+                        suite,
+                        case,
+                        args.runs_dir,
+                        force=args.force,
+                        timeout=args.timeout,
+                        resume_infra_failures=args.resume_infra_failures,
+                    )
+                except CodexInfraFailure as exc:
+                    print(
+                        "aborting after Codex infrastructure failure: "
+                        f"{json.dumps(exc.meta, sort_keys=True)}",
+                        file=sys.stderr,
+                    )
+                    return 2
 
     quality: dict[str, dict[str, dict[str, Any]]] = {}
     perf: dict[str, dict[str, dict[str, Any]]] = {}

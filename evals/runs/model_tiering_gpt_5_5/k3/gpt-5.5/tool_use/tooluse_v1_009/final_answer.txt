@@ -1,0 +1,1 @@
+Explained that fulfillment cost is needed because ads are paid back by gross profit, not revenue; gross profit after fulfillment cost determines CAC payback and whether ads can scale.

@@ -1,0 +1,97 @@
+{
+  "created_at": "2026-07-07T23:09:32Z",
+  "harness": "codex_cli_agent",
+  "models": [
+    "gpt-5.4-mini"
+  ],
+  "performance": {
+    "gpt-5.4-mini": {
+      "source_need": {
+        "avg_codex_reported_tokens": 25893.6,
+        "execution_errors": 0,
+        "p50_latency_ms": 48399.8,
+        "p95_latency_ms": 113541.8,
+        "requests": 14,
+        "total_codex_reported_tokens": 362510
+      },
+      "tool_use": {
+        "avg_codex_reported_tokens": 47769.2,
+        "execution_errors": 20,
+        "p50_latency_ms": 6530.5,
+        "p95_latency_ms": 170768.2,
+        "requests": 24,
+        "total_codex_reported_tokens": 238846
+      }
+    }
+  },
+  "quality": {
+    "gpt-5.4-mini": {
+      "source_need": {
+        "avg_focus_recall": 0.8099999999999999,
+        "failure_modes": {
+          "false_search": 1
+        },
+        "scored": 14,
+        "search_decision_accuracy": 0.9285714285714286,
+        "strict_case_pass_rate": 0.9285714285714286,
+        "subject_exact_match_rate": 1.0,
+        "total": 14
+      },
+      "tool_use": {
+        "avg_required_recall": 0.14583333333333334,
+        "failure_modes": {
+          "missed_search": 3,
+          "missing_actual_actions": 20,
+          "missing_required:answer_without_tool": 2,
+          "missing_required:calculate,diagnose,read_snapshot": 1,
+          "missing_required:calculate,read_snapshot": 2,
+          "missing_required:calculate,read_snapshot,search_source_material": 1,
+          "missing_required:calculate,update_snapshot": 1,
+          "missing_required:clarify": 2,
+          "missing_required:clarify,read_snapshot": 1,
+          "missing_required:compose_answer_from_state,read_snapshot": 2,
+          "missing_required:diagnose,read_snapshot": 1,
+          "missing_required:inspect_local_docs": 3,
+          "missing_required:read_logs": 1,
+          "missing_required:read_snapshot": 1,
+          "missing_required:read_snapshot,search_source_material": 2,
+          "missing_required:update_snapshot": 1
+        },
+        "false_search_rate": 0.0,
+        "forbidden_violation_rate": 0.0,
+        "missed_search_rate": 0.125,
+        "scored": 24,
+        "strict_case_pass_rate": 0.125,
+        "total": 24
+      }
+    }
+  },
+  "recorded_acting_agent_reference": {
+    "source_need": {
+      "avg_focus_recall": null,
+      "failure_modes": {
+        "missing_valid_subjects": 10,
+        "search_true_but_no_valid_source_need": 10
+      },
+      "scored": 14,
+      "search_decision_accuracy": 1.0,
+      "strict_case_pass_rate": 0.2857142857142857,
+      "subject_exact_match_rate": 0.0,
+      "total": 14
+    },
+    "tool_use": {
+      "avg_required_recall": 1.0,
+      "failure_modes": {},
+      "false_search_rate": 0.0,
+      "forbidden_violation_rate": 0.0,
+      "missed_search_rate": 0.0,
+      "scored": 24,
+      "strict_case_pass_rate": 1.0,
+      "total": 24
+    }
+  },
+  "suites": [
+    "source_need",
+    "tool_use"
+  ]
+}

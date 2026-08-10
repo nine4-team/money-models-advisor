@@ -1,0 +1,51 @@
+{
+  "case_id": "sourceneed_v1_008",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_008",
+    "created_at": "2026-07-07T22:49:59Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 85973.8,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 45599
+  },
+  "completed_at": "2026-07-07T22:49:53Z",
+  "created_at": "2026-07-07T22:48:33Z",
+  "notes": "Search is needed because the snapshot already has offer-stack context and the turn asks for source-backed guidance on a front-end free-trial structure with required actions, which maps to offers plus trial-with-penalty friction reduction.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_008/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "free trial",
+      "trial with penalty",
+      "attraction offer",
+      "required actions",
+      "card on file"
+    ],
+    "intent": "recommendation_evidence",
+    "query_variants": [
+      "free trial as front end offer reduce risk",
+      "free trial with required actions trial with penalty",
+      "free trial attraction offer card on file required actions"
+    ],
+    "subjects": [
+      "offers",
+      "downsells"
+    ],
+    "user_turn": "could a free trial work as a front-end offer if we require the right actions?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_008",
+    "conversation_context": "The snapshot has offer-stack context. The user asks whether a free trial could work with required actions.",
+    "scenario_id": "1584_design",
+    "user_turn": "could a free trial work as a front-end offer if we require the right actions?"
+  }
+}

@@ -1,0 +1,3 @@
+It is still saved in the snapshot as CAC: `$1,000`.
+
+The prior session logs show we accepted referral partner acquisition as roughly `$1,000 CAC`, and the current economics snapshot is using that number with `$10,000` first-30-day gross profit, producing the saved `1.0` month payback. I recorded the advisor turn and created the required `run.json`.

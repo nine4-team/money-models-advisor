@@ -1,0 +1,109 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2], workflow_steps[3]",
+      "evidence_type": "file_inspection",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[4]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[5]",
+      "evidence_type": "session_record",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_005",
+    "created_at": "2026-07-08T23:27:38Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 80046.8,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 31670
+  },
+  "completed_at": "2026-07-08T23:27:32Z",
+  "created_at": "2026-07-08T20:54:31Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions/20260708T232700.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:ec56abc42d979ce1ac9f0d21f34b03f41f152d93177475dbeb407cf258dc527a",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "index": 0,
+      "kind": "instruction_read",
+      "summary": "Read .codex/skills/money-model-advisor/SKILL.md and JOB_DESCRIPTION.md."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_005/business_dir",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Confirmed snapshot existed and business context fields were empty."
+    },
+    {
+      "index": 2,
+      "kind": "file_inspection",
+      "summary": "Listed business directory fixture files and found business-profile.md, product-ladder.md, and services-and-pricing.md."
+    },
+    {
+      "index": 3,
+      "kind": "file_inspection",
+      "summary": "Read local business docs and identified 1584 Design as a premium full-service STR and second-home interior design firm with owner ICP and offer ladder."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> business.business_type=... business.icp=... business.delivery_model=... money_model.core_offer... money_model.attraction_offer...",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command",
+      "summary": "Saved clear business identity, ICP, delivery model, core offer, and attraction offer facts to the snapshot."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 5,
+      "kind": "cli_command",
+      "summary": "Recorded the completed advisor turn with actions and metadata."
+    }
+  ]
+}

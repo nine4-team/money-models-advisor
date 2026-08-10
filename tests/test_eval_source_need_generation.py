@@ -13,7 +13,7 @@ class SourceNeedGenerationEvalTest(unittest.TestCase):
             "expected_search": True,
             "expected_source_need": {
                 "intent": "teaching_evidence",
-                "layers": ["offers"],
+                "subjects": ["offers"],
                 "focus_terms": ["free trial"],
             },
             "acceptable_intents": ["teaching_evidence", "recommendation_evidence"],
@@ -22,7 +22,7 @@ class SourceNeedGenerationEvalTest(unittest.TestCase):
             "source_search_decision": True,
             "source_need": {
                 "intent": "recommendation_evidence",
-                "layers": ["offers"],
+                "subjects": ["offers"],
                 "focus_terms": ["free trial"],
             },
         }
@@ -48,7 +48,7 @@ class SourceNeedGenerationEvalTest(unittest.TestCase):
                     "expected_search": True,
                     "expected_source_need": {
                         "intent": "teaching_evidence",
-                        "layers": ["offers"],
+                        "subjects": ["offers"],
                         "focus_terms": ["free trial"],
                     },
                     "acceptable_intents": ["recommendation_evidence"],
@@ -68,7 +68,7 @@ class SourceNeedGenerationEvalTest(unittest.TestCase):
             "expected_search": True,
             "expected_source_need": {
                 "intent": "recommendation_evidence",
-                "layers": ["offers"],
+                "subjects": ["offers"],
                 "focus_terms": ["get leads to engage", "front end offer"],
             },
             "focus_aliases": {
@@ -79,7 +79,7 @@ class SourceNeedGenerationEvalTest(unittest.TestCase):
             "source_search_decision": True,
             "source_need": {
                 "intent": "recommendation_evidence",
-                "layers": ["offers"],
+                "subjects": ["offers"],
                 "focus_terms": ["front-end offer", "engagement", "STR owners"],
             },
         }
@@ -105,7 +105,7 @@ class SourceNeedGenerationEvalTest(unittest.TestCase):
                     "expected_search": True,
                     "expected_source_need": {
                         "intent": "recommendation_evidence",
-                        "layers": ["offers"],
+                        "subjects": ["offers"],
                         "focus_terms": ["front end offer"],
                     },
                     "focus_aliases": {"unknown": ["engagement"]},

@@ -1,0 +1,108 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_output",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_output",
+      "index": 1
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_output",
+      "index": 2
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_output",
+      "index": 3
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "index": 4
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir",
+  "case_id": "tooluse_v1_004",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_004",
+    "created_at": "2026-07-08T20:30:34Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 214922.8,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 58251
+  },
+  "completed_at": "2026-07-08T20:30:23Z",
+  "created_at": "2026-07-08T20:26:59Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_offer_stack_no_economics.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [
+    "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir/.money-model-advisor/sessions/20260708T202928.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:11d1585c96a72f2aeca0dd636567131125dfcc7968d8cbc805f5867ecc732893",
+    "start": "sha256:8bc670c81a2518b2db2a5fe20a599c55830642c519baad972a494a1378c36109"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir --full",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate gross-profit --inputs '{\"price\":13000,\"cogs\":3000}'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir economics.first_30_day_gross_profit=10000",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_004/business_dir --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    }
+  ]
+}

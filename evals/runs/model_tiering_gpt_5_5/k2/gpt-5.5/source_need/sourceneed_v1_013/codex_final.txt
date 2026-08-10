@@ -1,0 +1,3 @@
+Recorded decision: `source_search_decision=false`.
+
+Rationale: this is a simple vocabulary question, answerable without Money Models source-material citation, and the source need was recorded as `null` in `run.json`.

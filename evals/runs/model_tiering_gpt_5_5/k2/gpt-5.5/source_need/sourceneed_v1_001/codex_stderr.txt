@@ -1,0 +1,920 @@
+2026-07-08T20:42:28.848009Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T20:42:28.874787Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T20:42:28.887373Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-08T20:42:28.888343Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-08T20:42:29.221581Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:29.221825Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+OpenAI Codex v0.143.0
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019f4377-be43-7681-a293-31544144f45a
+--------
+user
+# Source-Need Generation Acting Prompt
+
+You are the acting agent for a Money Model Advisor source-need generation eval case.
+
+Consult the money-model-advisor skill before you decide, then use the local CLI to act. The skill is the authoritative rulebook for the search decision, intents, and subjects; where a case is a close call, its rules decide it, including the rule that a unit-economics search stays `diagnostic_evidence` even when the final answer contains a recommendation. This prompt only summarizes the skill. Expected labels are intentionally hidden.
+
+Task: decide whether Money Models source-material search is needed for the current turn. If search is needed, generate a structured source need with `intent`, `subjects`, and `focus_terms`. If search is not needed, set source need to null.
+
+Apply the decision rules below exactly. They are inlined verbatim from the
+authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+skill points to, so there is one source of truth.
+
+# Source-Need Decision Rules
+
+Single source of truth for deciding whether to run a source-material search and how
+to structure the source need. The operating skill and the eval acting prompts both
+pull these rules from this file. Do not restate them anywhere else — change them here.
+
+## When to search
+
+- Search source material when the answer needs Money Models support for a concept,
+  comparison, diagnosis, or recommendation, and the snapshot or prior-session context
+  already holds enough business facts to make a source-backed claim.
+- Do not use source search as a substitute for missing business facts. If the
+  responsible next move is to get CAC, gross profit, fulfillment cost, current offer
+  details, or prior-session context first, do that instead and do not search this step.
+- Do not search for simple vocabulary answers that can be answered without a citation.
+- A missing optional field should not block search when the user is asking for
+  conceptual source support.
+
+## Layers (these drive retrieval — choose carefully)
+
+Choose layers by the mechanism the source material must support:
+
+- front-end attraction offer -> `offers`
+- post-sale add-on or premium next offer -> `upsells`
+- payment plan, pay-less-now option, or friction-reducing alternative -> `downsells`
+- recurring maintenance, membership, or repeat post-purchase service -> `continuity`
+- CAC, gross profit, payback, or acquisition-capacity interpretation -> `unit-economics`
+
+Keep layers minimal; extra layers make retrieval noisier. Use payback or CAC as focus
+terms without adding `unit-economics` when the source claim is about a concrete fix
+mechanism such as continuity or upsells.
+
+## One retrieval job per search (this drives layer and focus-term choice)
+
+- Generate one source need per search. If an answer needs two retrieval jobs, run two
+  searches with two source needs instead of mixing them into one.
+- Boundary rule: a search that interprets the business's economics stays on
+  `unit-economics` even when the final answer contains a recommendation. If the source
+  is justifying why the economics point a certain way, keep it a `unit-economics`
+  search; then run a separate search on the concrete fix layer (`offers`, `upsells`,
+  `continuity`, `downsells`) for the recommended move.
+- Do not add a `unit-economics` search merely because known economics appear in the
+  answer. If the frame is already established and the user asks for a concrete fix,
+  search only for the fix mechanism unless the answer makes a fresh source-backed
+  economics claim.
+
+## Focus terms and query variants
+
+- `focus_terms`: the specific evidence the search must surface.
+- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+  the current turn. Three is the normal target; four is the cap. If you need more than
+  four, split the answer into narrower source needs. Do not rely on the deterministic
+  fallback query except for debugging.
+
+## Intent (recorded annotation, not scored)
+
+Record the retrieval job as `intent` for traceability. Intent does not change retrieval
+— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+closest fit and move on:
+
+- `teaching_evidence`: explain a Money Models concept or framework.
+- `diagnostic_evidence`: support interpretation of known business economics or constraints.
+- `comparison_evidence`: compare two concepts, options, or layers.
+- `recommendation_evidence`: support a concrete next move after enough business facts are known.
+
+Allowed intents: `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, `recommendation_evidence`.
+Allowed subjects: `unit-economics`, `offers`, `upsells`, `downsells`, `continuity`.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business`
+
+Visible case context:
+
+```json
+{
+  "case_id": "sourceneed_v1_001",
+  "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+  "scenario_id": "1584_design",
+  "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+}
+```
+
+After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+```
+
+Your final response should only summarize the recorded decision.
+
+2026-07-08T20:42:30.877046Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-07-08T20:42:33.533916Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-07-08T20:42:33.533977Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-08T20:42:33.554727Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:42:33.558463Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:33.558914Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:42:33.561596Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-08T20:42:34.949778Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:42:34.952055Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:34.952338Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:42:34.954268Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ll load the advisor skill first, then record the source-need decision through the trace script exactly as the eval requires.
+exec
+/bin/zsh -lc "sed -n '1,240p' .codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Follow the source-need decision rules in `source_need_rules.md` (same directory). That
+file is the single source of truth for when to search, how to choose layers, how to split
+one answer into multiple source needs, how to write `query_variants`, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+2026-07-08T20:42:37.635657Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:42:37.637125Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:37.637335Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:42:37.638593Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The skill points to `source_need_rules.md` as the deciding rulebook, so I’m reading that file directly before recording the trace.
+exec
+/bin/zsh -lc "sed -n '1,240p' .codex/skills/money-model-advisor/source_need_rules.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Source-Need Decision Rules
+
+Single source of truth for deciding whether to run a source-material search and how
+to structure the source need. The operating skill and the eval acting prompts both
+pull these rules from this file. Do not restate them anywhere else — change them here.
+
+## When to search
+
+- Search source material when the answer needs Money Models support for a concept,
+  comparison, diagnosis, or recommendation, and the snapshot or prior-session context
+  already holds enough business facts to make a source-backed claim.
+- Do not use source search as a substitute for missing business facts. If the
+  responsible next move is to get CAC, gross profit, fulfillment cost, current offer
+  details, or prior-session context first, do that instead and do not search this step.
+- Do not search for simple vocabulary answers that can be answered without a citation.
+- A missing optional field should not block search when the user is asking for
+  conceptual source support.
+
+## Layers (these drive retrieval — choose carefully)
+
+Choose layers by the mechanism the source material must support:
+
+- front-end attraction offer -> `offers`
+- post-sale add-on or premium next offer -> `upsells`
+- payment plan, pay-less-now option, or friction-reducing alternative -> `downsells`
+- recurring maintenance, membership, or repeat post-purchase service -> `continuity`
+- CAC, gross profit, payback, or acquisition-capacity interpretation -> `unit-economics`
+
+Keep layers minimal; extra layers make retrieval noisier. Use payback or CAC as focus
+terms without adding `unit-economics` when the source claim is about a concrete fix
+mechanism such as continuity or upsells.
+
+## One retrieval job per search (this drives layer and focus-term choice)
+
+- Generate one source need per search. If an answer needs two retrieval jobs, run two
+  searches with two source needs instead of mixing them into one.
+- Boundary rule: a search that interprets the business's economics stays on
+  `unit-economics` even when the final answer contains a recommendation. If the source
+  is justifying why the economics point a certain way, keep it a `unit-economics`
+  search; then run a separate search on the concrete fix layer (`offers`, `upsells`,
+  `continuity`, `downsells`) for the recommended move.
+- Do not add a `unit-economics` search merely because known economics appear in the
+  answer. If the frame is already established and the user asks for a concrete fix,
+  search only for the fix mechanism unless the answer makes a fresh source-backed
+  economics claim.
+
+## Focus terms and query variants
+
+- `focus_terms`: the specific evidence the search must surface.
+- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+  the current turn. Three is the normal target; four is the cap. If you need more than
+  four, split the answer into narrower source needs. Do not rely on the deterministic
+  fallback query except for debugging.
+
+## Intent (recorded annotation, not scored)
+
+Record the retrieval job as `intent` for traceability. Intent does not change retrieval
+— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+closest fit and move on:
+
+- `teaching_evidence`: explain a Money Models concept or framework.
+- `diagnostic_evidence`: support interpretation of known business economics or constraints.
+- `comparison_evidence`: compare two concepts, options, or layers.
+- `recommendation_evidence`: support a concrete next move after enough business facts are known.
+
+2026-07-08T20:42:41.797459Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:42:41.799705Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:41.800023Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:42:41.801857Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+This case is asking for source support on a unit-economics concept, not asking me to fill in the actual missing fulfillment-cost number. I’m checking the capture script shape so the recorded JSON matches what the evaluator expects.
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/capture_source_need_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Prepare and complete source-need generation trace artifacts."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import shutil
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_NEED_RULES_PATH = ROOT / ".codex" / "skills" / "money-model-advisor" / "source_need_rules.md"
+STATE_DIR_NAME = ".money-model-advisor"
+SNAPSHOT_FILE = "business_snapshot.json"
+SESSIONS_DIR = "sessions"
+RUN_FILE = "run.json"
+
+PROMPT_HIDDEN_FIELDS = {
+    "split",
+    "snapshot_fixture_path",
+    "prior_sessions_fixture_path",
+    "expected_search",
+    "expected_source_need",
+    "acceptable_intents",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+
+def utc_now() -> str:
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            record["_line_number"] = line_number
+            records.append(record)
+    return records
+
+
+def find_case(cases_path: Path, case_id: str) -> dict[str, Any]:
+    for case in load_jsonl(cases_path):
+        if case.get("case_id") == case_id:
+            return case
+    raise SystemExit(f"case not found: {case_id}")
+
+
+def rel_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def copy_session_fixture(source: Path, sessions_dir: Path) -> None:
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    fixture_id = payload.get("fixture_id", source.stem)
+    turns = payload.get("turns")
+    if isinstance(turns, list):
+        for index, turn in enumerate(turns, 1):
+            session = {
+                "created_at": turn.get("timestamp"),
+                "user_message": turn.get("user_message"),
+                "assistant_message": turn.get("assistant_message"),
+                "actions": turn.get("actions", []),
+                "retrieval_queries": turn.get("retrieval_queries", []),
+                "evidence": turn.get("evidence", []),
+                "fixture_id": fixture_id,
+            }
+            write_json(sessions_dir / f"{fixture_id}_{index:02d}.json", session)
+        return
+    shutil.copy2(source, sessions_dir / source.name)
+
+
+def prepare_business_dir(case: dict[str, Any], business_dir: Path) -> dict[str, str]:
+    state_dir = business_dir / STATE_DIR_NAME
+    sessions_dir = state_dir / SESSIONS_DIR
+    snapshot_path = state_dir / SNAPSHOT_FILE
+
+    state_dir.mkdir(parents=True, exist_ok=True)
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(ROOT / case["snapshot_fixture_path"], snapshot_path)
+
+    prior_sessions_fixture = case.get("prior_sessions_fixture_path")
+    if prior_sessions_fixture:
+        copy_session_fixture(ROOT / prior_sessions_fixture, sessions_dir)
+
+    return {
+        "business_dir": rel_path(business_dir),
+        "snapshot": rel_path(snapshot_path),
+        "sessions_dir": rel_path(sessions_dir),
+    }
+
+
+def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
+    visible_case = {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")}
+    return "\n".join(
+        [
+            "# Source-Need Generation Acting Prompt",
+            "",
+            "You are the acting agent for a Money Model Advisor source-need generation eval case.",
+            "",
+            "Consult the money-model-advisor skill before you decide, then use the local CLI to act. The skill is the authoritative rulebook for the search decision, intents, and subjects; where a case is a close call, its rules decide it, including the rule that a unit-economics search stays `diagnostic_evidence` even when the final answer contains a recommendation. This prompt only summarizes the skill. Expected labels are intentionally hidden.",
+            "",
+            "Task: decide whether Money Models source-material search is needed for the current turn. If search is needed, generate a structured source need with `intent`, `subjects`, and `focus_terms`. If search is not needed, set source need to null.",
+            "",
+            "Apply the decision rules below exactly. They are inlined verbatim from the",
+            "authoritative rulebook (`source_need_rules.md`); this is the same file the operating",
+            "skill points to, so there is one source of truth.",
+            "",
+            SOURCE_NEED_RULES_PATH.read_text(encoding="utf-8").strip(),
+            "",
+            "Allowed intents: `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, `recommendation_evidence`.",
+            "Allowed subjects: `unit-economics`, `offers`, `upsells`, `downsells`, `continuity`.",
+            "",
+            f"Business dir: `{business_dir}`",
+            "",
+            "Visible case context:",
+            "",
+            "```json",
+            json.dumps(visible_case, indent=2, sort_keys=True),
+            "```",
+            "",
+            "After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.",
+            "",
+        ]
+    )
+
+
+def read_json_value(value: str | None) -> Any:
+    if value is None:
+        return None
+    candidate = Path(value)
+    if candidate.exists():
+        return json.loads(candidate.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def prepare(args: argparse.Namespace) -> int:
+    case = find_case(args.cases, args.case_id)
+    run_dir = args.runs_dir / args.phase / args.case_id
+    if run_dir.exists() and not args.force:
+        raise SystemExit(f"run directory already exists; pass --force to replace: {run_dir}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    business_dir = run_dir / "business"
+    paths = prepare_business_dir(case, business_dir)
+    prompt = render_acting_prompt(case, business_dir)
+    (run_dir / "acting_prompt.md").write_text(prompt, encoding="utf-8")
+    write_json(
+        run_dir / "run_draft.json",
+        {
+            "case_id": case["case_id"],
+            "created_at": utc_now(),
+            "paths": paths,
+            "visible_context": {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")},
+        },
+    )
+    print(json.dumps({"run_dir": rel_path(run_dir), "acting_prompt": rel_path(run_dir / "acting_prompt.md")}, indent=2))
+    return 0
+
+
+def complete(args: argparse.Namespace) -> int:
+    run_dir = args.run_dir
+    draft_path = run_dir / "run_draft.json"
+    if not draft_path.exists():
+        raise SystemExit(f"missing run_draft.json: {draft_path}")
+    draft = json.loads(draft_path.read_text(encoding="utf-8"))
+    source_need = read_json_value(args.source_need)
+    source_search_decision = args.source_search_decision.lower() == "true"
+    if not source_search_decision:
+        source_need = None
+
+    payload = {
+        **draft,
+        "completed_at": utc_now(),
+        "source_search_decision": source_search_decision,
+        "source_need": source_need,
+        "notes": args.notes,
+    }
+    write_json(run_dir / RUN_FILE, payload)
+    print(json.dumps({"run": rel_path(run_dir / RUN_FILE)}, indent=2))
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    prepare_parser = subparsers.add_parser("prepare")
+    prepare_parser.add_argument("case_id")
+    prepare_parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_source_need_cases.jsonl")
+    prepare_parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "source_need")
+    prepare_parser.add_argument("--phase", default="pilot")
+    prepare_parser.add_argument("--force", action="store_true")
+    prepare_parser.set_defaults(func=prepare)
+
+    complete_parser = subparsers.add_parser("complete")
+    complete_parser.add_argument("run_dir", type=Path)
+    complete_parser.add_argument("--source-search-decision", required=True, choices=("true", "false"))
+    complete_parser.add_argument("--source-need", help="JSON object or path to JSON file. Omit when source search decision is false.")
+    complete_parser.add_argument("--notes")
+    complete_parser.set_defaults(func=complete)
+
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+2026-07-08T20:42:48.810931Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:42:48.813476Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:48.813829Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:42:48.815853Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The trace accepts the structured source need directly. I’m also starting the local advisor session against the provided business directory so the action is grounded in the fixture state, not just the prompt text.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business\"
+USER_REQUEST='why do we need fulfillment cost to understand whether ads can work?'
+PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir \""'$CONTEXT_DIR" --user-message "$USER_REQUEST"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business",
+  "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor",
+  "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json",
+  "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+  "user_message": "why do we need fulfillment cost to understand whether ads can work?",
+  "advisor_state": {
+    "advisory_status": "diagnosable",
+    "ready_for_payback_diagnosis": true,
+    "ready_for_offer_stack_diagnosis": true,
+    "missing_fields": [],
+    "likely_retrieval_subjects": [
+      "unit-economics"
+    ],
+    "retrieval_query_terms": [
+      "premium full-service interior design firm for short-term rental and second-home projects",
+      "STR and second-home owners with $80K-$200K+ project capacity",
+      "full-service STR and second-home design",
+      "diagnose cash payback",
+      "wants to understand how much can be spent on acquisition",
+      "CAC",
+      "first 30 day gross profit",
+      "payback period"
+    ],
+    "known_facts": {
+      "business.business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+      "business.icp": "STR and second-home owners with $80K-$200K+ project capacity",
+      "business.delivery_model": "Lisa-led full-service design planning, procurement, and installation",
+      "economics.cac": 1000,
+      "economics.first_30_day_gross_profit": 10000,
+      "economics.monthly_recurring_gross_profit": 0,
+      "economics.gross_margin": 0.769,
+      "economics.payback_period_months": 1.0,
+      "problem.user_goal": "diagnose cash payback",
+      "problem.reported_symptoms_count": 1,
+      "problem.recent_reported_symptoms": [
+        "wants to understand how much can be spent on acquisition"
+      ],
+      "money_model.attraction_offer.exists": true,
+      "money_model.attraction_offer.description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "money_model.attraction_offer.price": 597,
+      "money_model.core_offer.exists": true,
+      "money_model.core_offer.description": "full-service STR and second-home design",
+      "money_model.core_offer.price": 15000,
+      "money_model.upsell.exists": true,
+      "money_model.upsell.description": "pre-designed room packages sold per room or bundle",
+      "money_model.upsell.price": 5000,
+      "money_model.downsell.exists": false,
+      "money_model.continuity.exists": false
+    }
+  },
+  "recent_turns": [],
+  "available_operations": [
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "search_source_material",
+    "logs",
+    "turn_record",
+    "session_finish"
+  ],
+  "trace_requirements": [
+    "Record the completed turn with session finish.",
+    "Include every CLI-backed action in the record actions list.",
+    "Include one source_events entry per source-material search.",
+    "Include cited chunk ids when source material supports the answer."
+  ],
+  "boundary": {
+    "agent_owns": [
+      "advisory judgment",
+      "local document inspection",
+      "source-need generation",
+      "answer synthesis"
+    ],
+    "cli_owns": [
+      "snapshot persistence",
+      "deterministic calculations",
+      "source-material retrieval",
+      "trace recording"
+    ]
+  }
+}
+
+2026-07-08T20:42:52.718071Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:42:52.719496Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:52.719699Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:42:52.720893Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The session confirms the fixture has enough economics to support a unit-economics explanation: CAC, first-30-day gross profit, gross margin, and payback are already present. I’m going to record a search-needed decision with a single unit-economics source need.
+exec
+/bin/zsh -lc "rg -n \"source_need|source_search_decision|query_variants|focus_terms\" scripts tests src evals -g '*.py' | head -80" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+scripts/eval_search_query_quality.py:40:    "focus_terms",
+scripts/eval_search_query_quality.py:127:        for field in ("focus_terms", "known_useful_chunk_ids"):
+scripts/eval_search_query_quality.py:143:def focus_term_recall(query: str, focus_terms: list[str]) -> float:
+scripts/eval_search_query_quality.py:144:    if not focus_terms:
+scripts/eval_search_query_quality.py:147:    hits = sum(1 for term in focus_terms if term.lower() in lowered)
+scripts/eval_search_query_quality.py:148:    return hits / len(focus_terms)
+scripts/eval_search_query_quality.py:158:        variants = row.get("query_variants")
+scripts/eval_search_query_quality.py:162:            raise ValueError(f"{path}: {case_id} query_variants must be a non-empty list of strings")
+scripts/eval_search_query_quality.py:180:    query_variants = ()
+scripts/eval_search_query_quality.py:182:        query_variants = tuple((variants_by_case or {}).get(case["case_id"], ()))
+scripts/eval_search_query_quality.py:183:    source_need = SourceNeed(
+scripts/eval_search_query_quality.py:186:        focus_terms=tuple(case["focus_terms"]),
+scripts/eval_search_query_quality.py:188:        query_variants=query_variants,
+scripts/eval_search_query_quality.py:193:        for query in build_advisor_queries(snapshot, source_need=source_need)
+scripts/eval_search_query_quality.py:373:                    case["focus_terms"],
+scripts/eval_search_query_quality.py:393:        "namespace_policy": "source_need_target_namespaces" if retrieval_backend in {"vector", "hybrid"} else "n/a",
+scripts/eval_search_query_quality.py:746:        default=ROOT / "evals" / "advisor_query_variants_v2.jsonl",
+scripts/eval_search_query_quality.py:781:            variants_by_case = load_variant_rows(args.query_variants)
+scripts/eval_search_query_quality.py:830:                "namespace_policy": "source_need_target_namespaces" if args.retrieval_backend in {"vector", "hybrid"} else "n/a",
+scripts/eval_search_query_quality.py:834:                "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
+tests/test_eval_source_event_traces.py:24:                    "focus_terms": ["CAC", "payback period"],
+tests/test_eval_source_event_traces.py:29:                    "focus_terms": ["upsell", "first 30 day gross profit"],
+tests/test_eval_source_event_traces.py:36:                    "source_need": {
+tests/test_eval_source_event_traces.py:39:                        "focus_terms": ["CAC", "payback period", "gross margin"],
+tests/test_eval_source_event_traces.py:44:                    "source_need": {
+tests/test_eval_source_event_traces.py:47:                        "focus_terms": ["upsell", "first 30 day gross profit"],
+tests/test_eval_source_event_traces.py:69:                    "focus_terms": ["CAC", "payback period"],
+tests/test_eval_source_event_traces.py:74:                    "focus_terms": ["upsell", "first 30 day gross profit"],
+tests/test_eval_source_event_traces.py:81:                    "source_need": {
+tests/test_eval_source_event_traces.py:84:                        "focus_terms": ["CAC", "payback period", "upsell", "first 30 day gross profit"],
+tests/test_eval_source_event_traces.py:106:                    "focus_terms": ["CAC", "payback period"],
+tests/test_eval_source_event_traces.py:113:                    "source_need": {
+tests/test_eval_source_event_traces.py:116:                        "focus_terms": ["CAC", "payback period"],
+tests/test_eval_source_event_traces.py:136:                    "focus_terms": ["front-end offer", "paid acquisition"],
+tests/test_eval_source_event_traces.py:143:                    "source_need": {
+tests/test_eval_source_event_traces.py:146:                        "focus_terms": ["front end offer", "paid acquisition test"],
+tests/test_eval_source_event_traces.py:166:                    "focus_terms": ["CAC", "payback period"],
+tests/test_eval_source_event_traces.py:173:                    "source_need": {
+tests/test_eval_source_event_traces.py:176:                        "focus_terms": ["CAC", "payback period"],
+tests/test_eval_source_event_traces.py:181:                    "source_need": {
+tests/test_eval_source_event_traces.py:184:                        "focus_terms": ["front end offer"],
+tests/test_eval_source_event_traces.py:220:                    "source_need": {
+tests/test_eval_source_event_traces.py:223:                        "focus_terms": ["front end offer"],
+src/money_model_architect/cli.py:142:        if args.source_need_json:
+src/money_model_architect/cli.py:148:            source_need = _parse_source_need(_read_json_value(args.source_need_json))
+src/money_model_architect/cli.py:149:            queries = build_advisor_queries(snapshot, source_need)
+src/money_model_architect/cli.py:162:                "namespace_policy": "source_need_target_namespaces",
+src/money_model_architect/cli.py:164:                "source_need": _source_need_to_dict(source_need),
+src/money_model_architect/cli.py:602:    source_need = event.get("source_need")
+src/money_model_architect/cli.py:603:    if not isinstance(source_need, dict):
+src/money_model_architect/cli.py:604:        raise SystemExit(f"record-json source_events[{index}].source_need must be an object")
+src/money_model_architect/cli.py:605:    _validate_source_need_payload(source_need, f"record-json source_events[{index}].source_need")
+src/money_model_architect/cli.py:612:    _validate_query_variants_executed(source_need, queries, f"record-json source_events[{index}]")
+src/money_model_architect/cli.py:654:def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> None:
+src/money_model_architect/cli.py:655:    intent = source_need.get("intent")
+src/money_model_architect/cli.py:658:    subjects = source_need.get("subjects")
+src/money_model_architect/cli.py:664:    target_namespaces = source_need.get("target_namespaces", [])
+src/money_model_architect/cli.py:673:    focus_terms = source_need.get("focus_terms")
+src/money_model_architect/cli.py:674:    if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
+src/money_model_architect/cli.py:675:        raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
+src/money_model_architect/cli.py:676:    query_variants = source_need.get("query_variants")
+src/money_model_architect/cli.py:678:        not isinstance(query_variants, list)
+src/money_model_architect/cli.py:679:        or not 2 <= len(query_variants) <= 4
+src/money_model_architect/cli.py:680:        or not all(isinstance(query, str) and query.strip() for query in query_variants)
+src/money_model_architect/cli.py:682:        raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
+src/money_model_architect/cli.py:685:def _validate_query_variants_executed(source_need: dict[str, Any], queries: list[str], label: str) -> None:
+src/money_model_architect/cli.py:686:    query_variants = source_need.get("query_variants")
+src/money_model_architect/cli.py:687:    if not isinstance(query_variants, list):
+src/money_model_architect/cli.py:690:    missing = [variant for variant in query_variants if _normalize_query_text(variant) not in executed]
+src/money_model_architect/cli.py:692:        raise SystemExit(f"{label}.queries must include every source_need.query_variants entry")
+src/money_model_architect/cli.py:737:def _parse_source_need(value: Any) -> SourceNeed:
+src/money_model_architect/cli.py:742:    focus_terms = value.get("focus_terms", [])
+src/money_model_architect/cli.py:744:    query_variants = value.get("query_variants", [])
+src/money_model_architect/cli.py:750:    if not isinstance(focus_terms, list) or not all(isinstance(term, str) for term in focus_terms):
+src/money_model_architect/cli.py:751:        raise SystemExit("source need field focus_terms must be a list of strings")
+src/money_model_architect/cli.py:754:    if not isinstance(query_variants, list) or not all(isinstance(query, str) for query in query_variants):
+src/money_model_architect/cli.py:755:        raise SystemExit("source need field query_variants must be a list of strings when supplied")
+src/money_model_architect/cli.py:767:        focus_terms=tuple(focus_terms),
+src/money_model_architect/cli.py:769:        query_variants=tuple(query_variants),
+src/money_model_architect/cli.py:805:def _source_need_to_dict(source_need: SourceNeed) -> dict[str, Any]:
+
+2026-07-08T20:42:57.890115Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:42:57.892282Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:42:57.892539Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:42:57.894016Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The CLI validator expects `query_variants` for full source-need payloads, so I’ll include three concise variants along with the required intent, subject, and focus terms.
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001 --source-search-decision true --source-need '{\"intent\":\"diagnostic_evidence\",\"subjects\":[\"unit-economics\"],\"focus_terms\":[\"fulfillment cost\",\"gross profit\",\"CAC\",\"payback period\",\"paid acquisition\"],\"query_variants\":[\"fulfillment cost gross profit CAC payback paid acquisition\",\"cost to fulfill offer affects gross profit and ad payback\",\"paid ads work when CAC is covered by gross profit after fulfillment cost\"]}' --notes 'Search is needed because the user asks for Money Models support explaining why fulfillment cost changes whether paid acquisition can work; known CAC and first-30-day gross profit make this a unit-economics interpretation, not a missing-facts question.'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "run": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/run.json"
+}
+
+2026-07-08T20:43:02.815426Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:43:02.816927Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:43:02.817147Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:43:02.818607Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The required `run.json` has been created. I’m doing a quick readback to verify the recorded decision and payload are present.
+exec
+/bin/zsh -lc "sed -n '1,220p' evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/run.json" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "case_id": "sourceneed_v1_001",
+  "completed_at": "2026-07-08T20:43:02Z",
+  "created_at": "2026-07-08T20:42:27Z",
+  "notes": "Search is needed because the user asks for Money Models support explaining why fulfillment cost changes whether paid acquisition can work; known CAC and first-30-day gross profit make this a unit-economics interpretation, not a missing-facts question.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "fulfillment cost",
+      "gross profit",
+      "CAC",
+      "payback period",
+      "paid acquisition"
+    ],
+    "intent": "diagnostic_evidence",
+    "query_variants": [
+      "fulfillment cost gross profit CAC payback paid acquisition",
+      "cost to fulfill offer affects gross profit and ad payback",
+      "paid ads work when CAC is covered by gross profit after fulfillment cost"
+    ],
+    "subjects": [
+      "unit-economics"
+    ]
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_001",
+    "conversation_context": "The snapshot has CAC and first-30-day gross profit. The user asks why fulfillment cost matters for ads.",
+    "scenario_id": "1584_design",
+    "user_turn": "why do we need fulfillment cost to understand whether ads can work?"
+  }
+}
+
+2026-07-08T20:43:05.386463Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-08T20:43:05.388218Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-08T20:43:05.388489Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-08T20:43:05.391556Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+Recorded decision: source search needed.
+
+Source need:
+`intent`: `diagnostic_evidence`  
+`subjects`: `["unit-economics"]`  
+`focus_terms`: fulfillment cost, gross profit, CAC, payback period, paid acquisition
+
+Created `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/run.json`.
+2026-07-08T20:43:07.431076Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+2026-07-08T20:43:07.431094Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+tokens used
+26,627

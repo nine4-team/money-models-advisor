@@ -1,0 +1,5 @@
+Saved `economics.cac=1000` for the eval business snapshot, recorded the advisor turn, and created the required run artifact:
+
+`evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_003/run.json`
+
+Final advisor response recorded: “Got it. I saved CAC as $1,000 including referral partner payments. The next economics input I need before diagnosing payback is first-30-day gross profit.”

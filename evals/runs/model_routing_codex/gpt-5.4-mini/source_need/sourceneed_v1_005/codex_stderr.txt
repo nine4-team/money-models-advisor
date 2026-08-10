@@ -1,0 +1,671 @@
+2026-07-07T21:43:14.489355Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T21:43:14.504966Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T21:43:14.531766Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T21:43:14.532774Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T21:43:15.149715Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T21:43:15.160718Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T21:43:15.179463Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:43:15.180866Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:43:15.183344Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T21:43:15.183979Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+OpenAI Codex v0.142.5
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019f3e89-0300-7a01-9bfd-536352fddc21
+--------
+user
+# Source-Need Generation Acting Prompt
+
+You are the acting agent for a Money Model Advisor source-need generation eval case.
+
+Consult the money-model-advisor skill before you decide, then use the local CLI to act. The skill is the authoritative rulebook for the search decision, intents, and subjects; where a case is a close call, its rules decide it, including the rule that a unit-economics search stays `diagnostic_evidence` even when the final answer contains a recommendation. This prompt only summarizes the skill. Expected labels are intentionally hidden.
+
+Task: decide whether Money Models source-material search is needed for the current turn. If search is needed, generate a structured source need with `intent`, `subjects`, and `focus_terms`. If search is not needed, set source need to null.
+
+Apply the decision rules below exactly. They are inlined verbatim from the
+authoritative rulebook (`source_need_rules.md`); this is the same file the operating
+skill points to, so there is one source of truth.
+
+# Source-Need Decision Rules
+
+Single source of truth for deciding whether to run a source-material search and how
+to structure the source need. The operating skill and the eval acting prompts both
+pull these rules from this file. Do not restate them anywhere else — change them here.
+
+## When to search
+
+- Search source material when the answer needs Money Models support for a concept,
+  comparison, diagnosis, or recommendation, and the snapshot or prior-session context
+  already holds enough business facts to make a source-backed claim.
+- Do not use source search as a substitute for missing business facts. If the
+  responsible next move is to get CAC, gross profit, fulfillment cost, current offer
+  details, or prior-session context first, do that instead and do not search this step.
+- Do not search for simple vocabulary answers that can be answered without a citation.
+- A missing optional field should not block search when the user is asking for
+  conceptual source support.
+
+## Layers (these drive retrieval — choose carefully)
+
+Choose layers by the mechanism the source material must support:
+
+- front-end attraction offer -> `offers`
+- post-sale add-on or premium next offer -> `upsells`
+- payment plan, pay-less-now option, or friction-reducing alternative -> `downsells`
+- recurring maintenance, membership, or repeat post-purchase service -> `continuity`
+- CAC, gross profit, payback, or acquisition-capacity interpretation -> `unit-economics`
+
+Keep layers minimal; extra layers make retrieval noisier. Use payback or CAC as focus
+terms without adding `unit-economics` when the source claim is about a concrete fix
+mechanism such as continuity or upsells.
+
+## One retrieval job per search (this drives layer and focus-term choice)
+
+- Generate one source need per search. If an answer needs two retrieval jobs, run two
+  searches with two source needs instead of mixing them into one.
+- Boundary rule: a search that interprets the business's economics stays on
+  `unit-economics` even when the final answer contains a recommendation. If the source
+  is justifying why the economics point a certain way, keep it a `unit-economics`
+  search; then run a separate search on the concrete fix layer (`offers`, `upsells`,
+  `continuity`, `downsells`) for the recommended move.
+- Do not add a `unit-economics` search merely because known economics appear in the
+  answer. If the frame is already established and the user asks for a concrete fix,
+  search only for the fix mechanism unless the answer makes a fresh source-backed
+  economics claim.
+
+## Focus terms and query variants
+
+- `focus_terms`: the specific evidence the search must surface.
+- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+  the current turn. Three is the normal target; four is the cap. If you need more than
+  four, split the answer into narrower source needs. Do not rely on the deterministic
+  fallback query except for debugging.
+
+## Intent (recorded annotation, not scored)
+
+Record the retrieval job as `intent` for traceability. Intent does not change retrieval
+— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+closest fit and move on:
+
+- `teaching_evidence`: explain a Money Models concept or framework.
+- `diagnostic_evidence`: support interpretation of known business economics or constraints.
+- `comparison_evidence`: compare two concepts, options, or layers.
+- `recommendation_evidence`: support a concrete next move after enough business facts are known.
+
+Allowed intents: `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, `recommendation_evidence`.
+Allowed subjects: `unit-economics`, `offers`, `upsells`, `downsells`, `continuity`.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/business`
+
+Visible case context:
+
+```json
+{
+  "case_id": "sourceneed_v1_005",
+  "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+  "focus_aliases": {
+    "first sale": [
+      "diagnostic offer"
+    ],
+    "maximize 30 day profits": [
+      "first-month profit",
+      "first 30 day gross profit"
+    ],
+    "next offer": [
+      "pre-designed room packages"
+    ],
+    "upsell after first sale": [
+      "post-sale upsell",
+      "post-sale add-on"
+    ]
+  },
+  "scenario_id": "1584_design",
+  "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+}
+```
+
+After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+```
+
+Your final response should only summarize the recorded decision.
+
+2026-07-07T21:43:16.428640Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-07-07T21:43:16.429010Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-07T21:43:16.537311Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-07-07T21:43:18.058720Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Server returned error response: invalid_grant: Grant not found
+2026-07-07T21:43:18.058741Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-07T21:43:18.447424Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T21:43:18.448599Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T21:43:18.448774Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T21:43:18.454055Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:43:18.454549Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T21:43:18.468938Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.468945Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.469517Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.469523Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.469812Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.469818Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.470123Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.470127Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.470408Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.470411Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.471095Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T21:43:18.471099Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+warning: Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-07-07T21:43:19.445183Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T21:43:19.447020Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T21:43:19.447270Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T21:43:19.454419Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:43:19.455174Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’m checking the money-model-advisor runbook first, then I’ll map the case to the search rules and record the trace with the local CLI.
+exec
+/bin/zsh -lc "sed -n '1,260p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Follow the source-need decision rules in `source_need_rules.md` (same directory). That
+file is the single source of truth for when to search, how to choose layers, how to split
+one answer into multiple source needs, how to write `query_variants`, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+2026-07-07T21:43:22.895912Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T21:43:22.897227Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T21:43:22.897401Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T21:43:22.902557Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:43:22.903097Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ve got the rulebook open and this case is a recommendation about the next post-sale mechanism, not a missing-facts problem. I’m validating the minimal layer choice, then I’ll write the required trace artifact.
+exec
+/bin/zsh -lc "rg -n \"capture_source_need_trace|source-need-json|query_variants|source-search-decision\" -S scripts src evals | sed -n '1,220p'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+scripts/eval_search_query_quality.py:158:        variants = row.get("query_variants")
+scripts/eval_search_query_quality.py:162:            raise ValueError(f"{path}: {case_id} query_variants must be a non-empty list of strings")
+scripts/eval_search_query_quality.py:180:    query_variants = ()
+scripts/eval_search_query_quality.py:182:        query_variants = tuple((variants_by_case or {}).get(case["case_id"], ()))
+scripts/eval_search_query_quality.py:188:        query_variants=query_variants,
+scripts/eval_search_query_quality.py:746:        default=ROOT / "evals" / "advisor_query_variants_v2.jsonl",
+scripts/eval_search_query_quality.py:781:            variants_by_case = load_variant_rows(args.query_variants)
+scripts/eval_search_query_quality.py:834:                "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
+evals/advisor_query_variants_v2.jsonl:1:{"case_id":"searchq_v1_001","query_variants":["why cost to deliver affects gross profit CAC payback ads","gross profit after fulfillment cost pays back customer acquisition cost","first 30 days gross profit versus CAC advertising viability"]}
+evals/advisor_query_variants_v2.jsonl:2:{"case_id":"searchq_v1_002","query_variants":["client financed acquisition first 30 days gross profit CAC","CFA level first 30 day gross profit covers CAC","how customer gross profit funds acquisition spend"]}
+evals/advisor_query_variants_v2.jsonl:3:{"case_id":"searchq_v1_003","query_variants":["how much can spend on ads first 30 day gross profit CAC","ad spend capacity CAC payback client financed acquisition","first 30 day gross profit determines advertising budget"]}
+evals/advisor_query_variants_v2.jsonl:4:{"case_id":"searchq_v1_004","query_variants":["attraction offer versus upsell front end after first sale","money model sequence attraction offer core offer upsell","difference between front end offer and post sale upsell"]}
+evals/advisor_query_variants_v2.jsonl:5:{"case_id":"searchq_v1_005","query_variants":["upsell after first sale next offer maximize 30 day profits","post sale upsell increase first month gross profit","what to offer after front end diagnostic sale"]}
+evals/advisor_query_variants_v2.jsonl:6:{"case_id":"searchq_v1_006","query_variants":["continuity offer recurring gross profit payback period","recurring revenue improves CAC payback after first sale","continuity after initial sale adds monthly gross profit"]}
+evals/advisor_query_variants_v2.jsonl:7:{"case_id":"searchq_v1_007","query_variants":["payment plan reduces purchase friction pay less now","downsell payment terms lower upfront price","payment plans help customers decide payment terms"]}
+evals/advisor_query_variants_v2.jsonl:8:{"case_id":"searchq_v1_008","query_variants":["free trial as front end offer reduce risk","free trial downsell try before buying offer","free trial creates leads and lowers purchase friction"]}
+evals/advisor_query_variants_v2.jsonl:9:{"case_id":"searchq_v1_009","query_variants":["CAC versus gross profit make more per customer","customer worth depends on gross profit not revenue","make more gross profit per client before lowering acquisition cost"]}
+evals/advisor_query_variants_v2.jsonl:10:{"case_id":"searchq_v1_010","query_variants":["low cost front end offer to get leads engaged","attraction offer gets prospects to engage before core offer","front end offer low price lead generation attraction"]}
+evals/advisor_query_variants_v2.jsonl:11:{"case_id":"searchq_v1_011","query_variants":["why revenue can hide bad gross profit CAC economics","gross margin delivery cost determines ad viability","lifetime revenue versus lifetime gross profit CAC"]}
+evals/advisor_query_variants_v2.jsonl:12:{"case_id":"searchq_v1_012","query_variants":["CFA level 3 first 30 day gross profit greater than twice CAC","make 2x CAC in first 30 days reinvest advertising profit","gross profit more than twice acquisition cost removes money limit"]}
+evals/advisor_query_variants_v2.jsonl:13:{"case_id":"searchq_v1_013","query_variants":["front loaded setup onboarding activation fees shorten payback","first and last month creates gross profit before next payment","fees up front reduce payback period in first 30 days"]}
+evals/advisor_query_variants_v2.jsonl:14:{"case_id":"searchq_v1_014","query_variants":["when to upsell after first sale next step big win","upsell timing point of deprivation not satisfaction","first 30 days upsell immediate next step halfway point"]}
+evals/advisor_query_variants_v2.jsonl:15:{"case_id":"searchq_v1_015","query_variants":["classic upsell versus menu upsell next problem prescribe options","menu upsell prescribe what customer needs and does not need","classic upsell solves next problem after purchase"]}
+evals/advisor_query_variants_v2.jsonl:16:{"case_id":"searchq_v1_016","query_variants":["anchor upsell expensive premium option first cheaper alternative","high ticket premium offer makes core offer feel affordable","offer most expensive thing first then acceptable alternative"]}
+evals/advisor_query_variants_v2.jsonl:17:{"case_id":"searchq_v1_017","query_variants":["rollover upsell credit previous purchase toward next offer","credit diagnostic fee toward bigger package upsell","prior purchase applied to annual or larger offer"]}
+evals/advisor_query_variants_v2.jsonl:18:{"case_id":"searchq_v1_018","query_variants":["attraction offer free or discount front end lead generation","free discount offer gets customers to engage","front end attraction offer creates leads and customers"]}
+evals/advisor_query_variants_v2.jsonl:19:{"case_id":"searchq_v1_019","query_variants":["free giveaway grand prize participation offer lead capture","giveaway big prize then discounted offer to everyone else","grand prize room refresh collect contact information"]}
+evals/advisor_query_variants_v2.jsonl:20:{"case_id":"searchq_v1_020","query_variants":["win your money back goal store credit attraction offer","set customer goal refund or store credit if achieved","service business win your money back offer mechanism"]}
+evals/advisor_query_variants_v2.jsonl:21:{"case_id":"searchq_v1_021","query_variants":["buy X get Y free fulfillment cost cash management fit","buy more units or access get free bonus gross margin risk","buy X get Y works when fulfillment discipline supports it"]}
+evals/advisor_query_variants_v2.jsonl:22:{"case_id":"searchq_v1_022","query_variants":["free with consumption education builds trust before paid offer","give free value break beliefs leads to next offer","educational content creates ideal prospect and CTA"]}
+evals/advisor_query_variants_v2.jsonl:23:{"case_id":"searchq_v1_023","query_variants":["decoy offer free discounted front end premium offer","decoy offer presents more valuable premium package","lead asks about discount then sees premium option"]}
+evals/advisor_query_variants_v2.jsonl:24:{"case_id":"searchq_v1_024","query_variants":["downsell path payment plan feature downsell free trial","if customer says no offer same product different terms","payment plan feature downsell trial sequence"]}
+evals/advisor_query_variants_v2.jsonl:25:{"case_id":"searchq_v1_025","query_variants":["feature downsell reduced scope fewer rooms lower friction","sell fewer features same offer lower price","remove features not outcome to create downsell"]}
+evals/advisor_query_variants_v2.jsonl:26:{"case_id":"searchq_v1_026","query_variants":["pay less now pay more later discount choice","discount now additional benefits versus full price later","pay less now structure compared to normal discount"]}
+evals/advisor_query_variants_v2.jsonl:27:{"case_id":"searchq_v1_027","query_variants":["waived fee continuity recurring revenue later","waive upfront fee to create recurring membership","continuity offer waived fee structure"]}
+evals/advisor_query_variants_v2.jsonl:28:{"case_id":"searchq_v1_028","query_variants":["continuity discount retention earn point reminders","discount that customer earns by staying subscribed","remind customers before earn point to reduce cancellation"]}
+evals/advisor_query_variants_v2.jsonl:29:{"case_id":"searchq_v1_029","query_variants":["continuity bonus makes membership more valuable retention","bonus attached to recurring maintenance membership","continuity bonus increases value of staying"]}
+evals/advisor_query_variants_v2.jsonl:30:{"case_id":"searchq_v1_030","query_variants":["money model stack attraction upsell downsell continuity","combine attraction offer upsell downsell continuity first 30 days","build process attraction offer then upsell then downsell then continuity"]}
+scripts/eval_codex_model_routing.py:30:import capture_source_need_trace as sn_capture  # noqa: E402
+scripts/eval_codex_model_routing.py:154:                "PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete "
+scripts/eval_codex_model_routing.py:155:                f"{run_dir} --source-search-decision <true|false> --source-need '<json-if-true>' "
+scripts/eval_model_routing.py:44:import capture_source_need_trace as sn_capture  # noqa: E402
+scripts/capture_tool_use_trace.py:221:            "- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`",
+evals/reports/model_routing_opus.md:42:`focus_terms`, and `query_variants` do — so it is recorded as a trace annotation and does
+src/money_model_architect/advisor_queries.py:36:    query_variants: tuple[str, ...] = ()
+src/money_model_architect/advisor_queries.py:51:    for variant in source_need.query_variants:
+scripts/capture_source_need_trace.py:138:            "After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.",
+scripts/capture_source_need_trace.py:216:    complete_parser.add_argument("--source-search-decision", required=True, choices=("true", "false"))
+scripts/compare_retrieval_backends.py:342:        default=ROOT / "evals" / "advisor_query_variants_v2.jsonl",
+scripts/compare_retrieval_backends.py:375:            variants_by_case = query_eval.load_variant_rows(args.query_variants)
+scripts/compare_retrieval_backends.py:462:                "query_variants": str(args.query_variants.resolve().relative_to(ROOT)) if args.query_source == "generated_variants" else None,
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_008/acting_prompt.md:62:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+src/money_model_architect/cli.py:75:    source_material.add_argument("--source-need-json", help="JSON object or path to JSON file with agent-selected SourceNeed")
+src/money_model_architect/cli.py:144:                parser.error("search --source-need-json requires --business-dir")
+src/money_model_architect/cli.py:172:            parser.error("search requires a raw query or --source-need-json")
+src/money_model_architect/cli.py:612:    _validate_query_variants_executed(source_need, queries, f"record-json source_events[{index}]")
+src/money_model_architect/cli.py:676:    query_variants = source_need.get("query_variants")
+src/money_model_architect/cli.py:678:        not isinstance(query_variants, list)
+src/money_model_architect/cli.py:679:        or not 2 <= len(query_variants) <= 4
+src/money_model_architect/cli.py:680:        or not all(isinstance(query, str) and query.strip() for query in query_variants)
+src/money_model_architect/cli.py:682:        raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
+src/money_model_architect/cli.py:685:def _validate_query_variants_executed(source_need: dict[str, Any], queries: list[str], label: str) -> None:
+src/money_model_architect/cli.py:686:    query_variants = source_need.get("query_variants")
+src/money_model_architect/cli.py:687:    if not isinstance(query_variants, list):
+src/money_model_architect/cli.py:690:    missing = [variant for variant in query_variants if _normalize_query_text(variant) not in executed]
+src/money_model_architect/cli.py:692:        raise SystemExit(f"{label}.queries must include every source_need.query_variants entry")
+src/money_model_architect/cli.py:739:        raise SystemExit("source-need-json must decode to an object")
+src/money_model_architect/cli.py:744:    query_variants = value.get("query_variants", [])
+src/money_model_architect/cli.py:754:    if not isinstance(query_variants, list) or not all(isinstance(query, str) for query in query_variants):
+src/money_model_architect/cli.py:755:        raise SystemExit("source need field query_variants must be a list of strings when supplied")
+src/money_model_architect/cli.py:769:        query_variants=tuple(query_variants),
+src/money_model_architect/cli.py:811:        "query_variants": list(source_need.query_variants),
+scripts/eval_source_event_traces.py:228:    return len(query_variants(event))
+scripts/eval_source_event_traces.py:231:def query_variants(event: dict[str, Any]) -> list[str]:
+scripts/eval_source_event_traces.py:235:    variants = source_need.get("query_variants")
+scripts/eval_source_event_traces.py:248:    return sum(1 for variant in query_variants(event) if normalize_query_text(variant) in executed)
+scripts/eval_source_event_traces.py:294:def score_case(case: dict[str, Any], run_path: Path | None, *, require_query_variants: bool = False) -> CaseResult:
+scripts/eval_source_event_traces.py:345:        if require_query_variants and not 2 <= match.query_variant_count <= 4:
+scripts/eval_source_event_traces.py:346:            failures.append(f"missing_query_variants:{need.intent}")
+scripts/eval_source_event_traces.py:347:        if require_query_variants and match.executed_query_variant_count != match.query_variant_count:
+scripts/eval_source_event_traces.py:348:            failures.append(f"unexecuted_query_variants:{need.intent}")
+scripts/eval_source_event_traces.py:357:            not require_query_variants
+scripts/eval_source_event_traces.py:400:    require_query_variants: bool = False,
+scripts/eval_source_event_traces.py:415:        "- Query variants required: " + ("yes" if require_query_variants else "no"),
+scripts/eval_source_event_traces.py:416:        "- Query variants must be present in executed queries: " + ("yes" if require_query_variants else "no"),
+scripts/eval_source_event_traces.py:498:        help="Fail matched source events unless source_need.query_variants contains at least two agent-written variants.",
+scripts/eval_source_event_traces.py:506:        score_case(case, artifacts.get(case["case_id"]), require_query_variants=args.require_query_variants) for case in cases
+scripts/eval_source_event_traces.py:511:        render_report(cases, results, validation_errors, require_query_variants=args.require_query_variants),
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_006/acting_prompt.md:62:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/run.json:22:    "query_variants": [
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/run.json:22:    "query_variants": [
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_010/acting_prompt.md:74:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_008 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:106:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003/acting_prompt.md:113:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_003 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/run.json:21:    "query_variants": [
+evals/runs/product_smoke/v1/productsmoke_v1_002/run.json:287:            "query_variants": [
+evals/runs/product_smoke/v1/productsmoke_v1_002/run.json:513:            "query_variants": [
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_008 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:28:      "command": "python3 - <<'PY'  # create /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business; copy evals/fixtures/snapshots/1584_diagnosed.json to business/.money-model-advisor/business_snapshot.json; install prior sessions fixture when present",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:33:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business --user-message 'does this mean paid acquisition is viable, or is CAC the bottleneck?'",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:38:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business --source-need-json '{\"intent\":\"diagnostic_evidence\",\"layers\":[\"unit-economics\"],\"focus_terms\":[\"CAC\",\"first 30 day gross profit\",\"payback period\",\"paid acquisition\"],\"user_turn\":\"does this mean paid acquisition is viable, or is CAC the bottleneck?\",\"query_variants\":[\"CAC first 30 day gross profit payback period paid acquisition viability\",\"30 day gross profit greater than CAC paid ads bottleneck\",\"cash payback period acquisition bottleneck CAC gross profit\"]}' --top-k 5",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:40:      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/search_unit_economics.json"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:44:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/turn_record.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:46:      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/session_finish_stdout.json"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:69:        "query_variants": [
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:128:    "session_finish_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions/20260611T205052.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:130:      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions/fixture_prior_001.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:131:      "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions/fixture_prior_002.json"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:145:    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:146:    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:147:    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/business_snapshot.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:148:    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/business/.money-model-advisor/sessions",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:149:    "turn_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/turn_record.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:150:    "session_finish_stdout": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/session_finish_stdout.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/run.json:151:    "search_unit_economics": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_002/search_unit_economics.json"
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_001/acting_prompt.md:62:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/source_events/query_variants_v1/sourceevents_v1_002/turn_record.json:24:        "query_variants": [
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_011/acting_prompt.md:62:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/run.json:21:    "query_variants": [
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/run.json:21:    "query_variants": [
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/run.json:22:    "query_variants": [
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:107:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:114:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_006 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:107:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006/acting_prompt.md:114:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_006 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_007/acting_prompt.md:62:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:106:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010/acting_prompt.md:113:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_010 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:18:      "command": "mkdir -p /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/sessions && cp evals/fixtures/snapshots/1584_diagnosed.json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/business_snapshot.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:23:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --user-message \"what is a front-end offer in plain English?\"",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:25:      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_start.out"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:29:      "command": "write JSON SourceNeed artifact to /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:31:      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:35:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --source-need-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json --top-k 5",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:37:      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/search.out"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:41:      "command": "write completed turn record to /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:43:      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:47:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:54:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:56:      "output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_finish.out"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:79:        "query_variants": [
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:230:    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:231:    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:232:    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/sessions",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:233:    "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/sessions/20260611T205046.json"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:250:    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:251:    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:253:    "installed_snapshot_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/business/.money-model-advisor/business_snapshot.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:254:    "source_need_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/source_need.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:255:    "session_start_output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_start.out",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:256:    "search_output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/search.out",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:257:    "turn_record_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:258:    "session_finish_output_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/session_finish.out",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json:259:    "run_json_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_005/run.json"
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/run.json:22:    "query_variants": [
+evals/runs/source_need/pilot/sourceneed_v1_008/acting_prompt.md:41:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_011 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_009/acting_prompt.md:62:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/run.json:22:    "query_variants": [
+evals/runs/source_events/query_variants_v1/sourceevents_v1_005/turn_record.json:24:        "query_variants": [
+evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_009/run.json:60:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json <teaching_evidence unit-economics>",
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_001 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run2/claude-sonnet-5/tool_use/tooluse_v1_009/acting_prompt.md:16:- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_001 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_014 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:29:    "run_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:30:    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:31:    "session_finish_output_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/session_finish_output.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:32:    "turn_record_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/turn_record.json"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:35:    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:36:    "session_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor/sessions/20260611T205007.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:37:    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor/sessions",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:38:    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor/business_snapshot.json",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:39:    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business/.money-model-advisor"
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:59:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business --user-message 'what should we fix first?'",
+evals/runs/source_events/query_variants_v1/sourceevents_v1_004/run.json:64:      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/query_variants_v1/sourceevents_v1_004/turn_record.json",
+evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_001/run.json:34:    "query_variants": [
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/run.json:22:    "query_variants": [
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/run.json:21:    "query_variants": [
+evals/runs/source_need/taxonomy_v2/sourceneed_v1_014/acting_prompt.md:62:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_007 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run3/claude-sonnet-5/source_need/sourceneed_v1_007 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:62:- `query_variants`: 2-4 short, source-facing search phrasings authored for the claim in
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:70:— `layers`, `focus_terms`, and `query_variants` do — and it is not graded, so choose the
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:94:After acting, complete the trace with `scripts/capture_source_need_trace.py complete ...`. Do not look up expected labels.
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013/acting_prompt.md:101:PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_013 --source-search-decision <true|false> --source-need '<json-if-true>' --notes '<brief rationale>'
+evals/runs/model_tiering/run2/claude-sonnet-5/source_need/sourceneed_v1_005/run.json:21:    "query_variants": [
+
+2026-07-07T21:43:38.054450Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T21:43:38.055910Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T21:43:38.056154Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T21:43:38.094103Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:43:38.096049Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: capture_source_need_trace.py complete [-h]
+                                             --source-search-decision {true,false}
+                                             [--source-need SOURCE_NEED]
+                                             [--notes NOTES]
+                                             run_dir
+
+positional arguments:
+  run_dir
+
+options:
+  -h, --help            show this help message and exit
+  --source-search-decision {true,false}
+  --source-need SOURCE_NEED
+                        JSON object or path to JSON file. Omit when source
+                        search decision is false.
+  --notes NOTES
+
+2026-07-07T21:43:44.610719Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T21:43:44.611819Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T21:43:44.611971Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T21:43:44.636182Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:43:44.637413Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ve decided this is a search case: the turn is asking for a concrete post-sale mechanism, and the business context is already sufficient to support a source-backed recommendation. I’m recording `upsells` only, with a minimal query set aimed at the next offer after the diagnostic.
+exec
+/bin/zsh -lc "cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 scripts/capture_source_need_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005 --source-search-decision true --source-need '{\"intent\":\"recommendation_evidence\",\"layers\":[\"upsells\"],\"subjects\":[\"upsells\"],\"focus_terms\":[\"post-sale upsell\",\"pre-designed room packages\",\"first-month profit\",\"after the diagnostic sells\"],\"query_variants\":[\"post-sale upsell after diagnostic sale room packages\",\"what to offer next after diagnostic to increase first month profit\",\"pre-designed room packages upsell first month profit\"],\"user_turn\":\"if the diagnostic sells, what should we offer next to increase first-month profit?\"}' --notes 'Post-sale upsell is the concrete next mechanism; the question is asking for the next offer to raise first-month profit after the diagnostic sells.'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "run": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/run.json"
+}
+
+2026-07-07T21:44:01.360564Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T21:44:01.366742Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T21:44:01.368573Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T21:44:01.407968Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T21:44:01.410113Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+Recorded `source-search-decision: true` with source need:
+`intent=recommendation_evidence`, `subjects=["upsells"]`, `layers=["upsells"]`, focused on the post-sale upsell / pre-designed room package mechanism to increase first-month profit after the diagnostic sells.
+2026-07-07T21:44:03.912537Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+2026-07-07T21:44:03.912664Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-07-07T21:44:03.912670Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+tokens used
+30,734

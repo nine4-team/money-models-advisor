@@ -1,0 +1,81 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "snapshot command exit_code=0",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "assistant_message recorded in session 20260708T233339.json",
+      "evidence_type": "turn_record",
+      "index": 1
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir",
+  "case_id": "tooluse_v1_011",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_011",
+    "created_at": "2026-07-08T23:34:04Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 45910.6,
+    "model": "gpt-5.5",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 16779
+  },
+  "completed_at": "2026-07-08T23:34:00Z",
+  "created_at": "2026-07-08T23:33:18Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.5",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir/.money-model-advisor/sessions/20260708T233339.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f",
+    "start": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "description": "Consulted money-model-advisor skill before acting.",
+      "index": 0,
+      "kind": "skill_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "description": "Composed a brief recap from saved snapshot; no calculation, search, or log inspection was needed.",
+      "index": 2,
+      "kind": "decision"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_011/business_dir --user-message ... --assistant-message ...",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    }
+  ]
+}

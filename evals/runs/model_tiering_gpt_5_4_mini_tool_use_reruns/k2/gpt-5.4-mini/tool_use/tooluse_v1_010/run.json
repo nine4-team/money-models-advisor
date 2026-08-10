@@ -1,0 +1,115 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[3]",
+      "evidence_type": "cli_command",
+      "index": 3
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[4]",
+      "evidence_type": "cli_command",
+      "index": 4
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 5
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir",
+  "case_id": "tooluse_v1_010",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_010",
+    "created_at": "2026-07-08T15:04:52Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 340604.0,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 144137
+  },
+  "completed_at": "2026-07-08T15:04:33Z",
+  "created_at": "2026-07-08T14:59:12Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": "evals/fixtures/sessions/1584_ad_spend_context.json",
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_diagnosed.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f",
+    "start": "sha256:03d635d9fad08099a7b71912f7736da60e6f4e8a71f620455955b4e5b1f3eb2f"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir --full",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate cfa-level --inputs '{\"cac\":1000,\"first_30_day_gp\":10000}'",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_010/business_dir/.money-model-advisor/business_snapshot.json",
+      "exit_code": 0,
+      "index": 4,
+      "kind": "cli_command"
+    }
+  ]
+}

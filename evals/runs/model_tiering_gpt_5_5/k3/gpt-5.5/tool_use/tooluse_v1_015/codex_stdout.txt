@@ -1,0 +1,3 @@
+CAC is `$1k` because the saved snapshot says referral partner acquisition was averaged at about `$1,000` per client. The prior logged turn accepted that average, so I treated referral partner acquisition as roughly `$1,000 CAC` for now.
+
+Recorded the eval trace at `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_015/run.json`.

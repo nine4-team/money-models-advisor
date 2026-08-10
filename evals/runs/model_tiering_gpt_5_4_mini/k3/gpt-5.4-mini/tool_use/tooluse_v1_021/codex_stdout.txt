@@ -1,0 +1,3 @@
+Probably not. At `$1k` CAC against about `$10k` of first-30-day gross profit, payback is about `1 month`, so the unit economics can support acquisition.
+
+What that usually means is acquisition is not the binding constraint on cash payback. The more likely bottlenecks are lead flow, close rate, or fulfillment capacity, depending on where volume breaks first.

@@ -26,7 +26,7 @@ INTENTS = {
     "recommendation_evidence",
 }
 
-LAYERS = {"unit-economics", "offers", "upsells", "downsells", "continuity"}
+SUBJECTS = {"unit-economics", "offers", "upsells", "downsells", "continuity"}
 
 REQUIRED_CASE_FIELDS = {
     "case_id",
@@ -47,7 +47,7 @@ REQUIRED_CASE_FIELDS = {
 @dataclass(frozen=True)
 class SourceNeed:
     intent: str
-    layers: tuple[str, ...]
+    subjects: tuple[str, ...]
     focus_terms: tuple[str, ...]
 
 
@@ -59,8 +59,8 @@ class CaseResult:
     actual_search: bool | None
     status: str
     intent_match: bool | None
-    layer_exact_match: bool | None
-    layer_recall: float | None
+    subject_exact_match: bool | None
+    subject_recall: float | None
     focus_recall: float | None
     false_search: bool | None
     missed_search: bool | None
@@ -96,13 +96,13 @@ def validate_source_need(value: Any, case_ref: str, field_name: str) -> list[str
     if intent not in INTENTS:
         errors.append(f"{case_ref}: {field_name}.intent is invalid: {intent}")
 
-    layers = value.get("layers")
-    if not isinstance(layers, list) or not layers:
-        errors.append(f"{case_ref}: {field_name}.layers must be a non-empty list")
+    subjects = value.get("subjects")
+    if not isinstance(subjects, list) or not subjects:
+        errors.append(f"{case_ref}: {field_name}.subjects must be a non-empty list")
     else:
-        unknown_layers = sorted(set(layers) - LAYERS)
-        if unknown_layers:
-            errors.append(f"{case_ref}: {field_name}.layers unknown values: {', '.join(unknown_layers)}")
+        unknown_subjects = sorted(set(subjects) - SUBJECTS)
+        if unknown_subjects:
+            errors.append(f"{case_ref}: {field_name}.subjects unknown values: {', '.join(unknown_subjects)}")
 
     focus_terms = value.get("focus_terms")
     if not isinstance(focus_terms, list) or not focus_terms:
@@ -187,29 +187,29 @@ def parse_source_need(value: Any) -> tuple[SourceNeed | None, list[str]]:
         return None, ["source_need_not_object"]
 
     intent = value.get("intent")
-    raw_layers = value.get("layers", [])
+    raw_subjects = value.get("subjects", [])
     raw_focus_terms = value.get("focus_terms", [])
     failures: list[str] = []
 
     if intent not in INTENTS:
         failures.append(f"invalid_intent:{intent}")
-    if not isinstance(raw_layers, list):
-        failures.append("layers_not_list")
-        raw_layers = []
+    if not isinstance(raw_subjects, list):
+        failures.append("subjects_not_list")
+        raw_subjects = []
     if not isinstance(raw_focus_terms, list):
         failures.append("focus_terms_not_list")
         raw_focus_terms = []
 
-    layers = tuple(str(layer) for layer in raw_layers if isinstance(layer, str) and layer in LAYERS)
+    subjects = tuple(str(subject) for subject in raw_subjects if isinstance(subject, str) and subject in SUBJECTS)
     focus_terms = tuple(term.strip() for term in raw_focus_terms if isinstance(term, str) and term.strip())
 
-    if not layers:
-        failures.append("missing_valid_layers")
+    if not subjects:
+        failures.append("missing_valid_subjects")
     if not focus_terms:
         failures.append("missing_focus_terms")
     if failures:
         return None, failures
-    return SourceNeed(intent=str(intent), layers=layers, focus_terms=focus_terms), []
+    return SourceNeed(intent=str(intent), subjects=subjects, focus_terms=focus_terms), []
 
 
 def find_run_artifacts(runs_dir: Path) -> dict[str, Path]:
@@ -309,8 +309,8 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
             actual_search=None,
             status="not_run",
             intent_match=None,
-            layer_exact_match=None,
-            layer_recall=None,
+            subject_exact_match=None,
+            subject_recall=None,
             focus_recall=None,
             false_search=None,
             missed_search=None,
@@ -327,21 +327,21 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
     missed_search = actual_search is False and expected_search is True
 
     intent_match = None
-    layer_exact_match = None
-    layer_recall = None
+    subject_exact_match = None
+    subject_recall = None
     focus_recall = None
 
     if expected_search and actual_need is not None and expected is not None:
         intent_match = actual_need.intent in acceptable_intents(case, expected)
-        expected_layers = set(expected.layers)
-        actual_layers = set(actual_need.layers)
-        layer_exact_match = actual_layers == expected_layers
-        layer_recall = len(expected_layers & actual_layers) / len(expected_layers)
+        expected_subjects = set(expected.subjects)
+        actual_subjects = set(actual_need.subjects)
+        subject_exact_match = actual_subjects == expected_subjects
+        subject_recall = len(expected_subjects & actual_subjects) / len(expected_subjects)
         focus_recall = term_recall(expected.focus_terms, actual_need.focus_terms, focus_aliases(case))
     elif not expected_search:
         intent_match = actual_need is None
-        layer_exact_match = actual_need is None
-        layer_recall = 1.0 if actual_need is None else 0.0
+        subject_exact_match = actual_need is None
+        subject_recall = 1.0 if actual_need is None else 0.0
         focus_recall = 1.0 if actual_need is None else 0.0
 
     if actual_search is None:
@@ -355,8 +355,8 @@ def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
         actual_search=actual_search,
         status=status,
         intent_match=intent_match,
-        layer_exact_match=layer_exact_match,
-        layer_recall=layer_recall,
+        subject_exact_match=subject_exact_match,
+        subject_recall=subject_recall,
         focus_recall=focus_recall,
         false_search=false_search,
         missed_search=missed_search,
@@ -395,7 +395,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         "",
         "This eval checks the step between next-action classification and query construction. Given conversation context, snapshot state, and the current user turn, the acting agent should decide whether source-material search is needed and, if it is, generate a structured source need.",
         "",
-        "A source need contains retrieval intent, corpus layer or layers, and focus terms. The query builder then turns that structure into a concrete search query.",
+        "A source need contains retrieval intent, corpus subject or subjects, and focus terms. The query builder then turns that structure into a concrete search query.",
         "",
         "Some labeled cases may include `acceptable_intents`. That is eval-only label tolerance for turns where more than one primary retrieval objective is defensible; runtime source needs still emit one intent per source-material search call.",
         "",
@@ -439,8 +439,8 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
         false_search_count = sum(bool(result.false_search) for result in scored)
         missed_search_count = sum(bool(result.missed_search) for result in scored)
         intent_matches = sum(result.intent_match is True for result in search_expected)
-        layer_exact_matches = sum(result.layer_exact_match is True for result in search_expected)
-        average_layer_recall = avg([result.layer_recall for result in search_expected])
+        subject_exact_matches = sum(result.subject_exact_match is True for result in search_expected)
+        average_subject_recall = avg([result.subject_recall for result in search_expected])
         average_focus_recall = avg([result.focus_recall for result in search_expected])
         correct_no_search = sum(result.actual_search is False for result in no_search_expected)
         lines.extend(
@@ -448,9 +448,9 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
                 f"- Search decision accuracy: {pct(search_decision_accuracy, len(scored))}",
                 f"- False search rate: {pct(false_search_count, len(scored))}",
                 f"- Missed search rate: {pct(missed_search_count, len(scored))}",
-                f"- Layer exact match on expected-search cases: {pct(layer_exact_matches, len(search_expected))}",
+                f"- Subject exact match on expected-search cases: {pct(subject_exact_matches, len(search_expected))}",
                 f"- Intent match on expected-search cases (recorded annotation, not scored): {pct(intent_matches, len(search_expected))}",
-                f"- Average layer recall on expected-search cases: {fmt(average_layer_recall)}",
+                f"- Average subject recall on expected-search cases: {fmt(average_subject_recall)}",
                 f"- Average focus-term concept recall on expected-search cases: {fmt(average_focus_recall)}",
                 f"- Correct no-search controls: {pct(correct_no_search, len(no_search_expected))}",
             ]
@@ -467,10 +467,10 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             lines.append("- The search/no-search boundary is clean on this eval slice.")
         else:
             lines.append("- The search/no-search boundary still needs instruction or tool-surface work before retrieval-backend comparisons.")
-        if layer_exact_matches / len(search_expected) >= 0.9:
-            lines.append("- Source-need precision meets the seed gate for retrieval-backend comparison; carry any residual layer misses as caveats.")
-        elif layer_exact_matches < len(search_expected):
-            lines.append("- Source-need precision is still partial; inspect layer misses before treating retrieval-backend comparisons as meaningful.")
+        if subject_exact_matches / len(search_expected) >= 0.9:
+            lines.append("- Source-need precision meets the seed gate for retrieval-backend comparison; carry any residual subject misses as caveats.")
+        elif subject_exact_matches < len(search_expected):
+            lines.append("- Source-need precision is still partial; inspect subject misses before treating retrieval-backend comparisons as meaningful.")
         if average_focus_recall is not None and average_focus_recall < 0.7:
             lines.append("- Focus-term concept recall is low enough that the metric should be treated as a development signal, not a production-quality semantic score.")
 
@@ -479,7 +479,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             "",
             "## Case Table",
             "",
-            "| Case | Split | Expected Search | Actual Search | Intent (recorded) | Layer Recall | Focus Concept Recall | Status | Failure Reasons |",
+            "| Case | Split | Expected Search | Actual Search | Intent (recorded) | Subject Recall | Focus Concept Recall | Status | Failure Reasons |",
             "|---|---|---:|---:|---|---:|---:|---|---|",
         ]
     )
@@ -489,7 +489,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
             f"`{result.case_id}` | `{result.split}` | {str(result.expected_search).lower()} | "
             f"{'-' if result.actual_search is None else str(result.actual_search).lower()} | "
             f"{'-' if result.actual_source_need is None else f'`{result.actual_source_need.intent}`'} | "
-            f"{fmt(result.layer_recall)} | {fmt(result.focus_recall)} | "
+            f"{fmt(result.subject_recall)} | {fmt(result.focus_recall)} | "
             f"`{result.status}` | "
             f"{', '.join(result.failure_reasons) or '-'} |"
         )
@@ -510,7 +510,7 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
                     "source_search_decision": True,
                     "source_need": {
                         "intent": "teaching_evidence",
-                        "layers": ["unit-economics"],
+                        "subjects": ["unit-economics"],
                         "focus_terms": ["gross profit", "fulfillment cost", "CAC", "payback period"],
                     },
                 },

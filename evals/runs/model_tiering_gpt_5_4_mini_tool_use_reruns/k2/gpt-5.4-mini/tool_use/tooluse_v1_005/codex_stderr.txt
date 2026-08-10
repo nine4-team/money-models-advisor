@@ -1,0 +1,1249 @@
+2026-07-07T23:19:59.284194Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T23:19:59.299373Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T23:19:59.325707Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T23:19:59.326674Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T23:19:59.505822Z  WARN codex_core_plugins::remote::remote_installed_plugin_sync: remote installed plugin bundle sync failed error=remote plugin catalog request to https://chatgpt.com/backend-api/ps/plugins/installed failed with status 503 Service Unavailable: upstream connect error or disconnect/reset before headers. reset reason: remote connection failure, transport failure reason: delayed connect error: Connection refused
+2026-07-07T23:19:59.928696Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T23:19:59.940855Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T23:19:59.966871Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+2026-07-07T23:19:59.969086Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/openai-primary-runtime/template-creator/26.630.12135/.codex-plugin/plugin.json
+OpenAI Codex v0.142.5
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019f3ee1-95e2-7d92-a06f-f0f904364b41
+--------
+user
+# Next-Action Eval Acting Prompt
+
+You are the acting agent for a Money Model Advisor next-action eval case.
+
+Consult the money-model-advisor skill, then use the local CLI to act. The skill is the authoritative rulebook and its rules decide the close calls. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir`
+
+Allowed CLI surface:
+
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`
+- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`
+- `PYTHONPATH=src python3 -m money_model_architect.cli search "raw debug query" --subject <subject>`
+- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`
+
+Visible case context:
+
+```json
+{
+  "case_id": "tooluse_v1_005",
+  "conversation_context": "The snapshot is empty, but local business docs are available in the eval fixture.",
+  "scenario_id": "1584_design",
+  "user_turn": "do you know what business we're working on?"
+}
+```
+
+After acting, record observable steps for `complete`. Do not infer actions from the hidden label.
+
+## Noninteractive Eval Requirement
+
+Before your final response, you must create `evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/run.json` by running:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_tool_use_trace.py complete evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005 --workflow-steps '<json-array>' --session-paths '<json-array>' --actual-actions '<json-array>' --final-answer '<brief answer or action summary>'
+```
+
+Use the local CLI where the case calls for it. Do not look up expected labels.
+
+2026-07-07T23:20:00.155849Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:00.157619Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:00.296222Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-07-07T23:20:00.723351Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-07-07T23:20:00.723392Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-07T23:20:00.745509Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Server returned error response: invalid_grant: Grant not found
+2026-07-07T23:20:00.745544Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-07-07T23:20:01.561622Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:20:01.566550Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:20:01.567910Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:20:01.574878Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:01.575485Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+2026-07-07T23:20:01.589300Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.589310Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.589734Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.589738Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.590072Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.590078Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.590460Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.590465Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.590791Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.590796Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.591615Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-07-07T23:20:01.591621Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+warning: Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-07-07T23:20:02.443527Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:20:02.444894Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:20:02.445094Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:20:02.452809Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:02.453439Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’m checking the money-model-advisor runbook first, then I’ll inspect the local snapshot and docs to answer the business-id question with the CLI, not by guessing from the eval label.
+exec
+/bin/zsh -lc "sed -n '1,260p' /Users/benjaminmackenzie/.codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit source need.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Record the final turn with `session finish`.
+9. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+
+## When To Search
+
+Search source material when the answer needs Money Models support for a concept, comparison, diagnosis, or recommendation.
+
+Do not search source material as a substitute for missing business facts. If the responsible next move is to get CAC, gross profit, fulfillment cost, current offer details, or prior-session context before making a recommendation, do that first. Search can come later when the agent has enough business context to make a source-backed claim.
+
+Do use source search when the snapshot or prior-session context already contains enough facts for a source-backed explanation, diagnosis, comparison, or recommendation. A missing optional field should not block search when the user is asking for conceptual source support.
+
+Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
+
+Use the smallest source need that can support the answer:
+
+- `teaching_evidence`: explain a Money Models concept.
+- `diagnostic_evidence`: support a diagnosis of the business constraint using known facts.
+- `comparison_evidence`: compare Money Models concepts or options.
+- `recommendation_evidence`: support a recommended next move after the needed business facts are available.
+
+Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+
+For each source-material search, write 2-4 `query_variants` inside the SourceNeed. These are semantic search requests authored by the agent for the specific evidence needed in the current turn. Do not rely on the deterministic fallback query except for manual debugging or as a last-resort safety net. Good variants should be short, source-facing, and focused on the claim being supported, not a pasted user message.
+
+Why 2-4: one query is often too brittle because source material may use different wording than the human. Two variants is the minimum useful fanout, three is the normal target, and four is the cap to avoid noisy spray-and-pray retrieval. If you need more than four variants, split the answer into narrower SourceNeeds instead.
+
+Common split: if the answer needs both unit-economics interpretation and a proposed offer-stack fix, run one `diagnostic_evidence` search on `unit-economics`, then a separate `recommendation_evidence` search on the specific fix layer such as `upsells`, `continuity`, `offers`, or `downsells`. Do not combine broad economics terms and offer-stack layers into one catch-all SourceNeed; that makes retrieval noisy.
+
+Boundary rule: do not label a unit-economics search as `recommendation_evidence` just because the final answer contains a recommendation. If the source material is being used to justify why the economics point in a certain direction, the SourceNeed is `diagnostic_evidence` on `unit-economics`. Then, if you recommend a concrete next move such as a front-end offer, upsell, continuity path, or downsell/payment-plan path, run a separate `recommendation_evidence` search on that concrete fix layer.
+
+Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
+
+Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
+
+Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.
+
+When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+
+Keep source layers minimal. Extra layers make retrieval noisier.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+2026-07-07T23:20:10.418556Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:20:10.420081Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:20:10.420271Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:20:10.429003Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:10.429685Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ve got the rulebook. Next I’m checking the empty snapshot and the local fixture docs so I can answer from the repo evidence and persist any clear business fact.
+exec
+/bin/zsh -lc 'rg --files "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/product-ladder.md
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/services-and-pricing.md
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/business-profile.md
+
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir"' in /Users/benjaminmackenzie/Dev/money-model-architect
+2026-07-07T23:20:22.334364Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:20:22.338720Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:20:22.340044Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:20:22.375257Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:22.377280Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+ succeeded in 119ms:
+{
+  "schema_version": "business_snapshot.v1",
+  "business": {
+    "business_type": null,
+    "icp": null,
+    "delivery_model": null
+  },
+  "money_model": {
+    "attraction_offer": {
+      "exists": null,
+      "description": null,
+      "price": null
+    },
+    "core_offer": {
+      "exists": null,
+      "description": null,
+      "price": null
+    },
+    "upsell": {
+      "exists": null,
+      "description": null,
+      "price": null
+    },
+    "downsell": {
+      "exists": null,
+      "description": null,
+      "price": null
+    },
+    "continuity": {
+      "exists": null,
+      "description": null,
+      "price": null
+    }
+  },
+  "economics": {
+    "cac": null,
+    "first_30_day_gross_profit": null,
+    "monthly_recurring_gross_profit": null,
+    "gross_margin": null,
+    "lifetime_gross_profit": null,
+    "payback_period_months": null
+  },
+  "problem": {
+    "user_goal": null,
+    "reported_symptoms": [],
+    "diagnosed_constraints": []
+  },
+  "advisor_state": {
+    "advisory_status": "insufficient_context",
+    "missing_fields": [
+      "problem.user_goal",
+      "business.business_type",
+      "business.icp",
+      "money_model.core_offer.description",
+      "money_model.attraction_offer.exists",
+      "money_model.upsell.exists",
+      "money_model.downsell.exists",
+      "money_model.continuity.exists",
+      "economics.cac",
+      "economics.first_30_day_gross_profit"
+    ],
+    "ready_for_payback_diagnosis": false,
+    "ready_for_offer_stack_diagnosis": false,
+    "likely_retrieval_subjects": [],
+    "retrieval_query_terms": []
+  },
+  "field_sources": {}
+}
+
+codex
+The snapshot is empty, so I’m pulling the local business docs now. If they clearly identify the business, I’ll save that fact and answer directly instead of asking you to restate it.
+exec
+/bin/zsh -lc "sed -n '1,220p' \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/business-profile.md\"" in /Users/benjaminmackenzie/Dev/money-model-architect
+exec
+/bin/zsh -lc "sed -n '1,220p' \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/product-ladder.md\"" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# 1584 Design Business Profile
+
+1584 Design is a premium full-service interior design firm for short-term rental and second-home projects.
+
+The target client is an owner of large STR properties or second homes with the budget for full-service design, procurement, and installation.
+
+ succeeded in 0ms:
+# Product Ladder
+
+Draft ladder:
+
+1. STR Design Diagnostic: listing and photo audit, likely $597 to $997.
+2. Pre-designed room packages: $1,200 to $1,800 per room or $5,000 to $7,000 as a bundle.
+3. Full-service design: planning, procurement, and installation.
+
+exec
+/bin/zsh -lc "sed -n '1,220p' \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/services-and-pricing.md\"" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Services And Pricing
+
+The core offer is full-service STR and second-home design.
+
+Draft pricing:
+
+- Design fee: $15,000 to $60,000 depending on project scope.
+- Typical project budget: $80,000 to $160,000.
+- Ideal project budget: $150,000 to $200,000 or more.
+
+2026-07-07T23:20:32.623894Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:20:32.628742Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:20:32.630109Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:20:32.659614Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:32.661381Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ve identified the business from the fixture docs. I’m saving only the parts that are explicit in those files so the snapshot becomes useful without inventing extra structure.
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir\" business.business_type='premium full-service interior design firm' business.icp='owners of large STR properties or second homes' business.delivery_model='full-service design, procurement, and installation' money_model.core_offer.exists=true money_model.core_offer.description='Full-service STR and second-home design' money_model.attraction_offer.exists=true money_model.attraction_offer.description='STR Design Diagnostic (listing and photo audit)'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+  "updated": [
+    {
+      "field": "business.business_type",
+      "value": "premium full-service interior design firm"
+    },
+    {
+      "field": "business.icp",
+      "value": "owners of large STR properties or second homes"
+    },
+    {
+      "field": "business.delivery_model",
+      "value": "full-service design, procurement, and installation"
+    },
+    {
+      "field": "money_model.core_offer.exists",
+      "value": true
+    },
+    {
+      "field": "money_model.core_offer.description",
+      "value": "Full-service STR and second-home design"
+    },
+    {
+      "field": "money_model.attraction_offer.exists",
+      "value": true
+    },
+    {
+      "field": "money_model.attraction_offer.description",
+      "value": "STR Design Diagnostic (listing and photo audit)"
+    }
+  ],
+  "state": {
+    "schema_version": "business_snapshot.v1",
+    "business": {
+      "business_type": "premium full-service interior design firm",
+      "icp": "owners of large STR properties or second homes",
+      "delivery_model": "full-service design, procurement, and installation"
+    },
+    "money_model": {
+      "attraction_offer": {
+        "exists": true,
+        "description": "STR Design Diagnostic (listing and photo audit)",
+        "price": null
+      },
+      "core_offer": {
+        "exists": true,
+        "description": "Full-service STR and second-home design",
+        "price": null
+      },
+      "upsell": {
+        "exists": null,
+        "description": null,
+        "price": null
+      },
+      "downsell": {
+        "exists": null,
+        "description": null,
+        "price": null
+      },
+      "continuity": {
+        "exists": null,
+        "description": null,
+        "price": null
+      }
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "payback_period_months": null
+    },
+    "problem": {
+      "user_goal": null,
+      "reported_symptoms": [],
+      "diagnosed_constraints": []
+    },
+    "advisor_state": {
+      "advisory_status": "insufficient_context",
+      "missing_fields": [
+        "problem.user_goal",
+        "money_model.upsell.exists",
+        "money_model.downsell.exists",
+        "money_model.continuity.exists",
+        "economics.cac",
+        "economics.first_30_day_gross_profit"
+      ],
+      "ready_for_payback_diagnosis": false,
+      "ready_for_offer_stack_diagnosis": false,
+      "likely_retrieval_subjects": [],
+      "retrieval_query_terms": [
+        "premium full-service interior design firm",
+        "owners of large STR properties or second homes",
+        "Full-service STR and second-home design"
+      ]
+    },
+    "field_sources": {
+      "business.business_type": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-07-07T23:20:42Z"
+      },
+      "business.icp": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-07-07T23:20:42Z"
+      },
+      "business.delivery_model": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-07-07T23:20:42Z"
+      },
+      "money_model.core_offer.exists": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-07-07T23:20:42Z"
+      },
+      "money_model.core_offer.description": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-07-07T23:20:42Z"
+      },
+      "money_model.attraction_offer.exists": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-07-07T23:20:42Z"
+      },
+      "money_model.attraction_offer.description": {
+        "source_type": "cli",
+        "confidence": "high",
+        "updated_at": "2026-07-07T23:20:42Z"
+      }
+    }
+  }
+}
+
+2026-07-07T23:20:42.377454Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:20:42.381797Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:20:42.383146Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:20:42.410749Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:42.412427Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ve got enough to answer. I’m now generating the required trace artifact for the eval run so the observable steps are recorded, then I’ll return the business name and what I saved.
+exec
+/bin/zsh -lc 'python3 scripts/capture_tool_use_trace.py --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: capture_tool_use_trace.py [-h] {prepare,complete,validate} ...
+
+Prepare and complete next-action classification trace artifacts. This is a
+strict trace recorder, not a planner. `prepare` sets up an isolated business
+directory and an acting prompt that excludes expected labels. `complete` turns
+recorded workflow evidence into `run.json`. It never chooses the advisor's
+next action from the case label.
+
+positional arguments:
+  {prepare,complete,validate}
+    prepare             Prepare an isolated eval case directory
+    complete            Complete a prepared trace and write run.json
+    validate            Validate a run.json or run directory
+
+options:
+  -h, --help            show this help message and exit
+
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir"' in /Users/benjaminmackenzie/Dev/money-model-architect
+2026-07-07T23:20:51.425676Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:20:51.426911Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:20:51.427080Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:20:51.473117Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:20:51.474630Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+ succeeded in 109ms:
+exec
+/bin/zsh -lc "python3 scripts/capture_tool_use_trace.py complete \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005\" --workflow-steps '[\"Checked the empty snapshot\",\"Read the local business docs\",\"Saved explicit business facts to the snapshot\",\"Answered from the fixture docs\"]' --session-paths '[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/business-profile.md\",\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/product-ladder.md\",\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/services-and-pricing.md\"]' --actual-actions '[\"cli snapshot --business-dir <business_dir>\",\"read business-profile.md\",\"read product-ladder.md\",\"read services-and-pricing.md\",\"cli snapshot set --business-dir <business_dir> business.business_type=... business.icp=... business.delivery_model=... money_model.core_offer.exists=true money_model.core_offer.description=... money_model.attraction_offer.exists=true money_model.attraction_offer.description=...\"]' --final-answer 'Yes. The business is 1584 Design, a premium full-service interior design firm for owners of large short-term rental properties or second homes. I saved that business context to the snapshot.'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ exited 1 in 0ms:
+{
+  "valid": false,
+  "errors": [
+    "workflow_steps[0] must be an object",
+    "workflow_steps[1] must be an object",
+    "workflow_steps[2] must be an object",
+    "workflow_steps[3] must be an object",
+    "actual_actions[0] must be an object",
+    "actual_actions[1] must be an object",
+    "actual_actions[2] must be an object",
+    "actual_actions[3] must be an object",
+    "actual_actions[4] must be an object"
+  ]
+}
+
+2026-07-07T23:21:05.454769Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:21:05.456168Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:21:05.456355Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:21:05.461934Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:21:05.462534Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+The trace tool rejected plain strings. I’m checking the expected object shape, then I’ll rerun it with the schema it wants and finish the response.
+exec
+/bin/zsh -lc 'python3 scripts/capture_tool_use_trace.py complete --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: capture_tool_use_trace.py complete [-h]
+                                          [--workflow-steps WORKFLOW_STEPS]
+                                          [--session-paths SESSION_PATHS]
+                                          [--actual-actions ACTUAL_ACTIONS]
+                                          [--final-answer FINAL_ANSWER]
+                                          [--final-answer-file FINAL_ANSWER_FILE]
+                                          run_dir
+
+positional arguments:
+  run_dir
+
+options:
+  -h, --help            show this help message and exit
+  --workflow-steps WORKFLOW_STEPS
+                        JSON array or path to JSON array
+  --session-paths SESSION_PATHS
+                        JSON array or path to JSON array
+  --actual-actions ACTUAL_ACTIONS
+                        JSON array or path to JSON array
+  --final-answer FINAL_ANSWER
+  --final-answer-file FINAL_ANSWER_FILE
+
+2026-07-07T23:21:07.910913Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:21:07.912670Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:21:07.912965Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:21:07.920706Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:21:07.921492Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc 'rg -n "workflow_steps|actual_actions|session_paths|final_answer" scripts/capture_tool_use_trace.py' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+274:        "workflow_steps": [],
+275:        "session_paths": [],
+276:        "actual_actions": [],
+277:        "final_answer_path": None,
+291:    final_answer_path = None
+292:    if args.final_answer:
+293:        final_answer_path = run_dir / "final_answer.txt"
+294:        final_answer_path.write_text(args.final_answer, encoding="utf-8")
+295:    elif args.final_answer_file:
+296:        source = args.final_answer_file
+297:        final_answer_path = run_dir / "final_answer.txt"
+298:        shutil.copy2(source, final_answer_path)
+300:    workflow_steps = read_json_arg(args.workflow_steps, draft.get("workflow_steps", []))
+301:    session_paths = read_json_arg(args.session_paths, draft.get("session_paths", []))
+302:    actual_actions = read_json_arg(args.actual_actions, draft.get("actual_actions", []))
+309:        "workflow_steps": workflow_steps,
+310:        "session_paths": session_paths,
+311:        "actual_actions": actual_actions,
+312:        "final_answer_path": rel_path(final_answer_path) if final_answer_path else draft.get("final_answer_path"),
+342:    for field in ("case_id", "split", "phase", "business_dir", "fixtures", "snapshot_hash", "workflow_steps", "session_paths", "actual_actions"):
+349:    workflow_steps = run.get("workflow_steps", [])
+350:    if not isinstance(workflow_steps, list):
+351:        errors.append("workflow_steps must be a list")
+352:        workflow_steps = []
+353:    for index, step in enumerate(workflow_steps):
+355:            errors.append(f"workflow_steps[{index}] must be an object")
+359:                errors.append(f"workflow_steps[{index}] missing {field}")
+363:                    errors.append(f"workflow_steps[{index}] cli_command missing {field}")
+365:    actual_actions = run.get("actual_actions", [])
+366:    if not isinstance(actual_actions, list):
+367:        errors.append("actual_actions must be a list")
+368:        actual_actions = []
+369:    if not actual_actions:
+370:        errors.append("actual_actions must contain at least one action before writing run.json")
+371:    for index, item in enumerate(actual_actions):
+373:            errors.append(f"actual_actions[{index}] must be an object")
+378:            errors.append(f"actual_actions[{index}] unknown action: {action}")
+380:            errors.append(f"actual_actions[{index}] unknown confidence: {confidence}")
+382:            errors.append(f"actual_actions[{index}] index must equal {index}")
+385:                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_type")
+387:                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_ref")
+389:            errors.append(f"actual_actions[{index}] missing-confidence action needs evidence_note")
+400:    final_answer_path = run.get("final_answer_path")
+401:    if final_answer_path and not (ROOT / final_answer_path).exists():
+402:        errors.append(f"final_answer_path does not exist: {final_answer_path}")
+
+exec
+/bin/zsh -lc "sed -n '1,260p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Prepare and complete next-action classification trace artifacts.
+
+This is a strict trace recorder, not a planner. `prepare` sets up an isolated
+business directory and an acting prompt that excludes expected labels. `complete`
+turns recorded workflow evidence into `run.json`. It never chooses the advisor's
+next action from the case label.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import shutil
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+STATE_DIR_NAME = ".money-model-advisor"
+SNAPSHOT_FILE = "business_snapshot.json"
+SESSIONS_DIR = "sessions"
+DRAFT_FILE = "run_draft.json"
+RUN_FILE = "run.json"
+
+ACTION_TAXONOMY = {
+    "clarify",
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "compose_answer_from_state",
+    "answer_without_tool",
+}
+
+CONFIDENCE_VALUES = {"direct", "inferred", "missing"}
+
+TOOL_LIKE_ACTIONS = {
+    "update_snapshot",
+    "read_snapshot",
+    "read_logs",
+    "inspect_local_docs",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+}
+
+PROMPT_HIDDEN_FIELDS = {
+    "split",
+    "turn_type",
+    "snapshot_fixture_path",
+    "local_docs_fixture_path",
+    "prior_sessions_fixture_path",
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+    "adjudication_note",
+}
+
+FORBIDDEN_RUN_FIELDS = {
+    "required_actions",
+    "allowed_actions",
+    "forbidden_actions",
+    "expected_first_action",
+    "search_allowed",
+    "expected_mutation",
+    "label_rationale",
+    "ambiguity",
+    "severity_if_wrong",
+}
+
+
+def utc_now() -> str:
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            record["_line_number"] = line_number
+            records.append(record)
+    return records
+
+
+def find_case(cases_path: Path, case_id: str) -> dict[str, Any]:
+    for case in load_jsonl(cases_path):
+        if case.get("case_id") == case_id:
+            return case
+    raise SystemExit(f"case not found: {case_id}")
+
+
+def rel_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def sha256_file(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return f"sha256:{digest.hexdigest()}"
+
+
+def read_json_arg(value: str | None, default: Any) -> Any:
+    if value is None:
+        return default
+    candidate = Path(value)
+    if candidate.exists():
+        return json.loads(candidate.read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def copy_tree_contents(source: Path, destination: Path) -> None:
+    destination.mkdir(parents=True, exist_ok=True)
+    for item in source.iterdir():
+        target = destination / item.name
+        if item.is_dir():
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.copytree(item, target)
+        else:
+            shutil.copy2(item, target)
+
+
+def prepare_business_dir(case: dict[str, Any], business_dir: Path) -> dict[str, str | None]:
+    state_dir = business_dir / STATE_DIR_NAME
+    sessions_dir = state_dir / SESSIONS_DIR
+    snapshot_path = state_dir / SNAPSHOT_FILE
+
+    business_dir.mkdir(parents=True, exist_ok=True)
+    state_dir.mkdir(parents=True, exist_ok=True)
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+
+    snapshot_fixture = ROOT / case["snapshot_fixture_path"]
+    shutil.copy2(snapshot_fixture, snapshot_path)
+
+    local_docs_fixture = case.get("local_docs_fixture_path")
+    if local_docs_fixture:
+        source = ROOT / local_docs_fixture
+        if source.is_dir():
+            copy_tree_contents(source, business_dir)
+        else:
+            shutil.copy2(source, business_dir / source.name)
+
+    prior_sessions_fixture = case.get("prior_sessions_fixture_path")
+    if prior_sessions_fixture:
+        copy_session_fixture(ROOT / prior_sessions_fixture, sessions_dir)
+
+    return {
+        "business_dir": rel_path(business_dir),
+        "state_dir": rel_path(state_dir),
+        "snapshot": rel_path(snapshot_path),
+        "sessions_dir": rel_path(sessions_dir),
+    }
+
+
+def copy_session_fixture(source: Path, sessions_dir: Path) -> None:
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    fixture_id = payload.get("fixture_id", source.stem)
+    turns = payload.get("turns")
+    if isinstance(turns, list):
+        for index, turn in enumerate(turns, 1):
+            session = {
+                "created_at": turn.get("timestamp"),
+                "user_message": turn.get("user_message"),
+                "assistant_message": turn.get("assistant_message"),
+                "actions": turn.get("actions", []),
+                "retrieval_queries": turn.get("retrieval_queries", []),
+                "evidence": turn.get("evidence", []),
+                "fixture_id": fixture_id,
+            }
+            write_json(sessions_dir / f"{fixture_id}_{index:02d}.json", session)
+        return
+    shutil.copy2(source, sessions_dir / source.name)
+
+
+def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
+    visible_case = {key: value for key, value in case.items() if key not in PROMPT_HIDDEN_FIELDS and not key.startswith("_")}
+    return "\n".join(
+        [
+            "# Next-Action Eval Acting Prompt",
+            "",
+            "You are the acting agent for a Money Model Advisor next-action eval case.",
+            "",
+            "Consult the money-model-advisor skill, then use the local CLI to act. The skill is the authoritative rulebook and its rules decide the close calls. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.",
+            "",
+            f"Business dir: `{business_dir}`",
+            "",
+            "Allowed CLI surface:",
+            "",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <business_dir> --full`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli calculate ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir <business_dir> --source-need-json ...`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli search \"raw debug query\" --subject <subject>`",
+            "- `PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir <business_dir> --user-message ... --assistant-message ...`",
+            "",
+            "Visible case context:",
+            "",
+            "```json",
+            json.dumps(visible_case, indent=2, sort_keys=True),
+            "```",
+            "",
+            "After acting, record observable steps for `complete`. Do not infer actions from the hidden label.",
+            "",
+        ]
+    )
+
+
+def prepare(args: argparse.Namespace) -> int:
+    case = find_case(args.cases, args.case_id)
+    run_dir = args.runs_dir / args.phase / args.case_id
+    if run_dir.exists() and not args.force:
+        raise SystemExit(f"run directory already exists; pass --force to replace: {run_dir}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+
+    business_dir = run_dir / "business_dir"
+    stdout_dir = run_dir / "stdout"
+    stderr_dir = run_dir / "stderr"
+    stdout_dir.mkdir(parents=True, exist_ok=True)
+    stderr_dir.mkdir(parents=True, exist_ok=True)
+    paths = prepare_business_dir(case, business_dir)
+
+    snapshot_path = business_dir / STATE_DIR_NAME / SNAPSHOT_FILE
+    prompt_path = run_dir / "acting_prompt.md"
+    prompt_path.write_text(render_acting_prompt(case, business_dir.resolve()), encoding="utf-8")
+
+    draft = {
+        "case_id": case["case_id"],
+        "split": case["split"],
+        "phase": args.phase,
+        "created_at": utc_now(),
+
+2026-07-07T23:21:11.341179Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:21:11.343111Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:21:11.343370Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:21:11.352889Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:21:11.354434Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '330,430p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+def validate(args: argparse.Namespace) -> int:
+    run_path = args.run if args.run.is_file() else args.run / RUN_FILE
+    if not run_path.exists():
+        raise SystemExit(f"run not found: {run_path}")
+    run = json.loads(run_path.read_text(encoding="utf-8"))
+    errors = validate_run(run, run_path.parent)
+    print(json.dumps({"valid": not errors, "errors": errors, "run": rel_path(run_path)}, indent=2))
+    return 1 if errors else 0
+
+
+def validate_run(run: dict[str, Any], run_dir: Path) -> list[str]:
+    errors: list[str] = []
+    for field in ("case_id", "split", "phase", "business_dir", "fixtures", "snapshot_hash", "workflow_steps", "session_paths", "actual_actions"):
+        if field not in run:
+            errors.append(f"missing field: {field}")
+
+    if any(field in run for field in FORBIDDEN_RUN_FIELDS):
+        errors.append("run artifact must not contain expected-label fields")
+
+    workflow_steps = run.get("workflow_steps", [])
+    if not isinstance(workflow_steps, list):
+        errors.append("workflow_steps must be a list")
+        workflow_steps = []
+    for index, step in enumerate(workflow_steps):
+        if not isinstance(step, dict):
+            errors.append(f"workflow_steps[{index}] must be an object")
+            continue
+        for field in ("index", "kind"):
+            if field not in step:
+                errors.append(f"workflow_steps[{index}] missing {field}")
+        if step.get("kind") == "cli_command":
+            for field in ("command", "exit_code"):
+                if field not in step:
+                    errors.append(f"workflow_steps[{index}] cli_command missing {field}")
+
+    actual_actions = run.get("actual_actions", [])
+    if not isinstance(actual_actions, list):
+        errors.append("actual_actions must be a list")
+        actual_actions = []
+    if not actual_actions:
+        errors.append("actual_actions must contain at least one action before writing run.json")
+    for index, item in enumerate(actual_actions):
+        if not isinstance(item, dict):
+            errors.append(f"actual_actions[{index}] must be an object")
+            continue
+        action = item.get("action")
+        confidence = item.get("confidence")
+        if action not in ACTION_TAXONOMY:
+            errors.append(f"actual_actions[{index}] unknown action: {action}")
+        if confidence not in CONFIDENCE_VALUES:
+            errors.append(f"actual_actions[{index}] unknown confidence: {confidence}")
+        if item.get("index") != index:
+            errors.append(f"actual_actions[{index}] index must equal {index}")
+        if confidence == "direct" and action in TOOL_LIKE_ACTIONS:
+            if not item.get("evidence_type"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_type")
+            if not item.get("evidence_ref"):
+                errors.append(f"actual_actions[{index}] direct tool-like action missing evidence_ref")
+        if confidence == "missing" and not item.get("evidence_note"):
+            errors.append(f"actual_actions[{index}] missing-confidence action needs evidence_note")
+
+    prompt_path = run.get("acting_prompt_path")
+    if prompt_path:
+        full_prompt_path = ROOT / prompt_path
+        if full_prompt_path.exists():
+            prompt = full_prompt_path.read_text(encoding="utf-8")
+            leaked = [field for field in PROMPT_HIDDEN_FIELDS if field in prompt]
+            if leaked:
+                errors.append(f"acting prompt leaks expected-label fields: {', '.join(sorted(leaked))}")
+
+    final_answer_path = run.get("final_answer_path")
+    if final_answer_path and not (ROOT / final_answer_path).exists():
+        errors.append(f"final_answer_path does not exist: {final_answer_path}")
+
+    business_dir = run.get("business_dir")
+    if business_dir and not (ROOT / business_dir).exists():
+        errors.append(f"business_dir does not exist: {business_dir}")
+
+    if run_dir.name != run.get("case_id") and run_dir.parent.name != run.get("case_id"):
+        # Allow validating a copied run file, but flag obviously mismatched generated dirs.
+        if "evals/runs/next_action" in rel_path(run_dir):
+            errors.append("run directory does not match case_id")
+
+    return errors
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    prepare_parser = subparsers.add_parser("prepare", help="Prepare an isolated eval case directory")
+    prepare_parser.add_argument("case_id")
+    prepare_parser.add_argument("--phase", default="baseline")
+    prepare_parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_tool_use_cases.jsonl")
+    prepare_parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "next_action")
+    prepare_parser.add_argument("--force", action="store_true")
+    prepare_parser.set_defaults(func=prepare)
+
+    complete_parser = subparsers.add_parser("complete", help="Complete a prepared trace and write run.json")
+    complete_parser.add_argument("run_dir", type=Path)
+    complete_parser.add_argument("--workflow-steps", help="JSON array or path to JSON array")
+
+exec
+/bin/zsh -lc "sed -n '430,520p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+    complete_parser.add_argument("--workflow-steps", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--session-paths", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--actual-actions", help="JSON array or path to JSON array")
+    complete_parser.add_argument("--final-answer")
+    complete_parser.add_argument("--final-answer-file", type=Path)
+    complete_parser.set_defaults(func=complete)
+
+    validate_parser = subparsers.add_parser("validate", help="Validate a run.json or run directory")
+    validate_parser.add_argument("run", type=Path)
+    validate_parser.set_defaults(func=validate)
+
+    return parser
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+2026-07-07T23:21:15.996908Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:21:15.998296Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:21:15.998490Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:21:16.004352Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:21:16.004962Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+exec
+/bin/zsh -lc "sed -n '300,360p' scripts/capture_tool_use_trace.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+    workflow_steps = read_json_arg(args.workflow_steps, draft.get("workflow_steps", []))
+    session_paths = read_json_arg(args.session_paths, draft.get("session_paths", []))
+    actual_actions = read_json_arg(args.actual_actions, draft.get("actual_actions", []))
+
+    snapshot_path = ROOT / draft["paths"]["snapshot"]
+    run = {
+        **draft,
+        "completed_at": utc_now(),
+        "status": "completed",
+        "workflow_steps": workflow_steps,
+        "session_paths": session_paths,
+        "actual_actions": actual_actions,
+        "final_answer_path": rel_path(final_answer_path) if final_answer_path else draft.get("final_answer_path"),
+        "snapshot_hash": {
+            "start": draft["snapshot_hash"]["start"],
+            "end": sha256_file(snapshot_path),
+        },
+    }
+
+    errors = validate_run(run, run_dir)
+    if errors:
+        print(json.dumps({"valid": False, "errors": errors}, indent=2))
+        return 1
+
+    run.pop("status", None)
+    write_json(run_dir / RUN_FILE, run)
+    print(json.dumps({"valid": True, "run": rel_path(run_dir / RUN_FILE)}, indent=2))
+    return 0
+
+
+def validate(args: argparse.Namespace) -> int:
+    run_path = args.run if args.run.is_file() else args.run / RUN_FILE
+    if not run_path.exists():
+        raise SystemExit(f"run not found: {run_path}")
+    run = json.loads(run_path.read_text(encoding="utf-8"))
+    errors = validate_run(run, run_path.parent)
+    print(json.dumps({"valid": not errors, "errors": errors, "run": rel_path(run_path)}, indent=2))
+    return 1 if errors else 0
+
+
+def validate_run(run: dict[str, Any], run_dir: Path) -> list[str]:
+    errors: list[str] = []
+    for field in ("case_id", "split", "phase", "business_dir", "fixtures", "snapshot_hash", "workflow_steps", "session_paths", "actual_actions"):
+        if field not in run:
+            errors.append(f"missing field: {field}")
+
+    if any(field in run for field in FORBIDDEN_RUN_FIELDS):
+        errors.append("run artifact must not contain expected-label fields")
+
+    workflow_steps = run.get("workflow_steps", [])
+    if not isinstance(workflow_steps, list):
+        errors.append("workflow_steps must be a list")
+        workflow_steps = []
+    for index, step in enumerate(workflow_steps):
+        if not isinstance(step, dict):
+            errors.append(f"workflow_steps[{index}] must be an object")
+            continue
+        for field in ("index", "kind"):
+            if field not in step:
+                errors.append(f"workflow_steps[{index}] missing {field}")
+        if step.get("kind") == "cli_command":
+
+2026-07-07T23:21:20.626602Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:21:20.628811Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:21:20.629124Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:21:20.638394Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:21:20.639398Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+I’ve got the schema now. I’m rerunning the trace completion with structured step objects so the eval artifact is valid.
+exec
+/bin/zsh -lc "python3 scripts/capture_tool_use_trace.py complete \"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005\" --workflow-steps '[{\"index\":0,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <business_dir>\",\"exit_code\":0},{\"index\":1,\"kind\":\"file_read\"},{\"index\":2,\"kind\":\"file_read\"},{\"index\":3,\"kind\":\"file_read\"},{\"index\":4,\"kind\":\"cli_command\",\"command\":\"PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <business_dir> business.business_type=... business.icp=... business.delivery_model=... money_model.core_offer.exists=true money_model.core_offer.description=... money_model.attraction_offer.exists=true money_model.attraction_offer.description=...\",\"exit_code\":0},{\"index\":5,\"kind\":\"cli_command\",\"command\":\"python3 scripts/capture_tool_use_trace.py complete <run_dir> ...\",\"exit_code\":0}]' --session-paths '[\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/business-profile.md\",\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/product-ladder.md\",\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/services-and-pricing.md\"]' --actual-actions '[{\"index\":0,\"action\":\"read_snapshot\",\"confidence\":\"direct\",\"evidence_type\":\"cli\",\"evidence_ref\":\"snapshot output showing empty business context\"},{\"index\":1,\"action\":\"inspect_local_docs\",\"confidence\":\"direct\",\"evidence_type\":\"file\",\"evidence_ref\":\"business-profile.md, product-ladder.md, services-and-pricing.md\"},{\"index\":2,\"action\":\"update_snapshot\",\"confidence\":\"direct\",\"evidence_type\":\"cli\",\"evidence_ref\":\"snapshot set output with business facts\"},{\"index\":3,\"action\":\"compose_answer_from_state\",\"confidence\":\"inferred\"}]' --final-answer 'Yes. The business is 1584 Design, a premium full-service interior design firm for owners of large short-term rental properties or second homes. I saved that context to the snapshot.'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "valid": true,
+  "run": "evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/run.json"
+}
+
+2026-07-07T23:21:38.262780Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/template-creator/.codex-plugin/plugin.json
+2026-07-07T23:21:38.263993Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="fullstory"
+2026-07-07T23:21:38.264157Z  WARN codex_core_plugins::marketplace: skipping marketplace plugin with unsupported source path=/Users/benjaminmackenzie/.codex/.tmp/marketplaces/claude-plugins-official/.claude-plugin/marketplace.json plugin="jfrog"
+2026-07-07T23:21:38.269120Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=/Users/benjaminmackenzie/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-07-07T23:21:38.269858Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=/Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.7.0/.codex-plugin/plugin.json
+codex
+Yes. We’re working on **1584 Design**: a premium full-service interior design firm for owners of large short-term rental properties or second homes. I saved that context to the snapshot.
+
+Sources: [business-profile.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/business-profile.md), [services-and-pricing.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/services-and-pricing.md)
+2026-07-07T23:21:43.859938Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+2026-07-07T23:21:43.860003Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+2026-07-07T23:21:43.860008Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+tokens used
+21,691

@@ -1,0 +1,89 @@
+{
+  "acting_prompt_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "read_logs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/business_dir",
+  "case_id": "tooluse_v1_017",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_017",
+    "created_at": "2026-07-08T18:36:07Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 142266.8,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 47385
+  },
+  "completed_at": "2026-07-08T18:35:57Z",
+  "created_at": "2026-07-08T18:33:45Z",
+  "final_answer_path": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/business_dir",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18",
+    "start": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18"
+  },
+  "split": "regression",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_017/business_dir --full",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot '{\"business\":{\"business_type\":\"premium full-service interior design firm for short-term rental and second-home projects\",\"icp\":\"STR and second-home owners with $80K-$200K+ project capacity\",\"delivery_model\":\"Lisa-led full-service design planning, procurement, and installation\"},\"money_model\":{\"attraction_offer\":{\"exists\":true,\"description\":\"STR Design Diagnostic with listing/photo audit and priority summary\",\"price\":597},\"core_offer\":{\"exists\":true,\"description\":\"full-service STR and second-home design\",\"price\":15000},\"upsell\":{\"exists\":true,\"description\":\"pre-designed room packages sold per room or bundle\",\"price\":5000},\"downsell\":{\"exists\":false,\"description\":null,\"price\":null},\"continuity\":{\"exists\":false,\"description\":null,\"price\":null}},\"economics\":{\"cac\":1000,\"first_30_day_gross_profit\":10000,\"monthly_recurring_gross_profit\":0,\"gross_margin\":0.769,\"lifetime_gross_profit\":null,\"payback_period_months\":1.0},\"problem\":{\"user_goal\":\"diagnose cash payback\",\"reported_symptoms\":[\"wants to understand how much can be spent on acquisition\"],\"diagnosed_constraints\":[]},\"advisor_state\":{\"advisory_status\":\"diagnosable\",\"missing_fields\":[],\"ready_for_payback_diagnosis\":true,\"ready_for_offer_stack_diagnosis\":true,\"likely_retrieval_subjects\":[\"unit-economics\"],\"retrieval_query_terms\":[\"premium full-service interior design firm for short-term rental and second-home projects\",\"STR and second-home owners with $80K-$200K+ project capacity\",\"full-service STR and second-home design\",\"diagnose cash payback\",\"wants to understand how much can be spent on acquisition\",\"CAC\",\"first 30 day gross profit\",\"payback period\"]},\"field_sources\":{\"economics.cac\":{\"confidence\":\"medium\",\"source_type\":\"user_chat\",\"value_note\":\"Referral partner cost averaged to about $1k per client.\"},\"economics.first_30_day_gross_profit\":{\"confidence\":\"medium\",\"source_type\":\"user_chat\"},\"economics.payback_period_months\":{\"source_type\":\"calculated\",\"inputs\":[\"economics.cac\",\"economics.first_30_day_gross_profit\",\"economics.monthly_recurring_gross_profit\"],\"confidence\":\"high\"}}}'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

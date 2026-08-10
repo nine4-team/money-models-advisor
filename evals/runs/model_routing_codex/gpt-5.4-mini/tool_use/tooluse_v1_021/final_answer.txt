@@ -1,0 +1,1 @@
+Yes. Based on the current snapshot, acquisition is probably not the bottleneck on cash payback: CAC is about $1k and first-30-day gross profit is about $10k, so payback is roughly 1 month. The more likely constraints are qualified lead volume, sales conversion, or fulfillment capacity, not unit economics.

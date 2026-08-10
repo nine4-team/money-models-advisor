@@ -1,0 +1,68 @@
+{
+  "case_id": "sourceneed_v1_005",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_005",
+    "created_at": "2026-07-07T21:44:04Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 50102.8,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 30734
+  },
+  "completed_at": "2026-07-07T21:44:01Z",
+  "created_at": "2026-07-07T21:43:14Z",
+  "notes": "Post-sale upsell is the concrete next mechanism; the question is asking for the next offer to raise first-month profit after the diagnostic sells.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/business",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_005/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "post-sale upsell",
+      "pre-designed room packages",
+      "first-month profit",
+      "after the diagnostic sells"
+    ],
+    "intent": "recommendation_evidence",
+    "layers": [
+      "upsells"
+    ],
+    "query_variants": [
+      "post-sale upsell after diagnostic sale room packages",
+      "what to offer next after diagnostic to increase first month profit",
+      "pre-designed room packages upsell first month profit"
+    ],
+    "subjects": [
+      "upsells"
+    ],
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_005",
+    "conversation_context": "The snapshot has a draft diagnostic front-end offer. The user asks what should come next to improve first-month profit.",
+    "focus_aliases": {
+      "first sale": [
+        "diagnostic offer"
+      ],
+      "maximize 30 day profits": [
+        "first-month profit",
+        "first 30 day gross profit"
+      ],
+      "next offer": [
+        "pre-designed room packages"
+      ],
+      "upsell after first sale": [
+        "post-sale upsell",
+        "post-sale add-on"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+  }
+}

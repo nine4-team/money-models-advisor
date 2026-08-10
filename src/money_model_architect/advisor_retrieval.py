@@ -7,7 +7,7 @@ from pathlib import Path
 
 from .advisor_queries import AdvisorQuery
 from .retrieval import CorpusIndex
-from .vector_store import layer_namespaces
+from .vector_store import subject_namespaces
 
 
 RETRIEVAL_BACKENDS = ("bm25", "vector", "hybrid")
@@ -18,8 +18,8 @@ VECTOR_STORES = ("local", "pinecone")
 class EvidenceChunk:
     id: str
     chapter: str
-    layer: str
-    layers: list[str]
+    subject: str
+    subjects: list[str]
     score: float
     preview: str
     text: str
@@ -31,8 +31,8 @@ class EvidenceChunk:
 @dataclass(frozen=True)
 class QueryEvidence:
     intent: str
-    layer: str | None
-    layers: list[str]
+    subject: str | None
+    subjects: list[str]
     target_namespaces: list[str]
     queried_namespaces: list[str | None]
     query: str
@@ -60,7 +60,7 @@ def execute_advisor_queries(
         results = _search(
             corpus_index,
             query.query,
-            layers=query.layers,
+            subjects=query.subjects,
             top_k=top_k,
             retrieval_backend=retrieval_backend,
             vector_store=vector_store,
@@ -74,8 +74,8 @@ def execute_advisor_queries(
         evidence.append(
             QueryEvidence(
                 intent=query.intent,
-                layer=query.layer,
-                layers=list(query.layers),
+                subject=query.subject,
+                subjects=list(query.subjects),
                 target_namespaces=list(query.target_namespaces),
                 queried_namespaces=list(queried_namespaces),
                 query=query.query,
@@ -84,8 +84,8 @@ def execute_advisor_queries(
                     EvidenceChunk(
                         id=result.chunk.id,
                         chapter=result.chunk.chapter,
-                        layer=result.chunk.layer,
-                        layers=list(result.chunk.layers),
+                        subject=result.chunk.subject,
+                        subjects=list(result.chunk.subjects),
                         score=round(result.score, 3),
                         preview=result.chunk.text[:360].replace("\n", " "),
                         text=result.chunk.text,
@@ -101,7 +101,7 @@ def _search(
     index: CorpusIndex,
     query: str,
     *,
-    layers: tuple[str, ...],
+    subjects: tuple[str, ...],
     top_k: int,
     retrieval_backend: str,
     vector_store: str = "local",
@@ -109,12 +109,12 @@ def _search(
     target_namespaces: tuple[str, ...] = (),
 ):
     if retrieval_backend == "bm25":
-        return index.search(query, layers=layers, top_k=top_k)
+        return index.search(query, subjects=subjects, top_k=top_k)
     vector_namespaces = _physical_namespaces(target_namespaces, namespace_prefix=namespace_prefix)
     if retrieval_backend == "vector":
         return index.vector_search(
             query,
-            layers=layers,
+            subjects=subjects,
             top_k=top_k,
             vector_store_name=vector_store,
             vector_namespaces=vector_namespaces,
@@ -123,7 +123,7 @@ def _search(
     if retrieval_backend == "hybrid":
         return index.hybrid_search(
             query,
-            layers=layers,
+            subjects=subjects,
             top_k=top_k,
             vector_store_name=vector_store,
             vector_namespaces=vector_namespaces,
@@ -140,4 +140,4 @@ def _physical_namespaces(
 ) -> tuple[str | None, ...]:
     if not target_namespaces:
         return (None,)
-    return tuple(layer_namespaces(target_namespaces, prefix=namespace_prefix))
+    return tuple(subject_namespaces(target_namespaces, prefix=namespace_prefix))

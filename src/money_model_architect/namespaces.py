@@ -1,4 +1,4 @@
-"""Layer taxonomy for the local proof harness."""
+"""Subject taxonomy for the local proof harness."""
 
 from __future__ import annotations
 
@@ -8,12 +8,12 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class ChapterRoute:
     chapter: str
-    primary_layer: str
-    secondary_layers: tuple[str, ...] = ()
+    primary_subject: str
+    secondary_subjects: tuple[str, ...] = ()
 
     @property
-    def layers(self) -> tuple[str, ...]:
-        return (self.primary_layer, *self.secondary_layers)
+    def subjects(self) -> tuple[str, ...]:
+        return (self.primary_subject, *self.secondary_subjects)
 
 
 CHAPTER_ROUTES: dict[str, ChapterRoute] = {
@@ -51,7 +51,7 @@ CHAPTER_ROUTES: dict[str, ChapterRoute] = {
     "final-words": ChapterRoute("final-words", "unit-economics", ("offers", "upsells", "downsells", "continuity")),
 }
 
-LAYERS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
+SUBJECTS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
 
 
 def route_for_chapter(chapter: str) -> ChapterRoute:

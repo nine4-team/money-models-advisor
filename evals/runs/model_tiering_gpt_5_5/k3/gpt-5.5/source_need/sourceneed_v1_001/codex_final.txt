@@ -1,0 +1,3 @@
+Recorded decision: source search needed.
+
+Source need: `diagnostic_evidence` for `unit-economics`, focused on fulfillment cost, gross profit, CAC, payback period, and advertising viability. The trace was written to `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_001/run.json`.

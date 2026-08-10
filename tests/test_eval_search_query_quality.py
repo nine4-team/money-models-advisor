@@ -13,8 +13,8 @@ def chunk(chunk_id: str) -> Chunk:
     return Chunk(
         id=chunk_id,
         chapter=chunk_id.split(":")[0],
-        layer="unit-economics",
-        layers=("unit-economics",),
+        subject="unit-economics",
+        subjects=("unit-economics",),
         text=chunk_id,
         char_start=0,
         char_end=len(chunk_id),

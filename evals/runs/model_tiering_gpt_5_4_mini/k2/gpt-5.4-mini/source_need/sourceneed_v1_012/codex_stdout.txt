@@ -1,0 +1,1 @@
+Recorded `source_search_decision=false` with `source_need=null` in [`run.json`](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_012/run.json) because the case is deterministic payback math from existing snapshot numbers, not a source-backed claim.

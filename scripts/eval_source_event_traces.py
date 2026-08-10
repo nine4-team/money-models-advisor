@@ -27,7 +27,7 @@ INTENTS = {
     "recommendation_evidence",
 }
 
-LAYERS = {"unit-economics", "offers", "upsells", "downsells", "continuity"}
+SUBJECTS = {"unit-economics", "offers", "upsells", "downsells", "continuity"}
 
 REQUIRED_CASE_FIELDS = {
     "case_id",
@@ -47,7 +47,7 @@ REQUIRED_CASE_FIELDS = {
 @dataclass(frozen=True)
 class SourceNeed:
     intent: str
-    layers: tuple[str, ...]
+    subjects: tuple[str, ...]
     focus_terms: tuple[str, ...]
 
 
@@ -56,7 +56,7 @@ class EventMatch:
     expected: SourceNeed
     actual: SourceNeed | None
     intent_match: bool
-    layer_recall: float
+    subject_recall: float
     focus_recall: float
     has_chunks: bool
     query_variant_count: int
@@ -106,13 +106,13 @@ def validate_source_need(value: Any, case_ref: str, field_name: str) -> list[str
     if intent not in INTENTS:
         errors.append(f"{case_ref}: {field_name}.intent is invalid: {intent}")
 
-    layers = value.get("layers")
-    if not isinstance(layers, list) or not layers:
-        errors.append(f"{case_ref}: {field_name}.layers must be a non-empty list")
+    subjects = value.get("subjects")
+    if not isinstance(subjects, list) or not subjects:
+        errors.append(f"{case_ref}: {field_name}.subjects must be a non-empty list")
     else:
-        unknown_layers = sorted(set(layers) - LAYERS)
-        if unknown_layers:
-            errors.append(f"{case_ref}: {field_name}.layers unknown values: {', '.join(unknown_layers)}")
+        unknown_subjects = sorted(set(subjects) - SUBJECTS)
+        if unknown_subjects:
+            errors.append(f"{case_ref}: {field_name}.subjects unknown values: {', '.join(unknown_subjects)}")
 
     focus_terms = value.get("focus_terms")
     if not isinstance(focus_terms, list) or not focus_terms:
@@ -162,19 +162,19 @@ def parse_source_need(value: Any) -> SourceNeed | None:
     if not isinstance(value, dict):
         return None
     intent = value.get("intent")
-    raw_layers = value.get("layers")
+    raw_subjects = value.get("subjects")
     raw_focus_terms = value.get("focus_terms")
     if intent not in INTENTS:
         return None
-    if not isinstance(raw_layers, list) or not raw_layers:
+    if not isinstance(raw_subjects, list) or not raw_subjects:
         return None
     if not isinstance(raw_focus_terms, list) or not raw_focus_terms:
         return None
-    layers = tuple(layer for layer in raw_layers if isinstance(layer, str) and layer in LAYERS)
+    subjects = tuple(subject for subject in raw_subjects if isinstance(subject, str) and subject in SUBJECTS)
     focus_terms = tuple(term.strip() for term in raw_focus_terms if isinstance(term, str) and term.strip())
-    if not layers or not focus_terms:
+    if not subjects or not focus_terms:
         return None
-    return SourceNeed(intent=intent, layers=layers, focus_terms=focus_terms)
+    return SourceNeed(intent=intent, subjects=subjects, focus_terms=focus_terms)
 
 
 def expected_needs(case: dict[str, Any]) -> list[SourceNeed]:
@@ -211,9 +211,9 @@ def normalize_text(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
 
 
-def layer_recall(expected_layers: tuple[str, ...], actual_layers: tuple[str, ...]) -> float:
-    expected = set(expected_layers)
-    actual = set(actual_layers)
+def subject_recall(expected_subjects: tuple[str, ...], actual_subjects: tuple[str, ...]) -> float:
+    expected = set(expected_subjects)
+    actual = set(actual_subjects)
     return len(expected & actual) / len(expected)
 
 
@@ -263,16 +263,16 @@ def find_best_match(expected: SourceNeed, events: list[dict[str, Any]], used_ind
         if need is None:
             continue
         intent_match = need.intent == expected.intent
-        layers = layer_recall(expected.layers, need.layers)
+        subjects = subject_recall(expected.subjects, need.subjects)
         focus = term_recall(expected.focus_terms, need.focus_terms)
         chunks = has_chunks(event)
         variants = query_variant_count(event)
         executed_variants = executed_query_variant_count(event)
-        score = (2.0 if intent_match else 0.0) + layers + focus + (0.25 if chunks else 0.0)
+        score = (2.0 if intent_match else 0.0) + subjects + focus + (0.25 if chunks else 0.0)
         if score > best_score:
             best_index = index
             best_score = score
-            best_match = EventMatch(expected, need, intent_match, layers, focus, chunks, variants, executed_variants)
+            best_match = EventMatch(expected, need, intent_match, subjects, focus, chunks, variants, executed_variants)
     return best_index, best_match
 
 
@@ -336,8 +336,8 @@ def score_case(case: dict[str, Any], run_path: Path | None, *, require_query_var
         matches.append(match)
         if not match.intent_match:
             failures.append(f"missing_intent:{need.intent}")
-        if match.layer_recall < 1.0:
-            failures.append(f"layer_miss:{need.intent}")
+        if match.subject_recall < 1.0:
+            failures.append(f"subject_miss:{need.intent}")
         if match.focus_recall < 0.5:
             failures.append(f"focus_miss:{need.intent}")
         if not match.has_chunks:
@@ -350,7 +350,7 @@ def score_case(case: dict[str, Any], run_path: Path | None, *, require_query_var
     extra_events = max(0, len(events) - len(used_indexes))
     matched = sum(
         match.intent_match
-        and match.layer_recall >= 1.0
+        and match.subject_recall >= 1.0
         and match.focus_recall >= 0.5
         and match.has_chunks
         and (

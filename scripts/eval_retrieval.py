@@ -51,7 +51,7 @@ def evaluate(records: list[dict[str, Any]], top_k: int) -> dict[str, Any]:
 
     for record in records:
         query_started = time.perf_counter()
-        results = index.search(record["query"], layer=record.get("layer"), top_k=top_k)
+        results = index.search(record["query"], subject=record.get("subject"), top_k=top_k)
         latency_ms = (time.perf_counter() - query_started) * 1000
         latencies.append(latency_ms)
 
@@ -62,7 +62,7 @@ def evaluate(records: list[dict[str, Any]], top_k: int) -> dict[str, Any]:
             {
                 "id": record["id"],
                 "query": record["query"],
-                "layer": record.get("layer"),
+                "subject": record.get("subject"),
                 "expected_chapters": record["must_chapters"],
                 "retrieved_chapters": chapters,
                 "rank": rank,
@@ -118,7 +118,7 @@ def write_report(run: dict[str, Any], path: Path) -> None:
         "",
         "## Hypothesis",
         "",
-        "A lightweight local BM25-style retriever over heading-aware transcript chunks should provide a runnable baseline for the five-layer taxonomy.",
+        "A lightweight local BM25-style retriever over heading-aware transcript chunks should provide a runnable baseline for the five-subject taxonomy.",
         "",
         "## Variant",
         "",
@@ -140,7 +140,7 @@ def write_report(run: dict[str, Any], path: Path) -> None:
         "",
         "## Per-query Results",
         "",
-        "| ID | Layer | Expected | Rank | Top retrieved |",
+        "| ID | Subject | Expected | Rank | Top retrieved |",
         "|---|---|---|---:|---|",
     ]
 
@@ -148,7 +148,7 @@ def write_report(run: dict[str, Any], path: Path) -> None:
         rank = query["rank"] if query["rank"] is not None else "miss"
         expected = ", ".join(query["expected_chapters"])
         top = ", ".join(query["retrieved_chapters"][:3])
-        lines.append(f"| `{query['id']}` | `{query['layer']}` | {expected} | {rank} | {top} |")
+        lines.append(f"| `{query['id']}` | `{query['subject']}` | {expected} | {rank} | {top} |")
 
     lines.extend(
         [

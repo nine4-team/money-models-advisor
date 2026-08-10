@@ -1,0 +1,3 @@
+Recorded decision: `true`.
+
+Source need saved with `intent=recommendation_evidence`, `subjects=["offers","downsells"]`, and focus terms around `free trial`, `trial with penalty`, `attraction offer`, `required actions`, and `card on file`.

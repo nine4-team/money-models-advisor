@@ -1,0 +1,87 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "inspect_local_docs",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "file_read",
+      "index": 1
+    },
+    {
+      "action": "update_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "inferred",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir",
+  "case_id": "tooluse_v1_005",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_005",
+    "created_at": "2026-07-08T20:32:34Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 120622.0,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 42956
+  },
+  "completed_at": "2026-07-08T20:32:30Z",
+  "created_at": "2026-07-08T20:30:34Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": "evals/fixtures/local_docs/1584_design_basic",
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [],
+  "snapshot_hash": {
+    "end": "sha256:38aeeee48add0cb8df355b3c5d34653693002aaa96951817194b49b22e75c9a6",
+    "start": "sha256:297eed16f91a94c1e6b5da485a10671a32fb87a117256a1b7e413bc9624ed080"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command"
+    },
+    {
+      "command": "sed -n 1,220p business-profile.md; sed -n 1,220p product-ladder.md; sed -n 1,220p services-and-pricing.md",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "file_read"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir business.business_type=\"premium full-service interior design firm\" business.icp=\"owners of large short-term rental properties or second homes\" business.delivery_model=\"full-service design, procurement, and installation\" money_model.core_offer.exists=true money_model.core_offer.description=\"Full-service STR and second-home design\"",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command"
+    }
+  ]
+}

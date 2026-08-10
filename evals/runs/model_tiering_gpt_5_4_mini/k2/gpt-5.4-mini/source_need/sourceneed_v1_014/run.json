@@ -1,0 +1,32 @@
+{
+  "case_id": "sourceneed_v1_014",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_014",
+    "created_at": "2026-07-07T22:55:00Z",
+    "final_message_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_014/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 25346.4,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_014/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_014/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 5721
+  },
+  "completed_at": "2026-07-07T22:54:55Z",
+  "created_at": "2026-07-07T22:54:34Z",
+  "notes": "No source search: the turn asks whether to run ads next month, but the snapshot/context lacks the unit-economics facts needed for a source-backed recommendation (for example CAC, gross profit, payback, and acquisition capacity). The next move is to gather missing business facts first rather than search source material.",
+  "paths": {
+    "business_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_014/business",
+    "sessions_dir": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_014/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_014/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": null,
+  "source_search_decision": false,
+  "visible_context": {
+    "case_id": "sourceneed_v1_014",
+    "conversation_context": "The snapshot has offer-stack context but no economics. The user asks whether to run ads next month.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we start running ads next month?"
+  }
+}

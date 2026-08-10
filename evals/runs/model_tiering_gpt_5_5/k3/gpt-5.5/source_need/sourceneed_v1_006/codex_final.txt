@@ -1,0 +1,8 @@
+Recorded `source_search_decision: true`.
+
+Source need:
+`intent`: `recommendation_evidence`  
+`subjects`: `["continuity"]`  
+`focus_terms`: `["recurring maintenance", "membership offer", "recurring offer", "payback period"]`
+
+Rationale recorded: the snapshot is payback-ready, and the question needs source support for the continuity mechanism, with payback as a focus term rather than a separate `unit-economics` search.

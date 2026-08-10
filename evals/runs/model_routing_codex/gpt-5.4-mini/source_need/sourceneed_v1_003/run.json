@@ -1,0 +1,61 @@
+{
+  "case_id": "sourceneed_v1_003",
+  "codex_model_meta": {
+    "case_id": "sourceneed_v1_003",
+    "created_at": "2026-07-07T21:42:03Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 35741.3,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/codex_stdout.txt",
+    "suite": "source_need",
+    "tokens_used_reported_by_codex": 20701
+  },
+  "completed_at": "2026-07-07T21:41:59Z",
+  "created_at": "2026-07-07T21:41:27Z",
+  "notes": "Snapshot already contains enough business economics to support a source-backed interpretation. This is a unit-economics question about paid acquisition capacity, so the search should surface allowable CAC, payback, and gross-profit evidence.",
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/business",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "source_need": {
+    "focus_terms": [
+      "paid acquisition capacity",
+      "allowable CAC",
+      "payback period",
+      "first 30 day gross profit"
+    ],
+    "intent": "diagnostic_evidence",
+    "query_variants": [
+      "paid acquisition capacity allowable CAC payback period",
+      "how much can we spend on ads allowable CAC gross profit",
+      "paid acquisition capacity first 30 day gross profit payback"
+    ],
+    "subjects": [
+      "unit-economics"
+    ],
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  },
+  "source_search_decision": true,
+  "visible_context": {
+    "case_id": "sourceneed_v1_003",
+    "conversation_context": "The snapshot is diagnosed and the user asks how much paid acquisition capacity the business has.",
+    "focus_aliases": {
+      "ad spend": [
+        "paid acquisition capacity",
+        "paid acquisition"
+      ],
+      "client financed acquisition": [
+        "CFA"
+      ],
+      "first 30 day gross profit": [
+        "gross profit"
+      ]
+    },
+    "scenario_id": "1584_design",
+    "user_turn": "how should I think about how much we can spend on ads if we run them?"
+  }
+}

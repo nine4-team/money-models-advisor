@@ -1,0 +1,3 @@
+Completed. I created `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_017/run.json`.
+
+Final advisor answer recorded: the business has strong CAC payback and a usable offer stack, but gross margin is 76.9%, just under the 80% service benchmark, so the next test should focus on protecting or lifting delivery margin before scaling acquisition.

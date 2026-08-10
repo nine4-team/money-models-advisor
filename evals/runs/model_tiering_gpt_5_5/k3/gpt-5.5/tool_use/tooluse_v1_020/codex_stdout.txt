@@ -1,0 +1,5 @@
+Gross profit means the money left after subtracting the direct cost of delivering what you sold.
+
+Example: if a customer pays `$100` and it costs `$35` to make, fulfill, ship, or deliver it, gross profit is `$65`. It is not final profit because overhead like rent, software, admin payroll, and taxes still come after that.
+
+Recorded the advisor turn and created `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_020/run.json`.

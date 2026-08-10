@@ -1,0 +1,1 @@
+You have $9k of room before break-even. $10k first-month gross profit minus $1k CAC leaves $9k, and the payback calculator returns 1.0 month.

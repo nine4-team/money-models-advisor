@@ -1,0 +1,105 @@
+{
+  "acting_prompt_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/acting_prompt.md",
+  "actual_actions": [
+    {
+      "action": "read_snapshot",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[0]",
+      "evidence_type": "cli_command",
+      "index": 0
+    },
+    {
+      "action": "diagnose",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[1]",
+      "evidence_type": "cli_command",
+      "index": 1
+    },
+    {
+      "action": "calculate",
+      "confidence": "direct",
+      "evidence_ref": "workflow_steps[2]",
+      "evidence_type": "cli_command",
+      "index": 2
+    },
+    {
+      "action": "compose_answer_from_state",
+      "confidence": "direct",
+      "evidence_ref": "final_answer.txt",
+      "evidence_type": "final_answer",
+      "index": 3
+    }
+  ],
+  "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir",
+  "case_id": "tooluse_v1_008",
+  "codex_model_meta": {
+    "case_id": "tooluse_v1_008",
+    "created_at": "2026-07-08T20:38:26Z",
+    "final_message_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/codex_final.txt",
+    "harness": "codex_cli_agent",
+    "latency_ms": 132402.7,
+    "model": "gpt-5.4-mini",
+    "returncode": 0,
+    "stderr_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/codex_stderr.txt",
+    "stdout_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/codex_stdout.txt",
+    "suite": "tool_use",
+    "tokens_used_reported_by_codex": 52091
+  },
+  "completed_at": "2026-07-08T20:38:20Z",
+  "created_at": "2026-07-08T20:36:14Z",
+  "final_answer_path": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/final_answer.txt",
+  "fixtures": {
+    "local_docs_fixture_path": null,
+    "prior_sessions_fixture_path": null,
+    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_payback_ready.json"
+  },
+  "paths": {
+    "business_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir",
+    "sessions_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/business_snapshot.json",
+    "state_dir": "evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir/.money-model-advisor"
+  },
+  "phase": "codex_model_routing_gpt-5.4-mini",
+  "session_paths": [
+    "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir/.money-model-advisor/sessions/20260708T203723.json"
+  ],
+  "snapshot_hash": {
+    "end": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18",
+    "start": "sha256:76e603d2396b61327e5ba203a747848fe754847d99cbab3a83ff3fb161cc6b18"
+  },
+  "split": "dev",
+  "workflow_steps": [
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir",
+      "exit_code": 0,
+      "index": 0,
+      "kind": "cli_command",
+      "summary": "Read the saved BusinessSnapshot to inspect the current economics."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli diagnose --snapshot <snapshot_json>",
+      "exit_code": 0,
+      "index": 1,
+      "kind": "cli_command",
+      "summary": "Diagnosed the current economics and identified the main constraint."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{\"cac\":1000,\"month_one_gp\":10000,\"monthly_recurring_gp\":0}'",
+      "exit_code": 0,
+      "index": 2,
+      "kind": "cli_command",
+      "stdout": {
+        "metric": "payback",
+        "value": 1.0
+      },
+      "summary": "Calculated payback from CAC and first-month gross profit."
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli turn record --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_008/business_dir --user-message 'where does this leave us economically?' --assistant-message 'Economically, you are in good payback shape: $1k CAC against $10k of first-30-day gross profit gives a 1.0-month payback. The constraint is not cash recovery; it is margin quality, because service gross margin is 77%, which is below the 80% rule of thumb. My read is that you can support more acquisition than you are currently spending, but the next lever is to lift gross margin before scaling harder.'",
+      "exit_code": 0,
+      "index": 3,
+      "kind": "cli_command",
+      "summary": "Recorded the completed advisor turn."
+    }
+  ]
+}
