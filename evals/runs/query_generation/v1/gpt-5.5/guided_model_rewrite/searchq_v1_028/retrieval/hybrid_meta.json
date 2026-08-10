@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Continuity Discount Offers promised lifetime discount after usual churn point front-loaded back-loaded spread credit reason customers stay cancel churn",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 1677.9,
+  "returncode": 0,
+  "stderr": ""
+}

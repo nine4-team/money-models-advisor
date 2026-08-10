@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Feature Downsells reduced-scope offer lower price paired with lower value change quantity service level lower-friction alternative after a no",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 1674.6,
+  "returncode": 0,
+  "stderr": ""
+}

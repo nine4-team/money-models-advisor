@@ -1,7 +1,7 @@
 # Query Generation Testing Design
 
 **Date:** 2026-08-10
-**Status:** First development run recorded; holdout review and final comparison remain open.
+**Status:** First development run complete; holdout review and final comparison remain open.
 
 ## Purpose
 
@@ -90,10 +90,49 @@ The complete BM25 control produced:
 | Unguided model rewrite | 50.0% | 70.0% | 90.0% | 2.037 |
 | Guided model rewrite | 66.7% | 90.0% | 93.3% | 1.429 |
 
-Hybrid retrieval completed for both 30-case raw and unguided conditions. Raw reached
-90.0% Hit@5; unguided reached 96.7% Hit@5. The guided hybrid run was paused after 24
-cases, at which point it had 91.7% Hit@5 on that incomplete, sequential subset. Its
-percentage must not be compared directly with the two complete 30-case rows.
+The complete hybrid comparison produced:
+
+| Method | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank |
+|---|---:|---:|---:|---:|
+| Raw question | 66.7% | 86.7% | 90.0% | 1.407 |
+| Unguided model rewrite | 63.3% | 90.0% | 96.7% | 1.552 |
+| Guided model rewrite | 73.3% | 93.3% | 93.3% | 1.214 |
+
+The guided method ranked useful evidence first most often and had the best mean first
+useful rank. The unguided method had the best Hit@5, missing one case versus two for
+the guided method. This exposed development comparison therefore does not establish a
+single winner: failure analysis may inform one general, versioned refinement, but the
+final choice must be made on the reviewed holdout.
+
+### Relationship to the pre-existing variant result
+
+The earlier narrative reports 96.7% Hit@1 and 100.0% Hit@3/Hit@5 for local
+hybrid retrieval with three frozen query variants plus a deterministic fallback. On
+the same enriched 30-case labels, the direct numerical comparison is:
+
+| Condition | Hit@1 | Hit@3 | Hit@5 |
+|---|---:|---:|---:|
+| Earlier hybrid + three fixed variants + fallback | 96.7% | 100.0% | 100.0% |
+| Raw user question + hybrid | 66.7% | 86.7% | 90.0% |
+| Unguided single rewrite + hybrid | 63.3% | 90.0% | 96.7% |
+| Guided single rewrite + hybrid | 73.3% | 93.3% | 93.3% |
+
+The earlier condition is numerically stronger, but it is not a valid head-to-head
+query-generation result. It begins after reviewer-selected `focus_terms` and
+`expected_subjects` have been supplied; the expected subjects are also applied as
+retrieval metadata filters. It runs four searches and fuses them. Its three saved
+variants have no recorded generating model, prompt, or raw response. The current
+experiment starts from the user question and normal saved snapshot, hides reviewer
+labels, applies no subject filter, and runs one search.
+
+The defensible interpretation is therefore that the older run establishes a
+downstream, information-assisted retrieval ceiling and provides a reason to test
+multi-query generation fairly. It does not establish that the product can generate
+those variants or subject choices. The six cases completed after the interrupted run
+also do not explain the aggregate gap: guided single-query retrieval placed useful
+evidence first on all six, while the old condition did so on five of six. Across all
+30 cases, the old condition tied the guided method on 21, ranked better on six, missed
+none where guided missed two, and ranked worse on one.
 
 The results and case artifacts are preserved in:
 

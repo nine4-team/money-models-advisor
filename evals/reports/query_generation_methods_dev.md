@@ -1,6 +1,6 @@
 # Query Generation Method Comparison
 
-**Created:** 2026-08-10T18:35:21Z
+**Created:** 2026-08-10T18:59:38Z
 **Dataset:** `evals/advisor_search_query_cases_enriched_labels.jsonl` (30 exposed development cases)
 **Generation model:** `gpt-5.5` for model-driven conditions
 **Method version:** `single-query-methods.v1`
@@ -29,7 +29,7 @@ Rows with incomplete coverage are descriptive only and must not be compared dire
 | `model_rewrite` | `bm25` | 30/30 | 50.0% | 70.0% | 90.0% | 2.037 | 90.2 ms | 0 |
 | `model_rewrite` | `hybrid` | 30/30 | 63.3% | 90.0% | 96.7% | 1.552 | 809.3 ms | 0 |
 | `guided_model_rewrite` | `bm25` | 30/30 | 66.7% | 90.0% | 93.3% | 1.429 | 91.7 ms | 0 |
-| `guided_model_rewrite` | `hybrid` | 24/30 | 66.7% | 91.7% | 91.7% | 1.273 | 692.3 ms | 6 |
+| `guided_model_rewrite` | `hybrid` | 30/30 | 73.3% | 93.3% | 93.3% | 1.214 | 791.2 ms | 0 |
 
 ## Misses
 
@@ -39,10 +39,6 @@ Rows with incomplete coverage are descriptive only and must not be compared dire
 - `model_rewrite` / `hybrid`: searchq_v1_022
 - `guided_model_rewrite` / `bm25`: searchq_v1_010, searchq_v1_020
 - `guided_model_rewrite` / `hybrid`: searchq_v1_010, searchq_v1_020
-
-## Incomplete executions
-
-- `guided_model_rewrite` / `hybrid` missing: searchq_v1_025, searchq_v1_026, searchq_v1_027, searchq_v1_028, searchq_v1_029, searchq_v1_030
 
 ## Interpretation boundary
 

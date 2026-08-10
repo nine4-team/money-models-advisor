@@ -1363,16 +1363,15 @@
           searches and records two source events.
         </p>
 
-        <h4 class="block">Query generation: agent-written variants + a deterministic fallback</h4>
+        <h4 class="block">Query generation: an open, eval-gated choice</h4>
         <p>
-          Queries are generated, not lifted from the user's message. The
-          agent writes 2–4 variants of each search — the same need phrased
-          different ways, typically once in cause-and-effect terms and once
-          in the book's framework vocabulary. One variant is always the
-          deterministic fallback: the focus terms joined mechanically, with
-          no agent judgment in it. All variants run, and their results are
-          merged by rank, so a badly phrased variant can't sink the search.
-          A real request from a recorded turn:
+          The trace schema can record 2–4 variants plus a mechanical fallback,
+          and the evaluation runner can execute and rank-fuse them. That is a
+          capability, not yet the selected product behavior. The earlier
+          retrieval experiment supplied already-written variants, reviewer-selected
+          focus terms, and expected subjects; it proved that the retriever can
+          use good inputs, not that the product can generate those inputs.
+          A recorded request shows the trace shape:
         </p>
         <figure class="figure">
           <figcaption>SourceNeed from sourceevents_v1_001 — first variant is the deterministic fallback</figcaption>
@@ -1390,11 +1389,11 @@
 }</pre>
         </figure>
         <p class="quiet">
-          Why not one freeform agent query? Traceability: every variant is
-          recorded, and the fallback gives every search a judgment-free
-          baseline to score against. The variants exist because of a measured
-          failure — a question about <em>why</em> fulfillment cost matters
-          retrieved the wrong passages when only the mechanical query ran
+          The current generation experiment starts earlier: user question plus
+          the normal saved snapshot, with reviewer labels hidden and no subject
+          filter. It compares the raw question, one unguided model rewrite, and
+          one rewrite guided by the book's glossary and frameworks. Multi-query
+          fusion is now a candidate to test fairly, not an assumed default
           (§3.4).
         </p>
 
@@ -1717,8 +1716,13 @@
                   </tr>
                   <tr>
                     <td>search_queries · 30</td>
-                    <td class="wrap">Queries retrieve citeable chunks?</td>
-                    <td class="wrap">Hybrid + variants leads at Hit@1 (96.7%), mean useful rank 1.03 (§3.5).</td>
+                    <td class="wrap">Given fixed variants and reviewer source fields, which retriever ranks citeable chunks?</td>
+                    <td class="wrap">Hybrid leads at Hit@1 (96.7%), but this is a downstream retrieval ceiling—not a generation result (§3.5).</td>
+                  </tr>
+                  <tr>
+                    <td>query_generation · 30 dev + 16 holdout</td>
+                    <td class="wrap">Can the product create a useful query from the real question and saved snapshot?</td>
+                    <td class="wrap">Development: guided leads Hit@1 (73.3%); unguided leads Hit@5 (96.7%). No winner before holdout review (§3.4).</td>
                   </tr>
                   <tr>
                     <td>pilot set</td>
@@ -1864,23 +1868,84 @@
             </dd>
           </div>
           <div>
-            <dt>The fix</dt>
+            <dt>The earlier candidate</dt>
             <dd>
-              Instead of one keyword list, the agent writes two to four short
-              rephrasings of the search. The plain keyword version stays in as
-              a safety net. All of them run, and chunks that keep showing up
-              across the rephrasings rise to the top (reciprocal-rank fusion).
-              Every query is written down, so the search stays auditable —
-              rather than handing the agent one free-form query no one can
-              check.
+              Run three short rephrasings plus a deterministic keyword
+              fallback, then use reciprocal-rank fusion to promote chunks that
+              recur. This worked well as a retrieval experiment, but the
+              variants were a frozen fixture with no recorded generator. The
+              evaluator also supplied reviewer-selected focus terms and
+              expected subjects and used those subjects as filters. That means
+              the result begins after the hardest generation choices have
+              already been made.
             </dd>
           </div>
         </dl>
+        <p>
+          The new experiment starts at the real product input instead: the
+          user's question and normal saved business snapshot. It hides the
+          reference query, focus terms, subjects, and useful chunks; applies no
+          subject filter; and runs one query. All four rows below use the same
+          enriched 30-case labels and local hybrid retriever, but the first row
+          has more information and four searches, so it is a ceiling rather
+          than a fair generation head-to-head.
+        </p>
+        <figure class="figure">
+          <figcaption>30 exposed development cases · old downstream variant result versus blind single-query generation</figcaption>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Condition</th>
+                  <th class="num">Hit@1</th>
+                  <th class="num">Hit@3</th>
+                  <th class="num">Hit@5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fixed 3 variants + fallback · reviewer fields + filter</td>
+                  <td class="num">96.7%</td>
+                  <td class="num">100.0%</td>
+                  <td class="num">100.0%</td>
+                </tr>
+                <tr>
+                  <td>raw user question · one query · no filter</td>
+                  <td class="num">66.7%</td>
+                  <td class="num">86.7%</td>
+                  <td class="num">90.0%</td>
+                </tr>
+                <tr>
+                  <td>unguided model rewrite · one query · no filter</td>
+                  <td class="num">63.3%</td>
+                  <td class="num">90.0%</td>
+                  <td class="num hit">96.7%</td>
+                </tr>
+                <tr>
+                  <td>glossary + framework guided rewrite · one query · no filter</td>
+                  <td class="num hit">73.3%</td>
+                  <td class="num hit">93.3%</td>
+                  <td class="num">93.3%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
         <p class="quiet">
-          §3.5 compares how BM25, vector, and hybrid retrieval do with these
-          variants. Cost: about four searches per case, 120 across the 30-case
-          set. Embeddings are cached, so on repeat runs those searches made no
-          new embedding API calls.
+          On the six cases completed after the interrupted run, the guided
+          single-query method put useful evidence first in all six; the older
+          four-query method did so in five. Across all 30, however, the old
+          condition tied guided on 21 cases, did better on eight including two
+          guided top-five misses, and did worse on one. The honest result is
+          not “variants win”: the old result makes a clean multi-query
+          generation test worth running. The 16-case holdout remains unopened
+          until its relevance labels are human-reviewed.
+        </p>
+        <p class="quiet">
+          §3.5 isolates the retrieval backends while holding the old fixed
+          variants constant. Cost: about four searches per case, 120 across
+          the 30-case set. Embeddings are cached, so on repeat runs those
+          searches made no new embedding API calls.
         </p>
 
         <h3 id="s3-5"><span class="sub">3.5</span>Hybrid retrieval + reranking</h3>
@@ -1892,7 +1957,7 @@
           "rollover upsell," "payback period"), and that shared vocabulary
           makes keyword retrieval unusually competitive. Against it: vector
           search and rank-fused hybrid, over the same chunks, each running the
-          agent-written constrained query variants described in §3.4.
+          frozen constrained query variants described in §3.4.
         </p>
         <p>
           The comparison is graded at Hit@1 — did the single best labeled
@@ -1961,15 +2026,15 @@
           <span class="d-tag">Decision</span>
           <div>
             <p>
-              Hybrid retrieval + constrained query variants is the candidate
-              product path. BM25 stays as the control, and it stays strong —
-              on a small corpus with strong framework vocabulary, hybrid
-              wins, but only by a little.
+              Hybrid remains the candidate retrieval backend and BM25 remains
+              the control. Holding the supplied queries fixed, hybrid ranks
+              useful evidence best on this slice—but only by a few cases.
             </p>
             <p>
-              Variants add an agent-authored artifact that can be wrong, so
-              the deterministic fallback and the golden set stay in place as
-              guards. Candidate default, not a final claim.
+              Query generation is a separate, unresolved decision. The old
+              fixed-variant result is a downstream ceiling, not a validated
+              product default; single-query finalists and any multi-query
+              challenger must earn adoption on the reviewed holdout.
             </p>
           </div>
         </div>
@@ -2262,11 +2327,15 @@
               <code>diagnose</code> expected raw JSON instead of reading
               saved state, and that agents skipped writing query variants.
               Fix: <code>diagnose --business-dir</code> reads the snapshot
-              directly, and query variants became mandatory — the skill
+              directly, and in that iteration query variants became mandatory — the skill
               requires 2–4 agent-written variants per search,
               <code>session finish</code> rejects source events without
               them, and a second 6/6 source-event pass verified the
-              stricter contract.
+              stricter trace contract. The new generation experiment makes
+              that product behavior provisional: if a single-query method
+              wins the holdout, the skill and validator must be reconciled
+              with the measured choice rather than preserving variants by
+              inertia.
             </dd>
           </div>
         </dl>
@@ -2295,11 +2364,15 @@
               The retrieval comparison (§3.4–3.5) holds the query variants
               fixed — the right control for isolating the retrieval method —
               but the variants themselves are a frozen fixture with no recorded
-              generator. Whether variant quality is model-sensitive is untested,
-              so the supported claim is "these variants beat keyword-only," not
-              "agent-generated variants beat keyword-only." A generator
-              comparison (regenerate the 30-case variants with named models,
-              re-run retrieval, compare) is the next experiment.
+              generator. That old evaluator also supplies reviewer-selected
+              focus terms and expected subjects and uses the subjects as
+              retrieval filters. The new experiment removes those hidden
+              inputs and records every prompt and raw model response, but its
+              30 cases are exposed development data. The supported claims are
+              therefore: fixed variants demonstrate a high downstream ceiling;
+              guided and unguided single-query generation are viable finalists;
+              neither query count nor generator is selected until the reviewed
+              holdout is run.
             </dd>
           </div>
           <div>
@@ -2397,8 +2470,9 @@
                     single namespace before choosing the default (§2.6, §3.7), and the chunking strategy was chosen by comparison (§3.3). Hybrid retrieval
                     merges its two ranked lists with reciprocal-rank fusion, the recorded v1 baseline; the trigger for
                     adding a true reranker is written down — known-useful chunks landing in the top-20 candidates but
-                    missing the top-5 (§3.4–3.5). The query-construction stage is agent-generated query variants with a
-                    deterministic fallback (§2.6, §3.4). Embedding model selection is a named gap: one model so far,
+                    missing the top-5 (§3.4–3.5). Query construction is now an explicit eval-gated decision: the
+                    narrative separates a fixed-variant retrieval ceiling from blind single-query generation and keeps
+                    multi-query as a challenger rather than an assumed default (§2.6, §3.4). Embedding model selection is a named gap: one model so far,
                     <code>text-embedding-3-small</code> (§4).
                   </td>
                 </tr>

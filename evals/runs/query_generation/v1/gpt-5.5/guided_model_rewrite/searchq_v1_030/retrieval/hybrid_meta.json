@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "money model stack offer sequence attraction upsell downsell continuity how offers fit together build one offer at a time fewest offers needed",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 1047.1,
+  "returncode": 0,
+  "stderr": ""
+}
