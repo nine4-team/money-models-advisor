@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Continuity Discount Offers how promised lifetime discount after usual churn point gives customers a reason to stay and reduces cancellation",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 97.0,
+  "returncode": 0,
+  "stderr": ""
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "why ad viability should be judged by gross profit after fulfillment or delivery costs versus CAC, not revenue",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 91.8,
+  "returncode": 0,
+  "stderr": ""
+}

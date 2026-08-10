@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "how much can we spend on ads customer acquisition cost CAC first 30 day gross profit cash payback client financed acquisition",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 843.5,
+  "returncode": 0,
+  "stderr": ""
+}

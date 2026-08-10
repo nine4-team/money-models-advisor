@@ -1,7 +1,7 @@
 # Query Generation Testing Design
 
 **Date:** 2026-08-10
-**Status:** First development run complete; holdout review and final comparison remain open.
+**Status:** Guided v2 clears the development gate; holdout review and final comparison remain open.
 
 ## Purpose
 
@@ -116,6 +116,7 @@ the same enriched 30-case labels, the direct numerical comparison is:
 | Raw user question + hybrid | 66.7% | 86.7% | 90.0% |
 | Unguided single rewrite + hybrid | 63.3% | 90.0% | 96.7% |
 | Guided single rewrite + hybrid | 73.3% | 93.3% | 93.3% |
+| Guided v2 single rewrite + hybrid | 86.7% | 96.7% | 100.0% |
 
 The earlier condition is numerically stronger, but it is not a valid head-to-head
 query-generation result. It begins after reviewer-selected `focus_terms` and
@@ -134,12 +135,43 @@ evidence first on all six, while the old condition did so on five of six. Across
 30 cases, the old condition tied the guided method on 21, ranked better on six, missed
 none where guided missed two, and ranked worse on one.
 
+### Recorded guided v2 development refinement — 2026-08-10
+
+The v2 prompt was committed as `query-generation-prompt.v2` before generation. It
+kept the same input, guide, `gpt-5.5` harness, output contract, no-filter retrieval
+path, and 30 exposed cases. Its only intended behavior change was to preserve every
+concept necessary to the user's information need while treating the corpus guide as a
+translation reference rather than a checklist.
+
+All 30 outputs were valid. The complete result was:
+
+| Backend | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank |
+|---|---:|---:|---:|---:|
+| BM25 | 73.3% | 93.3% | 96.7% | 1.345 |
+| Hybrid | 86.7% | 96.7% | 100.0% | 1.200 |
+
+On hybrid, v2 tied guided v1 on 23 cases, improved four existing ranks, repaired both
+v1 top-five misses, and regressed one case from rank 1 to rank 2. Case 010 moved from
+a top-five miss to rank 1. Case 020 moved from a miss to rank 4 and is the only v2
+case outside the top three. V2 therefore clears the predeclared 22/30 Hit@1, 28/30
+Hit@3, and 29/30 Hit@5 development frontier. It becomes a holdout finalist, not a
+production choice.
+
+Compared with the older information-assisted four-query ceiling, v2 closes much of
+the gap while using one query and no subject filter: 86.7% versus 96.7% Hit@1, 96.7%
+versus 100.0% Hit@3, and an equal 100.0% Hit@5. That remaining comparison still does
+not isolate query count because the old condition also receives reviewer fields.
+
 The results and case artifacts are preserved in:
 
 - `evals/reports/query_generation_methods_dev.md`
 - `evals/reports/query_generation_methods_dev_summary.json`
 - `evals/reports/query_generation_methods_dev_cases.jsonl`
 - `evals/runs/query_generation/v1/`
+- `evals/reports/query_generation_guided_v2_dev.md`
+- `evals/reports/query_generation_guided_v2_dev_summary.json`
+- `evals/reports/query_generation_guided_v2_dev_cases.jsonl`
+- `evals/runs/query_generation/v2/`
 
 These are development results, not an adoption decision. The 16-case multi-scenario
 holdout at `evals/query_generation/query_generation_holdout_v1.jsonl` remains untouched

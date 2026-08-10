@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Free Trials or Trial with Penalty free trial stays free when agreed action or consumption requirements are met card collected upfront fees for non-consumption as front-end attraction offer",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 96.4,
+  "returncode": 0,
+  "stderr": ""
+}

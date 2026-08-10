@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "compare customer acquisition cost against gross profit per client first 30 day gross profit payback lifetime gross profit viability",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 92.5,
+  "returncode": 0,
+  "stderr": ""
+}

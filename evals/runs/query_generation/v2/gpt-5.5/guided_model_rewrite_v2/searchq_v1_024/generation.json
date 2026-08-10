@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_024",
+  "created_at": "2026-08-10T19:17:40Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 6436.1,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "Downsell offers after a prospect rejects the main full-service package: how to structure the downsell path, payment plans versus feature downsells, and avoiding simply discounting the same offer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4390,
+  "valid": true
+}

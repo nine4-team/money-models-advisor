@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Attraction offers free versus discounted front-end offer liquidate CAC match barrier to first purchase",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 97.4,
+  "returncode": 0,
+  "stderr": ""
+}

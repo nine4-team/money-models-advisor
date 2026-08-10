@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "setup fee onboarding fee startup fee front-loaded fees prepayment shorten payback period recover CAC faster first 30 day gross profit",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 576.8,
+  "returncode": 0,
+  "stderr": ""
+}

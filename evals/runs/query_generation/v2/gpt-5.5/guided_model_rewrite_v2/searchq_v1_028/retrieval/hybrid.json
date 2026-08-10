@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "Continuity Discount Offers how promised lifetime discount after usual churn point gives customers a reason to stay and reduces cancellation",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 19915,
+      "char_start": 17975,
+      "id": "continuity-discounts:11",
+      "score": 0.033,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "That's not gonna work. You wanna tell, you wanna let them vent. You wanna feel, have them feel validated. You wanna be more upset than them. You wanna have them calm you down. You say that you made the mistake and that's unacceptable. Ask them to, see if you can make it up to them. Then you do a rollover and you get a do-over. That's the idea. Those are the important points. Whoo. All right. Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5969,
+      "char_start": 3663,
+      "id": "continuity-discounts:7",
+      "score": 0.032,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if they stay past Y or X period, and you make the Y or X period the month that the average customer drops off. So first time I saw this was on Amazon. Um, they had a continuity for rice packets. I buy rice. And, uh, they had 5% off if you go on continuity, and 15% off if you stay past five months. And so this is the idea is that you want to... And it was five months to the same address. Like they were pretty particular about it. But you can get a lifetime discount, and if they know, and I'm sure they did the math that they knew that people would stop paying at, call it the four-month point. And so they say, \"Okay, well, let's put a big nugget after the four-month point where they get a lifetime lower rate after that point.\" And so you can think through your own business the same way and hang the carrot, and you can also use this in the advertising. So let's say you know every customer stays four months on average. You tell everyone up front they get a lifetime discount after month four. So a lot of times people are willing to pay more up front if they know it's eventually going to go down. But this does two things. One is it gets people to buy at higher rates than they otherwise would, because they know it's gonna go down. And two, it gets them to stay longer because they know when it's going to go down. So as the time approaches, tell them the newer lower rate is right around the corner. This is key. So if you do know that it's at month four, month five or whatever that they're gonna start getting a lower rate, at month two, at month three, be like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5702,
+      "char_start": 3430,
+      "id": "continuity-discounts:6",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "because it really can't. They either have the money or they don't. And so this way, I like having two forms of payment. One's a card, one's ACH. We get the ACH by giving back. the processing fee, and here's a fun little benefit of ACH.Not only do you get the reduction in churn, you also save some money on processing too, because it's cheaper to process via ACH, usually by one or two percentage points. So, gift cards. So you can give the discount and time in the form of a physical gift card. You can mail it to them if they are out of the area. So if they're, you know, if you're a national business, you can mail it to them. Uh, the customer can apply the discount whenever they want after their first three payments, right? So you can say, \"Hey, when you buy, we're gonna give you these three months free, but I'm gonna give it to you the, to you in this form with this card. And I'm gonna mail it to you, and then you have to remember to come back and redeem it.\" Now you might be like, \"Alex.\" Well, deal with it. You can do whatever we want. Okay? And so the ne- that way they can also, if you wanna position to make it sound good, uh, they can gift it to a friend if they want. All right? That way it's like, \"Hey, gift it to a friend.\" And beyond that, many people simply forget to use it, and in that instance, you just get the full price sign-up. All right? So in the, quote, \"worst case scenario\" for the business owner, they get it, and then they redeem it after a certain period of time. So you still got payments and you made sure the card worked and they're a legit person. The second condition is they give it to somebody else, which is awesome. I'll absolutely accept their friend, which is now a free customer that I don't have to pay for, and I will give them that three months in some sort of aggressive way. I might spread it over, the term. I might use one of the other ways. Or they just don't use it, in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 12547,
+      "char_start": 10080,
+      "id": "continuity-offers:5",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "were winners, then every month you're like, \"Well, I want the new ads.\" So those are things that are consumable. So it makes sense to price the payment plan or the continuity based on the value of those consumables, not the blended value of the one-time thing and the consumable, because that blended value would be much higher and would have a much higher likelihood of churn. And so this is how I would prefer to fix most education businesses. There's nothing wrong, like they often have high churn simply 'cause they're mispriced. They kind of try to price in the middle when really you should price way high upfront and lower over time, or alternatively just charge annual. And then that way you're just basically looking back into the future and saying, \"Hey, if a year from now you can do all these things, would that be valuable?\" Yes. And then you have a whole year to figure out what the next big thing you're gonna have. It basically buys you more time to figure out what the next offer you're gonna have. that the first offer you did solved. So if I taught you how to sell, well, then maybe you wanna have, learn how to market. If I taught you how to sell, maybe you wanna learn how to onboard. There's gonna still be the same offer solution cycle that exists, and you can still include that within the continuity that you have. So real world offer. So let's say you have $5,000 down, 200 bucks a month. This also, the big head, long tail, helps with client find us acquisition. Because you have this big upfront payment, you can offset the cost to acquire customers, offset your sales commissions, and then you get the continuity. And the nice thing here is the cancellation rate is very, very low because of sunk cost fallacy. People don't wanna lose money they put down. So it's very unlikely someone puts $5,000 down and then cancels month two. Enterprise value is based on a discount applied to future cash flows, which really comes down to how much money and how likely is it to occur. And so for you to have a very big business, you want lots of money that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 4325,
+      "char_start": 1893,
+      "id": "continuity-discounts:1",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "really cool guy. Um, and so that's fundamentally what he did. So this was a discount continuity play. It says bonus. It should say, it should say discount. There we go. So here's the description, here's how it works. To make a one-time continuity discount, you give products or services away for free if the customer commits to buying more products and services over time. Makes sense. So this can attract loads of potential customers and makes a very easy sale that anyone can close. If you look, around, you see this offer in many different industries. So think internet, pool cleaning, gym memberships, landscaping, anything that's rentable, storage, leases, get your first two months free if you sign up for a year, things like that. You can make this work in any business as long as you know two things. Number one is first how you will apply the discount, you can do it in four ways, and I'll show you all four. Second, your cancellation policy, because a lot of people don't always keep their commitments. So let me give you some examples. So this is the first way that you can do a continuity discount. So upfront, you can apply the discount upfront and push out the term, as in the official time starts after the free time ends. So in the story that I gave, he gave a year for free and then he had five years on the back. So he basically gave 20% away. Here, three months free, 12 months on the back. Now, this works best in industries that have successful histories of reinforcing contracts. So cell phone carriers can do that because they'll cut off your cell phone stuff. Storage works well with this because they'll... they have your stuff. Real estate works well because they'll kick you out. Cars work well 'cause they can take your car back, right? Anything that has collateral tends to work really well with this type of model, which is why a lot of them do it. All right? Now, if you have historically high churn, then skip this one 'cause it means that you don't have a lot of enforcement and this is probably not the best way to do it. Now, this does not get customers profitably, all right? So he lost a bunch of money for the first year, and then he made a bunch afterwards, but it does get customers, it delays cash. So if you want more profitable options, continue on down our list. A fun note here is that instead of giving time away for free, you can also give it away at a discount, right? So that you can"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

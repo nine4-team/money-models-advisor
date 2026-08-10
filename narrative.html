@@ -1392,9 +1392,11 @@
           The current generation experiment starts earlier: user question plus
           the normal saved snapshot, with reviewer labels hidden and no subject
           filter. It compares the raw question, one unguided model rewrite, and
-          one rewrite guided by the book's glossary and frameworks. Multi-query
-          fusion is now a candidate to test fairly, not an assumed default
-          (§3.4).
+          one rewrite guided by the book's glossary and frameworks. A
+          precommitted v2 guided prompt now leads the development split by
+          using the guide as a translation reference while preserving every
+          concept the question actually requires. Multi-query fusion remains
+          a candidate to test fairly, not an assumed default (§3.4).
         </p>
 
         <h4 class="block">How a search runs</h4>
@@ -1722,7 +1724,7 @@
                   <tr>
                     <td>query_generation · 30 dev + 16 holdout</td>
                     <td class="wrap">Can the product create a useful query from the real question and saved snapshot?</td>
-                    <td class="wrap">Development: guided leads Hit@1 (73.3%); unguided leads Hit@5 (96.7%). No winner before holdout review (§3.4).</td>
+                    <td class="wrap">Guided v2 reaches 86.7% Hit@1, 96.7% Hit@3, and 100% Hit@5 with one unfiltered query. Development finalist; no promotion before holdout review (§3.4).</td>
                   </tr>
                   <tr>
                     <td>pilot set</td>
@@ -1885,7 +1887,7 @@
           The new experiment starts at the real product input instead: the
           user's question and normal saved business snapshot. It hides the
           reference query, focus terms, subjects, and useful chunks; applies no
-          subject filter; and runs one query. All four rows below use the same
+          subject filter; and runs one query. All five rows below use the same
           enriched 30-case labels and local hybrid retriever, but the first row
           has more information and four searches, so it is a ceiling rather
           than a fair generation head-to-head.
@@ -1919,27 +1921,35 @@
                   <td>unguided model rewrite · one query · no filter</td>
                   <td class="num">63.3%</td>
                   <td class="num">90.0%</td>
-                  <td class="num hit">96.7%</td>
+                  <td class="num">96.7%</td>
                 </tr>
                 <tr>
-                  <td>glossary + framework guided rewrite · one query · no filter</td>
-                  <td class="num hit">73.3%</td>
-                  <td class="num hit">93.3%</td>
+                  <td>guided v1 rewrite · one query · no filter</td>
+                  <td class="num">73.3%</td>
                   <td class="num">93.3%</td>
+                  <td class="num">93.3%</td>
+                </tr>
+                <tr>
+                  <td>guided v2 rewrite · one query · no filter</td>
+                  <td class="num hit">86.7%</td>
+                  <td class="num hit">96.7%</td>
+                  <td class="num hit">100.0%</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </figure>
         <p class="quiet">
-          On the six cases completed after the interrupted run, the guided
-          single-query method put useful evidence first in all six; the older
-          four-query method did so in five. Across all 30, however, the old
-          condition tied guided on 21 cases, did better on eight including two
-          guided top-five misses, and did worse on one. The honest result is
-          not “variants win”: the old result makes a clean multi-query
-          generation test worth running. The 16-case holdout remains unopened
-          until its relevance labels are human-reviewed.
+          Guided v2 was committed before generation. It tells the model to use
+          the guide as a translation reference, preserve however many concepts
+          the user's mechanism or relationship actually needs, and omit only
+          concepts added because they are nearby in the guide. Against v1 it
+          tied 23 cases, improved four ranks, repaired both top-five misses,
+          and regressed one case from rank 1 to rank 2. It clears the declared
+          development gate and closes much of the gap to the old four-query
+          ceiling while using one query and no subject filter. It is now a
+          holdout finalist—not a production decision. The 16-case holdout
+          remains unopened until its relevance labels are human-reviewed.
         </p>
         <p class="quiet">
           §3.5 isolates the retrieval backends while holding the old fixed
@@ -2031,10 +2041,10 @@
               useful evidence best on this slice—but only by a few cases.
             </p>
             <p>
-              Query generation is a separate, unresolved decision. The old
-              fixed-variant result is a downstream ceiling, not a validated
-              product default; single-query finalists and any multi-query
-              challenger must earn adoption on the reviewed holdout.
+              Guided v2 is the single-query development finalist, not yet the
+              product default. The old fixed-variant result remains a
+              downstream ceiling; v2 and any fair multi-query challenger must
+              earn adoption on the reviewed holdout.
             </p>
           </div>
         </div>
@@ -2370,7 +2380,7 @@
               inputs and records every prompt and raw model response, but its
               30 cases are exposed development data. The supported claims are
               therefore: fixed variants demonstrate a high downstream ceiling;
-              guided and unguided single-query generation are viable finalists;
+              guided v2 is the strongest single-query development finalist;
               neither query count nor generator is selected until the reviewed
               holdout is run.
             </dd>

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Attraction offers versus upsell offers in a money model offer stack: front-end customer acquisition offer that liquidates CAC compared with post-purchase add-on that maximizes profit per customer, applied to STR Design Diagnostic and pre-designed room packages",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 103.4,
+  "returncode": 0,
+  "stderr": ""
+}

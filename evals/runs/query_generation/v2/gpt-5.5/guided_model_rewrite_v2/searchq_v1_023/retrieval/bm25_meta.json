@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Decoy Offers premium offer difficult to advertise directly stripped-down option presented side by side contrast makes additional value clear",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 105.6,
+  "returncode": 0,
+  "stderr": ""
+}

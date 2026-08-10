@@ -1,0 +1,1 @@
+{"query":"Attraction offers versus upsell offers in a money model offer stack: front-end customer acquisition offer that liquidates CAC compared with post-purchase add-on that maximizes profit per customer, applied to STR Design Diagnostic and pre-designed room packages"}

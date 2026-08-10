@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Feature downsells reduced-scope lower-friction alternative sell fewer rooms first instead of full-service design project",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 102.7,
+  "returncode": 0,
+  "stderr": ""
+}

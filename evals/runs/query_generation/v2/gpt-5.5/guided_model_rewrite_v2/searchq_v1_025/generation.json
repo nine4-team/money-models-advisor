@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_025",
+  "created_at": "2026-08-10T19:17:47Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 6784.3,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "Feature downsells reduced-scope lower-friction alternative sell fewer rooms first instead of full-service design project",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4377,
+  "valid": true
+}

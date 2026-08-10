@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_008",
+  "created_at": "2026-08-10T19:15:48Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 8185.9,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "Free Trials or Trial with Penalty free trial stays free when agreed action or consumption requirements are met card collected upfront fees for non-consumption as front-end attraction offer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4387,
+  "valid": true
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Classic Upsell vs Menu Upsell difference essential complement obvious next purchase compared with prescribed add-on menu unsell irrelevant choices prescribe what fits preference question card on file",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 90.1,
+  "returncode": 0,
+  "stderr": ""
+}

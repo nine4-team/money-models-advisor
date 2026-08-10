@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Pay Less Now or Pay More Later versus normal discount difference unexplained discount risk reversal buyer chooses paying less upfront now or full amount later after delivery",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 758.6,
+  "returncode": 0,
+  "stderr": ""
+}

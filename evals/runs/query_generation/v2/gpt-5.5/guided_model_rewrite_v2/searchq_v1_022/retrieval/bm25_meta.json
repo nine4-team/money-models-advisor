@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Free with Consumption free education before sale how much consumption needed before high-ticket paid offer readiness price complexity trust limiting beliefs",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 115.1,
+  "returncode": 0,
+  "stderr": ""
+}
