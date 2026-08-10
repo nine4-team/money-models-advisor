@@ -293,6 +293,30 @@ concise query.
 Hypothesis: corpus vocabulary and framework relationships together help the model aim
 at the right evidence, especially when the user does not already use the book's terms.
 
+### C2. Guided prompt v2 development challenger — frozen before generation
+
+The first guided development run suggests—but does not prove—that the guide can help
+translate ordinary language while also tempting the model to add more neighboring
+concepts than the question requires. The v2 challenger tests one general prompt change:
+use the guide as a translation reference rather than a checklist.
+
+The prompt does **not** impose a one-concept rule, restrict additional concepts to
+comparisons, exclude related concepts as a category, or impose an arbitrary word count.
+It instructs the generator to preserve every concept needed for the mechanism,
+relationship, comparison, sequence, or combined system in the user's question, while
+omitting concepts added only because the guide lists them as related or nearby. The
+query should be no longer than necessary without sacrificing essential meaning.
+
+This prompt is versioned as `query-generation-prompt.v2` and must be committed before
+its 30 development queries are generated. It receives the same question, snapshot
+projection, complete v1 corpus guide, model, output contract, and isolated Codex harness
+as guided v1. It is a development challenger, not a holdout finalist by declaration.
+
+For the initial screen, v2 must produce 30 valid outputs with no retrieval execution
+errors. To dominate the current single-query frontier, it must achieve at least 22/30
+Hit@1 and 28/30 Hit@3 (guided v1) plus 29/30 Hit@5 (unguided v1). Results below that
+frontier may still diagnose the prompt hypothesis, but do not earn promotion.
+
 A deterministic keyword-library method is not part of the initial comparison. It would
 require designing and maintaining another query system without current evidence that
 it addresses a real failure. It remains an optional later diagnostic if the results

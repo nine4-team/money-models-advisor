@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate and score the three single-query methods in the query design.
+"""Generate and score versioned single-query methods in the query design.
 
 The generator sees only the current user question and the approved projection of
 the saved BusinessSnapshot. Retrieval is executed through the public CLI so this
@@ -35,10 +35,26 @@ DEFAULT_REPORT = ROOT / "evals" / "reports" / "query_generation_methods_dev.md"
 DEFAULT_SUMMARY = ROOT / "evals" / "reports" / "query_generation_methods_dev_summary.json"
 DEFAULT_CASE_RESULTS = ROOT / "evals" / "reports" / "query_generation_methods_dev_cases.jsonl"
 
-METHODS = ("raw_question", "model_rewrite", "guided_model_rewrite")
-MODEL_METHODS = ("model_rewrite", "guided_model_rewrite")
-METHOD_VERSION = "single-query-methods.v1"
-PROMPT_VERSION = "query-generation-prompt.v1"
+METHODS = (
+    "raw_question",
+    "model_rewrite",
+    "guided_model_rewrite",
+    "guided_model_rewrite_v2",
+)
+DEFAULT_METHODS = METHODS[:3]
+MODEL_METHODS = METHODS[1:]
+GUIDED_METHODS = ("guided_model_rewrite", "guided_model_rewrite_v2")
+METHOD_VERSIONS = {
+    "raw_question": "single-query-methods.v1",
+    "model_rewrite": "single-query-methods.v1",
+    "guided_model_rewrite": "single-query-methods.v1",
+    "guided_model_rewrite_v2": "single-query-methods.v2",
+}
+PROMPT_VERSIONS = {
+    "model_rewrite": "query-generation-prompt.v1",
+    "guided_model_rewrite": "query-generation-prompt.v1",
+    "guided_model_rewrite_v2": "query-generation-prompt.v2",
+}
 SMOKE_CASE_IDS = (
     "searchq_v1_001",
     "searchq_v1_010",
@@ -65,6 +81,18 @@ GUIDED_EXTENSION = """Use the corpus guide below when it is relevant. It describ
 source's vocabulary and the relationships between its concepts. Translate ordinary
 user language into source terminology when that will help retrieval, but do not copy
 irrelevant guide terms into the query."""
+
+GUIDED_EXTENSION_V2 = """Use the corpus guide as a translation reference, not as a
+checklist. Translate the user's language into the source's canonical terminology when
+that will help retrieve a passage that directly answers the question.
+
+Preserve the user's full information need. Include every concept needed to express the
+mechanism, relationship, comparison, sequence, or combined system the user asks about;
+there is no fixed number of concepts. Include relevant business context only when it
+changes or disambiguates the evidence needed. Do not introduce a concept merely because
+the guide lists it as related or nearby. Do not speculate about the answer or add a
+mechanism the user did not ask about. Make the query only as long as necessary without
+dropping essential meaning."""
 
 OUTPUT_SCHEMA = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -152,10 +180,15 @@ def build_prompt(
         + json.dumps(generator_visible_snapshot(snapshot_path), indent=2, sort_keys=True)
         + "\n```",
     ]
-    if method == "guided_model_rewrite":
+    if method in GUIDED_METHODS:
+        guided_extension = (
+            GUIDED_EXTENSION_V2
+            if method == "guided_model_rewrite_v2"
+            else GUIDED_EXTENSION
+        )
         blocks.extend(
             [
-                GUIDED_EXTENSION,
+                guided_extension,
                 "## Corpus guide\n\n```json\n"
                 + json.dumps(generator_visible_guide(guide_path), indent=2, sort_keys=True)
                 + "\n```",
@@ -240,7 +273,7 @@ def generate_case(
                 "harness": "literal_pass_through",
                 "latency_ms": 0.0,
                 "method": method,
-                "method_version": METHOD_VERSION,
+                "method_version": METHOD_VERSIONS[method],
                 "model": None,
                 "prompt_version": None,
                 "query": raw_query(case),
@@ -284,14 +317,14 @@ def generate_case(
             "case_id": case["case_id"],
             "created_at": utc_now(),
             "guide_version": generator_visible_guide(guide_path)["version"]
-            if method == "guided_model_rewrite"
+            if method in GUIDED_METHODS
             else None,
             "harness": "codex_cli_bounded_generation",
             "latency_ms": latency_ms,
             "method": method,
-            "method_version": METHOD_VERSION,
+            "method_version": METHOD_VERSIONS[method],
             "model": model,
-            "prompt_version": PROMPT_VERSION,
+            "prompt_version": PROMPT_VERSIONS[method],
             "returncode": returncode,
             "tokens_used_reported_by_codex": _tokens_used(stdout, stderr),
             "valid": False,
@@ -627,7 +660,15 @@ def cmd_score(args: argparse.Namespace) -> int:
         "case_count": len(cases),
         "cases_file": rel_path(args.cases),
         "created_at": utc_now(),
-        "method_version": METHOD_VERSION,
+        "method_version": ", ".join(
+            sorted({METHOD_VERSIONS[method] for method in args.methods})
+        ),
+        "method_versions": {
+            method: METHOD_VERSIONS[method] for method in args.methods
+        },
+        "prompt_versions": {
+            method: PROMPT_VERSIONS.get(method) for method in args.methods
+        },
         "methods": args.methods,
         "model": args.model,
         "generation": {
@@ -665,7 +706,7 @@ def main() -> int:
     generate = sub.add_parser("generate", help="Generate and preserve one query per case and method.")
     add_case_filters(generate)
     generate.add_argument("--guide", type=Path, default=DEFAULT_GUIDE)
-    generate.add_argument("--methods", nargs="+", choices=METHODS, default=list(METHODS))
+    generate.add_argument("--methods", nargs="+", choices=METHODS, default=list(DEFAULT_METHODS))
     generate.add_argument("--model", default="gpt-5.5")
     generate.add_argument("--runs-dir", type=Path, default=DEFAULT_RUNS_DIR)
     generate.add_argument("--timeout", type=int, default=300)
@@ -675,7 +716,7 @@ def main() -> int:
 
     score = sub.add_parser("score", help="Run generated queries through the real CLI and score chunk IDs.")
     add_case_filters(score)
-    score.add_argument("--methods", nargs="+", choices=METHODS, default=list(METHODS))
+    score.add_argument("--methods", nargs="+", choices=METHODS, default=list(DEFAULT_METHODS))
     score.add_argument("--backends", nargs="+", choices=("bm25", "vector", "hybrid"), default=["bm25", "hybrid"])
     score.add_argument("--model", default="gpt-5.5")
     score.add_argument("--runs-dir", type=Path, default=DEFAULT_RUNS_DIR)

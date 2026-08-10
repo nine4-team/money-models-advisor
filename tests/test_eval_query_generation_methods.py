@@ -28,13 +28,30 @@ class QueryGenerationMethodEvalTest(unittest.TestCase):
     def test_guided_and_unguided_prompts_share_input_without_label_leakage(self):
         unguided = query_eval.build_prompt(self.case, "model_rewrite")
         guided = query_eval.build_prompt(self.case, "guided_model_rewrite")
+        guided_v2 = query_eval.build_prompt(self.case, "guided_model_rewrite_v2")
 
         self.assertIn(self.case["user_turn"], unguided)
         self.assertIn(self.case["user_turn"], guided)
+        self.assertIn(self.case["user_turn"], guided_v2)
         self.assertNotIn("known_useful_chunk_ids", unguided)
         self.assertNotIn("known_useful_chunk_ids", guided)
+        self.assertNotIn("known_useful_chunk_ids", guided_v2)
         self.assertNotIn("Client-financed acquisition", unguided)
         self.assertIn("Client-financed acquisition", guided)
+        self.assertIn("Client-financed acquisition", guided_v2)
+
+    def test_guided_v2_preserves_relationships_without_fixed_concept_count(self):
+        guided_v1 = query_eval.build_prompt(self.case, "guided_model_rewrite")
+        guided_v2 = query_eval.build_prompt(self.case, "guided_model_rewrite_v2")
+
+        self.assertNotIn("there is no fixed number of concepts", guided_v1)
+        self.assertIn("there is no fixed number of concepts", guided_v2)
+        self.assertIn("mechanism, relationship, comparison, sequence, or combined system", guided_v2)
+        self.assertIn("merely because\nthe guide lists it as related or nearby", guided_v2)
+        self.assertEqual(
+            query_eval.PROMPT_VERSIONS["guided_model_rewrite_v2"],
+            "query-generation-prompt.v2",
+        )
 
     def test_raw_query_is_only_transport_normalized(self):
         case = {"user_turn": "  why   does this work?  "}
