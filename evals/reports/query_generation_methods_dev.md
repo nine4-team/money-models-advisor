@@ -1,6 +1,6 @@
 # Query Generation Method Comparison
 
-**Created:** 2026-08-10T21:08:16Z
+**Created:** 2026-08-10T21:26:37Z
 **Dataset:** `evals/advisor_search_query_cases_enriched_labels.jsonl` (30 exposed development cases)
 **Generation model:** `gpt-5.5` for model-driven conditions
 **Method version:** `single-query-methods.v1`
@@ -24,10 +24,10 @@ Rows with incomplete coverage are descriptive only and must not be compared dire
 
 | Method | Backend | Coverage | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank | Mean retrieval latency | Errors |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| `raw_question` | `bm25` | 30/30 | 46.7% | 66.7% | 76.7% | 1.739 | 92.8 ms | 0 |
-| `raw_question` | `hybrid` | 30/30 | 66.7% | 86.7% | 90.0% | 1.407 | 826.6 ms | 0 |
-| `model_rewrite` | `bm25` | 30/30 | 53.3% | 73.3% | 90.0% | 1.889 | 90.2 ms | 0 |
-| `model_rewrite` | `hybrid` | 30/30 | 66.7% | 93.3% | 96.7% | 1.448 | 809.3 ms | 0 |
+| `raw_question` | `bm25` | 30/30 | 43.3% | 66.7% | 76.7% | 1.783 | 92.8 ms | 0 |
+| `raw_question` | `hybrid` | 30/30 | 63.3% | 86.7% | 90.0% | 1.444 | 826.6 ms | 0 |
+| `model_rewrite` | `bm25` | 30/30 | 46.7% | 73.3% | 90.0% | 1.963 | 90.2 ms | 0 |
+| `model_rewrite` | `hybrid` | 30/30 | 60.0% | 93.3% | 96.7% | 1.517 | 809.3 ms | 0 |
 | `guided_model_rewrite` | `bm25` | 30/30 | 66.7% | 90.0% | 96.7% | 1.517 | 91.7 ms | 0 |
 | `guided_model_rewrite` | `hybrid` | 30/30 | 76.7% | 93.3% | 93.3% | 1.179 | 791.2 ms | 0 |
 

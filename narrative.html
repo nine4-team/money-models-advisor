@@ -1365,38 +1365,19 @@
 
         <h4 class="block">Query generation: an open, eval-gated choice</h4>
         <p>
-          The trace schema can record 2–4 variants plus a mechanical fallback,
-          and the evaluation runner can execute and rank-fuse them. That is a
-          capability, not yet the selected product behavior. The earlier
-          retrieval experiment supplied already-written variants, reviewer-selected
-          focus terms, and expected subjects; it proved that the retriever can
-          use good inputs, not that the product can generate those inputs.
-          A recorded request shows the trace shape:
+          The experiment begins with the real product inputs: the user's
+          question and normal saved business snapshot. It compares using the
+          question unchanged, asking a model for an unguided rewrite, and
+          asking the same model for a rewrite informed by the book's glossary
+          and frameworks. Each method produces one query and receives no
+          reviewer labels or subject filter.
         </p>
-        <figure class="figure">
-          <figcaption>SourceNeed from sourceevents_v1_001 — first variant is the deterministic fallback</figcaption>
-          <pre>{
-  "intent": "diagnostic_evidence",
-  "subjects": ["unit-economics"],
-  "focus_terms": ["CAC", "first 30 day gross profit",
-                  "payback period", "paid acquisition capacity"],
-  "user_turn": "what should we fix first?",
-  "query_variants": [
-    "CAC first 30 day gross profit payback period paid acquisition capacity",
-    "cash payback period CAC gross profit acquisition bottleneck",
-    "unit economics gross profit covers CAC paid ads test"
-  ]
-}</pre>
-        </figure>
         <p class="quiet">
-          The current generation experiment starts earlier: user question plus
-          the normal saved snapshot, with reviewer labels hidden and no subject
-          filter. It compares the raw question, one unguided model rewrite, and
-          one rewrite guided by the book's glossary and frameworks. A
-          precommitted v2 guided prompt now leads the development split by
-          using the guide as a translation reference while preserving every
-          concept the question actually requires. Multi-query fusion remains
-          a candidate to test fairly, not an assumed default (§3.4).
+          The corpus-guided rewrite leads development testing by using the
+          guide as a translation reference while preserving every concept the
+          question actually requires. The trace records the exact query and
+          returned passages. Multiple queries and metadata filters remain
+          possible later experiments, not assumed product behavior (§3.4).
         </p>
 
         <h4 class="block">How a search runs</h4>
@@ -1718,13 +1699,13 @@
                   </tr>
                   <tr>
                     <td>search_queries · 30</td>
-                    <td class="wrap">Given fixed variants and reviewer source fields, which retriever ranks citeable chunks?</td>
-                    <td class="wrap">Hybrid leads at Hit@1 (96.7%), but this is a downstream retrieval ceiling—not a generation result (§3.5).</td>
+                    <td class="wrap">Holding the current corpus-guided queries fixed, which retriever ranks useful passages best?</td>
+                    <td class="wrap">Hybrid reaches 90.0% Hit@1 and 100% Hit@5 versus BM25 at 83.3% and 96.7% (§3.5).</td>
                   </tr>
                   <tr>
                     <td>query_generation · 30 dev + 16 holdout</td>
                     <td class="wrap">Can the product create a useful query from the real question and saved snapshot?</td>
-                    <td class="wrap">After a method-neutral relevance-label audit, guided v2 reaches 93.3% Hit@1, 96.7% Hit@3, and 100% Hit@5 with one unfiltered query. Development finalist; no promotion before holdout review (§3.4).</td>
+                    <td class="wrap">After false-negative and false-positive label review, the corpus-guided rewrite reaches 90.0% Hit@1, 96.7% Hit@3, and 100% Hit@5 with one unfiltered query. Development finalist; no promotion before holdout review (§3.4).</td>
                   </tr>
                   <tr>
                     <td>pilot set</td>
@@ -1842,58 +1823,46 @@
 
         <h3 id="s3-4"><span class="sub">3.4</span>Query generation</h3>
         <p>
-          Once the agent decides what to search for, that decision has to
-          become an actual search query. The first version did the simplest
-          thing — take the key terms and run them as one query. It worked on
-          most turns and failed on one clear kind of question (§2.6):
+          The goal was to find a reliable way to turn a search-worthy user
+          question into a query that retrieves passages capable of answering
+          it. The experiment did not assume that rewriting, corpus guidance,
+          filters, or multiple queries were necessary. It started with three
+          simple approaches that could show whether added machinery earned
+          its place.
         </p>
         <dl class="rows">
           <div>
-            <dt>The question</dt>
+            <dt>Raw question</dt>
             <dd>
-              "Why does fulfillment cost matter for whether ads can work?" The
-              user is asking why one thing affects another, not just for a
-              definition.
+              Search the user's words unchanged. This is the simplest control
+              and adds no model latency.
             </dd>
           </div>
           <div>
-            <dt>What went wrong</dt>
+            <dt>Unguided rewrite</dt>
             <dd>
-              The one-query builder just strung the terms together — gross
-              profit, fulfillment cost, CAC, payback. A bare list doesn't say
-              the user wants the link between them, so the search brought back
-              nearby chunks about payback and CAC and ranked the one passage
-              that actually explains the fulfillment-cost-to-gross-profit
-              connection too far down. The right chunk existed; the query just
-              didn't surface it. The problem was the query, not the search
-              engine.
+              Give a model the question and normal saved business snapshot,
+              then ask for one concise source-search query.
             </dd>
           </div>
           <div>
-            <dt>The earlier candidate</dt>
+            <dt>Corpus-guided rewrite</dt>
             <dd>
-              Run three short rephrasings plus a deterministic keyword
-              fallback, then use reciprocal-rank fusion to promote chunks that
-              recur. This worked well as a retrieval experiment, but the
-              variants were a frozen fixture with no recorded generator. The
-              evaluator also supplied reviewer-selected focus terms and
-              expected subjects and used those subjects as filters. That means
-              the result begins after the hardest generation choices have
-              already been made.
+              Give the same model the same inputs plus a compact guide to the
+              book's vocabulary and frameworks. The guide translates the
+              user's language while preserving every concept required by the
+              question; it is not a checklist of related terms.
             </dd>
           </div>
         </dl>
         <p>
-          The new experiment starts at the real product input instead: the
-          user's question and normal saved business snapshot. It hides the
-          reference query, focus terms, subjects, and useful chunks; applies no
-          subject filter; and runs one query. All five rows below use the same
-          enriched 30-case labels and local hybrid retriever, but the first row
-          has more information and four searches, so it is a ceiling rather
-          than a fair generation head-to-head.
+          All three approaches used the same 30 exposed development cases,
+          one query, no subject filter, and the same local hybrid retriever.
+          Reference queries, focus terms, subjects, and useful-passage labels
+          were hidden from the generators.
         </p>
         <figure class="figure">
-          <figcaption>30 exposed development cases · old downstream variant result versus blind single-query generation</figcaption>
+          <figcaption>30 exposed development cases · one unfiltered query per method · shared audited labels</figcaption>
           <div class="table-scroll">
             <table>
               <thead>
@@ -1906,32 +1875,20 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>fixed 3 variants + fallback · reviewer fields + filter</td>
-                  <td class="num">96.7%</td>
-                  <td class="num">100.0%</td>
-                  <td class="num">100.0%</td>
-                </tr>
-                <tr>
-                  <td>raw user question · one query · no filter</td>
-                  <td class="num">66.7%</td>
+                  <td>raw user question</td>
+                  <td class="num">63.3%</td>
                   <td class="num">86.7%</td>
                   <td class="num">90.0%</td>
                 </tr>
                 <tr>
-                  <td>unguided model rewrite · one query · no filter</td>
-                  <td class="num">66.7%</td>
+                  <td>unguided model rewrite</td>
+                  <td class="num">60.0%</td>
                   <td class="num">93.3%</td>
                   <td class="num">96.7%</td>
                 </tr>
                 <tr>
-                  <td>guided v1 rewrite · one query · no filter</td>
-                  <td class="num">76.7%</td>
-                  <td class="num">93.3%</td>
-                  <td class="num">93.3%</td>
-                </tr>
-                <tr>
-                  <td>guided v2 rewrite · one query · no filter</td>
-                  <td class="num hit">93.3%</td>
+                  <td>corpus-guided model rewrite</td>
+                  <td class="num hit">90.0%</td>
                   <td class="num hit">96.7%</td>
                   <td class="num hit">100.0%</td>
                 </tr>
@@ -1940,51 +1897,35 @@
           </div>
         </figure>
         <p class="quiet">
-          Guided v2 was committed before generation. It tells the model to use
-          the guide as a translation reference, preserve however many concepts
-          the user's mechanism or relationship actually needs, and omit only
-          concepts added because they are nearby in the guide. Against v1 it
-          tied 24 cases, improved four ranks, repaired both top-five misses,
-          and regressed none after a method-neutral label sanity check. That
-          audit accepted six directly citeable chunks across five cases and
-          rejected neighboring passages that did not answer the question. V2
-          now reaches 93.3% Hit@1 and closes most of the gap to the old
-          four-query ceiling while using one query and no subject filter. It
-          is a holdout finalist—not a production decision. The 16-case holdout
-          remains unopened until its relevance labels are human-reviewed.
-        </p>
-        <p class="quiet">
-          §3.5 isolates the retrieval backends while holding the old fixed
-          variants constant. Cost: about four searches per case, 120 across
-          the 30-case set. Embeddings are cached, so on repeat runs those
-          searches made no new embedding API calls.
+          Before finalizing the scores, every plausible missing positive was
+          reviewed, as was every labeled passage returned in the top five by
+          any current method. The same relevance rule applied throughout: a
+          passage had to support a substantial part of the requested answer;
+          topic overlap alone was not enough. Missing valid passages were
+          added, overly broad labels were removed, and all three saved methods
+          were rescored against the same corrected answer key. No query was
+          regenerated and retrieval was not rerun. The corpus-guided rewrite
+          is the development leader, not yet the product default; the 16-case
+          holdout remains unopened until its labels are independently reviewed.
         </p>
 
-        <h3 id="s3-5"><span class="sub">3.5</span>Hybrid retrieval + reranking</h3>
+        <h3 id="s3-5"><span class="sub">3.5</span>Hybrid retrieval vs lexical control</h3>
         <p>
           BM25 served as the keyword baseline and control, not the product
-          architecture. Its job was to reveal whether vector and hybrid
-          retrieval actually beat the simple thing, and it set a high bar — the
-          generated queries carry the book's exact framework terms ("CFA,"
-          "rollover upsell," "payback period"), and that shared vocabulary
-          makes keyword retrieval unusually competitive. Against it: vector
-          search and rank-fused hybrid, over the same chunks, each running the
-          frozen constrained query variants described in §3.4.
+          architecture. The final corpus-guided queries from §3.4 were scored
+          unchanged through BM25 and hybrid retrieval. That isolates the
+          backend choice while keeping the current query-generation method
+          fixed. BM25 has a real advantage on exact book terms; hybrid adds
+          vector similarity and combines the two ranked lists with reciprocal
+          rank fusion.
         </p>
         <p>
-          The comparison is graded at Hit@1 — did the single best labeled
-          chunk come back first. The
-          known-useful labels mark only some of the good chunks, not all of
-          them, so before trusting that grade, every case where a backend did
-          not rank a labeled chunk first was checked by reading the chunk that
-          actually came back. Where that
-          chunk directly answered the turn but had never been labeled, it was
-          added to the answer key — the same correction applied to BM25,
-          vector, and hybrid alike, so no backend got a friendlier key.
+          Both backends use the same answer key audited for false negatives
+          and false positives. A passage must support a substantial part of
+          the requested answer; merely sharing vocabulary does not count.
         </p>
         <figure class="figure">
-          <figcaption>30-case golden set · constrained query variants + fusion · graded at Hit@1 · answer key corrected
-            for unlabeled-but-citeable chunks across all backends</figcaption>
+          <figcaption>30 development cases · same corpus-guided query · no subject filter · shared audited labels</figcaption>
           <div class="table-scroll">
             <table>
               <thead>
@@ -1999,40 +1940,27 @@
               <tbody>
                 <tr>
                   <td>BM25 · control</td>
-                  <td class="num">90.0%</td>
-                  <td class="num">100.0%</td>
-                  <td class="num">100.0%</td>
-                  <td class="num">1.13</td>
-                </tr>
-                <tr>
-                  <td>vector + variants</td>
-                  <td class="num">86.7%</td>
+                  <td class="num">83.3%</td>
+                  <td class="num">93.3%</td>
                   <td class="num">96.7%</td>
-                  <td class="num">100.0%</td>
-                  <td class="num">1.20</td>
+                  <td class="num">1.24</td>
                 </tr>
                 <tr>
-                  <td>hybrid + variants</td>
+                  <td>hybrid · candidate</td>
+                  <td class="num hit">90.0%</td>
                   <td class="num hit">96.7%</td>
                   <td class="num hit">100.0%</td>
-                  <td class="num hit">100.0%</td>
-                  <td class="num hit">1.03</td>
+                  <td class="num hit">1.20</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </figure>
         <p class="quiet">
-          At Hit@5 the methods tie near 100%, which on a corpus this size says
-          little. Hit@1 is where they separate: hybrid + variants ranks the
-          right chunk first on nearly every case (mean rank 1.03), ahead of the
-          BM25 control and vector. After the answer-key correction, hybrid
-          carries one genuine remaining weakness against BM25's three and
-          vector's four. The one weakness shared by all three is a case where
-          an anecdotal passage outranks the explanatory one — a content issue,
-          not a retriever one. On 30 cases the whole gap is only a few cases, so the
-          mean rank and the count of real weaknesses are stronger evidence
-          than the percentages.
+          Hybrid puts a useful passage first in 27 of 30 cases versus 25 for
+          BM25, and it recovers every case by rank five. That is enough to keep
+          hybrid as the candidate backend, but the gap is only two cases; the
+          reviewed holdout still matters more than the percentage alone.
         </p>
         <div class="decision">
           <span class="d-tag">Decision</span>
@@ -2043,10 +1971,9 @@
               useful evidence best on this slice—but only by a few cases.
             </p>
             <p>
-              Guided v2 is the single-query development finalist, not yet the
-              product default. The old fixed-variant result remains a
-              downstream ceiling; v2 and any fair multi-query challenger must
-              earn adoption on the reviewed holdout.
+              The corpus-guided rewrite is the single-query development
+              finalist, not yet the product default. It must earn adoption on
+              the independently reviewed holdout.
             </p>
           </div>
         </div>
@@ -2054,18 +1981,18 @@
         <h3 id="s3-6"><span class="sub">3.6</span>Latency benchmarks</h3>
         <p>
           Local retrieval came first so iteration and evals stayed fast.
-          Once the strategy was justified, the same 30-case set was rerun
-          against the Pinecone implementation of the
-          <code>VectorStore</code> interface (§2.6): 100% Hit@3/Hit@5, mean
-          useful rank 1.17, 100% query-cache hit rate, and no new embedding
-          API calls — the cache served every query. Quality reproduced
-          exactly.
+          A separate storage-parity benchmark then ran identical saved queries
+          against the Pinecone implementation of the <code>VectorStore</code>
+          interface (§2.6). Local and hosted rankings matched, the query cache
+          served every embedding, and the run made no new embedding API calls.
+          This tested storage and latency, not query-generation quality.
         </p>
         <p>
-          What the latency benchmark exposed instead: the first hosted run
-          executed each case's four query variants one at a time, and p50
+          The benchmark deliberately exercised several independent searches
+          per case as a heavier workload. The first hosted run executed them
+          one at a time, and p50
           retrieval landed around 5.3s for hybrid and 5.5s for vector —
-          versus sub-millisecond local BM25. Running the variants in
+          versus sub-millisecond local BM25. Running the searches in
           parallel (8 workers) brought the same 30-case
           benchmark to roughly 1.4s p50 and 1.8s p95, quality unchanged.
         </p>
@@ -2371,32 +2298,25 @@
             </dd>
           </div>
           <div>
-            <dt>Query-variant provenance</dt>
+            <dt>Query-generation generalization</dt>
             <dd>
-              The retrieval comparison (§3.4–3.5) holds the query variants
-              fixed — the right control for isolating the retrieval method —
-              but the variants themselves are a frozen fixture with no recorded
-              generator. That old evaluator also supplies reviewer-selected
-              focus terms and expected subjects and uses the subjects as
-              retrieval filters. The new experiment removes those hidden
-              inputs and records every prompt and raw model response, but its
-              30 cases are exposed development data. The supported claims are
-              therefore: fixed variants demonstrate a high downstream ceiling;
-              guided v2 is the strongest single-query development finalist;
-              neither query count nor generator is selected until the reviewed
-              holdout is run.
+              The three query methods record every prompt, model response,
+              query, and retrieval result, but the 30 cases are exposed
+              development data. The corpus-guided rewrite is the development
+              leader, not the selected product default. Its advantage must
+              survive the independently reviewed holdout before adoption.
             </dd>
           </div>
           <div>
             <dt>Retrieval answer key</dt>
             <dd>
-              The Hit@1 grades (§3.5) rest on a 30-case, near-saturated set —
-              Hit@5 is 100% for every method — with a hand-adjudicated answer
-              key: some correct chunks were added by reviewer judgment after
-              reading what each search returned. The same rule was applied to
-              every method, so it favors none, but the exact percentages carry
-              that subjectivity. Mean useful rank and residual-weakness counts
-              are cited as steadier signals than the raw percentage.
+              The query-generation grades rest on a 30-case answer key. Before
+              finalizing them, unlabeled high-ranking passages and misses were
+              reviewed for false negatives, and every labeled passage returned
+              in the top five was reviewed for false positives. Corrections
+              were shared across all methods, but the development percentages
+              still carry human judgment; the unopened holdout is the stronger
+              check against overfitting.
             </dd>
           </div>
           <div>
@@ -2483,8 +2403,8 @@
                     merges its two ranked lists with reciprocal-rank fusion, the recorded v1 baseline; the trigger for
                     adding a true reranker is written down — known-useful chunks landing in the top-20 candidates but
                     missing the top-5 (§3.4–3.5). Query construction is now an explicit eval-gated decision: the
-                    narrative separates a fixed-variant retrieval ceiling from blind single-query generation and keeps
-                    multi-query as a challenger rather than an assumed default (§2.6, §3.4). Embedding model selection is a named gap: one model so far,
+                    narrative compares three single-query approaches from the real product input and keeps multi-query
+                    as a challenger rather than an assumed default (§2.6, §3.4). Embedding model selection is a named gap: one model so far,
                     <code>text-embedding-3-small</code> (§4).
                   </td>
                 </tr>

@@ -33,7 +33,7 @@ The labels are not all the same kind of truth. Some are strict behavioral expect
 | Codex-harness model-routing baseline over existing golden suites | How well does an OpenAI Codex agent perform on source-need and tool-use judgment when it can operate the actual CLI, and can any supported cheaper tier be promoted? | `scripts/eval_codex_model_routing.py`; `evals/reports/model_routing_tiering.md`; summary JSON and per-case run artifacts under `evals/runs/model_routing_codex/` | Corrected full run: `gpt-5.5` via Codex CLI over 38 cases. Source-need: 85.7% strict pass, 92.9% search decision, 90.0% layer exact (`intent` recorded but not scored). Tool-use: 95.8% strict pass, 0 false search, 0 missed search, 0 execution errors. Codex reported ~400k tokens for source-need and ~1.25M for tool-use; these are subscription-harness token proxies, not API bills. | The API replay is no longer used as the product-routing result. `gpt-5.5` is the current OpenAI Codex baseline; no cheaper Codex tier is promoted because `gpt-5-mini` is not supported in this ChatGPT subscription harness. Future model-routing work must use the same CLI-backed harness or be explicitly labeled as a separate API/provider experiment. |
 | Cross-provider replication of the model-routing suites with Claude Opus 4.8 as the acting agent | Does a second-provider frontier model hold the semantic-planning role on the same CLI-backed suites, and where do the two providers differ? | Same prep + scorers via `scripts/eval_codex_model_routing.py::run_prepare`; `evals/reports/model_routing_opus.md`; summary JSON and per-case artifacts under `evals/runs/model_routing_opus/` | Opus 4.8 over the same 38 cases, identical acting prompts, isolated context per case. Source-need: 85.7% strict pass, 92.9% search decision, 90.0% layer exact (`intent` recorded but not scored). Tool-use: 91.7% strict pass, 0.972 required recall, 4.2% false search, 0 missed search. Recorded reference reproduced exactly, confirming a shared baseline. Token/latency proxies captured in `opus_runtime_proxy.json` (Claude Code subagent-reported, not API billing). | The two models tie on source-need and gpt-5.5 leads tool-use by a single case, inside the noise floor for n=14/n=24 single-shot. Residual failures are genuine and small (Opus: over-search + missed calculate; gpt-5.5: missed diagnose). Both frontier tiers are good enough for planning; cheaper-tier comparison through this same harness remains the open work. |
 | `evals/advisor_search_query_cases.jsonl` plus `evals/advisor_query_variants_v2.jsonl` | Given reviewer-selected source fields and fixed variants, can the retrieval stack find citeable Money Models chunks? | `scripts/eval_search_query_quality.py`; generated and generated-variant reports; backend summary JSON and case JSONL artifacts | 30 cases after expansion and miss adjudication. With three frozen variants plus a deterministic fallback, hybrid reaches 96.7% Hit@1 and 100.0% Hit@3/Hit@5 on the enriched labels. Warm-cache runs show 100.0% corpus/query embedding cache hit rates and zero external embedding API batches. The evaluator supplies expected subjects and focus terms, applies the subjects as filters, and the variants have no recorded generator. | Treat this as a downstream retrieval ceiling, not evidence that the product can generate the inputs. BM25 remains the lexical control; hybrid remains the candidate backend. Query count, generation method, and filtering require their own eval-gated decisions. |
-| Single-query generation-method development comparison over `evals/advisor_search_query_cases_enriched_labels.jsonl`; candidate holdout in `evals/query_generation/query_generation_holdout_v1.jsonl` | Starting from the real user question and saved snapshot, do raw search, unguided model rewrite, or model rewrite with a combined corpus guide retrieve better evidence? | `scripts/eval_query_generation_methods.py`; v1 report at `evals/reports/query_generation_methods_dev.md`; guided-v2 report at `evals/reports/query_generation_guided_v2_dev.md`; label audit at `evals/reports/query_generation_guided_v2_label_audit.md`; summaries, case JSONL, and preserved artifacts under `evals/runs/query_generation/v1/` and `v2/` | After a method-neutral label audit added six directly citeable chunks across five cases, v1 hybrid Hit@1/Hit@3/Hit@5 is: raw 66.7%/86.7%/90.0%, unguided 66.7%/93.3%/96.7%, guided 76.7%/93.3%/93.3%. The precommitted guided-v2 prompt produced 30/30 valid queries and reached 93.3%/96.7%/100.0% with no filter and one query, repairing both v1 top-five misses with no regression. | Guided v2 clears the declared development frontier and becomes a holdout finalist. Review and freeze the 16 candidate holdout labels before running it there; do not promote from the exposed split alone. |
+| Single-query generation-method development comparison over `evals/advisor_search_query_cases_enriched_labels.jsonl`; candidate holdout in `evals/query_generation/query_generation_holdout_v1.jsonl` | Starting from the real user question and saved snapshot, which simple query-generation approach most reliably retrieves useful evidence? | `scripts/eval_query_generation_methods.py`; canonical result at `evals/reports/query_generation_current.md`; label audit at `evals/reports/query_generation_label_audit.md`; preserved prompts, responses, and retrieval artifacts under `evals/runs/query_generation/` | With one query, no subject filter, hybrid retrieval, and shared labels audited for false negatives and false positives: raw question 63.3%/86.7%/90.0%, unguided rewrite 60.0%/93.3%/96.7%, corpus-guided rewrite 90.0%/96.7%/100.0% Hit@1/Hit@3/Hit@5. All generated queries were valid. | The corpus-guided rewrite is the development leader and holdout finalist. Review and freeze the 16 candidate holdout labels before running it there; do not promote from the exposed split alone. |
 | Pinecone namespace experiment | Does the existing five-layer Money Models taxonomy make sense as a hosted Pinecone namespace layout? | `scripts/compare_retrieval_backends.py`; `evals/reports/retrieval_backend_comparison_generated_variants_pinecone_single_namespace.md`; `evals/reports/retrieval_backend_comparison_generated_variants_pinecone_layer_namespaces_oracle.md`; local control reports for single/default and oracle namespace conditions | Full 30-case Pinecone single/default and five-layer oracle namespace benchmarks now complete with `--max-workers 8`. Both preserve hybrid quality at 100.0% Hit@3/Hit@5 and mean rank 1.17. The namespace condition adds vector searches, 140 versus 120, and worsens p95 hybrid retrieval, about 3.01s versus 1.76s. Warm-cache query embeddings keep both at zero embedding API batches. | Namespace support is real and JD-relevant, but single namespace plus metadata filters remains the better v1 default on this eval slice: both conditions returned identical top-5 rankings on all 90 per-case rows, and the split only worsens tail latency. The agent namespace-selection eval is intentionally dropped because even oracle routing showed no quality to win. |
 | `evals/golden.jsonl` | Does the local retriever find expected source material for a broad pilot query set? | `scripts/eval_retrieval.py`; `evals/reports/local_retrieval_baseline.md` | BM25 heading-aware baseline: 81.25% Hit@1, 100.00% Hit@5, 0.8917 MRR. | Keep as the local retrieval smoke benchmark. |
 | Chunking comparison data generated by `scripts/compare_chunking.py` | Which chunking strategy gives the best retrieval quality without unnecessary complexity? | `evals/reports/chunking_comparison.md` | `heading-aware`: 81.25% Hit@1, 100.00% Hit@5, 0.8917 MRR. `framework-aware`: same Hit@1 and +0.0041 MRR. | Keep `heading-aware`; the framework-aware gain does not clear the adoption rule. |
@@ -96,32 +96,20 @@ When adding a new case:
 
 Do not tune for one visible miss unless the fix is a general rule and counter-cases still pass.
 
-## Query Generation And Variant Evidence
+## Query Generation Evidence
 
-The pre-existing variant experiment and the new generation-method experiment answer
-different questions and must stay separate.
+The current experiment asks how to generate good queries from the real product input:
+the user question plus the normal saved snapshot. It compares the raw question, an
+unguided model rewrite, and a model rewrite using a combined corpus guide. Each method
+produces one query, sees no reviewer fields, applies no subject filter, and runs through
+the same hybrid retrieval path.
 
-The earlier run asks what the retrieval stack can do after it receives three fixed
-variants, a deterministic fallback, reviewer-selected focus terms, and expected
-subjects. Hybrid plus reciprocal-rank fusion reaches 96.7% Hit@1 and 100.0%
-Hit@3/Hit@5 on the enriched 30-case labels. That is strong downstream retrieval
-evidence, but the frozen variants have no recorded generator and the expected subjects
-are used as retrieval filters.
+Before finalizing the scores, returned passages were audited for both false negatives
+and false positives. Missing directly useful passages were added, overly broad labels
+were removed, and the corrected shared labels were applied to every method. No queries
+were regenerated and retrieval was not rerun.
 
-The 2026-08-10 development run starts at the real product boundary: user question plus
-normal saved snapshot. It hides the reviewer fields, applies no subject filter, and
-compares one raw or model-generated query at a time. A method-neutral review then
-accepted six previously unlabeled but directly citeable chunks across five cases and
-applied those shared labels to every saved method. On the corrected labels, the
-precommitted guided-v2 refinement reaches 93.3% Hit@1, 96.7% Hit@3, and 100.0% Hit@5
-with hybrid retrieval, beating the declared single-query development frontier. It is
-not promoted because these are exposed development cases and the 16-case holdout
-labels still need human review.
-
-Current decision: BM25 remains the lexical baseline/control and hybrid remains the
-candidate retrieval backend. The older multi-query score is a ceiling and a reason to
-run a fair multi-query generation experiment, not permission to assume multi-query,
-subject filtering, or a particular generator. Guided v2 is the single-query holdout
-finalist. Query-generation behavior is selected only after the holdout comparison;
-cached embeddings and the Pinecone storage boundary remain valid independent retrieval
-decisions.
+Final development Hit@1/Hit@3/Hit@5: raw question 63.3%/86.7%/90.0%, unguided rewrite
+60.0%/93.3%/96.7%, and corpus-guided rewrite 90.0%/96.7%/100.0%. The corpus-guided
+rewrite is the development leader, not yet the product default. The 16-case holdout
+must receive independent label review before the frozen comparison is run.

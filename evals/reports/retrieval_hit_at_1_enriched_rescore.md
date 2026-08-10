@@ -1,8 +1,8 @@
 # Retrieval Hit@1 — Fair Enriched Re-score (methodology plan, Step 4)
 
-> Historical note: a later guided-v2 sanity check added six directly citeable chunks
-> across five cases to this enriched label file. See
-> `evals/reports/query_generation_guided_v2_label_audit.md` for the accepted and
+> Historical note: a later query-generation relevance review added missing directly
+> citeable chunks and removed overly broad labels from this enriched label file. See
+> `evals/reports/query_generation_label_audit.md` for the accepted and
 > rejected candidates. The fixed-variant aggregate in this report is unchanged.
 
 This completes the Step 1 re-score honestly. Step 1 graded the existing runs at

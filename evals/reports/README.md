@@ -41,6 +41,14 @@ Recommended metrics:
 
 The goal is to make RAG architecture decisions the way an ML workflow makes model or hyperparameter decisions: by comparing variants under the same dataset, metrics, and adoption threshold.
 
+## Current Query-Generation Evidence
+
+Use `query_generation_current.md` as the canonical result for the current three-method
+comparison and `query_generation_label_audit.md` for its false-negative and
+false-positive review. The method-specific reports and run directories remain as raw
+reproducibility artifacts; older aggregate interpretations are historical and should
+not be copied into the narrative.
+
 The active retrieval-support guardrail is required-claim support coverage. Required supported claims live in `evals/obligations.jsonl`; review them with `PYTHONPATH=src python3 scripts/review_obligations.py`, then score accepted labels with `PYTHONPATH=src python3 scripts/score_obligation_support.py`. Use `--include-proposed` only when a future label batch has unreviewed proposed rows.
 
 For active local retrieval checks, use:

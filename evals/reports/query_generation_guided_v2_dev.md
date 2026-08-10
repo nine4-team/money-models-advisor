@@ -1,6 +1,6 @@
 # Query Generation Method Comparison
 
-**Created:** 2026-08-10T21:08:16Z
+**Created:** 2026-08-10T21:26:37Z
 **Dataset:** `evals/advisor_search_query_cases_enriched_labels.jsonl` (30 exposed development cases)
 **Generation model:** `gpt-5.5` for model-driven conditions
 **Method version:** `single-query-methods.v2`
@@ -22,8 +22,8 @@ Rows with incomplete coverage are descriptive only and must not be compared dire
 
 | Method | Backend | Coverage | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank | Mean retrieval latency | Errors |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| `guided_model_rewrite_v2` | `bm25` | 30/30 | 86.7% | 96.7% | 96.7% | 1.103 | 100.4 ms | 0 |
-| `guided_model_rewrite_v2` | `hybrid` | 30/30 | 93.3% | 96.7% | 100.0% | 1.133 | 861.7 ms | 0 |
+| `guided_model_rewrite_v2` | `bm25` | 30/30 | 83.3% | 93.3% | 96.7% | 1.241 | 100.4 ms | 0 |
+| `guided_model_rewrite_v2` | `hybrid` | 30/30 | 90.0% | 96.7% | 100.0% | 1.2 | 861.7 ms | 0 |
 
 ## Misses
 
