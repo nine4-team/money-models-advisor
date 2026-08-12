@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "credit diagnostic fee toward package upgrade apply diagnostic fee to bigger package",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 99.6,
+  "returncode": 0,
+  "stderr": ""
+}

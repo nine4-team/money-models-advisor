@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "Continuity Discount Offers promised lifetime discount after the usual churn point gives customers a reason to stay until then",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5969,
+      "char_start": 3663,
+      "id": "continuity-discounts:7",
+      "score": 24.684,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if they stay past Y or X period, and you make the Y or X period the month that the average customer drops off. So first time I saw this was on Amazon. Um, they had a continuity for rice packets. I buy rice. And, uh, they had 5% off if you go on continuity, and 15% off if you stay past five months. And so this is the idea is that you want to... And it was five months to the same address. Like they were pretty particular about it. But you can get a lifetime discount, and if they know, and I'm sure they did the math that they knew that people would stop paying at, call it the four-month point. And so they say, \"Okay, well, let's put a big nugget after the four-month point where they get a lifetime lower rate after that point.\" And so you can think through your own business the same way and hang the carrot, and you can also use this in the advertising. So let's say you know every customer stays four months on average. You tell everyone up front they get a lifetime discount after month four. So a lot of times people are willing to pay more up front if they know it's eventually going to go down. But this does two things. One is it gets people to buy at higher rates than they otherwise would, because they know it's gonna go down. And two, it gets them to stay longer because they know when it's going to go down. So as the time approaches, tell them the newer lower rate is right around the corner. This is key. So if you do know that it's at month four, month five or whatever that they're gonna start getting a lower rate, at month two, at month three, be like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 19915,
+      "char_start": 17975,
+      "id": "continuity-discounts:11",
+      "score": 24.461,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "That's not gonna work. You wanna tell, you wanna let them vent. You wanna feel, have them feel validated. You wanna be more upset than them. You wanna have them calm you down. You say that you made the mistake and that's unacceptable. Ask them to, see if you can make it up to them. Then you do a rollover and you get a do-over. That's the idea. Those are the important points. Whoo. All right. Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5702,
+      "char_start": 3430,
+      "id": "continuity-discounts:6",
+      "score": 15.967,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "because it really can't. They either have the money or they don't. And so this way, I like having two forms of payment. One's a card, one's ACH. We get the ACH by giving back. the processing fee, and here's a fun little benefit of ACH.Not only do you get the reduction in churn, you also save some money on processing too, because it's cheaper to process via ACH, usually by one or two percentage points. So, gift cards. So you can give the discount and time in the form of a physical gift card. You can mail it to them if they are out of the area. So if they're, you know, if you're a national business, you can mail it to them. Uh, the customer can apply the discount whenever they want after their first three payments, right? So you can say, \"Hey, when you buy, we're gonna give you these three months free, but I'm gonna give it to you the, to you in this form with this card. And I'm gonna mail it to you, and then you have to remember to come back and redeem it.\" Now you might be like, \"Alex.\" Well, deal with it. You can do whatever we want. Okay? And so the ne- that way they can also, if you wanna position to make it sound good, uh, they can gift it to a friend if they want. All right? That way it's like, \"Hey, gift it to a friend.\" And beyond that, many people simply forget to use it, and in that instance, you just get the full price sign-up. All right? So in the, quote, \"worst case scenario\" for the business owner, they get it, and then they redeem it after a certain period of time. So you still got payments and you made sure the card worked and they're a legit person. The second condition is they give it to somebody else, which is awesome. I'll absolutely accept their friend, which is now a free customer that I don't have to pay for, and I will give them that three months in some sort of aggressive way. I might spread it over, the term. I might use one of the other ways. Or they just don't use it, in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if"
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2363,
+      "char_start": 49,
+      "id": "waived-fee:1",
+      "score": 15.723,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is, but because we pair it as a price on the front end, it becomes a very strong sales thing too. So with the other version, we use the three, months free or whatever to get someone in, and then we say, \"Cool, you have to pay the difference if you cancel early.\" Here, we sell them on the vacation and we say, \"We have this massive onboarding fee, but I'll waive it if you sign up for a commitment.\" Then that' also hangs as a knife, if they don't wanna pay it today, they're not gonna pay it in six months either. And so the same reason they signed up is the same reason they'll keep paying. Here's our description. So the waived fee offers work like this. First, you ask customers to pay a startup fee as a part of joining a month to month program. Typically, you wanna do that to three to five times the monthly rate. All right? So if it was a thousand dollar thing, you'd want it to be a $5,000, uh, front fee. For, you know, the example it was $4,000 a month and $25,000 signup fee. That's the idea. All right. Then you offer a discount on the entire fee if they commit to the longer term. And the commitment period should be minimum of six months, ideally 12 plus. If it's less than that, it doesn't really make any sense. So if they cancel inside the term, they pay the fee. Customers can choose to pay the big fee and keep the option to quit at any time, or they can commit to 12 months and get the fee waived. And many will commit to avoid the big fee. There's also a clear point after four, five, six months where if they paid the fee, it's the same as staying, in which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 4828,
+      "char_start": 2344,
+      "id": "continuity-offers:2",
+      "score": 15.552,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments and contracts. They can significantly increase LTV if you deliver value. So that's downsell the upsell. Now let's talk about calculating back of napkin LTV. So the simplest way to do this is look at your price, divide it by your monthly churn, and that gives you your lifetime revenue. Remember, we still have margin on this. We still have some cost of delivery. Now, the gross margin times lifetime revenue equals your lifetime gross profit. So for example, let's say our price minus our cost of goods times 100% equals our gross margins. So let's say we have a $100 price, $20 cost of goods, times 100 equals 80% gross margins. Okay. So now we take our 80% gross margins, we multiply it by our lifetime revenue, and we get $800 of lifetime gross profit. That's how much we make per customer. over lifetime. That is what you can calculate for yourself given whatever it is you have. So you divide your price by your churn, that gives you the revenue, then you basically just figure out what your gross margin is, multiply that by that, and there you go. So getting people into continuity automatically extends LTV. Even with a company that does one-time transactions, most recurring stuff that has basically no added value, I'm just being super real with you, the recurring is usually three months, which still 3X your new LTV. So if you sell physical products, which maybe have one-time use, if you just get someone into a subscription, it usually triples the value of the customer. So if half the people do that thing, then you've got half the people doing 3X and half of them doing 1X, which means you double the revenue of your business, not bad, just by making it available. So the valuable money lesson is people think more about price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

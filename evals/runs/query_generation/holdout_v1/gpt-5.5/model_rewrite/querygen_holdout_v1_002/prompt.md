@@ -1,0 +1,68 @@
+You generate one query for searching a source corpus.
+
+The system has already decided that source search is appropriate. Write the single
+query most likely to retrieve passages that directly answer the user's current
+question.
+
+Use saved business facts only when they change what evidence is needed. Do not stuff
+the query with background details merely because they are available. Do not answer the
+question. Do not provide a rationale, subject label, namespace, filter, or multiple
+queries. Do not invent facts. Do not use tools.
+
+Return only the JSON object required by the response schema.
+
+## Current user question
+
+We don't charge an implementation fee today. Could showing one and waiving it for annual customers increase commitment?
+
+## Saved business facts
+
+```json
+{
+  "business": {
+    "business_type": "B2B inventory-planning SaaS",
+    "delivery_model": "cloud software with guided onboarding and customer success",
+    "icp": "multi-location specialty retailers with small operations teams"
+  },
+  "economics": {
+    "cac": 2800,
+    "first_30_day_gross_profit": 1100,
+    "gross_margin": 0.75,
+    "lifetime_gross_profit": 18000,
+    "monthly_recurring_gross_profit": 900,
+    "payback_period_months": 2.888888888888889
+  },
+  "money_model": {
+    "attraction_offer": {
+      "description": "paid inventory cleanup pilot",
+      "exists": true,
+      "price": 500
+    },
+    "continuity": {
+      "description": "monthly software and customer-success subscription",
+      "exists": true,
+      "price": 1200
+    },
+    "core_offer": {
+      "description": "inventory planning software subscription",
+      "exists": true,
+      "price": 1200
+    },
+    "downsell": {
+      "exists": false
+    },
+    "upsell": {
+      "description": "implementation and analytics package",
+      "exists": true,
+      "price": 4000
+    }
+  },
+  "problem": {
+    "reported_symptoms": [
+      "many customers cancel during the fourth month",
+      "new-customer acquisition requires more cash than month-one gross profit"
+    ],
+    "user_goal": "reduce month-four churn and improve acquisition payback"
+  }
+}
+```

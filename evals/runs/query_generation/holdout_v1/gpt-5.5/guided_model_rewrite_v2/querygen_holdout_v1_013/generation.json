@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_013",
+  "created_at": "2026-08-10T22:02:39Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 5801.3,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "Rollover Upsell credit the prior purchase apply first fee toward larger package economics credited amount several times larger offer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4501,
+  "valid": true
+}

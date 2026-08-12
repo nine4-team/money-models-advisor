@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "waived-fee",
+      "char_end": 6484,
+      "char_start": 3979,
+      "id": "waived-fee:2",
+      "score": 18.007,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk year to year by waiving those fees. And if they commit and they wanna quit early, then okay, they pay the fee as though they had paid month to month from the beginning. Very simple. Bottom line is that customers will stay longer if leaving costs more than staying. And to make this equitable, if they stay the full term, they can cancel if they choose with no fee. That's what makes it fair to both parties. So if you need to feel better about yourself for charging these things, uh, whether real or made up, you should get that looked at. But if you need a reason why, well, here's a perfectly reasonable also made up reason for you. You can say this. \"Whenever we onboard a new customer, it always takes more resources than an existing customer who's been with us for multiple months. So in order to give you the best experience, we charge a one-time onboarding fee, setup, activation, engagement, enrollment,\" whatever made up thing you wanna say, \"to give you the experience, that experience. So you'll never have to pay it again and it's for your own benefit so you get the most out of your experience. Now, we know that if you learn how to use our services the right. way, you'll be 23.7X times more successful.\" So you can say initiation, onboarding, enrollment, startup, setup, processing, activation, build, commencement. You can just use whatever words you want and then put the word \"fee\" afterwards, and that's what it. can be. So that is our description. Let me give you some examples. So we'll use all combinations, but we'll assume $5,000 onboarding fee and a thousand dollars a month for all of them. Okay? So waived fee with commitment. This is my personal favorite. It's clean and simple. Commitment's 12 months, monthly rate's a thousand dollars a month, fee is $5,000 if they pay month to month. Option A, pay one time five grand plus a thousand dollars for the first month, then pay $1,000 a month thereafter, cancel whenever you want. Option B, waive the $5,000 if you commit to 12, pay $1,000 per month, only pay the $5,000 fee if you break your commitment early. Boom. Very simple, very straightforward. There's the"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 2441,
+      "char_start": 0,
+      "id": "continuity-offers:0",
+      "score": 17.024,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "So we just finished the downsell offer section, and now we move on, to the magic of continuity offers. I've been a continuity guy my whole life, and so this is a section that I hold near and dear to my heart. It has made me a tremendous amount of money. It also stabilizes cash flow for the business. And so in our four money. models, we have attraction, upsells, down sells, and now, kaboom, continuity. So continuity. offers provide ongoing value that customers make ongoing payments for until they cancel. They boost the profit from every customer and give you one last thing to sell. Continuity offers are awesome because you sell. once and get paid again, and again, and again. So here's my quick explanation. Let's say you offer something for $1,000 to 100 people and 10 people buy. You make $10,000. 10 times $1,000. Okay. Now, let's say that you talk to the same 100 people, but you make your $1,000 thing $50 a month instead. And at 50 bucks, we can get 40 out of the 100 to buy. \u00d0\u00b8. And if you keep those people, for 20 months, you still make $1,000 from each customer. So you go from making $10,000 now and zero dollars over time to $2,000 now and $40,000 over time. And as an added bonus, in the first example, if you only sold 10 customers, you'd only have 10 customers to upsell later. If you use a continuity offer and sold 40 customers, you'd have four times the customers to upsell later, which is a massive difference. This is fundamentally why people do continuity. You can sell more people at a lower price, you can still collect the same LTV, and you get four times the customers to upsell later. The pros are you can attract more customers compared to something more expensive. The cons are but you make way less money now, which makes it tough to use as an attraction offer on its own, which is why we put it last, or at least why I tend to put it last. So the TL;DR is that by making continuity offers last, we get the best of all worlds. We get cash today from attraction offers, upsell offers, and downsell offers, and we get a little cash today and tons of cash tomorrow from continuity offers. Note, to be clear, you can make continuity offers whenever and however you want. There are no rules, all right? They can attract new customers, upsell and downsell current customers, or reengage old customers, same as all the others. So the objective here for continuity offers within the money models that I explain is"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 19915,
+      "char_start": 17975,
+      "id": "continuity-discounts:11",
+      "score": 16.848,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "That's not gonna work. You wanna tell, you wanna let them vent. You wanna feel, have them feel validated. You wanna be more upset than them. You wanna have them calm you down. You say that you made the mistake and that's unacceptable. Ask them to, see if you can make it up to them. Then you do a rollover and you get a do-over. That's the idea. Those are the important points. Whoo. All right. Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 8434,
+      "char_start": 5920,
+      "id": "waived-fee:3",
+      "score": 16.572,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "thousand dollars a month, fee is $5,000 if they pay month to month. Option A, pay one time five grand plus a thousand dollars for the first month, then pay $1,000 a month thereafter, cancel whenever you want. Option B, waive the $5,000 if you commit to 12, pay $1,000 per month, only pay the $5,000 fee if you break your commitment early. Boom. Very simple, very straightforward. There's the visual. If you want, you can do a different version of this where you keep, uh, the month to month rate higher. So if they cancel, the discounted commitment, you bill the difference. All right? So let's say, uh, they, basically the longer they stay, the bigger the cancellation rate. So if they've accrued, you know, uh, $177 of savings or $67 of savings every single month on their commitment, the day they wanna, they wanna break the contract, they pay the difference in savings up to that point. Now let's do some important points. So four variables for this method. You've got the commitment length, you've got the commitment rate, you've got the month to month rate, and you've got the fee that they're gonna waive or not. There are more versions of this beyond the two that I shared. You can figure them out on your own. Now, I had an earlier version of this that had like nine different versions and my editor was like, \"You're honestly just gonna confuse people, so don't do that.\" So fundamentally though, you can mix and match these however you want. You can have a, like the rate difference between the people who commit can be less. You can have, uh, the length be a variable. Uh, the rate that you charge month to month is different, the fee that you waive. So all of those things kind of go into this deal structure. The recommendation that I have is a model that works, which is take the price, multiply it by five, make that the fee, waive it-And that holds, that basically hangs over their head the whole time. And if you want, again, the ethical reason for this is that many businesses and many services have emotional ups and downs. They're volatility for customers. And so having something kind of like guardrails to keep someone on point during the rough months can help them overall see success. And I believe that. So that's not just not, that's not just wordsmithing. That's true. Um, and this vehicle or pricing structure, money model, allows you to build incentives around that. All right. So fees get them to start. People get value out of committing immediately because they avoid a fee. People"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 10930,
+      "char_start": 8464,
+      "id": "continuity-discounts:8",
+      "score": 15.112,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations. So if someone cancels during a trial, so you can say you're allowed to cancel during the trial. Now if you do that, it'll increase sales, 'cause then people will be like, \"Okay, well, this is easy. This is no risk.\" But, uh, you'll decrease stick rate, meaning the number of people who will stay on the back end. The other version of this is that you can have zero cancellations and say there are no cancellations allowed, which works with good customers, but it will decrease sales and increase stick. Sometimes though, I mean, for example, Netflix and some of these other massive companies, they don't even try that, because they have customers that are unenforceable. And so if you're gonna have zero cancellations, make sure it's with good customers. If you do zero cancellation policy on bad customers, you will decrease sales, but you will not increase stick. So you'll just get the cost but not the benefit. Another way of doing this is a prorated fee based on savings accrued. That just sounds like fancy terms, but basically if they cancel, uh, you know, at month six and got two months free, you just bill them the difference of what they saved over that six months. And this one is probably the simplest way of doing it, which is you just have a one-time breakup fee. So you have an outlaw- out clause. It increases stick, it increases sales, and you get money on the way out, and you can also use it as a negotiating chip to figure out something else. I like this one because it's the easiest to explain. It's very simple. And I like the negotiating chip personally. So the way this would look would be, \"Hey, um, listen. You can c- like, you have a 12-month agreement. If you wanna get out of the agreement, it costs you two months.\" That's it. So it's very straightforward. So if you cancel at month one or month 11, it doesn't really matter. It's two months breakup fee. Now, when they come to break up, you set it up front. They initial next to it. And you say, \"Hey, this two-month breakup fee. What was the issue?\" And then you can try and leverage that,"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

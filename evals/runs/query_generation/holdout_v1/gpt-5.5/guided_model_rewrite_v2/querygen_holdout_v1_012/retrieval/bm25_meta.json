@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Feature Downsells reduced-scope offer remove features lower price instead of discounting identical offer price objection",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 95.3,
+  "returncode": 0,
+  "stderr": ""
+}

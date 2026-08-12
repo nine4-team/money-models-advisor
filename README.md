@@ -46,12 +46,12 @@ PYTHONPATH=src python3 -m money_model_architect.cli session start \
   --user-message "what should we do next?"
 ```
 
-Search source material from an explicit agent-selected SourceNeed:
+Search source material from one explicit corpus-guided request:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli search \
   --business-dir /path/to/company \
-  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?"}'
+  --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}'
 ```
 
 Record a completed agent-operated turn:
@@ -179,7 +179,7 @@ python3 scripts/compare_retrieval_backends.py --query-source generated_variants 
   --report evals/reports/retrieval_backend_comparison_generated_variants_pinecone_layer_namespaces_oracle.md
 ```
 
-The hosted Pinecone namespace benchmark uses bounded per-case parallel retrieval because query variants and multi-layer namespaces create retrieval fanout. The current result supports keeping single namespace plus metadata filters as the v1 default: the two conditions returned identical top-5 results in identical order across all 90 per-case rows, and the namespace split adds hosted vector searches on multi-layer cases. The split also worsens tail latency (p95 retrieval about 3.01s vs 1.76s): at this corpus size, Pinecone query time is round-trip dominated, so scoping a query to a smaller namespace saves nothing while fanning one round-trip out into several — and the case waits for the slowest. See DESIGN.md for the full experiment record.
+The current hosted benchmark uses the active 46-case, one-query path and framework-aware chunks. A single unfiltered namespace preserves 93.5% Hit@1 and 100% Hit@5 at 4.07s p50 and 7.64s p95. An oracle subject split does not improve the hit-rate cutoffs and worsens p95 to 10.47s, so the runtime keeps one namespace and treats hosted latency optimization as open work. See `evals/reports/active_query_pinecone_revalidation.md`.
 
 Run the product-harness model-routing baseline. This uses `codex exec`, so the model acts as an agent, can run the local CLI, and writes normal trace artifacts. It does not use `OPENAI_API_KEY`:
 
@@ -209,7 +209,7 @@ python3 scripts/capture_source_event_trace.py prepare sourceevents_v1_001
 python3 scripts/capture_source_event_trace.py complete \
   evals/runs/source_events/post_hardening/sourceevents_v1_001 \
   --actions-json '["read_snapshot","calculate","diagnose","search_source_material","search_source_material","turn_record"]' \
-  --source-events-json '[{"source_need":{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period"]},"query":"CAC payback period","chunks":[{"id":"payback-period:0"}]},{"source_need":{"intent":"recommendation_evidence","layers":["upsells"],"focus_terms":["upsell","first 30 day gross profit"]},"query":"upsell first 30 day gross profit","chunks":[{"id":"upsells:0"}]}]'
+  --source-events-json '[{"search_request":{"intent":"diagnostic_evidence","user_turn":"what should we fix first?","query":"client financed acquisition CAC gross profit payback period"},"query":"client financed acquisition CAC gross profit payback period","chunks":[{"id":"payback-period:0"}]},{"search_request":{"intent":"recommendation_evidence","user_turn":"what should we fix first?","query":"upsell offers first 30 day gross profit payback"},"query":"upsell offers first 30 day gross profit payback","chunks":[{"id":"upsells:0"}]}]'
 python3 scripts/eval_source_event_traces.py --runs-dir evals/runs/source_events/post_hardening_expanded_v2
 ```
 
@@ -235,20 +235,20 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - A 32-query pilot retrieval set.
 - A draft realistic user-intent query set in `evals/realistic_queries.jsonl`, documented in `evals/reports/query_realism.md`.
 - A local retrieval baseline report in `evals/reports/local_retrieval_baseline.md`.
-- A chunking comparison report in `evals/reports/chunking_comparison.md`; `heading-aware` remains the default, while `framework-aware` is tracked as a candidate.
+- Chunking comparison and active-path revalidation reports; `framework-aware` is the runtime default after preserving 100% Hit@5 while eliminating multi-thousand-word heading chunks.
 - A 65-label reviewed required-claim support set in `evals/obligations.jsonl`, plus a local review UI in `scripts/review_obligations.py`.
 - A required-claim support scorer in `scripts/score_obligation_support.py`; accepted-label BM25 heading-aware coverage is currently 87.69%.
 - A corrected architecture direction for setup/intake plus snapshot-backed agent operation.
 - `BusinessSnapshot v1` implemented in `src/money_model_architect/snapshot.py`.
 - Setup/intake state directory implemented in `src/money_model_architect/business_context.py`.
 - Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
-- Advisor runtime query policy implemented in `src/money_model_architect/advisor_queries.py`.
+- Advisor runtime single-query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
 - Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
 - Source-event trace eval implemented in `evals/advisor_source_event_cases.jsonl`, with report generation in `scripts/eval_source_event_traces.py`.
-- Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented for post-source-need retrieval experiments. BM25 is treated as the lexical baseline/control. The golden search-query slice now has 30 cases; after constrained query variants plus fusion, hybrid is the candidate product path, with continued golden-set validation required before calling it final.
-- Agent-facing source-need search implemented in `search --source-need-json`.
+- Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented. BM25 is the lexical control. The active path uses one corpus-guided query with unfiltered hybrid retrieval; the approach leads the 46-case audited regression suite, and the hybrid-backend decision holds under both tested query writers.
+- Agent-facing single-query search implemented in `search --search-request-json`; the older `--source-need-json` remains only for reproducing historical evals and manual debugging.
 - Agent-facing session workbench implemented in `session start`; it loads state, recent traces, known/missing facts, operation names, and trace requirements without synthesizing an answer.
 - Agent-facing completed turn persistence implemented in `session finish`; lower-level `turn record` remains available for tests and scripts.
 - Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.

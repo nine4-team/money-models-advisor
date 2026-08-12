@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from money_model_architect.advisor_queries import SourceNeed, build_advisor_queries
+from money_model_architect.advisor_queries import SearchRequest, SourceNeed, build_advisor_queries
 from money_model_architect.advisor_retrieval import execute_advisor_queries
 from money_model_architect.snapshot import BusinessSnapshot
 
@@ -105,31 +105,24 @@ class AdvisorQueryPolicyTest(unittest.TestCase):
         self.assertIn("gross profit", teaching_query.query)
         self.assertIn("attraction offer", comparison_query.query)
 
-    def test_query_variants_are_emitted_before_fallback(self):
+    def test_current_search_request_emits_one_unfiltered_query(self):
         snapshot = diagnosable_snapshot()
-        source_need = SourceNeed(
+        search_request = SearchRequest(
             intent="teaching_evidence",
             subjects=("unit-economics",),
             focus_terms=("gross profit", "fulfillment cost", "CAC"),
             user_turn="why do we need fulfillment cost?",
-            query_variants=(
-                "why cost to deliver affects gross profit CAC payback ads",
-                "gross profit after fulfillment cost pays back customer acquisition cost",
-            ),
+            query="fulfillment cost gross profit customer acquisition cost payback",
+            target_namespaces=("unit-economics",),
         )
 
-        queries = build_advisor_queries(snapshot, source_need)
+        queries = build_advisor_queries(snapshot, search_request)
 
-        self.assertEqual(
-            [query.reason for query in queries[:2]],
-            [
-                "Agent-generated query variant for the selected source need.",
-                "Agent-generated query variant for the selected source need.",
-            ],
-        )
-        self.assertEqual(queries[-1].reason, "Deterministic fallback query from source-need focus terms and compact business context.")
-        self.assertEqual(queries[0].subject, "unit-economics")
-        self.assertIn("fulfillment cost", queries[-1].query)
+        self.assertEqual(len(queries), 1)
+        self.assertEqual(queries[0].query, search_request.query)
+        self.assertEqual(queries[0].subjects, ())
+        self.assertEqual(queries[0].target_namespaces, ())
+        self.assertEqual(queries[0].reason, "Corpus-guided query authored by the agent for the current question.")
 
 
 if __name__ == "__main__":

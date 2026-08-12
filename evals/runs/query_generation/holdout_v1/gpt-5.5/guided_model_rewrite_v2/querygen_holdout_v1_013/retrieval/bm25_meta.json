@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Rollover Upsell credit the prior purchase apply first fee toward larger package economics credited amount several times larger offer",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 97.0,
+  "returncode": 0,
+  "stderr": ""
+}

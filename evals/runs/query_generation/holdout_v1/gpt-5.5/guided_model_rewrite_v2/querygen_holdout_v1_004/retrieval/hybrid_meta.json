@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "software has high lifetime gross profit but first 30 day gross profit is less than CAC tying up cash at acquisition what diagnosis payback period client financed acquisition",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 599.0,
+  "returncode": 0,
+  "stderr": ""
+}

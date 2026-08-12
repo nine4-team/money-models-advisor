@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "A prospect wants the full program but cannot cover all of it this week. How can we change the timing without cutting what they get?",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 88.0,
+  "returncode": 0,
+  "stderr": ""
+}

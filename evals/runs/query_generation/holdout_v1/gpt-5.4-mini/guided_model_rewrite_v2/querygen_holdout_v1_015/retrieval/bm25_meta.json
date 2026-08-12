@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "attraction offer qualified prospects enter sales conversations liquidate CAC front-end offer money model offer stack",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 91.3,
+  "returncode": 0,
+  "stderr": ""
+}

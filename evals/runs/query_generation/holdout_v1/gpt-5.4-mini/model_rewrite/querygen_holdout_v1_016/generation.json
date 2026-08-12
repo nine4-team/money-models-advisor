@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_016",
+  "created_at": "2026-08-11T23:29:18Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7479.8,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "rollout one offer at a time audit add-on smaller package monitoring",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 962,
+  "valid": true
+}

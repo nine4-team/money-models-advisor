@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "gross profit fulfillment cost customer acquisition cost payback ads work",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "how-businesses-make-money",
+      "char_end": 5488,
+      "char_start": 3911,
+      "id": "how-businesses-make-money:2",
+      "score": 18.202,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period\n\nWhich then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math. So you're here, and you can do math. So if you're looking closely, you may notice that there's three numbers that make the biggest difference here. All right? So number one is CAC, which is the cost of our customer. The second. is the fact that I talk about this 30-day thing. Like, why am I talking about 30 days? And the third is gross profit, which those three, metrics triangulate acquisition, meaning getting new customers. CAC is how much it costs. GP is to make a profit. In short, PPD means payback period. How long it takes you to make that money back. How long it takes you to make your cost back. So ideally, you get, have low CAC, which means you have cheap customers. You have high GP, who pay you lots of money, and then short payback period, which means really fast. Outcome is more money faster. All right. And that's pretty much the training in this book. Like, that's what this is all about. So that's, that's what we accomplished. The rest of this is all about how. Okay? So boom, those are the three numbers that matter, and let's get into the first one in a little bit more detail, 'cause some of you guys are like, \"CAC? Sounds like something my cat threw up.\" Understood. That's the next one."
+    },
+    {
+      "chapter": "gross-profit",
+      "char_end": 2439,
+      "char_start": 0,
+      "id": "gross-profit:0",
+      "score": 17.495,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "Gross profit. All right, let's rock in. So this is the second of the three metrics that we look at to triangulate acquisition. We started with CAC. You have to have cheap customers. We talked about the different ways to improve it, free or discount, different ways to display discounts. Uh, but now we're gonna talk about gross profit. Okay? So we're gonna define what it. is, why it's important, examples, calculating and improving it. All right, let's rock. So gross profit, the difference between the price and the cost of goods sold. So cost of goods or COGS is what it costs you to deliver the thing. All right? So if it cost me $9 to deliver meals and I sell it for 10, then I got $1 in. gross profit. All right? Very straightforward. Now, here's why this is important. So the problem is that most businesses think they need cheaper leads, when in reality they need to make more money per customer. And so my observation is that the CAC... This is, this is me, like high level, 'cause I see lots of businesses. CAC. between competitors is often fairly similar. So a lot of people are, you know, obsessing about how they're like, you know, they wanna improve their ads and things like that. And sometimes you do need to do that. But the ranges are actually much tighter than you'd think. So you might see somebody who's, you know, acquiring customers. at $2,500. Somebody and somebody else in the marketplace might be $3,500. Rarely would you see somebody at like $6,000 unless they're like just getting into the market. But the CAC for specific avatars is usually pretty tight in terms of ranges when I see many businesses in the same industry. Now that may surprise you, but that just like kind of is what it, is. But the difference between how much money these, these companies make is often how much customers are worth. Now that is where the huge discrepancy between businesses exists. So this is the difference between the whales and the minnows, is how much they make per customer, gross profit. All right? So let me tell you a quick story. So I did a consulting day years and years and years ago. This might have been the first five I've ever done in my whole life. Um, and a guy was in the same space as me. And you're like, \"Wait, Alex, why would you help someone who's a quote competitor?\" I don't see the world that way. So guy came in and he was selling the same number of units per month as me. All right? Same number of"
+    },
+    {
+      "chapter": "cfa",
+      "char_end": 2368,
+      "char_start": 0,
+      "id": "cfa:0",
+      "score": 17.127,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "So, we just triangulated the cost to acquire our customers, uh, gross profit and payback period. That is what creates client finest acquisition. And I wanna unleash the three levels of advertising. This is also not in the book for you. All right, so, client finest acquisition, or CFA, the three levels of advertising. So this is how I would describe three levels of advertising. for you. as a business owner. So let's start with level one. This is where lifetime gross profit is greater than the cost to acquire a customer. This is the dull level. All right? So you've gotta make more money than it costs you to make it over the lifespan of the customer, ideally at least three times more. So, what it costs you to make the money, how much money you make. Fundamentally, that's it. If you don't have that, then you don't have a business. So you need at least this to be a business that can make money and grow. So level two is 30-day gross profit, not lifetime. Notice the big difference here is the time difference. This is forever, and this is in the first month, all right, is greater than CAC. I'll explain why the first month is so important in a second. All right, so we wanna make more money than it costs you to make it in 30 days. And so the result, this is the key part, is that you never spend your own money to grow. And so why is 30, why is 30 days the number? Because that's the amount of time that any business can borrow money with zero interest in the form of a credit card or credit lines. Many businesses, banks will even give you cr- uh, interest-free credit lines for 30, sometimes 60, sometimes 90 days depending on, you know, your relationship with the bank, how much money it is, whatever. But at least every business can get 30-day interest-free money. And so that means that the way the financial system exists right, now, at least in America, you can get money and not pay for it as long as you pay it back in a month, which means that my objective for you, because I've always operated on, I've owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 4329,
+      "char_start": 2067,
+      "id": "payback-period:1",
+      "score": 17.049,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner and you were like, \"Well, I don't wanna offer a helmet. I don't wanna offer shoes. I don't wanna offer glo- I don't wanna seem pushy,\" she wants to buy them! She signed up for a race. She's going t- she's going to buy them. It's just whether she's gonna buy them from you or the guy down the street. And there's a very big difference between hard selling and letting a customer know the offers you have available. You're making offers available to them. And if you ha- think about it this way. If someone has a problem and you have the ability to solve it, it's my opinion that ethically, you should let them know you can solve it, and what it would cost them for you to do it for them. You make them aware. If they say no, no problem! Fine! But at least tell them. Make the offer. Because you sell 0% of people who don't know you have something to sell. You are making offers. They can choose to take them or not, and if you believe in what you sell solves the problem, then solve more problems. Yes is cool. No, also not... also not cool. Yes, also cool. All right, so that's the importance. So let's do a quick example. So payback periods. So if it costs you $160 to acquire a customer, CAC, and you sell them widget for $100 a month, that costs you 20 bucks gross profit, so $80, what's your payback period? We make $100 from the- for the person who buys their first month. Our gross profit's 80 'cause we have to have 20 bucks better off for cost of goods. So that means that I spent 160 but I made 100 back, but I had another cost of 20 for my cost of goods, so I have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period?"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 2417,
+      "char_start": 0,
+      "id": "payback-period:0",
+      "score": 16.812,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. All right, so, we got the definition, why it's important, examples, and then how to improve it. Let's start with definition. So payback period, how long it takes until gross profit, is greater than CAC. In other words, how long does it take to break even? The shorter it is, the easier it is to scale your advertising. So if I break even in a day versus breaking even in five years, it's a lot easier f- for me to scale. Right? 'Cause I get my dollar back tomorrow, then I can spend it again. Some people call this a cash conversion cycle. I probably won't say that again, but just in case you hear it, that's what that means. All right, so that's the definition. Here's the importance. All right, so problem number one, businesses take too long to break even on getting new customers. And so they have to manage cash flow by making a marketing budget. I think this is silly. We solved that problem. Problem number two is that businesses feel guilty making multiple offers in a row because they think that they bother people. They are wrong. The people who feel this way are poorer than they should be. And that's exactly how buyers buy, by the way, is that there's short windows of time that they go super hyper-buying cycle and then they go dormant again. And so if you do not take advantage of this hyper-buying cycle when someone makes a new decision or starts a new lifestyle or make, creates a new identity for themselves, you will miss out, and another business who is intelligent, who makes more money than you, will profit. So, here's a story you probably haven't heard before. So, uh, friend of mine, business owner, decides to lose weight, and, uh, remembers that they like riding bikes, and goes online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

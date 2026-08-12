@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 85.7,
+  "returncode": 0,
+  "stderr": ""
+}

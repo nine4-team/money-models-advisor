@@ -429,12 +429,23 @@ def first_useful_rank(returned_ids: list[str], useful_ids: set[str]) -> int | No
     return None
 
 
-def score_result_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def score_result_rows(rows: list[dict[str, Any]], *, top_k: int = 5) -> dict[str, Any]:
+    if top_k < 1:
+        raise ValueError("top_k must be at least 1")
     total = len(rows)
     valid_rows = [row for row in rows if row.get("error") is None]
     completed = len(valid_rows)
     ranks = [row["first_useful_rank"] for row in valid_rows if row["first_useful_rank"] is not None]
     latencies = [row["retrieval_latency_ms"] for row in valid_rows]
+    useful_counts = [
+        len(row.get("useful_returned_chunk_ids", [])[:top_k])
+        for row in valid_rows
+    ]
+    useful_slots = sum(useful_counts)
+    result_slots = completed * top_k
+    precision_at_k_pct = (
+        round(100 * useful_slots / result_slots, 1) if result_slots else None
+    )
     return {
         "cases": total,
         "completed_cases": completed,
@@ -456,6 +467,26 @@ def score_result_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "hit_at_5": len(ranks),
         "hit_at_5_pct": round(100 * len(ranks) / completed, 1) if completed else None,
         "mean_first_useful_rank": round(sum(ranks) / len(ranks), 3) if ranks else None,
+        "top_k": top_k,
+        "useful_results": useful_slots,
+        "result_slots": result_slots,
+        "mean_useful_results_at_k": (
+            round(statistics.mean(useful_counts), 3) if useful_counts else None
+        ),
+        "median_useful_results_at_k": (
+            round(statistics.median(useful_counts), 3) if useful_counts else None
+        ),
+        "precision_at_k_pct": precision_at_k_pct,
+        "noise_at_k_pct": (
+            round(100 - precision_at_k_pct, 1)
+            if precision_at_k_pct is not None
+            else None
+        ),
+        "useful_results_per_case_distribution": {
+            str(count): useful_counts.count(count)
+            for count in range(top_k + 1)
+            if count in useful_counts
+        },
         "mean_retrieval_latency_ms": round(statistics.mean(latencies), 1) if latencies else None,
         "misses": [row["case_id"] for row in valid_rows if row["first_useful_rank"] is None],
         "missing_cases": [row["case_id"] for row in rows if row.get("error") is not None],
@@ -479,15 +510,54 @@ def summarize_generation(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def render_report(summary: dict[str, Any]) -> str:
+    is_holdout = summary.get("case_splits") == ["holdout"]
+    is_expansion = summary.get("case_splits") == ["expansion"]
+    dataset_kind = (
+        "reserved holdout"
+        if is_holdout
+        else "regression expansion"
+        if is_expansion
+        else "exposed development"
+    )
+    if is_holdout:
+        opening_boundary = (
+            "All queries and retrieval results were frozen before a method-neutral semantic audit "
+            "of the shared relevance labels. Every query was retrieved through the public CLI "
+            "with no subject filter."
+        )
+        interpretation_boundary = (
+            "The post-run audit corrected both omitted relevant passages and overly broad prior "
+            "labels without changing any query or retrieval result. Because that audit was performed "
+            "by Codex rather than an independent human reviewer, this is reviewed holdout evidence, "
+            "not an independently human-adjudicated benchmark."
+        )
+    elif is_expansion:
+        opening_boundary = (
+            "This frozen slice is now part of the shared regression suite. Every query was "
+            "retrieved through the public CLI with no subject filter."
+        )
+        interpretation_boundary = (
+            "These cases are known and reviewed regression evidence, not an unopened holdout. "
+            "Future changes should be checked across the complete shared suite."
+        )
+    else:
+        opening_boundary = (
+            "This is development evidence, not the reserved holdout decision. Every query was "
+            "retrieved through the public CLI with no subject filter."
+        )
+        interpretation_boundary = (
+            "Prompts and the corpus guide may be revised using these exposed development cases, "
+            "with every revision versioned. Final selection should be checked on reserved cases."
+        )
     lines = [
         "# Query Generation Method Comparison",
         "",
         f"**Created:** {summary['created_at']}",
-        f"**Dataset:** `{summary['cases_file']}` ({summary['case_count']} exposed development cases)",
+        f"**Dataset:** `{summary['cases_file']}` ({summary['case_count']} {dataset_kind} cases)",
         f"**Generation model:** `{summary['model']}` for model-driven conditions",
         f"**Method version:** `{summary['method_version']}`",
         "",
-        "This is development evidence, not the untouched holdout decision. Every query was retrieved through the public CLI with no subject filter.",
+        opening_boundary,
         "",
         "## Generation",
         "",
@@ -509,10 +579,10 @@ def render_report(summary: dict[str, Any]) -> str:
             "## Retrieval",
             "",
             "Quality percentages use only completed searches as the denominator. Coverage makes interrupted or missing executions explicit.",
-            "Rows with incomplete coverage are descriptive only and must not be compared directly with complete 30-case rows.",
+            "Rows with incomplete coverage are descriptive only and must not be compared directly with complete rows.",
             "",
-            "| Method | Backend | Coverage | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank | Mean retrieval latency | Errors |",
-            "|---|---|---:|---:|---:|---:|---:|---:|---:|",
+            f"| Method | Backend | Coverage | Hit@1 | Hit@3 | Hit@5 | Useful@{summary['top_k']} | Noise@{summary['top_k']} | Mean first useful rank | Mean retrieval latency | Errors |",
+            "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for method in summary["methods"]:
@@ -522,6 +592,7 @@ def render_report(summary: dict[str, Any]) -> str:
             lines.append(
                 f"| `{method}` | `{backend}` | {result['completed_cases']}/{result['cases']} | "
                 f"{result['hit_at_1_pct']:.1f}% | {result['hit_at_3_pct']:.1f}% | {result['hit_at_5_pct']:.1f}% | "
+                f"{result['precision_at_k_pct']:.1f}% | {result['noise_at_k_pct']:.1f}% | "
                 f"{rank if rank is not None else '-'} | {result['mean_retrieval_latency_ms'] or '-'} ms | "
                 f"{result['execution_errors']} |"
             )
@@ -545,7 +616,7 @@ def render_report(summary: dict[str, Any]) -> str:
             "",
             "## Interpretation boundary",
             "",
-            "Prompts and the corpus guide may be revised using these exposed development cases, with every revision versioned. No method should be promoted until the frozen finalists are evaluated on the independently reviewed holdout.",
+        interpretation_boundary,
             "",
         ]
     )
@@ -629,6 +700,14 @@ def cmd_score(args: argparse.Namespace) -> int:
                 returned_ids = [item["id"] for item in response.get("source_material", [])] if response else []
                 useful_ids = set(case["known_useful_chunk_ids"])
                 rank = first_useful_rank(returned_ids, useful_ids)
+                useful_returned_ids = [
+                    chunk_id for chunk_id in returned_ids if chunk_id in useful_ids
+                ]
+                useful_result_count = len(useful_returned_ids[: args.top_k])
+                precision_at_k_pct = round(
+                    100 * useful_result_count / args.top_k,
+                    1,
+                )
                 row = {
                     "backend": backend,
                     "case_id": case["case_id"],
@@ -638,7 +717,10 @@ def cmd_score(args: argparse.Namespace) -> int:
                     "query": query,
                     "retrieval_latency_ms": meta["latency_ms"],
                     "returned_chunk_ids": returned_ids,
-                    "useful_returned_chunk_ids": [chunk_id for chunk_id in returned_ids if chunk_id in useful_ids],
+                    "useful_returned_chunk_ids": useful_returned_ids,
+                    "useful_result_count_at_k": useful_result_count,
+                    "precision_at_k_pct": precision_at_k_pct,
+                    "noise_at_k_pct": round(100 - precision_at_k_pct, 1),
                 }
                 rows.append(row)
                 grouped[method][backend].append(row)
@@ -658,6 +740,7 @@ def cmd_score(args: argparse.Namespace) -> int:
     summary = {
         "backends": args.backends,
         "case_count": len(cases),
+        "case_splits": sorted({str(case.get("split", "development")) for case in cases}),
         "cases_file": rel_path(args.cases),
         "created_at": utc_now(),
         "method_version": ", ".join(
@@ -677,7 +760,7 @@ def cmd_score(args: argparse.Namespace) -> int:
         },
         "results": {
             method: {
-                backend: score_result_rows(grouped[method][backend])
+                backend: score_result_rows(grouped[method][backend], top_k=args.top_k)
                 for backend in args.backends
             }
             for method in args.methods

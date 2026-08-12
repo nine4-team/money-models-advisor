@@ -1,0 +1,41 @@
+{
+  "cases": 46,
+  "chunking": "framework-aware",
+  "conditions": {
+    "single": {
+      "cases": 46,
+      "hit_at_1_pct": 93.5,
+      "hit_at_3_pct": 97.8,
+      "hit_at_5_pct": 100.0,
+      "mean_first_useful_rank": 1.152,
+      "mean_latency_ms": 4635.01,
+      "mean_returned_words": 2476.3,
+      "misses": [],
+      "noise_at_5_pct": 21.7,
+      "p50_latency_ms": 4065.74,
+      "p50_returned_words": 2476.0,
+      "p95_latency_ms": 7644.41,
+      "useful_at_5_pct": 78.3
+    },
+    "subject_oracle": {
+      "cases": 46,
+      "hit_at_1_pct": 93.5,
+      "hit_at_3_pct": 97.8,
+      "hit_at_5_pct": 100.0,
+      "mean_first_useful_rank": 1.13,
+      "mean_latency_ms": 3723.14,
+      "mean_returned_words": 2502.1,
+      "misses": [],
+      "noise_at_5_pct": 21.7,
+      "p50_latency_ms": 2276.93,
+      "p50_returned_words": 2467.0,
+      "p95_latency_ms": 10466.58,
+      "useful_at_5_pct": 78.3
+    }
+  },
+  "experiment": "active-query-pinecone-revalidation",
+  "max_workers": 1,
+  "query_writer": "gpt-5.5/guided_model_rewrite_v2",
+  "ranking_parity_cases": 37,
+  "retriever": "Pinecone hybrid, one query per case"
+}

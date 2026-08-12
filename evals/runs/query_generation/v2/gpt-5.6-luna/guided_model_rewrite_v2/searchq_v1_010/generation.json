@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_010",
+  "created_at": "2026-08-10T22:35:16Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7564.9,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.6-luna",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "What type of attraction offer or front-end offer should a premium full-service interior design firm use to get more short-term-rental owners to engage and make a first purchase at a viable CAC, considering the existing $597 STR Design Diagnostic and the barrier to buying a $15,000+ full-service design offer? Compare relevant attraction-offer mechanisms such as free with consumption, decoy offers,,",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 5125,
+  "valid": true
+}

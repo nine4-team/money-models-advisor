@@ -1,0 +1,76 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "when to pitch an add-on after diagnostic purchase upsell timing",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "payback-period",
+      "char_end": 5097,
+      "char_start": 2816,
+      "id": "payback-period:2",
+      "score": 9.8,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period? Two months. Also, to be really clear here, if it costs you 160 bucks to acquire a customer, some people are like, \"It takes me one and a half months to break even here,\" because they see $100 in revenue and they say, \"Oh, it's one and a half months.\" You have to take out your cost of goods in the payback period. If it costs me $9 in meals and I sell 10 bucks for the meal, I make a dollar. I can't say, \"Oh, you know, they paid me 20 bucks. It cost me 20. I break even in two months.\" You have to do it off gross profit. All right, so here's how to improve it. You can make them more, better, or new offers, and here's the key part, in the first 30 days. And the key part is to do- to do it at the right, moment. The reason that somebody will not take an upsell from you is 'cause you did it the wrong way or at the wrong time or you described it poorly, or they're the wrong person. Right? And so, let' me give you this supplement sale example. This is just, uh, zoned in on. timing, presenting it at the right time. So I say this because some of you might have an amazing upsell offer. You're just, you're just presenting it not when the problem, uh, exists, all right, or creates itself. So I tried to sell supplements after people bought services from me, and it didn't work. Now, I could give you a whole bunch of theories around that. Someone comes in saying they wanna lose weight, and I say, \"Awesome, let's get you signed up.\" And then right then after they signed up, I say, \"Oh, by the way, buy these supplements.\" And you might think, \"Wait, isn't that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 5457,
+      "char_start": 2991,
+      "id": "payback-period:3",
+      "score": 8.965,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they come in for nutrition orientations, and then I would walk through their food. And so with the food, then I would say, \"Oh, you're not eating these things. You should probably add this stuff in.\" I created a new problem which I could then solve with supplements. And so the thing is, is that you wanna be able to offer it at the right time. You sell at the point of greatest deprivation, not at the point of greatest satisfaction. But re- like, advanced people know what I just said. Beginners, please hear that again. You sell at the point of greatest deprivation, at the point of greatest pain, not at the point of greatest satisfaction. If I just had a big steak dinner-And then you say, \"Do you want another steak? You might have amazing steak. I don't need any more steak. I'm satisfied.\" And a lot of you guys are trying to make your upsell offer after I already ate a steak. Now, I might have a dessert stomach that's open, but my steak stomach is full. So we create deprivation, we make offers at the moment of deprivation. If somebody's really thirsty in the desert, after you give them the cup of water, they don't want the second cup as much as they wanted the first one. So the timing matters. So these are the times that I think through when I tend to incorporate upsells, and this is important for decreasing payback period. So one is right immediately after the first sale. Sometimes this works great. So to be clear, if I'm selling... If, if that new... If I solved one problem that then naturally creates the next problem, immediately upselling works. If you have to create another kind of problem in someone's head or guide them through awareness, then that's where you have what I call the next step. So the version I just gave you with the orientation, the nutritional orientation, that's like, great, that's the next step in the process. So this is usually a 24, 48, 72-hour difference between first sale and next step. The next time period, where I think about selling a customer or upselling is after they have a big win. This is a milestone. Someone says, you know,"
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 5570,
+      "char_start": 3156,
+      "id": "pay-less-now:3",
+      "score": 7.982,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "so you can make three times the amount. All right. And so you can charge more. for the thing. since a delayed purchase to the same degree. People will agree to pay more later than they will now. And so you can also boost the price because also if so- you... If someone... It basically means what's the price of the guaranteed delivery. So when you have someone pay today, there's a, a risk metric that, they apply to the purchase on. the risk that' they don't get what they think they're going to get. If I said, \"Hey, you only pay me after you get a six-pack,\" then people are like, \"Oh,\" then the value of a six-pack is directly related to the price that they pay, which means I could charge way more for that thing because it's at a delay. And so we wanna give the one-time offer, uh, of the same thing for one-third to one-half the price, plus bonuses and guarantee to get more people to buy now. Great. All right. So let's do some examples, 'cause some people are like, \"Okay, I get how it, work for the reading story, but how does it work for other businesses?\" So pay later, zero plus 299 after three-hour training. Pay now, 149, 97, doesn't matter. Recording plus notes. Okay, now some of you are like, \"Wait, I thought you said 20 to 50. I thought you said 67.\" Doesn't really matter. You just pick the discount amount that accomplishes your objective for offsetting as much cash as you need to break even on the acquisition. Now, upsell,And also to be clear, if you are doing this, this thing is happening all within 30 days, I also include the cash I get from the pay later, option, because they're still paying in that 30-day window. So if I get some today and then some in two weeks or some in three weeks or some in four weeks, I still get it before I pay my card back. Whatever, doesn't matter to me. Now, upsell. The upsell here is the eight-week double your reading speed thing. Cool? So we have three offers. Pay later, pay now, upsell. That's how this works. Now, let's say I'm in the, you know, find your first real estate deal. Okay, fine, I do a three-day workshop. Pay later for zero dollars for a three-day workshop. They get billed $500 at the end, unless they cancel. Pay now. is $299 for the three-day workshop, plus the recordings, plus a one-on-one call with a distressed property expert, plus printed materials that they can use at the workshop. Kind of compelling. Now, the upsell is"
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 8424,
+      "char_start": 5975,
+      "id": "continuity-bonus:3",
+      "score": 7.779,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "join right now. Also, you can offer the bonus as a standalone purchase or you can only make it available if they buy your continuity. So either of them work. And I'm gonna show you some really cool math examples at' the end of this video of price tests we've run to generate more cash up front or more people taking continuity. So there's actually some signs I can show you of like how much cash do you want up front versus how many people do you want to take continuity, and then what percentage is the right percentage to offer so you can get the right distribution you want? And we tested this across a lot of Okay. ... locations, so I feel pretty confident about it. So on their own, continuity offers get less cash now, remember, less cash now, and that makes it tough for getting customers profitably. But the way that I use them, we can still hit our 30-day profit goals, which I'll explain in a second. So first, I do all my big cash attraction, upsell and downsell offers, so I should already be profitable, I should already have cash from all those original offers. Then continuity offers get a little bit of cash from the first month's payments. Then I offer people who bought that one month a discount for pre-paying more months. This further boosts 30-day profits, giving me more cash to advertise and stacks recurring revenue. So think about how that goes.Big attraction offer, buy X, get Y' free, win your money back, whatever. Got it. Then we do our up-sells. Got it. Then we do our down-sells. Got it. Then we get them into continuity, really soft pitch. We got them on continuity, we gave them some bonuses in order to say yes. Now that they're on continuity, we already have the commitment, we then say, \"Hey, you're already committed. Let's just pre-pay and save some money.\" We stack even more cash forward. And that's how you just stack, stack, stack, stack, stack. You front-load the money so that you can scale your advertising and go to the moon. All right, let's do some examples. So physical products. Let's use pet food. All right, so one-time bonus, get every dog toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 15037,
+      "char_start": 14088,
+      "id": "rollover-upsell:7",
+      "score": 7.471,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. What to upsell, more of something, better of something, new something new. Just make sure that you make a profit after applying your discount. How to rollover the credit. You can do full or partial purchase, uh, give it upfront, or you can spread it out. We went through examples of all those. You can price your next offer for at least four times higher than the credit. So this makes it a 25% discount. Everything above that is gravy. I wouldn't do less than that. And to get more takers, add urgency. Make your rollover credit a one-time-only offer. And boom, that is the rollover upsell."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Classic Upsell and Upsell Offers: when customers purchase coaching and then need nutrition support, how to structure nutrition as the natural essential complement or next offer after the initial sale, timed when the next problem appears",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 729.7,
+  "returncode": 0,
+  "stderr": ""
+}

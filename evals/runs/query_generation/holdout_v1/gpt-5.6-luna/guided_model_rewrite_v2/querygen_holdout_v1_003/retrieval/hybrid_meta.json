@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Can a valuable onboarding or implementation package make a recurring software subscription easier to sell by advertising the bonus or upfront value rather than the subscription itself, especially when onboarding reduces uncertainty and increases perceived first-month value?",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 1096.5,
+  "returncode": 0,
+  "stderr": ""
+}

@@ -1,0 +1,83 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "\"buy X get Y free\" fulfillment expensive",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3166,
+      "char_start": 682,
+      "id": "ten-years-ten-minutes:1",
+      "score": 12.671,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' you want from this prospect. After picking a winner, you offer everyone else, uh, the big prize at a discounted price in second place. The decoy offers are also attraction offers where you advertise a free or discounted offer. When the lead asks to learn more, you also present a more valuable premium offer. The premium offer includes more features, benefits, bonuses, guarantees, and so on, and gets more people to buy it. Buy X to get Y free, you offer customers free stuff in exchange for buying stuff for money. The more free stuff and the higher its value, the more people will buy X to get Y free. Pay less now or pay more later, you give people a choice to pay full price later or pay a discounted price now for additional benefits. We also did free with consumption, which I won't Yeah. ... bonus here. But fundamentally, you give away a lot of free value, and that increases the likelihood people buy a very expensive thing from you. The more expensive the thing, the longer and the more free stuff you give them. Then we have upsell offers, which is, are whatever you offer next. That is my very literal scientific thing. Try and brai- like, fight me. An upsell is whatever you offer next. All right, so typically, it's gonna be more, better, or newer version of whatever they just bought. These can get you lots of cash fast. We covered four. The classic upsell, where you offer the solution to the customer's next problem the moment they become aware of it. You can't have X without Y. The menu upsell, you tell customers which options they don't need, then tell them which one they do need and how to get the value from it, prescribe, and, \"You don't need that, you need this.\" The anchor upsells, you offer the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 12351,
+      "char_start": 10812,
+      "id": "buy-x-get-y:7",
+      "score": 11.552,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "as big as you can if you're only gonna get one shot. Summarizing buy X, get Y, free. In buy X, get Y free, customers buy something, they get other stuff for free. Buy X, get Y free. works, uh, for stuff that makes sense to buy more of or get longer access to. Basic buy X, get Y free, offers reframe pricing. Buy one, get two free, costs the same as buying three except customers see the free offer. as more valuable. Remember the 18-month service example I gave. So always try to give more free things than paid things and you can pair different free things with paid things as well, which you can just test. All right. So buy X, get Y free can lengthen the amount of time customers stay. If normal customers stay for three, months, then buy two, get two customers will keep them for four months. So whatever you sell, try and extend whatever the normal customer duration is by saying, saying like, \"If I know customers stay for three, I do buy two, get two and I price it' so that it's still four, I make more money. I make 33% more money.\" It's a great deal. Uh, if you use buy X, get Y to generate a lot of cash fast, make sure you manage it. and you can deliver on your promises. If you need fast cash and your business is healthy, make sure, make this offer to existing customers, uh, and just cap how many you sell it to. If you have recurring, I recommend 10% is the cap. Um, keep selling customers who prepay for long durations because they are the most likely people to buy again. With that being said, that is buy X, get Y free."
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 12188,
+      "char_start": 9817,
+      "id": "buy-x-get-y:6",
+      "score": 10.214,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "for fast cash. Now, if your business is healthy but you're like, \"You know. what? I wanna buy a bunch of equipment,\" great. Prepay 10 people, go buy your equipment. Or you need to go buy a, uh, another big oven, industrial oven for your baking business. Like, totally makes sense for you to do prepayments and things like that to cash flow or fund rather than take on credit lines. Super smart. Um, so, even if customers prepay, you can still upsell them different stuff now. So this is really important. So I made this mistake, which is why I share it with you. The people who prepay, especially for services, for durations of time, business owners have this fear of selling them or making offers for other stuff. But here's the craziest thing that we saw, is that the people who prepay for the year are the most likely people to buy more stuff afterwards. And so these are basically a way of identifying your hyper buyers. And so they self-select. They prepay for a year, and guess what happens after that? When I would have Big Booty Boot Camp and a deadlift seminar or, you know, uh, Make Your Sexy Back or I would do Buns & Guns or whatever else I would do, Lean by Halloween, they were the most likely people to pay, 'cause guess what? They weren't paying anything for being there as far as they felt. They, they had paid so long ago they forgot that they paid. So it felt like I was just a free gym. And you know what? The cool thing about wallets with people who make money, they replenish and then you can ask again. So if customers only buy once, this is just a disclaimer for the, um, for the boot business. The reason they structured their deal that way was to maximize the transaction. So if you're in a business where people only buy once, then it makes sense to structure as much into that first sale as you can 'cause you're only gonna get one shot. Like the bachelorette parties are probably not coming back to Nashville. Now maybe they will, but for the most part, that's this... You wanna make the big, the ask as big as you can if you're only gonna get one shot. Summarizing buy X, get Y, free. In buy X, get Y free, customers buy something, they get other stuff for free. Buy X, get Y free. works, uh, for stuff that makes sense to buy more of or get longer access to. Basic buy X, get Y free, offers reframe pricing. Buy one, get two free, costs the"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 2469,
+      "char_start": 130,
+      "id": "buy-x-get-y:1",
+      "score": 9.773,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "to college out of high school knowing literally nothing about anything, I assumed that I was more intelligent than the store owner who obviously was doing very well. And so, uh, I came back 10 years later, and they had expanded. And so I was like, \"Huh, that's interesting.\" Now, 10 years later, I had a lot more business. acumen. And so I went in, and I, like, looked around poked around, and I saw that the pairs of boots had... each of them had multiple markdowns on the price down to $600 for one pair, at least the ones that I looked at. And so it was... instead of saying, \"Buy one fairly priced boots,\" or, \"Buy 20% off,\" they had, \"Buy one, get two free.\" But if you bought three pairs of boots for $200 each, that's still, like, a pretty normal price for leather boots. And so the ones that I... like the ones I was looking at were not like Stingray or, you know, Hippopotamus or something like. They were, they were normal leather. And so I realized that they had just fully baked the cost of three into one pair and then said, \"Buy one, get two free.\" And the thing is, is that because of that, all the bachelorette parties would pile in because the bride would get one, and then the other two friends would get them for free. Or one of the friends would buy a pair and give one to the bride and one to her maid of honor or whatever, and they just milked it. And so that is how I learned this more valuable way of doing buy X get Y free. So let's get into it. So in buy X get Y free offers, customers buy something to get other stuff free. Cool. Makes sense. The more free stuff they get and the higher its value, the better it works. Buy one get two free works better than buy two get one free. Free offers get way more attention than discount offers. But if you only have one thing to sell and give it away, then obviously, you go hungry. If you just say, like, \"Buy... Here's free boots,\" that's not gonna work, right? So in situations like this, they tend to lean on discounts. All right? Most businesses do. So they run sales relying on holidays, seasonal changes, or whatever, as, you know, reasons to temporarily lower the price for whatever the thing is to get more customers. But by selling more than one thing at once, you can turn discount offers into even stronger free offers. This is the magic of buy X get Y free."
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 2451,
+      "char_start": 0,
+      "id": "buy-x-get-y:0",
+      "score": 9.31,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "So we just covered win-your-money-back, free giveaways, and now decoy offers. And one thing that I will highlight before we get into buy X get Y free is that an ethical salesman makes recommendations that he believes will help the customer and help the business. An unethical salesman makes recommendations to customers that will not help the customer and only helps the business. And so you making more offers. to a customer is in no way unethical. It is unethical, basically, if you lie. And so you're either lying to them about them being qualified for something, or you're lying to them about the quality of the thing that it will get delivered to them. Either way, fundamentally, bad salesmanship is rooted in deception. Good salesmanship is rooted in education. And if the education is true, which it should be, then the customer should just find out as much about what they need to do to make a decision as you know. And so, fundamentally, if you were a customer and you were selling your mother and she had as much information as you, then she should buy the same things you would recommend to her. With that being said, buy X get Y free. Let's rock and roll. So buy X get Y free, super, super common offer. There's a lot of different ways to do it, and there's, like, very advanced tactics, which is why I love this offer so much. Like, this thing, it's funny because I like the first three, and I also love this offer too. Like, it's a banger. So we'll cover the main five. Here's how I learned it. So I was in Downtown Nashville. I went to school in Nashville, a college called Vanderbilt. And I remember when I, when I got to Vanderbilt for the first time, um, I remember going downtown, and there was this, uh, thing called Boot Factory. And Boot Factory had this massive boot that was bigger than a car, big flashing, like almost like Vegas lights. And, uh, on all the windows it said, \"Buy one pair, get two free.\" And I was like, \"This business, these guys are idiots. Like, they're just giving away their boots.\" And I being, you know, like, of course, fresh to college out of high school knowing literally nothing about anything, I assumed that I was more intelligent than the store owner who obviously was doing very well. And so, uh, I came back 10 years later, and they had expanded. And so I was like, \"Huh, that's interesting.\" Now, 10 years later, I had a lot more business. acumen. And so I went in, and I, like, looked around"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

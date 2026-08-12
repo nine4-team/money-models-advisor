@@ -1,0 +1,1 @@
+{"query":"Payment plans for a $15,000 premium full-service interior design project when the buyer wants the complete offer but cannot pay the entire amount upfront: spreading payment timing without reducing total value, and distinguishing installments or financing from feature downsells that reduce scope, quantity, or service level"}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Payment Plans for prospects who want the full 12-week coached transformation program but cannot pay the entire price this week; spread payment timing without reducing the offer's scope or total value, distinguishing installments from feature downsells",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 833.5,
+  "returncode": 0,
+  "stderr": ""
+}

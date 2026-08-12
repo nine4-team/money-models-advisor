@@ -1,0 +1,14 @@
+{
+  "case_id": "querygen_holdout_v1_009",
+  "created_at": "2026-08-10T21:59:40Z",
+  "guide_version": null,
+  "harness": "literal_pass_through",
+  "latency_ms": 0.0,
+  "method": "raw_question",
+  "method_version": "single-query-methods.v1",
+  "model": null,
+  "prompt_version": null,
+  "query": "We could pre-sell six months of refills and add bonus months, but inventory costs arrive early. What should we consider before doing that?",
+  "tokens_used_reported_by_codex": null,
+  "valid": true
+}

@@ -1,0 +1,81 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "\"Buy X Get Y Free\" fulfillment cost cash obligations prepaid gross profit",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 11889,
+      "char_start": 9486,
+      "id": "buy-x-get-y:5",
+      "score": 15.365,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "free. And even though the socks cost less than a shirt, it's still buy one, get three. And sometimes that converts better, so I test this. Rather than offer a 33% discount, try buy one, get two free. This here will convert more than this, but they're still one thirds off. All right? So I just like to... If you are gonna use a discount, this structure still makes a discount even more compelling. Do not make offers like this if you cannot manage money, especially with service businesses. So if you say buy six months of service, get six months free, if you don't know how to manage money and you immediately blow the money that they prepaid, you are a bad business. owner. So you need to be able to consistently... Like if you have to have an accountant, you know, do this for you, put all the cash into one bank account and you can pay yourself out of that bank account every month as you deliver services. But the worst thing, you' can possibly do for your reputation is like pre-sell a year of service and then, you know, like do not do this play if you are trying to keep your business alive. If you need this cash in order to keep the business alive, I think you risk your reputation by doing it. I also cap this at 10% of a recurring customer base for those of you who have recurring revenue businesses. So if you wanna do a banger buy X, get Y free, which is a really great cash play, let's say you have 100 recurring customers, cap it at 10. Don't let more than 10 of your recurring customers prepay for the year 'cause you still like ha- I, this is a, not a math solution. This is a psychological solution. I've just seen way, more businesses succeed by keeping their recurring cash flow because most business owners honestly can't manage it. Now, mathematically it makes sense to get everybody on. annual, but a lot of people can't handle that responsibility. I'm just being really honest with you. Okay. So this is a great grand opening strategy. Uh, as I referenced earlier, um, this is also a great offer to give for fast cash. Now, if your business is healthy but you're like, \"You know. what? I wanna buy a bunch of equipment,\" great. Prepay 10 people, go buy your equipment. Or you need to go buy a, uh, another big oven, industrial oven for your baking business. Like, totally makes sense for you to do prepayments and things like that to cash flow or fund rather than take on credit"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 12351,
+      "char_start": 10812,
+      "id": "buy-x-get-y:7",
+      "score": 13.842,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "as big as you can if you're only gonna get one shot. Summarizing buy X, get Y, free. In buy X, get Y free, customers buy something, they get other stuff for free. Buy X, get Y free. works, uh, for stuff that makes sense to buy more of or get longer access to. Basic buy X, get Y free, offers reframe pricing. Buy one, get two free, costs the same as buying three except customers see the free offer. as more valuable. Remember the 18-month service example I gave. So always try to give more free things than paid things and you can pair different free things with paid things as well, which you can just test. All right. So buy X, get Y free can lengthen the amount of time customers stay. If normal customers stay for three, months, then buy two, get two customers will keep them for four months. So whatever you sell, try and extend whatever the normal customer duration is by saying, saying like, \"If I know customers stay for three, I do buy two, get two and I price it' so that it's still four, I make more money. I make 33% more money.\" It's a great deal. Uh, if you use buy X, get Y to generate a lot of cash fast, make sure you manage it. and you can deliver on your promises. If you need fast cash and your business is healthy, make sure, make this offer to existing customers, uh, and just cap how many you sell it to. If you have recurring, I recommend 10% is the cap. Um, keep selling customers who prepay for long durations because they are the most likely people to buy again. With that being said, that is buy X, get Y free."
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 12188,
+      "char_start": 9817,
+      "id": "buy-x-get-y:6",
+      "score": 12.275,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "for fast cash. Now, if your business is healthy but you're like, \"You know. what? I wanna buy a bunch of equipment,\" great. Prepay 10 people, go buy your equipment. Or you need to go buy a, uh, another big oven, industrial oven for your baking business. Like, totally makes sense for you to do prepayments and things like that to cash flow or fund rather than take on credit lines. Super smart. Um, so, even if customers prepay, you can still upsell them different stuff now. So this is really important. So I made this mistake, which is why I share it with you. The people who prepay, especially for services, for durations of time, business owners have this fear of selling them or making offers for other stuff. But here's the craziest thing that we saw, is that the people who prepay for the year are the most likely people to buy more stuff afterwards. And so these are basically a way of identifying your hyper buyers. And so they self-select. They prepay for a year, and guess what happens after that? When I would have Big Booty Boot Camp and a deadlift seminar or, you know, uh, Make Your Sexy Back or I would do Buns & Guns or whatever else I would do, Lean by Halloween, they were the most likely people to pay, 'cause guess what? They weren't paying anything for being there as far as they felt. They, they had paid so long ago they forgot that they paid. So it felt like I was just a free gym. And you know what? The cool thing about wallets with people who make money, they replenish and then you can ask again. So if customers only buy once, this is just a disclaimer for the, um, for the boot business. The reason they structured their deal that way was to maximize the transaction. So if you're in a business where people only buy once, then it makes sense to structure as much into that first sale as you can 'cause you're only gonna get one shot. Like the bachelorette parties are probably not coming back to Nashville. Now maybe they will, but for the most part, that's this... You wanna make the big, the ask as big as you can if you're only gonna get one shot. Summarizing buy X, get Y, free. In buy X, get Y free, customers buy something, they get other stuff for free. Buy X, get Y free. works, uh, for stuff that makes sense to buy more of or get longer access to. Basic buy X, get Y free, offers reframe pricing. Buy one, get two free, costs the"
+    },
+    {
+      "chapter": "cfa",
+      "char_end": 4379,
+      "char_start": 2024,
+      "id": "cfa:1",
+      "score": 11.921,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "owned everything, and I haven't sold equity, and I haven't taken on debt to grow all my businesses, and I've been able to grow them absurdly fast relative to the marketplace. I'll just say it like that. And the way that we've been able to do it is because I take the money that I have access to, and I can take as much as I possibly can as long as I figure out a, way to pay it back in that first month. All right? And so you can use the credit card to get your customers, then pay the card back, then reuse the money, recycle the cash, and get another customer. All right? As long as your gross profit in the first 30 days is greater than the cost to get them, you can never carry debt while growing your business, which is a sizeable advantage. So, this is what level two advertising. would look like. So 30 days' gross profit. So that means that, like, if I got that first customer, right, if it cost me, uh, 160 to get the customer, and I got 180 back in gross profit, then it's just all free. They're all... It's just all free. That's how it works. And so note is that if you have an XXX limit on your credit card, you'll always be limited by the amount of customers that XXX number buys you before having to pay it back. And so this assumes that you don't reinvest the excess profits after the 30 days on marketing rather than putting it in your pocket. Okay? So once you unlock acquisition this way, typically, you will get limited by your operational constraints before you will get limited by your advertising constraints. You will not be able to handle the amount of customers that you can bring in, and that's what's going to throttle down your advertising more than you can't get more customers. So that's level two is that now your 30-day gross profit is greater than your CAC, which means you're just getting free customers now. Level three is where I like to live, which is that my 30-day gross profit is greater than two times the cost of getting a customer. Okay? So pay attention to what happens here. So you make gross profit more than twice CAC in the first 30 days, and the result is never being limited by money at all. Remember, the first version of this is, like, I'm limited by the amount of credit card that I can, uh, have access to. With this, there are no limits. And this is the goal of everything that I'm gonna basically go"
+    },
+    {
+      "chapter": "money-models-offer-stacks",
+      "char_end": 2268,
+      "char_start": 0,
+      "id": "money-models-offer-stacks:0",
+      "score": 11.586,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that some of the things are a little bit different from the book, and that's done on purpose because I like to think through things differently in different mediums. All right? Because I can say things here that I couldn't normally say in the book. So we'll go definition, rental car story, and the gym launch example. All right. So a money model is a series of offers. That's it. The reason I had to start with the offers book before talking about the money model book is that an offer is one unit. A money model is sequencing these things. It's putting them in a series of offers deliberately to maximize gross profit collected in the first 30 days. So I will say this all together. A money model is a series of offers. A good money model, which is the objective of this book, or this training, is a series of offers structured to minimize CAC, how much it costs to get a customer, maximize gross profit, how much they pay you, collected in the first 30 days, how fast they pay you. That's the point... [Content continues with rental car counter story example including late checkout, insurance upgrade, minimum package, prepaid gas, and late return fees explanation] ...describing how rental car companies engineer their offers sequentially. The story illustrates 9 different upsells that occurred during a single reservation transaction. This is followed by the Gym Launch case study detailing how the company grew from $1,000 in the bank to $17 million in profit in 20 months through their money model approach. The transcript covers their specific offer stack including: free book/podcast lead magnet, free strategy call, $16,000 premium offer with payment terms, free supplement training, and free feedback call with continuity upsell. The lesson emphasizes how understanding offer sequencing and psychology can dramatically increase customer lifetime value and enable rapid scaling without external funding."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,72 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "Could clients earn their program fee back by hitting the result and completing their check-ins?",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "waived-fee",
+      "char_end": 8446,
+      "char_start": 5953,
+      "id": "waived-fee:4",
+      "score": 0.033,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "of like guardrails to keep someone on point during the rough months can help them overall see success. And I believe that. So that's not just not, that's not just wordsmithing. That's true. Um, and this vehicle or pricing structure, money model, allows you to build incentives around that. All right. So fees get them to start. People get value out of committing immediately because they avoid a fee. People want to avoid fees, so more people sign up to continuity. Mission accomplished. Hooray. That's how this works. Fees also get them to stick, which is lovely. So people will stick for the same reason they started, by sticking to avoid the fee. So people quit for millions of reasons, but by incurring an additional cost, a larger fee, in order to cancel, their original reason for quitting immediately shrinks compared to the value of avoiding the fee. In English, if the cost to quit exceeds the cost to stay, they will probably stay. Presenting the fee. Justify the fee by explaining the cost of taking on new customers for longer term programs. Basically, if they want short term flexibility, they pay their own setup costs. If they commit to staying long term, we'll pay their setup costs for them. All right? If someone asks for additional reason, just say, \"It costs us money to get you started. If you only want to test this out, you cover those costs. If you commit to longer, I'll cover them.\" Now, if more than 5% of people want to cancel early, look into that. Pricing incentivizes sticking, but it can't and shouldn't overcome a terrible product. You want to nudge them, not handcuff people into paying for something they hate, 'cause then they'll just hate you. Now, if you want more upfront cash, have a smaller fee. A smaller fee encourages more people to go month-to-month. This is the same, uh, difference we had with the earlier version with the continuity bonus offer. Same idea, except this is just a fee rather than a program, but some people will pay, and I'll tell you what my guess would be to get 50/50 to sign up, which would be a 33% increase, uh, a smaller fee will get more people to go month-to-month. A larger fee will encourage more people to make the commitment. But if you need more cash upfront, then you can make the fee one and a half to three times the monthly rate, and that will get more people to choose that more flexible option. And when you do this, more people will take it. Great. And you get more cash upfront. So you can drop the fee after"
+    },
+    {
+      "chapter": "free-trials",
+      "char_end": 7945,
+      "char_start": 5738,
+      "id": "free-trials:2",
+      "score": 0.03,
+      "subject": "downsells",
+      "subjects": [
+        "downsells",
+        "offers"
+      ],
+      "text": "## [\u00a75.3.c] Examples \u2014 B2C, B2B, therapy, fee weighting\n\nSo let's walk through some examples. So I'll do a B2C version, so a business to consumer, and then I'll do a B2B. So let's say you do a business to consumer offer, 28-day kick-that-habit blueprint, whatever, right? So you get the trial for free and avoid the penalty fee. You must... Or to get the trial for free and avoid the penalty fee, you must attend all your consulting calls, post your progress in the group once a week, journal daily in our app, and attend feedback sessions and transformation sessions, AKA the upsell opportunities. Business to business offer: five-day get your first five clients challenge. All right? To get the trial for free and avoid the penalty fee, you must send 100 outbound messages per day, report stats on the outbound messages, attend the daily training, post in the group daily once you've done the homework, attend your graduation call, which is the upsell opportunity. And so these look really similar to what the win-your-money-back ones were, because they are the same thing. Now, let's say you had a therapy business. So offer a free 28-day breakthrough therapy, free trial plus penalty. You're gonna need, uh, to do the homework before each session and show up. If you don't do the homework, you're not going to get the results that you want. And if you don't show up, obviously you're not gonna get better. This will give you an added incentive to get better faster. So we charge a $50 non-compliance fee for not doing the homework or not doing the session. If you don't do the homework, then we can't help you in the session. Fair enough? You just explain it, how it works. Now, in this 28-day thing, you can have all the fees add up to the exact same amount of money that you would have charged in a win-your-money-back. So if they have, call it 10 things they have to do over X period of time, and it's a $500 thing, then you charge $50 per thing. Now, if some things are more important than others, let's say sales consultations, then you can make those ones $100 or $150 and the other things 25. You wanna weight the prices based on the importance for you as a business and for them getting results."
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2363,
+      "char_start": 49,
+      "id": "waived-fee:1",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is, but because we pair it as a price on the front end, it becomes a very strong sales thing too. So with the other version, we use the three, months free or whatever to get someone in, and then we say, \"Cool, you have to pay the difference if you cancel early.\" Here, we sell them on the vacation and we say, \"We have this massive onboarding fee, but I'll waive it if you sign up for a commitment.\" Then that' also hangs as a knife, if they don't wanna pay it today, they're not gonna pay it in six months either. And so the same reason they signed up is the same reason they'll keep paying. Here's our description. So the waived fee offers work like this. First, you ask customers to pay a startup fee as a part of joining a month to month program. Typically, you wanna do that to three to five times the monthly rate. All right? So if it was a thousand dollar thing, you'd want it to be a $5,000, uh, front fee. For, you know, the example it was $4,000 a month and $25,000 signup fee. That's the idea. All right. Then you offer a discount on the entire fee if they commit to the longer term. And the commitment period should be minimum of six months, ideally 12 plus. If it's less than that, it doesn't really make any sense. So if they cancel inside the term, they pay the fee. Customers can choose to pay the big fee and keep the option to quit at any time, or they can commit to 12 months and get the fee waived. And many will commit to avoid the big fee. There's also a clear point after four, five, six months where if they paid the fee, it's the same as staying, in which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 6310,
+      "char_start": 3927,
+      "id": "rollover-upsell:2",
+      "score": 0.029,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "solved.\" You turn their biggest hater into your biggest ambassador. Savage. Number four, you upsell. your regular customers who walk in the door. So there's the four who's. The next one is the what. So remember, you can upsell. more of what they just got, something better or something new and/or different. So to make money, roll their credit over to something more expensive. And so the more expensive thing, again, in my opinion, should be. five times more expensive. So if I'm gonna roll a $500 thing, I wanna roll it towards a 2000, $2500 plus type offer. For the how, you can apply all or part of the discount upfront or you can spread it over time. And so this is dependent on you. So in the examples I gave before, I took it and I spread it over time. You could, if you had a smaller amount, do it upfront. It's up to you. You can also make up a fee that you can then waive and use the credit for it. There's lots of things you can do here. All right? But fundamentally, you can just figure out. Now, the all or part of it is, like, let's say somebody was with you for three years and they spent five grand with you. You might not credit five grand towards something else if your services, you know, aren't that much, maybe it's $2,000 a year, $5,000, three years of service. Well, you'd certainly want to get that customer back. But if you give them another three years, it doesn't make sense. So you could say, \"Hey, I'm gonna give you the last, you know, the last three things you bought from me. Let me credit those instead,\" right? You wouldn't say instead, you'd just say, \"I'll credit those for you,\" right? All of those things you could say, \"Listen, I'm gonna assume that we did something to mess up because you didn't come back. And so I'm gonna assume that the last six months of service that we did was not up to snuff. So let me make it up to you.\" So examples. So chiropractor, reengage old, old patients with a win back campaign. So we say who's the who, six months since their last purchase. What? New plan. How? Upfront. So that's our who, our what, and our how. So reach out to your old patients, you look at their purchase history, you offer. to apply some or all of their past purchase towards something more expensive than what they bought. So I would say, \"Hey, Mrs. Banks, I wanted to give your money back. Do you have a minute?\" \"Great. Yeah, I wanted"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5702,
+      "char_start": 3430,
+      "id": "continuity-discounts:6",
+      "score": 0.028,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "because it really can't. They either have the money or they don't. And so this way, I like having two forms of payment. One's a card, one's ACH. We get the ACH by giving back. the processing fee, and here's a fun little benefit of ACH.Not only do you get the reduction in churn, you also save some money on processing too, because it's cheaper to process via ACH, usually by one or two percentage points. So, gift cards. So you can give the discount and time in the form of a physical gift card. You can mail it to them if they are out of the area. So if they're, you know, if you're a national business, you can mail it to them. Uh, the customer can apply the discount whenever they want after their first three payments, right? So you can say, \"Hey, when you buy, we're gonna give you these three months free, but I'm gonna give it to you the, to you in this form with this card. And I'm gonna mail it to you, and then you have to remember to come back and redeem it.\" Now you might be like, \"Alex.\" Well, deal with it. You can do whatever we want. Okay? And so the ne- that way they can also, if you wanna position to make it sound good, uh, they can gift it to a friend if they want. All right? That way it's like, \"Hey, gift it to a friend.\" And beyond that, many people simply forget to use it, and in that instance, you just get the full price sign-up. All right? So in the, quote, \"worst case scenario\" for the business owner, they get it, and then they redeem it after a certain period of time. So you still got payments and you made sure the card worked and they're a legit person. The second condition is they give it to somebody else, which is awesome. I'll absolutely accept their friend, which is now a free customer that I don't have to pay for, and I will give them that three months in some sort of aggressive way. I might spread it over, the term. I might use one of the other ways. Or they just don't use it, in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

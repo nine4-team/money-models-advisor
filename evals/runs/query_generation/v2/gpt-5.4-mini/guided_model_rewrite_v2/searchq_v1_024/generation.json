@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_024",
+  "created_at": "2026-08-10T22:42:35Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 10288.3,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "downsell offers after a no feature downsells payment plans full offer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4982,
+  "valid": true
+}

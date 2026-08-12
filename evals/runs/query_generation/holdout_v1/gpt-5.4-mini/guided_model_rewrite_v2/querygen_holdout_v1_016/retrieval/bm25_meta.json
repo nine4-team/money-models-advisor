@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "build the money model one offer at a time use the fewest offers needed attraction upsell downsell continuity rollout",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 95.7,
+  "returncode": 0,
+  "stderr": ""
+}

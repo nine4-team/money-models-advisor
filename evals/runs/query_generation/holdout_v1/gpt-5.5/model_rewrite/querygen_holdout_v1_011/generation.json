@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_011",
+  "created_at": "2026-08-10T22:00:46Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 6549.3,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "Can revenue tell us what we can afford to spend on ads when shipping and product costs are high gross profit contribution margin CAC allowable acquisition cost",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 1384,
+  "valid": true
+}

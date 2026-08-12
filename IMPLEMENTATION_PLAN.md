@@ -252,7 +252,7 @@ First generated-query backend result:
 - Plain generated hybrid: 96.7% known-useful Hit@3/Hit@5, mean known-useful rank 1.21, misses `searchq_v1_001`.
 - Generated variants + hybrid: 100.0% known-useful Hit@3/Hit@5, mean known-useful rank 1.17, no top-5 misses.
 
-Decision: BM25 remains the lexical baseline/control for citation-oriented source lookup. It is not the intended product architecture for the hiring narrative. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a clean storage boundary. The 30-case expanded slice plus Pinecone parity supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and hosted-vector latency optimization before calling it production-final.
+Superseded backend-era decision: BM25 remains the lexical baseline/control for citation-oriented source lookup, and the constrained-variant comparison remains evidence for hybrid capacity and Pinecone parity. The later query-generation experiment replaced variants as the active runtime policy: the selected path is one corpus-guided, unfiltered query through hybrid retrieval, cached embeddings, and a Pinecone-backed vector store behind a clean storage boundary. It leads the 46-case audited regression suite, and a paired backend test preserves the hybrid decision under both `gpt-5.5` and `gpt-5.4-mini` queries. Continued golden-set expansion and hosted-vector latency work remain worthwhile, but the runtime no longer waits on the old variant-based promotion.
 
 JD-aligned next experiment:
 
@@ -345,15 +345,15 @@ Use the smallest chunking strategy that preserves framework completeness and doe
 
 Current result:
 
-- `heading-aware` wins the local BM25 comparison with Hit@1 81.25%, Hit@5 100%, and MRR 0.8917.
-- Fixed windows all reached Hit@5 100%, but underperformed on Hit@1 and MRR.
-- `framework-aware` slightly improves MRR to 0.8958, but does not clear the adoption rule because Hit@1 is unchanged and MRR gain is below 0.01.
-- Required-claim support coverage is evaluated in Phase 3 as the support guardrail rather than during chunking selection.
-- Adopted default remains `heading-aware`.
+- The original 32-case BM25 screen left heading-aware and framework-aware effectively tied.
+- On the active 46-case hybrid path, both reach 93.5% Hit@1 and 100% Hit@5. Framework-aware raises Useful@5 from 73.0% to 78.3% and caps the largest chunk at 922 words instead of 2,471.
+- Fixed-800 reaches 95.7% Hit@1 but returns 51% more text across the top five.
+- Adopted default is `framework-aware`.
 
 Report:
 
 - `evals/reports/chunking_comparison.md`
+- `evals/reports/active_query_chunking_revalidation.md`
 
 ## Phase 3 — Local Retrieval Guardrails
 
@@ -361,7 +361,7 @@ Objective: keep retrieval evaluation honest without introducing external model-s
 
 Current active checks:
 
-- BM25 heading-aware retrieval over the local corpus. **Done.**
+- One-query hybrid framework-aware retrieval over the local corpus. **Done.**
 - Required-claim support coverage over reviewed labels. **Done.**
 - Query realism audit to prevent framework-name-heavy evals from overstating quality. **Done.**
 

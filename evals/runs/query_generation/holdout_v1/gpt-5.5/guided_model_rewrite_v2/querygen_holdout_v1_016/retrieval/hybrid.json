@@ -1,0 +1,82 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "offer rollout order build money model one offer at a time perfect one before adding attraction upsell downsell continuity fewest offers needed",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "offer-types",
+      "char_end": 11296,
+      "char_start": 8319,
+      "id": "offer-types:4",
+      "score": 0.033,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a72.2.e] The four offer types \u2014 Attraction, Upsell, Downsell, Continuity\n\nSo now let's talk about all the things that I just did, but we're gonna chunk up so that you can apply it to any business. All right? So there's attraction offers, upsell offers, downsell offers and continuity offers. The objective of each of these. Attraction offers is to liquidate how much it costs you to cus- get a customer. Upsell offers are to maximize profit. Downsell offers are to maximize conversion. Continuity offers are to stabilize cash flow in the business. There are many ways to accomplish CFA. Some businesses can do it with only one offer. Some businesses get funding so they don't need to break even to get customers 'cause they have outside money that's injected into their system. But for everyone else probably watching this, I will explain a model that I have seen emerge over and over and over again within the businesses that I built. So when I look at every single amazing business that I've built that's made a lot of money, they had these things pretty much in this sequence. And it doesn't happen all at once. It just often becomes something that you build towards. So to be very clear, I'm not saying you start with a fully fledged money model, 'cause it will break your b- whole business in half. You wanna start with one, you start adding in layers, like layers of paint. You just keep putting more and more layers on it. And so again, you can build an amazing business with just one or two of these things. And sometimes it's worth keeping it simple and just doing that. If you can scale with... I wanna scale with as few offers as humanly possible. But I still wanna maximize how much money I make in the shortest period of time. So if I have to add more, I will, to enable me scaling. But I wanna have as few as I can, 'cause I wanna have as little operational drag as possible. All right? And so it has four prongs or four different vectors and different offers that correspond to each objective. All right? So this beautiful little image took me a very long time to figure out. Right? And so we have attraction offers that bring people in the door. We have upsell offers that typically happen immediately after that get people to buy more stuff. We have downsell offers for people who, who don't say yes to either of these things, so we can still get conversions and then potentially upsell them later. And then we have continuity offers on the back, which get them into a recurring cash flow payment to the business. And so let's explain how they all work together to make a symphony of CFA. All right. So here, we turn strangers into customers, get, come spend more money. Lower CAC is to get people... Excuse me, is to get people to say yes when they would have said no, which is what you offer when they say no. And then with continuity, you keep people buying. All right? Which is meaning you get them to buy again. All right? So those are the four prongs."
+    },
+    {
+      "chapter": "make-your-money-model",
+      "char_end": 6428,
+      "char_start": 5228,
+      "id": "make-your-money-model:1",
+      "score": 0.032,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)\n\nSo let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in. They're coming off win-your-money-back. They're coming on, uh, buy X get Y free. They're coming on, uh, decoy offer. Whatever it is, they're coming on the front end. You say, \"Great, now I'm either gonna do a menu upsell, I'm gonna do an anchor- anchor upsell, I'm gonna do a rollover upsell.\" All of those things you can use as your second, second piece. Then you can pick your downsell offer. So what if they say no to any of these other offers? Well, we have our. entire downsell flow, which is we start with payment plans, uh, then we do a free trial, or we do payment plan to feature downsell. Then we go to free trial. You just pick the ones that you know that you can execute on right? now. Step four, then you' pick a continuity offer. And the result is. that you get your cash back in 30 days, more customers, and make more money."
+    },
+    {
+      "chapter": "make-your-money-model",
+      "char_end": 10262,
+      "char_start": 6429,
+      "id": "make-your-money-model:2",
+      "score": 0.031,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a77.1.c] Implementation rules \u2014 perfect one at a time, simple scales, affiliate gap-fill\n\nSo here's some notes. One, perfect one of these. at a time. If you try and do all four at once, or six of these things at once, you're- you're gonna break your business. Like, I strongly recommend just start with one. One is enough. There's already enough complexity doing anything new that you haven't done before. I try to include as many important notes as I know that make these things work in these trainings and in the book. There's some things that are in this tr- uh, video training that aren't in the book. There's some things in the book that aren't in the video training. It's the way it is. Uh, so read both if you're really serious about it. But if you have enough from either of them, by all means, please take action. All right, now if you are going to, uh, start one of these things, start it with a lower price. Get people to say yes, and then start raising prices in stages. That's my recommendation. Payment plans, based on how I told you to present the, uh, the discounted rate, uh, basically the pre-payment discount versus the payment plan rate, is a great way to get kind of a look into the future of what prices the market will sustain. I like this little saying, \"Simple scales, fancy fails.\" I wanna have as few of these as humanly possible, because the fewer pieces I have in my business, the fewer things can break. And so I would rather start with the simplest possible. thing that accomplished the objective, which is that I can offset my cost to acquire customers. I can recycle that cash within 30 days, and I keep, keep scaling, basically removing acquisition as the bottleneck in my business. Once I've accomplished that, we've accomplished our objective. We no longer need outside money to scale, which is pretty sweet. So this is a little bit of an advanced tip. Affiliate products can fill money model gaps. So if you're like, \"Okay, well, I wanna do a buy X get Y free,\" then just do a buy X get Y free on someone else's product. So then you. can still sell, your main thing, and then use somebody else's product that, you send traffic to, so you can get cash and you have no operational constraints. Now, you can use that for complementary services rather than something that's gonna take away from your core offer. You can turn attraction offers into continuity offers automatically just with renewal. Buy X get Y free, for example, if I said buy six get six, it becomes a continuity offer if after the end of that first year it rolls into continuity. If I do win your money back and say, \"Hey, after this period, you then roll into continuity.\" If I say decoy offer, I could say, \"Hey, you'd pay- you can either do this, uh, you know, this- this simple thing that's not that good, or this amazing thing for more money that has a guarantee.\" After that period, it rolls into continuity. So you can take any attraction offer that I had and just immediately turn it into continuity by just saying, adding a clause that says it rolls into continuity at. this price. And again, you can mix and match these however you like. So I- I present them in- this order because this is the most logical order that I can think of and as I have used them in my businesses. But this is no- in no way a limitation on your- ability to innovate. And honestly, I want you, I want you to send me all the cool money- models you guys figure out. Like, that's the point. This is me just showing you all the stuff that I know that I could fit into a presentation within a reasonable amount of time. Um, and so again, right, you can use attraction offers and upsell, anything that you can, that you can put your mind to, you can figure out. Okay, so that is how you make the money model. And let's go to 10 years in 10 minutes."
+    },
+    {
+      "chapter": "upsell-offers",
+      "char_end": 2366,
+      "char_start": 0,
+      "id": "upsell-offers:0",
+      "score": 0.03,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "All right, so we just covered attraction offers. So these are the first thing that most people are going to see when they're entering your business. This is the stuff that gets leads to engage, that's why they're big, sexy, free things. The upsell offers. are things. that we're going to reposition for them to spend even more money. Now, sometimes this happens immediately, sometimes it happens, you know, uh, a few days later, sometimes a few weeks later, sometimes a month later. But either way, we're going to be using four of my favorite upsells. So this is step two in our money. model process. So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a problem, another appears. You upsell the solution to the problem that your first offer reveals. So every offer opens the door to an upsell. Even upsells o- open the door to more upsells. And often, upsells make up the majority of the profits. This is what people don't understand. If the objective is that we can break even, obviously, we wanna make as much money as we want, but you don't wanna make more money on a few customers when you can get 10 times the customers and then make way, more on the second sale, right? And so often, upsells. make up the majority of the profit, even if that's not the thing you' sell the most of. Think about it in terms of volume, I might sell 10 times more of my front-end offer, but 10X of my profit comes from my second sale. They can make or break a money. model. And so let me show you how much. So here's some examples. So this is. a classic burger, fries, and soda store, all right? So this is a, our very sad burger shop owner. He sells a burger for two bucks, his cost on the burger is $1.75. He makes 25 cents of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 2441,
+      "char_start": 0,
+      "id": "continuity-offers:0",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "So we just finished the downsell offer section, and now we move on, to the magic of continuity offers. I've been a continuity guy my whole life, and so this is a section that I hold near and dear to my heart. It has made me a tremendous amount of money. It also stabilizes cash flow for the business. And so in our four money. models, we have attraction, upsells, down sells, and now, kaboom, continuity. So continuity. offers provide ongoing value that customers make ongoing payments for until they cancel. They boost the profit from every customer and give you one last thing to sell. Continuity offers are awesome because you sell. once and get paid again, and again, and again. So here's my quick explanation. Let's say you offer something for $1,000 to 100 people and 10 people buy. You make $10,000. 10 times $1,000. Okay. Now, let's say that you talk to the same 100 people, but you make your $1,000 thing $50 a month instead. And at 50 bucks, we can get 40 out of the 100 to buy. \u00d0\u00b8. And if you keep those people, for 20 months, you still make $1,000 from each customer. So you go from making $10,000 now and zero dollars over time to $2,000 now and $40,000 over time. And as an added bonus, in the first example, if you only sold 10 customers, you'd only have 10 customers to upsell later. If you use a continuity offer and sold 40 customers, you'd have four times the customers to upsell later, which is a massive difference. This is fundamentally why people do continuity. You can sell more people at a lower price, you can still collect the same LTV, and you get four times the customers to upsell later. The pros are you can attract more customers compared to something more expensive. The cons are but you make way less money now, which makes it tough to use as an attraction offer on its own, which is why we put it last, or at least why I tend to put it last. So the TL;DR is that by making continuity offers last, we get the best of all worlds. We get cash today from attraction offers, upsell offers, and downsell offers, and we get a little cash today and tons of cash tomorrow from continuity offers. Note, to be clear, you can make continuity offers whenever and however you want. There are no rules, all right? They can attract new customers, upsell and downsell current customers, or reengage old customers, same as all the others. So the objective here for continuity offers within the money models that I explain is"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

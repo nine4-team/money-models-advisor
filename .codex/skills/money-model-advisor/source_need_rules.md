@@ -1,8 +1,7 @@
 # Source-Need Decision Rules
 
-Single source of truth for deciding whether to run a source-material search and how
-to structure the source need. The operating skill and the eval acting prompts both
-pull these rules from this file. Do not restate them anywhere else — change them here.
+Frozen rulebook for the source-need planning eval and historical multi-query traces.
+The active runtime query contract lives in `search_request_rules.md`.
 
 ## When to search
 

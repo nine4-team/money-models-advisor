@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "We could pre-sell six months of refills and add bonus months, but inventory costs arrive early. What should we consider before doing that?",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 85.5,
+  "returncode": 0,
+  "stderr": ""
+}

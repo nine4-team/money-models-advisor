@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_020",
+  "created_at": "2026-08-11T23:29:37Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 6724.7,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "win your money back offer for a service business refund guarantee how it works",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 709,
+  "valid": true
+}

@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "readiness audit fee credited toward implementation if they continue",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 10930,
+      "char_start": 8464,
+      "id": "continuity-discounts:8",
+      "score": 6.867,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations. So if someone cancels during a trial, so you can say you're allowed to cancel during the trial. Now if you do that, it'll increase sales, 'cause then people will be like, \"Okay, well, this is easy. This is no risk.\" But, uh, you'll decrease stick rate, meaning the number of people who will stay on the back end. The other version of this is that you can have zero cancellations and say there are no cancellations allowed, which works with good customers, but it will decrease sales and increase stick. Sometimes though, I mean, for example, Netflix and some of these other massive companies, they don't even try that, because they have customers that are unenforceable. And so if you're gonna have zero cancellations, make sure it's with good customers. If you do zero cancellation policy on bad customers, you will decrease sales, but you will not increase stick. So you'll just get the cost but not the benefit. Another way of doing this is a prorated fee based on savings accrued. That just sounds like fancy terms, but basically if they cancel, uh, you know, at month six and got two months free, you just bill them the difference of what they saved over that six months. And this one is probably the simplest way of doing it, which is you just have a one-time breakup fee. So you have an outlaw- out clause. It increases stick, it increases sales, and you get money on the way out, and you can also use it as a negotiating chip to figure out something else. I like this one because it's the easiest to explain. It's very simple. And I like the negotiating chip personally. So the way this would look would be, \"Hey, um, listen. You can c- like, you have a 12-month agreement. If you wanna get out of the agreement, it costs you two months.\" That's it. So it's very straightforward. So if you cancel at month one or month 11, it doesn't really matter. It's two months breakup fee. Now, when they come to break up, you set it up front. They initial next to it. And you say, \"Hey, this two-month breakup fee. What was the issue?\" And then you can try and leverage that,"
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3308,
+      "char_start": 786,
+      "id": "ten-years-ten-minutes:2",
+      "score": 6.132,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 10535,
+      "char_start": 8061,
+      "id": "rollover-upsell:4",
+      "score": 5.552,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "would, but I've got three months left in this service agreement.\" You say, \"No worries.Whatever you have, the three months, I'll credit it towards mine and I'll just make mine a two-year agreement. So you'd say like, \"Hey, John, saw your negative review on, uh, their product and it really upset me. To make it up to you, I'll credit whatever payments you have left with them to switch to ours. This way you don't lose a thing and you start getting the benefits now. Fair enough?\" 'Cause that way you don't have to wait for that thing to expire and pay and then wait to get the benefits. You can start getting the benefits now, and you don't lose anything, and I get the customer. Membership. So this is where you spread the first purchase over time. So who? Current customers. What? 12-month membership. How? Spread over the first purchase. So if somebody comes in, buys a block of service, uh, or, or of membership time, as- soon as they do, you can then offer to apply the entire amount towards more time, like 12 months. I can do rollover upsells anytime, I just prefer to do, to do them, right then. All right, so this is the important points. Uh, use rollover, uh, offers to attract new customers. For example, you roll over some or all of the customers paid. somebody else towards your thing, and you can find leads by scraping contact information from negative product reviews wherever available. You can do rollover upsells before refunding. This has solved me tons of cus- saved me tons of customers and cash. If you did a bad job, hey, it happens, rollover for a do-over. And if they want something different, you can rollover the purchase toward that thing in- instead. Previous customer, uh, are still customers, upsell them. These are win-backs, so reach out to old customers, six plus, plus months, uh, from their last purchase. Look at how much they paid, decide how much you wanna give them, offer it. Example, I made personalized videos. This is me personally. I made personalized videos for 200 past customers. This is before AI and all that stuff. It took me like two days, um, offering them $4,000 of credit to return. Add urgency to rollover upsells, so make them one-time only. So this is a key point. So this is optional. It's up to you, but this is how I prefer to do it. Make the moment you present the offer the only time to take the offer so they don't get to sleep on it. So you wanna surprise and delight them with this credit or this discount."
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 8292,
+      "char_start": 6168,
+      "id": "waived-fee:5",
+      "score": 5.11,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "A larger fee will encourage more people to make the commitment. But if you need more cash upfront, then you can make the fee one and a half to three times the monthly rate, and that will get more people to choose that more flexible option. And when you do this, more people will take it. Great. And you get more cash upfront. So you can drop the fee after the customer fulfills the commitment, right? So if someone stays the entirety of the commitment, and I'm repeating this 'cause some people forget about this, and then wants to cancel, then they have honored their commitment, and then you need to honor the fact that they don't need to pay that fee anymore. That is what makes it equitable. That's what makes it fair. Okay. So I prefer this offer for commitments over one year and longer. All right? So the longer the commitment, the better this works. This works especially well with services that take a long time to work. So think about SEO, investing, weight loss. These are all things that take a long time for someone to really get closer to their goals. It keeps people committed when they get emotional. Cancellation fees for a cause. So this is like a 201 version of this, um, but if you wanna keep customers extra motivated, you can donate the money that they would be paying for a cause that they are against. So you just say, \"Hey, what cause do you absolutely hate? Great. If you cancel early, I will be donating your entire setup fee to them.\" So this gives them two reasons to stay. First, because they don't wanna shell out that cash. Second, because they don't wanna co- they don't wanna give it to a cause they hate. Summary. So waived fee offers present a month-to-month option with a fee or a waived fee if they commit. I typically make it three to five times my monthly rate. At minimum, the commitment less should be a year. The larger your fee, the more buyers will opt for commitment. The smaller fee, the more people will do the month-to-month option, which will give you more cash upfront. If the customer meets the commitment, the fee officially goes away. Boom. That is the waived fee offer."
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2363,
+      "char_start": 49,
+      "id": "waived-fee:1",
+      "score": 5.109,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is, but because we pair it as a price on the front end, it becomes a very strong sales thing too. So with the other version, we use the three, months free or whatever to get someone in, and then we say, \"Cool, you have to pay the difference if you cancel early.\" Here, we sell them on the vacation and we say, \"We have this massive onboarding fee, but I'll waive it if you sign up for a commitment.\" Then that' also hangs as a knife, if they don't wanna pay it today, they're not gonna pay it in six months either. And so the same reason they signed up is the same reason they'll keep paying. Here's our description. So the waived fee offers work like this. First, you ask customers to pay a startup fee as a part of joining a month to month program. Typically, you wanna do that to three to five times the monthly rate. All right? So if it was a thousand dollar thing, you'd want it to be a $5,000, uh, front fee. For, you know, the example it was $4,000 a month and $25,000 signup fee. That's the idea. All right. Then you offer a discount on the entire fee if they commit to the longer term. And the commitment period should be minimum of six months, ideally 12 plus. If it's less than that, it doesn't really make any sense. So if they cancel inside the term, they pay the fee. Customers can choose to pay the big fee and keep the option to quit at any time, or they can commit to 12 months and get the fee waived. And many will commit to avoid the big fee. There's also a clear point after four, five, six months where if they paid the fee, it's the same as staying, in which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

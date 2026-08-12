@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Payment Plans downsell spread payments buyer wants the full offer but cannot afford the entire price today change when they pay without cutting what they receive",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 90.0,
+  "returncode": 0,
+  "stderr": ""
+}

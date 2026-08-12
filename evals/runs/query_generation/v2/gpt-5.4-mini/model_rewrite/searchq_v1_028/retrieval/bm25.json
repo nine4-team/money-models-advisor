@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "continuity discounts reduce churn canceling retention",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 19915,
+      "char_start": 17975,
+      "id": "continuity-discounts:11",
+      "score": 11.047,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "That's not gonna work. You wanna tell, you wanna let them vent. You wanna feel, have them feel validated. You wanna be more upset than them. You wanna have them calm you down. You say that you made the mistake and that's unacceptable. Ask them to, see if you can make it up to them. Then you do a rollover and you get a do-over. That's the idea. Those are the important points. Whoo. All right. Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2407,
+      "char_start": 0,
+      "id": "waived-fee:0",
+      "score": 8.868,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "All right, so we just covered continuity bonuses and continuity discounts. Now, we go to a special continuity offer that I really like a lot. And it's, the other two are like big amorphous versions. This is a very specific play. It'll be the shortest of the three, but for many of you people who have services or anything that's on continuity, especially if you have onboarding or some sort of getting client's results quickly, this thing is a beast. All right. So here's how I learned it. So after a long career in business, a friend of mine entered, uh, the consulting space with the intention of creating a lifestyle business. So he said, \"Hey, I'd just rather make five million bucks a year with no employees and, than have some big company.\" Um, and he said, \"You know, I don't really lose anyone, so I don't really need to market.\" And I was like, \"That's really interesting.\" A weird thing to say. I was like, \"So I assume like...\" All right, so you just collect payments upfront. Whenever somebody says, \"Oh, I don't have any churn,\" I usually just assume, well, you have no churn if you only have pre-payments. He said, \"No, I've got mostly payment plans.\" I was like, \"Huh. How do you do that?\" He said, \"Well, once you hear it, you're gonna kick yourself for not doing this all along.\" I was like, \"All right, so what do you do?\" He said, \"I just say that you could pay $25,000 to start and then go month to month after that for $4,000 a month. Or you can go to $4,000 a month if you commit to the year. So just about everyone takes the year. Then I just have them initial on their contract that they understand that if they exit early, they have to cover the $25,000 onboarding fee. So if someone calls to quit, I just say, 'Oh yeah, no worries. Just wire over the onboarding fee and I'll get you canceled right, away.' And that usually keeps people in it. It also gets people the, through the emotional ups and downs of business.\" And I was like, \"That's pretty sweet.\" So if you look at this visual here, if you had a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is,"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5969,
+      "char_start": 3663,
+      "id": "continuity-discounts:7",
+      "score": 7.06,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if they stay past Y or X period, and you make the Y or X period the month that the average customer drops off. So first time I saw this was on Amazon. Um, they had a continuity for rice packets. I buy rice. And, uh, they had 5% off if you go on continuity, and 15% off if you stay past five months. And so this is the idea is that you want to... And it was five months to the same address. Like they were pretty particular about it. But you can get a lifetime discount, and if they know, and I'm sure they did the math that they knew that people would stop paying at, call it the four-month point. And so they say, \"Okay, well, let's put a big nugget after the four-month point where they get a lifetime lower rate after that point.\" And so you can think through your own business the same way and hang the carrot, and you can also use this in the advertising. So let's say you know every customer stays four months on average. You tell everyone up front they get a lifetime discount after month four. So a lot of times people are willing to pay more up front if they know it's eventually going to go down. But this does two things. One is it gets people to buy at higher rates than they otherwise would, because they know it's gonna go down. And two, it gets them to stay longer because they know when it's going to go down. So as the time approaches, tell them the newer lower rate is right around the corner. This is key. So if you do know that it's at month four, month five or whatever that they're gonna start getting a lower rate, at month two, at month three, be like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations."
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 5492,
+      "char_start": 3201,
+      "id": "continuity-offers:3",
+      "score": 6.942,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to 3%, you have a $3,000 lifetime revenue. Massive. So some people are like, \"Oh, it's only decreasing churn by s- you know, 7%.\" No, you decreased it by 70%, or 300, sorry, 300% in terms of what it is. All right? And so churn is how many customers, leave monthly from the ones who started the month by percentage. So if you' want big LTGP, conquer churn.... make this number, the people who cancel every month, go down. And the amount that you make from that is unbelievable. So that's back-of-napkin LTV. So now let's talk about big head, long tail. So John taught me this. He said, \"You can shear a sheep...\" I shou- I should say sheep. Uh, you can shear a sheep for a lifetime, but you can only skin it once. And so he explained this one thing to me that I have always remembered. He said, \"You know, I had this membership at a tanning salon that was $100 down and then 10 bucks a month.\" He said, \"Or you could just pay $19.99 a month.\" He said the, he said people would call him up before their cards would expire to make sure they got to save that $10-a-month thing. And so because they felt like they had bought that lower rate, they didn't wanna lose it. And so that concept of the big head, long tail came from John. Like if you pay $1,000 and then something's $50 a month afterwards, the likelihood that you wanna cancel that's way lower, and so if you say, \"Hey, you can pay 1,000 bucks now and then you can earn this lower rate, or you can pay $200 a month,\" a lot of people are like, \"Shit, I'll just pay the grand and then keep the 50.\" But the thing is, is that 50, the churn on that 50 is so low that you even make more over time than the $200 a month. So you have to play with the numbers here. But typically, the more offset the upfront versus the continuity, the more valuable it is. And I will do one little side quest here and then we'll get into 'em. I think the main reason that a lot of education businesses and media"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 12547,
+      "char_start": 10080,
+      "id": "continuity-offers:5",
+      "score": 6.698,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "were winners, then every month you're like, \"Well, I want the new ads.\" So those are things that are consumable. So it makes sense to price the payment plan or the continuity based on the value of those consumables, not the blended value of the one-time thing and the consumable, because that blended value would be much higher and would have a much higher likelihood of churn. And so this is how I would prefer to fix most education businesses. There's nothing wrong, like they often have high churn simply 'cause they're mispriced. They kind of try to price in the middle when really you should price way high upfront and lower over time, or alternatively just charge annual. And then that way you're just basically looking back into the future and saying, \"Hey, if a year from now you can do all these things, would that be valuable?\" Yes. And then you have a whole year to figure out what the next big thing you're gonna have. It basically buys you more time to figure out what the next offer you're gonna have. that the first offer you did solved. So if I taught you how to sell, well, then maybe you wanna have, learn how to market. If I taught you how to sell, maybe you wanna learn how to onboard. There's gonna still be the same offer solution cycle that exists, and you can still include that within the continuity that you have. So real world offer. So let's say you have $5,000 down, 200 bucks a month. This also, the big head, long tail, helps with client find us acquisition. Because you have this big upfront payment, you can offset the cost to acquire customers, offset your sales commissions, and then you get the continuity. And the nice thing here is the cancellation rate is very, very low because of sunk cost fallacy. People don't wanna lose money they put down. So it's very unlikely someone puts $5,000 down and then cancels month two. Enterprise value is based on a discount applied to future cash flows, which really comes down to how much money and how likely is it to occur. And so for you to have a very big business, you want lots of money that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

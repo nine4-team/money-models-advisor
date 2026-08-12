@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Rollover Upsell: credit the prior readiness audit payment toward the larger compliance implementation engagement when the customer continues",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 687.6,
+  "returncode": 0,
+  "stderr": ""
+}

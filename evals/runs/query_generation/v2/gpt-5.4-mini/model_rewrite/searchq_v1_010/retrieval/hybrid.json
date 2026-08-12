@@ -1,0 +1,77 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "short-term rental owners front-end offer design diagnostic listing photo audit priority summary",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "money-models-offer-stacks",
+      "char_end": 2268,
+      "char_start": 0,
+      "id": "money-models-offer-stacks:0",
+      "score": 0.032,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that some of the things are a little bit different from the book, and that's done on purpose because I like to think through things differently in different mediums. All right? Because I can say things here that I couldn't normally say in the book. So we'll go definition, rental car story, and the gym launch example. All right. So a money model is a series of offers. That's it. The reason I had to start with the offers book before talking about the money model book is that an offer is one unit. A money model is sequencing these things. It's putting them in a series of offers deliberately to maximize gross profit collected in the first 30 days. So I will say this all together. A money model is a series of offers. A good money model, which is the objective of this book, or this training, is a series of offers structured to minimize CAC, how much it costs to get a customer, maximize gross profit, how much they pay you, collected in the first 30 days, how fast they pay you. That's the point... [Content continues with rental car counter story example including late checkout, insurance upgrade, minimum package, prepaid gas, and late return fees explanation] ...describing how rental car companies engineer their offers sequentially. The story illustrates 9 different upsells that occurred during a single reservation transaction. This is followed by the Gym Launch case study detailing how the company grew from $1,000 in the bank to $17 million in profit in 20 months through their money model approach. The transcript covers their specific offer stack including: free book/podcast lead magnet, free strategy call, $16,000 premium offer with payment terms, free supplement training, and free feedback call with continuity upsell. The lesson emphasizes how understanding offer sequencing and psychology can dramatically increase customer lifetime value and enable rapid scaling without external funding."
+    },
+    {
+      "chapter": "decoy-offers",
+      "char_end": 16507,
+      "char_start": 14437,
+      "id": "decoy-offers:8",
+      "score": 0.026,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "that you do wanna actually help them, so it- it's aligned with the scripting in the sale, right? So this builds goodwill, it over-delivers, and it increases the chance that they take your upsell offer later. Remember, they're still a lead and if they bought the decoy, if it's a free thing that they haven't bought yet, if it's not a free thing, they paid. They're still a customer. And if you've followed any of my stuff, you absolutely should still upsell them halfway through whatever this thing is, and if you give them some stuff now, that's good, they will probably increase the likelihood that they will take more of your stuff that's good later. So, in summary, decoy offers. Advertise something for free or discounted, then when the leads ask to learn more, you also present a more valuable premium offer. Make the premium offer far more valuable than the decoy option by adding more features, benefits, bonuses, and guarantees. Strip down your decoy- your main offer to your decoy offer as much as is reasonable. When leads ask about the decoy offer, present your premium offer right next to it. All right? Ask if they're here for free stuff or lasting results to get permission to put the premium offer first. If you still don't want that, then you put the decoy offer and then kind of like, like, \"I mean, you can do that, but this is what people get the best results on.\" And you can still make money from the leads who pick the decoy option. You'll just learn the best way to deliver your decoy product and maximize upsells from it. Expect to make money fast. If you're not, then make the contrast between the offers bigger. By the way, if you're a company doing over a million dollars or more in profit and want us to invest as a partner to help you scale, you can go to acquisition.com and hit the Sell button. If you just want help scaling, you can hit the Scale button. If you don't have a business, hit the Start a Business one, which I'll just tell you will route you to school.com. So, that concludes the decoy offers. Let's get to buy X get Y free."
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 11889,
+      "char_start": 9486,
+      "id": "buy-x-get-y:5",
+      "score": 0.026,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "free. And even though the socks cost less than a shirt, it's still buy one, get three. And sometimes that converts better, so I test this. Rather than offer a 33% discount, try buy one, get two free. This here will convert more than this, but they're still one thirds off. All right? So I just like to... If you are gonna use a discount, this structure still makes a discount even more compelling. Do not make offers like this if you cannot manage money, especially with service businesses. So if you say buy six months of service, get six months free, if you don't know how to manage money and you immediately blow the money that they prepaid, you are a bad business. owner. So you need to be able to consistently... Like if you have to have an accountant, you know, do this for you, put all the cash into one bank account and you can pay yourself out of that bank account every month as you deliver services. But the worst thing, you' can possibly do for your reputation is like pre-sell a year of service and then, you know, like do not do this play if you are trying to keep your business alive. If you need this cash in order to keep the business alive, I think you risk your reputation by doing it. I also cap this at 10% of a recurring customer base for those of you who have recurring revenue businesses. So if you wanna do a banger buy X, get Y free, which is a really great cash play, let's say you have 100 recurring customers, cap it at 10. Don't let more than 10 of your recurring customers prepay for the year 'cause you still like ha- I, this is a, not a math solution. This is a psychological solution. I've just seen way, more businesses succeed by keeping their recurring cash flow because most business owners honestly can't manage it. Now, mathematically it makes sense to get everybody on. annual, but a lot of people can't handle that responsibility. I'm just being really honest with you. Okay. So this is a great grand opening strategy. Uh, as I referenced earlier, um, this is also a great offer to give for fast cash. Now, if your business is healthy but you're like, \"You know. what? I wanna buy a bunch of equipment,\" great. Prepay 10 people, go buy your equipment. Or you need to go buy a, uh, another big oven, industrial oven for your baking business. Like, totally makes sense for you to do prepayments and things like that to cash flow or fund rather than take on credit"
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 10563,
+      "char_start": 8068,
+      "id": "continuity-bonus:4",
+      "score": 0.016,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the other is to get them to stay. Now, service, short-term accelerator offer. So one-time bonus for the short-term accelerator, it costs $1,000 on its own. Get it free when you become a member for $100 a month. Same concept as the gym. The bonus package is the VIP community members enjoy first in line access to our events, longer support hours, as in longer, not longer time period, uh, better support reps, and faster response times. So if you become a VIP member, not only do you get this big benefit, you also get this recurring benefit of c- continuing to pay and stay. Digital product offer. So one-time bonus would be, uh, get all my past 40 newsletters, valued at 15,800 whatever, by becoming a member today for only $3.99 a month after a 30-day free trial. Lifetime discount plus lifetime bonuses if you pay today. You can lock in a lifetime discount for $299 a month, and you get early digital access and a physical copy every month. Now, important points. Focus on the bonus, not the membership. This is really important. Join my membership program isn't very compelling, not nearly as compelling as get this free valuable thing. So advertise the free valuable thing, then explain the rest of the offer once, they show interest. So if I'm talking about the $800 of dog toys, I advertise my free $800 of dog toys, not my dog food. If I'm talking about my six-week challenge, I'm talking about the six-week challenge. They come in, I explain the $1,000 thing. I say, \"Or you can get that whole thing and this other thing for less.\" That's the idea, is you advertise the thing you're gonna give away, not the thing you sell. Bonuses kind of work like, up-sells. More of the same. You get two years of past newsletters by becoming a member. So they're coming in for newsletters, so you get more of that thing. Complimentary. You get nutrition services for free when you sign up for one of our fitness memberships. Great, that's complimentary. It goes together. You could have an upgrade, which is better, right? You get a free gold membership when you buy a bonus membership. So it's limited availability. Keep your bonuses related to"
+    },
+    {
+      "chapter": "anchor-upsell",
+      "char_end": 14496,
+      "char_start": 12143,
+      "id": "anchor-upsell:6",
+      "score": 0.016,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "something one-tenth the price, they've already done all the heavy lifting of, of anchoring, of comparing why it might be worth that. And then compared to this price, it's totally worth it. And that's why we change as little as we can from the thing that they thought about to the thing that they ultimately buy. The next point, make a premium offer that you actually want people to buy. If you have this premium offer that has all these bells and whistles, be ready to service it because let me tell you the real secret of what ends up happening when people do this. They 10X their price, and they make this really bang, whizbang thing. And then more than one out of teepol- 10 people buy it. And so this is just also a great way to give yourself permission to anchor something 10 times as expensive. A proper anchor gets the gasp. Expect them. Design for them. You want the gasp. The gasp means they considered it. If they do not gasp, it either means you didn't go high enough, or you didn't sell hard enough, as in you didn't truthfully commit to actually selling that thing. Like, you have to, in earnest, present it, or this will not work. It'll just be a waste of your time and theirs. And this is especially for business owners. If you teach your team this process, many of them will just skirt through the anchor because they start selling from their wallet. They're gonna be like, \"I would never pay for this.\" It's like, \"Of course you wouldn't. You already know how to fix cars. This guy doesn't.\" And so we often can never see the value of the stuff we sell because for us, it's easy. Duh, that's why we have a business around it. You wanna sell stuff that's easy for you and hard for other people. That's how you make money. Once you get the gasp, you come to the rescue. And if they don't balk, like if they, if they don't gasp, close the whale. If they're like, \"You know, this is a nice suit,\" then you're like, \"Great. Do you have a card on file? Do you wanna, do you put a, pair this with a handkerchief?\" You just move right on in the sale. And you're like, \"Oh God, I got a whale on the line. I'm just gonna keep going.\" To get more people to buy your main offer, make it a better deal. So this is the primary versus secondary features. You want it to be as little different from the main one, from the anchor, as, uh, as possible so"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

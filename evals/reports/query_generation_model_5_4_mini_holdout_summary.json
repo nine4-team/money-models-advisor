@@ -1,0 +1,176 @@
+{
+  "backends": [
+    "bm25",
+    "hybrid"
+  ],
+  "case_count": 16,
+  "case_splits": [
+    "expansion"
+  ],
+  "cases_file": "evals/query_generation/query_generation_holdout_v1.jsonl",
+  "created_at": "2026-08-12T01:53:59Z",
+  "generation": {
+    "guided_model_rewrite_v2": {
+      "cases": 16,
+      "mean_latency_ms": 9353.1,
+      "p50_latency_ms": 9778.0,
+      "total_codex_reported_tokens": 169512,
+      "valid_cases": 16
+    },
+    "model_rewrite": {
+      "cases": 16,
+      "mean_latency_ms": 8736.0,
+      "p50_latency_ms": 8091.6,
+      "total_codex_reported_tokens": 66391,
+      "valid_cases": 16
+    }
+  },
+  "method_version": "single-query-methods.v1, single-query-methods.v2",
+  "method_versions": {
+    "guided_model_rewrite_v2": "single-query-methods.v2",
+    "model_rewrite": "single-query-methods.v1"
+  },
+  "methods": [
+    "model_rewrite",
+    "guided_model_rewrite_v2"
+  ],
+  "model": "gpt-5.4-mini",
+  "prompt_versions": {
+    "guided_model_rewrite_v2": "query-generation-prompt.v2",
+    "model_rewrite": "query-generation-prompt.v1"
+  },
+  "results": {
+    "guided_model_rewrite_v2": {
+      "bm25": {
+        "cases": 16,
+        "completed_cases": 16,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 14,
+        "hit_at_1_pct": 87.5,
+        "hit_at_3": 15,
+        "hit_at_3_pct": 93.8,
+        "hit_at_5": 16,
+        "hit_at_5_pct": 100.0,
+        "mean_first_useful_rank": 1.312,
+        "mean_retrieval_latency_ms": 94.3,
+        "mean_useful_results_at_k": 3.438,
+        "median_useful_results_at_k": 4.0,
+        "misses": [],
+        "missing_cases": [],
+        "noise_at_k_pct": 31.2,
+        "precision_at_k_pct": 68.8,
+        "result_slots": 80,
+        "top_k": 5,
+        "useful_results": 55,
+        "useful_results_per_case_distribution": {
+          "1": 1,
+          "2": 3,
+          "3": 3,
+          "4": 6,
+          "5": 3
+        }
+      },
+      "hybrid": {
+        "cases": 16,
+        "completed_cases": 16,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 15,
+        "hit_at_1_pct": 93.8,
+        "hit_at_3": 16,
+        "hit_at_3_pct": 100.0,
+        "hit_at_5": 16,
+        "hit_at_5_pct": 100.0,
+        "mean_first_useful_rank": 1.062,
+        "mean_retrieval_latency_ms": 796.5,
+        "mean_useful_results_at_k": 3.938,
+        "median_useful_results_at_k": 4.0,
+        "misses": [],
+        "missing_cases": [],
+        "noise_at_k_pct": 21.2,
+        "precision_at_k_pct": 78.8,
+        "result_slots": 80,
+        "top_k": 5,
+        "useful_results": 63,
+        "useful_results_per_case_distribution": {
+          "2": 2,
+          "3": 4,
+          "4": 3,
+          "5": 7
+        }
+      }
+    },
+    "model_rewrite": {
+      "bm25": {
+        "cases": 16,
+        "completed_cases": 16,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 8,
+        "hit_at_1_pct": 50.0,
+        "hit_at_3": 11,
+        "hit_at_3_pct": 68.8,
+        "hit_at_5": 13,
+        "hit_at_5_pct": 81.2,
+        "mean_first_useful_rank": 1.692,
+        "mean_retrieval_latency_ms": 94.0,
+        "mean_useful_results_at_k": 2.312,
+        "median_useful_results_at_k": 2.5,
+        "misses": [
+          "querygen_holdout_v1_005",
+          "querygen_holdout_v1_015",
+          "querygen_holdout_v1_016"
+        ],
+        "missing_cases": [],
+        "noise_at_k_pct": 53.8,
+        "precision_at_k_pct": 46.2,
+        "result_slots": 80,
+        "top_k": 5,
+        "useful_results": 37,
+        "useful_results_per_case_distribution": {
+          "0": 3,
+          "2": 5,
+          "3": 5,
+          "4": 3
+        }
+      },
+      "hybrid": {
+        "cases": 16,
+        "completed_cases": 16,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 11,
+        "hit_at_1_pct": 68.8,
+        "hit_at_3": 13,
+        "hit_at_3_pct": 81.2,
+        "hit_at_5": 14,
+        "hit_at_5_pct": 87.5,
+        "mean_first_useful_rank": 1.5,
+        "mean_retrieval_latency_ms": 926.2,
+        "mean_useful_results_at_k": 2.688,
+        "median_useful_results_at_k": 3.0,
+        "misses": [
+          "querygen_holdout_v1_005",
+          "querygen_holdout_v1_016"
+        ],
+        "missing_cases": [],
+        "noise_at_k_pct": 46.2,
+        "precision_at_k_pct": 53.8,
+        "result_slots": 80,
+        "top_k": 5,
+        "useful_results": 43,
+        "useful_results_per_case_distribution": {
+          "0": 2,
+          "1": 3,
+          "2": 1,
+          "3": 4,
+          "4": 4,
+          "5": 2
+        }
+      }
+    }
+  },
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_022",
+  "created_at": "2026-08-11T23:29:51Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7425.2,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "when is free education enough to make someone ready for a paid offer readiness criteria free training paid offer",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 838,
+  "valid": true
+}

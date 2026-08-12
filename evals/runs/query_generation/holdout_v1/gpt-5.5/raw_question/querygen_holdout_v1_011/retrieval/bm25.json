@@ -1,0 +1,76 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "Revenue per kit looks good, but shipping and product costs are high. Can revenue tell us what we can afford to spend on ads?",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "cac",
+      "char_end": 2450,
+      "char_start": 0,
+      "id": "cac:0",
+      "score": 19.481,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers"
+      ],
+      "text": "So, cost to acquire a customer, AKA CAC. Let's dive in. Cost to acquire a customer, again. So, let's start with definition. All right, cost to acquire a customer, all the costs required to sell a new customer, so, that's the advertising dollars, the payroll to a media buyer, creative team, software that you, that the team uses to make advertising and sales commissions, salaries, the managers of those teams, everything that it costs you. So, a lot of people... And if you want, you can delineate how much does it cost if you use paid ads, for example, how much it costs us in media spend versus how much is our, sometimes people call it fully loaded CAC. Uh, you can have both those numbers separated out, which I think is wise, kind of like media CAC versus fully loaded. Uh, but at' the very basics now, that only really applies to paid media. If you, acquire customers via outbound, payroll is gonna be the majority of your CAC. If you. use, uh, content to get customers as your primary acquisition, uh, method, then it's just gonna be the cost of the payroll for the team that does all the distribution of content and editing and whatnot. But most companies, especially if you're bigger, are gonna have multiple different versions of that, which is why you just look at everything and you look at how many customers you got, you divide it out and you're like, \"That's our, cost per customer.\" So if we're trying to get unlimited customers, we better be sure we know what our ca- own costs, uh, to make sure that we can actually pay for it so that we can get unlimited new customers. All right, so let's calculate it together. So if you use outreach as your primary way of getting customers, then you use, let's say, $200 a month in email software and you pay someone $3,000 a month to do cold email prospecting for you, then emails become appointments that turn into eight sales per month. And so then you pay your salesperson $100 per sale. So then what's CAC, right? This is like a ChatGPT prompt word problem. But fundamentally, this is what it looks like for you as a business owner. So this is how we, this is how we calculate it. So the total cost for eight sales means that you have a $3,000 emailer plus a $200 software plus 800 bucks in commissions, which is eight sales times $100 equals four grand. All right? So now, we divide that by the number of new customers, which is $4,000 divided by eight new customers equals 500 bucks per"
+    },
+    {
+      "chapter": "context",
+      "char_end": 13331,
+      "char_start": 8269,
+      "id": "context:2",
+      "score": 18.497,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "## [\u00a71.1.c] Gym origin story \u2014 Facebook lead costs, supplements insight\n\nSo here's a quick story for you. So let me tell you how this all started. So this is me when I signed my first lease at $5,000 a month. That's me not knowing what I was doing. And this is where I slept, and that's my really fancy equipment that I was able to afford. Um, and so I heard about this thing called Facebook marketing, and things started going well. This is actually a picture that I sent to my dad after the first week of, uh, having my gym to show how many memberships. I actually was very proud of this, uh, which is kind of silly now that I look at it. It's like, I had like, whatever, 18 memberships. But I was super proud of this. I was, I had hustled all day to get that. And so the thing is, is that things started to grow. And so that was good. This was our, my one year. There's my little, my little dinky streamers 'cause that's what I could afford at the time. Um, but things were going well. Like, all my clients showed up, which was kind of sweet. Um, and we grew over to nine plus employees, so that was cool. Um, and I started to feel like I had it figured out. I was like, \"I'm a businessman.\" And then, of course, Facebook slaps me, and they five X my cost per lead. And so what was once a money, you know, torrential hurricane or downpour turned into the Sahara Desert or whatever desert this is. Uh, and all I could think about was, you know, having to call my dad saying, \"I'm gonna be... I'm a failure. This is actually didn't work. I didn't really know what I was doing.\" And that would've sucked, right? And so all I could think about was, \"How can I afford to pay for more leads,\" right? Like, the business worked, everything was fine, it's just my cost per lead went up. And so I needed something that was immediate cash upfront, so I could pay off my credit card bill for the ad spend without going into debt. And so I want to highlight one key point right now is that two types of business owners. One type of business owner tries to keep figuring out and being upset about the things that are out of their control. If your, if CPMs, the cost per impression goes up on a platform, you can either afford the impressions or you can't. And you can beg, borrow, and steal and wish that the impression cost goes down, but it's not gonna change anything, right? Of course, you can make better ads, you can make better hooks, things like that. But fundamentally, my lead cost went up. So, you can either go out of business, or you can try and figure out a way to make more money per customer. And so that's what we did. All right. And so this is what happened. So I'm traveling home for the holidays. And I've got this layover somewhere, and I see a guy from college in the same waiting area. And I was like, \"Oh, no shoot.\" I was like, \"Hey, what's up, dude?\" Uh, so we start chatting, and it turned out that he'd started a supplement business. And I was like, \"Oh, okay. Kind of interesting.\" And so I was like, \"Hey, so how do you make... how much do you make a month from your supplement company?\" He's like, \"Well, I got two locations. One does about 80,000 a month. The other's 130,000 a month.\" And I was like, \"A month?\" I was like, \"Selling supplements?\" And, uh, and I was like, \"Hold on.\" I was like, \"If this guy can make an extra 80,000 a month selling supplement without any members... I got a gym, he has no gym. I've got a gym with members, he doesn't have members.\" I was like, \"I can definitely sell 20 grand a month with my members just to cover my costs.\" And so I put an order for supplements to resell at my gym. And at first, of course, no one bought, until one day I was able to make a sale. And then from that day and going forward, I began selling $200 per person in supplements, so about a hundred bucks in profit. And that $100 offset my cost of getting a new member in the door. And so I used to have to spend money to get the person in the door, and then sell them stuff and then wait to get, you know, recruit membership cost, et cetera. But here with the supplements, I could sell them supplements up front, and I made my cost to get the customer back. All right. So I was able to start spending way more money on ads again, because it paid for my advertising. And so it made all the new members and the cash they paid free, which was sweet. And so the moral is that I made another offer. And when I made another offer, I made more money. And so the outcome was I was able to get paid to get new customers. And I'll say that again. I was able to get paid to get new customers. So most people pay to get customers. I was getting paid to grow. And so my gyms grew. And so over time, I continued to get better and better at, at recombining the way I charged and structured my client journey to make more money than my competitors. And so I went from making like four to five to one, to making 30 to one and up. So like, every dollar I put in, I would get $30, $40 back on my marketing. And I'll show you how I did it. All right."
+    },
+    {
+      "chapter": "offer-types",
+      "char_end": 2832,
+      "char_start": 1927,
+      "id": "offer-types:1",
+      "score": 17.54,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a72.2.b] Old LBO math \u2014 $600 gross profit per 10 walk-ins\n\nSo the old way that people did low barrier offers was that they would run trials. So they'd run $19 months, $21, 21 days, things like that. And so right off the bat, if you had 10 people walk in the door, two would not buy. So now you got eight left who buy a trial or buy the discount offer at 29 bucks, 19 bucks, $21, whatever. Now this guy doesn't convert, this guy doesn't convert, this guy doesn't convert, this guy doesn't convert, this guy doesn't convert. We get three, 'cause the industry average is 35% of trials would convert. So not 35% of people who showed up, 35% of people who started the trial. So being, being generous on this one, three out of the eight continue on. All right? So this is what the math looks like. So 30 days later, our total gross profit is $600. Our revenue per show up is $60. Our revenue per trial is 75."
+    },
+    {
+      "chapter": "gross-profit",
+      "char_end": 6743,
+      "char_start": 4272,
+      "id": "gross-profit:3",
+      "score": 15.486,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "of attention, he would outbid me every time. And our goal is to do the same to our competitors. All right? So you need to look at both sides, getting customers for less, but also making them worth more. All right? And before we improve it, we gotta know how to calculate it. So here's gross profit, how we calculate it. So here's a product example. So if I sell a widget for $100, it costs me 20 bucks to manufacture it and ship the widget to the end customer. All right? So my gross profit is 100, where it is, 100 minus 20, 80 bucks. This is what's left over. This is my gross profit. Okay. Here's a service example. Let's say I deliver services monthly and I have one account representative per ten customers. If my clients pay me $3,000 per month each and my reps cost me $6,000 per month, we can then figure out the gross profit margin. Okay.So the rep salary is six thousand dollars. The clients per rep is ten. The cost per client means it's six hundred dollars per client. Remember, we make six thousand dollars, divided by ten clients, six hundred dollars per client. Gross profit, all right, is now three thousand dollars, what they' pay us, minus my cost per client, which means twenty-four hundred left over. The reason I'm going through this is that many of you, guys watching this are service-based businesses and don't know your costs. These, are your costs. So my gross margins are twenty-four hundred divided by three thousand dollars, which is 80%. Rule of thumb from Alex, if you run a service-based business, local brick and mortar or national, you want at least an 80% gross profit margin. Now that- that may sound crazy to you, but it is very unlikely that you will scale in service unless you have 80 or higher. So not just eight- that means that if it cost you a hundred, you gotta sell it for five hundred. Now you might think, 'cause if you're a newer business owner, you're like, \"No, I- that's- that seems unreasonable.\" That's your gross profit, not your net profit. You still have rent. You've got, you've got your fixed admin cost, you've got insurance, you've got utilities, you've got break-fix that happens within your business. You've got all these other costs that go into doing business. You're not running 80% net margins. You're just saying this is now all the money I have left over to run the re- I still gotta spend advertising dollars. Like there's all this money that I still gotta spend. And so if you're- if you're at 80, you"
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 12694,
+      "char_start": 10290,
+      "id": "pay-less-now:6",
+      "score": 15.408,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "the criteria what people do to get the value out of the product. All right? Which should make you feel good, too, 'cause then you can explain it. It's like, listen, I have this as the criteria because you said you want. a double your readings meeting. You're not gonna double your readings meeting if you don't, unless you show up. You're not gonna find your dis- distressed op- property unless you come to the workshop. Have bonuses for your, uh, pay now offers to get even more buyers. All right? So if you want more people to take that' pay now option, just stack the bonuses, decrease the price. Um, optimizing your pay now and pay later offers. If too many people. take your pay later option, discount the pay now option more, add better bonuses or both. And if too many people take your pay now option, go the other direction. If more than 10% of pay later people cancel their payment, you promised too much, uh, the guarantee conditions are too low or the price is. too high. And so the last one's the one that can be kind of tricky, is if you have a massive discrepancy between pay now and pay later, then sometimes people will get the value and just be cheapskates. That's why having the objective measure of whether they' got the thing is so important for this. Now, again, I would explain that 10% is what you should target, or what you should expect. So 10% of people who have pay later, are going to just say, \"Don't bill me.\" So just factor it in the cost of doing business. So if you have 100 people that do pay later, expect 10 to say that. Now, if, like, 20 say that, more than, then it's like, okay, we need to change one of these other things. I would say the fourth thing is that you're selling people who can't afford it. No- no matter how well you deliver, some people will cancel their payment, and that's okay. Just cost of doing business. Now, uh, this works for recurring revenue businesses, too. Because you're like, \"How does this work for those businesses?\" Let me explain. So you just give them the option to pay a higher ongoing rate 30 days later, or they pay less today and they keep the better rate for good. All right? Really sexy. So plus, you can add in some bonuses. So I'll, I'll, I'm gonna just give you one line now and we'll talk more about it in the one-time bonuses. chapter, uh, with continuity. But it' works like, this. Someone does a free trial of whatever"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

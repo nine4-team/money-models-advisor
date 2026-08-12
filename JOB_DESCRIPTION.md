@@ -80,7 +80,7 @@ Strong alignment:
 
 - The advisor is agent-operated and CLI-backed: the agent plans; deterministic tools persist state, calculate, search, and record traces.
 - The project has explicit eval assets for next-action classification, source-need generation, source-event logging, query quality, chunking, and retrieval backend comparison.
-- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; hybrid retrieval with constrained query variants is the candidate product path after a 30-case golden search-query comparison.
+- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; one corpus-guided, unfiltered query through hybrid retrieval is the selected path after leading an audited 30-case development comparison and a 16-case reserved comparison.
 - Embeddings are cached under `.cache/embeddings/` so repeated vector runs reuse corpus and query vectors.
 - The narrative records decisions, metrics, misses, and non-adoptions rather than treating every sophisticated technique as automatically better.
 
@@ -88,7 +88,7 @@ Weak alignment / gaps to close:
 
 - The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
 - The vector backend now has a storage boundary with local and Pinecone implementations. The local backend remains the fast eval baseline; the Pinecone path is indexed and parity-tested on the 30-case generated-variants slice.
-- Query generation v2 is implemented as constrained `SourceNeed.query_variants` with the deterministic flattened query retained as a fallback/control.
+- Query generation is implemented as one `SearchRequest.query` written by the operating agent from the current question, saved snapshot, and the same versioned corpus guide used by the winning experiment. The CLI applies no request-time filter and defaults that structured request to hybrid; the old variants/fallback path is compatibility-only.
 - Observability is now present through traces, Markdown reports, summary JSON, case-level JSONL, latency metrics, cache hit/miss accounting, and estimated embedding cost. Token/cost reporting is explicit for embeddings; agent work remains outside the API path.
 - The biggest remaining JD gap is model routing and tiering. The project has golden datasets and trace scorers, but it has not yet run the same agent tasks across multiple model/provider tiers to decide which tasks can use cheaper/faster models without losing output quality.
 - Multi-provider tradeoff evidence is also missing. The narrative should not merely say "understands OpenAI and Anthropic"; it should show comparable runs, observed failure modes, latency/cost notes, and a routing decision.
@@ -100,8 +100,8 @@ The next highest-signal work is:
 1. Run model-routing and tiering evals over the existing golden suites: tool-use judgment, source-need generation, source-event/query-variant traces, and product-smoke turns. Compare at least a strong model tier and a cheaper/faster model tier, and record pass rate, failure modes, latency, and cost or cost proxy.
 2. Convert those results into a routing decision: which tasks require the strongest model, which can safely use a cheaper tier, and which should stay deterministic inside the CLI.
 3. Add multi-provider comparison evidence where available, especially prompt-following behavior, trace completeness, source-need quality, token economics, and failure modes.
-4. Optimize hosted-vector latency by reducing or parallelizing query-variant fanout while preserving hybrid+variants quality.
-5. Continue expanding the golden dataset breadth enough to support the hybrid+variants candidate story without overclaiming production finality.
+4. Independently review the frozen query-generation holdout, then keep or roll back the provisional single-query runtime based on that result.
+5. Optimize hosted-vector latency for the active single-query hybrid path and continue expanding golden-dataset breadth without overclaiming production finality.
 6. Keep Pinecone quality/latency/cache/cost reports beside local vector-store reports as the hosted retrieval guardrail.
 
 This keeps the work aligned with the JD: model routing must be data-backed, retrieval choices must be measured, and production-oriented infrastructure should support the eval story rather than distract from it.

@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_016",
+  "created_at": "2026-08-11T23:29:07Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 6251.7,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "anchoring effect expensive premium option first makes standard offer seem more affordable decoy effect pricing psychology",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 711,
+  "valid": true
+}

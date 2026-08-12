@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "A prospect wants the full program but cannot cover all of it this week. How can we change the timing without cutting what they get?",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3308,
+      "char_start": 786,
+      "id": "ten-years-ten-minutes:2",
+      "score": 0.032,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 4409,
+      "char_start": 1997,
+      "id": "continuity-offers:1",
+      "score": 0.029,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "offers, and we get a little cash today and tons of cash tomorrow from continuity offers. Note, to be clear, you can make continuity offers whenever and however you want. There are no rules, all right? They can attract new customers, upsell and downsell current customers, or reengage old customers, same as all the others. So the objective here for continuity offers within the money models that I explain is to maximize lifetime value per customer. These have lower absolute gross profit, but higher gross margins oftentimes. There are three topics we will cover: downsell the upsell, calculating back of napkin LTV, and big head long tail. So let's rock through it. So downsell the upsell. So this is my two cents. I found it works best to downsell your upsell. So get more cash upfront, sell shorter duration, and then add value, and then sell it for less. All right, so when I explained this, I had my $16,000, 16-week thing, $1,000 a week, and then I would say, \"Hey, let me give you five times the value, and then it's less.\" And people were like, \"Whoa.\" But I extended the term. So that's how I downselled my upsell. A lot of times people want to increase the price of the upsell. There's nothing wrong with that. This is just an alternative method that I found worked really well. My challenge is in the beginning was $600 for six weeks, and then back end, we'd sell $200 per month. So it's less, so one is $100 a week, one's $50 a week. It's half the price, and as a member, you get all these benefits, right? And so I like the downsell the upsell process because if they said yes to this thing, they're like, \"Oh, this is an even better deal,\" and then we convert even more of them. All right, so here's how it sounds. \"So have you enjoyed everything so far?\" They say yes. \"Mind if I tell you about a way to save a little bit and get a lot more?\" They say yes. You say, \"So given you've enjoyed X, Y, and Z, we want you here for the long term. So here's what we're gonna do. If you're in this with us for the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments"
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 8446,
+      "char_start": 5953,
+      "id": "waived-fee:4",
+      "score": 0.029,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "of like guardrails to keep someone on point during the rough months can help them overall see success. And I believe that. So that's not just not, that's not just wordsmithing. That's true. Um, and this vehicle or pricing structure, money model, allows you to build incentives around that. All right. So fees get them to start. People get value out of committing immediately because they avoid a fee. People want to avoid fees, so more people sign up to continuity. Mission accomplished. Hooray. That's how this works. Fees also get them to stick, which is lovely. So people will stick for the same reason they started, by sticking to avoid the fee. So people quit for millions of reasons, but by incurring an additional cost, a larger fee, in order to cancel, their original reason for quitting immediately shrinks compared to the value of avoiding the fee. In English, if the cost to quit exceeds the cost to stay, they will probably stay. Presenting the fee. Justify the fee by explaining the cost of taking on new customers for longer term programs. Basically, if they want short term flexibility, they pay their own setup costs. If they commit to staying long term, we'll pay their setup costs for them. All right? If someone asks for additional reason, just say, \"It costs us money to get you started. If you only want to test this out, you cover those costs. If you commit to longer, I'll cover them.\" Now, if more than 5% of people want to cancel early, look into that. Pricing incentivizes sticking, but it can't and shouldn't overcome a terrible product. You want to nudge them, not handcuff people into paying for something they hate, 'cause then they'll just hate you. Now, if you want more upfront cash, have a smaller fee. A smaller fee encourages more people to go month-to-month. This is the same, uh, difference we had with the earlier version with the continuity bonus offer. Same idea, except this is just a fee rather than a program, but some people will pay, and I'll tell you what my guess would be to get 50/50 to sign up, which would be a 33% increase, uh, a smaller fee will get more people to go month-to-month. A larger fee will encourage more people to make the commitment. But if you need more cash upfront, then you can make the fee one and a half to three times the monthly rate, and that will get more people to choose that more flexible option. And when you do this, more people will take it. Great. And you get more cash upfront. So you can drop the fee after"
+    },
+    {
+      "chapter": "free-with-consumption",
+      "char_end": 9012,
+      "char_start": 6522,
+      "id": "free-with-consumption:4",
+      "score": 0.029,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "sell 10 at 10K, you make 100 grand from a dinner. This is super common in the education space. So there's these three to five-day challenges, these virtual summits, things like that. And so these are, you know, day one you give, day two you give/ask, day three you re-pitch/give. That is the very standard structure. And so in the challenges structure, it's give, give, give, pitch, re-pitch, with proof. If you have a very high ticket price, you can push people to a phone call from the five-day thing to get someone to finalize the transaction, get details from a salesperson. And so the goal of these challenges, these events, these multi-day things, these dinners is to break the core beliefs of the prospect while you deliver on the tactical promise that you made at the beginning and/or the headline of the promotion you had. The benchmark that I have if it's virtual is that you convert 2 to 5% of people who opt in, not who schedule, show, everything down. But just if you say, \"I got 1,000 opt-ins for my virtual thing. If I can convert, uh, 2% of those people at a, you know, expensive price, then I will offset the cost.\" Now, if you're like, \"Wait, mine's not 2%\" It depends by market, but if you're going really mass market, really cheap opt-ins, it's 2 to 5%. If you're in a super niche, it should be way higher than that. That's the, basically that's the worst numbers you can have. It only gets better if you have more brand, more warm audience, and more, uh, more niched down in terms of what, what you're selling and who you're selling to. So, this is an example of something it might look like. So on Monday, and again, you can compress this. Like you could make this into one day rather than five days. It all just... Like this is basically the, the stuff that's going to get covered typically in a process. This could be a 90-minute video. Everything's just about how much and how many examples you're gonna give. So Monday it's like our story, why it's like your story, why we can help, what we're gonna cover and our perspective shift about how your approach to solving problems is different. How our, our approach is different than what you've had before. Tuesday, it's gonna be second valuable nugget of value, which is regarding their ability or insecurity. It's like what are they most afraid of? What are the thing that they're most concerned about? The next one is gonna be the second thing that they're also concerned about. This is typically an excuse outside"
+    },
+    {
+      "chapter": "payment-plans",
+      "char_end": 10318,
+      "char_start": 8033,
+      "id": "payment-plans:4",
+      "score": 0.027,
+      "subject": "downsells",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "you, like, hate them a little bit more, right? I mean, ideally that's not the case, but I'm just, I'm just explaining my experience as a consumer. Some businesses can't do this. They can't, they can't do a layaway. But if you do have the opportunity or the option where it's, where you can delay starting for a little bit, whether it's a service or it's a product, having them start paying is a great way to do this. And the nice thing with layaway is it's as flexible as you want. And I'll tell you the story of how I learned this. So I had, uh, Alan, which was our software company, I mean, we still own 25% of it, but, um, when we started the business, I learned that, uh, in-person onboardings led to higher stick rates and happier customers, and you wanna get more customer feedback, et cetera. And so I would do a single company full day, onboarding or half day onboarding, and I was on the phone selling that onboarding. Now, the onboardings, for context, these, this was an enterprise level sale, so it was like $20,000 to just be able to white label the stuff, um, and then use the, the whole product, 'cause it added a whole no- another revenue stream to agencies. And so I was on the phone, this must have been the first week or two, and I was on with these, uh, young agency owners, and they said, um, \"Okay, 20. Do guy- do you guys do payment plans?\" And I was like, \"Yeah, sure.\" Um, I said, \"You can break it up however you want.\" And they were like, \"Awesome. So we'll just do 800 bucks every other week.\" So that's what they said. And they're like, \"So with that being said, we good to come out, you know, uh, you know, next week?\" And I was like, \"Oh, no. No, you can't come out.\" I was like, \"You can split it as many times as you want, but you gotta pay it off. And the moment you pay it off, you can fly out.\" And they, they just said, \"Oh. All right, we'll put half down now and half in a month, and then we'll come out then.\" And so they wanted to delay my payment for like six months, or more than that, whatever the math is on that. And then as soon as I said, \"Oh, no, you don't get the thing until you pay,\" they were able to do it in, in a month. And so the nice thing with layaway is that it actually aligns your incentives with the customers. They want to"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_001",
+  "created_at": "2026-08-10T22:30:47Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7065.8,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.6-luna",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "Continuity Discount Offers: using a retention milestone discount or lifetime discount delivered after the usual month-four churn point to give subscription customers a reason to stay until then",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 16359,
+  "valid": true
+}

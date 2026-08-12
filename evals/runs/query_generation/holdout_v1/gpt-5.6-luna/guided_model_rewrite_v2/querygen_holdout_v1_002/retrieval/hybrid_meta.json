@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Waived Fee Offers: whether showing a meaningful implementation or startup fee, waiving it for annual continuity customers, and making it due upon early cancellation increases commitment and reduces churn",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 804.9,
+  "returncode": 0,
+  "stderr": ""
+}

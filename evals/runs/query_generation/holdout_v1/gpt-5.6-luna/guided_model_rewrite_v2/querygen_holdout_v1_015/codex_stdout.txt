@@ -1,0 +1,1 @@
+{"query":"When a business closes valuable customers but does not generate enough qualified sales conversations, how should it diagnose whether the failing part is the attraction offer/customer acquisition offer versus the upsell, downsell, or continuity, and which offer-stack function should be addressed first?"}

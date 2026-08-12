@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "We do not get enough qualified conversations, but the clients we close are valuable. Which part of the offer stack is failing?",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 89.2,
+  "returncode": 0,
+  "stderr": ""
+}

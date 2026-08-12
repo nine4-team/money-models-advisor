@@ -1,0 +1,1 @@
+{"query":"After an attraction offer sells, which upsell should come next to maximize first-30-day gross profit and shorten CAC payback, and how should it fit into the money model and offer sequence?"}

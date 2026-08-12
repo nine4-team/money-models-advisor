@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,420;9..144,560;9..144,640&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,420;9..144,560;9..144,640&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap"
     rel="stylesheet" />
   <style>
     :root {
@@ -392,23 +392,117 @@
       color: #2e2a22;
     }
 
-    /* ---------- runtime loop ---------- */
+    /* ---------- workflow map ---------- */
 
-    .loop {
-      margin: 22px 0 0;
-      border: 1px solid var(--rule);
-      background: var(--paper-deep);
-      padding: 22px 26px;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      line-height: 1.85;
-      color: var(--muted);
-      white-space: normal;
+    .workflow-map {
+      margin: 26px 0 4px;
     }
 
-    .loop b {
+    .workflow-map figcaption {
+      margin-bottom: 12px;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    .workflow-scroll {
+      overflow-x: auto;
+      padding: 2px 0 10px;
+      scrollbar-color: var(--rule) transparent;
+    }
+
+    .wf-diagram {
+      display: block;
+      width: 100%;
+      min-width: 760px;
+      height: auto;
+    }
+
+    .wf-diagram .flow-line {
+      fill: none;
+      stroke: var(--rule-strong);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      marker-end: url(#flow-arrow);
+    }
+
+    .wf-diagram .flow-loop {
+      stroke: var(--accent);
+    }
+
+    .wf-diagram .flow-merge {
+      fill: none;
+      stroke: var(--rule-strong);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .wf-diagram .flow-process,
+    .wf-diagram .flow-terminal,
+    .wf-diagram .flow-decision {
+      stroke-width: 1.5;
+    }
+
+    .wf-diagram .flow-process {
+      fill: var(--paper-deep);
+      stroke: var(--rule-strong);
+    }
+
+    .wf-diagram .flow-agent {
+      fill: var(--accent-soft);
+      stroke: var(--accent);
+    }
+
+    .wf-diagram .flow-terminal {
+      fill: #faf7ef;
+      stroke: var(--rule-strong);
+    }
+
+    .wf-diagram .flow-output {
+      stroke: var(--accent);
+      stroke-width: 2;
+    }
+
+    .wf-diagram .flow-decision {
+      fill: var(--accent-soft);
+      stroke: var(--accent);
+    }
+
+    .wf-diagram .flow-title {
+      fill: var(--ink);
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 560;
+      text-anchor: middle;
+    }
+
+    .wf-diagram .flow-owner,
+    .wf-diagram .flow-label {
+      font-family: var(--mono);
+      text-transform: uppercase;
+    }
+
+    .wf-diagram .flow-owner {
+      fill: var(--muted);
+      font-size: 8.5px;
       font-weight: 500;
-      color: var(--accent);
+      letter-spacing: 1.3px;
+      text-anchor: middle;
+    }
+
+    .wf-diagram .flow-agent-label,
+    .wf-diagram .flow-label {
+      fill: var(--accent);
+    }
+
+    .wf-diagram .flow-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
     }
 
     /* ---------- decision block ---------- */
@@ -637,6 +731,10 @@
 
     td.hit {
       color: var(--accent);
+    }
+
+    .query-matrix td[rowspan] {
+      vertical-align: middle;
     }
 
     tr:last-child td {
@@ -918,27 +1016,24 @@
       <div class="subnav-group" data-parent="s2">
         <ol>
           <li><a href="#s2-1"><span class="sn-num">2.1</span><span class="sn-title">Workflow</span></a></li>
-          <li><a href="#s2-2"><span class="sn-num">2.2</span><span class="sn-title">Model</span></a></li>
-          <li><a href="#s2-3"><span class="sn-num">2.3</span><span class="sn-title">Instructions</span></a></li>
-          <li><a href="#s2-4"><span class="sn-num">2.4</span><span class="sn-title">Tools</span></a></li>
-          <li><a href="#s2-5"><span class="sn-num">2.5</span><span class="sn-title">Memory</span></a></li>
-          <li><a href="#s2-6"><span class="sn-num">2.6</span><span class="sn-title">Knowledge &amp; retrieval</span></a></li>
-          <li><a href="#s2-7"><span class="sn-num">2.7</span><span class="sn-title">Guardrails</span></a></li>
-          <li><a href="#s2-8"><span class="sn-num">2.8</span><span class="sn-title">Observability</span></a></li>
-          <li><a href="#s2-9"><span class="sn-num">2.9</span><span class="sn-title">Environment</span></a></li>
+          <li><a href="#s2-2"><span class="sn-num">2.2</span><span class="sn-title">Component overview</span></a></li>
+          <li><a href="#s2-3"><span class="sn-num">2.3</span><span class="sn-title">Model</span></a></li>
+          <li><a href="#s2-4"><span class="sn-num">2.4</span><span class="sn-title">Instructions</span></a></li>
+          <li><a href="#s2-5"><span class="sn-num">2.5</span><span class="sn-title">Tools</span></a></li>
+          <li><a href="#s2-6"><span class="sn-num">2.6</span><span class="sn-title">Memory</span></a></li>
+          <li><a href="#s2-7"><span class="sn-num">2.7</span><span class="sn-title">Knowledge &amp; retrieval</span></a></li>
+          <li><a href="#s2-8"><span class="sn-num">2.8</span><span class="sn-title">Guardrails</span></a></li>
+          <li><a href="#s2-9"><span class="sn-num">2.9</span><span class="sn-title">Observability</span></a></li>
+          <li><a href="#s2-10"><span class="sn-num">2.10</span><span class="sn-title">Environment</span></a></li>
         </ol>
       </div>
       <div class="subnav-group" data-parent="s3">
         <ol>
           <li><a href="#s3-1"><span class="sn-num">3.1</span><span class="sn-title">Evaluation framework</span></a></li>
           <li><a href="#s3-2"><span class="sn-num">3.2</span><span class="sn-title">Quality scoring</span></a></li>
-          <li><a href="#s3-3"><span class="sn-num">3.3</span><span class="sn-title">Chunking strategy</span></a></li>
-          <li><a href="#s3-4"><span class="sn-num">3.4</span><span class="sn-title">Query generation</span></a></li>
-          <li><a href="#s3-5"><span class="sn-num">3.5</span><span class="sn-title">Hybrid retrieval + reranking</span></a></li>
-          <li><a href="#s3-6"><span class="sn-num">3.6</span><span class="sn-title">Latency benchmarks</span></a></li>
-          <li><a href="#s3-7"><span class="sn-num">3.7</span><span class="sn-title">Pinecone namespaces</span></a></li>
-          <li><a href="#s3-8"><span class="sn-num">3.8</span><span class="sn-title">Model selection</span></a></li>
-          <li><a href="#s3-9"><span class="sn-num">3.9</span><span class="sn-title">Regression detection</span></a></li>
+          <li><a href="#s3-3"><span class="sn-num">3.3</span><span class="sn-title">Retrieval</span></a></li>
+          <li><a href="#s3-4"><span class="sn-num">3.4</span><span class="sn-title">Orchestration model</span></a></li>
+          <li><a href="#s3-5"><span class="sn-num">3.5</span><span class="sn-title">Regression detection</span></a></li>
         </ol>
       </div>
     </nav>
@@ -948,35 +1043,27 @@
       <div class="body">
         <h2>Objective</h2>
         <p class="lede">
-          The idea with this project is to methodically design a hosted AI agent based on
-          <em>$100M Money Models</em> so that you can get a feel for how I work through design and build problems.
+          This project designs and tests an AI advisor based on
+          <em>$100M Money Models</em>. It is a portfolio demonstration of how
+          I make and validate AI engineering decisions.
         </p>
         <p class="lede">
-          When a user says things like, "I think CAC is too high,"
-          "cash is tight," "what should I add after the first sale?" the advisor should reply with explanations,
-          diagnosis, and/or recommendations - citing passages from Money Models where appropriate.
+          Given questions such as “Why is cash tight?” or “What should I add
+          after the first sale?”, the advisor explains, diagnoses, and
+          recommends, citing the source material when it relies on the book.
         </p>
         <p class="lede">
-          The advisor exists today as a local CLI core, driven by the coding
-          agents of both candidate providers — Codex for OpenAI, Claude Code for
-          Anthropic. That's the method:
-          settle the design choices that need evidence — platform, model,
-          retrieval strategy — in a cheap harness before building the hosted
-          version (§3.8). The hosted build is the next step, not part of
-          this write-up.
+          The current implementation is a local CLI operated by Codex and
+          Claude Code. This makes model, workflow, and retrieval choices cheap
+          to test before building the hosted product.
         </p>
 
         <h3 id="s1-1"><span class="sub">1.1</span>Scope</h3>
         <p class="lede">
-          Three parts of this system are probably overkill: the vector database, semantic
-          retrieval, and namespace partitioning (ditched for a single namespace after it showed no benefit and latency
-          costs during testing). I included these elements in the design process because the Sr. AI Engineer role calls
-          for them.
-        </p>
-        <p class="lede">
-          An early prototype that used a decision tree .md file and several framework summary files (created from
-          transcripts of the Money Models video course) in a Claude project performed pretty well in informal
-          testing.
+          This is a bounded portfolio system, not a production deployment.
+          Vector retrieval, hybrid search, and namespace partitioning were
+          tested rather than assumed; features that did not earn their cost
+          were rejected.
         </p>
       </div>
     </section>
@@ -994,36 +1081,137 @@
           One advisory turn starts with a founder's question and ends with an
           answer plus an auditable record of how the answer was produced.
         </p>
-        <div class="loop"><b>Founder asks a business question</b>
-          → agent reads what the advisor already knows about the business
-          → agent decides whether to clarify, calculate, diagnose, or consult the book
-          → deterministic services perform the repeatable work
-          → agent judges the results and writes the answer
-          → the system validates the evidence and records the turn</div>
+        <figure class="workflow-map" aria-labelledby="workflow-map-caption">
+          <figcaption id="workflow-map-caption">One advisory turn · one selected action per loop · agent judgment in purple</figcaption>
+          <div class="workflow-scroll">
+            <!--
+              Control-flow specification:
+              1. Load context.
+              2. If context is sufficient, compose; otherwise select exactly one next action.
+              3. Selected action = context gap -> clarify or inspect.
+                 Selected action = calculation needed -> calculate.
+                 Selected action = source evidence needed -> search source material.
+              4. After the selected action, reassess context and repeat if necessary.
+              5. Validate the composed answer. If valid, record and return; otherwise revise and revalidate.
+            -->
+            <svg class="wf-diagram" viewBox="0 0 1080 700" role="img" aria-labelledby="workflow-title workflow-desc"
+              xmlns="http://www.w3.org/2000/svg">
+              <title id="workflow-title">Money Model Advisor workflow</title>
+              <desc id="workflow-desc">A founder asks a question and the system loads saved context. If the agent has enough context, it composes an answer. Otherwise it chooses whether to clarify, calculate, or search source material, then reassesses. A composed answer is validated. Valid answers are recorded and returned; invalid answers return to the agent for revision.</desc>
+              <defs>
+                <marker id="flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#1c1914" />
+                </marker>
+                <marker id="flow-arrow-accent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6"
+                  markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b3fa0" />
+                </marker>
+              </defs>
+
+              <!-- Connectors are drawn first so they sit behind the nodes. -->
+              <path class="flow-line" data-from="question" data-to="load-context" d="M 190 200 H 240" />
+              <path class="flow-line" data-from="load-context" data-to="enough-context" d="M 440 200 H 490" />
+              <path class="flow-line" data-from="enough-context" data-to="compose" data-condition="yes"
+                d="M 690 200 H 830" />
+              <path class="flow-line" data-from="enough-context" data-to="choose-action" data-condition="no"
+                d="M 590 250 V 280 H 390 V 305" />
+              <path class="flow-line" data-from="choose-action" data-to="clarify" data-condition="context-gap"
+                d="M 270 355 H 130 V 520" />
+              <path class="flow-line" data-from="choose-action" data-to="calculate" data-condition="calculation-needed"
+                d="M 390 405 V 520" />
+              <path class="flow-line" data-from="choose-action" data-to="search" data-condition="source-evidence-needed"
+                d="M 510 355 H 650 V 520" />
+              <path class="flow-merge" data-from="clarify" data-to="action-complete" d="M 130 580 V 640 H 390" />
+              <path class="flow-merge" data-from="calculate" data-to="action-complete" d="M 390 580 V 640" />
+              <path class="flow-merge" data-from="search" data-to="action-complete" d="M 650 580 V 640 H 390" />
+              <circle data-node="action-complete" cx="390" cy="640" r="3.5" fill="var(--rule-strong)" />
+              <path class="flow-line flow-loop" data-from="action-complete" data-to="enough-context"
+                d="M 390 640 H 16 V 120 H 590 V 150"
+                style="marker-end:url(#flow-arrow-accent)" />
+              <path class="flow-line" data-from="compose" data-to="validate" d="M 940 232 V 300" />
+              <path class="flow-line" data-from="validate" data-to="valid" d="M 940 364 V 390" />
+              <path class="flow-line" data-from="valid" data-to="record" data-condition="yes" d="M 940 470 V 530" />
+              <path class="flow-line flow-loop" data-from="valid" data-to="compose" data-condition="no"
+                d="M 1050 430 H 1066 V 200 H 1050"
+                style="marker-end:url(#flow-arrow-accent)" />
+
+              <text class="flow-label" x="714" y="189">Yes · answer</text>
+              <text class="flow-label" x="475" y="269">No · choose one action</text>
+              <text class="flow-label" x="145" y="343">Context gap</text>
+              <text class="flow-label" x="404" y="468">Calculation needed</text>
+              <text class="flow-label" x="525" y="343">Source evidence needed</text>
+              <text class="flow-label" x="460" y="108">Reassess after one action</text>
+              <text class="flow-label" x="952" y="505">Yes</text>
+              <text class="flow-label" x="1058" y="370" transform="rotate(-90 1058 370)">No · revise</text>
+
+              <rect class="flow-terminal" data-node="question" x="20" y="170" width="170" height="60" rx="30" />
+              <text class="flow-owner" x="105" y="195">Founder</text>
+              <text class="flow-title" x="105" y="218">Ask a question</text>
+
+              <rect class="flow-process" data-node="load-context" x="240" y="168" width="200" height="64" rx="6" />
+              <text class="flow-owner" x="340" y="193">Deterministic core</text>
+              <text class="flow-title" x="340" y="216">Load saved context</text>
+
+              <polygon class="flow-decision" data-node="enough-context" points="590,150 690,200 590,250 490,200" />
+              <text class="flow-owner flow-agent-label" x="590" y="193">Agent judgment</text>
+              <text class="flow-title" x="590" y="216">Enough context?</text>
+
+              <polygon class="flow-decision" data-node="choose-action" points="390,305 510,355 390,405 270,355" />
+              <text class="flow-owner flow-agent-label" x="390" y="348">Agent judgment</text>
+              <text class="flow-title" x="390" y="371">Choose next action</text>
+
+              <rect class="flow-process" data-node="clarify" x="30" y="520" width="200" height="60" rx="6" />
+              <text class="flow-owner" x="130" y="544">Agent + core</text>
+              <text class="flow-title" x="130" y="566">Clarify or inspect</text>
+
+              <rect class="flow-process" data-node="calculate" x="290" y="520" width="200" height="60" rx="6" />
+              <text class="flow-owner" x="390" y="544">Deterministic core</text>
+              <text class="flow-title" x="390" y="566">Calculate</text>
+
+              <rect class="flow-process" data-node="search" x="550" y="520" width="200" height="60" rx="6" />
+              <text class="flow-owner" x="650" y="544">Agent + core</text>
+              <text class="flow-title" x="650" y="566">Search source material</text>
+
+              <rect class="flow-process flow-agent" data-node="compose" x="830" y="168" width="220" height="64" rx="6" />
+              <text class="flow-owner flow-agent-label" x="940" y="193">Agent judgment</text>
+              <text class="flow-title" x="940" y="216">Compose answer</text>
+
+              <rect class="flow-process" data-node="validate" x="830" y="300" width="220" height="64" rx="6" />
+              <text class="flow-owner" x="940" y="325">Deterministic core</text>
+              <text class="flow-title" x="940" y="348">Validate evidence + trace</text>
+
+              <polygon class="flow-decision" data-node="valid" points="940,390 1050,430 940,470 830,430" />
+              <text class="flow-owner" x="940" y="423">Deterministic core</text>
+              <text class="flow-title" x="940" y="446">Valid?</text>
+
+              <rect class="flow-terminal flow-output" data-node="record" x="830" y="530" width="220" height="56" rx="28" />
+              <text class="flow-owner" x="940" y="553">Completed turn</text>
+              <text class="flow-title" x="940" y="574">Record + return</text>
+            </svg>
+          </div>
+        </figure>
         <p>
-          The boundary is the central design rule: the agent owns meaning and
-          judgment; the deterministic core owns state, formulas, retrieval,
-          validation, and recording. The component map below shows where each
-          responsibility lives; the sections after it unpack those components
-          in the same order.
+          The agent owns judgment; the deterministic core owns state,
+          formulas, retrieval, validation, and recording.
         </p>
 
-        <h4 class="block">Component map</h4>
+        <h3 id="s2-2"><span class="sub">2.2</span>Component overview</h3>
         <div class="anatomy">
           <div class="an-zone agent">
             <div class="an-zone-h"><span class="lead">The agent</span> — judgment</div>
             <div class="an-grid cols2">
               <div class="acard">
                 <span class="k">Model</span>
-                <span class="d">gpt-5.4-mini + gpt-5.5, chosen by testing every candidate from
-                  both providers; the core stays model-agnostic.</span>
-                <span class="r"><a href="#s2-2">§2.2</a></span>
+                <span class="d">The local agent supplies judgment; the core stays model-agnostic.
+                  Tests support gpt-5.5 for orchestration and Mini as a bounded query-writing option.</span>
+                <span class="r"><a href="#s2-3">§2.3</a></span>
               </div>
               <div class="acard">
                 <span class="k">Instructions</span>
                 <span class="d">One versioned skill file, hardened like code through a
                   test-fix loop.</span>
-                <span class="r"><a href="#s2-3">§2.3</a></span>
+                <span class="r"><a href="#s2-4">§2.4</a></span>
               </div>
             </div>
           </div>
@@ -1034,31 +1222,31 @@
                 <span class="k">Tools</span>
                 <span class="d">Eight operations, bounded by one session start and
                   finish.</span>
-                <span class="r"><a href="#s2-4">§2.4</a></span>
+                <span class="r"><a href="#s2-5">§2.5</a></span>
               </div>
               <div class="acard">
                 <span class="k">Memory</span>
                 <span class="d">Typed business state, every field source-tracked, reused
                   each turn as the context cache.</span>
-                <span class="r"><a href="#s2-5">§2.5</a></span>
+                <span class="r"><a href="#s2-6">§2.6</a></span>
               </div>
               <div class="acard">
                 <span class="k">Knowledge</span>
                 <span class="d">The book, chunked and indexed in a vector store; hybrid
                   BM25 + vector retrieval.</span>
-                <span class="r"><a href="#s2-6">§2.6</a></span>
+                <span class="r"><a href="#s2-7">§2.7</a></span>
               </div>
               <div class="acard">
                 <span class="k">Guardrails</span>
                 <span class="d">No ungrounded citation, no unproven math — enforced at
                   session finish.</span>
-                <span class="r"><a href="#s2-7">§2.7</a></span>
+                <span class="r"><a href="#s2-8">§2.8</a></span>
               </div>
               <div class="acard">
                 <span class="k">Observability</span>
                 <span class="d">Every turn ends as one validated trace; every eval reads
                   them.</span>
-                <span class="r"><a href="#s2-8">§2.8</a></span>
+                <span class="r"><a href="#s2-9">§2.9</a></span>
               </div>
             </div>
           </div>
@@ -1069,39 +1257,36 @@
                 <span class="d">A hosted service on the OpenAI Agents SDK, taking the
                   founder's business data as uploaded context — today a local CLI reading
                   the founder's files in place.</span>
-                <span class="r"><a href="#s2-9">§2.9</a></span>
+                <span class="r"><a href="#s2-10">§2.10</a></span>
               </div>
             </div>
           </div>
         </div>
 
-        <h3 id="s2-2"><span class="sub">2.2</span>Model</h3>
+        <h3 id="s2-3"><span class="sub">2.3</span>Model</h3>
         <p>
-          The planning brain runs on two OpenAI models: <code>gpt-5.4-mini</code>
-          makes the source-need decision, <code>gpt-5.5</code> sequences the
-          tools across a turn. Both were picked by running every candidate
-          model from Anthropic and OpenAI through the same golden cases
-          (§3.8). The core stays model-agnostic, so a model can change without
-          touching the tools, memory, or retrieval around it.
+          The operating agent supplies semantic judgment; the CLI makes no
+          model calls. The model-agnostic core lets the model change without
+          changing tools, memory, or retrieval. Tests select
+          <code>gpt-5.5</code> for orchestration and show that
+          <code>gpt-5.4-mini</code> can handle bounded query writing. The local
+          product still uses one operating agent (§3.3, §3.4).
         </p>
 
-        <h3 id="s2-3"><span class="sub">2.3</span>Instructions</h3>
+        <h3 id="s2-4"><span class="sub">2.4</span>Instructions</h3>
         <p>
           The agent's instructions are one versioned skill file
-          (<code>SKILL.md</code>, 238 lines): how to run a turn, when to
-          search versus ask, the query variants each search requires
-          (§2.6), and what the trace must contain at the end. It's treated
-          like code — versioned in git and amended through the test-fix
-          loop in §3.9: when one agent misreads an instruction the skill is
-          patched, and when two fail the same way the case becomes a
-          regression test.
+          (<code>SKILL.md</code>): how to run a turn, when to search versus
+          ask, how to write one corpus-guided query (§2.7), and what the
+          final trace must contain. Failures drive instruction changes and
+          regression cases (§3.5).
         </p>
 
-        <h3 id="s2-4"><span class="sub">2.4</span>Tools</h3>
+        <h3 id="s2-5"><span class="sub">2.5</span>Tools</h3>
         <p class="lede">
-          The CLI (§2.1) emits structured JSON the agent reads. Six of its
-          eight operations run in the order a turn uses them; <code>logs</code>
-          and <code>index pinecone</code> are utilities used outside that flow.
+          The CLI emits structured JSON through eight operations;
+          <code>logs</code> and <code>index pinecone</code> sit outside the
+          normal turn flow.
         </p>
         <dl class="rows">
           <div>
@@ -1142,8 +1327,8 @@
             <dt>search</dt>
             <dd>
               Retrieve citation-ready chunks from an agent-written
-              <code>SourceNeed</code>, against a selectable retrieval
-              strategy and vector store (§2.6).
+              <code>SearchRequest</code>, against a selectable retrieval
+              strategy and vector store (§2.7).
             </dd>
           </div>
           <div>
@@ -1160,20 +1345,19 @@
           </div>
           <div>
             <dt>index pinecone</dt>
-            <dd>Index management: upsert corpus vectors into the hosted vector index (§2.6).</dd>
+            <dd>Index management: upsert corpus vectors into the hosted vector index (§2.7).</dd>
           </div>
         </dl>
 
-        <h3 id="s2-5"><span class="sub">2.5</span>Memory</h3>
+        <h3 id="s2-6"><span class="sub">2.6</span>Memory</h3>
         <p class="lede">
           The advisor's memory of a business is one typed object —
           identity, offer stack, economics, problem framing — and every
           field records where it came from.
         </p>
         <p>
-          V1 stores only what's needed to decide the next advisory action,
-          run diagnostics, target retrieval, and explain what's missing
-          before a recommendation. The whole schema:
+          V1 stores only what is needed to choose the next action, run
+          diagnostics, retrieve evidence, and identify missing context.
         </p>
         <figure class="figure">
           <figcaption>BusinessSnapshot v1 — full field layout</figcaption>
@@ -1195,7 +1379,6 @@
   "field_sources":{ … }
 }</pre>
         </figure>
-        <p>Block by block:</p>
         <dl class="rows">
           <div>
             <dt><code>business</code></dt>
@@ -1213,10 +1396,7 @@
               The book's five offer types — attraction offer, core offer,
               upsell, downsell, continuity — each stored as
               <code>{exists, description, price}</code>.
-              <code>exists</code> alone wouldn't be enough — "add an
-              upsell" is bad advice for a business that has one but priced
-              it too low — so the description and price are stored with it.
-              And <code>exists</code> takes three values: <code>true</code>,
+              <code>exists</code> takes three values: <code>true</code>,
               <code>false</code> only when there's evidence the offer is
               really absent, and <code>null</code> when nobody knows yet.
             </dd>
@@ -1245,12 +1425,8 @@
           <div>
             <dt><code>advisor_state</code></dt>
             <dd>
-              Status fields the CLI computes and the agent can read but not
-              invent: which diagnoses the saved numbers can support, the
-              still-missing facts — which is what drives the clarifying
-              questions — and which sections of the book are likely
-              relevant. The agent decides whether any of this matters for
-              the current turn. The headline field,
+              CLI-computed status, readiness, and missing facts. The agent
+              decides what matters for the current turn. The headline field,
               <code>advisory_status</code>, moves through four stages:
               <div class="statusflow">
                 <span>insufficient_context</span><i>→</i>
@@ -1266,9 +1442,8 @@
               One record per saved fact, naming where it came from
               (<code>file</code>, <code>conversation</code>, or
               <code>calculated</code>) with a confidence grade and
-              timestamp. Facts taken from a file keep the file's path and a
-              hash of its contents, so the fact is marked stale when the
-              file changes. The record for a CAC read from a metrics file:
+              timestamp. File-backed facts keep the path and content hash so
+              they can be marked stale when the file changes:
               <pre>"economics.cac": {
   "source_type": "file",
   "source": "metrics/q1-unit-economics.csv",
@@ -1286,17 +1461,14 @@
           the trace rather than silently overwritten.
         </p>
         <p class="quiet">
-          The snapshot is also the cache for business context: facts are
-          accepted once and reused every turn after — the advisor remembers
-          the business, advice traces to sourced facts, and docs aren't
-          re-inspected every turn. Full schema, field rationale, readiness
-          and merge rules: <code>BUSINESS_SNAPSHOT_V1.md</code>.
+          Accepted facts are reused across turns instead of rediscovered.
+          Full contract: <code>BUSINESS_SNAPSHOT_V1.md</code>.
         </p>
 
-        <h3 id="s2-6"><span class="sub">2.6</span>Knowledge &amp; retrieval</h3>
+        <h3 id="s2-7"><span class="sub">2.7</span>Knowledge &amp; retrieval</h3>
         <p class="lede">
           Every search starts from a structured request the agent writes — a
-          <code>SourceNeed</code> — and runs hybrid: two rankers over the
+          <code>SearchRequest</code> — and runs hybrid: two rankers over the
           same chunked book, BM25 and vector, combined into one ranked list.
         </p>
 
@@ -1313,26 +1485,16 @@
           <span>downsells</span>
           <span>continuity</span>
         </div>
-        <h4 class="block">The request: a SourceNeed</h4>
+        <h4 class="block">The request: one corpus-guided query</h4>
         <p>
-          A <code>SourceNeed</code> is the structured request the agent writes
-          for one search. Its fields:
+          A <code>SearchRequest</code> is the small traceable request the agent
+          writes for one search. Its active fields are:
         </p>
         <dl class="rows">
           <div>
-            <dt>subjects</dt>
-            <dd>Which book subjects to search, drawn from the five above.
-              Restricts the search to those subjects' chunks.</dd>
-          </div>
-          <div>
-            <dt>focus_terms</dt>
-            <dd>The specific terms the search is about, e.g.
-              <code>CAC</code>, <code>payback period</code>.</dd>
-          </div>
-          <div>
-            <dt>query_variants</dt>
-            <dd>The 2–4 rephrasings that actually run against the store
-              (built as described next).</dd>
+            <dt>query</dt>
+            <dd>The single query that actually runs against the store, written
+              from the user's question, saved snapshot, and corpus guide.</dd>
           </div>
           <div>
             <dt>user_turn</dt>
@@ -1357,27 +1519,18 @@
           </div>
         </dl>
         <p>
-          What gets searched is set by <code>subjects</code>,
-          <code>focus_terms</code>, and <code>query_variants</code>. One
-          search does one job: a turn needing two kinds of evidence runs two
-          searches and records two source events.
+          The query alone drives retrieval. It applies no subject or namespace
+          filter. One search does one job: a turn needing two genuinely
+          different kinds of evidence runs two searches and records two source
+          events.
         </p>
 
-        <h4 class="block">Query generation: an open, eval-gated choice</h4>
+        <h4 class="block">Query generation: measured and selected</h4>
         <p>
-          The experiment begins with the real product inputs: the user's
-          question and normal saved business snapshot. It compares using the
-          question unchanged, asking a model for an unguided rewrite, and
-          asking the same model for a rewrite informed by the book's glossary
-          and frameworks. Each method produces one query and receives no
-          reviewer labels or subject filter.
-        </p>
-        <p class="quiet">
-          The corpus-guided rewrite leads development testing by using the
-          guide as a translation reference while preserving every concept the
-          question actually requires. The trace records the exact query and
-          returned passages. Multiple queries and metadata filters remain
-          possible later experiments, not assumed product behavior (§3.4).
+          A 46-case comparison selected a corpus-guided rewrite over the raw
+          question and an unguided rewrite. The agent writes one query from
+          the question, snapshot, and versioned corpus guide; the CLI runs it
+          unfiltered through hybrid retrieval (§3.3).
         </p>
 
         <h4 class="block">How a search runs</h4>
@@ -1385,9 +1538,9 @@
           <div>
             <dt>Chunking</dt>
             <dd>
-              Heading-aware: preserve transcript sections, fall back to
-              fixed windows. 202 chunks with stable IDs and citation
-              metadata.
+              Framework-aware: preserve transcript headings, split long
+              sections at framework cues, then use bounded windows as a
+              fallback. 204 chunks with stable IDs and citation metadata.
             </dd>
           </div>
           <div>
@@ -1433,19 +1586,14 @@
               A narrow <code>VectorStore</code> interface with two
               implementations: local in-memory for fast dev and evals, and
               Pinecone for hosted retrieval. The first Pinecone adapter is a
-              small REST client rather than the official SDK; it can move to
-              the SDK later without touching advisor or eval logic. The index also
-              supports a namespace-per-subject layout; a single namespace
-              with metadata filters is the default (§3.7).
+              small REST client that can move to the official SDK without
+              changing advisor or eval logic. The index supports a
+              namespace-per-subject layout; one unfiltered namespace is the
+              active path (§3.3).
             </dd>
           </div>
         </dl>
-        <p class="quiet">
-          None of these choices was assumed. Section 3 is the measurement
-          behind each: how it was tested, and why it was kept or rejected.
-        </p>
-
-        <h3 id="s2-7"><span class="sub">2.7</span>Guardrails</h3>
+        <h3 id="s2-8"><span class="sub">2.8</span>Guardrails</h3>
         <p class="lede">
           Before a turn is saved, <code>session finish</code> checks it against
           fixed rules rather than trusting the agent's self-report. Two can
@@ -1455,14 +1603,9 @@
           <div>
             <dt>Grounded citations</dt>
             <dd>
-              Every cited chunk ID must appear in a source event, unless the
-              trace explicitly marks it as an external, non-corpus citation — the
-              agent cannot quietly cite material it never retrieved. Chunks
-              inspected but not cited only warn: that's legitimate behavior. This
-              is the grounding rule: a claim about the book either cites an
-              inspected chunk or isn't made as a book claim at all — when
-              retrieval finds no support, the advisor has to say so instead of
-              inventing a citation.
+              Every corpus citation must refer to a chunk recorded in a
+              source event. Unsupported book claims reject the turn; retrieved
+              but unused chunks only warn.
             </dd>
           </div>
           <div>
@@ -1471,12 +1614,12 @@
               If actions include <code>calculate</code>, the trace must include
               structured <code>calculation_events</code> with metric, inputs, and
               output — added after agents were observed claiming math their
-              traces couldn't prove (§3.9).
+              traces couldn't prove (§3.5).
             </dd>
           </div>
         </dl>
 
-        <h3 id="s2-8"><span class="sub">2.8</span>Observability</h3>
+        <h3 id="s2-9"><span class="sub">2.9</span>Observability</h3>
         <p class="lede">
           Every turn is persisted as one structured artifact — message pair,
           actions, source events, calculations, cited chunks, ending snapshot —
@@ -1493,8 +1636,8 @@
           <div>
             <dt>Source events</dt>
             <dd>
-              Each must carry the full <code>SourceNeed</code>, the executed
-              queries, and inspected chunks with IDs and scores.
+              Each must carry the full <code>SearchRequest</code>, its one
+              executed query, and inspected chunks with IDs and scores.
             </dd>
           </div>
           <div>
@@ -1511,20 +1654,12 @@
   "actions": ["session_start", "read_snapshot", "calculate",
               "search_source_material", "answer"],
   "source_events": [{
-    "source_need": {
+    "search_request": {
       "intent": "diagnostic_evidence",
-      "subjects": ["unit-economics"],
-      "focus_terms": ["CAC", "gross profit", "payback period"],
       "user_turn": "what should we do next?",
-      "query_variants": [
-        "CAC gross profit payback period",
-        "slow payback period what to fix first",
-        "gross profit covers CAC paid ads"
-      ]
+      "query": "client financed acquisition CAC gross profit payback period"
     },
-    "queries": ["CAC gross profit payback period",
-                "slow payback period what to fix first",
-                "gross profit covers CAC paid ads"],
+    "queries": ["client financed acquisition CAC gross profit payback period"],
     "chunks": [{ "id": "payback-period:0", "score": 20.4 }]
   }],
   "calculation_events": [{
@@ -1545,30 +1680,17 @@
           </div>
         </details>
 
-        <h3 id="s2-9"><span class="sub">2.9</span>Environment</h3>
+        <h3 id="s2-10"><span class="sub">2.10</span>Environment</h3>
         <p>
-          The hosted advisor will run as a service on the OpenAI Agents SDK,
-          taking the founder's business data as uploaded context. Today it runs
-          locally instead: pointed at the founder's business directory
-          (<code>--business-dir</code>), the agent reads those files in place
-          when saved context is missing and records each accepted fact back to
-          its source path and content hash (§2.5). A hosted service would copy
-          the directory in first; the local CLI just reads it where it lives.
+          Today the agent runs locally against a founder's business directory
+          (<code>--business-dir</code>). A hosted version would run the same
+          core as a service and receive those files as uploaded context.
         </p>
         <h4 class="block">Tested today as a local CLI</h4>
         <p>
-          Two coding agents operate the local core: Codex and Claude Code. The
-          CLI came first because it is a cheap way to settle the provider choice
-          before building the hosted version — running the same core through
-          both agents compares OpenAI and Anthropic on the same workflow
-          (§3.8). The hosted version will run this core on the OpenAI Agents SDK.
-          Because the coding agents are flat-rate subscriptions rather than
-          per-token API calls, embeddings are the only per-use cost today,
-          cached after first use (§2.6).
-        </p>
-        <p class="quiet">
-          The only outside services today are the embedding API and the
-          Pinecone vector store (§2.6).
+          Codex and Claude Code operate the same CLI-backed workflow, enabling
+          a controlled provider comparison (§3.4). Embeddings are the only
+          metered API call in this harness and are cached after first use.
         </p>
       </div>
     </section>
@@ -1580,206 +1702,95 @@
 
         <h3 id="s3-1"><span class="sub">3.1</span>Evaluation framework</h3>
         <p class="lede">
-          The evals run in order so a failure points at one component.
-          Agent judgment is tested before query writing, and query writing
-          before the retriever. So when two retrieval strategies differ,
-          the difference is about retrieval, not a bad query or a wrong
-          decision upstream.
+          The evaluation grew in stages. It covers both retrieval quality—
+          chunking, query writing, and ranking—and the hosted implementation:
+          Pinecone latency and namespace layout. Early tests narrowed the
+          design space cheaply; current tests use realistic turns and
+          passage-level judgments.
         </p>
         <ol class="steps">
           <li>
-            <span class="s-term">Tool-use judgment</span>
+            <span class="s-term">Establish agent behavior</span>
             <span class="s-def">
-              Should this turn search source material at all — versus read
-              state, inspect docs, calculate, clarify, or answer directly?
+              A 24-turn suite tests whether the agent chooses the right action
+              before retrieval is evaluated. The orchestration-model experiment
+              later reuses these same cases.
             </span>
           </li>
           <li>
-            <span class="s-term">Source-need generation</span>
+            <span class="s-term">Screen chunking cheaply</span>
             <span class="s-def">
-              When search is right, what should guide it: what to look for,
-              which corpus subjects to search, and which concepts to cover?
+              Before selecting a retrieval architecture, 32 source-oriented
+              questions compare five chunking strategies with local BM25 held
+              fixed. This produces an initial chunking candidate, not a final
+              end-to-end result.
             </span>
           </li>
           <li>
-            <span class="s-term">Search-query quality</span>
+            <span class="s-term">Build a stronger retrieval test</span>
             <span class="s-def">
-              Does query construction retrieve citeable chunks for that
-              source need?
+              A separate 46-turn suite—30 base cases plus 16 expansion
+              cases—adds saved business context and audited passage-level
+              relevance. The query approach, query model, and retriever
+              experiments all reuse these same 46 cases.
             </span>
           </li>
           <li>
-            <span class="s-term">Strategy comparison</span>
+            <span class="s-term">Revalidate chunking</span>
             <span class="s-def">
-              Only now do BM25-vs-vector-vs-hybrid comparisons measure which
-              method ranks the right passage higher.
+              Freeze the winning queries and replay all five chunking
+              strategies through the selected unfiltered hybrid retriever.
+              Measure ranking, useful-result density, and returned text—not
+              just whether the right chapter appears.
             </span>
           </li>
           <li>
-            <span class="s-term">Support coverage</span>
+            <span class="s-term">Verify the hosted implementation</span>
             <span class="s-def">
-              Do the cited chunks actually support the claims the answer
-              must make?
+              Index the selected chunks in Pinecone, then use the same 46
+              queries to measure request latency and compare one namespace
+              with five subject namespaces: Unit Economics, Offers, Upsells,
+              Downsells, and Continuity.
             </span>
           </li>
         </ol>
         <p class="quiet">
-          Five of the nine datasets each test one of the steps above. The
-          other four check the eval system itself: two verify traces record
-          what actually happened (source events, calculation events), one
-          compares chunking strategies, and one audits whether eval queries
-          are phrased the way real users talk. Every dataset pairs with an automated scorer that writes
-          an auditable report. The acting agents in the judgment evals are
-          subscription coding agents — Codex for the reference results here,
-          and both Codex and Claude Code in the model-selection sweep (§3.8).
-          OpenAI's API is used only to turn text into vectors for search.
+          Separate trace regressions check deterministic calculations and
+          search records. The five-case calculation suite is current; the
+          six-case source-event suite still needs migration from the retired
+          SourceNeed/query-variant contract to <code>SearchRequest.query</code>.
         </p>
-        <dl class="rows">
-          <div>
-            <dt>Blind, three roles</dt>
-            <dd>
-              An acting agent performs each case using the skill and CLI
-              without seeing expected labels. A trace extractor maps its
-              observable behavior — commands run, files read, snapshot diffs
-              — into recorded actions, marking weak evidence as
-              <code>inferred</code> or <code>missing</code> so it stays
-              visible. A separate scorer compares those actions to the
-              labels. The score comes from what the agent did, not from
-              what it says it did.
-            </dd>
-          </div>
-          <div>
-            <dt>Label strength</dt>
-            <dd>
-              "Do not search on this turn" is strict: searching fails the
-              case. "This chunk is known useful" is a starting label, not a
-              complete list of every useful chunk. Exact term matching is
-              only a debugging signal — "front-end offer" fails a text
-              match against "front end offer" — so the measure that counts
-              is whether the concepts are covered, judged with a written
-              rationale. Misses against the starting labels get reviewed
-              before they're counted.
-            </dd>
-          </div>
-        </dl>
-        <details open>
-          <summary>The full suite — nine datasets, results, decisions</summary>
-          <div class="inner">
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Dataset</th>
-                    <th>Risk tested</th>
-                    <th>Current result</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>tool_use · 24</td>
-                    <td class="wrap">Right next action chosen?</td>
-                    <td class="wrap">1.000 required-action recall, 100% full-sequence pass, 0% false / 0% missed search,
-                      100% trace completeness.</td>
-                  </tr>
-                  <tr>
-                    <td>source_need · 14</td>
-                    <td class="wrap">Right retrieval objective?</td>
-                    <td class="wrap">100% search-decision accuracy, 90% subject exact match, 0.950 subject recall, 0.750
-                      focus-concept recall. (Intent recorded but not scored — it steers no retrieval.)</td>
-                  </tr>
-                  <tr>
-                    <td>source_events · 6</td>
-                    <td class="wrap">Traces record exactly the right searches — including none?</td>
-                    <td class="wrap">6/6, zero extra-search warnings. Built from a real failure (§3.9).</td>
-                  </tr>
-                  <tr>
-                    <td>calc_traces · 5</td>
-                    <td class="wrap">Calculations preserved with metric, inputs, output?</td>
-                    <td class="wrap">5/5 after correcting evaluator labels for the CLI's payback convention.</td>
-                  </tr>
-                  <tr>
-                    <td>search_queries · 30</td>
-                    <td class="wrap">Holding the current corpus-guided queries fixed, which retriever ranks useful passages best?</td>
-                    <td class="wrap">Hybrid reaches 90.0% Hit@1 and 100% Hit@5 versus BM25 at 83.3% and 96.7% (§3.5).</td>
-                  </tr>
-                  <tr>
-                    <td>query_generation · 30 dev + 16 holdout</td>
-                    <td class="wrap">Can the product create a useful query from the real question and saved snapshot?</td>
-                    <td class="wrap">After false-negative and false-positive label review, the corpus-guided rewrite reaches 90.0% Hit@1, 96.7% Hit@3, and 100% Hit@5 with one unfiltered query. Development finalist; no promotion before holdout review (§3.4).</td>
-                  </tr>
-                  <tr>
-                    <td>pilot set</td>
-                    <td class="wrap">Local retrieval smoke benchmark.</td>
-                    <td class="wrap">BM25 heading-aware: 81.25% Hit@1, 100% Hit@5, 0.8917 MRR.</td>
-                  </tr>
-                  <tr>
-                    <td>chunking</td>
-                    <td class="wrap">Does the fancier strategy beat the simpler one?</td>
-                    <td class="wrap">Heading-aware kept; framework-aware rejected (§3.3).</td>
-                  </tr>
-                  <tr>
-                    <td>obligations · 65</td>
-                    <td class="wrap">Chunks support required claims?</td>
-                    <td class="wrap">87.69% support coverage on the BM25 baseline.</td>
-                  </tr>
-                  <tr>
-                    <td>query realism</td>
-                    <td class="wrap">Queries phrased like real users?</td>
-                    <td class="wrap">Kept separate so realism and relevance don't get conflated.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p>
-              Files, scorers, and reports for every row:
-              <code>GOLDEN_DATASET.md</code> and <code>evals/reports/</code>.
-            </p>
-          </div>
-        </details>
 
-        <h3 id="s3-2"><span class="sub">3.2</span>Quality scoring</h3>
+        <h3 id="s3-2"><span class="sub">3.2</span>Scoring</h3>
         <p>
-          The tool-use suite has 24 cases. Most were captured during the
-          build as development and regression traces; the rest are held-out
-          scenarios, run after the instructions were frozen, by acting
-          agents that never saw the expected answers. The source-need suite
-          has 14 cases: 10 where the right move is to search, 4 controls
-          where it isn't. Results: all 24 tool-use cases passed with full
-          required-action recall and zero false and zero missed searches.
-          Source-need scored 100% on the search/no-search decision and
-          matched the expected subjects exactly on 9 of the 10 search
-          cases. The misses, case by case:
+          All 24 tool-use reference cases passed with full required-action
+          recall, zero false searches, and zero missed searches. This clears
+          the upstream decision—whether to search—before retrieval is tested.
         </p>
         <dl class="rows">
           <div>
-            <dt>Corrected label</dt>
+            <dt>Action scoring</dt>
             <dd>
-              One held-out case required reading logs as the literal first
-              action. Review concluded that reading the snapshot first did
-              no harm — the logs were still read before answering — and the
-              label records that review explicitly.
+              Each case specifies required actions, forbidden actions, and
+              any ordering constraint. The scorer reads the trace produced by
+              the acting agent rather than trusting a self-reported summary.
             </dd>
           </div>
           <div>
-            <dt>Unresolved miss</dt>
+            <dt>Pilot chapter scoring</dt>
             <dd>
-              On the free-trial case the agent picks the
-              <code>offers</code> subject without also adding
-              <code>downsells</code>. It remains open.
+              On the 32-case pilot, a hit means any returned chunk belongs to
+              an expected chapter. This is the scoring used by the chunking
+              comparison.
             </dd>
           </div>
           <div>
-            <dt>General rules, not patches</dt>
+            <dt>Current passage scoring</dt>
             <dd>
-              When a case disagreed with its label, the resolution became a
-              general rule, not a one-case patch. Two examples: payment
-              plans are labeled <code>downsells</code> — they look like
-              pricing, but their function is reducing purchase friction.
-              And a search that interprets the business's economics stays on
-              the <code>unit-economics</code> subject even when the answer will
-              recommend something; the recommended move gets its own search
-              on its own fix subject. One answer, two searches — so each
-              search ranks against only its own subject's passages.
+              On the 46-case suite, Hit@1, Hit@3, and Hit@5 ask whether an
+              audited useful passage appears by that rank. Useful@5 is the
+              share of the five results that directly help answer the turn;
+              Noise@5 is the remainder.
             </dd>
           </div>
         </dl>
@@ -1787,49 +1798,180 @@
           <span class="d-tag">Decision</span>
           <div>
             <p>
-              Agent judgment is solid enough to build the retrieval
-              comparisons on.
-            </p>
-            <p>
-              With search/no-search decisions at 100% on the captured sets,
-              the agent reliably picks the right action, so differences
-              between retrieval strategies reflect the retrieval itself.
+              Use the 46-case passage-labeled suite for current query and
+              retriever decisions. Keep the 32-case chapter-labeled set as a
+              pilot baseline, not as equivalent evidence.
             </p>
           </div>
         </div>
 
-        <h3 id="s3-3"><span class="sub">3.3</span>Chunking strategy</h3>
+        <h3 id="s3-3"><span class="sub">3.3</span>Retrieval</h3>
+        <h4 id="s3-3-chunking" class="block">Chunking strategy</h4>
         <p>
-          Two chunking strategies were compared on a labeled set.
-          Heading-aware splits the transcripts at their section headings.
-          The framework-aware variant adds split points at cue phrases like
-          "how it works," "step one," and "examples" — the spots where a
-          lesson switches from naming a framework to explaining it — on the
-          theory that tighter chunks would match definition-style and
-          mechanics-style queries better. It didn't help: identical Hit@1
-          (81.25%), and an MRR gain of +0.0041.
+          Five strategies ran against the same 32-case BM25 retrieval set:
+          three fixed windows, heading-aware transcript sections, and a
+          framework-aware variant that adds split points at framework cues.
         </p>
+        <dl class="rows">
+          <div>
+            <dt>Answer key</dt>
+            <dd>
+              Each natural-language query has a known subject and one or more
+              acceptable source chapters.
+            </dd>
+          </div>
+          <div>
+            <dt>Controlled comparison</dt>
+            <dd>
+              Each strategy rebuilds the same transcript corpus. The query,
+              local BM25 retriever, known-subject filter, and top-five cutoff
+              stay fixed; only the chunk boundaries change.
+            </dd>
+          </div>
+          <div>
+            <dt>Scoring</dt>
+            <dd>
+              A hit occurs when a returned chunk belongs to an acceptable
+              chapter. Hit@1 and Hit@5 measure whether that happens by those
+              cutoffs. Reciprocal rank scores the first hit as
+              <code>1 / rank</code>; MRR averages that score across all 32
+              cases. p95 records local query latency.
+            </dd>
+          </div>
+          <div>
+            <dt>Selection rule</dt>
+            <dd>
+              Require 100% Hit@5 on the current suite, then compare first-hit
+              rank, useful-result density, and context size together. A small
+              rank gain does not win if it requires substantially more text.
+            </dd>
+          </div>
+        </dl>
+        <figure class="figure">
+          <figcaption>32 chapter-labeled cases · subject-filtered BM25 · top five</figcaption>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Chunking strategy</th>
+                  <th class="num">Chunks</th>
+                  <th class="num">Avg. words</th>
+                  <th class="num">Hit@1</th>
+                  <th class="num">Hit@5</th>
+                  <th class="num">MRR</th>
+                  <th class="num">p95 latency</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>fixed · 300</td>
+                  <td class="num">360</td>
+                  <td class="num">308.1</td>
+                  <td class="num">65.62%</td>
+                  <td class="num">100.00%</td>
+                  <td class="num">0.8099</td>
+                  <td class="num">0.661 ms</td>
+                </tr>
+                <tr>
+                  <td>fixed · 512</td>
+                  <td class="num">215</td>
+                  <td class="num">507.1</td>
+                  <td class="num">71.88%</td>
+                  <td class="num">100.00%</td>
+                  <td class="num">0.8448</td>
+                  <td class="num">1.042 ms</td>
+                </tr>
+                <tr>
+                  <td>fixed · 800</td>
+                  <td class="num">141</td>
+                  <td class="num">761.4</td>
+                  <td class="num">75.00%</td>
+                  <td class="num">100.00%</td>
+                  <td class="num">0.8552</td>
+                  <td class="num">0.270 ms</td>
+                </tr>
+                <tr>
+                  <td>heading-aware</td>
+                  <td class="num">202</td>
+                  <td class="num">513.5</td>
+                  <td class="num hit">81.25%</td>
+                  <td class="num">100.00%</td>
+                  <td class="num">0.8917</td>
+                  <td class="num">0.440 ms</td>
+                </tr>
+                <tr>
+                  <td>framework-aware</td>
+                  <td class="num">204</td>
+                  <td class="num">496.9</td>
+                  <td class="num hit">81.25%</td>
+                  <td class="num">100.00%</td>
+                  <td class="num hit">0.8958</td>
+                  <td class="num">0.408 ms</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+        <p class="quiet">
+          This is a chapter-retrieval screen, not a passage-level test of the
+          current runtime. A chunk counts as relevant if it comes from the
+          expected chapter, even if that specific passage would not support
+          the answer; the known-subject filter also makes the task easier than
+          today's unfiltered hybrid search.
+        </p>
+        <h4 class="block">Revalidation on the current retrieval path</h4>
+        <p>
+          The five strategies then ran on all 46 current cases with the saved
+          winning queries and unfiltered hybrid retrieval held fixed. Labels
+          were transferred by source-span overlap, and passages exposed by new
+          boundaries were checked for missed useful results. “Top-five words”
+          is the total text across five results, not the size of one chunk.
+        </p>
+        <figure class="figure">
+          <figcaption>46 passage-labeled cases · corpus-guided <code>gpt-5.5</code> query · local hybrid</figcaption>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Chunking strategy</th>
+                  <th class="num">Hit@1</th>
+                  <th class="num">Hit@5</th>
+                  <th class="num">Mean rank</th>
+                  <th class="num">Useful@5</th>
+                  <th class="num">Max chunk</th>
+                  <th class="num">Mean top-five words</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>fixed · 300</td><td class="num">91.3%</td><td class="num">97.8%</td><td class="num">1.089</td><td class="num">79.1%</td><td class="num">436</td><td class="num">1,490</td></tr>
+                <tr><td>fixed · 512</td><td class="num">87.0%</td><td class="num">97.8%</td><td class="num">1.156</td><td class="num hit">79.6%</td><td class="num">729</td><td class="num">2,495</td></tr>
+                <tr><td>fixed · 800</td><td class="num hit">95.7%</td><td class="num">100.0%</td><td class="num hit">1.065</td><td class="num">75.2%</td><td class="num">1,139</td><td class="num">3,762</td></tr>
+                <tr><td>heading-aware</td><td class="num">93.5%</td><td class="num">100.0%</td><td class="num">1.130</td><td class="num">73.0%</td><td class="num">2,471</td><td class="num">2,493</td></tr>
+                <tr><td>framework-aware</td><td class="num">93.5%</td><td class="num">100.0%</td><td class="num">1.152</td><td class="num">78.3%</td><td class="num hit">922</td><td class="num">2,476</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
         <div class="decision">
           <span class="d-tag">Decision</span>
           <div>
-            <p>Keep heading-aware chunking.</p>
+            <p>Use framework-aware chunking.</p>
             <p>
-              A gain of less than half a percent doesn't justify
-              maintaining a second chunking pipeline; the comparison stays
-              in the repo as a recorded non-adoption.
+              It preserves 100% Hit@5 and ties heading-aware at Hit@1 while
+              improving useful-result density and capping every chunk below
+              1,000 words. Fixed-800 puts useful evidence first in one more
+              case, but returns 51% more text per top-five context.
             </p>
           </div>
         </div>
 
-        <h3 id="s3-4"><span class="sub">3.4</span>Query generation</h3>
+        <h4 id="s3-3-selection" class="block">Query generation and retrieval backend</h4>
         <p>
-          The goal was to find a reliable way to turn a search-worthy user
-          question into a query that retrieves passages capable of answering
-          it. The experiment did not assume that rewriting, corpus guidance,
-          filters, or multiple queries were necessary. It started with three
-          simple approaches that could show whether added machinery earned
-          its place.
+          One experiment selected both parts of the active retrieval path:
+          how to write the query and how to retrieve with it. The 46-case
+          matrix crosses query approach, query-writing model, and retriever.
         </p>
+        <h4 class="block">Query approaches</h4>
         <dl class="rows">
           <div>
             <dt>Raw question</dt>
@@ -1855,254 +1997,223 @@
             </dd>
           </div>
         </dl>
+        <h4 class="block">Results</h4>
         <p>
-          All three approaches used the same 30 exposed development cases,
-          one query, no subject filter, and the same local hybrid retriever.
-          Reference queries, focus terms, subjects, and useful-passage labels
-          were hidden from the generators.
+          Every condition uses one unfiltered query; each saved query runs
+          unchanged through BM25 and hybrid. Generators cannot see the answer
+          key.
         </p>
         <figure class="figure">
-          <figcaption>30 exposed development cases · one unfiltered query per method · shared audited labels</figcaption>
+          <figcaption>46 audited cases · heading-aware chunks held fixed · one saved query per condition · top five · no subject filter</figcaption>
           <div class="table-scroll">
-            <table>
+            <table class="query-matrix">
               <thead>
                 <tr>
-                  <th>Condition</th>
+                  <th>Query approach</th>
+                  <th>Model</th>
+                  <th>Retriever</th>
                   <th class="num">Hit@1</th>
                   <th class="num">Hit@3</th>
                   <th class="num">Hit@5</th>
+                  <th class="num">Mean rank</th>
+                  <th class="num">Useful@5</th>
+                  <th class="num">Noise@5</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>raw user question</td>
-                  <td class="num">63.3%</td>
-                  <td class="num">86.7%</td>
-                  <td class="num">90.0%</td>
-                </tr>
-                <tr>
-                  <td>unguided model rewrite</td>
-                  <td class="num">60.0%</td>
-                  <td class="num">93.3%</td>
-                  <td class="num">96.7%</td>
-                </tr>
-                <tr>
-                  <td>corpus-guided model rewrite</td>
-                  <td class="num hit">90.0%</td>
-                  <td class="num hit">96.7%</td>
-                  <td class="num hit">100.0%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </figure>
-        <p class="quiet">
-          Before finalizing the scores, every plausible missing positive was
-          reviewed, as was every labeled passage returned in the top five by
-          any current method. The same relevance rule applied throughout: a
-          passage had to support a substantial part of the requested answer;
-          topic overlap alone was not enough. Missing valid passages were
-          added, overly broad labels were removed, and all three saved methods
-          were rescored against the same corrected answer key. No query was
-          regenerated and retrieval was not rerun. The corpus-guided rewrite
-          is the development leader, not yet the product default; the 16-case
-          holdout remains unopened until its labels are independently reviewed.
-        </p>
-
-        <h3 id="s3-5"><span class="sub">3.5</span>Hybrid retrieval vs lexical control</h3>
-        <p>
-          BM25 served as the keyword baseline and control, not the product
-          architecture. The final corpus-guided queries from §3.4 were scored
-          unchanged through BM25 and hybrid retrieval. That isolates the
-          backend choice while keeping the current query-generation method
-          fixed. BM25 has a real advantage on exact book terms; hybrid adds
-          vector similarity and combines the two ranked lists with reciprocal
-          rank fusion.
-        </p>
-        <p>
-          Both backends use the same answer key audited for false negatives
-          and false positives. A passage must support a substantial part of
-          the requested answer; merely sharing vocabulary does not count.
-        </p>
-        <figure class="figure">
-          <figcaption>30 development cases · same corpus-guided query · no subject filter · shared audited labels</figcaption>
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Strategy</th>
-                  <th class="num">Hit@1</th>
-                  <th class="num">Hit@3</th>
-                  <th class="num">Hit@5</th>
-                  <th class="num">Mean useful rank</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
+                  <td rowspan="2">raw question</td>
+                  <td rowspan="2">none</td>
                   <td>BM25 · control</td>
-                  <td class="num">83.3%</td>
-                  <td class="num">93.3%</td>
-                  <td class="num">96.7%</td>
-                  <td class="num">1.24</td>
+                  <td class="num">54.3%</td>
+                  <td class="num">69.6%</td>
+                  <td class="num">84.8%</td>
+                  <td class="num">1.821</td>
+                  <td class="num">40.4%</td>
+                  <td class="num">59.6%</td>
                 </tr>
                 <tr>
-                  <td>hybrid · candidate</td>
-                  <td class="num hit">90.0%</td>
-                  <td class="num hit">96.7%</td>
+                  <td>hybrid</td>
+                  <td class="num">67.4%</td>
+                  <td class="num">82.6%</td>
+                  <td class="num">84.8%</td>
+                  <td class="num">1.308</td>
+                  <td class="num">44.8%</td>
+                  <td class="num">55.2%</td>
+                </tr>
+                <tr>
+                  <td rowspan="4">unguided rewrite</td>
+                  <td rowspan="2"><code>gpt-5.5</code></td>
+                  <td>BM25 · control</td>
+                  <td class="num">60.9%</td>
+                  <td class="num">87.0%</td>
+                  <td class="num">93.5%</td>
+                  <td class="num">1.558</td>
+                  <td class="num">50.9%</td>
+                  <td class="num">49.1%</td>
+                </tr>
+                <tr>
+                  <td>hybrid</td>
+                  <td class="num">67.4%</td>
+                  <td class="num">93.5%</td>
+                  <td class="num">95.7%</td>
+                  <td class="num">1.409</td>
+                  <td class="num">57.0%</td>
+                  <td class="num">43.0%</td>
+                </tr>
+                <tr>
+                  <td rowspan="2"><code>gpt-5.4-mini</code></td>
+                  <td>BM25 · control</td>
+                  <td class="num">56.5%</td>
+                  <td class="num">80.4%</td>
+                  <td class="num">89.1%</td>
+                  <td class="num">1.561</td>
+                  <td class="num">51.3%</td>
+                  <td class="num">48.7%</td>
+                </tr>
+                <tr>
+                  <td>hybrid</td>
+                  <td class="num">67.4%</td>
+                  <td class="num">91.3%</td>
+                  <td class="num">95.7%</td>
+                  <td class="num">1.432</td>
+                  <td class="num">55.7%</td>
+                  <td class="num">44.3%</td>
+                </tr>
+                <tr>
+                  <td rowspan="4">corpus-guided rewrite</td>
+                  <td rowspan="2"><code>gpt-5.5</code></td>
+                  <td>BM25 · control</td>
+                  <td class="num">84.8%</td>
+                  <td class="num">93.5%</td>
+                  <td class="num">97.8%</td>
+                  <td class="num">1.289</td>
+                  <td class="num hit">75.2%</td>
+                  <td class="num hit">24.8%</td>
+                </tr>
+                <tr>
+                  <td>hybrid</td>
+                  <td class="num hit">93.5%</td>
+                  <td class="num hit">97.8%</td>
                   <td class="num hit">100.0%</td>
-                  <td class="num hit">1.20</td>
+                  <td class="num">1.130</td>
+                  <td class="num">73.0%</td>
+                  <td class="num">27.0%</td>
+                </tr>
+                <tr>
+                  <td rowspan="2"><code>gpt-5.4-mini</code></td>
+                  <td>BM25 · control</td>
+                  <td class="num">84.8%</td>
+                  <td class="num">95.7%</td>
+                  <td class="num hit">100.0%</td>
+                  <td class="num">1.326</td>
+                  <td class="num">72.2%</td>
+                  <td class="num">27.8%</td>
+                </tr>
+                <tr>
+                  <td>hybrid</td>
+                  <td class="num hit">89.1%</td>
+                  <td class="num hit">100.0%</td>
+                  <td class="num hit">100.0%</td>
+                  <td class="num hit">1.109</td>
+                  <td class="num">72.6%</td>
+                  <td class="num">27.4%</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </figure>
-        <p class="quiet">
-          Hybrid puts a useful passage first in 27 of 30 cases versus 25 for
-          BM25, and it recovers every case by rank five. That is enough to keep
-          hybrid as the candidate backend, but the gap is only two cases; the
-          reviewed holdout still matters more than the percentage alone.
+        <h4 class="block">False-negative and false-positive check</h4>
+        <p>
+          Across all recorded retrieval audits, we added 150 missing useful
+          case-passage labels and removed 13 overly broad labels, for 163
+          corrections in total.
+        </p>
+        <h4 class="block">What the results show</h4>
+        <p>
+          <strong>Query writing.</strong> Corpus guidance performs best with
+          both tested models and both retrievers.
+          <code>gpt-5.4-mini</code> is viable for this bounded task.
+        </p>
+        <p>
+          <strong>Retrieval.</strong> BM25 is the lexical control. Hybrid runs
+          BM25 and vector search, combines their ranks with reciprocal-rank
+          fusion, ranks useful evidence earlier for both guided query writers,
+          and preserves 100% Hit@5. Useful evidence density is mixed.
         </p>
         <div class="decision">
           <span class="d-tag">Decision</span>
           <div>
             <p>
-              Hybrid remains the candidate retrieval backend and BM25 remains
-              the control. Holding the supplied queries fixed, hybrid ranks
-              useful evidence best on this slice—but only by a few cases.
-            </p>
-            <p>
-              The corpus-guided rewrite is the single-query development
-              finalist, not yet the product default. It must earn adoption on
-              the independently reviewed holdout.
+              Use one corpus-guided, unfiltered query through hybrid retrieval.
+              Keep BM25 as the control and Useful@5 and Noise@5 as regression
+              metrics.
             </p>
           </div>
         </div>
 
-        <h3 id="s3-6"><span class="sub">3.6</span>Latency benchmarks</h3>
+        <h4 id="s3-3-latency" class="block">Latency benchmarks</h4>
         <p>
-          Local retrieval came first so iteration and evals stayed fast.
-          A separate storage-parity benchmark then ran identical saved queries
-          against the Pinecone implementation of the <code>VectorStore</code>
-          interface (§2.6). Local and hosted rankings matched, the query cache
-          served every embedding, and the run made no new embedding API calls.
-          This tested storage and latency, not query-generation quality.
-        </p>
-        <p>
-          The benchmark deliberately exercised several independent searches
-          per case as a heavier workload. The first hosted run executed them
-          one at a time, and p50
-          retrieval landed around 5.3s for hybrid and 5.5s for vector —
-          versus sub-millisecond local BM25. Running the searches in
-          parallel (8 workers) brought the same 30-case
-          benchmark to roughly 1.4s p50 and 1.8s p95, quality unchanged.
+          The selected framework-aware chunks were indexed in Pinecone and
+          tested with the same 46 saved queries. With one sequential product
+          request per case and cached embeddings, single-namespace retrieval
+          measured 4.07s p50 and 7.64s p95. It reproduced the local quality
+          result: 93.5% Hit@1 and 100% Hit@5.
         </p>
         <div class="decision">
           <span class="d-tag">Decision</span>
           <div>
             <p>
-              Hosted retrieval works: Pinecone returns the same results as
-              the local store, and parallelizing the variant queries fixed
-              the worst of the latency.
-            </p>
-            <p>
-              Top-k tuning and request-level observability are still open —
-              no claim of production latency readiness before they're done.
+              Keep Pinecone behind the storage boundary, but do not call the
+              hosted latency production-ready. Profile the request path and
+              tune candidate depth before adding retrieval fanout.
             </p>
           </div>
         </div>
 
-        <h3 id="s3-7"><span class="sub">3.7</span>Pinecone namespaces</h3>
+        <h4 id="s3-3-namespaces" class="block">Pinecone namespaces</h4>
         <p>
-          The corpus was indexed one namespace per subject, with the agent
-          choosing which to query, and the same 30 cases — same variants,
-          cache, and hybrid path — ran both ways: one namespace with metadata
-          filters versus the five-way split. The split was routed straight
-          from each case's expected subjects, giving it the most favorable
-          routing it could possibly get.
+          The same 46 cases compared one namespace with five subject
+          namespaces: Unit Economics, Offers, Upsells, Downsells, and
+          Continuity. Each test query was routed to its matching namespace.
+          Even with this favorable setup, splitting the corpus did not improve
+          retrieval quality.
         </p>
         <p>
-          The two conditions retrieved identically. Not just the same
-          scores: across all 90 case-and-retriever rows, the same top-5
-          chunks in the same order. Namespaces would only help if
-          wrong-subject chunks were crowding out right-subject ones, and on
-          this corpus they are not. Tail latency got worse: p50
-          barely moved (~1.45s vs ~1.43s), but p95 went from ~1.76s to
-          ~3.01s, on 140 vector searches instead of 120.
-        </p>
-        <p>
-          The mechanism: at 202 chunks, a Pinecone query is dominated by
-          the network round-trip and fixed per-request overhead, not vector
-          scan time — so searching a smaller namespace saves microseconds.
-          The split instead turns one round-trip into up to five for
-          multi-subject cases, and a case finishes only when its slowest
-          namespace answers. Waiting on the slowest of five queries is
-          usually slower than waiting on one — which is exactly what the
-          p95 shows.
-        </p>
-        <p class="quiet">
-          One scope caveat: this set is saturated — Hit@5 is 100% for
-          every backend in both conditions — so it cannot detect a quality
-          improvement from anything. The supported claim is "no measurable
-          difference on this set," not "namespaces never help." If the
-          corpus grows to where subjects interfere in ranking, re-test on a
-          harder set.
+          Both layouts reached 93.5% Hit@1, 100% Hit@5, and 78.3% Useful@5.
+          The split changed exact top-five ordering in nine cases, lowered p50
+          to 2.28s, and worsened p95 to 10.47s. That does not justify adding a
+          semantic subject router.
         </p>
         <div class="decision">
           <span class="d-tag">Decision</span>
           <div>
             <p>
-              Namespace support stays in; a single namespace with metadata
-              filters stays the default.
-            </p>
-            <p>
-              The five-way split is implemented and verified, loses on tail
-              latency, and wins nothing on quality here. It gets promoted
-              only on a measured win.
+              Use one unfiltered namespace. Revisit partitioning only if a
+              larger corpus produces measured subject interference.
             </p>
           </div>
         </div>
 
-        <h3 id="s3-8"><span class="sub">3.8</span>Model selection</h3>
+        <h3 id="s3-4"><span class="sub">3.4</span>Orchestration model</h3>
         <p>
-          The hosted advisor needs a model for its planning brain — the part
-          that decides when to search, when to calculate, and when to answer
-          from saved state. Two choices ride on it at once: which provider to
-          build on (Anthropic or OpenAI), and how strong a model the job needs.
-          Each provider sells a range of models — a top, expensive one down to
-          smaller, cheaper ones — so the second question is whether the strongest
-          model is required or a cheaper one can do it. Both are read off one
-          grid — five models, the same 38 golden cases, the same scorers.
+          Five OpenAI and Anthropic models ran the same 24 tool-use cases to
+          test provider and model-tier choices for orchestration.
         </p>
         <p>
-          To keep it honest, each model operates the real CLI-backed advisor:
-          same prep code, same 14 source-need and 24 tool-use golden cases, same
-          deterministic scorers. It inspects state, runs the local CLI, and
-          writes the same trace artifacts a live turn would. OpenAI models act
-          via <code>codex exec</code>; Anthropic models act as a Claude Code
-          subagent, one per case. Every model ran the full suite three times
-          (K=3); the first <code>gpt-5.5</code> attempt hit ChatGPT-subscription
-          usage limits mid-run, and the two repeat runs completed clean once
-          those limits cleared. Quality is
-          comparable across providers (identical cases and scorers); token and
-          latency figures are harness-reported proxies from two different tools,
-          so read cross-provider cost as a ballpark, not billed dollars.
+          Each model operated the real CLI-backed advisor and produced the
+          same trace format for the same scorer. Every model ran the suite
+          three times (K=3). Cross-provider token and latency values are
+          harness proxies, not comparable billed costs.
         </p>
         <figure class="figure">
-          <figcaption>Strict case pass, both suites · mean with per-run scores in small text · same 38 golden cases and
-            scorers across all five models · reports:
-            <code>evals/reports/model_tiering_multi_summary.json</code>,
-            <code>evals/reports/model_routing_tiering_gpt_5_4_mini_k3_aggregate.md</code>,
-            <code>evals/reports/model_routing_opus.md</code>,
-            <code>evals/reports/model_routing_tiering_gpt_5_5_k2.md</code>,
-            <code>evals/reports/model_routing_tiering_gpt_5_5_k3.md</code>
-          </figcaption>
+          <figcaption>Tool-use strict case pass · mean with per-run scores · 24 cases · K=3</figcaption>
           <div class="table-scroll">
             <table>
               <thead>
                 <tr>
                   <th>Model</th>
                   <th>Provider</th>
-                  <th>Source-need · strict pass</th>
                   <th>Tool-use · strict pass</th>
                   <th class="num">Runs</th>
                 </tr>
@@ -2111,35 +2222,30 @@
                 <tr>
                   <td><code>claude-sonnet-5</code></td>
                   <td class="wrap">Anthropic</td>
-                  <td class="score"><strong>92.9%</strong> <span class="runs">92.9 / 92.9 / 92.9</span></td>
                   <td class="score">77.8% <span class="runs">79.2 / 75.0 / 79.2</span></td>
                   <td class="num">K=3</td>
                 </tr>
                 <tr>
                   <td><code>gpt-5.4-mini</code></td>
                   <td class="wrap">OpenAI</td>
-                  <td class="score">90.5% <span class="runs">92.9 / 92.9 / 85.7</span></td>
                   <td class="score">75.0% <span class="runs">75.0 / 75.0 / 75.0</span></td>
                   <td class="num">K=3</td>
                 </tr>
                 <tr>
                   <td><code>claude-opus-4-8</code></td>
                   <td class="wrap">Anthropic</td>
-                  <td class="score">85.7% <span class="runs">85.7 / 85.7 / 85.7</span></td>
                   <td class="score">84.7% <span class="runs">91.7 / 79.2 / 83.3</span></td>
                   <td class="num">K=3</td>
                 </tr>
                 <tr>
                   <td><code>gpt-5.5</code></td>
                   <td class="wrap">OpenAI</td>
-                  <td class="score">88.1% <span class="runs">85.7 / 92.9 / 85.7</span></td>
                   <td class="score"><strong>91.7%</strong> <span class="runs">95.8 / 87.5 / 91.7</span></td>
                   <td class="num">K=3</td>
                 </tr>
                 <tr>
                   <td><code>claude-haiku-4-5</code></td>
                   <td class="wrap">Anthropic</td>
-                  <td class="score">81.0% <span class="runs">78.6 / 85.7 / 78.6</span></td>
                   <td class="score">54.2% <span class="runs">58.3 / 50.0 / 54.2</span></td>
                   <td class="num">K=3</td>
                 </tr>
@@ -2149,76 +2255,42 @@
         </figure>
         <h4 class="block">Reading the grid</h4>
         <p>
-          The right model depends on the job. On the light
-          <strong>source-need</strong> decision, the cheaper models win: Sonnet
-          (92.9%) and <code>gpt-5.4-mini</code> (90.5%) each beat their own
-          provider's strongest model, and either provider can do this job well.
-          On <strong>tool-use</strong> orchestration the strongest model earns
-          its cost, and here the two providers' strongest models separate by a
-          real margin: <code>gpt-5.5</code> leads at 91.7%, ahead of Opus at
-          84.7% — both measured across three clean runs. Haiku trails on both, and
-          its tool-use score (54.2%) rules it out — about half its runs miss a
-          required step or fire a forbidden search.
+          <code>gpt-5.5</code> leads orchestration at 91.7%, ahead of Opus at
+          84.7%. Haiku's 54.2% rules it out for this workflow.
+        </p>
+        <p>
+          In the bounded query task (§3.3), <code>gpt-5.4-mini</code> reaches
+          100% Hit@5 and 72.6% Useful@5. Its 75.0% orchestration score is not
+          strong enough to run the full turn.
         </p>
         <h4 class="block">Cost</h4>
         <p>
-          Calculation, persistence, retrieval, and trace validation all run in
-          the CLI, so none of that work is a paid model call, on either
-          platform. What's left is the source-need decision and tool-use
-          orchestration; the cheaper model handles source-need almost as well
-          as its own frontier sibling, so it routes to <code>gpt-5.4-mini</code>.
+          Calculation, persistence, retrieval, and validation remain
+          deterministic. The harness supports a possible split—
+          <code>gpt-5.5</code> for orchestration and Mini for query writing—but
+          does not establish billed-dollar savings.
         </p>
         <h4 class="block">Where the misses cluster</h4>
         <p>
-          Across models the strict-pass losses land on the same known-weak cases,
-          not new ones. On source-need it is the free-trial case
-          (offers-vs-downsells subject ambiguity, already flagged noisy in
-          <code>GOLDEN_DATASET.md</code>) and a recall question that saved state
-          already answers (over-search). On tool-use, Opus's losses are a
-          skipped calculation and over-search, <code>gpt-5.4-mini</code>'s are
-          missed source-searches and diagnoses, and <code>gpt-5.5</code>'s are
-          the same shape — over-search and missed diagnose — repeated across
-          its three runs. These are documented soft spots, not surprises.
+          Misses cluster around over-searching, skipped calculations, and
+          missed diagnoses or source searches. These remain regression targets.
         </p>
         <div class="decision">
           <span class="d-tag">Decision</span>
           <div>
             <p>
-              Host the agent on OpenAI, and split the planning role across two
-              models: route the source-need decision (search or not, which
-              subject — one classification call) to <code>gpt-5.4-mini</code>,
-              and keep tool-use orchestration (sequencing read / calculate /
-              diagnose / search across a turn) on <code>gpt-5.5</code>. Haiku
-              and Opus are not promoted to the planning role.
-            </p>
-            <p>
-              Both providers can split the planning role between a cheap and a
-              strong model and measure the split repeatably (K=3), so that's no
-              longer what decides it. What decides it is which side wins its
-              harder job by more: Sonnet beats <code>gpt-5.4-mini</code> on
-              source-need by 2.4 points, but <code>gpt-5.5</code> beats Opus on
-              tool-use — the job with more steps and more ways to fail — by 7.0
-              points. OpenAI wins the harder job by a wider margin than
-              Anthropic wins the easier one. Embeddings already run on OpenAI's
-              API regardless of which provider hosts the planning brain (§2.6),
-              so hosting there too leaves one model provider in the stack
-              instead of two.
+              Use <code>gpt-5.5</code> for orchestration. Keep
+              <code>gpt-5.4-mini</code> as the tested option for bounded query
+              generation; the local product does not yet split the calls.
             </p>
           </div>
         </div>
 
-        <h3 id="s3-9"><span class="sub">3.9</span>Regression detection</h3>
+        <h3 id="s3-5"><span class="sub">3.5</span>Regression detection</h3>
         <p>
-          Beyond the planned experiments, the design was hardened by a
-          test-fix loop against acting agents that don't know they're being
-          tested and are graded on their saved traces, not their answers.
-          Send realistic turns, inspect the traces, and fix the part that
-          actually failed: skill guidance, CLI command design, trace schema,
-          or eval case. The rule for acting on a failure is explicit: if one
-          agent is confused by the instructions, patch the skill; if two
-          agents fail the same way, add a regression case; anything that
-          could corrupt state or hide unsupported advice gets a CLI guard
-          after a single occurrence.
+          Realistic agent runs feed a test-fix loop. Instruction failures
+          change the skill; repeated failures become regression cases; risks
+          to state or grounding become CLI guards.
         </p>
         <dl class="rows">
           <div>
@@ -2227,26 +2299,18 @@
               Agents listed <code>calculate</code> in actions while traces
               didn't preserve the math. Fix: structured
               <code>calculation_events</code>, required whenever
-              <code>calculate</code> is claimed (§2.7). The 5-case
-              regression suite passes 5/5 — and one agent that nested the
-              events under <code>metadata</code> was correctly rejected by
-              the validator, confirming the guard catches the real failure
-              class.
+              <code>calculate</code> is claimed (§2.8). The five-case suite
+              passes 5/5, and the validator rejects misplaced events.
             </dd>
           </div>
           <div>
-            <dt>Source events → regression suite</dt>
+            <dt>Source events → migration required</dt>
             <dd>
-              On a "what should we fix first?" turn, the correct answer
-              needs two recorded searches: diagnostic evidence plus
-              recommendation evidence for the chosen fix. Blind runs failed
-              twice, two different ways. After tightening the guidance, the
-              case became a 6-case set covering multi-search,
-              pure-diagnosis, pure-recommendation, no-search, teaching-only,
-              and continuity turns — with counter-cases in both directions
-              so the rule against extra searches can't be passed by simply
-              never searching. Current: 6/6, zero
-              extra-search warnings.
+              Two blind failures on source-search sequencing produced a
+              six-case suite that passed under the older SourceNeed and
+              query-variant trace contract. The runtime now records one
+              <code>SearchRequest.query</code>; the labels and scorer still
+              expect the retired fields, so this is not a current 6/6 claim.
             </dd>
           </div>
           <div>
@@ -2262,19 +2326,10 @@
           <div>
             <dt>Command design → command change</dt>
             <dd>
-              A realistic offer-sequencing turn exposed that
-              <code>diagnose</code> expected raw JSON instead of reading
-              saved state, and that agents skipped writing query variants.
-              Fix: <code>diagnose --business-dir</code> reads the snapshot
-              directly, and in that iteration query variants became mandatory — the skill
-              requires 2–4 agent-written variants per search,
-              <code>session finish</code> rejects source events without
-              them, and a second 6/6 source-event pass verified the
-              stricter trace contract. The new generation experiment makes
-              that product behavior provisional: if a single-query method
-              wins the holdout, the skill and validator must be reconciled
-              with the measured choice rather than preserving variants by
-              inertia.
+              An offer-sequencing run exposed that <code>diagnose</code>
+              required raw JSON. It now reads the saved snapshot directly.
+              Later query experiments replaced the earlier variant contract
+              with one recorded, unfiltered corpus-guided query through hybrid.
             </dd>
           </div>
         </dl>
@@ -2291,80 +2346,51 @@
             <dt>Scale</dt>
             <dd>
               Golden sets are portfolio-scale (5–65 cases each). They drive
-              architecture decisions and catch the failure modes found so
-              far; they are not production benchmarks. The high pass rates
-              read as "the design clears everything that has broken it" —
-              not "nothing will break it."
+              decisions and regression checks, not production claims.
             </dd>
           </div>
           <div>
-            <dt>Query-generation generalization</dt>
+            <dt>Retrieval evaluation</dt>
             <dd>
-              The three query methods record every prompt, model response,
-              query, and retrieval result, but the 30 cases are exposed
-              development data. The corpus-guided rewrite is the development
-              leader, not the selected product default. Its advantage must
-              survive the independently reviewed holdout before adoption.
-            </dd>
-          </div>
-          <div>
-            <dt>Retrieval answer key</dt>
-            <dd>
-              The query-generation grades rest on a 30-case answer key. Before
-              finalizing them, unlabeled high-ranking passages and misses were
-              reviewed for false negatives, and every labeled passage returned
-              in the top five was reviewed for false positives. Corrections
-              were shared across all methods, but the development percentages
-              still carry human judgment; the unopened holdout is the stronger
-              check against overfitting.
+              The 46 known cases form one audited regression suite, not an
+              untouched production holdout. Retrieved passages were reviewed
+              for missing and overly broad labels.
             </dd>
           </div>
           <div>
             <dt>Hosted latency</dt>
             <dd>
-              ~1.4s p50 / ~1.8s p95 for Pinecone hybrid after parallelizing
-              the variant queries (down from ~5.3s sequential). Hosted
-              quality matches local exactly; top-k tuning and request-level
-              observability remain (§3.6).
+              The heavier Pinecone benchmark reached about 1.4s p50 and 1.8s
+              p95 after parallelizing independent searches. The active
+              single-query path still needs request-level measurement and
+              top-k tuning (§3.3).
             </dd>
           </div>
           <div>
             <dt>Answer quality</dt>
             <dd>
-              The thinnest coverage in the eval suite. Decisions, traces, and
-              retrieval are well-tested; grounded final-recommendation
-              quality is the next dataset to grow.
+              Grounded final-recommendation quality has less coverage than
+              tool use and retrieval and needs a larger dataset.
             </dd>
           </div>
           <div>
             <dt>Cost reporting</dt>
             <dd>
-              Embedding cost, cache hit rates, and per-run query counts are
-              instrumented. Agent-side API billing is intentionally absent
-              because the advisor runs through subscription agent harnesses,
-              but the model-routing reports record each harness's
-              token-usage proxy and latency by suite (§3.8).
+              Embedding cost and cache use are measured. Agent-side billed
+              cost is not available from the subscription harnesses; their
+              token and latency figures are proxies (§3.4).
             </dd>
           </div>
           <div>
             <dt>Model routing</dt>
             <dd>
-              Settled in the same harness the product uses:
-              <code>gpt-5.4-mini</code> for the source-need decision,
-              <code>gpt-5.5</code> for tool-use orchestration, hosted on
-              OpenAI — its frontier model wins the harder tool-use job by more
-              than Anthropic's wins the easier source-need one (§3.8). Still
-              missing: embedding-model selection.
+              <code>gpt-5.5</code> leads orchestration and
+              <code>gpt-5.4-mini</code> clears the bounded query-writing test.
+              The local product does not yet split these calls. Embedding-model
+              selection also remains open.
             </dd>
           </div>
         </dl>
-        <p>
-          The product path forward would reuse what's built: a thin web
-          surface over the same advisor core. That is why retrieval sits
-          behind a vector-store interface, the CLI emits stable JSON, and
-          the advisor logic can't tell whether its vectors are local or
-          hosted.
-        </p>
       </div>
     </section>
 
@@ -2384,69 +2410,48 @@
               <tbody>
                 <tr>
                   <td class="wrap">Production-grade AI agents and end-to-end agentic workflows</td>
-                  <td class="wrap">Agent-planned turns over a deterministic CLI tool surface, with the agent's
-                    instructions in a versioned skill file; every turn bounded by session start/finish and recorded as a
-                    validated trace (§1, §2.1, §2.8).</td>
+                  <td class="wrap">Agent-planned turns over deterministic tools, bounded by session start/finish and
+                    recorded as validated traces (§2.1, §2.9).</td>
                 </tr>
                 <tr>
                   <td class="wrap">Integrate LLMs with internal systems, APIs, and data sources</td>
-                  <td class="wrap">Typed business state with per-field source tracking and merge rules (§2.5), a bounded
-                    CLI tool surface (§2.4), structured retrieval requests (§2.6), and in-place reads of the firm's own
-                    files (§2.9).</td>
+                  <td class="wrap">Typed, source-tracked business state; structured retrieval; and a bounded CLI tool
+                    surface (§2.5–2.7).</td>
                 </tr>
                 <tr>
                   <td class="wrap">RAG pipelines across Pinecone namespaces — chunking strategy, embedding model
                     selection, hybrid retrieval, reranking</td>
-                  <td class="wrap">A Pinecone-backed store sits behind a vector-store interface. The book's lessons are
-                    labeled by subject — five in all — and a namespace-per-subject layout was benchmarked against a
-                    single namespace before choosing the default (§2.6, §3.7), and the chunking strategy was chosen by comparison (§3.3). Hybrid retrieval
-                    merges its two ranked lists with reciprocal-rank fusion, the recorded v1 baseline; the trigger for
-                    adding a true reranker is written down — known-useful chunks landing in the top-20 candidates but
-                    missing the top-5 (§3.4–3.5). Query construction is now an explicit eval-gated decision: the
-                    narrative compares three single-query approaches from the real product input and keeps multi-query
-                    as a challenger rather than an assumed default (§2.6, §3.4). Embedding model selection is a named gap: one model so far,
-                    <code>text-embedding-3-small</code> (§4).
+                  <td class="wrap">Measured chunking, query generation, hybrid retrieval, and namespace layout over a
+                    Pinecone-backed store (§2.7, §3.3). Embedding-model selection and learned reranking remain open.
                   </td>
                 </tr>
                 <tr>
                   <td class="wrap">Evaluation framework — golden datasets, automated quality scoring, retrieval metrics,
                     latency benchmarks, regression detection</td>
-                  <td class="wrap">Nine golden datasets, each with an automated scorer and a written report (§3.1);
-                    Hit@3 / Hit@5 / mean-rank retrieval metrics (§3.5); a hosted-vs-local latency benchmark (§3.6); two
-                    regression suites and a CLI guard promoted from real failures (§3.9).</td>
+                  <td class="wrap">Nine golden datasets with automated scorers; retrieval quality and noise metrics;
+                    hosted latency benchmarks; and regression cases promoted from failures (§3).</td>
                 </tr>
                 <tr>
                   <td class="wrap">Embedding strategies, index management, and retrieval tuning</td>
-                  <td class="wrap">Deterministic, cached embeddings (§2.6); <code>index pinecone</code> upsert tooling
-                    over the vector-store interface (§2.4, §2.6); the strategy comparison, variant fusion, query
-                    parallelization, and namespace-layout benchmark are measured retrieval tuning, with top-k tuning
-                    named as the next step (§3.4–3.7).</td>
+                  <td class="wrap">Cached embeddings, Pinecone indexing, a vector-store boundary, and measured query,
+                    retrieval, latency, and namespace choices (§2.7, §3.3).</td>
                 </tr>
                 <tr>
                   <td class="wrap">Reduce LLM API costs — model routing, caching, token management, or architectural
                     improvements</td>
-                  <td class="wrap">Subscription-operated agent over a local CLI, so the build-and-eval loop's only
-                    metered API call is embeddings (§2.1); those are cached at 100% warm hit rate, zero API batches on
-                    reruns (§2.6, §3.4); BusinessSnapshot prevents repeated context discovery (§2.5); model-routing
-                    records token/latency proxies from the same harness and a same-provider model sweep promotes
-                    <code>gpt-5.4-mini</code> for the light decision, keeping <code>gpt-5.5</code> on orchestration
-                    (§3.8).</td>
+                  <td class="wrap">Cached embeddings and business context, deterministic non-semantic work, and a
+                    measured Mini option for bounded query writing. Billed savings are not yet claimed (§2.6–2.7, §3.4).</td>
                 </tr>
                 <tr>
                   <td class="wrap">Observability — cost-per-request, token usage, quality signals, anomaly detection
                   </td>
-                  <td class="wrap">Per-turn validated traces (§2.8); per-run cost, cache, and latency accounting
-                    (§3.4–3.6); scorer reports as quality signals (§3.1). Token usage and anomaly detection are named
-                    gaps (§4).</td>
+                  <td class="wrap">Validated turn traces, cache and latency accounting, and scorer reports. Billed
+                    agent cost and anomaly detection remain gaps (§2.9, §4).</td>
                 </tr>
                 <tr>
                   <td class="wrap">Model routing and tiering to improve unit economics; multiple LLM providers</td>
-                  <td class="wrap">Five candidate models run the same <code>codex exec</code> / Claude Code CLI-backed
-                    harness on the same 38 cases, so model choice is measured on the product's real workflow (§3.8). Two
-                    OpenAI models (<code>gpt-5.5</code>, <code>gpt-5.4-mini</code>) and three Anthropic models (Opus,
-                    Sonnet, Haiku) tie close on the light source-need decision, but OpenAI's frontier model wins
-                    tool-use orchestration by a clear margin; the build routes the source-need decision to
-                    <code>gpt-5.4-mini</code> and tool-use orchestration to <code>gpt-5.5</code>, and hosts on OpenAI.</td>
+                  <td class="wrap">Five OpenAI and Anthropic models ran the same 24 orchestration cases;
+                    <code>gpt-5.5</code> leads. Mini separately cleared bounded query writing (§3.3, §3.4).</td>
                 </tr>
                 <tr>
                   <td class="wrap">Comfortable in both TypeScript and Python</td>

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "We are tempted to launch an audit, an add-on, a smaller package, and monitoring at the same time. What does the source say about rollout?",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 95.7,
+  "returncode": 0,
+  "stderr": ""
+}

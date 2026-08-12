@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Free with Consumption for skeptical high-ticket coaching prospects who need to experience value, build trust, and change beliefs before buying; use a challenge or webinar before a 12-week coached transformation program, with free consumption matched to the offer\u2019s price and complexity.",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 705.3,
+  "returncode": 0,
+  "stderr": ""
+}

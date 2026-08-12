@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "waiving a design fee to create continuity revenue later recurring revenue continuity offer design fee waiver",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5035,
+      "char_start": 2627,
+      "id": "continuity-discounts:4",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "at your monthly recurring revenue, if you would like to put that in your pocket this month, for example, you can guarantee that you put it in your pocket by just changing your billing from monthly to every four weeks. Now, some people say, \"Hey, well, you said weekly.\" It's more that there's, you can present the price as weekly, but you still bill on a four-week cadence. Because I found this out the hard way. If you bill weekly, you get a bunch of financial pain in the butts of people changing cards, and they're like, \"Hey, can I pause for one week?\" Pain in the butt. So present it as, whatever, call it 50 bucks a week, but you bill at $200 every four weeks. All right? Just to be clear. So this is fundamentally how it works. That gives you 8.3% more revenue. So that may not sound like much, but if you run a, a 20% profit business, if you go from 20 to 28%, it's going to make you a lot more money. That's almost a 50% increase in revenue, so I think, there it is, 41%. Right? Kinda nifty. And the best part is, you don't do any more work. You just change a few words in your contract and how you present the price. That's it. In my experience, I've never had any difference in take rates between every four weeks versus every month, but you make a lot more money. So you're welcome. 3% more revenue for four extra words. Yeah, it's X plus a 3% processing fee. Now, I've never had anyone not buy because of the processing fee. The 3% added to your top line for no extra work goes straight to your bottom line. If you run a 10% profit business and add 3%, you just added 30% to your profit. Pretty worth it. And this works especially well when paired with the get two forms of payment. Recurring businesses lose mounds of cash because payment processing problems. So basically, people's card goes, you know, their, their numbers change, they, they move states, there's some guy in Nigeria who tries to bill them, whatever. Right? They've got something, and they have to change their card. And so first, customers don't cancel, but their payment information changes or expires. Second, customers max out cards or have insufficient funds. Fix both issues with the same solution. And so what we do is we say, \"Hey, now that I told you about this 3% fee, remember kind of the rental car, like, 'Hey, there's this fee, you wanna avoid this fee that I made up anyways? Yeah, that's what we're gonna do.'\""
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 12538,
+      "char_start": 10131,
+      "id": "continuity-offers:6",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This is, again, this is not in the book. So this is me giving you bonus stuff. Um, there's a difference. between recurring and reoccurring revenue. So Netflix is recurring. Think memberships. Coca-Cola is reoccurring. I am a Coca-Cola product buyer. I buy lots of their drinks and I do that on a regular basis, but I don't have a fixed membership, but I reoccur. Both are great. The key with this one is that you just need to demonstrate that, hey, I... For example, there's a sauce company that I like and I bu- I bought their sauce for like four straight years and I use it every single month. I go through three or four bottles a month and I've been using for years and sure as hell you can bet that they can calculate that the average person who buys a bottle over time buys another 20 bottles. That makes it a very valuable business. Company one, let's say that's got top line of $10 million EBITDA3. Company two is 10 million and 3 million in EBITDA. Okay, this one's all transactional. You might get a 4X multiple. This is all recurring and based on how much you retain it, it might be worth eight to 15 times. So it's 24 to 45 million. So between 12 and 24 to 45, that's a hell of a lot more money. So this is problems worth solving. And so if they stay, buyers will pay. And when I say buyers, I mean investors. So my personal note is that you sleep great, this is me telling you personally, when you know in the first of the month that all your bills are paid and your profit's already locked in and everything else you have is gravy. And so recurring/continuity equals stability, which is why it's the fourth pillar of this. It's also the thing that will usually make your company the most valuable. So have I sold you? Hopefully on adding some recurring element to your business. Great. So let's get to the three best combinations that I've seen and used. Continuity. bonus offers, continuity discount offers, and then the waived fee offer. All right? So let's rock and roll. And now we do bonus offer."
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2407,
+      "char_start": 0,
+      "id": "waived-fee:0",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "All right, so we just covered continuity bonuses and continuity discounts. Now, we go to a special continuity offer that I really like a lot. And it's, the other two are like big amorphous versions. This is a very specific play. It'll be the shortest of the three, but for many of you people who have services or anything that's on continuity, especially if you have onboarding or some sort of getting client's results quickly, this thing is a beast. All right. So here's how I learned it. So after a long career in business, a friend of mine entered, uh, the consulting space with the intention of creating a lifestyle business. So he said, \"Hey, I'd just rather make five million bucks a year with no employees and, than have some big company.\" Um, and he said, \"You know, I don't really lose anyone, so I don't really need to market.\" And I was like, \"That's really interesting.\" A weird thing to say. I was like, \"So I assume like...\" All right, so you just collect payments upfront. Whenever somebody says, \"Oh, I don't have any churn,\" I usually just assume, well, you have no churn if you only have pre-payments. He said, \"No, I've got mostly payment plans.\" I was like, \"Huh. How do you do that?\" He said, \"Well, once you hear it, you're gonna kick yourself for not doing this all along.\" I was like, \"All right, so what do you do?\" He said, \"I just say that you could pay $25,000 to start and then go month to month after that for $4,000 a month. Or you can go to $4,000 a month if you commit to the year. So just about everyone takes the year. Then I just have them initial on their contract that they understand that if they exit early, they have to cover the $25,000 onboarding fee. So if someone calls to quit, I just say, 'Oh yeah, no worries. Just wire over the onboarding fee and I'll get you canceled right, away.' And that usually keeps people in it. It also gets people the, through the emotional ups and downs of business.\" And I was like, \"That's pretty sweet.\" So if you look at this visual here, if you had a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is,"
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 8446,
+      "char_start": 5953,
+      "id": "waived-fee:4",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "of like guardrails to keep someone on point during the rough months can help them overall see success. And I believe that. So that's not just not, that's not just wordsmithing. That's true. Um, and this vehicle or pricing structure, money model, allows you to build incentives around that. All right. So fees get them to start. People get value out of committing immediately because they avoid a fee. People want to avoid fees, so more people sign up to continuity. Mission accomplished. Hooray. That's how this works. Fees also get them to stick, which is lovely. So people will stick for the same reason they started, by sticking to avoid the fee. So people quit for millions of reasons, but by incurring an additional cost, a larger fee, in order to cancel, their original reason for quitting immediately shrinks compared to the value of avoiding the fee. In English, if the cost to quit exceeds the cost to stay, they will probably stay. Presenting the fee. Justify the fee by explaining the cost of taking on new customers for longer term programs. Basically, if they want short term flexibility, they pay their own setup costs. If they commit to staying long term, we'll pay their setup costs for them. All right? If someone asks for additional reason, just say, \"It costs us money to get you started. If you only want to test this out, you cover those costs. If you commit to longer, I'll cover them.\" Now, if more than 5% of people want to cancel early, look into that. Pricing incentivizes sticking, but it can't and shouldn't overcome a terrible product. You want to nudge them, not handcuff people into paying for something they hate, 'cause then they'll just hate you. Now, if you want more upfront cash, have a smaller fee. A smaller fee encourages more people to go month-to-month. This is the same, uh, difference we had with the earlier version with the continuity bonus offer. Same idea, except this is just a fee rather than a program, but some people will pay, and I'll tell you what my guess would be to get 50/50 to sign up, which would be a 33% increase, uh, a smaller fee will get more people to go month-to-month. A larger fee will encourage more people to make the commitment. But if you need more cash upfront, then you can make the fee one and a half to three times the monthly rate, and that will get more people to choose that more flexible option. And when you do this, more people will take it. Great. And you get more cash upfront. So you can drop the fee after"
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3308,
+      "char_start": 786,
+      "id": "ten-years-ten-minutes:2",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

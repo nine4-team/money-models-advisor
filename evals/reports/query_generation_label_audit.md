@@ -65,6 +65,26 @@ was regenerated and retrieval was not rerun.
 | Unguided model rewrite | 60.0% | 93.3% | 96.7% | 1.517 |
 | Corpus-guided model rewrite | **90.0%** | **96.7%** | **100.0%** | **1.200** |
 
-The corpus-guided rewrite is the development leader. The result is not a production
-selection because the prompts were developed against these exposed cases. The 16-case
-holdout remains unopened until its relevance labels receive independent human review.
+The corpus-guided rewrite is the development leader. This report records the exposed
+development stage; the later reserved-case comparison and its bidirectional label audit
+are recorded in `query_generation_holdout_v1.md` and
+`query_generation_holdout_v1_label_audit.md`.
+
+## Mini unguided robustness extension — 2026-08-11
+
+The later unguided `gpt-5.4-mini` condition was generated and retrieved before its
+labels were reviewed. Its top-five results added 29 case-passage pairs that had not
+appeared in the three-method audit above. All 29 were reviewed under the same
+direct-support rule, including both previously labeled and unlabeled pairs.
+
+Three false negatives were corrected:
+
+| Case | Added passage | Reason |
+|---|---|---|
+| `searchq_v1_009` | `payback-period:0` | Directly defines payback as gross profit exceeding CAC, which bears on the requested CAC-versus-gross-profit diagnosis. |
+| `searchq_v1_010` | `decoy-offers:8` | Summarizes a decoy attraction offer that gets leads to engage before presenting the premium offer. |
+| `searchq_v1_024` | `downsells:1` | States when a downsell fits and why it works when price, rather than the product, causes the no. |
+
+No false-positive labels were removed. The frozen Mini retrievals were rescored without
+regenerating a query or rerunning retrieval: 60.0% Hit@1, 96.7% Hit@3, 100.0% Hit@5,
+46.7% Precision@5, and 53.3% Noise@5.

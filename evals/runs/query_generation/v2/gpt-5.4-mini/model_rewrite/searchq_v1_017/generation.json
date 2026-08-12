@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_017",
+  "created_at": "2026-08-11T23:29:12Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 5317.3,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "credit diagnostic fee toward package upgrade apply diagnostic fee to bigger package",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 661,
+  "valid": true
+}

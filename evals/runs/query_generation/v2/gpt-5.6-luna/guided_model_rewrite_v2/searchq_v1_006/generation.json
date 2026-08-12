@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_006",
+  "created_at": "2026-08-10T22:34:36Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7657.4,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.6-luna",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "How continuity offers such as recurring maintenance plans or memberships affect payback period, CAC recovery, recurring gross profit, customer lifetime value, and retention for a premium full-service interior design business with high first-30-day gross profit and no current recurring revenue",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 5189,
+  "valid": true
+}

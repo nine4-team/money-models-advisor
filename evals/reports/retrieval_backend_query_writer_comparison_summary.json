@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-11",
+  "cases": 46,
+  "query_conditions": 5,
+  "query_policy": "frozen query text; one query; no subject filter",
+  "aggregate_results": "evals/reports/query_generation_full_matrix_summary.json",
+  "relevance_audit": "evals/reports/query_generation_full_matrix_audit.md",
+  "paired_results": [
+    {"approach": "raw_question", "model": null, "hybrid_earlier": 12, "bm25_earlier": 5, "same_rank": 29, "hybrid_denser": 19, "bm25_denser": 11, "same_density": 16},
+    {"approach": "model_rewrite", "model": "gpt-5.5", "hybrid_earlier": 13, "bm25_earlier": 8, "same_rank": 25, "hybrid_denser": 14, "bm25_denser": 10, "same_density": 22},
+    {"approach": "model_rewrite", "model": "gpt-5.4-mini", "hybrid_earlier": 11, "bm25_earlier": 7, "same_rank": 28, "hybrid_denser": 20, "bm25_denser": 12, "same_density": 14},
+    {"approach": "guided_model_rewrite_v2", "model": "gpt-5.5", "hybrid_earlier": 6, "bm25_earlier": 0, "same_rank": 40, "hybrid_denser": 13, "bm25_denser": 18, "same_density": 15},
+    {"approach": "guided_model_rewrite_v2", "model": "gpt-5.4-mini", "hybrid_earlier": 6, "bm25_earlier": 1, "same_rank": 39, "hybrid_denser": 13, "bm25_denser": 14, "same_density": 19}
+  ]
+}

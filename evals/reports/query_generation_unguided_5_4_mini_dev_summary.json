@@ -1,0 +1,104 @@
+{
+  "backends": [
+    "bm25",
+    "hybrid"
+  ],
+  "case_count": 30,
+  "case_splits": [
+    "dev",
+    "expansion",
+    "scenario_holdout"
+  ],
+  "cases_file": "evals/advisor_search_query_cases_enriched_labels.jsonl",
+  "created_at": "2026-08-12T02:03:22Z",
+  "generation": {
+    "model_rewrite": {
+      "cases": 30,
+      "mean_latency_ms": 8038.4,
+      "p50_latency_ms": 7272.5,
+      "total_codex_reported_tokens": 97651,
+      "valid_cases": 30
+    }
+  },
+  "method_version": "single-query-methods.v1",
+  "method_versions": {
+    "model_rewrite": "single-query-methods.v1"
+  },
+  "methods": [
+    "model_rewrite"
+  ],
+  "model": "gpt-5.4-mini",
+  "prompt_versions": {
+    "model_rewrite": "query-generation-prompt.v1"
+  },
+  "results": {
+    "model_rewrite": {
+      "bm25": {
+        "cases": 30,
+        "completed_cases": 30,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 18,
+        "hit_at_1_pct": 60.0,
+        "hit_at_3": 26,
+        "hit_at_3_pct": 86.7,
+        "hit_at_5": 28,
+        "hit_at_5_pct": 93.3,
+        "mean_first_useful_rank": 1.5,
+        "mean_retrieval_latency_ms": 93.3,
+        "mean_useful_results_at_k": 2.633,
+        "median_useful_results_at_k": 2.0,
+        "misses": [
+          "searchq_v1_010",
+          "searchq_v1_022"
+        ],
+        "missing_cases": [],
+        "noise_at_k_pct": 47.3,
+        "precision_at_k_pct": 52.7,
+        "result_slots": 150,
+        "top_k": 5,
+        "useful_results": 79,
+        "useful_results_per_case_distribution": {
+          "0": 2,
+          "1": 4,
+          "2": 10,
+          "3": 5,
+          "4": 5,
+          "5": 4
+        }
+      },
+      "hybrid": {
+        "cases": 30,
+        "completed_cases": 30,
+        "coverage_pct": 100.0,
+        "execution_errors": 0,
+        "hit_at_1": 20,
+        "hit_at_1_pct": 66.7,
+        "hit_at_3": 29,
+        "hit_at_3_pct": 96.7,
+        "hit_at_5": 30,
+        "hit_at_5_pct": 100.0,
+        "mean_first_useful_rank": 1.433,
+        "mean_retrieval_latency_ms": 890.1,
+        "mean_useful_results_at_k": 2.8,
+        "median_useful_results_at_k": 3.0,
+        "misses": [],
+        "missing_cases": [],
+        "noise_at_k_pct": 44.0,
+        "precision_at_k_pct": 56.0,
+        "result_slots": 150,
+        "top_k": 5,
+        "useful_results": 84,
+        "useful_results_per_case_distribution": {
+          "1": 6,
+          "2": 7,
+          "3": 8,
+          "4": 5,
+          "5": 4
+        }
+      }
+    }
+  },
+  "top_k": 5,
+  "vector_store": "local"
+}

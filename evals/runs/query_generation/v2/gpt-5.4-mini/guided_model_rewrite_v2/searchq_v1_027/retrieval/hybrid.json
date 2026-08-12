@@ -1,0 +1,71 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "waived fee offers continuity revenue recurring gross profit",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "waived-fee",
+      "char_end": 2363,
+      "char_start": 49,
+      "id": "waived-fee:1",
+      "score": 0.032,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is, but because we pair it as a price on the front end, it becomes a very strong sales thing too. So with the other version, we use the three, months free or whatever to get someone in, and then we say, \"Cool, you have to pay the difference if you cancel early.\" Here, we sell them on the vacation and we say, \"We have this massive onboarding fee, but I'll waive it if you sign up for a commitment.\" Then that' also hangs as a knife, if they don't wanna pay it today, they're not gonna pay it in six months either. And so the same reason they signed up is the same reason they'll keep paying. Here's our description. So the waived fee offers work like this. First, you ask customers to pay a startup fee as a part of joining a month to month program. Typically, you wanna do that to three to five times the monthly rate. All right? So if it was a thousand dollar thing, you'd want it to be a $5,000, uh, front fee. For, you know, the example it was $4,000 a month and $25,000 signup fee. That's the idea. All right. Then you offer a discount on the entire fee if they commit to the longer term. And the commitment period should be minimum of six months, ideally 12 plus. If it's less than that, it doesn't really make any sense. So if they cancel inside the term, they pay the fee. Customers can choose to pay the big fee and keep the option to quit at any time, or they can commit to 12 months and get the fee waived. And many will commit to avoid the big fee. There's also a clear point after four, five, six months where if they paid the fee, it's the same as staying, in which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk"
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 8292,
+      "char_start": 6168,
+      "id": "waived-fee:5",
+      "score": 0.032,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "A larger fee will encourage more people to make the commitment. But if you need more cash upfront, then you can make the fee one and a half to three times the monthly rate, and that will get more people to choose that more flexible option. And when you do this, more people will take it. Great. And you get more cash upfront. So you can drop the fee after the customer fulfills the commitment, right? So if someone stays the entirety of the commitment, and I'm repeating this 'cause some people forget about this, and then wants to cancel, then they have honored their commitment, and then you need to honor the fact that they don't need to pay that fee anymore. That is what makes it equitable. That's what makes it fair. Okay. So I prefer this offer for commitments over one year and longer. All right? So the longer the commitment, the better this works. This works especially well with services that take a long time to work. So think about SEO, investing, weight loss. These are all things that take a long time for someone to really get closer to their goals. It keeps people committed when they get emotional. Cancellation fees for a cause. So this is like a 201 version of this, um, but if you wanna keep customers extra motivated, you can donate the money that they would be paying for a cause that they are against. So you just say, \"Hey, what cause do you absolutely hate? Great. If you cancel early, I will be donating your entire setup fee to them.\" So this gives them two reasons to stay. First, because they don't wanna shell out that cash. Second, because they don't wanna co- they don't wanna give it to a cause they hate. Summary. So waived fee offers present a month-to-month option with a fee or a waived fee if they commit. I typically make it three to five times my monthly rate. At minimum, the commitment less should be a year. The larger your fee, the more buyers will opt for commitment. The smaller fee, the more people will do the month-to-month option, which will give you more cash upfront. If the customer meets the commitment, the fee officially goes away. Boom. That is the waived fee offer."
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 12538,
+      "char_start": 10131,
+      "id": "continuity-offers:6",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This is, again, this is not in the book. So this is me giving you bonus stuff. Um, there's a difference. between recurring and reoccurring revenue. So Netflix is recurring. Think memberships. Coca-Cola is reoccurring. I am a Coca-Cola product buyer. I buy lots of their drinks and I do that on a regular basis, but I don't have a fixed membership, but I reoccur. Both are great. The key with this one is that you just need to demonstrate that, hey, I... For example, there's a sauce company that I like and I bu- I bought their sauce for like four straight years and I use it every single month. I go through three or four bottles a month and I've been using for years and sure as hell you can bet that they can calculate that the average person who buys a bottle over time buys another 20 bottles. That makes it a very valuable business. Company one, let's say that's got top line of $10 million EBITDA3. Company two is 10 million and 3 million in EBITDA. Okay, this one's all transactional. You might get a 4X multiple. This is all recurring and based on how much you retain it, it might be worth eight to 15 times. So it's 24 to 45 million. So between 12 and 24 to 45, that's a hell of a lot more money. So this is problems worth solving. And so if they stay, buyers will pay. And when I say buyers, I mean investors. So my personal note is that you sleep great, this is me telling you personally, when you know in the first of the month that all your bills are paid and your profit's already locked in and everything else you have is gravy. And so recurring/continuity equals stability, which is why it's the fourth pillar of this. It's also the thing that will usually make your company the most valuable. So have I sold you? Hopefully on adding some recurring element to your business. Great. So let's get to the three best combinations that I've seen and used. Continuity. bonus offers, continuity discount offers, and then the waived fee offer. All right? So let's rock and roll. And now we do bonus offer."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5035,
+      "char_start": 2627,
+      "id": "continuity-discounts:4",
+      "score": 0.031,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "at your monthly recurring revenue, if you would like to put that in your pocket this month, for example, you can guarantee that you put it in your pocket by just changing your billing from monthly to every four weeks. Now, some people say, \"Hey, well, you said weekly.\" It's more that there's, you can present the price as weekly, but you still bill on a four-week cadence. Because I found this out the hard way. If you bill weekly, you get a bunch of financial pain in the butts of people changing cards, and they're like, \"Hey, can I pause for one week?\" Pain in the butt. So present it as, whatever, call it 50 bucks a week, but you bill at $200 every four weeks. All right? Just to be clear. So this is fundamentally how it works. That gives you 8.3% more revenue. So that may not sound like much, but if you run a, a 20% profit business, if you go from 20 to 28%, it's going to make you a lot more money. That's almost a 50% increase in revenue, so I think, there it is, 41%. Right? Kinda nifty. And the best part is, you don't do any more work. You just change a few words in your contract and how you present the price. That's it. In my experience, I've never had any difference in take rates between every four weeks versus every month, but you make a lot more money. So you're welcome. 3% more revenue for four extra words. Yeah, it's X plus a 3% processing fee. Now, I've never had anyone not buy because of the processing fee. The 3% added to your top line for no extra work goes straight to your bottom line. If you run a 10% profit business and add 3%, you just added 30% to your profit. Pretty worth it. And this works especially well when paired with the get two forms of payment. Recurring businesses lose mounds of cash because payment processing problems. So basically, people's card goes, you know, their, their numbers change, they, they move states, there's some guy in Nigeria who tries to bill them, whatever. Right? They've got something, and they have to change their card. And so first, customers don't cancel, but their payment information changes or expires. Second, customers max out cards or have insufficient funds. Fix both issues with the same solution. And so what we do is we say, \"Hey, now that I told you about this 3% fee, remember kind of the rental car, like, 'Hey, there's this fee, you wanna avoid this fee that I made up anyways? Yeah, that's what we're gonna do.'\""
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 4828,
+      "char_start": 2344,
+      "id": "continuity-offers:2",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments and contracts. They can significantly increase LTV if you deliver value. So that's downsell the upsell. Now let's talk about calculating back of napkin LTV. So the simplest way to do this is look at your price, divide it by your monthly churn, and that gives you your lifetime revenue. Remember, we still have margin on this. We still have some cost of delivery. Now, the gross margin times lifetime revenue equals your lifetime gross profit. So for example, let's say our price minus our cost of goods times 100% equals our gross margins. So let's say we have a $100 price, $20 cost of goods, times 100 equals 80% gross margins. Okay. So now we take our 80% gross margins, we multiply it by our lifetime revenue, and we get $800 of lifetime gross profit. That's how much we make per customer. over lifetime. That is what you can calculate for yourself given whatever it is you have. So you divide your price by your churn, that gives you the revenue, then you basically just figure out what your gross margin is, multiply that by that, and there you go. So getting people into continuity automatically extends LTV. Even with a company that does one-time transactions, most recurring stuff that has basically no added value, I'm just being super real with you, the recurring is usually three months, which still 3X your new LTV. So if you sell physical products, which maybe have one-time use, if you just get someone into a subscription, it usually triples the value of the customer. So if half the people do that thing, then you've got half the people doing 3X and half of them doing 1X, which means you double the revenue of your business, not bad, just by making it available. So the valuable money lesson is people think more about price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

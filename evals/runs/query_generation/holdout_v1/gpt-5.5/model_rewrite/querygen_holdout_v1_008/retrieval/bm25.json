@@ -1,0 +1,77 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "natural next offer upsell pattern after coaching purchase when customers realize they need nutrition support",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3166,
+      "char_start": 682,
+      "id": "ten-years-ten-minutes:1",
+      "score": 12.727,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' you want from this prospect. After picking a winner, you offer everyone else, uh, the big prize at a discounted price in second place. The decoy offers are also attraction offers where you advertise a free or discounted offer. When the lead asks to learn more, you also present a more valuable premium offer. The premium offer includes more features, benefits, bonuses, guarantees, and so on, and gets more people to buy it. Buy X to get Y free, you offer customers free stuff in exchange for buying stuff for money. The more free stuff and the higher its value, the more people will buy X to get Y free. Pay less now or pay more later, you give people a choice to pay full price later or pay a discounted price now for additional benefits. We also did free with consumption, which I won't Yeah. ... bonus here. But fundamentally, you give away a lot of free value, and that increases the likelihood people buy a very expensive thing from you. The more expensive the thing, the longer and the more free stuff you give them. Then we have upsell offers, which is, are whatever you offer next. That is my very literal scientific thing. Try and brai- like, fight me. An upsell is whatever you offer next. All right, so typically, it's gonna be more, better, or newer version of whatever they just bought. These can get you lots of cash fast. We covered four. The classic upsell, where you offer the solution to the customer's next problem the moment they become aware of it. You can't have X without Y. The menu upsell, you tell customers which options they don't need, then tell them which one they do need and how to get the value from it, prescribe, and, \"You don't need that, you need this.\" The anchor upsells, you offer the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended"
+    },
+    {
+      "chapter": "classic-upsell",
+      "char_end": 13632,
+      "char_start": 10159,
+      "id": "classic-upsell:3",
+      "score": 12.565,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "## [\u00a74.2.d] Applied examples \u2014 weight loss, physical therapy, education\n\nSo weight loss. So for us, upsell number one was at the nutrition orientation. We would sell them supplements. We would then sell them nutrition plans. That was an immediate version for me was I wanted to sell supplements because I had no more delivery. I could immediately hand it to them, make the profit back, and usually what I made on the supplements covered the cost to a car customer. So just that sale covered my, my cashflow, and I hadn't even started servicing them yet. And so a lot of you guys have these little things that are available. Like if I was a physical therapist, maybe you give four free treatments as your offer. That's a banger offer. A lot of people might consider that. But upsell one is you're gonna need these orthotics, these bands, these braces, these oils, this kinesio tape, all to maximize the effectiveness of the four treatments. And so they come in for the free month of storage, but they need their lock, they need their insurance, they need their boxes. Just think about those things for yourself. If you're in education, it's like I offer, uh, group coaching, provide information in a community for free indefinitely as long as you keep using my software. By the way, this is basically, I mean, fundamentally what we do with the school. We do all this stuff for free and then just use school to he- to help monetize. Okay, uh, free versus discount note is that with the classic upsell, it works either way, same as normal. So a friend of mine had a very successful weight loss chain, and they offered services for $5 a month for their weight loss. And they had doctors and nurses and all this stuff there, and I was like, \"That's insane.\" And she was like, \"Yeah, 'cause we don't make money on the weight loss services.\" And I was like, \"What do you mean?\" She was like, \"Oh, we sell like five grand in supplements on the second day.\" I was like, \"Oh.\" So that's where I learned, that's where I really learned a lot of the really Jedi stuff that I know from, um, supplement sales. Uh, I learned from her, and I paid, her top salesperson, uh, $500 an hour for two hours to tell me everything she did to sell supplements. And you know what's crazy? When I told her top salesperson that I would pay her $500, she was like, \"$500?\" She's like, \"Just to talk to you?\" And I was like, \"Yeah.\" She thought I was an idiot. I'm, I'm dead serious. She, she looked at me like I had three eyes in my head, and she was like, \"It's your money.\" And so she just walked me through every single detail of what she did to sell supplements, and that $1,000 two hours that I paid for made me millions. And so I highly encourage you, sometimes the best people to learn from are people who aren't even selling information. Just offer to pay them- ... to learn what they do in their particular niche or. skill. And, because people are not used to doing that, and you can char- you know, you can offer way more what the val- you know, what the, what the money's worth to you, you can make way more money that' way. So, uh, I learned from her that she had service that she basically gave for a nominal amount of money 'cause she didn't even care about it, just because that drew people in, and then they'd sell the supplements and the food and the bars and the shakes. Um, and yeah, they were, they, you know, they had doctors and nurses working there. That's how they made the money."
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 5457,
+      "char_start": 2991,
+      "id": "payback-period:3",
+      "score": 11.948,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they come in for nutrition orientations, and then I would walk through their food. And so with the food, then I would say, \"Oh, you're not eating these things. You should probably add this stuff in.\" I created a new problem which I could then solve with supplements. And so the thing is, is that you wanna be able to offer it at the right time. You sell at the point of greatest deprivation, not at the point of greatest satisfaction. But re- like, advanced people know what I just said. Beginners, please hear that again. You sell at the point of greatest deprivation, at the point of greatest pain, not at the point of greatest satisfaction. If I just had a big steak dinner-And then you say, \"Do you want another steak? You might have amazing steak. I don't need any more steak. I'm satisfied.\" And a lot of you guys are trying to make your upsell offer after I already ate a steak. Now, I might have a dessert stomach that's open, but my steak stomach is full. So we create deprivation, we make offers at the moment of deprivation. If somebody's really thirsty in the desert, after you give them the cup of water, they don't want the second cup as much as they wanted the first one. So the timing matters. So these are the times that I think through when I tend to incorporate upsells, and this is important for decreasing payback period. So one is right immediately after the first sale. Sometimes this works great. So to be clear, if I'm selling... If, if that new... If I solved one problem that then naturally creates the next problem, immediately upselling works. If you have to create another kind of problem in someone's head or guide them through awareness, then that's where you have what I call the next step. So the version I just gave you with the orientation, the nutritional orientation, that's like, great, that's the next step in the process. So this is usually a 24, 48, 72-hour difference between first sale and next step. The next time period, where I think about selling a customer or upselling is after they have a big win. This is a milestone. Someone says, you know,"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 15037,
+      "char_start": 14088,
+      "id": "rollover-upsell:7",
+      "score": 11.668,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. What to upsell, more of something, better of something, new something new. Just make sure that you make a profit after applying your discount. How to rollover the credit. You can do full or partial purchase, uh, give it upfront, or you can spread it out. We went through examples of all those. You can price your next offer for at least four times higher than the credit. So this makes it a 25% discount. Everything above that is gravy. I wouldn't do less than that. And to get more takers, add urgency. Make your rollover credit a one-time-only offer. And boom, that is the rollover upsell."
+    },
+    {
+      "chapter": "classic-upsell",
+      "char_end": 17291,
+      "char_start": 13633,
+      "id": "classic-upsell:4",
+      "score": 11.171,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "## [\u00a74.2.e] Important points + 80% close rate benchmark\n\nSo important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly encourage the thing, but that's fundamentally how it works. All right? So make sure that it doesn't cost you a lot or anything at all, uh, like, that thumb drive that we gave, like, you can y- you want it to be something that's cheap, uh, but still valuable. The next thing is make the upsells the next natural thing that they would need to buy. That's the boxes, the large units, the locks, the, the insurance, things like, that. The weight loss clinic, continuity of service, continuity of supplements, done-for-you meals, hormone treatments, et cetera, all of those things were all part of classic upsells that' went through. You can't have X without Y. You can't have this weight loss service without these supplements. Just think, \"You can't have X without Y,\" as your, as your mental framework for what the next thing I'm gonna offer is. All right, this play works so, well because the perception of how essential or required the next thing is. All right? So, this is the key point. If supplements is core to how someone's gonna get results with the main thing, the likelihood they buy is very high. So, if you, remember the, uh, minimum package for the rental car story I gave you, you want this to, feel as required as possible. Again, you don't wanna make it' required, because then it's, it's, it gets shady, but you want to strongly encourage people to take these things to get the best results, which ethically, they should be able to get better results with whatever your upsell is. All right? And so, how seamless the upsell process is for the prospect, if you make it frictionless, you can get sometimes 80% plus the people to take these upsells. I personally prefer to have upsells that have very little operational drag so, that I can' immediately offset cost to get it, getting a customer, or it becomes that's my major profit stream. It depends on' what the objective is for your business. Boom. Summary, works on' the front end as a back end, works as an internal play, meaning you can just upsell your existing customers. That's basically what the storage thing with, with the fur coats was. Many of those people were existing customers, so you can just upsell those people. Um, if you suck at sales, this is not a hard sale to make. Uh, there's a lot of goodwill in this play, because you just make sure that you close the upsell. Like, it's like, \"Hey, let me give you this thing. I'm giving you this free earmuffs. Why not take it? But, of course, you gotta take this other thing, too.\" Um, and if you aren't getting 80% plus close rates, you're doing it wrong. So that's my big benchmark for you. If you're getting 30% to take it, you're not, you're not making it assumed enough. You're not, it's, it's not clear enough to them that this goes with. So think about it like that. It has to go with. If you go to a McDonald's, I would bet you that 80% of people are getting fries and a Coke. You want, you want a very high uptake rate on' the people who buy the next natural thing. Think of this as the thing that goes with the thing, uh, and give the thing away for free to make sure that all the thing that goes with the thing you can make the money on. All right? And so, the nice thing with this is that it gives you a lot of upfront customers. And that is the classic upsell."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

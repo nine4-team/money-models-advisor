@@ -1,0 +1,74 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "\"pay less now\" discount difference",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "pay-less-now",
+      "char_end": 12939,
+      "char_start": 11221,
+      "id": "pay-less-now:9",
+      "score": 0.032,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "a delayed payment with a conditional guarantee. Have a clear criteria to qualify for the guarantee and easy ways to measure it. If you can, align the criteria with what gets people the most value from the product. The pay now option offers a 20 to 50%, sometimes two-thirds discount and bonuses if they pay now. It depends how desperate you are to get people to pay. Offer customers the pay now option after they already accepted the pay later terms. All right? So if they choose to pay now, then they get the discount and bonuses instead of the guarantee. Instead of, in lieu of. All right? Now, you make your promise easy to track and difficult to refute. So not only is it easy to track, but they can't say they didn't have it. The easier it is to track and the harder it is to refute, the better it is for this type of offer. So you want it to be as clear as a yes-no. And if you have more than 10% canceling the pay later option, you promised too much, the guarantee conditions are too low, or the price, uh, is too high, and/or the people that you're selling to are not the right people. All right? So also give extra attention to the customers who claim they haven't gotten value. If you remember, during the thing, a few people didn't say they- they raised their hand and they didn't double their reading speed. He attended to them so he could check off the can- He basically purposely brought down the cancellations that he was going to get later. And so there, it's really easy to tip people over the edge. It probably takes e- especially if an in-person thing, you can just easily check those boxes off and it'll save you a ton of money, uh, in cancellations. And that is the pay less now or pay more later."
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 13569,
+      "char_start": 11205,
+      "id": "pay-less-now:8",
+      "score": 0.031,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "people in the room. And so I would say, \"Hey, people are gonna interrupt me all, you know, to ask about supplements,\" and then it annoyed me. And I did it one time by accident, and then, of course, it worked really well. And then I started doing it every other time on purpose. All right? And so, by accident, I implied that people who, uh, that everybody bought supplements without actually offering them. And all the head, head nods actually showed that they actually did want more products. And so all these factors got more people to buy when I finally asked them to. So it was a happy mistake that I was sure to repeat. Now, if you're selling over the phone, get the card first. Then ask, \"Oh, yeah, I forgot to ask you. Do you wanna save 200 bucks on that price?\" So I'm giving you different selling environments. So if you're selling in person, uh, I explained that, the, the lawn care thing. If you sell, uh, digitally, it's a thank you page thing. If you're selling over the phone, you get the card first for the trial. You get the card first for the pay later option. Then you ask, like, the thank you pages once they've agreed to that purchase. Then you say, \"By the way, I forgot to mention, do you wanna save a little bit of money?\" Or say whatever the price is, \"And get these extra things?\" A lot of people say yes. And then you just explain, \"Yep, so for people who decided to just sign up without, uh, waiting to experience it first, so if you wanna skip the trial, you get VIP seating and recordings from the event, and you get it for $200 less than if you wait. And you won't be able to get those two other bonuses at any time. You wanna go ahead and do that?\" And so the more compelling those bonuses are, the more people will say yes. Great. Now, let's summarize this B. All right. So pay less now or pay more later offers people to, uh, a choice to pay full price or pay a discounted price with additional bonuses if they pay now. The pay later option has a delayed payment with a conditional guarantee. Have a clear criteria to qualify for the guarantee and easy ways to measure it. If you can, align the criteria with what gets people the most value from the product. The pay now option offers a 20 to 50%, sometimes two-thirds discount and bonuses if they pay now. It depends how desperate you are to get people to pay. Offer customers the"
+    },
+    {
+      "chapter": "payment-plans",
+      "char_end": 3613,
+      "char_start": 1224,
+      "id": "payment-plans:1",
+      "score": 0.03,
+      "subject": "downsells",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "they have to pay you right now, not what they have to pay in, general. And so people mistakenly think that they need cheaper stuff, and this is not the best course of action, in my opinion. Payment plans get the most buyers to pay the highest price by getting them to pay less now in the moment, but pay full price or higher over time. So here are the seven steps of a payment plan downsell. We reward for paying in full rather than punish for paying over time. This is a big thing that I, I don't see taught very much. And so I'm gonna explain this one in depth, 'cause it's really important. Uh, next, we're gonna offer financing options, half now, half later, check to see if they want the thing, offer to split it into three payments, or evenly spread the payments, offer a free trial. So let's give some deep-down examples. So step one, reward for paying in full rather than punish for paying over time. So if I take on the risk of a payment, because if you're a business owner and they don't pay you everything and you start delivering stuff, then you take on risk, right? So then what I do is I increase the price. Now, normally, businesses do this by charging interest. But everybody hates getting charged interest. And so instead, what I do is I anchor... My first price I present is the fully baked payment plan price. And then when I say, \"Got it, would you like, to save some money?\" they say yes, and I'm like, \"You can prepay, and save this much money.\" So now them pre-paying is a savings rather than getting penalized. So think about it like, this. Let's say it's 10K and 12K. 10K is the pay in full price, 12K is the payment plan price. Instead of s- instead of pitching people, 'cause remember, anchors still work. Instead of pitching people 10 and then they say that no. they can't afford it, and then. saying, \"Okay, fine, pay me 12 because you can't afford it,\" feels tough. So instead, pitch 12, \"I know you're afraid of doing it.\" Don't be. The difference in interest is usually never enough to change a purchasing decision. So like, if you had 10 and 20, then yeah. But most interest, or whatever you'd usually, you know, add on top, might be 10, 20%. And so that's not usually enough to get into a different buying tier. So you present here, and if someone says yes, and by the way, if everyone keeps saying yes at that, and then you don't even have to mention the"
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 12694,
+      "char_start": 10290,
+      "id": "pay-less-now:6",
+      "score": 0.029,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "the criteria what people do to get the value out of the product. All right? Which should make you feel good, too, 'cause then you can explain it. It's like, listen, I have this as the criteria because you said you want. a double your readings meeting. You're not gonna double your readings meeting if you don't, unless you show up. You're not gonna find your dis- distressed op- property unless you come to the workshop. Have bonuses for your, uh, pay now offers to get even more buyers. All right? So if you want more people to take that' pay now option, just stack the bonuses, decrease the price. Um, optimizing your pay now and pay later offers. If too many people. take your pay later option, discount the pay now option more, add better bonuses or both. And if too many people take your pay now option, go the other direction. If more than 10% of pay later people cancel their payment, you promised too much, uh, the guarantee conditions are too low or the price is. too high. And so the last one's the one that can be kind of tricky, is if you have a massive discrepancy between pay now and pay later, then sometimes people will get the value and just be cheapskates. That's why having the objective measure of whether they' got the thing is so important for this. Now, again, I would explain that 10% is what you should target, or what you should expect. So 10% of people who have pay later, are going to just say, \"Don't bill me.\" So just factor it in the cost of doing business. So if you have 100 people that do pay later, expect 10 to say that. Now, if, like, 20 say that, more than, then it's like, okay, we need to change one of these other things. I would say the fourth thing is that you're selling people who can't afford it. No- no matter how well you deliver, some people will cancel their payment, and that's okay. Just cost of doing business. Now, uh, this works for recurring revenue businesses, too. Because you're like, \"How does this work for those businesses?\" Let me explain. So you just give them the option to pay a higher ongoing rate 30 days later, or they pay less today and they keep the better rate for good. All right? Really sexy. So plus, you can add in some bonuses. So I'll, I'll, I'm gonna just give you one line now and we'll talk more about it in the one-time bonuses. chapter, uh, with continuity. But it' works like, this. Someone does a free trial of whatever"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 19915,
+      "char_start": 17975,
+      "id": "continuity-discounts:11",
+      "score": 0.028,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "That's not gonna work. You wanna tell, you wanna let them vent. You wanna feel, have them feel validated. You wanna be more upset than them. You wanna have them calm you down. You say that you made the mistake and that's unacceptable. Ask them to, see if you can make it up to them. Then you do a rollover and you get a do-over. That's the idea. Those are the important points. Whoo. All right. Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

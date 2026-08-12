@@ -83,7 +83,8 @@ Search source material:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli search \
-  --source-need-json '{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","first 30 day gross profit"],"query_variants":["CAC first 30 day gross profit payback period","client financed acquisition CAC gross profit payback"]}' \
+  --business-dir /path/to/company \
+  --search-request-json '{"intent":"diagnostic_evidence","user_turn":"what do these numbers mean?","query":"client financed acquisition first 30 day gross profit CAC payback period"}' \
   --top-k 5
 ```
 
@@ -146,28 +147,27 @@ Do use source search when the snapshot or prior-session context already contains
 
 Do not search for simple vocabulary answers that can be answered directly without citation. Source search is for source-backed advisory claims, not every definition.
 
-When generating a source need:
+When generating a search request:
 
 - `teaching_evidence` means the user needs a concept explained.
 - `diagnostic_evidence` means the user needs source support for identifying the business constraint from known facts.
 - `comparison_evidence` means the user needs two concepts or options compared.
 - `recommendation_evidence` means the user needs source support for a recommended next move after the necessary business facts are available.
 
-Generate one source need per source-material search call. If one answer needs two different retrieval jobs, run two searches with two source needs instead of mixing multiple intents into one source need.
+Generate one request per evidence job. Before writing its query, read the versioned corpus
+guide at `evals/query_generation/corpus_guide_v1.json`. Use the current question, the
+normal saved snapshot, and that guide to produce one concise query. Preserve the full
+information need; treat the guide as a translation reference rather than a checklist;
+and do not add query variants, deterministic fallback terms, subject filters, or
+namespace filters. The active CLI path executes that single query through hybrid
+retrieval.
 
-For each source-material search, include 2-4 agent-generated `query_variants` in the SourceNeed. These variants are the agent's focused requests for source evidence. Do not depend on the deterministic fallback query except for manual debugging or a last-resort safety net. Strong variants are short, source-facing, and aimed at the claim being supported rather than copied from the user's message.
+If one answer needs two genuinely different evidence jobs, run two searches rather
+than mixing both jobs into one query. Do not add a diagnostic search merely because
+known economics appear in the answer.
 
-Common split: if the answer needs both unit-economics interpretation and a proposed offer-stack fix, run one `diagnostic_evidence` search on `unit-economics`, then a separate `recommendation_evidence` search on the specific fix layer such as `upsells`, `continuity`, `offers`, or `downsells`. Do not combine broad economics terms and offer-stack layers into one catch-all SourceNeed; that makes retrieval noisy.
-
-Boundary rule: do not label a unit-economics search as `recommendation_evidence` just because the final answer contains a recommendation. If the source material is being used to justify why the economics point in a certain direction, the SourceNeed is `diagnostic_evidence` on `unit-economics`. Then, if you recommend a concrete next move such as a front-end offer, upsell, continuity path, or downsell/payment-plan path, run a separate `recommendation_evidence` search on that concrete fix layer.
-
-Recommendation support rule: if the answer recommends a concrete Money Models move, source that move separately. For example, recommending a paid-acquisition test through a diagnostic/front-end offer needs `recommendation_evidence` on `offers`; recommending a post-sale add-on needs `recommendation_evidence` on `upsells`; recommending recurring maintenance needs `recommendation_evidence` on `continuity`.
-
-Do not create multiple recommendation SourceNeeds for the same fix layer unless they support genuinely different claims.
-
-Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.
-
-When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+When recording the turn, create one `source_events` entry per search. Each entry should
+include the `search_request`, executed query, and inspected chunks with IDs and scores.
 
 Use the smallest layer set that can support the answer. Extra layers make retrieval noisier.
 
@@ -209,4 +209,6 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 
 ## Next Development Target
 
-The next product improvement is behavior hardening: run acting-agent traces against the post-refactor CLI surface, inspect source-event quality, and tune skill guidance where the agent chooses vague or overbroad SourceNeeds.
+The next query-generation improvement is independent review of the frozen holdout labels,
+followed by one comparison run that decides whether the provisional corpus-guided
+runtime stays or rolls back.

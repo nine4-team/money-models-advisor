@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from money_model_architect.retrieval import Chunk, CorpusIndex
+from money_model_architect.retrieval import Chunk, CorpusIndex, tokenize
 from money_model_architect.vector_store import subject_namespace
 
 
@@ -60,6 +60,15 @@ def test_index() -> CorpusIndex:
 
 
 class RetrievalBackendTest(unittest.TestCase):
+    def test_framework_aware_is_the_runtime_default(self):
+        self.assertEqual(CorpusIndex([]).strategy.name, "framework-aware")
+
+    def test_framework_aware_corpus_has_no_thousand_word_chunks(self):
+        corpus = Path(__file__).resolve().parents[1] / "corpus" / "transcripts"
+        index = CorpusIndex.from_transcripts(corpus)
+
+        self.assertLess(max(len(tokenize(chunk.text)) for chunk in index.chunks), 1000)
+
     def test_vector_search_uses_embeddings_and_subject_filter(self):
         index = test_index()
         results = index.vector_search(

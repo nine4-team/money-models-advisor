@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_007",
+  "created_at": "2026-08-11T23:28:01Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7831.2,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "How to change payment timing or offer installments for the full 12-week coached transformation program without reducing what the client gets",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 895,
+  "valid": true
+}

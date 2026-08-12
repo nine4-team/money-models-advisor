@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "recurring membership or maintenance offer improve CAC payback period service business",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "continuity-offers",
+      "char_end": 12538,
+      "char_start": 10131,
+      "id": "continuity-offers:6",
+      "score": 0.03,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This is, again, this is not in the book. So this is me giving you bonus stuff. Um, there's a difference. between recurring and reoccurring revenue. So Netflix is recurring. Think memberships. Coca-Cola is reoccurring. I am a Coca-Cola product buyer. I buy lots of their drinks and I do that on a regular basis, but I don't have a fixed membership, but I reoccur. Both are great. The key with this one is that you just need to demonstrate that, hey, I... For example, there's a sauce company that I like and I bu- I bought their sauce for like four straight years and I use it every single month. I go through three or four bottles a month and I've been using for years and sure as hell you can bet that they can calculate that the average person who buys a bottle over time buys another 20 bottles. That makes it a very valuable business. Company one, let's say that's got top line of $10 million EBITDA3. Company two is 10 million and 3 million in EBITDA. Okay, this one's all transactional. You might get a 4X multiple. This is all recurring and based on how much you retain it, it might be worth eight to 15 times. So it's 24 to 45 million. So between 12 and 24 to 45, that's a hell of a lot more money. So this is problems worth solving. And so if they stay, buyers will pay. And when I say buyers, I mean investors. So my personal note is that you sleep great, this is me telling you personally, when you know in the first of the month that all your bills are paid and your profit's already locked in and everything else you have is gravy. And so recurring/continuity equals stability, which is why it's the fourth pillar of this. It's also the thing that will usually make your company the most valuable. So have I sold you? Hopefully on adding some recurring element to your business. Great. So let's get to the three best combinations that I've seen and used. Continuity. bonus offers, continuity discount offers, and then the waived fee offer. All right? So let's rock and roll. And now we do bonus offer."
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 3907,
+      "char_start": 3126,
+      "id": "payback-period:6",
+      "score": 0.03,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "I had earlier, if I didn't want to wait two months, I would say, \"Great, we pay first and last. That's how we've always done it.\" And then I could offset... Now notice, the fee is all gross profit. So now I'm actually up 80 on my first transaction, and now I've got half the cost to get a new customer already back in my pocket before I even? have the next payment 30 days later. So every two customers buys me another one before even having to wait for the recurring to hit. All right? And this is, how you really scale. This is just one structure. There's a gazillion that I'm gonna show you. All right. So we went from two months to one and a half, right? Within 30 days. All right? So that's how you improve it, and that is about shortening payback period, making money faster."
+    },
+    {
+      "chapter": "cac",
+      "char_end": 4430,
+      "char_start": 2079,
+      "id": "cac:1",
+      "score": 0.028,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers"
+      ],
+      "text": "business owner. So this is how we, this is how we calculate it. So the total cost for eight sales means that you have a $3,000 emailer plus a $200 software plus 800 bucks in commissions, which is eight sales times $100 equals four grand. All right? So now, we divide that by the number of new customers, which is $4,000 divided by eight new customers equals 500 bucks per sale. So CAC. is $500 in this outreach example. So let's say that you have a content business. So let's do this one. So you have to pay two people on your media team that you pay $5,000 a month each, and they help you make, edit and distribute content across all platforms, right? So that content then turn into inbound messages and then opt-ins on your site, and then those leads turn into 10 new customers and you pay $100 in commission per sale. All right. So what's CAC? So the reason I'm giving you all those stats is so that you can plug your own stats in and then figure this out for yourself. So if my media payroll is 5K times two, it's $10,000 a month there, my commissions is 10 sales times 100 is 1,000. So all in I got 10 grand plus one grand is $11,000. So my cost to acquire a customer we'll say is $11,000 divided by 10 customers equals $1,100. So my CAC's 1100 bucks. Now if some of you are like, \"Wait, I have sales payroll in there too,\" then add it in. If there's something that you don't have here, cut it out. But fundamentally it's just all the money you spend to get new customers divided by how many customers you got. Cool. And I'll do one quick one on paid ads. So you spend $4,000 a month on a media buyer, you spend 20 grand in buying ads, the actual media itself. You spend 1,000 bucks commissions per sale, so this is probably a higher ticket sale, and you spend $1,000 on software and tracking and following up with leads that come in to get 10 new customers. So what's CAC? So media, 4K, media spend, 20K, software, 1K, commissions, 10 times one, 10,000. So all in, we spent $35,000 divided by 10 customers, $3,500 per customer is our CAC. That's how this works. By the way, one of the best ways to improve any metric is to start measuring it. So, how to improve it? In this whole training, I talk about lots of different things that cover and check off different boxes here. But fundamentally, if you had nothing else and you just wanted to have"
+    },
+    {
+      "chapter": "cac",
+      "char_end": 25820,
+      "char_start": 24040,
+      "id": "cac:12",
+      "score": 0.028,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers"
+      ],
+      "text": "doing. Um, you splinter out the thing. Now, I talk about this at length in the $100 million offers course. I'm not gonna break it down now, but basically, lots of different components to your offer, you have lots of different features. You take one feature off. You say, \"This feature is 99% off now.\" Great. That's where the discount is. And then you sell the rest of it. All right? And so whatever you break off, it has to be something that's well-understood or it's not gonna work. All right? That's kind of the thing I was talking about earlier. People have to have an understanding of it. Um, the cons are you got the bargain hoppers, right? People who, you know, complain about this, but really they, they're already, you know, uh, they're already customers. They're easier to upsell though than somebody who's cold. So yeah. All right. So the objective is that attraction offers are the first step in the four prongs because if you don't have interest, you don't have anything, right? And so customer-financed acquisition requires demand. And a big difference between CAC and GP, having low cost or free front ends is a strong way to do it. So lots of demand, free big front ends, drives more in. All right. So these things are going to be interchangeable throughout the remainder of these trainings. So if you see $19 chiropractor visit, it can be just as much a free chiropractor visit. The whole thing will work. But if you're like, you insist on doing this, fine, do that. If you insist on doing this, fine, do that. It does not matter. All the money models that I will show you can have free or discount interchange and they will both work. Kaboom. These are the ways that you can improve your CAC. So with that being said, CAC is covered. Now we go into gross profit."
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 10563,
+      "char_start": 8068,
+      "id": "continuity-bonus:4",
+      "score": 0.028,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the other is to get them to stay. Now, service, short-term accelerator offer. So one-time bonus for the short-term accelerator, it costs $1,000 on its own. Get it free when you become a member for $100 a month. Same concept as the gym. The bonus package is the VIP community members enjoy first in line access to our events, longer support hours, as in longer, not longer time period, uh, better support reps, and faster response times. So if you become a VIP member, not only do you get this big benefit, you also get this recurring benefit of c- continuing to pay and stay. Digital product offer. So one-time bonus would be, uh, get all my past 40 newsletters, valued at 15,800 whatever, by becoming a member today for only $3.99 a month after a 30-day free trial. Lifetime discount plus lifetime bonuses if you pay today. You can lock in a lifetime discount for $299 a month, and you get early digital access and a physical copy every month. Now, important points. Focus on the bonus, not the membership. This is really important. Join my membership program isn't very compelling, not nearly as compelling as get this free valuable thing. So advertise the free valuable thing, then explain the rest of the offer once, they show interest. So if I'm talking about the $800 of dog toys, I advertise my free $800 of dog toys, not my dog food. If I'm talking about my six-week challenge, I'm talking about the six-week challenge. They come in, I explain the $1,000 thing. I say, \"Or you can get that whole thing and this other thing for less.\" That's the idea, is you advertise the thing you're gonna give away, not the thing you sell. Bonuses kind of work like, up-sells. More of the same. You get two years of past newsletters by becoming a member. So they're coming in for newsletters, so you get more of that thing. Complimentary. You get nutrition services for free when you sign up for one of our fitness memberships. Great, that's complimentary. It goes together. You could have an upgrade, which is better, right? You get a free gold membership when you buy a bonus membership. So it's limited availability. Keep your bonuses related to"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_005",
+  "created_at": "2026-08-10T22:01:41Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 4883.0,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "Win Your Money Back earn the fee back refund or credit by achieving defined result and completing accountability check-ins",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4465,
+  "valid": true
+}

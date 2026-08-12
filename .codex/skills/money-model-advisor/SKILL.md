@@ -150,7 +150,7 @@ Search local source material:
 cd /Users/benjaminmackenzie/Dev/money-model-architect
 PYTHONPATH=src python3 -m money_model_architect.cli search \
   --business-dir "$CONTEXT_DIR" \
-  --source-need-json '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period","gross profit"],"user_turn":"why do we need fulfillment cost?","query_variants":["why cost to deliver changes gross profit CAC payback","fulfillment cost gross profit paid acquisition payback period"]}' \
+  --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}' \
   --top-k 5
 ```
 
@@ -177,7 +177,7 @@ PYTHONPATH=src python3 -m money_model_architect.cli session finish \
 3. Save clear inspected facts with `update_snapshot`.
 4. Decide the next advisory move yourself.
 5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
-6. Use `search` only after generating an explicit source need.
+6. Use `search` only after generating an explicit, corpus-guided search request.
 7. Cite inspected chunks inline, such as `[payback-period:0]`.
 8. Record the final turn with `session finish`.
 9. Use `logs` to inspect prior session turns.
@@ -192,12 +192,14 @@ This is required so the trace shows not only that math happened, but what math w
 
 ## When To Search
 
-Follow the source-need decision rules in `source_need_rules.md` (same directory). That
-file is the single source of truth for when to search, how to choose layers, how to split
-one answer into multiple source needs, how to write `query_variants`, and how to record
+Follow the runtime search-request rules in `search_request_rules.md` (same directory).
+That file is the single source of truth for when to search, when to split searches,
+how to use the versioned corpus guide, how to write the single query, and how to record
 `intent`. Do not restate those rules here — read that file and apply it exactly.
 
-When recording the turn, create one `source_events` entry per search. Each entry should include the SourceNeed, generated query, and inspected chunks with IDs and scores.
+When recording the turn, create one `source_events` entry per search. Each entry should
+include the `search_request`, the executed query, and inspected chunks with IDs and
+scores.
 
 ## Guardrails
 

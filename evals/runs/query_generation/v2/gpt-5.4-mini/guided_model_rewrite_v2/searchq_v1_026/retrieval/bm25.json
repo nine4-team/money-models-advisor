@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "\"Pay Less Now or Pay More Later\" vs discount difference",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "pay-less-now",
+      "char_end": 12939,
+      "char_start": 11221,
+      "id": "pay-less-now:9",
+      "score": 10.899,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "a delayed payment with a conditional guarantee. Have a clear criteria to qualify for the guarantee and easy ways to measure it. If you can, align the criteria with what gets people the most value from the product. The pay now option offers a 20 to 50%, sometimes two-thirds discount and bonuses if they pay now. It depends how desperate you are to get people to pay. Offer customers the pay now option after they already accepted the pay later terms. All right? So if they choose to pay now, then they get the discount and bonuses instead of the guarantee. Instead of, in lieu of. All right? Now, you make your promise easy to track and difficult to refute. So not only is it easy to track, but they can't say they didn't have it. The easier it is to track and the harder it is to refute, the better it is for this type of offer. So you want it to be as clear as a yes-no. And if you have more than 10% canceling the pay later option, you promised too much, the guarantee conditions are too low, or the price, uh, is too high, and/or the people that you're selling to are not the right people. All right? So also give extra attention to the customers who claim they haven't gotten value. If you remember, during the thing, a few people didn't say they- they raised their hand and they didn't double their reading speed. He attended to them so he could check off the can- He basically purposely brought down the cancellations that he was going to get later. And so there, it's really easy to tip people over the edge. It probably takes e- especially if an in-person thing, you can just easily check those boxes off and it'll save you a ton of money, uh, in cancellations. And that is the pay less now or pay more later."
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 12694,
+      "char_start": 10290,
+      "id": "pay-less-now:6",
+      "score": 10.476,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "the criteria what people do to get the value out of the product. All right? Which should make you feel good, too, 'cause then you can explain it. It's like, listen, I have this as the criteria because you said you want. a double your readings meeting. You're not gonna double your readings meeting if you don't, unless you show up. You're not gonna find your dis- distressed op- property unless you come to the workshop. Have bonuses for your, uh, pay now offers to get even more buyers. All right? So if you want more people to take that' pay now option, just stack the bonuses, decrease the price. Um, optimizing your pay now and pay later offers. If too many people. take your pay later option, discount the pay now option more, add better bonuses or both. And if too many people take your pay now option, go the other direction. If more than 10% of pay later people cancel their payment, you promised too much, uh, the guarantee conditions are too low or the price is. too high. And so the last one's the one that can be kind of tricky, is if you have a massive discrepancy between pay now and pay later, then sometimes people will get the value and just be cheapskates. That's why having the objective measure of whether they' got the thing is so important for this. Now, again, I would explain that 10% is what you should target, or what you should expect. So 10% of people who have pay later, are going to just say, \"Don't bill me.\" So just factor it in the cost of doing business. So if you have 100 people that do pay later, expect 10 to say that. Now, if, like, 20 say that, more than, then it's like, okay, we need to change one of these other things. I would say the fourth thing is that you're selling people who can't afford it. No- no matter how well you deliver, some people will cancel their payment, and that's okay. Just cost of doing business. Now, uh, this works for recurring revenue businesses, too. Because you're like, \"How does this work for those businesses?\" Let me explain. So you just give them the option to pay a higher ongoing rate 30 days later, or they pay less today and they keep the better rate for good. All right? Really sexy. So plus, you can add in some bonuses. So I'll, I'll, I'm gonna just give you one line now and we'll talk more about it in the one-time bonuses. chapter, uh, with continuity. But it' works like, this. Someone does a free trial of whatever"
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 13569,
+      "char_start": 11205,
+      "id": "pay-less-now:8",
+      "score": 10.326,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "people in the room. And so I would say, \"Hey, people are gonna interrupt me all, you know, to ask about supplements,\" and then it annoyed me. And I did it one time by accident, and then, of course, it worked really well. And then I started doing it every other time on purpose. All right? And so, by accident, I implied that people who, uh, that everybody bought supplements without actually offering them. And all the head, head nods actually showed that they actually did want more products. And so all these factors got more people to buy when I finally asked them to. So it was a happy mistake that I was sure to repeat. Now, if you're selling over the phone, get the card first. Then ask, \"Oh, yeah, I forgot to ask you. Do you wanna save 200 bucks on that price?\" So I'm giving you different selling environments. So if you're selling in person, uh, I explained that, the, the lawn care thing. If you sell, uh, digitally, it's a thank you page thing. If you're selling over the phone, you get the card first for the trial. You get the card first for the pay later option. Then you ask, like, the thank you pages once they've agreed to that purchase. Then you say, \"By the way, I forgot to mention, do you wanna save a little bit of money?\" Or say whatever the price is, \"And get these extra things?\" A lot of people say yes. And then you just explain, \"Yep, so for people who decided to just sign up without, uh, waiting to experience it first, so if you wanna skip the trial, you get VIP seating and recordings from the event, and you get it for $200 less than if you wait. And you won't be able to get those two other bonuses at any time. You wanna go ahead and do that?\" And so the more compelling those bonuses are, the more people will say yes. Great. Now, let's summarize this B. All right. So pay less now or pay more later offers people to, uh, a choice to pay full price or pay a discounted price with additional bonuses if they pay now. The pay later option has a delayed payment with a conditional guarantee. Have a clear criteria to qualify for the guarantee and easy ways to measure it. If you can, align the criteria with what gets people the most value from the product. The pay now option offers a 20 to 50%, sometimes two-thirds discount and bonuses if they pay now. It depends how desperate you are to get people to pay. Offer customers the"
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 4332,
+      "char_start": 1956,
+      "id": "pay-less-now:1",
+      "score": 10.066,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "was. Um, some people didn't and then he like, called those people out trying to help them like, live, whatever. And after that just at the very end he was like, \"By the way, if you thought this was good, this is what the progress you made in, you know, two hours. If you want, I have an eight-week intensive on the backend that will even further increase your reading speed and your comprehension. And so you can read at a faster rate and contain more. And ultimately, like, learning is the meta skill of everything.\" Like if you learn this one skill, blah, blah, blah, blah. Right? And so I ended up not doing that, but I was like, \"Wow, this is really interesting.\" He gets all these people on. He makes money from the 97s, he makes money from the 397s, and he then pitches people on another thing. I was like, \"This is pretty cool.\" So that's how I learned it, and I was like, \"I wonder if I could do something like this for my business.\" And you can too. So let's dive in. So in pay less now, or pay more later, you give people a choice to pay full price later with an implied guarantee of satisfaction or pay discounted price now. This play removes all risk from the customer, which is why it's so compelling. The other amazing thing is that you can advertise it as free, because they put $0 down and they only pay after they get it, if they want.. So they pay later and only if they like it. And it combines the benefits of a delayed payment and a satisfaction guarantee. So it gives us both. It's like it's a delay and satisfaction. That's why it makes it so compelling for people. And anyone can sell this. Almost anyone agree to pay later if they're satisfied. So from a salesmanship perspective for your business, if you're like not that good at sales, this offer, primo. But once they agree to pay later, you can then get them to pay now, with hefty discounts and valuable bonuses. Like, in this example, the recordings was. a very valuable bonus. You can also stack other bonuses as well as discounts. So it's like, \"Oh, my God.\" Which also, by the way, shows you the value of delayed payment and guarantees. How much you have to discount and how many bonuses you have to stack shows you the relative value of a guarantee and a delayed payment. So the pay later option allows you to advertise free since you can choose to pay or not. And this gets lots of leads to"
+    },
+    {
+      "chapter": "attraction-offers",
+      "char_end": 1485,
+      "char_start": 0,
+      "id": "attraction-offers:0",
+      "score": 9.778,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "So we are now officially in our apprenticeship, our digital apprenticeship, or virtual apprenticeship. Let us begin with attraction offers. So, what does an attraction offer, the free versus discounted continuum, and the lineup. All right. So, an attraction offer generates leads and converts them into customers. That's what it does. They turn advertising into money by offering something free or at a discount. We do this because everyone wants a great deal. In a great deal, customers get far more value than the price they pay. Strangers can only take your word on the value, but they absolutely understand the price. For that reason, discounts make anything a great deal to just about anyone. And the greater the discount, the better the deal. So, the greatest discount of all being free. So, free to discounted continue. This is a visual representation of what I alluded to earlier, but 100% off versus 0% off. So this is free, this is, uh, full price, and then this is the also lowest demand when you have full price versus highest demand, which is free. So the more you move this way, the higher the demand, the more you have, you give off. Pretty much that's how it works. The lineup. So, this is the lineup. These are the plays that I'm going to explain to you. We've got our win your money back, giveaways, decoy offer, buy X get Y free, pay less now or pay more later, and then free with consumption. This one is not in the book, FYI. So with that being said, let us begin."
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

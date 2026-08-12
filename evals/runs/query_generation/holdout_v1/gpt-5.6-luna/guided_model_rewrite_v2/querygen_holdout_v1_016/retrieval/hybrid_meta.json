@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Build the money model one offer at a time: rollout order for attraction offers, upsells, feature downsells, and continuity offers; perfecting one before adding the next, choosing the next offer based on the observed constraint, and using the fewest offers needed",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 1205.8,
+  "returncode": 0,
+  "stderr": ""
+}

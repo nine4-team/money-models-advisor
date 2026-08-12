@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "not enough qualified prospects enter sales conversations valuable clients close which offer stack function is failing attraction offer lead to customer qualified conversations",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 95.8,
+  "returncode": 0,
+  "stderr": ""
+}

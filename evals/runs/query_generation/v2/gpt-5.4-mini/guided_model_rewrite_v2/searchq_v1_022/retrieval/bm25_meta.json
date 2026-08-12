@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "\"Free with Consumption\" when free education is enough to make a higher-ticket buyer ready for a paid offer trust belief change",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 86.9,
+  "returncode": 0,
+  "stderr": ""
+}

@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from .advisor_queries import SourceNeed, build_advisor_queries
+from .advisor_queries import SearchRequest, build_advisor_queries
 from .advisor_retrieval import RETRIEVAL_BACKENDS, VECTOR_STORES, execute_advisor_queries
 from .business_context import advisor_paths, ensure_advisor_state, utc_now
 from .calculator import (
@@ -22,7 +22,7 @@ from .calculator import (
 )
 from .diagnose import diagnose
 from .embeddings import OpenAIEmbeddingClient
-from .retrieval import CorpusIndex
+from .retrieval import CHUNKING_STRATEGIES, DEFAULT_CHUNKING_STRATEGY, CorpusIndex
 from .setup_intake import load_answers, run_setup
 from .snapshot import BusinessSnapshot
 from .vector_store import PineconeVectorStore, VectorStoreError, subject_namespaces
@@ -71,21 +71,37 @@ def _build_parser() -> argparse.ArgumentParser:
 
     source_material = subparsers.add_parser("search", help="Get citation-ready Money Models source chunks")
     source_material.add_argument("query", nargs="?", help="Raw debug/manual search query")
-    source_material.add_argument("--business-dir", help="Directory containing advisor state for source-need search")
-    source_material.add_argument("--source-need-json", help="JSON object or path to JSON file with agent-selected SourceNeed")
+    source_material.add_argument("--business-dir", help="Directory containing advisor state for a structured search")
+    request_group = source_material.add_mutually_exclusive_group()
+    request_group.add_argument(
+        "--search-request-json",
+        help="JSON object or path with one agent-authored corpus-guided query",
+    )
+    request_group.add_argument(
+        "--source-need-json",
+        help="Legacy SourceNeed JSON for reproducibility and manual debugging",
+    )
     source_material.add_argument("--subject", choices=SUBJECTS)
     source_material.add_argument("--top-k", type=int, default=5)
-    source_material.add_argument("--backend", choices=RETRIEVAL_BACKENDS, default="bm25")
+    source_material.add_argument(
+        "--backend",
+        choices=RETRIEVAL_BACKENDS,
+        help="Retrieval backend; defaults to hybrid for a search request and BM25 for a raw debug query",
+    )
     source_material.add_argument("--vector-store", choices=VECTOR_STORES, default="local")
     source_material.add_argument("--namespace-prefix", default="money-models")
 
     index_cmd = subparsers.add_parser("index", help="Manage hosted retrieval indexes")
     index_subparsers = index_cmd.add_subparsers(dest="index_command", required=True)
     pinecone = index_subparsers.add_parser("pinecone", help="Upsert corpus chunks to Pinecone")
-    pinecone.add_argument("--namespace", help="Pinecone namespace; defaults to MMA_PINECONE_NAMESPACE or money-models")
+    pinecone.add_argument(
+        "--namespace",
+        help="Pinecone namespace; defaults to MMA_PINECONE_NAMESPACE or money-models-framework",
+    )
     pinecone.add_argument("--index-layout", choices=("single", "subject"), default="single")
     pinecone.add_argument("--namespace-prefix", default="money-models")
     pinecone.add_argument("--batch-size", type=int, default=64)
+    pinecone.add_argument("--chunking", choices=tuple(CHUNKING_STRATEGIES), default=DEFAULT_CHUNKING_STRATEGY)
 
     calc = subparsers.add_parser("calculate", help="Run deterministic unit-economics formulas")
     calc.add_argument("metric", choices=("cac", "gross-profit", "gross-margin", "ltgp", "payback", "cfa-level"))
@@ -139,44 +155,50 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "search":
-        if args.source_need_json:
+        request_json = args.search_request_json or args.source_need_json
+        if request_json:
             if not args.business_dir:
-                parser.error("search --source-need-json requires --business-dir")
+                parser.error("search with a structured request requires --business-dir")
             paths = advisor_paths(Path(args.business_dir))
             ensure_advisor_state(paths)
             snapshot = BusinessSnapshot.load(paths.snapshot)
-            source_need = _parse_source_need(_read_json_value(args.source_need_json))
-            queries = build_advisor_queries(snapshot, source_need)
+            search_request = _parse_search_request(_read_json_value(request_json))
+            if search_request.query and args.subject:
+                parser.error("--subject cannot be combined with --search-request-json; the active path is unfiltered")
+            queries = build_advisor_queries(snapshot, search_request)
+            retrieval_backend = args.backend or ("hybrid" if search_request.query else "bm25")
             evidence = execute_advisor_queries(
                 queries,
                 _repo_root() / "corpus" / "transcripts",
                 top_k=args.top_k,
-                retrieval_backend=args.backend,
+                retrieval_backend=retrieval_backend,
                 vector_store=args.vector_store,
                 namespace_prefix=args.namespace_prefix,
             )
             payload = {
                 "business_dir": str(paths.business_dir),
-                "retrieval_backend": args.backend,
+                "retrieval_backend": retrieval_backend,
                 "vector_store": args.vector_store,
-                "namespace_policy": "source_need_target_namespaces",
-                "namespace_prefix": args.namespace_prefix if args.backend in {"vector", "hybrid"} else None,
-                "source_need": _source_need_to_dict(source_need),
+                "namespace_policy": "unfiltered" if search_request.query else "legacy_source_need_target_namespaces",
+                "namespace_prefix": args.namespace_prefix if retrieval_backend in {"vector", "hybrid"} else None,
+                "search_request": _search_request_to_dict(search_request),
                 "queries": [query.to_dict() for query in queries],
                 "source_material": [item.to_dict() for item in evidence],
             }
+            if args.source_need_json:
+                payload["source_need"] = payload["search_request"]
             print(json.dumps(payload, indent=2))
             return 0
 
         if not args.query:
-            parser.error("search requires a raw query or --source-need-json")
+            parser.error("search requires a raw query or --search-request-json")
         index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts")
         results = _search_index(
             index,
             args.query,
             subject=args.subject,
             top_k=args.top_k,
-            backend=args.backend,
+            backend=args.backend or "bm25",
             vector_store=args.vector_store,
             namespace_prefix=args.namespace_prefix,
         )
@@ -184,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
             "query": args.query,
             "subject": args.subject,
             "top_k": args.top_k,
-            "retrieval_backend": args.backend,
+            "retrieval_backend": args.backend or "bm25",
             "vector_store": args.vector_store,
             "namespace_policy": "raw_debug_default_namespace",
             "namespace_prefix": args.namespace_prefix if args.backend in {"vector", "hybrid"} else None,
@@ -206,7 +228,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "index" and args.index_command == "pinecone":
-        index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts")
+        index = CorpusIndex.from_transcripts(_repo_root() / "corpus" / "transcripts", chunking=args.chunking)
         embedding_client = OpenAIEmbeddingClient()
         records = index.vector_records(embedding_client)
         store = PineconeVectorStore.from_env()
@@ -353,7 +375,7 @@ def main(argv: list[str] | None = None) -> int:
                 "agent_owns": [
                     "advisory judgment",
                     "local document inspection",
-                    "source-need generation",
+                    "corpus-guided search-request generation",
                     "answer synthesis",
                 ],
                 "cli_owns": [
@@ -599,17 +621,19 @@ def _required_string_list(record: dict[str, Any], field_name: str) -> list[str]:
 def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
     if not isinstance(event, dict):
         raise SystemExit(f"record-json source_events[{index}] must be an object")
-    source_need = event.get("source_need")
-    if not isinstance(source_need, dict):
-        raise SystemExit(f"record-json source_events[{index}].source_need must be an object")
-    _validate_source_need_payload(source_need, f"record-json source_events[{index}].source_need")
+    uses_current_contract = "search_request" in event
+    search_request = event.get("search_request", event.get("source_need"))
+    if not isinstance(search_request, dict):
+        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+    request_label = f"record-json source_events[{index}].search_request"
+    _validate_search_request_payload(search_request, request_label)
 
     queries = event.get("queries")
     if queries is None and isinstance(event.get("query"), str):
         queries = [event["query"]]
     if not isinstance(queries, list) or not queries or not all(isinstance(query, str) and query.strip() for query in queries):
         raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
-    _validate_query_variants_executed(source_need, queries, f"record-json source_events[{index}]")
+    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
 
     chunks = event.get("chunks")
     if not isinstance(chunks, list) or not chunks:
@@ -621,6 +645,9 @@ def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
             raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
 
     normalized = dict(event)
+    if uses_current_contract:
+        normalized.pop("source_need", None)
+        normalized["search_request"] = search_request
     normalized["queries"] = queries
     normalized["query"] = queries[0]
     normalized["chunks"] = chunks
@@ -651,17 +678,34 @@ def _normalize_calculation_event(event: Any, index: int) -> dict[str, Any]:
     return normalized
 
 
-def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> None:
-    intent = source_need.get("intent")
+def _validate_search_request_payload(search_request: dict[str, Any], label: str) -> None:
+    intent = search_request.get("intent")
     if intent not in SOURCE_NEED_INTENTS:
         raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
-    subjects = source_need.get("subjects")
+    query = search_request.get("query")
+    if query is not None:
+        if not isinstance(query, str) or not query.strip() or "\n" in query or "\r" in query or len(query.strip()) > 400:
+            raise SystemExit(f"{label}.query must be one non-empty line of at most 400 characters")
+        user_turn = search_request.get("user_turn")
+        if not isinstance(user_turn, str) or not user_turn.strip():
+            raise SystemExit(f"{label}.user_turn must be a non-empty string")
+        legacy_fields = [
+            field
+            for field in ("subjects", "focus_terms", "query_variants", "target_namespaces")
+            if field in search_request
+        ]
+        if legacy_fields:
+            raise SystemExit(f"{label} active query cannot include legacy fields: {', '.join(legacy_fields)}")
+        return
+
+    # Compatibility validation for preserved source-need traces and evals.
+    subjects = search_request.get("subjects")
     if not isinstance(subjects, list) or not subjects or not all(isinstance(subject, str) for subject in subjects):
         raise SystemExit(f"{label}.subjects must be a non-empty list of strings")
     invalid_subjects = [subject for subject in subjects if subject not in SUBJECTS]
     if invalid_subjects:
         raise SystemExit(f"{label}.subjects contain unknown subject(s): {', '.join(invalid_subjects)}")
-    target_namespaces = source_need.get("target_namespaces", [])
+    target_namespaces = search_request.get("target_namespaces", [])
     if (
         not isinstance(target_namespaces, list)
         or not all(isinstance(namespace, str) and namespace.strip() for namespace in target_namespaces)
@@ -670,10 +714,10 @@ def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> No
     invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in SUBJECTS]
     if invalid_namespaces:
         raise SystemExit(f"{label}.target_namespaces contain unknown namespace(s): {', '.join(invalid_namespaces)}")
-    focus_terms = source_need.get("focus_terms")
+    focus_terms = search_request.get("focus_terms")
     if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
         raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
-    query_variants = source_need.get("query_variants")
+    query_variants = search_request.get("query_variants")
     if (
         not isinstance(query_variants, list)
         or not 2 <= len(query_variants) <= 4
@@ -682,8 +726,13 @@ def _validate_source_need_payload(source_need: dict[str, Any], label: str) -> No
         raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
 
 
-def _validate_query_variants_executed(source_need: dict[str, Any], queries: list[str], label: str) -> None:
-    query_variants = source_need.get("query_variants")
+def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
+    query = search_request.get("query")
+    if isinstance(query, str):
+        if len(queries) != 1 or _normalize_query_text(queries[0]) != _normalize_query_text(query):
+            raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
+        return
+    query_variants = search_request.get("query_variants")
     if not isinstance(query_variants, list):
         return
     executed = {_normalize_query_text(query) for query in queries}
@@ -734,23 +783,39 @@ def _dedupe_strings(values: list[str]) -> list[str]:
     return deduped
 
 
-def _parse_source_need(value: Any) -> SourceNeed:
+def _parse_search_request(value: Any) -> SearchRequest:
     if not isinstance(value, dict):
-        raise SystemExit("source-need-json must decode to an object")
+        raise SystemExit("search-request-json must decode to an object")
     intent = value.get("intent")
     subjects = value.get("subjects", [])
     focus_terms = value.get("focus_terms", [])
     user_turn = value.get("user_turn", "")
+    query = value.get("query", "")
     query_variants = value.get("query_variants", [])
     target_namespaces = value.get("target_namespaces", [])
     if not isinstance(intent, str) or not intent:
-        raise SystemExit("source need requires non-empty string field: intent")
+        raise SystemExit("search request requires non-empty string field: intent")
+    if not isinstance(query, str):
+        raise SystemExit("search request field query must be a string when supplied")
+    if not isinstance(user_turn, str):
+        raise SystemExit("search request field user_turn must be a string when supplied")
+    query = query.strip()
+    if query and ("\n" in query or "\r" in query or len(query) > 400):
+        raise SystemExit("search request field query must be one line of at most 400 characters")
+    if query:
+        if not user_turn.strip():
+            raise SystemExit("search request field user_turn must be non-empty")
+        legacy_fields = [
+            field
+            for field in ("subjects", "focus_terms", "query_variants", "target_namespaces")
+            if field in value
+        ]
+        if legacy_fields:
+            raise SystemExit("active search request cannot include legacy fields: " + ", ".join(legacy_fields))
     if not isinstance(subjects, list) or not all(isinstance(subject, str) for subject in subjects):
         raise SystemExit("source need field subjects must be a list of strings")
     if not isinstance(focus_terms, list) or not all(isinstance(term, str) for term in focus_terms):
         raise SystemExit("source need field focus_terms must be a list of strings")
-    if not isinstance(user_turn, str):
-        raise SystemExit("source need field user_turn must be a string when supplied")
     if not isinstance(query_variants, list) or not all(isinstance(query, str) for query in query_variants):
         raise SystemExit("source need field query_variants must be a list of strings when supplied")
     if not isinstance(target_namespaces, list) or not all(isinstance(namespace, str) for namespace in target_namespaces):
@@ -761,11 +826,14 @@ def _parse_source_need(value: Any) -> SourceNeed:
     invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in SUBJECTS]
     if invalid_namespaces:
         raise SystemExit(f"unknown source need target namespace(s): {', '.join(invalid_namespaces)}")
-    return SourceNeed(
+    if not query and not query_variants and not focus_terms:
+        raise SystemExit("search request requires query")
+    return SearchRequest(
         intent=intent,
         subjects=tuple(subjects),
         focus_terms=tuple(focus_terms),
         user_turn=user_turn,
+        query=query,
         query_variants=tuple(query_variants),
         target_namespaces=tuple(target_namespaces),
     )
@@ -802,15 +870,23 @@ def _search_index(
     raise SystemExit(f"unknown retrieval backend: {backend}")
 
 
-def _source_need_to_dict(source_need: SourceNeed) -> dict[str, Any]:
-    return {
-        "intent": source_need.intent,
-        "subjects": list(source_need.subjects),
-        "focus_terms": list(source_need.focus_terms),
-        "user_turn": source_need.user_turn,
-        "query_variants": list(source_need.query_variants),
-        "target_namespaces": list(source_need.target_namespaces),
+def _search_request_to_dict(search_request: SearchRequest) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "intent": search_request.intent,
+        "user_turn": search_request.user_turn,
     }
+    if search_request.query:
+        payload["query"] = search_request.query
+        return payload
+    payload.update(
+        {
+            "subjects": list(search_request.subjects),
+            "focus_terms": list(search_request.focus_terms),
+            "query_variants": list(search_request.query_variants),
+            "target_namespaces": list(search_request.target_namespaces),
+        }
+    )
+    return payload
 
 
 def _write_turn_record(sessions_dir: Path, payload: dict[str, Any]) -> Path:

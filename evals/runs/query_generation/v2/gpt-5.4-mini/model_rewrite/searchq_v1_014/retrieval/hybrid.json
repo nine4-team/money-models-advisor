@@ -1,0 +1,77 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "when to pitch an add-on after diagnostic purchase upsell timing",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "payback-period",
+      "char_end": 5097,
+      "char_start": 2816,
+      "id": "payback-period:2",
+      "score": 0.033,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "have $80 left over. Sorry, le- uh, I'm down 80 month one. All right? So let's look at month two. Month two, I didn't have my cost to acquire the customer. I still have my cost to deliver. I make my 100 minus my 20 cost to deliver. I have another 80. So now I'm at zero. Okay. So month two is my break-even month. So what's my payback period? Two months. Also, to be really clear here, if it costs you 160 bucks to acquire a customer, some people are like, \"It takes me one and a half months to break even here,\" because they see $100 in revenue and they say, \"Oh, it's one and a half months.\" You have to take out your cost of goods in the payback period. If it costs me $9 in meals and I sell 10 bucks for the meal, I make a dollar. I can't say, \"Oh, you know, they paid me 20 bucks. It cost me 20. I break even in two months.\" You have to do it off gross profit. All right, so here's how to improve it. You can make them more, better, or new offers, and here's the key part, in the first 30 days. And the key part is to do- to do it at the right, moment. The reason that somebody will not take an upsell from you is 'cause you did it the wrong way or at the wrong time or you described it poorly, or they're the wrong person. Right? And so, let' me give you this supplement sale example. This is just, uh, zoned in on. timing, presenting it at the right time. So I say this because some of you might have an amazing upsell offer. You're just, you're just presenting it not when the problem, uh, exists, all right, or creates itself. So I tried to sell supplements after people bought services from me, and it didn't work. Now, I could give you a whole bunch of theories around that. Someone comes in saying they wanna lose weight, and I say, \"Awesome, let's get you signed up.\" And then right then after they signed up, I say, \"Oh, by the way, buy these supplements.\" And you might think, \"Wait, isn't that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 5457,
+      "char_start": 2991,
+      "id": "payback-period:3",
+      "score": 0.033,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "that a hyper-buying cycle?\" It's my belief that the person scratched their itch of weight loss the moment I sold them the service package and now I'm, like, trying to reopen a closed wound, kind of. It's like, wait, I thought I just solved that problem. Right? So what I figured out was, I would say, \"Hey, come in for a n- nutrition orientation.\" And then 48 hours later, they come in for nutrition orientations, and then I would walk through their food. And so with the food, then I would say, \"Oh, you're not eating these things. You should probably add this stuff in.\" I created a new problem which I could then solve with supplements. And so the thing is, is that you wanna be able to offer it at the right time. You sell at the point of greatest deprivation, not at the point of greatest satisfaction. But re- like, advanced people know what I just said. Beginners, please hear that again. You sell at the point of greatest deprivation, at the point of greatest pain, not at the point of greatest satisfaction. If I just had a big steak dinner-And then you say, \"Do you want another steak? You might have amazing steak. I don't need any more steak. I'm satisfied.\" And a lot of you guys are trying to make your upsell offer after I already ate a steak. Now, I might have a dessert stomach that's open, but my steak stomach is full. So we create deprivation, we make offers at the moment of deprivation. If somebody's really thirsty in the desert, after you give them the cup of water, they don't want the second cup as much as they wanted the first one. So the timing matters. So these are the times that I think through when I tend to incorporate upsells, and this is important for decreasing payback period. So one is right immediately after the first sale. Sometimes this works great. So to be clear, if I'm selling... If, if that new... If I solved one problem that then naturally creates the next problem, immediately upselling works. If you have to create another kind of problem in someone's head or guide them through awareness, then that's where you have what I call the next step. So the version I just gave you with the orientation, the nutritional orientation, that's like, great, that's the next step in the process. So this is usually a 24, 48, 72-hour difference between first sale and next step. The next time period, where I think about selling a customer or upselling is after they have a big win. This is a milestone. Someone says, you know,"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 15037,
+      "char_start": 14088,
+      "id": "rollover-upsell:7",
+      "score": 0.03,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. What to upsell, more of something, better of something, new something new. Just make sure that you make a profit after applying your discount. How to rollover the credit. You can do full or partial purchase, uh, give it upfront, or you can spread it out. We went through examples of all those. You can price your next offer for at least four times higher than the credit. So this makes it a 25% discount. Everything above that is gravy. I wouldn't do less than that. And to get more takers, add urgency. Make your rollover credit a one-time-only offer. And boom, that is the rollover upsell."
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 5416,
+      "char_start": 3000,
+      "id": "payback-period:4",
+      "score": 0.029,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "call the next step. So the version I just gave you with the orientation, the nutritional orientation, that's like, great, that's the next step in the process. So this is usually a 24, 48, 72-hour difference between first sale and next step. The next time period, where I think about selling a customer or upselling is after they have a big win. This is a milestone. Someone says, you know, they have some big success. Now you're like, \"Wait, I thought you said that you sell at the point of greatest deprivation.\" Yes. So if they have a big success, then it means we fully solved one problem, which typically means a fully formed new problem also opens. So great, you got to $10,000 a month. You probably have all these tax problems now and you probably need employees to help you take all this time because now that you're working all the time and you're making this money, you probably don't have time. You have money but not time. So let me solve the next problem for you, right? And so you can o- there's always... If you're a good entrepreneur, you're always solving problems, and fully solved problems always create more problems. After they have a big win, then I like to think about the halfway point. This is just me historically seeing that people at a halfway point tend to be very open to upselling. And finally, I call this the last chance. Now if you're like, \"Wait a second, at the end of a, of a period with a customer is the last chance, not when I should upsell?\" Yeah. If you haven't upsold them here, s- so many of you guys are trying to make your upsell at the end of the first thing. You've already lost them. Like this is your last shot. You missed all of the other times that you were supposed to sell them, and notice, four out of the five are before the halfway point. So you're losing out. So I can almost guarantee... Well, I'll say it this way. I have never not had this work. So I can't guarantee it, but I've never not had it work. Which is, if this is when you're upselling people or attempting to upselling, because I already know you're probably failing at it, if you move it forward in the sales process, in my opinion, you have an incomplete buying cycle. So I don't want to reopen something. I want to just ride the one I'm already on. It's like, \"Hey, you're halfway through. Let's keep the party going. Hey, you're doing great. Let's, let's keep it going. Let's, let's add this"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 6310,
+      "char_start": 3927,
+      "id": "rollover-upsell:2",
+      "score": 0.028,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "solved.\" You turn their biggest hater into your biggest ambassador. Savage. Number four, you upsell. your regular customers who walk in the door. So there's the four who's. The next one is the what. So remember, you can upsell. more of what they just got, something better or something new and/or different. So to make money, roll their credit over to something more expensive. And so the more expensive thing, again, in my opinion, should be. five times more expensive. So if I'm gonna roll a $500 thing, I wanna roll it towards a 2000, $2500 plus type offer. For the how, you can apply all or part of the discount upfront or you can spread it over time. And so this is dependent on you. So in the examples I gave before, I took it and I spread it over time. You could, if you had a smaller amount, do it upfront. It's up to you. You can also make up a fee that you can then waive and use the credit for it. There's lots of things you can do here. All right? But fundamentally, you can just figure out. Now, the all or part of it is, like, let's say somebody was with you for three years and they spent five grand with you. You might not credit five grand towards something else if your services, you know, aren't that much, maybe it's $2,000 a year, $5,000, three years of service. Well, you'd certainly want to get that customer back. But if you give them another three years, it doesn't make sense. So you could say, \"Hey, I'm gonna give you the last, you know, the last three things you bought from me. Let me credit those instead,\" right? You wouldn't say instead, you'd just say, \"I'll credit those for you,\" right? All of those things you could say, \"Listen, I'm gonna assume that we did something to mess up because you didn't come back. And so I'm gonna assume that the last six months of service that we did was not up to snuff. So let me make it up to you.\" So examples. So chiropractor, reengage old, old patients with a win back campaign. So we say who's the who, six months since their last purchase. What? New plan. How? Upfront. So that's our who, our what, and our how. So reach out to your old patients, you look at their purchase history, you offer. to apply some or all of their past purchase towards something more expensive than what they bought. So I would say, \"Hey, Mrs. Banks, I wanted to give your money back. Do you have a minute?\" \"Great. Yeah, I wanted"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

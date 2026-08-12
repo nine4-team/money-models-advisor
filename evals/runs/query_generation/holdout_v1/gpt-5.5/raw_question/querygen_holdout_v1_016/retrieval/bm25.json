@@ -1,0 +1,82 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "We are tempted to launch an audit, an add-on, a smaller package, and monitoring at the same time. What does the source say about rollout?",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "offer-types",
+      "char_end": 8318,
+      "char_start": 4542,
+      "id": "offer-types:3",
+      "score": 12.828,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a72.2.d] Business models aren't IP \u2014 why speed and innovation matter\n\nI was a young kid and I had this model and the right move that they should have done competitively was take all my shit and immediately disseminate it. That would have been the right move. That's what Zuck did with Snapchat when they had their stories, he just immediately like, \"Ooh, I'm gonna take that,\" distribute it immediately. But instead they postured against, they're like, \"This guy doesn't know what he's doing,\" and then we ended up just destroying them. Because the math's the math. Like you can not like that you didn't innovate it, but you can execute on it. And so one thing that I also want to break in terms of perspective here is that as much as you may not like it, a business model is not patentable. It's not IP. An offer that you may create, a great headline, a free six-week challenge, not IP. Anyone can advertise an offer. And so it's a double-edged sword in terms of learning this power, because it is a speed game, because basically you want to advertise this stuff, you want to rip as much money out as you can before the rest of the world catches up. And then guess what happens when the rest of world catches up? You do it again. You innovate the model again. And so there's always going to be followers and there's always going to be leaders. But the thing is, the leaders get to make 80% of the profits because by the time everyone else catches up, we already pillaged the land using a more, you know, violent terminology. You know, we, we, we seeded and farmed the land and we reaped the, the fruit of the l- the land that it gave us. Whatever, you get the idea. Okay, so, uh, this was the, this was the thing that broke it for them. So boom, we had service, we sold the goal, so we sold way higher ticket instead of doing a $21 thing. We sold, uh, nutrition and supplements, we sold continuity and then we did prepayment. So all four of these things we did in the first 30 days and that's how we could drag the cash forward. All right? And so if for some reason someone didn't buy the first offer thing, we had a downsell flow. We sold to goal, then we sell a smaller package, then we sell a free trial with penalty, then we sold a free trial with no commitment, and then we did a free orientation.And so what I mean is, like, let's say somebody didn't want to do the free trial. So for example, these, these people, they didn't buy any service. But how do we get money out of them? We said, \"Hey, no worries. Why don't you just come for a nutrition orientation? We just wanna help you out for free.\" People came to the nutrition orientation not having signed up for the gym. And we'd sell 'em 300 bucks in supplements. So we still made money from nos by selling them a different way to get to their goal. So that was the downsell flow for service. For supplements, we would sell a full supplement bundle, then we'd sell a four-pack, uh, with extras, so we'd add a couple pieces in. Then we'd on- downsell just to a four-pack. Um, and then we'd have it on continuity, then no continuity, then we'd do extras only. So we'd work our way down that whole thing. And then the meals flow, same deal. We'd work our way from biggest, all the way to smallest. And then continuity, we'd go again, sell the goal, smaller package, and then month-to-month. And then finally, the prepayment is we'd prepay the whole package, prepay for a discount, prepay the next month, and then we'd just get the commitment, just say, \"Fine, you're in continuity now.\" And all of this, if you're looking at the days, this is day 21 to 28, 14 to 21. And these, this is upfront, this is within 48 hours. So all of these things are happening fast. All right. So that is how we broke the gym industry."
+    },
+    {
+      "chapter": "money-models-offer-stacks",
+      "char_end": 2268,
+      "char_start": 0,
+      "id": "money-models-offer-stacks:0",
+      "score": 11.572,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "[Full transcript for money-models-offer-stacks - 16 minutes of detailed content about money models and offer stacks, covering the rental car example, Gym Launch example, and offer sequencing strategies] So we just covered the three levels. Let's rock into money models and offer stacks. All right. So, uh, you will notice throughout this whole training that some of the things are a little bit different from the book, and that's done on purpose because I like to think through things differently in different mediums. All right? Because I can say things here that I couldn't normally say in the book. So we'll go definition, rental car story, and the gym launch example. All right. So a money model is a series of offers. That's it. The reason I had to start with the offers book before talking about the money model book is that an offer is one unit. A money model is sequencing these things. It's putting them in a series of offers deliberately to maximize gross profit collected in the first 30 days. So I will say this all together. A money model is a series of offers. A good money model, which is the objective of this book, or this training, is a series of offers structured to minimize CAC, how much it costs to get a customer, maximize gross profit, how much they pay you, collected in the first 30 days, how fast they pay you. That's the point... [Content continues with rental car counter story example including late checkout, insurance upgrade, minimum package, prepaid gas, and late return fees explanation] ...describing how rental car companies engineer their offers sequentially. The story illustrates 9 different upsells that occurred during a single reservation transaction. This is followed by the Gym Launch case study detailing how the company grew from $1,000 in the bank to $17 million in profit in 20 months through their money model approach. The transcript covers their specific offer stack including: free book/podcast lead magnet, free strategy call, $16,000 premium offer with payment terms, free supplement training, and free feedback call with continuity upsell. The lesson emphasizes how understanding offer sequencing and psychology can dramatically increase customer lifetime value and enable rapid scaling without external funding."
+    },
+    {
+      "chapter": "free-with-consumption",
+      "char_end": 2460,
+      "char_start": 35,
+      "id": "free-with-consumption:1",
+      "score": 10.677,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "free video, it could be a PDF, it could be an audio, it could be, uh, a live event, it could be a workshop. Anything that someone's gonna consume a ton, that then they go, \"Oh, this thing's free.\" They learn a bunch. They say, \"Oh, I can do this.\" And then they put money down. That's how it works. Fundamentally, you're selling or giving away a selling tool. Now, effective selling tools also provide value. Bad selling tools are just pitches. Don't do that. Let's dive in. So you give the free thing that teaches and provides value. It breaks beliefs that most people have around that particular thing. And so the more knowledgeable you are about your customer or your prospects, the more you can systematically break their beliefs around, uh, the opportunity that you have or whatever service you provide that people get hung up on. So think about this as like FAQs on steroids. And you want to make an offer that solves their next concern or have embedded CTAs or calls to action to take the next steps in the process. By the way, if you're watching this massive video training and you want to scale your business, we're pretty good at it. And so, one, if you're a really big business, you can go to acquisition.com and hit the sell button, and we'd love to look at your business to invest in. If you're a smaller business, call it less than 10 million a year, then hit the scale button, and we'd love to help you scale from a million a month to beyond a million dollars a month. That's an embedded CTA. That's how that works. All right? And this works for books, webinars, VSLs, events, workshops, video trainings like this, anything where you get people's undivided attention. Now, what this does is the process reverse engineers trust. The best way for someone to know that they are going to get value from you when they pay you is to give them value before they pay you. Mind-blowing, I know. And so I believe that education is at the core of advertising. It's the core of marketing. It's that you help people shift their beliefs around something so that they make a decision to buy. And so the amount of time. that you need is in direct proportion to the price of the thing you sell, how cold the audience is, and what that price is relative to their buying power. So for example, if I'm selling consumers, uh, if I have a $20 thing, I might be able to sell that in a seven-second ad, direct to purchase. If I sell a"
+    },
+    {
+      "chapter": "offer-types",
+      "char_end": 13434,
+      "char_start": 11297,
+      "id": "offer-types:5",
+      "score": 9.925,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "## [\u00a72.2.f] Applied examples \u2014 Gym Launch, weight loss, rental car\n\nAnd so like I said earlier, this is just showing it through that same model, the Gym Launch Model. So we attract and we use the books and the lead magnets and the podcast, things like that. It's free. Then we sold them an upfront cash thing. Uh, so we generated upfront cash with the next sale, with the, uh, the, uh, 16 weeks. Then we would maximize profit by getting them to upsell supplements then sells our supplements on our behalf. And then we built continuity, which is the three-year licensing, which is the 42,000 a year. And note, I'm not saying that you have to use all four. I'm just saying I noticed that my most successful companies did. And many companies, you only use one or two. Okay? So let's look at the model that I showed earlier with weight loss. We had a free promo, get people in. We got cash by selling challenges that they could get their money back or sell the goal, either one. Then we would sell supplements. Then we would sell memberships all the way through. Rental car. 19 bucks a day gets me in the door. Then pretty much everything was upsells, so these kind of all happened at once. So I'm saying, like, this is just a model. Like, it's, it's more about the business. So we had all the insurance, the late pay- the late payback, the gas, the upgrading the car, all that stuff. All right? And then continuity is where they say, \"Great. Do you want to enter our rewards program?\" And so great money models can include multiple in the same business. So you can notice here, like there's some here, there's multiples here. There was insurance, there's multiple upsells. So it's not like you only have to have one. You can have multiple things there. Through the rest of our time together, I'll show you genius ways that other entrepreneurs have stacked and recombined these things to make lots of money. And I will only show the ones that I also then used, modeled that in my businesses and what we did. All right? Kajuna! Four types of offers. So with that being said, we will begin our ride-along apprenticeship, which is the next one."
+    },
+    {
+      "chapter": "cac",
+      "char_end": 20397,
+      "char_start": 18011,
+      "id": "cac:10",
+      "score": 9.353,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers"
+      ],
+      "text": "of the advertising. So how different do all those feel? They are all the same thing, just presented different ways. And that's why we do this. So this is a little pro tip that I will give you. You probably can't read this. I'll just tell you what it says, um, which is that in order for a price off or a simply discounted price to work, the market has to have an understanding of what the price of that commodity or what that service is. And so if I say that I'm, I'm selling, you know, an adjustment for a chiropractor for $29, that is effective because people know it costs more than that. They might not know how much more, but they just know that it's more, that that's cheap for that thing. If I say $20 teeth whitening at a dentist, that's gonna get a lot of people who are super interested because people know it's way more than $20. I could probably say $100 teeth whitening and people would still say, \"That's a great deal,\" right? Because there's an idea. Now, if you have an intangible product or a, a product that no one else sells, or it's a digital product, or you're like a, a creator and you wanna launch some thing, if you then say it's this price off of this price, there's not a lot of value because the, the arbitrage is, is arbitrary. So you made it up. And so there's no, there's no pegged kind of marketplace price for the thing that you're selling. And so in those instances, that's where percentages off off of retail, things like that, work a little bit better than just saying like $17, you know, course. It's like, well, that, that might be expensive for some people and cheap for other people, but for a teeth whitening thing, everyone knows it's cheap. And that's why if you are gonna put that one price on there, you wanna do it... This is like me differentiating for what business owner this works for, to be clear. All right. So here are the pros of discounts. So we talked about the pros of free stuff. Here are the pros of discounts. So, uh, one is that they're compliant for cheap leads, meaning you don't have to ever worry about, like, anybody saying that you did a bait and switch or anything like that. So if you charge people for stuff, then there's, there's really nothing to say about it. All right, number two is that you can actually collect some money, which is decent, right? I mean, some money is better than no money, okay? Um, people do"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

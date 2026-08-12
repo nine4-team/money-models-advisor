@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_002",
+  "created_at": "2026-08-11T23:27:19Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 8282.1,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "client-financed acquisition cash payback CAC payback",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 10655,
+  "valid": true
+}

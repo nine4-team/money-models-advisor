@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_014",
+  "created_at": "2026-08-10T22:01:03Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 5146.1,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "price anchoring enterprise offer presented before standard implementation makes standard offer seem more reasonable",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 12631,
+  "valid": true
+}

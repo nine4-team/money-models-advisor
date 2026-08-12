@@ -67,8 +67,20 @@ class QueryGenerationMethodEvalTest(unittest.TestCase):
         self.assertEqual(query_eval.first_useful_rank(["a", "b"], {"b"}), 2)
         self.assertIsNone(query_eval.first_useful_rank(["a"], {"b"}))
         rows = [
-            {"case_id": "one", "error": None, "first_useful_rank": 1, "retrieval_latency_ms": 10},
-            {"case_id": "two", "error": None, "first_useful_rank": 4, "retrieval_latency_ms": 20},
+            {
+                "case_id": "one",
+                "error": None,
+                "first_useful_rank": 1,
+                "retrieval_latency_ms": 10,
+                "useful_returned_chunk_ids": ["a", "b", "c"],
+            },
+            {
+                "case_id": "two",
+                "error": None,
+                "first_useful_rank": 4,
+                "retrieval_latency_ms": 20,
+                "useful_returned_chunk_ids": ["d"],
+            },
         ]
 
         summary = query_eval.score_result_rows(rows)
@@ -77,6 +89,13 @@ class QueryGenerationMethodEvalTest(unittest.TestCase):
         self.assertEqual(summary["hit_at_3_pct"], 50.0)
         self.assertEqual(summary["hit_at_5_pct"], 100.0)
         self.assertEqual(summary["mean_first_useful_rank"], 2.5)
+        self.assertEqual(summary["useful_results"], 4)
+        self.assertEqual(summary["result_slots"], 10)
+        self.assertEqual(summary["mean_useful_results_at_k"], 2.0)
+        self.assertEqual(summary["median_useful_results_at_k"], 2.0)
+        self.assertEqual(summary["precision_at_k_pct"], 40.0)
+        self.assertEqual(summary["noise_at_k_pct"], 60.0)
+        self.assertEqual(summary["useful_results_per_case_distribution"], {"1": 1, "3": 1})
 
     def test_quality_rates_exclude_infrastructure_errors_but_report_coverage(self):
         rows = [
@@ -96,6 +115,71 @@ class QueryGenerationMethodEvalTest(unittest.TestCase):
         self.assertEqual(summary["hit_at_1_pct"], 100.0)
         self.assertEqual(summary["execution_errors"], 1)
         self.assertEqual(summary["missing_cases"], ["two"])
+
+    def test_holdout_report_describes_post_run_label_audit(self):
+        result = query_eval.score_result_rows(
+            [{"case_id": "one", "error": None, "first_useful_rank": 1, "retrieval_latency_ms": 10}]
+        )
+        summary = {
+            "backends": ["hybrid"],
+            "case_count": 1,
+            "case_splits": ["holdout"],
+            "cases_file": "holdout.jsonl",
+            "created_at": "2026-08-10T00:00:00Z",
+            "generation": {
+                "raw_question": {
+                    "cases": 1,
+                    "valid_cases": 1,
+                    "mean_latency_ms": 0,
+                    "p50_latency_ms": 0,
+                    "total_codex_reported_tokens": None,
+                }
+            },
+            "method_version": "single-query-methods.v1",
+            "methods": ["raw_question"],
+            "model": "gpt-5.5",
+            "results": {"raw_question": {"hybrid": result}},
+            "top_k": 5,
+        }
+
+        report = query_eval.render_report(summary)
+
+        self.assertIn("1 reserved holdout cases", report)
+        self.assertIn("queries and retrieval results were frozen", report)
+        self.assertIn("not an independently human-adjudicated benchmark", report)
+        self.assertNotIn("exposed development cases", report)
+
+    def test_expansion_report_does_not_claim_holdout_status(self):
+        result = query_eval.score_result_rows(
+            [{"case_id": "one", "error": None, "first_useful_rank": 1, "retrieval_latency_ms": 10}]
+        )
+        summary = {
+            "backends": ["hybrid"],
+            "case_count": 1,
+            "case_splits": ["expansion"],
+            "cases_file": "expansion.jsonl",
+            "created_at": "2026-08-11T00:00:00Z",
+            "generation": {
+                "raw_question": {
+                    "cases": 1,
+                    "valid_cases": 1,
+                    "mean_latency_ms": 0,
+                    "p50_latency_ms": 0,
+                    "total_codex_reported_tokens": None,
+                }
+            },
+            "method_version": "single-query-methods.v1",
+            "methods": ["raw_question"],
+            "model": "gpt-5.5",
+            "results": {"raw_question": {"hybrid": result}},
+            "top_k": 5,
+        }
+
+        report = query_eval.render_report(summary)
+
+        self.assertIn("1 regression expansion cases", report)
+        self.assertIn("not an unopened holdout", report)
+        self.assertNotIn("reserved holdout", report)
 
 
 if __name__ == "__main__":

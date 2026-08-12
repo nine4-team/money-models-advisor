@@ -1,4 +1,4 @@
-"""Advisor runtime query policy v1."""
+"""Advisor runtime search-request policy."""
 
 from __future__ import annotations
 
@@ -26,19 +26,42 @@ class AdvisorQuery:
 
 
 @dataclass(frozen=True)
-class SourceNeed:
-    """Planner-selected source support for one source-material search call."""
+class SearchRequest:
+    """Agent-authored request for one source-material search call.
+
+    ``query`` is the current product path: one corpus-guided, unfiltered query.
+    The remaining fields preserve compatibility with older eval artifacts and
+    manual debugging; they do not alter a search when ``query`` is supplied.
+    """
 
     intent: str
-    subjects: tuple[str, ...]
-    focus_terms: tuple[str, ...]
+    subjects: tuple[str, ...] = ()
+    focus_terms: tuple[str, ...] = ()
     user_turn: str = ""
+    query: str = ""
     query_variants: tuple[str, ...] = ()
     target_namespaces: tuple[str, ...] = ()
 
 
-def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -> list[AdvisorQuery]:
-    """Build source-material queries from an explicit agent-selected source need."""
+# Historical eval code imports this name. Keep the alias while the recorded
+# source-need datasets remain useful for search/no-search planning tests.
+SourceNeed = SearchRequest
+
+
+def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SearchRequest) -> list[AdvisorQuery]:
+    """Build executable queries from an explicit agent-authored search request."""
+
+    query_text = _join_terms([source_need.query])
+    if query_text:
+        return [
+            AdvisorQuery(
+                intent=source_need.intent,
+                subjects=(),
+                target_namespaces=(),
+                query=query_text,
+                reason="Corpus-guided query authored by the agent for the current question.",
+            )
+        ]
 
     return _source_need_queries(snapshot, source_need)
 

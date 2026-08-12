@@ -1,0 +1,75 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "downsell offers after a no feature downsells payment plans full offer",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "downsells",
+      "char_end": 2432,
+      "char_start": 0,
+      "id": "downsells:0",
+      "score": 19.081,
+      "subject": "downsells",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "So let me talk about the downsell. A lot of people try to do a downsell and they do it in a way that actually insults their customer. They show the exact same product, but they say, \"Well, okay. So you don't want the $97 version. How about the $47 version?\" And the customer's like, \"Wait, these look like the same thing. Why are you showing me the same thing but charging me less?\" It feels insulting. It feels like you were ripping me off before and now you're trying to scam me with a cheaper version. That's not a downsell. Here's what a downsell is. A downsell is when you take out one or more features from a product and you reduce the price proportionally. So if you go from a five-module product to a three-module product, you might go from $97 to $57. So the customer sees that you actually removed value. They understand the price reduction. Okay, so let's talk about some really good downsell examples. The first example is payment plans. So a customer comes to your funnel and you say, \"Okay, here's the price. It's $297.\" And they say, \"Nope. I don't have that right now.\" So what you could do is you could say, \"Okay, how about instead of paying 297 dollars all upfront, you pay three payments of $99?\" Now, you could do four payments of $80 each. You could do two payments of $160 each. Whatever you want. But the key is you're giving them an alternative that's more affordable right now, but they still get the full product. And that's a downsell. Another type of downsell is a feature downsell. So let's say you have a course that comes with personalized coaching. And you say, \"Okay, it's $297, and that includes five coaching calls with me.\" They say, \"Nope, that's too expensive.\" So you say, \"Okay, how about I remove the coaching and you just get the course for $97?\" Now they get less features, but the product is more affordable. That's a downsell. Another one is a trial with a penalty. So you might say, \"Okay, you can use this for 30 days risk-free. But in order to qualify for this trial, you have to give me your credit card.\" So you're reducing the risk for the customer by letting them try it, but you're adding a small commitment hurdle to qualify for that trial. So those are a few different types of downsells that actually work. Let me give you a rule for downsells that will help you make better downsells in your own funnel. The rule is this: A downsell works best when the customer is saying no"
+    },
+    {
+      "chapter": "payment-plans",
+      "char_end": 2366,
+      "char_start": 0,
+      "id": "payment-plans:0",
+      "score": 19.039,
+      "subject": "downsells",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "So we just covered downsell offers. Now, let's rock and roll into payment plan downsells. We have the main five, as always, and let' us begin. So here's how I learned it. One month in the business, I got one month's rent left. And I'd only made a few sales that first week. And so halfway through the month, a prospect comes in, and I really needed the cash. And so she said no to buying. And so normally, I just would have given up, but I really needed the cash. And so I was like, \"All right, well, can you put half down?\" And she said no. And then I was like, \"Okay, can you put a third down? We'll do three payments.\" And she was like, \"No.\" I was like, \"Well, what can you do?\" And she's like, \"Well, I can't do anything today.\" She's like, uh, \"But I get paid on the 1st, I can put the whole thing down then.\" And rent was due on the 5th. And so I was like, \"Okay.\" So I put zero do- dollars down today, and then I put her whole payment on the 1st, and it. went through, and I was able to pay rent, and all was well in the world. Hooray. So that was my first real experience with learning how payment plan downsells worked. I got a little more sophisticated over time, which is what I'll share with you. So here's how they work overall. So payment plans work for any price tag. That's one of the nice benefits. But they are a gamble. They make money when customers complete payments. They lose money when people cancel before you profit, or when people who would have paid in full take payment plans instead and then cancel early. So note, this is not selling a cheaper thing. This is selling the same thing with different payment terms. And so people reject offers when they cost too much today, not necessarily when they cost too much overall. This is a massive miscommunication and misunderstanding for salespeople and business, owners. People saying no doesn't necessarily mean that you're p- mispriced. It just means that you might have to change the terms of payment. All right? It's usually about what they have to pay you right now, not what they have to pay in, general. And so people mistakenly think that they need cheaper stuff, and this is not the best course of action, in my opinion. Payment plans get the most buyers to pay the highest price by getting them to pay less now in the moment, but pay full price or higher over time. So here are the"
+    },
+    {
+      "chapter": "feature-downsells",
+      "char_end": 2301,
+      "char_start": 37,
+      "id": "feature-downsells:1",
+      "score": 18.772,
+      "subject": "downsells",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "## [\u00a75.4.a] How I learned it \u2014 friend 3X'd close rate by removing the guarantee\n\nSo we just covered payment plans 00:00:03.819 --> 00:00:08.039 and free trials, or trial with penalties, whatever you wanna say it. Now, we have the third and 00:00:08.159 --> 00:00:13.079 final of the downsell offers, which I like to call feature downsells. Let's begin. 00:00:13.599 --> 00:00:16.099 The same five: how I learned it, description, examples, important points, and 00:00:16.158 --> 00:00:19.099 summary. Look how clean this drawing looks. So nice. 00:00:19.639 --> 00:00:20.039 Okay. 00:00:20.439 --> 00:00:21.399 So fundamentally, 00:00:21.779 --> 00:00:25.079 you wanna buy the thing. No, it's too much. I remove some features. I say, \"How 00:00:25.079 --> 00:00:25.520 about now?\" 00:00:26.079 --> 00:00:26.919 That's how this works. 00:00:27.319 --> 00:00:31.699 All right? So how I learned it. A friend of mine told me that he had 3X'd his close rate 00:00:31.739 --> 00:00:36.000 last quarter from s- 25% to 75%. And I was like, \"What on God's earth 00:00:36.000 --> 00:00:39.459 did you do?\" And so I asked him if he used a payment plan or a discount, and he said 00:00:39.520 --> 00:00:44.000 neither. And I was like, \"Okay, how does that work?\" He said he lowered his price by removing 00:00:44.020 --> 00:00:47.560 a feature. And I was like, \"Well, what feature did you remove?\" And he said, \"My guarantee.\" 00:00:47.959 --> 00:00:48.020 I 00:00:48.020 --> 00:00:48.720 was like, \"What?\" 00:00:49.139 --> 00:00:52.159 He said, \"Yeah. So I have my $4,000 00:00:52.159 --> 00:00:56.079 thing.\" And then people say, \"Uh, no, I can't afford that.\" And he says, \"No 00:00:56.099 --> 00:00:58.040 worries.\" He said, \"I can do it for $2,000. I just won't give 00:00:58.059 --> 00:01:02.819 you a guarantee.\" And then what happens is people see the value of the guarantee now, and then they reclose 00:01:02.819 --> 00:01:03.959 themselves on the higher-priced 00:01:04.039 --> 00:01:09.179 offer. And so we went from 25 out of 100 people buying the expensive thing to 35 buying 00:01:09.199 --> 00:01:11.479 an expensive thing and 40 buying the downsell. 00:01:11.979 --> 00:01:14.459 That's how I learned the feature downsell process. 00:01:15.599 --> 00:01:15.999"
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3308,
+      "char_start": 786,
+      "id": "ten-years-ten-minutes:2",
+      "score": 18.631,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+    },
+    {
+      "chapter": "payment-plans",
+      "char_end": 22505,
+      "char_start": 19961,
+      "id": "payment-plans:10",
+      "score": 17.189,
+      "subject": "downsells",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "insufficient funds. Um, how to make sure payment plans make you money. So after implementing payment plans, if you hadn't done these before, your close rate should increase. Duh. But if the number of paid-in-fulls goes down, you have a problem. It means you're actually getting people who used to pay you in full are now taking payment plans. So those are the big points. All right. Summary. Payment plan downsell. spread the cost for a product by charging some of it' up front and putting the rest into scheduled payments. Payment plans get more buyers like discounts do, but can also boost profits because they agree to pay in full price over time. It's kinda the best of both worlds. Payment plans only grow your business if m- if they get you more customers and those customers actually pay. Seesaw downselling gradually shifts from paid in full to equal payments. It's a little bit more custom, and it's a little bit more headache on the back end. If you have a small business, you could probably handle it. If you have a bigger business, it can be kind of a pain. Payment plan upsells, they get the original discounted price if they pay the balance today or up to X period of time before that discount expires. Align the payment schedules with paycheck schedules, and you will get fewer declined payments. These are the seven steps of the downsell process. Full price, then offer a discount if they pay in full. Step two, third-party financing, credit card financing, and the layaway options. Step three, split the payment in two and schedule on their paycheck dates. Step four, ask if they still want the product. This is the off-ramp to a future downsell. If it's eight or above, you're good to go. If it's below that, I would, I would suggest switching the features around. Step five, split the payments, into three. Schedule on their paycheck dates or monthly. Step six, schedule equal payments, over the entire duration of time. they're working for you. Step seven, offer a free trial in exchange for putting a card down, which I will cover in-depth in the next video. Two quick pro tips. Number one, if you're like, \"What do I pay salespeople on a payment, plan?\" I have always compensated off cash collected today. Uh, main reason for that is that requires more salesmanship, and that aligns the interest of the salesman with the interest of the business, which is getting paid today. And if someone goes on' a payment plan, and then you do a great job, and they continue to pay, that's more the success of the onboarding team, the"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

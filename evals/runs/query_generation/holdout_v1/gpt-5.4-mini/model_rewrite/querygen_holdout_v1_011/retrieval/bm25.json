@@ -1,0 +1,73 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "how to calculate how much to spend on ads from gross profit contribution margin and payback period when shipping and product costs are high",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "gross-profit",
+      "char_end": 6743,
+      "char_start": 4272,
+      "id": "gross-profit:3",
+      "score": 27.291,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "of attention, he would outbid me every time. And our goal is to do the same to our competitors. All right? So you need to look at both sides, getting customers for less, but also making them worth more. All right? And before we improve it, we gotta know how to calculate it. So here's gross profit, how we calculate it. So here's a product example. So if I sell a widget for $100, it costs me 20 bucks to manufacture it and ship the widget to the end customer. All right? So my gross profit is 100, where it is, 100 minus 20, 80 bucks. This is what's left over. This is my gross profit. Okay. Here's a service example. Let's say I deliver services monthly and I have one account representative per ten customers. If my clients pay me $3,000 per month each and my reps cost me $6,000 per month, we can then figure out the gross profit margin. Okay.So the rep salary is six thousand dollars. The clients per rep is ten. The cost per client means it's six hundred dollars per client. Remember, we make six thousand dollars, divided by ten clients, six hundred dollars per client. Gross profit, all right, is now three thousand dollars, what they' pay us, minus my cost per client, which means twenty-four hundred left over. The reason I'm going through this is that many of you, guys watching this are service-based businesses and don't know your costs. These, are your costs. So my gross margins are twenty-four hundred divided by three thousand dollars, which is 80%. Rule of thumb from Alex, if you run a service-based business, local brick and mortar or national, you want at least an 80% gross profit margin. Now that- that may sound crazy to you, but it is very unlikely that you will scale in service unless you have 80 or higher. So not just eight- that means that if it cost you a hundred, you gotta sell it for five hundred. Now you might think, 'cause if you're a newer business owner, you're like, \"No, I- that's- that seems unreasonable.\" That's your gross profit, not your net profit. You still have rent. You've got, you've got your fixed admin cost, you've got insurance, you've got utilities, you've got break-fix that happens within your business. You've got all these other costs that go into doing business. You're not running 80% net margins. You're just saying this is now all the money I have left over to run the re- I still gotta spend advertising dollars. Like there's all this money that I still gotta spend. And so if you're- if you're at 80, you"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 2417,
+      "char_start": 0,
+      "id": "payback-period:0",
+      "score": 23.217,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "We talked about the three things for acquisition. So we've got cost to acquire a customer, how much it costs us; gross profit, what we make for what it costs us; and now, we go to payback period, which is how fast this all happens. So if you see PPD, just payback period or payback period. I'll probably just say it out loud 'cause I don't wanna confuse you. All right, so, we got the definition, why it's important, examples, and then how to improve it. Let's start with definition. So payback period, how long it takes until gross profit, is greater than CAC. In other words, how long does it take to break even? The shorter it is, the easier it is to scale your advertising. So if I break even in a day versus breaking even in five years, it's a lot easier f- for me to scale. Right? 'Cause I get my dollar back tomorrow, then I can spend it again. Some people call this a cash conversion cycle. I probably won't say that again, but just in case you hear it, that's what that means. All right, so that's the definition. Here's the importance. All right, so problem number one, businesses take too long to break even on getting new customers. And so they have to manage cash flow by making a marketing budget. I think this is silly. We solved that problem. Problem number two is that businesses feel guilty making multiple offers in a row because they think that they bother people. They are wrong. The people who feel this way are poorer than they should be. And that's exactly how buyers buy, by the way, is that there's short windows of time that they go super hyper-buying cycle and then they go dormant again. And so if you do not take advantage of this hyper-buying cycle when someone makes a new decision or starts a new lifestyle or make, creates a new identity for themselves, you will miss out, and another business who is intelligent, who makes more money than you, will profit. So, here's a story you probably haven't heard before. So, uh, friend of mine, business owner, decides to lose weight, and, uh, remembers that they like riding bikes, and goes online to buy a bike. All right? Now, this is what happens. after she immediately buys a bike. She enters a hyperactive buying mode. She then buys a helmet, she buys shoes, she buys pants, she buys gloves, she buys a water bottle, she bu- she signs up for a race. You get the idea. All within a day or two. Now, if you were that first bike shop owner"
+    },
+    {
+      "chapter": "how-businesses-make-money",
+      "char_end": 5488,
+      "char_start": 3911,
+      "id": "how-businesses-make-money:2",
+      "score": 22.422,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "## [\u00a71.2.c] The three numbers that matter \u2014 CAC, GP, Payback Period\n\nWhich then leads us to the only three numbers that matters, and this is what you need to write down. This is what you need to think with. All right? Now, this is not in the book, and you're like, \"Wait a second, how are you not talking about this in the book?\" It's 'cause no one can do math. So you're here, and you can do math. So if you're looking closely, you may notice that there's three numbers that make the biggest difference here. All right? So number one is CAC, which is the cost of our customer. The second. is the fact that I talk about this 30-day thing. Like, why am I talking about 30 days? And the third is gross profit, which those three, metrics triangulate acquisition, meaning getting new customers. CAC is how much it costs. GP is to make a profit. In short, PPD means payback period. How long it takes you to make that money back. How long it takes you to make your cost back. So ideally, you get, have low CAC, which means you have cheap customers. You have high GP, who pay you lots of money, and then short payback period, which means really fast. Outcome is more money faster. All right. And that's pretty much the training in this book. Like, that's what this is all about. So that's, that's what we accomplished. The rest of this is all about how. Okay? So boom, those are the three numbers that matter, and let's get into the first one in a little bit more detail, 'cause some of you guys are like, \"CAC? Sounds like something my cat threw up.\" Understood. That's the next one."
+    },
+    {
+      "chapter": "gross-profit",
+      "char_end": 10343,
+      "char_start": 7968,
+      "id": "gross-profit:4",
+      "score": 21.802,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "you've got utilities, you've got break-fix that happens within your business. You've got all these other costs that go into doing business. You're not running 80% net margins. You're just saying this is now all the money I have left over to run the re- I still gotta spend advertising dollars. Like there's all this money that I still gotta spend. And so if you're- if you're at 80, you might be running a 30% net margin business, right? So just to give you context on this. Okay. And so the pro tip is that gross margin equals gross profit times a hundred percent. So if you ever hear me say gross profit versus gross margin, uh, it's just, this is a percentage, this is an absolute, that's all it is. So gross profit's the absolute, uh, gross margin is the percentage. That's all it is. Okay? So if I say it's 80 bucks in gross profit, it's 80% gross margins. I just, I, I clarify this because if you've ever like read stuff and been like, \"Wait a second, is this different?\" It's just a different way of measuring the same thing. That's all it is. All right, cool. So big picture, this is what the business was, uh, this is the example I gave visually. This is the correct visual. Uh, all right? And you can note that gross profit is not net profit, all right? This is the cost limited to the, that what the business incurs directly from delivering the thing. So if you had an administrative assistant and you sell cups for ten dollars that cost you two dollars, we wouldn't factor in your administrative assistant into the eight dollars of gross profit. It's off the gross profit that we eventually pay for everything else in the business to create our net profit, AKA, what's left over at the end of the month. All right, so your rent doesn't go into your gross profit. Your admin costs don't go into your gross profit. Your utilities don't go into your gross profit. It's just the cost of, okay, if I sold another one of these, if I sold another customer, what are the variable costs? What are the costs that go up per unit sold? If your rent doesn't go up per unit sold, if your admin cost doesn't go up per unit sold, then it is not factored into gross profit. But if my hard cost of cups, if I sell another cup, I still have to incur that cost. If I, if I have, uh, if I have to sell another client, then a certain portion of my resources of client delivery is gonna"
+    },
+    {
+      "chapter": "gross-profit",
+      "char_end": 6300,
+      "char_start": 3996,
+      "id": "gross-profit:2",
+      "score": 20.12,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics"
+      ],
+      "text": "if... This is the precursor to this one, if that. makes sense. All right, so that's why this is important. So let me give you an example. So I remember when I, uh, I was, uh, at, at, at. Smoothie King, I was a blender tender, and my buddy was reading this article in the back of the store, probably goofing off when we probably shouldn't have been. Uh, and he was like, \"Dude, check this out. This guy bought a $50,000 burger.\" And we looked at it and it was like made of gold and whatever, crazy Wall Street person bought a $50,000 burger, right? And, and I was thinking about that, and I remember the article said something like, he was making $50 million a year or something like that in income. And so what I ended up doing was I started looking at what it costs him in hours versus what it cost me in hours for the burger that I bought earlier that day. And so then I realized that my $13 burger was the same to me as this Wall Street guy's $50,000 burger. That it was actually the same level of inconsequential cost for him as it was for me. And arguably, this was more expensive for me than it was for him, just a normal burger. And so that, that concept basically is the reverse of the realization that you' can only go down to zero, but you can go infinitely high when it comes to lifetime value. And so like you can only drive down so far, right, onto, on the, on the cost side. But in terms of how much you can make, that's where you can be as creative as you want in terms to continue to increase the lifetime gross profit per customer. And so it can make something as insane as paying $50,000 for a burger or CAC actually still be relatively cheap for you if you know, how to increase the value of the customer. And so think of the burgers as the commodity, which is traffic. Think of our income as the lifetime gross profit. If I were competing with this guy, he would be able to outspend me 3,700 times over. And in the auction of attention, he would outbid me every time. And our goal is to do the same to our competitors. All right? So you need to look at both sides, getting customers for less, but also making them worth more. All right? And before we improve it, we gotta know how to calculate it. So here's gross profit, how we calculate it. So here's a product example. So if I sell"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

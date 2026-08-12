@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Continuity Bonus Offers advertise the bonus rather than the subscription bonus worth more than first month's perceived value make joining continuity subscription easier to sell",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 699.4,
+  "returncode": 0,
+  "stderr": ""
+}

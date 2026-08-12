@@ -1,0 +1,81 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "The software is valuable over several years, but each new customer ties up cash at the beginning. What are we actually diagnosing?",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 7731,
+      "char_start": 6270,
+      "id": "ten-years-ten-minutes:3",
+      "score": 15.494,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program. Then you offer a discount to the entire fee if they commit to the longer term. If they cancel inside the term, they pay you the fee. Freemium, which I didn't, I cut from this one. I'll make a YouTube video about it 'cause I think it really only applies to software, and I thought that was too niche. All right, you build money models one stage at a time. Once I get customers reliably, then I make sure that they pay for themselves reliably. Then I make sure that they pay for other customers reliably. Then I start maximizing each customer's long term value. Then I print as much money as I possibly can. Bottom line, the knowledge in these bullets brought me more free and profitable customers than I've known what to do with. If executed, they will do the same for you. And with that, cash will no longer be a constraint in your business. I hope that this book and this training helps you guys grow your dream as big as you darn well please. And that is 10 years in 10 minutes. So in the next one, we'll just put it all together and put a nice bow on it, and we'll wrap this puppy up."
+    },
+    {
+      "chapter": "cac",
+      "char_end": 4430,
+      "char_start": 2079,
+      "id": "cac:1",
+      "score": 13.357,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers"
+      ],
+      "text": "business owner. So this is how we, this is how we calculate it. So the total cost for eight sales means that you have a $3,000 emailer plus a $200 software plus 800 bucks in commissions, which is eight sales times $100 equals four grand. All right? So now, we divide that by the number of new customers, which is $4,000 divided by eight new customers equals 500 bucks per sale. So CAC. is $500 in this outreach example. So let's say that you have a content business. So let's do this one. So you have to pay two people on your media team that you pay $5,000 a month each, and they help you make, edit and distribute content across all platforms, right? So that content then turn into inbound messages and then opt-ins on your site, and then those leads turn into 10 new customers and you pay $100 in commission per sale. All right. So what's CAC? So the reason I'm giving you all those stats is so that you can plug your own stats in and then figure this out for yourself. So if my media payroll is 5K times two, it's $10,000 a month there, my commissions is 10 sales times 100 is 1,000. So all in I got 10 grand plus one grand is $11,000. So my cost to acquire a customer we'll say is $11,000 divided by 10 customers equals $1,100. So my CAC's 1100 bucks. Now if some of you are like, \"Wait, I have sales payroll in there too,\" then add it in. If there's something that you don't have here, cut it out. But fundamentally it's just all the money you spend to get new customers divided by how many customers you got. Cool. And I'll do one quick one on paid ads. So you spend $4,000 a month on a media buyer, you spend 20 grand in buying ads, the actual media itself. You spend 1,000 bucks commissions per sale, so this is probably a higher ticket sale, and you spend $1,000 on software and tracking and following up with leads that come in to get 10 new customers. So what's CAC? So media, 4K, media spend, 20K, software, 1K, commissions, 10 times one, 10,000. So all in, we spent $35,000 divided by 10 customers, $3,500 per customer is our CAC. That's how this works. By the way, one of the best ways to improve any metric is to start measuring it. So, how to improve it? In this whole training, I talk about lots of different things that cover and check off different boxes here. But fundamentally, if you had nothing else and you just wanted to have"
+    },
+    {
+      "chapter": "cac",
+      "char_end": 2450,
+      "char_start": 0,
+      "id": "cac:0",
+      "score": 13.043,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers"
+      ],
+      "text": "So, cost to acquire a customer, AKA CAC. Let's dive in. Cost to acquire a customer, again. So, let's start with definition. All right, cost to acquire a customer, all the costs required to sell a new customer, so, that's the advertising dollars, the payroll to a media buyer, creative team, software that you, that the team uses to make advertising and sales commissions, salaries, the managers of those teams, everything that it costs you. So, a lot of people... And if you want, you can delineate how much does it cost if you use paid ads, for example, how much it costs us in media spend versus how much is our, sometimes people call it fully loaded CAC. Uh, you can have both those numbers separated out, which I think is wise, kind of like media CAC versus fully loaded. Uh, but at' the very basics now, that only really applies to paid media. If you, acquire customers via outbound, payroll is gonna be the majority of your CAC. If you. use, uh, content to get customers as your primary acquisition, uh, method, then it's just gonna be the cost of the payroll for the team that does all the distribution of content and editing and whatnot. But most companies, especially if you're bigger, are gonna have multiple different versions of that, which is why you just look at everything and you look at how many customers you got, you divide it out and you're like, \"That's our, cost per customer.\" So if we're trying to get unlimited customers, we better be sure we know what our ca- own costs, uh, to make sure that we can actually pay for it so that we can get unlimited new customers. All right, so let's calculate it together. So if you use outreach as your primary way of getting customers, then you use, let's say, $200 a month in email software and you pay someone $3,000 a month to do cold email prospecting for you, then emails become appointments that turn into eight sales per month. And so then you pay your salesperson $100 per sale. So then what's CAC, right? This is like a ChatGPT prompt word problem. But fundamentally, this is what it looks like for you as a business owner. So this is how we, this is how we calculate it. So the total cost for eight sales means that you have a $3,000 emailer plus a $200 software plus 800 bucks in commissions, which is eight sales times $100 equals four grand. All right? So now, we divide that by the number of new customers, which is $4,000 divided by eight new customers equals 500 bucks per"
+    },
+    {
+      "chapter": "continuity-offers",
+      "char_end": 2441,
+      "char_start": 0,
+      "id": "continuity-offers:0",
+      "score": 11.101,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "So we just finished the downsell offer section, and now we move on, to the magic of continuity offers. I've been a continuity guy my whole life, and so this is a section that I hold near and dear to my heart. It has made me a tremendous amount of money. It also stabilizes cash flow for the business. And so in our four money. models, we have attraction, upsells, down sells, and now, kaboom, continuity. So continuity. offers provide ongoing value that customers make ongoing payments for until they cancel. They boost the profit from every customer and give you one last thing to sell. Continuity offers are awesome because you sell. once and get paid again, and again, and again. So here's my quick explanation. Let's say you offer something for $1,000 to 100 people and 10 people buy. You make $10,000. 10 times $1,000. Okay. Now, let's say that you talk to the same 100 people, but you make your $1,000 thing $50 a month instead. And at 50 bucks, we can get 40 out of the 100 to buy. \u00d0\u00b8. And if you keep those people, for 20 months, you still make $1,000 from each customer. So you go from making $10,000 now and zero dollars over time to $2,000 now and $40,000 over time. And as an added bonus, in the first example, if you only sold 10 customers, you'd only have 10 customers to upsell later. If you use a continuity offer and sold 40 customers, you'd have four times the customers to upsell later, which is a massive difference. This is fundamentally why people do continuity. You can sell more people at a lower price, you can still collect the same LTV, and you get four times the customers to upsell later. The pros are you can attract more customers compared to something more expensive. The cons are but you make way less money now, which makes it tough to use as an attraction offer on its own, which is why we put it last, or at least why I tend to put it last. So the TL;DR is that by making continuity offers last, we get the best of all worlds. We get cash today from attraction offers, upsell offers, and downsell offers, and we get a little cash today and tons of cash tomorrow from continuity offers. Note, to be clear, you can make continuity offers whenever and however you want. There are no rules, all right? They can attract new customers, upsell and downsell current customers, or reengage old customers, same as all the others. So the objective here for continuity offers within the money models that I explain is"
+    },
+    {
+      "chapter": "ride-along-apprenticeship",
+      "char_end": 4430,
+      "char_start": 2059,
+      "id": "ride-along-apprenticeship:1",
+      "score": 10.85,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "unit-economics",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "possible as though you were with me. All right? And the reason I felt compelled to share these money models is I made a very tactical video with three money models two years ago, and the amount of messages that I got from people being like, \"I made 50 grand from that video, I made 100 grand, I made a million dollars on that video,\" I was like, \"Oh, people get the offer. They get the lead stuff, but they're not... They don't understand how to put the money, how to connect that with them making a profit and then being able to scale their advertising through sequencing offers together.\" That was the thing that I didn't know that people were putting together, and I was like, \"Oh.\" And then that is why I make these. Okay, so think of this as entering my private Money Models Journal. And so each of these stories actually was in a journal of mine that I've kept for like... Whenever I see anything cool, I just write it down. I'm like, \"Oh, I'll save this for later.\" Like, it's kind of like a, like a magic card or a Pokemon card or a, like a, a play that you want to pull out at a later time. Like, they're, they're basically like scratch-off winners. Like, they've already been scratched off, you just gotta turn them in for money. Like, these things work. And my notes were scattered all over the place, and then this book was me consolidating all of them in one place. All right, so the rest of this book and training will be all the tiny tactics I picked up that make leads and offers come together into money models. All right, so each money model will have a visual or doodle. They'll have a description, examples, important points, summary. And then, uh, this is me making a reminder that if you ever find any, uh, out in the wild, you're like, \"Oh, this is totally different and not covered in the book,\" just email it to me at value@acquisition.com. I will mention you. Um, if it's sweet, I'm, I'm gonna be honest. Like, if, if you... Nine times out of 10, people are like, \"This is brand new.\" I'm like, \"That's just a free trial.\" Uh, but, but, but, uh, but if you do have something novel, I will absolutely blast it and give you all the credit in the world, 'cause I, I just want, I want this to be a living thing for Mosey Nation as just like this one place that, like an encyclopedia of, uh, of offers. Okay? For everyone who thinks, \"This won't work"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

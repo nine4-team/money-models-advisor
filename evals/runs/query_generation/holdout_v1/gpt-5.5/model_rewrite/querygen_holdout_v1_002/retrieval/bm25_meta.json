@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "implementation fee waived for annual plan increases customer commitment upfront fee waiver annual SaaS onboarding setup fee",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 93.1,
+  "returncode": 0,
+  "stderr": ""
+}

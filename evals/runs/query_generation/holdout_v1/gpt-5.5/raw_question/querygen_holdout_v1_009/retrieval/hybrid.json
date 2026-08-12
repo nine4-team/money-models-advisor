@@ -1,0 +1,77 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": "money-models",
+  "query": "We could pre-sell six months of refills and add bonus months, but inventory costs arrive early. What should we consider before doing that?",
+  "retrieval_backend": "hybrid",
+  "source_material": [
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 22579,
+      "char_start": 20162,
+      "id": "continuity-bonus:10",
+      "score": 0.032,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "choose continuity, we 2.3x it. If we want 90% of people to choose continuity, we 2.66x it. So basically once you're at about 3x the price of what they would have to pay, almost everybody takes the continuity. But if you're like, \"Shoot, I would rather get some of that cash up front because, you know, these, these $600 payments, they add up, it's not bad.\" Well, fine, if you have 70% of people choosing continuity, but 30% take something that's twice as expensive, you're actually getting a decent amount of cash up front. And so you just need to play with, how much cash do I need so that I can offset my cost to acquire customers? And then I can stack as much recurring as I want. And this is the actual data that we have. The exact numbers for this matter less than the principle. The smaller the standalone price compared to the continuity price, the more people buy the standalone. The larger the standalone price, the bonus price compared to the continuity price, the more people choose continuity. So-If you want more cash up front, make bonuses and continuity plus bonuses separate offers. Make the bonus offer only a single payment. That's 33 to 266% more expensive than the first month continuity plus bonus. The bigger the price difference, the fewer standalone purchases you'll have, but the more money you'll make up front from each of them. And based on the data that I shared, people paid 33% more to avoid continuity. In other words, if you charge 33% more for the one-time bonus, half will buy it. If you want even more cash, offer bulk prepaid discounts. So bulk continuity upsells boost 30-day profits by a lot. All right? And I alluded to it earlier, but I'm saying it again 'cause it's so freaking important. So you offer buy five months, get one free. Only one out of every eight people have to take the upsell to raise 30-day profits by 50%. That can make or break your money model. So think about that. Only one out of eight people need to take your buy five get one free for you to raise by 50% the cash they make in the first 30 days. Make the damn offer. Note, the laws of discounting apply. The larger the discount, the more people will take it. So if I say, \"Buy five, get, uh, get one,\" I could also say, \"Buy six, get six,\" and I'll bet you I'd get a hell of a lot more people take it. And I might double or triple my up-front cash. So this actually takes continuity and turns it into"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 11889,
+      "char_start": 9486,
+      "id": "buy-x-get-y:5",
+      "score": 0.031,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "free. And even though the socks cost less than a shirt, it's still buy one, get three. And sometimes that converts better, so I test this. Rather than offer a 33% discount, try buy one, get two free. This here will convert more than this, but they're still one thirds off. All right? So I just like to... If you are gonna use a discount, this structure still makes a discount even more compelling. Do not make offers like this if you cannot manage money, especially with service businesses. So if you say buy six months of service, get six months free, if you don't know how to manage money and you immediately blow the money that they prepaid, you are a bad business. owner. So you need to be able to consistently... Like if you have to have an accountant, you know, do this for you, put all the cash into one bank account and you can pay yourself out of that bank account every month as you deliver services. But the worst thing, you' can possibly do for your reputation is like pre-sell a year of service and then, you know, like do not do this play if you are trying to keep your business alive. If you need this cash in order to keep the business alive, I think you risk your reputation by doing it. I also cap this at 10% of a recurring customer base for those of you who have recurring revenue businesses. So if you wanna do a banger buy X, get Y free, which is a really great cash play, let's say you have 100 recurring customers, cap it at 10. Don't let more than 10 of your recurring customers prepay for the year 'cause you still like ha- I, this is a, not a math solution. This is a psychological solution. I've just seen way, more businesses succeed by keeping their recurring cash flow because most business owners honestly can't manage it. Now, mathematically it makes sense to get everybody on. annual, but a lot of people can't handle that responsibility. I'm just being really honest with you. Okay. So this is a great grand opening strategy. Uh, as I referenced earlier, um, this is also a great offer to give for fast cash. Now, if your business is healthy but you're like, \"You know. what? I wanna buy a bunch of equipment,\" great. Prepay 10 people, go buy your equipment. Or you need to go buy a, uh, another big oven, industrial oven for your baking business. Like, totally makes sense for you to do prepayments and things like that to cash flow or fund rather than take on credit"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "char_end": 8410,
+      "char_start": 6062,
+      "id": "buy-x-get-y:3",
+      "score": 0.03,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "a, uh, uh, uh, a one-third discount, but it accomplishes the same objective. Okay, so those are two examples. Or sorry, this... That's the description. Now I have more examples for you. All right, so buy one get two physical products offers. This is the Boot Factory offer. One pair is $200. Buy X get Y free. Buy one pair for 600, get two pairs free. So the end result is to still buy three pairs of $200 boots. All right? Now, here's three versions of this that I wanna break down for you to show you the power of this. So if you said, \"Buy 12 months, get 6 months free for eight hundr- $1800,\" okay, that's an offer and a lot of people might take that. Like, that's a, that's a, it's a good offer.A better offer would be buy nine months, get nine months free. Still $1,800. A crazy offer would be buy six months, get 12 months free for $1,800. In all three situations, they get 18, 18 months for $1,800. That's what it works. Everyone pays the same price for the same amount of service, but the third option will be the most compelling because it has the most free stuff. So important points. Buy X, get Y free gets people to buy more stuff and provides more value. So it used to take a whole year for some of my service businesses to make the money to cash flow the acquisition. But if you do buy six, get six, for example, on the front end to attract customers or as a, \"Hey, it's our grand opening, buy six months, get six months,\" you can attract a boatload of customers and get six months' prepayments from all of them at full price. Now, guess what happens? If I have a full price or even a higher than full price thing that I add some little tiny differentiator during my grand opening special, which allows me to say that this service was higher than what I would then normally offer later, then it justifies me having an even higher price. So when I say buy six, get six, I might just get prepayments at basically the full price for the year because I added this extra wrinkle and that's very high margin for me. So for a gym, I'd- I might say, \"You get text access to me,\" which by the way, I probably would give all my first customers anyways. I just wouldn't promise that in the sale. I might for a grand opening. So raise prices when we're giving stuff away to preserve profits. Obviously, if you can only afford a certain amount of"
+    },
+    {
+      "chapter": "continuity-bonus",
+      "char_end": 12441,
+      "char_start": 10020,
+      "id": "continuity-bonus:6",
+      "score": 0.029,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "give if they buy my digital membership. So criss-crossing physical and digital, in my opinion, works exceptionally well. So this strategy often lowers the cost of getting a customer more than the cost of the bonus. That's the point. And so even if someone, you know, takes the bonuses and then runs, we still typically get a lower overall cost to acquire customers in general, and we can still make it up on everyone else. If it gets too expensive, maybe shift your offer and then give that one a try. But more often than not, adding the bonus will, in the long term, net you way more money. Use realistic bonus pricings. The bigger the value anchor on your bonus, the more compelling the offer. But you also have to make the anchor believable. All right? Some business owners make up ridiculous values. Don't do that. It won't anchor the customer, and you'll lose trust with them. So this is a great opportunity to give away products that you've sold before in the past so then you can anchor on their actual prices and use real discounts and bonuses. So it's like, \"I used to sell this for two grand and here's receipts of me selling this for two grand. Would you like it for free if you sign up for 200 bucks?\" A lot of people say yes to that. But that's ethical and it's real and it's believable. You can bonus customers by giving them titles. This is a little clever. So you can give customers titles, uh, when they stay three months or six months or 12 months and beyond. So things like Silver, Gold, Diamond, Double Diamond, et cetera. And so they get status in the community. And you can have some little frills and that, that they get, some little bonuses that are associated with those titles. But the main thing is if they know that in two months they're gonna get this b- this upgrade in status, that will, that can drag people through the continuity. And you can typically extend each time how long before you give them the next kind of reinforcing event. So in the beginning, maybe once they get to 90 days, if you know m- most people churn at, you know, two months, then you put the thing at three months or two and a half months, right?So that then that pulls poor people through. Now, once they get to the third month, it's like, \"Hey, you got this boost in status. You get some other upgrades.\" And then the next one might be at month eight, right? It's like, okay, so that's five months later. And once"
+    },
+    {
+      "chapter": "payback-period",
+      "char_end": 5449,
+      "char_start": 3086,
+      "id": "payback-period:5",
+      "score": 0.028,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": "to upselling, because I already know you're probably failing at it, if you move it forward in the sales process, in my opinion, you have an incomplete buying cycle. So I don't want to reopen something. I want to just ride the one I'm already on. It's like, \"Hey, you're halfway through. Let's keep the party going. Hey, you're doing great. Let's, let's keep it going. Let's, let's add this other piece of service on. Hey, let's, let's get you there faster,\" right? \"Let's, let's decrease your risk around this. Let me just get you more support,\" whatever it is. Right? We want to keep the party going. I don't want to finish my service package and then have to be like, \"Okay, now that you've completed our first t- you know, service of work, let's talk about working together again.\" It's like, \"Uh, I'm good with what you gave me before, you know. I'm pretty happy with that. This is cool.\" All right. So those are the five times I think about selling. Now, again, make more better new offers the first 30 days. These are the five. So immediately in the same conversation or conversion event. Next step is 24 to 72 hours. First big win. This means you focus on getting the fast wins so that you then create new problems that you can then solve. Halfway point. Um, this is just... I just, I'm telling you, it just, it's- this has worked, so I'll just throw it out there. I can give you some scientific whatever thing, but I just know it works. And then last chance is the exit interview, right? And, uh, this is only useful for payback periods if it's within the first 30 days, but pretty much all of these ones, uh, apply most of the times within the first 30 days of the customer coming in. These are some easy ways to do this. You can have somebody pay first and last month today, or you can add an initiation fee, an onboarding fee, or an enrollment fee, or an activation fee, or make up whatever fee you want. You too can have this power. Uh, you just, you just add that on. So if I wanted to improve that one I had earlier, if I didn't want to wait two months, I would say, \"Great, we pay first and last. That's how we've always done it.\" And then I could offset... Now notice, the fee is all gross profit. So now I'm actually up 80 on my first transaction, and now I've got half the cost to get a new customer already back in my pocket before I even? have"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
@@ -30,7 +31,7 @@ class CliTest(unittest.TestCase):
         self.assertIn("text", payload["source_material"][0])
         self.assertIn("id", payload["source_material"][0])
 
-    def test_search_accepts_agent_source_need(self):
+    def test_search_accepts_single_corpus_guided_request(self):
         with tempfile.TemporaryDirectory() as tmp:
             run_cli(
                 [
@@ -42,34 +43,74 @@ class CliTest(unittest.TestCase):
                     "money_model.core_offer.description=implementation program",
                 ]
             )
-            source_need = {
+            search_request = {
                 "intent": "teaching_evidence",
-                "subjects": ["unit-economics"],
-                "focus_terms": ["CAC", "payback period", "gross profit"],
                 "user_turn": "why do we need fulfillment cost?",
-                "query_variants": ["why cost to deliver affects gross profit CAC payback ads"],
+                "query": "fulfillment cost gross profit customer acquisition cost payback",
             }
             output = run_cli(
                 [
                     "search",
                     "--business-dir",
                     tmp,
-                    "--source-need-json",
-                    json.dumps(source_need),
+                    "--search-request-json",
+                    json.dumps(search_request),
+                    "--backend",
+                    "bm25",
                     "--top-k",
                     "1",
                 ]
             )
             payload = json.loads(output)
 
-            self.assertEqual(payload["source_need"]["intent"], "teaching_evidence")
-            self.assertEqual(payload["source_need"]["query_variants"], ["why cost to deliver affects gross profit CAC payback ads"])
-            self.assertEqual(payload["queries"][0]["subject"], "unit-economics")
-            self.assertEqual(payload["queries"][0]["query"], "why cost to deliver affects gross profit CAC payback ads")
-            self.assertIn("CAC", payload["queries"][1]["query"])
-            self.assertEqual(len(payload["source_material"]), 2)
+            self.assertEqual(payload["search_request"], search_request)
+            self.assertEqual(payload["namespace_policy"], "unfiltered")
+            self.assertIsNone(payload["queries"][0]["subject"])
+            self.assertEqual(payload["queries"][0]["query"], search_request["query"])
+            self.assertEqual(len(payload["source_material"]), 1)
             self.assertEqual(len(payload["source_material"][0]["chunks"]), 1)
             self.assertIn("text", payload["source_material"][0]["chunks"][0])
+
+    def test_search_request_defaults_to_hybrid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            search_request = {
+                "intent": "teaching_evidence",
+                "user_turn": "teach me payback",
+                "query": "customer acquisition cost gross profit payback period",
+            }
+            with patch("money_model_architect.cli.execute_advisor_queries", return_value=[]) as execute:
+                output = run_cli(
+                    [
+                        "search",
+                        "--business-dir",
+                        tmp,
+                        "--search-request-json",
+                        json.dumps(search_request),
+                    ]
+                )
+
+            payload = json.loads(output)
+            self.assertEqual(payload["retrieval_backend"], "hybrid")
+            self.assertEqual(execute.call_args.kwargs["retrieval_backend"], "hybrid")
+
+    def test_search_request_rejects_filter_fields_from_legacy_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            request = {
+                "intent": "teaching_evidence",
+                "user_turn": "teach me payback",
+                "query": "customer acquisition cost gross profit payback period",
+                "subjects": ["unit-economics"],
+            }
+            with self.assertRaises(SystemExit):
+                run_cli(
+                    [
+                        "search",
+                        "--business-dir",
+                        tmp,
+                        "--search-request-json",
+                        json.dumps(request),
+                    ]
+                )
 
     def test_search_accepts_agent_selected_target_namespaces(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -291,20 +332,12 @@ class CliTest(unittest.TestCase):
                 "actions": ["session_start", "read_snapshot", "search_source_material", "answer"],
                 "source_events": [
                     {
-                        "source_need": {
+                        "search_request": {
                             "intent": "diagnostic_evidence",
-                            "subjects": ["unit-economics"],
-                            "focus_terms": ["CAC", "gross profit", "payback period"],
                             "user_turn": "what should we do next?",
-                            "query_variants": [
-                                "CAC gross profit payback period",
-                                "customer acquisition cost first month gross profit",
-                            ],
+                            "query": "CAC gross profit payback period",
                         },
-                        "queries": [
-                            "CAC gross profit payback period",
-                            "customer acquisition cost first month gross profit",
-                        ],
+                        "queries": ["CAC gross profit payback period"],
                         "chunks": [{"id": "payback-period:0", "score": 20.4}],
                     }
                 ],
@@ -331,6 +364,7 @@ class CliTest(unittest.TestCase):
             self.assertEqual(payload["cited_chunk_ids"], ["payback-period:0"])
             self.assertEqual(full_logs["logs"][0]["actions"], record_artifact["actions"])
             self.assertEqual(full_logs["logs"][0]["metadata"], {"run_type": "unit_test"})
+            self.assertEqual(full_logs["logs"][0]["source_events"][0]["search_request"], record_artifact["source_events"][0]["search_request"])
             self.assertEqual(full_logs["logs"][0]["source_events"][0]["query"], "CAC gross profit payback period")
 
     def test_session_finish_warns_when_inspected_chunks_are_not_cited(self):
@@ -341,19 +375,12 @@ class CliTest(unittest.TestCase):
                 "actions": ["session_start", "search_source_material", "answer"],
                 "source_events": [
                     {
-                        "source_need": {
+                        "search_request": {
                             "intent": "teaching_evidence",
-                            "subjects": ["unit-economics"],
-                            "focus_terms": ["payback period"],
-                            "query_variants": [
-                                "payback period recover CAC",
-                                "customer acquisition cost payback",
-                            ],
+                            "user_turn": "teach me payback",
+                            "query": "payback period recover CAC",
                         },
-                        "queries": [
-                            "payback period recover CAC",
-                            "customer acquisition cost payback",
-                        ],
+                        "queries": ["payback period recover CAC"],
                         "chunks": [{"id": "payback-period:0"}],
                     }
                 ],
@@ -381,16 +408,12 @@ class CliTest(unittest.TestCase):
                 "actions": ["session_start", "search_source_material", "answer"],
                 "source_events": [
                     {
-                        "source_need": {
+                        "search_request": {
                             "intent": "teaching_evidence",
-                            "subjects": ["unit-economics"],
-                            "focus_terms": ["payback period"],
-                            "query_variants": [
-                                "payback period recover CAC",
-                                "customer acquisition cost payback",
-                            ],
+                            "user_turn": "teach me payback",
+                            "query": "payback period recover CAC",
                         },
-                        "queries": ["payback period"],
+                        "queries": ["payback period recover CAC"],
                         "chunks": [{"id": "payback-period:0"}],
                     }
                 ],
@@ -463,7 +486,7 @@ class CliTest(unittest.TestCase):
                     ]
                 )
 
-    def test_session_finish_rejects_source_event_without_query_variants(self):
+    def test_session_finish_rejects_source_event_without_query(self):
         with tempfile.TemporaryDirectory() as tmp:
             record_artifact = {
                 "user_message": "teach me payback",
@@ -471,10 +494,9 @@ class CliTest(unittest.TestCase):
                 "actions": ["session_start", "search_source_material", "answer"],
                 "source_events": [
                     {
-                        "source_need": {
+                        "search_request": {
                             "intent": "teaching_evidence",
-                            "subjects": ["unit-economics"],
-                            "focus_terms": ["payback period"],
+                            "user_turn": "teach me payback",
                         },
                         "queries": ["payback period"],
                         "chunks": [{"id": "payback-period:0"}],
@@ -494,7 +516,7 @@ class CliTest(unittest.TestCase):
                     ]
                 )
 
-    def test_session_finish_rejects_unexecuted_query_variants(self):
+    def test_session_finish_rejects_query_different_from_search_request(self):
         with tempfile.TemporaryDirectory() as tmp:
             record_artifact = {
                 "user_message": "teach me payback",
@@ -502,14 +524,10 @@ class CliTest(unittest.TestCase):
                 "actions": ["session_start", "search_source_material", "answer"],
                 "source_events": [
                     {
-                        "source_need": {
+                        "search_request": {
                             "intent": "teaching_evidence",
-                            "subjects": ["unit-economics"],
-                            "focus_terms": ["payback period"],
-                            "query_variants": [
-                                "payback period recover CAC",
-                                "customer acquisition cost payback",
-                            ],
+                            "user_turn": "teach me payback",
+                            "query": "customer acquisition cost payback",
                         },
                         "queries": ["payback period recover CAC"],
                         "chunks": [{"id": "payback-period:0"}],

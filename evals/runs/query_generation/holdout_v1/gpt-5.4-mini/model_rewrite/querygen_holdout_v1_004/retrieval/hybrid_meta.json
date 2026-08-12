@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "SaaS payback period customer acquisition requires more cash upfront than month-one gross profit cash tied up at the beginning",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 652.7,
+  "returncode": 0,
+  "stderr": ""
+}

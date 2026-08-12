@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "Decoy Offers: using a deliberately limited stripped-down starter offer to begin the conversation, then presenting it side by side with a premium offer so the contrast makes the premium routine\u2019s additional value clear when the premium offer is difficult to advertise directly",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 765.9,
+  "returncode": 0,
+  "stderr": ""
+}

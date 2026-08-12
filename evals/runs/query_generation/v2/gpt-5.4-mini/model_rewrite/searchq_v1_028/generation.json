@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_028",
+  "created_at": "2026-08-11T23:30:43Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 6732.2,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "continuity discounts reduce churn canceling retention",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 1962,
+  "valid": true
+}

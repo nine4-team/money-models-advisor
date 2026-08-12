@@ -1,0 +1,79 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "Can the readiness audit fee become credit toward implementation if they continue?",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "rollover-upsell",
+      "char_end": 10535,
+      "char_start": 8061,
+      "id": "rollover-upsell:4",
+      "score": 9.011,
+      "subject": "upsells",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "would, but I've got three months left in this service agreement.\" You say, \"No worries.Whatever you have, the three months, I'll credit it towards mine and I'll just make mine a two-year agreement. So you'd say like, \"Hey, John, saw your negative review on, uh, their product and it really upset me. To make it up to you, I'll credit whatever payments you have left with them to switch to ours. This way you don't lose a thing and you start getting the benefits now. Fair enough?\" 'Cause that way you don't have to wait for that thing to expire and pay and then wait to get the benefits. You can start getting the benefits now, and you don't lose anything, and I get the customer. Membership. So this is where you spread the first purchase over time. So who? Current customers. What? 12-month membership. How? Spread over the first purchase. So if somebody comes in, buys a block of service, uh, or, or of membership time, as- soon as they do, you can then offer to apply the entire amount towards more time, like 12 months. I can do rollover upsells anytime, I just prefer to do, to do them, right then. All right, so this is the important points. Uh, use rollover, uh, offers to attract new customers. For example, you roll over some or all of the customers paid. somebody else towards your thing, and you can find leads by scraping contact information from negative product reviews wherever available. You can do rollover upsells before refunding. This has solved me tons of cus- saved me tons of customers and cash. If you did a bad job, hey, it happens, rollover for a do-over. And if they want something different, you can rollover the purchase toward that thing in- instead. Previous customer, uh, are still customers, upsell them. These are win-backs, so reach out to old customers, six plus, plus months, uh, from their last purchase. Look at how much they paid, decide how much you wanna give them, offer it. Example, I made personalized videos. This is me personally. I made personalized videos for 200 past customers. This is before AI and all that stuff. It took me like two days, um, offering them $4,000 of credit to return. Add urgency to rollover upsells, so make them one-time only. So this is a key point. So this is optional. It's up to you, but this is how I prefer to do it. Make the moment you present the offer the only time to take the offer so they don't get to sleep on it. So you wanna surprise and delight them with this credit or this discount."
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3308,
+      "char_start": 786,
+      "id": "ten-years-ten-minutes:2",
+      "score": 8.903,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended up not including this. I'll probably make a YouTube video about it. Downsell offers are whatever you offer after someone says no. That's my scientific, uh, answer for that. And by turning nos into yeses, you make more money. We covered three of my favorites. So payment plan downsells, you offer the same product at the same price, but they pay some now and the rest over time: \"When do you get paid? Let's do half now and half then.\" Trial with penalty, you let customers try your product or service for free so long as they meet your terms. If they do, then they have a better chance of becoming paying customers. If they don't, they pay. \"If you do X, Y, and Z, I'll let you start for free.\" Feature downsells, you lower prices by changing what the customer gets: \"I offer lower quantity, lower quality, or lower priced alternatives, or cut optional components altogether.\" \"If you're okay without a guarantee, I can knock off $400.\" That's how that works. Then we had continuity offers, which provide ongoing value that customers make ongoing payments for until they cancel. These boost the profit of every customer and give you one last thing to sell. We covered three of my favorites. Continuity bonus offers, so with a continuity bonus, you give the customer an awesome thing if they sign up today. Typically, the bonus itself is more value than the first continuity payment: \"If you sign up today, you'll also get XYZ valuable thing.\" And if you want them to stick, you can continue to give them bonuses to maintain the service. Continuity discount offers we cover is the second type. We covered first month, backend commitments. And you give the customer free time now, an hour later, if they sign up today. And so the key point is that there's four different places that you can spread it out, at the front, at the end, in the middle, in between. That's the point , spread out over the whole thing. But that is fundamentally how continuity offers work to get people to sign up. Then we have the wave fee offers. So first, you ask a customer to pay a startup fee as part of adjoining or month-to-month program."
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 10930,
+      "char_start": 8464,
+      "id": "continuity-discounts:8",
+      "score": 7.18,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations. So if someone cancels during a trial, so you can say you're allowed to cancel during the trial. Now if you do that, it'll increase sales, 'cause then people will be like, \"Okay, well, this is easy. This is no risk.\" But, uh, you'll decrease stick rate, meaning the number of people who will stay on the back end. The other version of this is that you can have zero cancellations and say there are no cancellations allowed, which works with good customers, but it will decrease sales and increase stick. Sometimes though, I mean, for example, Netflix and some of these other massive companies, they don't even try that, because they have customers that are unenforceable. And so if you're gonna have zero cancellations, make sure it's with good customers. If you do zero cancellation policy on bad customers, you will decrease sales, but you will not increase stick. So you'll just get the cost but not the benefit. Another way of doing this is a prorated fee based on savings accrued. That just sounds like fancy terms, but basically if they cancel, uh, you know, at month six and got two months free, you just bill them the difference of what they saved over that six months. And this one is probably the simplest way of doing it, which is you just have a one-time breakup fee. So you have an outlaw- out clause. It increases stick, it increases sales, and you get money on the way out, and you can also use it as a negotiating chip to figure out something else. I like this one because it's the easiest to explain. It's very simple. And I like the negotiating chip personally. So the way this would look would be, \"Hey, um, listen. You can c- like, you have a 12-month agreement. If you wanna get out of the agreement, it costs you two months.\" That's it. So it's very straightforward. So if you cancel at month one or month 11, it doesn't really matter. It's two months breakup fee. Now, when they come to break up, you set it up front. They initial next to it. And you say, \"Hey, this two-month breakup fee. What was the issue?\" And then you can try and leverage that,"
+    },
+    {
+      "chapter": "ten-years-ten-minutes",
+      "char_end": 3166,
+      "char_start": 682,
+      "id": "ten-years-ten-minutes:1",
+      "score": 6.77,
+      "subject": "unit-economics",
+      "subjects": [
+        "unit-economics",
+        "offers",
+        "upsells",
+        "downsells",
+        "continuity"
+      ],
+      "text": "covered. We covered. five. We covered win-your-money back, which is where you set a goal for the customer and tell them how to reach it. And if they reach it, then they qualify to get, their money back or get it. as store credit. We covered giveaways, where you advertise a chance to win a big prize in exchange for contact information and anything else that' you want from this prospect. After picking a winner, you offer everyone else, uh, the big prize at a discounted price in second place. The decoy offers are also attraction offers where you advertise a free or discounted offer. When the lead asks to learn more, you also present a more valuable premium offer. The premium offer includes more features, benefits, bonuses, guarantees, and so on, and gets more people to buy it. Buy X to get Y free, you offer customers free stuff in exchange for buying stuff for money. The more free stuff and the higher its value, the more people will buy X to get Y free. Pay less now or pay more later, you give people a choice to pay full price later or pay a discounted price now for additional benefits. We also did free with consumption, which I won't Yeah. ... bonus here. But fundamentally, you give away a lot of free value, and that increases the likelihood people buy a very expensive thing from you. The more expensive the thing, the longer and the more free stuff you give them. Then we have upsell offers, which is, are whatever you offer next. That is my very literal scientific thing. Try and brai- like, fight me. An upsell is whatever you offer next. All right, so typically, it's gonna be more, better, or newer version of whatever they just bought. These can get you lots of cash fast. We covered four. The classic upsell, where you offer the solution to the customer's next problem the moment they become aware of it. You can't have X without Y. The menu upsell, you tell customers which options they don't need, then tell them which one they do need and how to get the value from it, prescribe, and, \"You don't need that, you need this.\" The anchor upsells, you offer the most expensive thing first. If the customer balks, you offer a much cheaper and still acceptable alternative: \"No worries. You don't care about X, this may be a better fit for you.\" D, rollover upsells, you credit some or all of a customer's previous purchase towards your next offer. \"Since you already spent $500, I'll just credit that towards staying a full year.\" Pick your price, which I ended"
+    },
+    {
+      "chapter": "continuity-discounts",
+      "char_end": 5264,
+      "char_start": 2869,
+      "id": "continuity-discounts:5",
+      "score": 6.654,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "don't cancel, but their payment information changes or expires. Second, customers max out cards or have insufficient funds. Fix both issues with the same solution. And so what we do is we say, \"Hey, now that I told you about this 3% fee, remember kind of the rental car, like, 'Hey, there's this fee, you wanna avoid this fee that I made up anyways? Yeah, that's what we're gonna do.'\" So if you wanna avoid that 3% fee, do you wanna save some processing? Awesome. So just give us a second form of payment in case anything happens to the first one.\" If they ask why, which they rarely do, just say, \"We only have the processing fee because it costs us money, to get new forms of payment every time something changes. In this crazy world, people's cards are changing all the time, so we pass those savings on to you.\" So now, I'm positioning this as a benefit to them. \"I'm passing the savings on to you even though I made up these fees to begin with.\" Right? And that's how it works. And just like that, you give up the 3% increase in revenue to have a decrease in churn. And oftentimes, if your churn decreases by, call it 20% because of the involuntary churn, you more than make up the 3% in revenue. Now, there's a third little payment hack for you, which is you can get ACH if you can. So ACH is something called automated clearing house, which basically how p- how banks pay one another. And so if you can get a second form of payment, try to get ACH. So this links directly to their bank, and it's the cheapest way to transact besides cash. So if you don't know what ACH is, you can Google it. But fundamentally, wherever you process money, they usually have an ACH option. And think about it like this. How many times have you changed your checking account or your bank in the last five- years? Probably not nearly as often as you've gotten new credit cards. Right. And the same thing applies for your customers. And so if you get this as the second form of payment, this thing's gold. It pretty much never declines, because it really can't. They either have the money or they don't. And so this way, I like having two forms of payment. One's a card, one's ACH. We get the ACH by giving back. the processing fee, and here's a fun little benefit of ACH.Not only do you get the reduction in churn, you also save some money on processing too, because it's cheaper to process via ACH, usually"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

@@ -1,0 +1,72 @@
+{
+  "namespace_policy": "raw_debug_default_namespace",
+  "namespace_prefix": null,
+  "query": "\"pay less now\" discount difference",
+  "retrieval_backend": "bm25",
+  "source_material": [
+    {
+      "chapter": "waived-fee",
+      "char_end": 8434,
+      "char_start": 5920,
+      "id": "waived-fee:3",
+      "score": 6.476,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "thousand dollars a month, fee is $5,000 if they pay month to month. Option A, pay one time five grand plus a thousand dollars for the first month, then pay $1,000 a month thereafter, cancel whenever you want. Option B, waive the $5,000 if you commit to 12, pay $1,000 per month, only pay the $5,000 fee if you break your commitment early. Boom. Very simple, very straightforward. There's the visual. If you want, you can do a different version of this where you keep, uh, the month to month rate higher. So if they cancel, the discounted commitment, you bill the difference. All right? So let's say, uh, they, basically the longer they stay, the bigger the cancellation rate. So if they've accrued, you know, uh, $177 of savings or $67 of savings every single month on their commitment, the day they wanna, they wanna break the contract, they pay the difference in savings up to that point. Now let's do some important points. So four variables for this method. You've got the commitment length, you've got the commitment rate, you've got the month to month rate, and you've got the fee that they're gonna waive or not. There are more versions of this beyond the two that I shared. You can figure them out on your own. Now, I had an earlier version of this that had like nine different versions and my editor was like, \"You're honestly just gonna confuse people, so don't do that.\" So fundamentally though, you can mix and match these however you want. You can have a, like the rate difference between the people who commit can be less. You can have, uh, the length be a variable. Uh, the rate that you charge month to month is different, the fee that you waive. So all of those things kind of go into this deal structure. The recommendation that I have is a model that works, which is take the price, multiply it by five, make that the fee, waive it-And that holds, that basically hangs over their head the whole time. And if you want, again, the ethical reason for this is that many businesses and many services have emotional ups and downs. They're volatility for customers. And so having something kind of like guardrails to keep someone on point during the rough months can help them overall see success. And I believe that. So that's not just not, that's not just wordsmithing. That's true. Um, and this vehicle or pricing structure, money model, allows you to build incentives around that. All right. So fees get them to start. People get value out of committing immediately because they avoid a fee. People"
+    },
+    {
+      "chapter": "waived-fee",
+      "char_end": 2363,
+      "char_start": 49,
+      "id": "waived-fee:1",
+      "score": 6.126,
+      "subject": "continuity",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "a one thou- you know, a thousand dollar a month continuity plan, right? You could say, \"Cool, this is 5,000 down, then a thousand bucks month to month. Or I will waive the $5,000 fee and it will be free with a 12-month commitment at $1,000 a month, and you pay that if you wanna cancel early.\" So this is fundamentally a neat cancellation term. Fundamentally it's, what it' is, but because we pair it as a price on the front end, it becomes a very strong sales thing too. So with the other version, we use the three, months free or whatever to get someone in, and then we say, \"Cool, you have to pay the difference if you cancel early.\" Here, we sell them on the vacation and we say, \"We have this massive onboarding fee, but I'll waive it if you sign up for a commitment.\" Then that' also hangs as a knife, if they don't wanna pay it today, they're not gonna pay it in six months either. And so the same reason they signed up is the same reason they'll keep paying. Here's our description. So the waived fee offers work like this. First, you ask customers to pay a startup fee as a part of joining a month to month program. Typically, you wanna do that to three to five times the monthly rate. All right? So if it was a thousand dollar thing, you'd want it to be a $5,000, uh, front fee. For, you know, the example it was $4,000 a month and $25,000 signup fee. That's the idea. All right. Then you offer a discount on the entire fee if they commit to the longer term. And the commitment period should be minimum of six months, ideally 12 plus. If it's less than that, it doesn't really make any sense. So if they cancel inside the term, they pay the fee. Customers can choose to pay the big fee and keep the option to quit at any time, or they can commit to 12 months and get the fee waived. And many will commit to avoid the big fee. There's also a clear point after four, five, six months where if they paid the fee, it's the same as staying, in which case it basically gets them through that initial churn point, and then after that there's no financial reason to leave the back half of the contract. So we take the greater risk if they pay month to month, but they take a greater risk if they commit. And so if a customer chooses month to month, we lower our risk with the startup fee. But we lower their risk"
+    },
+    {
+      "chapter": "attraction-offers",
+      "char_end": 1485,
+      "char_start": 0,
+      "id": "attraction-offers:0",
+      "score": 5.61,
+      "subject": "offers",
+      "subjects": [
+        "offers"
+      ],
+      "text": "So we are now officially in our apprenticeship, our digital apprenticeship, or virtual apprenticeship. Let us begin with attraction offers. So, what does an attraction offer, the free versus discounted continuum, and the lineup. All right. So, an attraction offer generates leads and converts them into customers. That's what it does. They turn advertising into money by offering something free or at a discount. We do this because everyone wants a great deal. In a great deal, customers get far more value than the price they pay. Strangers can only take your word on the value, but they absolutely understand the price. For that reason, discounts make anything a great deal to just about anyone. And the greater the discount, the better the deal. So, the greatest discount of all being free. So, free to discounted continue. This is a visual representation of what I alluded to earlier, but 100% off versus 0% off. So this is free, this is, uh, full price, and then this is the also lowest demand when you have full price versus highest demand, which is free. So the more you move this way, the higher the demand, the more you have, you give off. Pretty much that's how it works. The lineup. So, this is the lineup. These are the plays that I'm going to explain to you. We've got our win your money back, giveaways, decoy offer, buy X get Y free, pay less now or pay more later, and then free with consumption. This one is not in the book, FYI. So with that being said, let us begin."
+    },
+    {
+      "chapter": "pay-less-now",
+      "char_end": 12939,
+      "char_start": 11221,
+      "id": "pay-less-now:9",
+      "score": 5.549,
+      "subject": "offers",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": "a delayed payment with a conditional guarantee. Have a clear criteria to qualify for the guarantee and easy ways to measure it. If you can, align the criteria with what gets people the most value from the product. The pay now option offers a 20 to 50%, sometimes two-thirds discount and bonuses if they pay now. It depends how desperate you are to get people to pay. Offer customers the pay now option after they already accepted the pay later terms. All right? So if they choose to pay now, then they get the discount and bonuses instead of the guarantee. Instead of, in lieu of. All right? Now, you make your promise easy to track and difficult to refute. So not only is it easy to track, but they can't say they didn't have it. The easier it is to track and the harder it is to refute, the better it is for this type of offer. So you want it to be as clear as a yes-no. And if you have more than 10% canceling the pay later option, you promised too much, the guarantee conditions are too low, or the price, uh, is too high, and/or the people that you're selling to are not the right people. All right? So also give extra attention to the customers who claim they haven't gotten value. If you remember, during the thing, a few people didn't say they- they raised their hand and they didn't double their reading speed. He attended to them so he could check off the can- He basically purposely brought down the cancellations that he was going to get later. And so there, it's really easy to tip people over the edge. It probably takes e- especially if an in-person thing, you can just easily check those boxes off and it'll save you a ton of money, uh, in cancellations. And that is the pay less now or pay more later."
+    },
+    {
+      "chapter": "payment-plans",
+      "char_end": 3613,
+      "char_start": 1224,
+      "id": "payment-plans:1",
+      "score": 5.437,
+      "subject": "downsells",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "they have to pay you right now, not what they have to pay in, general. And so people mistakenly think that they need cheaper stuff, and this is not the best course of action, in my opinion. Payment plans get the most buyers to pay the highest price by getting them to pay less now in the moment, but pay full price or higher over time. So here are the seven steps of a payment plan downsell. We reward for paying in full rather than punish for paying over time. This is a big thing that I, I don't see taught very much. And so I'm gonna explain this one in depth, 'cause it's really important. Uh, next, we're gonna offer financing options, half now, half later, check to see if they want the thing, offer to split it into three payments, or evenly spread the payments, offer a free trial. So let's give some deep-down examples. So step one, reward for paying in full rather than punish for paying over time. So if I take on the risk of a payment, because if you're a business owner and they don't pay you everything and you start delivering stuff, then you take on risk, right? So then what I do is I increase the price. Now, normally, businesses do this by charging interest. But everybody hates getting charged interest. And so instead, what I do is I anchor... My first price I present is the fully baked payment plan price. And then when I say, \"Got it, would you like, to save some money?\" they say yes, and I'm like, \"You can prepay, and save this much money.\" So now them pre-paying is a savings rather than getting penalized. So think about it like, this. Let's say it's 10K and 12K. 10K is the pay in full price, 12K is the payment plan price. Instead of s- instead of pitching people, 'cause remember, anchors still work. Instead of pitching people 10 and then they say that no. they can't afford it, and then. saying, \"Okay, fine, pay me 12 because you can't afford it,\" feels tough. So instead, pitch 12, \"I know you're afraid of doing it.\" Don't be. The difference in interest is usually never enough to change a purchasing decision. So like, if you had 10 and 20, then yeah. But most interest, or whatever you'd usually, you know, add on top, might be 10, 20%. And so that's not usually enough to get into a different buying tier. So you present here, and if someone says yes, and by the way, if everyone keeps saying yes at that, and then you don't even have to mention the"
+    }
+  ],
+  "subject": null,
+  "top_k": 5,
+  "vector_store": "local"
+}

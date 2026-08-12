@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "how to calculate how much to spend on ads from gross profit contribution margin and payback period when shipping and product costs are high",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 579.6,
+  "returncode": 0,
+  "stderr": ""
+}

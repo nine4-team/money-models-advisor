@@ -1,0 +1,15 @@
+{
+  "case_id": "querygen_holdout_v1_015",
+  "created_at": "2026-08-10T22:01:08Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 4826.8,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.5",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "offer stack diagnosis not enough qualified sales conversations valuable closed clients attraction offer failing B2B consultancy compliance audit",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 1385,
+  "valid": true
+}

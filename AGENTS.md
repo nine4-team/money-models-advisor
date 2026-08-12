@@ -27,7 +27,7 @@ human talks to agent
 -> agent composes the answer
 ```
 
-The agent owns semantic judgment: next action, source need, query intent, chunk usefulness, and final answer quality.
+The agent owns semantic judgment: next action, search-request generation, chunk usefulness, and final answer quality.
 
 The CLI owns deterministic work: snapshot persistence, formulas, retrieval execution, embedding cache use, report generation, and trace recording.
 
@@ -63,7 +63,7 @@ Do not tune only for one visible miss unless the fix is framed as a general beha
 
 ## Retrieval Position
 
-BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The target product path is hybrid retrieval with constrained query variants, cached embeddings, eval-gated promotion, and a Pinecone-backed vector store behind a retrieval storage boundary. The local backend remains the fast eval baseline. The 30-case expanded search-query slice plus Pinecone parity supports moving hybrid+variants to candidate default, while requiring continued golden-set expansion and hosted-vector latency optimization before calling it production-final.
+BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The current product path is one corpus-guided, unfiltered query through hybrid retrieval over framework-aware chunks, with cached embeddings and a Pinecone-backed vector store behind a retrieval storage boundary. Across 46 audited regression cases, the corpus-guided method leads the raw-question and unguided controls under both tested query writers. With each saved query held fixed, hybrid ranks useful evidence earlier than BM25 under both `gpt-5.5` and `gpt-5.4-mini` and preserves 100% Hit@5; Useful@5 is mixed, so do not claim hybrid always produces a cleaner context. The relevance labels were audited by Codex rather than an independent human reviewer, so keep that limitation explicit. The local backend remains the fast eval baseline, and the older multi-query/filtering path remains only for historical reproducibility and separate future experiments.
 
 Embedding API use is allowed for deterministic vectorization and cached retrieval experiments. Do not use external model APIs for agent planning, labeling, answer synthesis, or acting-agent eval work. Product model-routing evidence for agent behavior should use the Codex/CLI harness in `scripts/eval_codex_model_routing.py`. A separate explicit model/provider comparison experiment (such as `scripts/eval_model_routing.py`) may replay golden cases against external chat models only if every prompt and raw response is recorded and the report is clearly labeled as API replay, not the product harness.
 

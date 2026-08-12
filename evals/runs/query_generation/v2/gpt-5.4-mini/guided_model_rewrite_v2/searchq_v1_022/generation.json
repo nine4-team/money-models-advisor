@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_022",
+  "created_at": "2026-08-10T22:42:14Z",
+  "guide_version": "money-models-corpus-guide.v1",
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 7723.7,
+  "method": "guided_model_rewrite_v2",
+  "method_version": "single-query-methods.v2",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v2",
+  "query": "\"Free with Consumption\" when free education is enough to make a higher-ticket buyer ready for a paid offer trust belief change",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 4874,
+  "valid": true
+}

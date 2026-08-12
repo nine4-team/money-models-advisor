@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "payback period client-financed acquisition profitable over a customer's life but lacks enough cash to fund continued growth",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 94.2,
+  "returncode": 0,
+  "stderr": ""
+}

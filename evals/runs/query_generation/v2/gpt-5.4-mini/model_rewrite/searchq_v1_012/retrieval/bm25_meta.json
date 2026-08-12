@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "first 30 days gross profit more than twice CAC meaning payback period acquisition spend LTV:CAC",
+    "--backend",
+    "bm25",
+    "--top-k",
+    "5"
+  ],
+  "latency_ms": 87.8,
+  "returncode": 0,
+  "stderr": ""
+}

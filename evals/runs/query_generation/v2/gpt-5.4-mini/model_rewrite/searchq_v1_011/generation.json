@@ -1,0 +1,15 @@
+{
+  "case_id": "searchq_v1_011",
+  "created_at": "2026-08-11T23:28:28Z",
+  "guide_version": null,
+  "harness": "codex_cli_bounded_generation",
+  "latency_ms": 6911.8,
+  "method": "model_rewrite",
+  "method_version": "single-query-methods.v1",
+  "model": "gpt-5.4-mini",
+  "prompt_version": "query-generation-prompt.v1",
+  "query": "why revenue alone cannot judge ad viability when delivery costs are high gross profit CAC payback ad viability",
+  "returncode": 0,
+  "tokens_used_reported_by_codex": 2043,
+  "valid": true
+}

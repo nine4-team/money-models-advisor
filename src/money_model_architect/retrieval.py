@@ -48,6 +48,7 @@ CHUNKING_STRATEGIES: dict[str, ChunkingStrategy] = {
     "heading-aware": ChunkingStrategy("heading-aware", "heading", target_words=450, overlap_words=70),
     "framework-aware": ChunkingStrategy("framework-aware", "framework", target_words=650, overlap_words=90),
 }
+DEFAULT_CHUNKING_STRATEGY = "framework-aware"
 
 
 @dataclass(frozen=True)
@@ -166,7 +167,7 @@ def _limit_long_parts(
 
 
 class CorpusIndex:
-    def __init__(self, chunks: list[Chunk], strategy: ChunkingStrategy = CHUNKING_STRATEGIES["heading-aware"]):
+    def __init__(self, chunks: list[Chunk], strategy: ChunkingStrategy = CHUNKING_STRATEGIES[DEFAULT_CHUNKING_STRATEGY]):
         self.chunks = chunks
         self.strategy = strategy
         self._term_freqs = [Counter(tokenize(chunk.text)) for chunk in chunks]
@@ -178,7 +179,11 @@ class CorpusIndex:
         self._chunk_embeddings: dict[str, list[float]] = {}
 
     @classmethod
-    def from_transcripts(cls, transcript_dir: Path, chunking: str | ChunkingStrategy = "heading-aware") -> "CorpusIndex":
+    def from_transcripts(
+        cls,
+        transcript_dir: Path,
+        chunking: str | ChunkingStrategy = DEFAULT_CHUNKING_STRATEGY,
+    ) -> "CorpusIndex":
         strategy = resolve_chunking_strategy(chunking)
         chunks: list[Chunk] = []
         for path in sorted(transcript_dir.glob("*.txt")):

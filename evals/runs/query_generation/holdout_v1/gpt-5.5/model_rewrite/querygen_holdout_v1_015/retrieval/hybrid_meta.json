@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-m",
+    "money_model_architect.cli",
+    "search",
+    "offer stack diagnosis not enough qualified sales conversations valuable closed clients attraction offer failing B2B consultancy compliance audit",
+    "--backend",
+    "hybrid",
+    "--top-k",
+    "5",
+    "--vector-store",
+    "local"
+  ],
+  "latency_ms": 641.6,
+  "returncode": 0,
+  "stderr": ""
+}
