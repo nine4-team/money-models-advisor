@@ -206,9 +206,3 @@ Your bottleneck is first-30-day gross profit, not lifetime value. The source mat
 - Do not invent calculations.
 - Do not cite source chunks you did not inspect.
 - Do not turn every user message into retrieval.
-
-## Next Development Target
-
-The next query-generation improvement is independent review of the frozen holdout labels,
-followed by one comparison run that decides whether the provisional corpus-guided
-runtime stays or rolls back.

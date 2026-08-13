@@ -1,0 +1,3 @@
+Recorded the acting-agent turn and completed the trace.
+
+Created `run.json` at `evals/runs/source_events/search_request_v1/sourceevents_v1_003/run.json`, with one `recommendation_evidence` source event, cited chunks, and the completed session path.

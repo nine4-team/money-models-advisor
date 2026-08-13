@@ -1,0 +1,16 @@
+{
+  "user_message": "what should we fix first?",
+  "assistant_message": "I would not pick a fix yet. The offer stack is mapped, but the priority depends on two missing economics: CAC and first-30-day gross profit. Give me either your average cost to get a signed project, or the spend and signed-project count for a recent period, plus the gross profit you usually collect in the first 30 days of a full-service project. Once we have those, I can tell whether the first fix is acquisition, the diagnostic/front-end offer, or first-sale monetization.",
+  "actions": [
+    "session_start",
+    "answer"
+  ],
+  "source_events": [],
+  "cited_chunk_ids": [],
+  "calculation_events": [],
+  "metadata": {
+    "run_type": "blind_codex_acting_agent_source_event_trace",
+    "case_id": "sourceevents_v1_004",
+    "decision": "asked for missing CAC and first-30-day gross profit instead of searching for a premature recommendation"
+  }
+}

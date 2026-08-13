@@ -1,0 +1,109 @@
+{
+  "cases": 46,
+  "conditions": {
+    "text-embedding-3-large-d1536": {
+      "cases": 46,
+      "corpus_build_ms": 120.56,
+      "embedding_stats": {
+        "by_purpose": {
+          "corpus": {
+            "api_batches": 0,
+            "api_input_chars": 0,
+            "api_inputs": 0,
+            "cache_hit_rate": 1.0,
+            "cache_hits": 204,
+            "cache_misses": 0,
+            "elapsed_ms": 118.319,
+            "estimated_api_input_tokens": 0,
+            "input_chars": 524996
+          },
+          "query": {
+            "api_batches": 0,
+            "api_input_chars": 0,
+            "api_inputs": 0,
+            "cache_hit_rate": 1.0,
+            "cache_hits": 46,
+            "cache_misses": 0,
+            "elapsed_ms": 36.653,
+            "estimated_api_input_tokens": 0,
+            "input_chars": 6497
+          }
+        },
+        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-large-d1536",
+        "cache_namespace": "openai/text-embedding-3-large-d1536",
+        "dimensions": 1536,
+        "model": "text-embedding-3-large"
+      },
+      "estimated_api_cost_usd": 0.0,
+      "estimated_uncached_cost_usd": 0.017274,
+      "hit_at_1_pct": 93.5,
+      "hit_at_3_pct": 97.8,
+      "hit_at_5_pct": 100.0,
+      "mean_first_useful_rank": 1.109,
+      "noise_at_5_pct": 13.5,
+      "p50_query_latency_ms": 27.74,
+      "p95_query_latency_ms": 28.39,
+      "useful_at_5_pct": 86.5
+    },
+    "text-embedding-3-small": {
+      "cases": 46,
+      "corpus_build_ms": 137.8,
+      "embedding_stats": {
+        "by_purpose": {
+          "corpus": {
+            "api_batches": 0,
+            "api_input_chars": 0,
+            "api_inputs": 0,
+            "cache_hit_rate": 1.0,
+            "cache_hits": 204,
+            "cache_misses": 0,
+            "elapsed_ms": 137.001,
+            "estimated_api_input_tokens": 0,
+            "input_chars": 524996
+          },
+          "query": {
+            "api_batches": 0,
+            "api_input_chars": 0,
+            "api_inputs": 0,
+            "cache_hit_rate": 1.0,
+            "cache_hits": 46,
+            "cache_misses": 0,
+            "elapsed_ms": 34.969,
+            "estimated_api_input_tokens": 0,
+            "input_chars": 6497
+          }
+        },
+        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+        "cache_namespace": "openai/text-embedding-3-small",
+        "dimensions": null,
+        "model": "text-embedding-3-small"
+      },
+      "estimated_api_cost_usd": 0.0,
+      "estimated_uncached_cost_usd": 0.002657,
+      "hit_at_1_pct": 93.5,
+      "hit_at_3_pct": 97.8,
+      "hit_at_5_pct": 100.0,
+      "mean_first_useful_rank": 1.152,
+      "noise_at_5_pct": 21.3,
+      "p50_query_latency_ms": 27.54,
+      "p95_query_latency_ms": 28.24,
+      "useful_at_5_pct": 78.7
+    }
+  },
+  "decision": "text-embedding-3-large-d1536",
+  "decision_rule": {
+    "mean_first_useful_rank_gain": 0.1,
+    "preserve_hit_at_5": true,
+    "useful_at_5_gain_percentage_points": 2.0
+  },
+  "embedding_model_audit": {
+    "false_negative_corrections": 6,
+    "false_positive_corrections": 0,
+    "new_case_chunk_pairs": 39,
+    "reviewed_new_case_chunk_pairs": 39,
+    "unreviewed_new_case_chunk_pairs": 0
+  },
+  "experiment": "embedding-model-comparison",
+  "query_writer": "gpt-5.5/guided_model_rewrite_v2",
+  "retrieval": "local hybrid, framework-aware chunks, top_k=5"
+}

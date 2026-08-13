@@ -1,0 +1,9 @@
+{
+  "case_id": "sourceevents_v1_003",
+  "created_at": "2026-08-13T16:27:03Z",
+  "harness": "codex_cli_agent",
+  "latency_ms": 111272.7,
+  "model": "gpt-5.5",
+  "returncode": 0,
+  "run_created": true
+}

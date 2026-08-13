@@ -1,0 +1,26 @@
+{
+  "cases": 46,
+  "chunking": "framework-aware",
+  "conditions": {
+    "single": {
+      "cases": 46,
+      "hit_at_1_pct": 93.5,
+      "hit_at_3_pct": 97.8,
+      "hit_at_5_pct": 100.0,
+      "mean_first_useful_rank": 1.152,
+      "mean_latency_ms": 1037.79,
+      "mean_returned_words": 2476.3,
+      "misses": [],
+      "noise_at_5_pct": 21.3,
+      "p50_latency_ms": 894.68,
+      "p50_returned_words": 2476.0,
+      "p95_latency_ms": 1141.14,
+      "useful_at_5_pct": 78.7
+    }
+  },
+  "experiment": "active-query-pinecone-revalidation",
+  "max_workers": 1,
+  "query_writer": "gpt-5.5/guided_model_rewrite_v2",
+  "ranking_parity_cases": null,
+  "retriever": "Pinecone hybrid, one query per case"
+}

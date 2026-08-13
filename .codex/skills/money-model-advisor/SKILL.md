@@ -80,7 +80,10 @@ The folder where the skill is invoked is the context directory. It is where advi
    ```
 
 3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
-4. Use `update_snapshot` to save accepted facts discovered from local docs. Save only facts that are clear from inspected files or the human's message. Do not guess.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Pass
+   `--source-type file --source <relative-path>` for facts taken from an inspected
+   file. Conversation facts use the default `conversation` source. Save only facts
+   that are clear from inspected files or the human's message. Do not guess.
 5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
 6. After composing the final answer, record the completed turn with one JSON artifact:
 
@@ -107,7 +110,7 @@ These are the operations the agent should use through the CLI. Humans may also r
 | `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
 | `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
 | `calculate` | `calculate ...` |
-| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --source-need-json ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --search-request-json ...` |
 | `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
 | `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
 | `logs` | `logs --business-dir "$CONTEXT_DIR"` |
@@ -135,6 +138,17 @@ Update accepted facts:
 ```bash
 cd /Users/benjaminmackenzie/Dev/money-model-architect
 PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Record a fact accepted from an inspected business file:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
+  --business-dir "$CONTEXT_DIR" \
+  --source-type file \
+  --source metrics/q1-unit-economics.csv \
+  economics.cac=350
 ```
 
 Run deterministic math:
@@ -179,8 +193,13 @@ PYTHONPATH=src python3 -m money_model_architect.cli session finish \
 5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
 6. Use `search` only after generating an explicit, corpus-guided search request.
 7. Cite inspected chunks inline, such as `[payback-period:0]`.
-8. Record the final turn with `session finish`.
-9. Use `logs` to inspect prior session turns.
+8. Before recording, audit each source-backed sentence against the exact cited chunk:
+   do not rely on the chunk title or a nearby passage, do not make a stronger claim
+   than the text supports, and remove or qualify any unsupported wording. Business-
+   specific recommendations may be reasoned from accepted facts; cite the source only
+   for the framework principle it actually establishes.
+9. Record the final turn with `session finish`.
+10. Use `logs` to inspect prior session turns.
 
 When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
 
@@ -188,7 +207,8 @@ When you use `calculate`, record a `calculation_events` entry in the final turn 
 - `inputs`: the exact numeric inputs passed to the CLI
 - `value`: the numeric result returned by the CLI
 
-This is required so the trace shows not only that math happened, but what math was run and whether the final answer used it correctly.
+This is required so `session finish` can recompute the result from the recorded inputs
+and reject an incorrect value.
 
 ## When To Search
 
@@ -207,6 +227,7 @@ scores.
 - Do not let the CLI crawl local business files as a substitute for agent judgment.
 - Do not use deterministic `chat` synthesis as the advisor brain.
 - Do not cite chunks you did not inspect.
+- Do not cite a chunk for a claim stronger than its text supports.
 - Do not turn every user message into retrieval.
 - Do not use source search to avoid asking for missing numbers or missing business context.
 - Prefer one clear clarifying question over premature recommendation.

@@ -1,0 +1,175 @@
+{
+  "user_message": "what should we fix first?",
+  "assistant_message": "Fix the paid-acquisition front end first: turn the STR Design Diagnostic into a measurable paid test, not a broader offer-stack rebuild yet.\n\nThe reason is the economics are already strong enough to test demand. You have roughly $10,000 first-30-day gross profit against about $1,000 CAC, so this is not primarily a CAC-recovery problem. The source framework says the key acquisition numbers are CAC, gross profit, and payback period, and that the shorter the payback period, the easier it is to scale advertising [how-businesses-make-money:2] [payback-period:0]. It also frames first-30-day gross profit above CAC as the point where customer acquisition can fund growth [cfa:0].\n\nSo I would fix this first: define one paid traffic path to the $597 STR Design Diagnostic, with a simple target like booked diagnostic CAC, diagnostic-to-core close rate, and core-project CAC. Attraction offers are the first step because they create demand, and low-cost or free front ends are a way to improve CAC [cac:11]. The diagnostic can function as that front-end offer: valuable enough to attract qualified STR and second-home owners, but structured to move them toward the $15,000 full-service project.\n\nI would not fix downsell or continuity first. Those are useful later, but the money model guidance is to add layers only as needed and keep as few offers as possible to avoid operational drag [offer-types:4]. First prove that the diagnostic can buy qualified conversations predictably. Then add a downsell or continuity offer if the paid test shows the specific leak they would solve.",
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer"
+  ],
+  "source_events": [
+    {
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "user_turn": "what should we fix first?",
+        "query": "build the money model one offer at a time choose next offer based on observed constraint attraction upsell downsell continuity"
+      },
+      "queries": [
+        "build the money model one offer at a time choose next offer based on observed constraint attraction upsell downsell continuity"
+      ],
+      "retrieval_backend": "bm25",
+      "chunks": [
+        {
+          "id": "offer-types:4",
+          "score": 24.38,
+          "subjects": [
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ]
+        },
+        {
+          "id": "make-your-money-model:2",
+          "score": 20.567,
+          "subjects": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ]
+        }
+      ]
+    },
+    {
+      "search_request": {
+        "intent": "diagnostic_evidence",
+        "user_turn": "what should we fix first?",
+        "query": "customer acquisition cost first 30 day gross profit payback period gross margin paid acquisition viability"
+      },
+      "queries": [
+        "customer acquisition cost first 30 day gross profit payback period gross margin paid acquisition viability"
+      ],
+      "retrieval_backend": "bm25",
+      "chunks": [
+        {
+          "id": "payback-period:0",
+          "score": 32.391,
+          "subjects": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ]
+        },
+        {
+          "id": "cfa:0",
+          "score": 29.274,
+          "subjects": [
+            "unit-economics"
+          ]
+        },
+        {
+          "id": "how-businesses-make-money:2",
+          "score": 28.453,
+          "subjects": [
+            "unit-economics"
+          ]
+        }
+      ]
+    },
+    {
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "user_turn": "what should we fix first?",
+        "query": "attraction offer front end offer liquidate customer acquisition cost paid acquisition diagnostic offer"
+      },
+      "queries": [
+        "attraction offer front end offer liquidate customer acquisition cost paid acquisition diagnostic offer"
+      ],
+      "retrieval_backend": "bm25",
+      "chunks": [
+        {
+          "id": "free-with-consumption:0",
+          "score": 16.566,
+          "subjects": [
+            "offers"
+          ]
+        },
+        {
+          "id": "context:2",
+          "score": 14.93,
+          "subjects": [
+            "unit-economics"
+          ]
+        },
+        {
+          "id": "cac:11",
+          "score": 14.38,
+          "subjects": [
+            "unit-economics",
+            "offers"
+          ]
+        }
+      ]
+    }
+  ],
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "payback-period:0",
+    "cfa:0",
+    "cac:11",
+    "offer-types:4"
+  ],
+  "metadata": {
+    "case_id": "sourceevents_v1_001",
+    "notes": "blind Codex acting-agent run; hybrid search failed because query embedding required unavailable network, so structured searches were executed with the local bm25 backend",
+    "action_details": [
+      {
+        "operation": "session_start",
+        "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_001/business",
+        "user_message": "what should we fix first?"
+      },
+      {
+        "operation": "search_source_material",
+        "status": "failed",
+        "retrieval_backend": "hybrid",
+        "search_request": {
+          "intent": "recommendation_evidence",
+          "user_turn": "what should we fix first?",
+          "query": "build the money model one offer at a time choose next offer based on observed constraint attraction upsell downsell continuity"
+        },
+        "error": "Embedding request failed because network access was unavailable for an uncached query embedding."
+      },
+      {
+        "operation": "search_source_material",
+        "status": "completed",
+        "retrieval_backend": "bm25",
+        "search_request": {
+          "intent": "recommendation_evidence",
+          "user_turn": "what should we fix first?",
+          "query": "build the money model one offer at a time choose next offer based on observed constraint attraction upsell downsell continuity"
+        }
+      },
+      {
+        "operation": "search_source_material",
+        "status": "completed",
+        "retrieval_backend": "bm25",
+        "search_request": {
+          "intent": "diagnostic_evidence",
+          "user_turn": "what should we fix first?",
+          "query": "customer acquisition cost first 30 day gross profit payback period gross margin paid acquisition viability"
+        }
+      },
+      {
+        "operation": "search_source_material",
+        "status": "completed",
+        "retrieval_backend": "bm25",
+        "search_request": {
+          "intent": "recommendation_evidence",
+          "user_turn": "what should we fix first?",
+          "query": "attraction offer front end offer liquidate customer acquisition cost paid acquisition diagnostic offer"
+        }
+      }
+    ]
+  }
+}

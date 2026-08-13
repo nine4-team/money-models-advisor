@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Revalidate chunking and Pinecone choices on the active 46-case query path.
+"""Revalidate connected retrieval choices on the active 46-case query path.
 
-The query writer is held fixed: every case uses the frozen gpt-5.5
-``guided_model_rewrite_v2`` query that won the query-generation experiment.
+Chunking and Pinecone checks hold the winning gpt-5.5 query fixed. The matrix
+command replays every frozen query approach and writer through both retrievers.
 No model generation occurs in this script.
 """
 
@@ -38,8 +38,19 @@ DEV_RUNS = ROOT / "evals" / "runs" / "query_generation" / "v2"
 EXPANSION_RUNS = ROOT / "evals" / "runs" / "query_generation" / "holdout_v1"
 REPORT_DIR = ROOT / "evals" / "reports"
 DEFAULT_ADJUDICATIONS = ROOT / "evals" / "active_query_chunking_adjudications.jsonl"
+DEFAULT_EMBEDDING_ADJUDICATIONS = ROOT / "evals" / "embedding_model_adjudications.jsonl"
 MODEL = "gpt-5.5"
 METHOD = "guided_model_rewrite_v2"
+CONTROL_EMBEDDING_MODEL = "text-embedding-3-small"
+ACTIVE_PINECONE_NAMESPACE = "money-models-framework-large-d1536"
+
+MATRIX_CONDITIONS = (
+    ("raw_question", None),
+    ("model_rewrite", "gpt-5.5"),
+    ("model_rewrite", "gpt-5.4-mini"),
+    ("guided_model_rewrite_v2", "gpt-5.5"),
+    ("guided_model_rewrite_v2", "gpt-5.4-mini"),
+)
 
 
 @dataclass(frozen=True)
@@ -100,6 +111,35 @@ def load_cases() -> list[Case]:
     if len(cases) != 46:
         raise ValueError(f"expected 46 cases, found {len(cases)}")
     return cases
+
+
+def matrix_generation_path(case_id: str, method: str, model: str | None) -> Path:
+    if case_id.startswith("querygen_holdout"):
+        runs = EXPANSION_RUNS
+    elif method in {"raw_question", "model_rewrite"} and model in {None, "gpt-5.5"}:
+        runs = ROOT / "evals" / "runs" / "query_generation" / "v1"
+    else:
+        runs = DEV_RUNS
+    model_dir = model or "gpt-5.5"
+    return runs / model_dir / method / case_id / "generation.json"
+
+
+def load_matrix_cases() -> list[dict[str, Any]]:
+    rows = [*load_jsonl(BASE_CASES), *load_jsonl(EXPANSION_CASES)]
+    matrix_cases: list[dict[str, Any]] = []
+    for row in rows:
+        queries: dict[str, str] = {}
+        for method, model in MATRIX_CONDITIONS:
+            path = matrix_generation_path(row["case_id"], method, model)
+            generation = json.loads(path.read_text(encoding="utf-8"))
+            if not generation.get("valid"):
+                raise ValueError(f"invalid frozen generation: {path}")
+            key = f"{method}:{model or 'none'}"
+            queries[key] = generation["query"]
+        matrix_cases.append({**row, "queries": queries})
+    if len(matrix_cases) != 46:
+        raise ValueError(f"expected 46 matrix cases, found {len(matrix_cases)}")
+    return matrix_cases
 
 
 def load_adjudications(path: Path) -> dict[tuple[str, str, str], dict[str, Any]]:
@@ -223,10 +263,15 @@ def build_local_store(index: CorpusIndex, client: OpenAIEmbeddingClient) -> Loca
     return LocalVectorStore(index.vector_records(client))
 
 
+def control_embedding_client() -> OpenAIEmbeddingClient:
+    """Return the embedding setup held constant in the historical control matrix."""
+    return OpenAIEmbeddingClient(model=CONTROL_EMBEDDING_MODEL)
+
+
 def run_chunking(args: argparse.Namespace) -> int:
     cases = load_cases()
     adjudications = load_adjudications(args.adjudications)
-    client = OpenAIEmbeddingClient()
+    client = control_embedding_client()
     heading_index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
     heading_by_id = {chunk.id: chunk for chunk in heading_index.chunks}
     heading_spans = chunk_token_spans(heading_index)
@@ -317,10 +362,131 @@ def run_chunking(args: argparse.Namespace) -> int:
         "experiment": "active-query-chunking-revalidation",
         "cases": len(cases),
         "query_writer": f"{MODEL}/{METHOD}",
+        "embedding_model": client.embedding_id,
         "retriever": "local hybrid, unfiltered",
         "label_transfer": "source-span overlap with audited heading-aware useful chunks",
         "semantic_adjudications": len(adjudications),
         "strategies": summaries,
+    }
+    write_json(args.summary, summary)
+    write_jsonl(args.cases_output, all_rows)
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return 0
+
+
+def run_matrix(args: argparse.Namespace) -> int:
+    cases = load_matrix_cases()
+    adjudications = load_adjudications(args.adjudications)
+    client = control_embedding_client()
+    heading_index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking="heading-aware")
+    heading_by_id = {chunk.id: chunk for chunk in heading_index.chunks}
+    heading_spans = chunk_token_spans(heading_index)
+    index = CorpusIndex.from_transcripts(ROOT / "corpus" / "transcripts", chunking=args.chunking)
+    strategy_spans = chunk_token_spans(index)
+    store = build_local_store(index, client)
+    all_rows: list[dict[str, Any]] = []
+    summaries: list[dict[str, Any]] = []
+
+    for method, model in MATRIX_CONDITIONS:
+        condition_key = f"{method}:{model or 'none'}"
+        for backend in ("bm25", "hybrid"):
+            print(f"running {condition_key} {backend}", file=sys.stderr)
+            condition_rows: list[dict[str, Any]] = []
+            for case in cases:
+                query = case["queries"][condition_key]
+                started = time.perf_counter()
+                if backend == "bm25":
+                    results = index.search(query, top_k=args.top_k)
+                else:
+                    results = index.hybrid_search(
+                        query,
+                        top_k=args.top_k,
+                        embedding_client=client,
+                        vector_store=store,
+                    )
+                latency_ms = (time.perf_counter() - started) * 1000
+                useful_heading = [
+                    heading_by_id[chunk_id]
+                    for chunk_id in case["known_useful_chunk_ids"]
+                    if chunk_id in heading_by_id
+                ]
+                candidates = []
+                useful_ids: list[str] = []
+                first_rank = None
+                returned_word_count = 0
+                for rank, result in enumerate(results, start=1):
+                    transferred_useful, matches = transferred_label(
+                        result.chunk,
+                        useful_heading,
+                        candidate_span=strategy_spans[result.chunk.id],
+                        heading_spans=heading_spans,
+                        exact_heading_ids=set(case["known_useful_chunk_ids"]),
+                        strategy=args.chunking,
+                    )
+                    adjudication = adjudications.get((args.chunking, case["case_id"], result.chunk.id))
+                    useful = bool(adjudication["useful"]) if adjudication else transferred_useful
+                    if useful:
+                        useful_ids.append(result.chunk.id)
+                        first_rank = first_rank or rank
+                    word_count = len(tokenize(result.chunk.text))
+                    returned_word_count += word_count
+                    candidates.append(
+                        {
+                            "rank": rank,
+                            "chunk_id": result.chunk.id,
+                            "chapter": result.chunk.chapter,
+                            "char_start": result.chunk.char_start,
+                            "char_end": result.chunk.char_end,
+                            "score": round(result.score, 8),
+                            "word_count": word_count,
+                            "useful": useful,
+                            "transferred_useful": transferred_useful,
+                            "label_source": "semantic_adjudication" if adjudication else "span_transfer",
+                            "adjudication_rationale": adjudication.get("rationale") if adjudication else None,
+                            "transfer_matches": matches,
+                            "text": result.chunk.text,
+                        }
+                    )
+                row = {
+                    "approach": method,
+                    "model": model,
+                    "retriever": backend,
+                    "chunking": args.chunking,
+                    "case_id": case["case_id"],
+                    "user_turn": case["user_turn"],
+                    "query": query,
+                    "first_useful_rank": first_rank,
+                    "useful_result_count": len(useful_ids),
+                    "useful_returned_chunk_ids": useful_ids,
+                    "returned_word_count": returned_word_count,
+                    "latency_ms": round(latency_ms, 3),
+                    "candidates": candidates,
+                }
+                condition_rows.append(row)
+                all_rows.append(row)
+            summaries.append(
+                {
+                    "approach": method,
+                    "model": model,
+                    "retriever": backend,
+                    **summarize(condition_rows, top_k=args.top_k),
+                }
+            )
+
+    summary = {
+        "experiment": "active-framework-query-model-retriever-matrix",
+        "cases": len(cases),
+        "chunking": args.chunking,
+        "top_k": args.top_k,
+        "query_policy": "frozen saved queries; no regeneration",
+        "retrieval_policy": "local, unfiltered",
+        "embedding_model": client.embedding_id,
+        "label_transfer": "source-span overlap with audited heading-aware useful chunks plus semantic adjudications",
+        "semantic_adjudications": sum(
+            strategy == args.chunking
+            for strategy, _case_id, _chunk_id in adjudications
+        ),
+        "results": summaries,
     }
     write_json(args.summary, summary)
     write_jsonl(args.cases_output, all_rows)
@@ -343,6 +509,7 @@ def pinecone_case(
     heading_by_id: dict[str, Chunk],
     strategy: str,
     adjudications: dict[tuple[str, str, str], dict[str, Any]],
+    embedding_adjudications: dict[tuple[str, str], dict[str, Any]],
 ) -> dict[str, Any]:
     started = time.perf_counter()
     results = index.hybrid_search(
@@ -358,7 +525,9 @@ def pinecone_case(
     returned_word_count = sum(len(tokenize(result.chunk.text)) for result in results)
     useful_heading = [heading_by_id[chunk_id] for chunk_id in case.known_useful_chunk_ids if chunk_id in heading_by_id]
     useful_flags = [
-        bool(adjudications[(strategy, case.case_id, result.chunk.id)]["useful"])
+        bool(embedding_adjudications[(case.case_id, result.chunk.id)]["useful"])
+        if (case.case_id, result.chunk.id) in embedding_adjudications
+        else bool(adjudications[(strategy, case.case_id, result.chunk.id)]["useful"])
         if (strategy, case.case_id, result.chunk.id) in adjudications
         else transferred_label(
                 result.chunk,
@@ -394,6 +563,10 @@ def run_pinecone(args: argparse.Namespace) -> int:
     heading_spans = chunk_token_spans(heading_index)
     heading_by_id = {chunk.id: chunk for chunk in heading_index.chunks}
     adjudications = load_adjudications(args.adjudications)
+    embedding_adjudications = {
+        (row["case_id"], row["chunk_id"]): row
+        for row in load_jsonl(args.embedding_adjudications)
+    }
     if args.reuse_results:
         rows = load_jsonl(args.cases_output)
         case_by_id = {case.case_id: case for case in cases}
@@ -403,8 +576,11 @@ def run_pinecone(args: argparse.Namespace) -> int:
             useful_heading = [heading_by_id[chunk_id] for chunk_id in case.known_useful_chunk_ids if chunk_id in heading_by_id]
             flags = []
             for chunk_id in row["returned_chunk_ids"]:
+                embedding_adjudication = embedding_adjudications.get((case.case_id, chunk_id))
                 adjudication = adjudications.get((args.chunking, case.case_id, chunk_id))
-                if adjudication is not None:
+                if embedding_adjudication is not None:
+                    flags.append(bool(embedding_adjudication["useful"]))
+                elif adjudication is not None:
                     flags.append(bool(adjudication["useful"]))
                 else:
                     flags.append(
@@ -428,14 +604,16 @@ def run_pinecone(args: argparse.Namespace) -> int:
         rows = []
         jobs: list[tuple[Case, str, tuple[str | None, ...] | None]] = []
         for case in cases:
-            jobs.append((case, "single", (args.single_namespace,)))
-            jobs.append(
-                (
-                    case,
-                    "subject_oracle",
-                    tuple(subject_namespaces(case.oracle_subjects, prefix=args.namespace_prefix)),
+            if args.policy in {"both", "single"}:
+                jobs.append((case, "single", (args.single_namespace,)))
+            if args.policy in {"both", "subject_oracle"}:
+                jobs.append(
+                    (
+                        case,
+                        "subject_oracle",
+                        tuple(subject_namespaces(case.oracle_subjects, prefix=args.namespace_prefix)),
+                    )
                 )
-            )
 
         def execute(job: tuple[Case, str, tuple[str | None, ...] | None]) -> dict[str, Any]:
             case, policy, namespaces = job
@@ -453,6 +631,7 @@ def run_pinecone(args: argparse.Namespace) -> int:
                 heading_by_id=heading_by_id,
                 strategy=args.chunking,
                 adjudications=adjudications,
+                embedding_adjudications=embedding_adjudications,
             )
 
         with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
@@ -460,17 +639,19 @@ def run_pinecone(args: argparse.Namespace) -> int:
                 print(f"{row['policy']} {row['case_id']} {row['latency_ms']}ms", file=sys.stderr)
                 rows.append(row)
 
-    grouped: dict[str, list[dict[str, Any]]] = {"single": [], "subject_oracle": []}
+    grouped: dict[str, list[dict[str, Any]]] = {}
     for row in rows:
-        grouped[row["policy"]].append(row)
+        grouped.setdefault(row["policy"], []).append(row)
 
     summaries = {policy: summarize(policy_rows, top_k=args.top_k) for policy, policy_rows in grouped.items()}
-    single_by_case = {row["case_id"]: row for row in grouped["single"]}
-    oracle_by_case = {row["case_id"]: row for row in grouped["subject_oracle"]}
-    ranking_parity = sum(
-        single_by_case[case_id]["returned_chunk_ids"] == oracle_by_case[case_id]["returned_chunk_ids"]
-        for case_id in single_by_case
-    )
+    ranking_parity = None
+    if "single" in grouped and "subject_oracle" in grouped:
+        single_by_case = {row["case_id"]: row for row in grouped["single"]}
+        oracle_by_case = {row["case_id"]: row for row in grouped["subject_oracle"]}
+        ranking_parity = sum(
+            single_by_case[case_id]["returned_chunk_ids"] == oracle_by_case[case_id]["returned_chunk_ids"]
+            for case_id in single_by_case
+        )
     summary = {
         "experiment": "active-query-pinecone-revalidation",
         "cases": len(cases),
@@ -499,16 +680,37 @@ def main() -> int:
     chunking.add_argument("--adjudications", type=Path, default=DEFAULT_ADJUDICATIONS)
     chunking.set_defaults(func=run_chunking)
 
+    matrix = subparsers.add_parser(
+        "matrix",
+        help="Replay the full frozen query/model/retriever matrix on the active chunks.",
+    )
+    matrix.add_argument("--top-k", type=int, default=5)
+    matrix.add_argument("--chunking", choices=tuple(CHUNKING_STRATEGIES), default="framework-aware")
+    matrix.add_argument(
+        "--summary",
+        type=Path,
+        default=REPORT_DIR / "active_framework_retrieval_matrix_summary.json",
+    )
+    matrix.add_argument(
+        "--cases-output",
+        type=Path,
+        default=REPORT_DIR / "active_framework_retrieval_matrix_cases.jsonl",
+    )
+    matrix.add_argument("--adjudications", type=Path, default=DEFAULT_ADJUDICATIONS)
+    matrix.set_defaults(func=run_matrix)
+
     pinecone = subparsers.add_parser("pinecone", help="Compare Pinecone single and oracle subject namespace layouts.")
     pinecone.add_argument("--top-k", type=int, default=5)
     pinecone.add_argument("--namespace-prefix", default="money-models")
-    pinecone.add_argument("--single-namespace", default="money-models")
-    pinecone.add_argument("--chunking", choices=tuple(CHUNKING_STRATEGIES), default="heading-aware")
+    pinecone.add_argument("--single-namespace", default=ACTIVE_PINECONE_NAMESPACE)
+    pinecone.add_argument("--chunking", choices=tuple(CHUNKING_STRATEGIES), default="framework-aware")
     pinecone.add_argument("--max-workers", type=int, default=1)
+    pinecone.add_argument("--policy", choices=("both", "single", "subject_oracle"), default="both")
     pinecone.add_argument("--reuse-results", action="store_true", help="Rescore the saved result IDs without querying Pinecone.")
     pinecone.add_argument("--summary", type=Path, default=REPORT_DIR / "active_query_pinecone_revalidation_summary.json")
     pinecone.add_argument("--cases-output", type=Path, default=REPORT_DIR / "active_query_pinecone_revalidation_cases.jsonl")
     pinecone.add_argument("--adjudications", type=Path, default=DEFAULT_ADJUDICATIONS)
+    pinecone.add_argument("--embedding-adjudications", type=Path, default=DEFAULT_EMBEDDING_ADJUDICATIONS)
     pinecone.set_defaults(func=run_pinecone)
 
     args = parser.parse_args()

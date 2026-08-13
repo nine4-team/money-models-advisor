@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import math
 import os
 from pathlib import Path
 from typing import Any
@@ -13,12 +15,8 @@ from .advisor_retrieval import RETRIEVAL_BACKENDS, VECTOR_STORES, execute_adviso
 from .business_context import advisor_paths, ensure_advisor_state, utc_now
 from .calculator import (
     UnitEconomics,
-    cac,
-    cfa_level,
+    calculate_metric,
     gross_margin,
-    gross_profit,
-    lifetime_gross_profit,
-    payback_period_months,
 )
 from .diagnose import diagnose
 from .embeddings import OpenAIEmbeddingClient
@@ -96,7 +94,7 @@ def _build_parser() -> argparse.ArgumentParser:
     pinecone = index_subparsers.add_parser("pinecone", help="Upsert corpus chunks to Pinecone")
     pinecone.add_argument(
         "--namespace",
-        help="Pinecone namespace; defaults to MMA_PINECONE_NAMESPACE or money-models-framework",
+        help="Pinecone namespace; defaults to MMA_PINECONE_NAMESPACE or money-models-framework-large-d1536",
     )
     pinecone.add_argument("--index-layout", choices=("single", "subject"), default="single")
     pinecone.add_argument("--namespace-prefix", default="money-models")
@@ -120,6 +118,16 @@ def _build_parser() -> argparse.ArgumentParser:
     snapshot.add_argument("snapshot_action", nargs="?", choices=("set",), help="Use 'set' to update snapshot fields")
     snapshot.add_argument("assignments", nargs="*", help="Field assignments such as economics.cac=350")
     snapshot.add_argument("--business-dir", required=True, help="Directory containing advisor state")
+    snapshot.add_argument(
+        "--source-type",
+        choices=("conversation", "file"),
+        default="conversation",
+        help="Origin of accepted facts written by 'snapshot set'",
+    )
+    snapshot.add_argument(
+        "--source",
+        help="File path, relative to --business-dir, when --source-type=file",
+    )
 
     logs = subparsers.add_parser("logs", help="Show saved advisor session logs")
     logs.add_argument("--business-dir", required=True, help="Directory containing advisor state")
@@ -260,6 +268,7 @@ def main(argv: list[str] | None = None) -> int:
             "chunks": len(index.chunks),
             "records_upserted": upserted,
             "embedding_model": embedding_client.model,
+            "embedding_dimensions": embedding_client.dimensions,
             "chunking_strategy": index.strategy.name,
             "embedding_cache": embedding_client.stats.to_dict(),
         }
@@ -269,18 +278,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "calculate":
         inputs = json.loads(args.inputs)
         metric = args.metric
-        if metric == "cac":
-            value = cac(inputs["total_acquisition_cost"], inputs["new_customers"])
-        elif metric == "gross-profit":
-            value = gross_profit(inputs["price"], inputs["cogs"])
-        elif metric == "gross-margin":
-            value = gross_margin(inputs["price"], inputs["cogs"])
-        elif metric == "ltgp":
-            value = lifetime_gross_profit(inputs["monthly_price"], inputs["monthly_churn_rate"], inputs["gross_margin"])
-        elif metric == "payback":
-            value = payback_period_months(inputs["cac"], inputs["month_one_gp"], inputs["monthly_recurring_gp"])
-        else:
-            value = cfa_level(inputs["cac"], inputs["first_30_day_gp"])
+        value = calculate_metric(metric, inputs)
         print(json.dumps({"metric": metric, "value": value}, indent=2))
         return 0
 
@@ -312,15 +310,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.snapshot_action == "set":
             if not args.assignments:
                 parser.error("snapshot set requires at least one field=value assignment")
+            source_record = _snapshot_source_record(args, paths.business_dir, parser)
             updates = []
             for assignment in args.assignments:
                 field_name, value = _parse_assignment(assignment)
                 _set_snapshot_field(snapshot, field_name, value)
-                snapshot.field_sources[field_name] = {
-                    "source_type": "cli",
-                    "confidence": "high",
-                    "updated_at": utc_now(),
-                }
+                snapshot.field_sources[field_name] = dict(source_record)
                 updates.append({"field": field_name, "value": value})
             snapshot.save(paths.snapshot)
             print(json.dumps({"snapshot": str(paths.snapshot), "updated": updates, "state": snapshot.to_dict()}, indent=2))
@@ -669,8 +664,19 @@ def _normalize_calculation_event(event: Any, index: int) -> dict[str, Any]:
     if not all(isinstance(key, str) and key.strip() for key in inputs):
         raise SystemExit(f"record-json calculation_events[{index}].inputs keys must be non-empty strings")
     value = event.get("value")
-    if not isinstance(value, (int, float)):
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
         raise SystemExit(f"record-json calculation_events[{index}].value must be a number")
+    try:
+        expected = calculate_metric(metric, inputs)
+    except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+        raise SystemExit(f"record-json calculation_events[{index}] has invalid inputs for {metric}: {exc}") from exc
+    if not math.isfinite(float(expected)):
+        raise SystemExit(f"record-json calculation_events[{index}] result for {metric} is not finite")
+    if not math.isclose(float(value), float(expected), rel_tol=1e-9, abs_tol=1e-9):
+        raise SystemExit(
+            f"record-json calculation_events[{index}].value does not match deterministic {metric} result: "
+            f"expected {expected}, got {value}"
+        )
     normalized = dict(event)
     normalized["metric"] = metric
     normalized["inputs"] = inputs
@@ -906,8 +912,6 @@ def _advisor_state_summary(snapshot: BusinessSnapshot) -> dict[str, Any]:
         "ready_for_payback_diagnosis": advisor_state["ready_for_payback_diagnosis"],
         "ready_for_offer_stack_diagnosis": advisor_state["ready_for_offer_stack_diagnosis"],
         "missing_fields": advisor_state["missing_fields"],
-        "likely_retrieval_subjects": advisor_state["likely_retrieval_subjects"],
-        "retrieval_query_terms": _compact_list(advisor_state["retrieval_query_terms"], 8),
         "known_facts": _known_snapshot_facts(payload),
     }
 
@@ -986,6 +990,38 @@ def _set_snapshot_field(snapshot: BusinessSnapshot, field_name: str, value: Any)
         raise SystemExit(f"unknown snapshot field path: {field_name}")
     setattr(target, final, value)
     snapshot.refresh()
+
+
+def _snapshot_source_record(
+    args: argparse.Namespace,
+    business_dir: Path,
+    parser: argparse.ArgumentParser,
+) -> dict[str, Any]:
+    record: dict[str, Any] = {
+        "source_type": args.source_type,
+        "confidence": "high",
+        "updated_at": utc_now(),
+    }
+    if args.source_type == "conversation":
+        if args.source:
+            parser.error("--source is only valid with --source-type=file")
+        return record
+    if not args.source:
+        parser.error("--source-type=file requires --source")
+    root = business_dir.resolve()
+    source_path = Path(args.source)
+    if not source_path.is_absolute():
+        source_path = root / source_path
+    try:
+        resolved = source_path.resolve(strict=True)
+        relative = resolved.relative_to(root)
+    except (FileNotFoundError, ValueError):
+        parser.error("--source must name an existing file inside --business-dir")
+    if not resolved.is_file():
+        parser.error("--source must name a file")
+    record["source"] = relative.as_posix()
+    record["source_hash"] = f"sha256:{hashlib.sha256(resolved.read_bytes()).hexdigest()}"
+    return record
 
 
 def _summarize_log(path: Path, payload: dict[str, Any]) -> dict[str, Any]:

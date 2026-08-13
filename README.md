@@ -4,7 +4,12 @@ A portfolio RAG and diagnostic advisor for Alex Hormozi's *$100M Money Models*.
 
 The target role is recorded in [JOB_DESCRIPTION.md](JOB_DESCRIPTION.md). That file is the project north star: the repo should demonstrate production-grade AI agent work, RAG judgment, golden datasets, cached embeddings, cost-aware architecture, observability, and regression-oriented evaluation for the Acquisition.com Senior AI Engineer role. Repo-wide Codex guidance lives in [AGENTS.md](AGENTS.md).
 
-The canonical narrative lives in [DESIGN.md](DESIGN.md): it is written like an applied ML paper, with hypotheses, variants, metrics, results, and decisions. [JOB_DESCRIPTION.md](JOB_DESCRIPTION.md) records the target role, and [JD_REQUIREMENTS_AUDIT.md](JD_REQUIREMENTS_AUDIT.md) maps each JD requirement to current evidence, gaps, and next proof. [GOLDEN_DATASET.md](GOLDEN_DATASET.md) maps the eval suite to the JD's golden-dataset requirement. [ARCHITECTURE.md](ARCHITECTURE.md) is the technical reference and JD-to-file map. [CLI_DESIGN.md](CLI_DESIGN.md) defines the agent-operated CLI product contract. [GLOSSARY.md](GLOSSARY.md) defines common project terms. [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md) defines the advisor's lean state schema. [ADVISOR_QUERY_POLICY_V1.md](ADVISOR_QUERY_POLICY_V1.md) defines runtime retrieval query construction. [AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md](AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md) tracks the boundary-correction history. [TOOL_USE_JUDGMENT_PROGRESS.md](TOOL_USE_JUDGMENT_PROGRESS.md) tracks next-action classification, [SOURCE_NEED_GENERATION_PROGRESS.md](SOURCE_NEED_GENERATION_PROGRESS.md) tracks source-need generation, and [SEARCH_QUERY_QUALITY_PROGRESS.md](SEARCH_QUERY_QUALITY_PROGRESS.md) tracks whether source-search queries retrieve useful chunks. [TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md](TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md) defines the concrete eval upgrade. [ADVISOR_RETRIEVAL_HANDOFF.md](ADVISOR_RETRIEVAL_HANDOFF.md) captures the current retrieval trace review and next planner work. [ADVISOR_OPERATING_GUIDE.md](ADVISOR_OPERATING_GUIDE.md) tells an agent how to use the local CLI tools. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) is the build order. [TOOLING_SHORTLIST.md](TOOLING_SHORTLIST.md) records the shortcut stack. `evals/reports/` contains the evidence tables behind the narrative.
+The portfolio narrative is [narrative.html](narrative.html). [DESIGN.md](DESIGN.md)
+is the longer technical decision record, and [GOLDEN_DATASET.md](GOLDEN_DATASET.md)
+maps each active evaluation to its data, scorer, and report. Runtime contracts live in
+[CLI_DESIGN.md](CLI_DESIGN.md), [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md),
+and the project advisor skill. Historical progress files remain in the repo for
+reproducibility but do not define current behavior.
 
 This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
 
@@ -20,7 +25,12 @@ Advisor operation instructions live in the project skill at `.codex/skills/money
 
 These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `calculate`, `search_source_material`, `turn_record`, and `logs`.
 
-Current dev focus: turn the working agent-operated CLI pieces into an impressive end-to-end advisor workflow. The project keeps the evaluation ladder separate: first, next-action classification asks whether the next action should be source-material search, saved-state read, local-doc inspection, calculation, clarification, saved-context update, or direct answer. Second, source-need generation asks what source support is needed when search is appropriate. Third, search-query quality asks whether that source need retrieves useful Money Models chunks. Retrieval now has local and Pinecone-backed vector storage; the next product-facing work is making the CLI session flow crisp, traceable, and demo-ready.
+Current retrieval uses one corpus-guided query through unfiltered hybrid search over
+framework-aware chunks. The 46-case suite tests the raw question and unguided and
+guided rewrites through both BM25 and hybrid retrieval; BM25 remains the lexical
+control. The selected embedding is `text-embedding-3-large` at 1,536 dimensions,
+isolated in its own Pinecone namespace. Local and Pinecone vector stores share the same boundary. The current
+remediation work is tracked in [REMEDIATION_PLAN.md](REMEDIATION_PLAN.md).
 
 Set up advisor state for a context directory:
 
@@ -117,71 +127,42 @@ Generate the local retrieval baseline report:
 PYTHONPATH=src python3 scripts/eval_retrieval.py
 ```
 
-Compare chunking strategies:
+Revalidate chunking and the complete frozen query/model/retriever matrix on the
+active 46-case suite:
 
 ```bash
-PYTHONPATH=src python3 scripts/compare_chunking.py
+python3 scripts/revalidate_retrieval_choices.py chunking
+python3 scripts/revalidate_retrieval_choices.py matrix
 ```
 
-Audit query realism before final retriever selection:
+The matrix report compares the raw question, unguided rewrite, and corpus-guided
+rewrite conditions through BM25 and hybrid retrieval over the final framework-aware
+chunks. See `evals/reports/active_framework_retrieval_matrix.md`.
 
-```bash
-PYTHONPATH=src python3 scripts/audit_query_realism.py
-```
-
-Score source-search query quality on search-appropriate turns. Reference mode scores reviewer-authored source-specific queries; generated mode scores the current runtime query builder using the same cases and their advisor-selected source needs:
-
-```bash
-python3 scripts/eval_search_query_quality.py --query-source reference \
-  --report evals/reports/advisor_search_query_quality.md
-
-python3 scripts/eval_search_query_quality.py --query-source generated \
-  --retrieval-backend bm25 \
-  --report evals/reports/advisor_search_query_quality_generated_bm25.md
-
-python3 scripts/compare_retrieval_backends.py --query-source generated \
-  --report evals/reports/retrieval_backend_comparison.md
-
-python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
-  --report evals/reports/retrieval_backend_comparison_generated_variants.md
-```
-
-`compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval on the same generated-query cases. Vector search uses the OpenAI embeddings API only for vectorization; agent planning, labeling, source-need generation, and answer synthesis remain Codex/CLI operated. Embeddings are cached under `.cache/embeddings/` so repeated runs reuse corpus and query vectors instead of paying for the same inputs again.
-
-Pinecone-backed retrieval uses the same generated-query cases after the corpus has been indexed:
-
-```bash
-PYTHONPATH=src python3 -m money_model_architect.cli index pinecone
-
-python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
-  --vector-store pinecone \
-  --report evals/reports/retrieval_backend_comparison_generated_variants_pinecone.md
-```
-
-Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`. Local tests and local evals continue to use `--vector-store local`.
-
-The JD-specific multi-namespace experiment indexes the same corpus into the five Money Models layer namespaces and runs an oracle namespace condition where `SourceNeed.target_namespaces` is populated from expected layers:
+Index and benchmark the active Pinecone path:
 
 ```bash
 PYTHONPATH=src python3 -m money_model_architect.cli index pinecone \
-  --index-layout layer \
-  --namespace-prefix money-models
+  --chunking framework-aware \
+  --namespace money-models-framework-large-d1536
 
-python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
-  --vector-store local \
-  --target-namespace-source expected_layers \
-  --report evals/reports/retrieval_backend_comparison_generated_variants_local_layer_namespaces_oracle.md
-
-python3 scripts/compare_retrieval_backends.py --query-source generated_variants \
-  --vector-store pinecone \
-  --target-namespace-source expected_layers \
-  --max-workers 8 \
-  --report evals/reports/retrieval_backend_comparison_generated_variants_pinecone_layer_namespaces_oracle.md
+python3 scripts/revalidate_retrieval_choices.py pinecone \
+  --chunking framework-aware \
+  --policy single \
+  --single-namespace money-models-framework-large-d1536 \
+  --max-workers 1 \
+  --summary evals/reports/pinecone_large_embedding_revalidation_summary.json \
+  --cases-output evals/reports/pinecone_large_embedding_revalidation_cases.jsonl
 ```
 
-The current hosted benchmark uses the active 46-case, one-query path and framework-aware chunks. A single unfiltered namespace preserves 93.5% Hit@1 and 100% Hit@5 at 4.07s p50 and 7.64s p95. An oracle subject split does not improve the hit-rate cutoffs and worsens p95 to 10.47s, so the runtime keeps one namespace and treats hosted latency optimization as open work. See `evals/reports/active_query_pinecone_revalidation.md`.
+Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`. Embeddings are
+used only for deterministic vectorization and cached under `.cache/embeddings/`.
 
-Run the product-harness model-routing baseline. This uses `codex exec`, so the model acts as an agent, can run the local CLI, and writes normal trace artifacts. It does not use `OPENAI_API_KEY`:
+The current hosted benchmark uses the active 46-case, one-query path, framework-aware chunks, and `text-embedding-3-large` at 1,536 dimensions. The isolated unfiltered namespace reaches 93.5% Hit@1, 100% Hit@5, and 86.1% Useful@5 at 1.13s p50 / 1.43s p95. The earlier namespace experiment did not improve quality, and removing a redundant 10x vector over-fetch reduced latency without changing rankings. See `evals/reports/pinecone_large_embedding_revalidation.md` and `evals/reports/pinecone_candidate_depth_optimization.md`.
+
+The older orchestration model-routing harness remains available for historical
+replay. It uses `codex exec`, lets the model operate the CLI, and does not use
+`OPENAI_API_KEY`:
 
 ```bash
 python3 scripts/eval_codex_model_routing.py
@@ -189,9 +170,10 @@ python3 scripts/eval_codex_model_routing.py
 # traces are cached under evals/runs/model_routing_codex/; --force re-runs them
 ```
 
-The report lands at `evals/reports/model_routing_tiering.md` with a summary JSON beside it. The current corrected decision: `gpt-5.5` via Codex CLI is the OpenAI agent baseline; no cheaper Codex tier is promoted because the attempted `gpt-5-mini` Codex run is unsupported for this ChatGPT subscription harness. API replay can still be used as a separately labeled provider experiment, but not as the product-routing result.
+The report lands at `evals/reports/model_routing_tiering.md`. It predates the current
+single-query contract and should not be used as query-writer evidence.
 
-Score source-need generation traces:
+Replay the retired source-need planning experiment:
 
 ```bash
 python3 scripts/capture_source_need_trace.py prepare sourceneed_v1_001
@@ -202,16 +184,18 @@ python3 scripts/capture_source_need_trace.py complete \
 python3 scripts/eval_source_need_generation.py
 ```
 
-Score completed source-event traces for search/no-search and multi-search advisor turns:
+Run and score the current source-event regression for search/no-search and
+multi-search advisor turns:
 
 ```bash
-python3 scripts/capture_source_event_trace.py prepare sourceevents_v1_001
-python3 scripts/capture_source_event_trace.py complete \
-  evals/runs/source_events/post_hardening/sourceevents_v1_001 \
-  --actions-json '["read_snapshot","calculate","diagnose","search_source_material","search_source_material","turn_record"]' \
-  --source-events-json '[{"search_request":{"intent":"diagnostic_evidence","user_turn":"what should we fix first?","query":"client financed acquisition CAC gross profit payback period"},"query":"client financed acquisition CAC gross profit payback period","chunks":[{"id":"payback-period:0"}]},{"search_request":{"intent":"recommendation_evidence","user_turn":"what should we fix first?","query":"upsell offers first 30 day gross profit payback"},"query":"upsell offers first 30 day gross profit payback","chunks":[{"id":"upsells:0"}]}]'
-python3 scripts/eval_source_event_traces.py --runs-dir evals/runs/source_events/post_hardening_expanded_v2
+python3 scripts/run_source_event_codex_eval.py --max-workers 2
+python3 scripts/eval_source_event_traces.py
+python3 scripts/eval_advisor_answer_quality.py
 ```
+
+The runner gives each isolated acting agent the case context but hides the expected
+labels. The scorer checks the active single-query `SearchRequest` contract and writes
+`evals/reports/advisor_source_event_traces.md`.
 
 Review human-auditable required-claim labels:
 
@@ -245,7 +229,9 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Advisor runtime single-query policy implemented in `src/money_model_architect/advisor_queries.py`.
 - Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
 - Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
-- Source-need generation eval implemented in `evals/advisor_source_need_cases.jsonl`, with report generation in `scripts/eval_source_need_generation.py`.
+- The retired source-need eval remains reproducible from
+  `evals/advisor_source_need_cases.jsonl` and
+  `scripts/eval_source_need_generation.py`; it is not the active query contract.
 - Source-event trace eval implemented in `evals/advisor_source_event_cases.jsonl`, with report generation in `scripts/eval_source_event_traces.py`.
 - Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented. BM25 is the lexical control. The active path uses one corpus-guided query with unfiltered hybrid retrieval; the approach leads the 46-case audited regression suite, and the hybrid-backend decision holds under both tested query writers.
 - Agent-facing single-query search implemented in `search --search-request-json`; the older `--source-need-json` remains only for reproducing historical evals and manual debugging.
@@ -258,6 +244,6 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 ## What remains planned
 
 - Agent-led local doc inspection before snapshot updates.
-- Optimize hosted-vector latency now that Pinecone indexing and parity evals are working.
+- Continue monitoring hosted-vector tail latency as the corpus and traffic grow.
 - Optional LangGraph state graph once the CLI advisor loop is defined clearly enough to benefit from it.
 - Final hiring write-up assembled from the narrative, reports, and saved result tables.

@@ -2,7 +2,7 @@
 
 ## Method
 
-All five chunking strategies used the same 46 cases, frozen `gpt-5.5` corpus-guided queries, unfiltered local hybrid retrieval, and top-five cutoff. The answer key is anchored to audited heading passages; alternative boundaries inherit labels by source-span overlap. A semantic review added 14 omitted heading-passage labels across nine cases and one direct alternate-boundary adjudication.
+All five chunking strategies used the same 46 cases, frozen `gpt-5.5` corpus-guided queries, `text-embedding-3-small`, unfiltered local hybrid retrieval, and top-five cutoff. The answer key is anchored to audited heading passages; alternative boundaries inherit labels by source-span overlap. The later framework-boundary audit reviewed 115 pairs with no previously returned heading counterpart and every weak-overlap positive. Across the current framework results, 12 missed useful labels were added and one overly broad label was removed.
 
 “Mean top-five words” is the total text returned across five chunks.
 
@@ -14,7 +14,7 @@ All five chunking strategies used the same 46 cases, frozen `gpt-5.5` corpus-gui
 | fixed-512 | 87.0% | 97.8% | 97.8% | 1.156 | 79.6% | 20.4% | 729 | 2,495 |
 | fixed-800 | 95.7% | 100.0% | 100.0% | 1.065 | 75.2% | 24.8% | 1,139 | 3,762 |
 | heading-aware | 93.5% | 97.8% | 100.0% | 1.130 | 73.0% | 27.0% | 2,471 | 2,493 |
-| framework-aware | 93.5% | 97.8% | 100.0% | 1.152 | 78.3% | 21.7% | 922 | 2,476 |
+| framework-aware | 93.5% | 97.8% | 100.0% | 1.152 | 78.7% | 21.3% | 922 | 2,476 |
 
 ## Decision
 

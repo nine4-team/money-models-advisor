@@ -1,6 +1,6 @@
 # Current Query Generation Experiment
 
-**Date:** 2026-08-11
+**Date:** 2026-08-12
 **Status:** Corpus-guided method selected and active in the CLI
 
 ## Goal
@@ -20,7 +20,8 @@ The experiment compares three reasonable starting approaches:
 Each method receives only the information appropriate to its design. Reference queries,
 focus terms, subjects, and relevance labels are hidden. Every method produces one query
 and uses no subject filter. Each saved query is scored unchanged through BM25 and hybrid
-retrieval, completing the approach × model × retriever matrix.
+retrieval over the framework-aware chunks used by the product, completing the
+approach × model × retriever matrix.
 
 ## Audited 46-case result
 
@@ -30,36 +31,36 @@ them as one regression suite.
 
 | Query approach | Model | Retriever | Hit@1 | Hit@3 | Hit@5 | Mean first useful rank | Useful@5 | Noise@5 |
 |---|---|---|---:|---:|---:|---:|---:|---:|
-| Raw question | none | BM25 | 54.3% | 69.6% | 84.8% | 1.821 | 40.4% | 59.6% |
-| Raw question | none | Hybrid | 67.4% | 82.6% | 84.8% | 1.308 | 44.8% | 55.2% |
-| Unguided rewrite | `gpt-5.5` | BM25 | 60.9% | 87.0% | 93.5% | 1.558 | 50.9% | 49.1% |
-| Unguided rewrite | `gpt-5.5` | Hybrid | 67.4% | 93.5% | 95.7% | 1.409 | 57.0% | 43.0% |
-| Unguided rewrite | `gpt-5.4-mini` | BM25 | 56.5% | 80.4% | 89.1% | 1.561 | 51.3% | 48.7% |
-| Unguided rewrite | `gpt-5.4-mini` | Hybrid | 67.4% | 91.3% | 95.7% | 1.432 | 55.7% | 44.3% |
-| Corpus-guided rewrite | `gpt-5.5` | BM25 | 84.8% | 93.5% | 97.8% | 1.289 | **75.2%** | **24.8%** |
-| Corpus-guided rewrite | `gpt-5.5` | Hybrid | **93.5%** | 97.8% | **100.0%** | 1.130 | 73.0% | 27.0% |
-| Corpus-guided rewrite | `gpt-5.4-mini` | BM25 | 84.8% | 95.7% | **100.0%** | 1.326 | 72.2% | 27.8% |
-| Corpus-guided rewrite | `gpt-5.4-mini` | Hybrid | 89.1% | **100.0%** | **100.0%** | **1.109** | 72.6% | 27.4% |
+| Raw question | none | BM25 | 56.5% | 76.1% | 87.0% | 1.800 | 41.7% | 58.3% |
+| Raw question | none | Hybrid | 63.0% | 80.4% | 87.0% | 1.525 | 50.9% | 49.1% |
+| Unguided rewrite | `gpt-5.5` | BM25 | 73.9% | 91.3% | 95.7% | 1.364 | 55.7% | 44.3% |
+| Unguided rewrite | `gpt-5.5` | Hybrid | 80.4% | 91.3% | 93.5% | 1.233 | 62.6% | 37.4% |
+| Unguided rewrite | `gpt-5.4-mini` | BM25 | 67.4% | 80.4% | 91.3% | 1.619 | 55.2% | 44.8% |
+| Unguided rewrite | `gpt-5.4-mini` | Hybrid | 76.1% | 87.0% | 91.3% | 1.333 | 62.6% | 37.4% |
+| Corpus-guided rewrite | `gpt-5.5` | BM25 | 89.1% | 95.7% | 95.7% | 1.091 | 76.1% | 23.9% |
+| Corpus-guided rewrite | `gpt-5.5` | Hybrid | **93.5%** | 97.8% | **100.0%** | 1.152 | 78.7% | 21.3% |
+| Corpus-guided rewrite | `gpt-5.4-mini` | BM25 | 89.1% | 95.7% | **100.0%** | 1.217 | 74.8% | 25.2% |
+| Corpus-guided rewrite | `gpt-5.4-mini` | Hybrid | 91.3% | **100.0%** | **100.0%** | **1.109** | **80.4%** | **19.6%** |
 
 ## False-negative and false-positive check
 
-Across all recorded retrieval audits, we added 150 missing useful case-passage
-labels and removed 13 overly broad labels, for 163 corrections in total.
+Across all recorded retrieval audits, we added 161 missing useful case-passage
+labels and removed 14 overly broad labels.
 
 Every query and retrieval result was frozen before the relevance audits. Missing valid
 passages and incorrectly permissive labels were corrected in the shared answer key,
 then every saved result was rescored without regeneration or retrieval. The successive
 reviews are recorded in `evals/reports/query_generation_label_audit.md`,
 `query_generation_holdout_v1_label_audit.md`, and
-`retrieval_backend_relevance_audit.md`, followed by the completed-matrix review in
-`query_generation_full_matrix_audit.md`. Codex performed the semantic review rather
+`retrieval_backend_relevance_audit.md`, followed by the heading-aware completed-matrix
+review in `query_generation_full_matrix_audit.md` and the active-boundary review in
+`active_framework_retrieval_matrix.md`. Codex performed the semantic review rather
 than an independent human adjudicator.
 
 Corpus guidance wins under both retrievers and both tested models, so the approach
-decision is not an artifact of one model or backend. Hybrid improves the raw and
-unguided conditions on both coverage and evidence density. With the guided winner,
-hybrid ranks useful evidence earlier and preserves 100% Hit@5, while BM25 is slightly
-denser for the `gpt-5.5` query set. `gpt-5.5` puts useful evidence first more often;
+decision is not an artifact of one model or backend. With the guided winner, hybrid
+preserves 100% Hit@5 and improves useful evidence density under both tested models.
+`gpt-5.5` puts useful evidence first more often;
 Mini reaches useful evidence within three results on every guided case. This still
 does not establish a final-answer-quality difference because the advisor receives all
 five passages.
@@ -74,8 +75,9 @@ corpus guide earns its added dependency.
 ## Current evidence files
 
 - `evals/reports/query_generation_current.md` — canonical current result
-- `evals/reports/query_generation_full_matrix_summary.json` — machine-readable combined result
-- `evals/reports/query_generation_full_matrix_audit.md` — completed pooled-label audit
+- `evals/reports/active_framework_retrieval_matrix.md` — current method and boundary audit
+- `evals/reports/active_framework_retrieval_matrix_summary.json` — machine-readable current result
+- `evals/reports/query_generation_full_matrix_audit.md` — historical heading-aware pooled-label audit
 - `evals/reports/query_generation_label_audit.md` — relevance-label review
 - `evals/reports/query_generation_holdout_v1.md` — preserved 16-case expansion-slice comparison
 - `evals/reports/query_generation_holdout_v1_label_audit.md` — expansion-slice relevance review

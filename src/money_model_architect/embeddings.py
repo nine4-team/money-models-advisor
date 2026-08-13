@@ -51,6 +51,7 @@ class EmbeddingPurposeStats:
 @dataclass
 class EmbeddingStats:
     model: str
+    dimensions: int | None
     cache_namespace: str
     cache_dir: str
     by_purpose: dict[str, EmbeddingPurposeStats] = field(default_factory=dict)
@@ -63,6 +64,7 @@ class EmbeddingStats:
     def to_dict(self) -> dict[str, object]:
         return {
             "model": self.model,
+            "dimensions": self.dimensions,
             "cache_namespace": self.cache_namespace,
             "cache_dir": self.cache_dir,
             "by_purpose": {
@@ -121,18 +123,29 @@ class OpenAIEmbeddingClient:
         cache_dir: Path | None = None,
         batch_size: int = 64,
         base_url: str = "https://api.openai.com/v1",
+        dimensions: int | None = None,
     ) -> None:
         load_env_file(repo_root() / ".env")
-        self.model = model or os.getenv("MMA_EMBEDDING_MODEL") or "text-embedding-3-small"
+        self.model = model or os.getenv("MMA_EMBEDDING_MODEL") or "text-embedding-3-large"
+        env_dimensions = os.getenv("MMA_EMBEDDING_DIMENSIONS")
+        self.dimensions = dimensions if dimensions is not None else (
+            int(env_dimensions) if env_dimensions else (1536 if self.model == "text-embedding-3-large" else None)
+        )
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        self.cache_dir = cache_dir or repo_root() / ".cache" / "embeddings" / "openai" / self.model
+        cache_name = self.embedding_id
+        self.cache_dir = cache_dir or repo_root() / ".cache" / "embeddings" / "openai" / cache_name
         self.batch_size = batch_size
         self.base_url = base_url.rstrip("/")
         self.stats = EmbeddingStats(
             model=self.model,
-            cache_namespace=f"openai/{self.model}",
+            dimensions=self.dimensions,
+            cache_namespace=f"openai/{cache_name}",
             cache_dir=str(self.cache_dir),
         )
+
+    @property
+    def embedding_id(self) -> str:
+        return f"{self.model}-d{self.dimensions}" if self.dimensions else self.model
 
     def embed_text(self, text: str, *, purpose: str = "query") -> list[float]:
         return self.embed_texts([text], purpose=purpose)[0]
@@ -195,7 +208,7 @@ class OpenAIEmbeddingClient:
         return estimate_tokens_from_chars(api_chars) / 1_000_000 * rate
 
     def _cache_path(self, text: str) -> Path:
-        digest = hashlib.sha256(f"{self.model}\n{text}".encode("utf-8")).hexdigest()
+        digest = hashlib.sha256(f"{self.embedding_id}\n{text}".encode("utf-8")).hexdigest()
         return self.cache_dir / f"{digest}.json"
 
     def _read_cache(self, path: Path) -> list[float] | None:
@@ -209,14 +222,20 @@ class OpenAIEmbeddingClient:
 
     def _write_cache(self, path: Path, embedding: Sequence[float]) -> None:
         path.write_text(
-            json.dumps({"model": self.model, "embedding": list(embedding)}, separators=(",", ":")) + "\n",
+            json.dumps(
+                {"model": self.model, "dimensions": self.dimensions, "embedding": list(embedding)},
+                separators=(",", ":"),
+            ) + "\n",
             encoding="utf-8",
         )
 
     def _request_embeddings(self, texts: Sequence[str]) -> list[list[float]]:
+        request_payload: dict[str, object] = {"model": self.model, "input": list(texts)}
+        if self.dimensions is not None:
+            request_payload["dimensions"] = self.dimensions
         request = urllib.request.Request(
             f"{self.base_url}/embeddings",
-            data=json.dumps({"model": self.model, "input": list(texts)}).encode("utf-8"),
+            data=json.dumps(request_payload).encode("utf-8"),
             headers={
                 "Authorization": f"Bearer {self.api_key}",
                 "Content-Type": "application/json",

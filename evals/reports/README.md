@@ -43,11 +43,16 @@ The goal is to make RAG architecture decisions the way an ML workflow makes mode
 
 ## Current Query-Generation Evidence
 
-Use `query_generation_current.md` as the canonical result for the current three-method
-comparison and `query_generation_label_audit.md` for its false-negative and
-false-positive review. The method-specific reports and run directories remain as raw
-reproducibility artifacts; older aggregate interpretations are historical and should
-not be copied into the narrative.
+Use `query_generation_current.md` and `active_framework_retrieval_matrix.md` as the
+canonical current result. The method-specific reports and run directories remain as
+raw reproducibility artifacts; older heading-aware aggregate interpretations are
+historical and should not be copied into the narrative.
+
+Replay the frozen current matrix with:
+
+```bash
+PYTHONPATH=src python3 scripts/revalidate_retrieval_choices.py matrix
+```
 
 The active retrieval-support guardrail is required-claim support coverage. Required supported claims live in `evals/obligations.jsonl`; review them with `PYTHONPATH=src python3 scripts/review_obligations.py`, then score accepted labels with `PYTHONPATH=src python3 scripts/score_obligation_support.py`. Use `--include-proposed` only when a future label batch has unreviewed proposed rows.
 
@@ -70,7 +75,8 @@ python3 scripts/eval_tool_use_judgment.py
 
 `eval_tool_use_judgment.py` validates `evals/advisor_tool_use_cases.jsonl` and scores any saved `run.json` traces under `evals/runs/next_action/`. If no traces exist yet, the report is case inventory only, not behavior results.
 
-For active source-search query-quality checks, use:
+The commands below reproduce earlier source-need and heading-aware experiments. They
+are retained for historical comparison, not as the active product benchmark:
 
 ```bash
 python3 scripts/eval_search_query_quality.py --query-source reference \
@@ -90,6 +96,12 @@ python3 scripts/compare_retrieval_backends.py --query-source generated \
 
 Use `--vector-store local` for the default local eval path. After running `PYTHONPATH=src python3 -m money_model_architect.cli index pinecone`, use `--vector-store pinecone` to run the same golden search-query evals against Pinecone-backed vector storage. Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`.
 
+The active Pinecone infrastructure reports are
+`active_query_pinecone_revalidation.md` for namespace layout and
+`pinecone_candidate_depth_optimization.md` for the 250-to-25 candidate correction.
+The selected embedding comparison is `embedding_model_comparison.md`; its isolated
+Large/1,536 Pinecone replay is `pinecone_large_embedding_revalidation.md`.
+
 For active source-need generation checks, use:
 
 ```bash
@@ -106,15 +118,25 @@ python3 scripts/eval_source_need_generation.py
 ## Source-Event Trace Eval
 
 ```bash
-python3 scripts/capture_source_event_trace.py prepare sourceevents_v1_001
-python3 scripts/capture_source_event_trace.py complete \
-  evals/runs/source_events/post_hardening/sourceevents_v1_001 \
-  --actions-json '["read_snapshot","calculate","diagnose","search_source_material","search_source_material","turn_record"]' \
-  --source-events-json '[{"source_need":{"intent":"diagnostic_evidence","layers":["unit-economics"],"focus_terms":["CAC","payback period"]},"query":"CAC payback period","chunks":[{"id":"payback-period:0"}]},{"source_need":{"intent":"recommendation_evidence","layers":["upsells"],"focus_terms":["upsell","first 30 day gross profit"]},"query":"upsell first 30 day gross profit","chunks":[{"id":"upsells:0"}]}]'
+python3 scripts/run_source_event_codex_eval.py --max-workers 2
 python3 scripts/eval_source_event_traces.py
 ```
 
-`capture_source_event_trace.py prepare` creates an isolated eval directory plus an acting prompt that hides expected source-event labels. `complete` records the completed turn's actions, source events, and cited chunk IDs. `eval_source_event_traces.py` validates `evals/advisor_source_event_cases.jsonl` and scores saved `run.json` artifacts under `evals/runs/source_events/`. It tests whether an acting agent records distinct source events when one answer needs multiple retrieval jobs.
+`run_source_event_codex_eval.py` prepares isolated case directories, hides the expected
+labels, runs the acting agents, and captures their completed session artifacts.
+`eval_source_event_traces.py` scores the saved runs under
+`evals/runs/source_events/search_request_v1/` against the active single-query
+`SearchRequest` contract.
+
+The same current-path answers have a hash-bound semantic audit:
+
+```bash
+python3 scripts/eval_advisor_answer_quality.py
+```
+
+It reports recommendation correctness/usefulness and claim-level citation support in
+`evals/reports/advisor_answer_quality.md`. Codex is the disclosed semantic reviewer;
+this is separate from the deterministic citation-provenance validator.
 
 Old keyword evidence-term experiments are archived under `archive/keyword-evidence-proxy/` and are not part of the active design.
 Old provider-backed experiments are archived under `archive/provider-backed-experiments/` and are not part of the active design.

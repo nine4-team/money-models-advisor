@@ -50,7 +50,7 @@ The key runtime object is `BusinessSnapshot`, defined in `BUSINESS_SNAPSHOT_V1.m
 
 The adopted strategy is `framework-aware`: preserve transcript headings, split long sections at framework cues, and use bounded overlapping windows as a fallback.
 
-The original 32-case BM25 screen could not distinguish it from heading-aware. Revalidation on the active 46-case, single-query hybrid path did: both reached 93.5% Hit@1 and 100% Hit@5, while framework-aware improved Useful@5 from 73.0% to 78.3% and reduced the largest chunk from 2,471 to 922 words. Fixed-800 reached 95.7% Hit@1 but returned 51% more text across the top five.
+The original 32-case BM25 screen could not distinguish it from heading-aware. Revalidation on the active 46-case, single-query hybrid path did: both reached 93.5% Hit@1 and 100% Hit@5, while framework-aware improved Useful@5 from 73.0% to 78.7% and reduced the largest chunk from 2,471 to 922 words. Fixed-800 reached 95.7% Hit@1 but returned 51% more text across the top five.
 
 Reports: `evals/reports/chunking_comparison.md` and `evals/reports/active_query_chunking_revalidation.md`.
 
@@ -65,7 +65,7 @@ It does not mean:
 - deciding the user's intent
 - calling external model services
 
-The current local baseline uses BM25-style scoring and the five-layer taxonomy. It is intentionally simple because the advisor loop, state model, and evaluation method need to be clear before adding retrieval complexity.
+The active product path uses one corpus-guided query through unfiltered hybrid search over framework-aware chunks. BM25 is retained as the lexical control. Cached embeddings and the local/Pinecone vector-store boundary keep retrieval execution deterministic and repeatable.
 
 The next retrieval work is not just "write better queries." The advisor must pass two gates:
 
@@ -74,9 +74,9 @@ The next retrieval work is not just "write better queries." The advisor must pas
 
 Query quality should be evaluated only on turns where source-material search is actually the right action.
 
-This order matters. First we need to prove the agent can decide when to search and generate source-specific search requests. Then retrieval-model comparisons become meaningful. If the agent searches on the wrong turns or sends generic/stale queries, BM25, dense, hybrid, or reranking comparisons mostly measure noise from bad tool use rather than retrieval architecture quality.
+This order matters. The tool-use suite tests when to search; the 46-case query suite tests what query to write and how to retrieve with it. Keeping those risks separate prevents a retriever comparison from being dominated by wrong-tool or generic-query failures.
 
-Local baseline:
+The early chapter-level control was:
 
 | Retriever | Hit@1 | Hit@5 | MRR |
 |---|---:|---:|---:|
@@ -88,9 +88,12 @@ Report: `evals/reports/local_retrieval_baseline.md`.
 
 The project is still experiment-first, but all active experiments must run locally or through agent-assisted human review. The point is to demonstrate clear engineering judgment, not to accumulate fragile experiments.
 
-Because the target JD explicitly calls for golden datasets, the eval assets are presented as a golden-dataset suite rather than a loose pile of scripts. `GOLDEN_DATASET.md` maps the case files, scorers, reports, current results, and decisions. The current suite covers several product risks: tool-use judgment, source-need generation, source-event logging, search-query quality, chunking, retrieval backend comparison, required-claim support, and product-level multi-turn advisor behavior.
+`GOLDEN_DATASET.md` maps the case files, scorers, reports, current results, and decisions.
+The active suite covers tool-use judgment, current source-event logging, query quality,
+chunking, retrieval and embedding choices, calculation integrity, and seed answer
+quality. Retired source-need and multi-query cases remain historical evidence.
 
-Core design principle: the agent judges meaning; the CLI handles deterministic bookkeeping. The advisor is built around an agent that can read conversation context, inspect local docs, decide which tool is appropriate, generate source needs, and adjudicate semantic quality. The CLI should not pretend to be that semantic judge. Its job is to persist state, run formulas, execute local search, capture traces, and score recorded judgments. The detailed CLI product contract is defined in `CLI_DESIGN.md`.
+Core design principle: the agent judges meaning; the CLI handles deterministic bookkeeping. The advisor is built around an agent that can read conversation context, inspect local docs, decide which tool is appropriate, write a corpus-guided search request, and adjudicate semantic quality. The CLI should not pretend to be that semantic judge. Its job is to persist state, run formulas, execute local search, capture traces, and score recorded judgments. The detailed CLI product contract is defined in `CLI_DESIGN.md`.
 
 This means deterministic code is appropriate for:
 
@@ -104,7 +107,7 @@ This means deterministic code is appropriate for:
 Agent judgment is appropriate for:
 
 - deciding the next advisory action
-- generating `SourceNeed` objects
+- writing one corpus-guided `SearchRequest.query`
 - judging whether retrieved chunks actually support a claim
 - judging whether focus terms are conceptually covered even when wording differs
 - adjudicating ambiguous intent/layer cases
@@ -112,7 +115,7 @@ Agent judgment is appropriate for:
 
 The system should record those agent judgments as auditable artifacts, with rationale, instead of burying semantic decisions in brittle keyword rules.
 
-Senior audit refinement: deterministic code can classify numeric/accounting states such as "CAC is not recovered by first-30-day gross profit." That is not the same as deciding the user's conversational intent. Readiness flags, likely retrieval layers, and query terms are candidate hints; the agent decides whether they apply to the current turn.
+Senior audit refinement: deterministic code can classify numeric/accounting states such as "CAC is not recovered by first-30-day gross profit." That is not the same as deciding the user's conversational intent. The agent decides whether the current turn needs search and writes the query from the question, saved business facts, and corpus guide.
 
 Active eval assets:
 
@@ -146,29 +149,34 @@ This prevents self-report from becoming the metric and keeps weak evidence visib
 
 Current next-action result: all 24 cases have completed trace artifacts. Dev/regression traces were captured in-thread by Codex; scenario holdout traces were run after prompt freeze with separate acting agents that saw acting prompts but not expected labels. The current report shows 1.000 required-action recall, 100.0% full-sequence pass rate, 0% false-search rate, 0% missed-search rate, and 100% trace completeness.
 
-Current source-query result: the golden search-query slice now covers 30 search-appropriate turns. Reference mode uses reviewer-authored source-specific queries. Generated mode passes an explicit advisor-selected `SourceNeed` into the runtime query builder. Generated-variants mode adds constrained agent-style query variants and keeps the deterministic `SourceNeed` query as a fallback. This fixes the earlier snapshot-only failure where generated mode scored 50.0% and repeated a broad diagnostic query. The known-useful chunk labels are non-exhaustive seed labels, so retrieved but unlabeled chunks are inspected and adjudicated before interpreting misses.
+## Historical Retrieval Experiments
 
-Current source-need result: `evals/advisor_source_need_cases.jsonl` defines 14 seed cases, including 10 source-search cases and 4 no-search controls. Blind acting-agent traces are captured under `evals/runs/source_need/taxonomy_v2/` and scored in `evals/reports/advisor_source_need_generation.md`. After taxonomy guidance and focus-alias cleanup, the current report shows 100.0% search decision accuracy, 0.0% false search rate, 0.0% missed search rate, and 100.0% correct no-search controls. Intent match is 100.0%, layer exact match is 90.0%, average layer recall is 0.950, and average focus-term concept recall is 0.750. Decision: source-need generation is now good enough for seed retrieval-backend comparisons, with one known residual: the free-trial case still chooses `offers` without also adding `downsells`.
+The SourceNeed, subject-filtering, and multi-query material below records the path to
+the current design. Those schemas remain only for reproducibility and compatibility;
+they are not the active product contract. The superseding decision is the single
+corpus-guided `SearchRequest.query` described below.
 
-Current retrieval-backend decision: the system supports BM25, vector, and hybrid over the same framework-aware chunks. Vector search uses OpenAI embeddings only for deterministic vectorization, not for agent judgment or answer synthesis. Embeddings are cached under `.cache/embeddings/` so corpus vectors and repeated query vectors are reused across runs. Hybrid search uses reciprocal-rank fusion over BM25 and vector rankings so raw lexical and embedding scores do not need to be directly comparable.
+Historical source-query result: the earlier golden search-query slice covered 30 search-appropriate turns. Reference mode used reviewer-authored source-specific queries. Generated mode passed an explicit advisor-selected `SourceNeed` into the runtime query builder, and generated-variants mode added constrained query variants. These results explain the design path but do not define the current one-query contract.
 
-Baseline retrieval-backend result: `evals/reports/retrieval_backend_comparison.md` compares the three backends on the 30 generated-query cases. BM25 is the lexical baseline/control, not the intended production architecture. It reaches 93.3% Hit@3, 100.0% Hit@5, and mean known-useful rank 1.43. Plain vector reaches 96.7% Hit@3/Hit@5 and misses `searchq_v1_001`; plain hybrid also reaches 96.7% Hit@3/Hit@5 and misses `searchq_v1_001`, with a better mean known-useful rank of 1.21. The likely lesson is that deterministic generated queries still contain exact framework terms, so lexical retrieval is unusually strong for citation-oriented source lookup; dense/hybrid retrieval can return semantically adjacent chunks while missing the clearest framework passage when the query is a flat noun list.
+Historical source-need result: `evals/advisor_source_need_cases.jsonl` contains 14 seed cases from the retired taxonomy-based planner. Its traces and report remain available for reproducibility, but `SourceNeed` no longer drives product retrieval.
 
-Miss adjudication matters because the labels are intentionally non-exhaustive. In the 30-case expansion, several apparent misses were actually label-set limitations: retrieved menu-upsell, rollover-upsell, waived-fee, and continuity-bonus chunks were directly citeable and were added to the known-useful labels after inspection. `searchq_v1_001` remains the true plain vector/hybrid top-5 weakness: the user asks why fulfillment cost matters for ads, and dense retrieval ranks adjacent payback/CAC/CFA chunks above the clearest gross-profit/fulfillment-cost explanation.
+The system supports BM25, vector, and hybrid over the same framework-aware chunks. Vector search uses OpenAI embeddings only for deterministic vectorization, not for agent judgment or answer synthesis. Embeddings are cached under `.cache/embeddings/`; hybrid uses reciprocal-rank fusion over BM25 and vector rankings.
 
-Senior review of the remaining miss concluded that deterministic query flattening was a reasonable v1 baseline because it separated risks: the agent selected the semantic `SourceNeed`, while the CLI produced a stable query that could be evaluated. The v2 direction should not be one unconstrained freeform agent query. It should be agent-generated query variants under a constrained schema, with the deterministic flattened query retained as a fallback variant. That preserves traceability while letting the agent express causal teaching queries such as "why cost to deliver affects gross profit and paid acquisition."
+The historical backend and multi-query results are preserved in
+`evals/reports/retrieval_backend_comparison.md` and its companion reports. They
+established runnable vector and hybrid paths, but the current decision comes from the
+later 46-case one-query matrix below.
 
-Query variants are now implemented as `SourceNeed.query_variants` plus a separate candidate file, `evals/advisor_query_variants_v2.jsonl`. The evaluator fuses variant results with reciprocal-rank fusion so repeated evidence across variants is promoted and early variants cannot simply crowd out the fallback. On the 30-case expanded set, generated variants produce 100.0% Hit@5 for BM25, vector, and hybrid. Hybrid is strongest: 100.0% Hit@3, 100.0% Hit@5, mean known-useful rank 1.17, and no top-5 misses. BM25+variants reaches 96.7% Hit@3 and 100.0% Hit@5; vector+variants reaches 96.7% Hit@3 and 100.0% Hit@5. The operational report makes the cost visible: generated variants use 4.0 queries per case and 120 vector searches across the 30-case slice. In the current warm-cache run, query and corpus embedding cache hit rates are 100.0%, so vector/hybrid made zero external embedding API batches.
+## Current Retrieval Decision
 
-Superseding query-generation decision (updated 2026-08-12): the fixed-variant result above is retained as historical downstream-retrieval evidence, not the active product method. A later controlled experiment started from the real user question and saved snapshot, hid reviewer fields, removed subject filters, and compared raw question, unguided rewrite, and corpus-guided rewrite with exactly one query each. Every saved query was evaluated unchanged through BM25 and hybrid. Across the 46-case audited regression suite, corpus-guided `gpt-5.5` hybrid retrieval reached 93.5% Hit@1, 97.8% Hit@3, 100.0% Hit@5, and 73.0% Useful@5, versus 67.4%/82.6%/84.8%/44.8% for the raw question and 67.4%/93.5%/95.7%/57.0% for the unguided rewrite. Corpus guidance remained the strongest approach under BM25, while hybrid improved early ranking over BM25 under both guided query writers and preserved 100% Hit@5. The runtime uses one `SearchRequest.query` authored from the same versioned guide, executes it unfiltered through hybrid, and rejects trace/query mismatches. Codex performed the semantic relevance audits rather than an independent human reviewer, which is recorded as a benchmark limitation.
+Superseding query-generation decision (updated 2026-08-12): the fixed-variant result above is retained as historical downstream-retrieval evidence, not the active product method. A later controlled experiment started from the real user question and saved snapshot, hid reviewer fields, removed subject filters, and compared raw question, unguided rewrite, and corpus-guided rewrite with exactly one query each. Every saved query was evaluated unchanged through BM25 and hybrid over the final framework-aware chunks. Across the 46-case audited regression suite, corpus-guided `gpt-5.5` hybrid retrieval reached 93.5% Hit@1, 97.8% Hit@3, 100.0% Hit@5, and 78.7% Useful@5, versus 63.0%/80.4%/87.0%/50.9% for the raw question and 80.4%/91.3%/93.5%/62.6% for the unguided rewrite. Corpus guidance remained the strongest approach under BM25, while hybrid preserved 100% Hit@5 and improved Useful@5 over BM25 under both guided query writers. The runtime uses one `SearchRequest.query` authored from the same versioned guide, executes it unfiltered through hybrid, and rejects trace/query mismatches. Codex performed the semantic relevance audits rather than an independent human reviewer, which is recorded as a benchmark limitation. See `evals/reports/active_framework_retrieval_matrix.md`.
 
-Hiring narrative and product direction: BM25 is the lexical baseline/control, not the product architecture. It tells us whether fancier retrieval is actually earning its complexity. The selected architecture is: the agent decides when source support is needed; the agent writes one corpus-guided `SearchRequest.query`; the CLI runs unfiltered hybrid search over lexical and vector candidates; results are fused by rank; embeddings are cached for cost control; and golden datasets track quality regressions, latency, and cost. Multi-query fanout and metadata filtering are retained as separately testable mechanisms rather than assumed complexity.
+Embedding-model decision (2026-08-13): after freezing query generation, chunks, hybrid retrieval, and top five, `text-embedding-3-small` was compared with `text-embedding-3-large` at Pinecone's deployable 1,536 dimensions. The predefined rule required Large to preserve Hit@5 and improve Useful@5 by at least two points or mean rank by 0.10. After reviewing all 39 new case-passage pairs, Large preserved 100% Hit@5, raised Useful@5 from 78.7% to 86.5%, and reduced Noise@5 from 21.3% to 13.5%. Its estimated uncached cost for all 204 chunks and 46 queries was $0.017 versus $0.003. Large is now the runtime default. Report: `evals/reports/embedding_model_comparison.md`.
 
-The Pinecone/web-hosting narrative should say: "I started with local retrieval so I could iterate quickly and build reliable evals. Once the retrieval strategy was justified, I added a Pinecone-backed vector store behind the same interface, so the system could move from local CLI experimentation to hosted production retrieval without rewriting advisor logic."
-
-Pinecone implementation note: the important architecture choice is the vector-store boundary, not whether the first Pinecone adapter uses the official SDK or direct HTTP calls. For this prototype, a small REST adapter keeps the rest of the advisor dependency-light and provider-agnostic: local evals, Pinecone evals, and a future hosted surface all call the same narrow `VectorStore` contract. In production, the internals of `PineconeVectorStore` could move to the official SDK if it improved retry handling, auth ergonomics, batching, observability, or long-term maintenance without changing advisor logic or eval code.
-
-The write-up should frame the result this way: "I started with BM25 as a baseline because exact framework terms are strong in this corpus. Then I tested vector and hybrid retrieval. Plain vector/hybrid underperformed on one diagnostic case, which exposed a query-generation weakness. I added constrained query variants plus fusion, expanded the golden search-query slice from 10 to 30 cases, adjudicated newly retrieved citeable chunks, and found that hybrid+variants was strongest on the expanded slice. Because the dataset is still portfolio-scale, I would not overclaim final production superiority, but the production-facing architecture is hybrid retrieval with cached embeddings and eval-gated query generation."
+BM25 is the lexical control. The selected architecture is one agent-authored,
+corpus-guided `SearchRequest.query` through unfiltered hybrid retrieval over cached
+lexical and vector candidates. The vector-store boundary lets local evaluation and
+Pinecone use the same retrieval interface.
 
 Historical Pinecone parity result: the corpus was indexed into Pinecone as 202 heading-aware chunk vectors using stable ids and citation metadata. The older 30-case multi-query slice is retained for history, but it no longer defines the runtime benchmark.
 
@@ -184,9 +192,12 @@ One caveat on scope: this eval slice is saturated. Hit@5 is 100% for every backe
 
 Decision: five-layer namespaces are implemented and verified, but they are not a better v1 default than single namespace plus metadata filtering on this evaluation slice. The senior product choice is to keep namespace support available for index-management and future scale, skip a runtime agent namespace-selection eval for now, and use the simpler single-namespace path by default until namespace routing shows a measured quality or latency win.
 
-Superseding active-path result (2026-08-12): 204 framework-aware chunks were indexed separately and all 46 frozen winning queries were replayed. One namespace reached 93.5% Hit@1, 100% Hit@5, 78.3% Useful@5, 4.07s p50, and 7.64s p95. An oracle subject split kept the same quality metrics and worsened p95 to 10.47s. Use one unfiltered namespace; hosted latency optimization remains open. Report: `evals/reports/active_query_pinecone_revalidation.md`.
+Superseding active-path result (updated 2026-08-13): the first Pinecone run exposed a redundant 10x over-fetch: hybrid consumed 25 vector candidates but requested 250. Removing it preserved every Small-model top-five list. The selected Large 1,536-dimension vectors were then indexed in an isolated namespace and all 46 frozen queries were replayed sequentially. The hosted path reached 93.5% Hit@1, 100% Hit@5, 86.1% Useful@5, 1.13s p50, and 1.43s p95. The earlier oracle subject split had not improved quality, so the active path remains one unfiltered namespace. Reports: `evals/reports/pinecone_candidate_depth_optimization.md` and `evals/reports/pinecone_large_embedding_revalidation.md`.
 
-Reranking decision: reciprocal-rank fusion over query variants is the recorded v1 reranking baseline, and no cross-encoder or LLM reranker ships in v1. The JD names reranking, so this is an explicit decision, not an omission. The reasoning is measured: the current 30-case slice is saturated (hybrid+variants at 100.0% Hit@3/Hit@5, mean known-useful rank 1.17), so a true reranker cannot demonstrate a quality win here — it can only add per-query inference latency and cost on top of the ~1.4s hosted retrieval path. RRF already performs the rank-fusion job a reranker would start with: chunks retrieved consistently across constrained query variants get promoted. The trigger for revisiting is evidence that ordering, not recall, is the failure: a future golden slice where the known-useful chunk appears in the top-20 candidates but misses the top-5. If that pattern shows up as the corpus grows, test a cross-encoder reranker over the fused candidate list before considering an LLM reranker, because the cross-encoder adds bounded latency and no per-query token cost.
+Reranking decision: the current hybrid retriever uses reciprocal-rank fusion to combine
+BM25 and vector rankings. No separate learned reranker has been adopted. Revisit that
+choice if a broader golden suite shows useful passages entering the candidate pool but
+regularly missing the returned top five.
 
 Model-routing result: the model-tiering report has been corrected to use the product harness. `scripts/eval_codex_model_routing.py` runs the source-need and tool-use golden suites through `codex exec`, so the model acts as a Codex agent, can run the local Money Model Advisor CLI, and must write the same trace artifacts the normal scorers evaluate. This replaces the earlier API-replay result for product-routing decisions; the API replay is only a separately labeled provider experiment because it inlined state and did not let the model operate the CLI. The current ChatGPT subscription exposes `gpt-5.5` as the supported OpenAI Codex model. Full corrected run: source-need strict pass 85.7%, search-decision accuracy 92.9%, layer exact 90.0%; tool-use strict pass 95.8%, required-action recall 0.979, false search 0.0%, missed search 0.0%, with zero execution errors after rerunning the transient timeout. Runtime is materially higher than bounded API replay: p50 about 29.4s for source-need and 71.5s for tool-use, with Codex-reported token proxies of about 400k and 1.25M tokens respectively. An attempted `gpt-5-mini` Codex run failed as unsupported for this ChatGPT account, so no cheaper tier is promoted. Routing decision: deterministic work stays in the CLI, `gpt-5.5` via Codex CLI is the current OpenAI agent baseline, and any cheaper/provider alternative must pass the same CLI-backed suite before it can be treated as a routing win.
 
@@ -196,7 +207,7 @@ The residual tool-use failures are the real ones and they are small: Opus over-s
 
 Current decision: BM25 remains the lexical baseline/control. The active product path is one corpus-guided, unfiltered query through hybrid retrieval, cached embeddings, and a Pinecone-backed vector store behind a vector-store interface. The local in-memory vector backend stays as the fast dev/eval baseline. The earlier constrained-variant result remains useful evidence about backend capacity and Pinecone parity, but it no longer defines the runtime query policy.
 
-Current source-event trace result: `evals/advisor_source_event_cases.jsonl` defines the post-hardening source-event regression requested after senior review. The first case, `sourceevents_v1_001`, checks the 1584 "what should we fix first?" turn and expects two recorded source events: diagnostic unit-economics evidence plus recommendation evidence for the selected fix layer. Blind acting-agent traces exposed the intended failure mode twice: v1 used one broad recommendation/unit-economics event, and v2 used only one diagnostic event. After tightening the source-event guidance, v3 matched both expected source events. The regression has since expanded to six blind acting-agent cases covering multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation turns. A follow-up cleanup reran the upsell recommendation case after adding restraint guidance against re-sourcing already-known diagnostics. The current report shows 100.0% case pass rate, 6 / 6 expected source events matched, and 0 extra source-event warnings.
+Current source-event trace result: `evals/advisor_source_event_cases.jsonl` now tests the active one-query `SearchRequest` contract. Six isolated acting-agent runs saw the case context but not the expected labels. The scorer checks search/no-search restraint, one event per distinct evidence job, required query concepts, exact agreement between the authored and executed query, the original user turn, and inspected chunk IDs. All 6/6 cases pass, with 7/7 expected events matched and no extras. Two apparent failures were answer-key defects: one additional search supported a separately cited prioritization rule, and one valid teaching query was rejected for omitting an unnecessary literal phrase. The run artifacts were frozen before correcting those labels. Report: `evals/reports/advisor_source_event_traces.md`.
 
 The anti-over-search restraint is intentionally framed as a general claim-support rule, not as a case-specific route. Known economics can appear in an answer without requiring a fresh `diagnostic_evidence` search; the agent should search diagnostics only when the answer needs source support for a diagnostic claim. The regression guards against overfitting this rule by retaining counter-cases where diagnostic search is required (`sourceevents_v1_001` and `sourceevents_v1_002`) alongside cases where it should be absent (`sourceevents_v1_003` and `sourceevents_v1_004`).
 

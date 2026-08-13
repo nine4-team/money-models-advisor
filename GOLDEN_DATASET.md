@@ -13,7 +13,7 @@ In this repo, golden data can include:
 - realistic user turns;
 - fixture snapshots and conversation context;
 - expected agent actions;
-- expected `SourceNeed` objects;
+- expected `SearchRequest` query content;
 - expected source-event traces;
 - known-useful source chunks;
 - required-claim support labels;
@@ -32,14 +32,20 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 | `evals/obligations.jsonl` | 65 claim labels on the same 32 queries | Required-claim coverage for the pilot BM25 path | Historical guardrail, not 65 additional user cases. |
 | `evals/advisor_search_query_cases_enriched_labels.jsonl` plus `evals/query_generation/query_generation_holdout_v1.jsonl` | 46 turns: 30 base + 16 expansion | Query approach, query-writing model, and BM25-vs-hybrid comparison | Active retrieval suite. Uses saved snapshot context, one unfiltered query, and audited passage-level usefulness labels. Canonical report: `evals/reports/query_generation_current.md`. |
 | `evals/advisor_calculation_trace_cases.jsonl` | 5 turns | Calculation trace integrity | Active; 5/5 pass. |
-| `evals/advisor_source_event_cases.jsonl` | 6 turns | Search trace integrity and search/no-search sequencing | Migration required. The earlier 6/6 report validates the retired SourceNeed/query-variant contract; the latest rescore does not pass against the current `SearchRequest.query` schema. |
+| `evals/advisor_source_event_cases.jsonl` | 6 turns | Search trace integrity and search/no-search sequencing | Active. Six blind runs pass 6/6 on the current one-query `SearchRequest` contract; two answer-key corrections are disclosed in the report. |
+| `evals/advisor_answer_quality_audit.jsonl` | 6 audited answers / 14 source-backed claims | Recommendation usefulness and semantic citation support | Active seed regression. Current answers pass 6/6 for correctness/usefulness and 14/14 audited claims are supported. Codex is the single semantic reviewer. |
 | `evals/advisor_product_smoke_scenarios.jsonl` | 3 multi-turn sessions | End-to-end product behavior | Historical exploratory evidence. One run was non-blind and all predate the current single-query path. |
 
 ### Experiments That Reuse Those Datasets
 
 - The full query approach × query model × retriever matrix reuses the same 46 retrieval cases for every condition.
 - The orchestration-model comparison reuses the same 24 tool-use cases for every model and repetition.
-- Chunking and Pinecone infrastructure revalidation reuse the 46 active cases and the frozen winning queries. Reports: `evals/reports/active_query_chunking_revalidation.md` and `evals/reports/active_query_pinecone_revalidation.md`.
+- Chunking and Pinecone infrastructure revalidation reuse the 46 active cases and the frozen winning queries. Reports: `evals/reports/active_query_chunking_revalidation.md`, `evals/reports/active_query_pinecone_revalidation.md`, and `evals/reports/pinecone_candidate_depth_optimization.md`.
+- Embedding selection also reuses those 46 frozen queries. Large at 1,536 dimensions
+  raises local Useful@5 from 78.7% to 86.5%; the isolated Pinecone replay reaches
+  86.1% at 1.13s p50 / 1.43s p95. Reports:
+  `evals/reports/embedding_model_comparison.md` and
+  `evals/reports/pinecone_large_embedding_revalidation.md`.
 - `evals/advisor_source_need_cases.jsonl`, `evals/advisor_query_variants_v2.jsonl`, and `evals/realistic_queries.jsonl` document earlier design stages. SourceNeed and multi-query filtering are retired product paths; the realism file is an audit draft, not a scored retrieval benchmark.
 
 ## Evaluation Ladder
@@ -50,14 +56,14 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 4. Model routing: which model tier can perform orchestration or bounded query writing without unacceptable quality loss?
 5. Trace and answer quality: are calculations, searches, citations, and recommendations complete and supported?
 
-Agent behavior and the 46-case retrieval matrix are the strongest component results. Chunking and Pinecone latency/namespaces have now been replayed on that single-query path. Source-event traces and end-to-end answer quality still need migration or expansion.
+Agent behavior, source-event traces, and the 46-case retrieval matrix are the strongest component results. Chunking and Pinecone latency/namespaces have now been replayed on that single-query path. The six-case current-path answer audit is a useful seed regression; broader end-to-end coverage remains open.
 
 ## Label Strength
 
 Not every metric should be interpreted the same way.
 
 - Tool-use cases and source-event cases are strict behavioral tests.
-- Source-need labels are semantic expectations. Scoring is on the fields that drive retrieval (search decision, layers, focus terms), with alias tolerance on focus terms; `intent` is recorded but not scored, since the diagnostic-vs-recommendation distinction it once graded changes no retrieval.
+- The retired source-need labels are historical semantic expectations. They do not define the current query contract.
 - Known-useful chunks in search-query cases are seed relevance labels, not exhaustive relevance judgments.
 - Required-claim labels are human or agent-adjudicated support labels for specific claims, not a complete map of every useful chunk in the corpus.
 - Exact focus-term recall is a debugging signal. Concept coverage with rationale is the stronger semantic signal.
@@ -72,7 +78,7 @@ Use an acting-agent test-fix loop for product workflow hardening:
 
 1. Run blind acting agents on realistic turns.
 2. Inspect saved traces, not only final answers.
-3. Classify failures as path plumbing, tool choice, source need, retrieval, trace shape, or answer quality.
+3. Classify failures as path plumbing, tool choice, query generation, retrieval, trace shape, or answer quality.
 4. Fix the right layer: skill, CLI affordance, trace schema, eval case, or narrative.
 5. Rerun after the fix.
 6. Promote repeated or high-risk failures into a golden regression case.
@@ -96,32 +102,35 @@ The current experiment asks how to generate good queries from the real product i
 the user question plus the normal saved snapshot. It compares the raw question, an
 unguided model rewrite, and a model rewrite using a combined corpus guide. Each method
 produces one query, sees no reviewer fields, and applies no subject filter. Every saved
-query is run unchanged through BM25 and hybrid retrieval.
+query is run unchanged through BM25 and hybrid retrieval over the framework-aware
+chunks used by the product.
 
 Before finalizing the scores, returned passages were audited for both false negatives
 and false positives. Missing directly useful passages were added, overly broad labels
 were removed, and the corrected shared labels were applied to every method. No queries
 were regenerated and retrieval was not rerun.
 
-Across all 46 hybrid cases, final Hit@1/Hit@3/Hit@5 is 67.4%/82.6%/84.8% for the
-raw question, 67.4%/93.5%/95.7% for the unguided `gpt-5.5` rewrite, and
-93.5%/97.8%/100.0% for the corpus-guided `gpt-5.5` rewrite. Useful@5 is 44.8%,
-57.0%, and 73.0%, respectively. Corpus guidance also leads the raw and unguided
+Across all 46 hybrid cases, final Hit@1/Hit@3/Hit@5 is 63.0%/80.4%/87.0% for the
+raw question, 80.4%/91.3%/93.5% for the unguided `gpt-5.5` rewrite, and
+93.5%/97.8%/100.0% for the corpus-guided `gpt-5.5` rewrite. Useful@5 is 50.9%,
+62.6%, and 78.7%, respectively. Corpus guidance also leads the raw and unguided
 conditions under BM25, so the method decision is not backend-dependent. Queries and
 retrieval results were frozen before the method-neutral false-negative and
 false-positive audits. Codex performed those semantic audits rather than an independent
 human reviewer. The corpus-guided rewrite remains the selected CLI method.
 
 With that method fixed, `gpt-5.4-mini` was compared with `gpt-5.5`. Across all 46
-cases, Mini reached 89.1% Hit@1, 100.0% Hit@3, and 100.0% Hit@5 versus 93.5%,
-97.8%, and 100.0% for `gpt-5.5`. Mini returned 167 useful passages and `gpt-5.5`
-returned 168 in 230 slots.
-Mini was slower and used more Codex-reported tokens in this harness, so the runtime
-remains unchanged on `gpt-5.5`; Mini is nevertheless validated for bounded query
-writing pending the final-answer comparison.
+hybrid cases, Mini reached 91.3% Hit@1, 100.0% Hit@3, and 100.0% Hit@5 versus
+93.5%, 97.8%, and 100.0% for `gpt-5.5`. Mini returned 185 useful passages and
+`gpt-5.5` returned 181 in 230 slots.
+Mini was slower and used more Codex-reported tokens in this harness, so query writing
+remains inside the existing `gpt-5.5` orchestration turn rather than adding a separate
+model call. Mini remains a validated bounded query-writer option.
 
 The unguided rewrite was then repeated with Mini as an approach-robustness check.
-Across all 46 cases, guided Mini improved Hit@1 from 67.4% to 89.1%, Hit@5 from
-95.7% to 100.0%, and Useful@5 from 55.7% to 72.6%. The approach choice therefore
+Across all 46 hybrid cases, guided Mini improved Hit@1 from 76.1% to 91.3%, Hit@5
+from 91.3% to 100.0%, and Useful@5 from 62.6% to 80.4%. The approach choice therefore
 survives the model change; the narrative presents approach selection and model
 selection as separate controlled questions.
+
+Current report: `evals/reports/active_framework_retrieval_matrix.md`.

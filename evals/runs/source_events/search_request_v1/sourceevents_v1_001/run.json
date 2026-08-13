@@ -1,0 +1,141 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer"
+  ],
+  "assistant_message": "Fix the paid-acquisition front end first: turn the STR Design Diagnostic into a measurable paid test, not a broader offer-stack rebuild yet.\n\nThe reason is the economics are already strong enough to test demand. You have roughly $10,000 first-30-day gross profit against about $1,000 CAC, so this is not primarily a CAC-recovery problem. The source framework says the key acquisition numbers are CAC, gross profit, and payback period, and that the shorter the payback period, the easier it is to scale advertising [how-businesses-make-money:2] [payback-period:0]. It also frames first-30-day gross profit above CAC as the point where customer acquisition can fund growth [cfa:0].\n\nSo I would fix this first: define one paid traffic path to the $597 STR Design Diagnostic, with a simple target like booked diagnostic CAC, diagnostic-to-core close rate, and core-project CAC. Attraction offers are the first step because they create demand, and low-cost or free front ends are a way to improve CAC [cac:11]. The diagnostic can function as that front-end offer: valuable enough to attract qualified STR and second-home owners, but structured to move them toward the $15,000 full-service project.\n\nI would not fix downsell or continuity first. Those are useful later, but the money model guidance is to add layers only as needed and keep as few offers as possible to avoid operational drag [offer-types:4]. First prove that the diagnostic can buy qualified conversations predictably. Then add a downsell or continuity offer if the paid test shows the specific leak they would solve.",
+  "case_id": "sourceevents_v1_001",
+  "cited_chunk_ids": [
+    "how-businesses-make-money:2",
+    "payback-period:0",
+    "cfa:0",
+    "cac:11",
+    "offer-types:4"
+  ],
+  "completed_at": "2026-08-13T16:01:20Z",
+  "created_at": "2026-08-13T15:58:31Z",
+  "notes": "blind Codex acting-agent run",
+  "paths": {
+    "business_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_001/business",
+    "sessions_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_001/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/search_request_v1/sourceevents_v1_001/business/.money-model-advisor/business_snapshot.json"
+  },
+  "session_path": "evals/runs/source_events/search_request_v1/sourceevents_v1_001/business/.money-model-advisor/sessions/20260813T160114.json",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "offer-types:4",
+          "score": 24.38,
+          "subjects": [
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ]
+        },
+        {
+          "id": "make-your-money-model:2",
+          "score": 20.567,
+          "subjects": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ]
+        }
+      ],
+      "queries": [
+        "build the money model one offer at a time choose next offer based on observed constraint attraction upsell downsell continuity"
+      ],
+      "query": "build the money model one offer at a time choose next offer based on observed constraint attraction upsell downsell continuity",
+      "retrieval_backend": "bm25",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "build the money model one offer at a time choose next offer based on observed constraint attraction upsell downsell continuity",
+        "user_turn": "what should we fix first?"
+      }
+    },
+    {
+      "chunks": [
+        {
+          "id": "payback-period:0",
+          "score": 32.391,
+          "subjects": [
+            "unit-economics",
+            "upsells",
+            "continuity"
+          ]
+        },
+        {
+          "id": "cfa:0",
+          "score": 29.274,
+          "subjects": [
+            "unit-economics"
+          ]
+        },
+        {
+          "id": "how-businesses-make-money:2",
+          "score": 28.453,
+          "subjects": [
+            "unit-economics"
+          ]
+        }
+      ],
+      "queries": [
+        "customer acquisition cost first 30 day gross profit payback period gross margin paid acquisition viability"
+      ],
+      "query": "customer acquisition cost first 30 day gross profit payback period gross margin paid acquisition viability",
+      "retrieval_backend": "bm25",
+      "search_request": {
+        "intent": "diagnostic_evidence",
+        "query": "customer acquisition cost first 30 day gross profit payback period gross margin paid acquisition viability",
+        "user_turn": "what should we fix first?"
+      }
+    },
+    {
+      "chunks": [
+        {
+          "id": "free-with-consumption:0",
+          "score": 16.566,
+          "subjects": [
+            "offers"
+          ]
+        },
+        {
+          "id": "context:2",
+          "score": 14.93,
+          "subjects": [
+            "unit-economics"
+          ]
+        },
+        {
+          "id": "cac:11",
+          "score": 14.38,
+          "subjects": [
+            "unit-economics",
+            "offers"
+          ]
+        }
+      ],
+      "queries": [
+        "attraction offer front end offer liquidate customer acquisition cost paid acquisition diagnostic offer"
+      ],
+      "query": "attraction offer front end offer liquidate customer acquisition cost paid acquisition diagnostic offer",
+      "retrieval_backend": "bm25",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "attraction offer front end offer liquidate customer acquisition cost paid acquisition diagnostic offer",
+        "user_turn": "what should we fix first?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_001",
+    "conversation_context": "The snapshot is recommendable for 1584 Design. Prior context includes referral-partner CAC and paid-acquisition capacity discussion. The user asks for the next priority.",
+    "scenario_id": "1584_design",
+    "user_turn": "what should we fix first?"
+  }
+}

@@ -1,170 +1,68 @@
 # Advisor Query Policy v1
 
-This policy defines how local corpus-search queries are built when the advisor decides that Money Models source material is needed for the current turn.
+This document summarizes the active source-search contract. The executable operating
+rules live in `.codex/skills/money-model-advisor/search_request_rules.md`; the CLI
+contract lives in `CLI_DESIGN.md`.
 
-Current handoff note: the v1 implementation is still too blunt. The 1584 Design trace review in `ADVISOR_RETRIEVAL_HANDOFF.md` shows that retrieval is currently triggered more by snapshot readiness than by the specific current turn. Treat the policy below as the target direction, not proof that the implementation is finished.
+## Decision sequence
 
-The advisor should not use shallow keyword matching over the raw user message as the router. V1 should use the agent conversation as the advisor loop: the agent reads the conversation, the `BusinessSnapshot`, and available tools, then decides whether to clarify, calculate, diagnose, teach, compare, recommend, search source material, update the snapshot, or decline. Query construction happens only when that advisor loop chooses to search source material.
+1. The agent decides whether the answer needs Money Models source support.
+2. If relevant business facts are missing, the agent obtains them before searching.
+3. For each distinct evidence job, the agent writes one corpus-guided query.
+4. The CLI executes that query through unfiltered hybrid retrieval and records the
+   request, exact executed query, and returned chunks.
 
-The two capabilities must be evaluated separately:
+Search is appropriate when the answer needs source support for a concept, comparison,
+diagnosis, or recommendation. It is not a substitute for reading saved state,
+inspecting a business document, calculating known numbers, or asking for missing
+context.
 
-1. Next-action classification: does the agent correctly classify whether this turn needs source-material search at all?
-2. Search-query quality: when source-material search is appropriate, does the query retrieve useful Money Models chunks?
+## Query inputs
 
-Search queries are not the bridge from every conversation turn to every action. They are only inputs to the `search_source_material` tool. Saved context lookup, conversation recall, snapshot updates, business-doc inspection, and deterministic calculations should use their own tools or agent reasoning without fabricating a corpus-search query.
+The query writer receives only:
 
-When source-material search is appropriate, the agent should first select a source need: the retrieval purpose, expected corpus layer or layers, and short focus terms for one source-material search call. The agent should also supply short query variants for that source need. The runtime query builder executes those variants and keeps the deterministic focus-term query as a fallback.
+- the current user question;
+- relevant accepted facts from the saved `BusinessSnapshot`; and
+- `evals/query_generation/corpus_guide_v1.json`.
 
-The v1 query-variant fanout policy is 2-4 variants per source-material search. This is a project-level default, not a universal law. One query is often too brittle because the same Money Models idea can appear under several phrasings, such as "fulfillment cost," "COGS," "cost to deliver," and "gross profit." Multiple focused variants let the agent express the evidence need from a few source-facing angles instead of relying on one pasted user message. The cap matters too: every additional variant adds latency, cost, and noisy retrieval candidates. For this portfolio-scale corpus, 2 variants is the minimum that shows real query generation, 3 is the normal target, and 4 is the upper bound before the search starts looking like broad spray-and-pray retrieval. A production system should treat this as a configurable policy and tune the range against quality, latency, and cost.
+The corpus guide combines book vocabulary and frameworks. It is a translation aid,
+not a checklist. The query should preserve the complete information need and add
+business context only when that context changes or disambiguates the requested
+evidence.
 
-One advisor turn may issue multiple source-material searches. If the answer needs teaching evidence and recommendation evidence, the planner should generate two source needs rather than one mixed-intent source need.
-
-Deterministic rules are allowed only where the justification is strong:
-
-- arithmetic and formulas, such as CAC payback and gross profit calculations
-- narrow validated extraction, such as obvious dollar amounts
-- schema/readiness checks, such as whether required snapshot fields exist
-- query assembly after the advisor has already selected source-material search
-
-Deterministic rules should not decide broad conversational intent, such as whether a user wants teaching versus diagnosis. That belongs to the agent-led advisor turn.
-
-## Inputs
-
-- `BusinessSnapshot`
-- `advisor_state.advisory_status`
-- `problem.diagnosed_constraints`
-- advisor-selected tool/action need
-- advisor-selected focus terms, when source search is needed
-- current money-model stack shape
-
-## Output Shape
+## Request shape
 
 ```json
 {
-  "intent": "diagnostic_evidence",
-  "layer": "unit-economics",
-  "query": "client financed acquisition CAC payback first 30 day gross profit",
-  "reason": "The current turn asks for source-supported unit-economics explanation, so search Money Models source material."
+  "intent": "recommendation_evidence",
+  "user_turn": "What should I add after the initial sale?",
+  "query": "upsell sequence after initial sale increase first 30 day gross profit"
 }
 ```
 
-## Next-Action Decision
+- `query` is the one text query the CLI executes.
+- `user_turn` preserves the original question in the trace.
+- `intent` is an audit label. It does not alter retrieval.
 
-Before any query is built, the agent should decide the next action for the turn:
+If the answer needs two genuinely different evidence jobs, the agent may issue two
+separate requests. Each request still contains one query.
 
-| Advisor need | Correct tool/action |
-|---|---|
-| Missing business fact | Ask the user or inspect local business docs before updating snapshot |
-| Business-doc lookup | Agent file inspection, then `update_snapshot` for accepted facts |
-| Saved fact or prior-turn lookup | `read_snapshot` or `logs` |
-| Calculation | `calculate` or deterministic snapshot math |
-| Concept teaching with source support | `search_source_material` |
-| Diagnostic explanation with source support | `search_source_material` plus calculation |
-| Recommendation support | `search_source_material` with a source-specific query for the proposed fix |
+## Retrieval contract
 
-Only the last three rows require a corpus-search query.
+The active path uses:
 
-## Retrieval Intents
+- framework-aware chunks;
+- BM25 plus vector retrieval;
+- reciprocal-rank fusion;
+- `text-embedding-3-large` at 1,536 dimensions;
+- one Pinecone namespace with no subject filter; and
+- a top-five returned context.
 
-| Intent | Purpose | Typical layer |
-|---|---|---|
-| `diagnostic_evidence` | Search for source material that explains how to interpret the business economics. | `unit-economics` |
-| `recommendation_evidence` | Search for source material for the likely fix after the constraint is diagnosed. | `upsells`, `continuity`, `offers`, `downsells` |
-| `teaching_evidence` | Search for source material for a concept the advisor chose to teach. | advisor-selected |
-| `comparison_evidence` | Search for source material for concepts the advisor chose to compare. | advisor-selected |
+BM25 remains the lexical control in evaluation. The local vector store remains the
+fast evaluation backend.
 
-Retrieval evidence is saved in the session trace. It is not a `BusinessSnapshot` status.
+## Retired compatibility path
 
-## Status Policy
-
-### `insufficient_context`
-
-Do not search by default. Ask for the next missing field or inspect local business docs when the agent has a clear reason to believe the missing fact is available there.
-
-Exception: if the advisor chooses to teach or compare and needs source evidence, build `teaching_evidence` or `comparison_evidence` from the advisor-selected focus terms and layer.
-
-### `diagnosable`
-
-Do not automatically build a query just because the snapshot is diagnosable. First decide the current advisor need.
-
-Build a `diagnostic_evidence` query only when the current turn needs source support for explaining the diagnosis, teaching the unit-economics frame, or grounding a recommendation.
-
-Layer:
-
-- `unit-economics`
-
-Core terms:
-
-- `CAC`
-- `first 30 day gross profit`
-- `payback period`
-- `client financed acquisition`
-- `gross profit`
-
-Add context terms when available:
-
-- business type
-- ICP
-- core offer description
-
-### `diagnosed`
-
-Build one or more `recommendation_evidence` queries from `problem.diagnosed_constraints` and the current money-model stack.
-
-The goal is to search for fix support, not re-diagnose the economics.
-
-### `recommendable`
-
-Build recommendation queries just like `diagnosed`. The difference is that stack context is complete enough to choose fixes with less ambiguity.
-
-## Constraint Guidance For The Agent
-
-These rows are examples to help the acting agent form a `SourceNeed`. They are not CLI routing rules. The CLI must not inspect the user message or snapshot and choose retrieval namespaces from this table. At runtime, the agent selects `SourceNeed.layers`, `SourceNeed.target_namespaces`, focus terms, and query variants; the CLI validates those values, maps logical namespace names to physical Pinecone namespaces when needed, executes the search, and records the trace.
-
-| Diagnosed constraint | Snapshot condition | Layer | Query terms |
-|---|---|---|---|
-| `payback_not_recovered_without_recurring_gp` | `upsell.exists = false` | `upsells` | upsell after first sale, increase first 30 day gross profit, improve payback period |
-| `payback_not_recovered_without_recurring_gp` | `continuity.exists = false` | `continuity` | continuity recurring gross profit, improve payback period, recurring offer |
-| `slow_payback` | `upsell.exists = false` | `upsells` | upsell after first sale, improve cash payback, first 30 day gross profit |
-| `slow_payback` | `continuity.exists = false` | `continuity` | continuity recurring gross profit, improve cash flow, payback period |
-| `weak_first_sale_monetization` | any | `upsells` | increase first sale monetization, upsell offer, first 30 day gross profit |
-| `low_gross_margin` | any | `unit-economics` | gross margin, gross profit, fulfillment cost, margin improvement |
-| `weak_acquisition_offer` | any | `offers` | attraction offer, free trial, free giveaway, front end offer |
-| `refund_or_payment_resistance` | any | `downsells` | downsell, payment plan, pay less now, waived fee |
-| `retention_or_churn_issue` | any | `continuity` | continuity offer, retention, recurring value, churn |
-
-If no example fits, the agent should form a narrower `recommendation_evidence` source need from the actual conversation and saved snapshot rather than forcing a table match. For manual/debug use only, a broad fallback could look like:
-
-- layer: first `likely_retrieval_layers` value, or `unit-economics`
-- query: diagnosed constraints + business type + core offer + user goal
-
-## Offer-Layer Boundaries
-
-Choose retrieval layers by business function, not by surface wording:
-
-- `offers`: source support for creating initial demand, lead engagement, or first customer engagement.
-- `downsells`: source support for saving a sale or reducing immediate purchase friction after interest or resistance.
-- Payment plans belong to `downsells`, even when the customer receives the same product, because the mechanism reduces immediate payment friction.
-- Free trials can span both layers. Use `downsells` when the trial is framed as a trial-with-penalty or resistance reducer; include `offers` too when the user frames it as a front-end acquisition mechanism.
-
-## Teaching and Comparison
-
-Teaching and comparison are valid advisor actions. They are not selected by keyword matching.
-
-When the advisor chooses to teach with retrieval, the retrieval tool call should include:
-
-- selected corpus `layer`
-- `focus_terms`, such as the framework or concept to teach
-- `reason`, explaining why teaching is the right next action
-
-When the advisor chooses to compare with retrieval, the retrieval tool call should include the same fields for each concept or a combined query. Query construction then turns those focus terms into `teaching_evidence` or `comparison_evidence`.
-
-## Query Construction Rules
-
-- Prefer accepted snapshot state over raw user wording.
-- Include business type and core offer only as context terms, not as the center of the query.
-- Keep query strings short enough to preserve the advisor-selected focus terms.
-- Do not include unknown fields.
-- Deduplicate terms.
-- Emit multiple queries when one diagnosis suggests multiple fix paths.
-- Do not infer advisor action from keyword hits in the message.
+`SourceNeed`, subject routing, query variants, deterministic fallback queries, and
+namespace filters remain in code only to reproduce older experiments and traces. They
+do not define product behavior and should not be used by the advisor skill.

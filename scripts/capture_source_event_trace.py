@@ -123,19 +123,13 @@ def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
             "",
             "You are the acting agent for a Money Model Advisor source-event trace eval case.",
             "",
-            "Consult the money-model-advisor skill before you act, then use the local CLI to carry out the workflow. The skill is the authoritative rulebook for search decisions, intents, and subjects, and its rules decide the close calls. Expected source events are intentionally hidden.",
+            "Consult the money-model-advisor skill before you act, then use the local CLI to carry out the workflow. The skill and search-request rules are the authoritative runtime instructions. Expected source events are intentionally hidden.",
             "",
-            "Task: answer the user's turn using the post-refactor agent-operated workflow. If the answer needs source-material support, generate SourceNeeds, run source-material search, inspect chunks, answer with citations, and record the completed turn with `turn record`.",
+            "Task: answer the user's turn using the active agent-operated workflow. If the answer needs source-material support, write one corpus-guided `SearchRequest.query` per evidence job, run `search --search-request-json`, inspect chunks, answer with citations, and record the completed turn with `session finish`.",
             "",
-            "If one answer needs multiple retrieval jobs, run multiple searches and record one `source_events` entry per search. For example, a turn may need one diagnostic unit-economics search and one recommendation search for the selected fix subject.",
+            "If one answer needs multiple evidence jobs, run multiple searches and record one `source_events` entry per search. Do not use the legacy `SourceNeed`, subject-filter, or query-variant fields.",
             "",
-            "Do not label a unit-economics search as recommendation evidence merely because the final answer recommends something. Use diagnostic evidence for the economics interpretation, then recommendation evidence for the concrete fix or action.",
-            "",
-            "If you recommend a concrete Money Models move, source that move separately. Examples: diagnostic/front-end offer -> offers; post-sale add-on -> upsells; recurring maintenance -> continuity; payment plan/downsell -> downsells.",
-            "",
-            "Do not create multiple recommendation SourceNeeds for the same fix subject unless they support genuinely different claims.",
-            "",
-            "Do not add a diagnostic SourceNeed merely because known economics appear in the answer. If the snapshot or prior context already establishes the diagnostic frame and the user asks for a concrete fix, search only for the fix mechanism unless the answer makes a fresh source-backed diagnostic claim.",
+            "Use `intent` only as the closest trace label. Preserve the complete evidence need in `query`; intent does not control scoring or retrieval.",
             "",
             f"Business dir: `{business_dir}`",
             "",
@@ -183,9 +177,12 @@ def complete(args: argparse.Namespace) -> int:
     if not draft_path.exists():
         raise SystemExit(f"missing run_draft.json: {draft_path}")
     draft = json.loads(draft_path.read_text(encoding="utf-8"))
-    actions = read_json_value(args.actions_json, [])
-    source_events = read_json_value(args.source_events_json, [])
-    cited_chunk_ids = read_json_value(args.cited_chunk_ids_json, [])
+    session_record = read_json_value(str(args.session_path), {}) if args.session_path else {}
+    if args.session_path and not isinstance(session_record, dict):
+        raise SystemExit("--session-path must contain a JSON object")
+    actions = read_json_value(args.actions_json, session_record.get("actions", []))
+    source_events = read_json_value(args.source_events_json, session_record.get("source_events", []))
+    cited_chunk_ids = read_json_value(args.cited_chunk_ids_json, session_record.get("cited_chunk_ids", []))
     if not isinstance(actions, list):
         raise SystemExit("--actions-json must decode to a list")
     if not isinstance(source_events, list):
@@ -199,6 +196,8 @@ def complete(args: argparse.Namespace) -> int:
         "actions": actions,
         "source_events": source_events,
         "cited_chunk_ids": cited_chunk_ids,
+        "session_path": rel_path(args.session_path) if args.session_path else None,
+        "assistant_message": session_record.get("assistant_message") if isinstance(session_record, dict) else None,
         "notes": args.notes,
     }
     write_json(run_dir / RUN_FILE, payload)
@@ -220,9 +219,10 @@ def main() -> int:
 
     complete_parser = subparsers.add_parser("complete")
     complete_parser.add_argument("run_dir", type=Path)
-    complete_parser.add_argument("--actions-json", default="[]")
-    complete_parser.add_argument("--source-events-json", default="[]")
-    complete_parser.add_argument("--cited-chunk-ids-json", default="[]")
+    complete_parser.add_argument("--session-path", type=Path)
+    complete_parser.add_argument("--actions-json")
+    complete_parser.add_argument("--source-events-json")
+    complete_parser.add_argument("--cited-chunk-ids-json")
     complete_parser.add_argument("--notes")
     complete_parser.set_defaults(func=complete)
 

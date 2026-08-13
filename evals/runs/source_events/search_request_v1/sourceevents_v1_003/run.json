@@ -1,0 +1,76 @@
+{
+  "actions": [
+    "session_start",
+    "read_snapshot",
+    "search_source_material",
+    "answer"
+  ],
+  "assistant_message": "I would not redesign the full-service offer. I would increase first-30-day gross profit by moving the existing pre-designed room packages into an immediate, prescribed upsell after the diagnostic or core-service sale. The Money Models goal is to sequence offers so CAC is minimized and gross profit collected in the first 30 days is maximized [money-models-offer-stacks:0]. Payback improves when gross profit exceeds CAC sooner, and the source specifically points to better or new offers in the first 30 days, timed at the moment the next problem exists [payback-period:0] [payback-period:2].\n\nFor this business, the cleanest move is: keep the $15,000 full-service design offer intact, then offer a $5,000 room-package add-on only after the client has seen the listing/photo audit and the gap is obvious. Frame it as the fastest path to fix the highest-ROI rooms before launch, not as more design scope. Use a short menu: primary bedroom, living room, outdoor/patio, and photo-ready accessory bundle. Prescribe one or two packages based on the audit, then ask which priority room they want installed first.\n\nThis should raise early gross profit without changing the core promise because it monetizes an adjacent need during the client's active buying window. With roughly $10,000 first-30-day gross profit against about $1,000 CAC already, the point is not survival; it is to turn a strong first-sale model into a stronger self-funded acquisition model.",
+  "case_id": "sourceevents_v1_003",
+  "cited_chunk_ids": [
+    "money-models-offer-stacks:0",
+    "payback-period:0",
+    "payback-period:2"
+  ],
+  "completed_at": "2026-08-13T16:26:53Z",
+  "created_at": "2026-08-13T16:25:12Z",
+  "notes": "blind Codex acting-agent run",
+  "paths": {
+    "business_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_003/business",
+    "sessions_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_003/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/search_request_v1/sourceevents_v1_003/business/.money-model-advisor/business_snapshot.json"
+  },
+  "session_path": "evals/runs/source_events/search_request_v1/sourceevents_v1_003/business/.money-model-advisor/sessions/20260813T162649.json",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "payback-period:0",
+          "preview": "Payback period is how long it takes until gross profit is greater than CAC; the shorter it is, the easier it is to scale advertising.",
+          "score": 17.52,
+          "subject": "unit-economics"
+        },
+        {
+          "id": "money-models-offer-stacks:0",
+          "preview": "A money model is a series of offers structured to minimize CAC and maximize gross profit collected in the first 30 days.",
+          "score": 16.399,
+          "subject": "offers"
+        },
+        {
+          "id": "payback-period:1",
+          "preview": "Customers enter short hyper-buying windows after a new decision, and businesses should make relevant offers available during that window.",
+          "score": 15.31,
+          "subject": "unit-economics"
+        },
+        {
+          "id": "how-businesses-make-money:2",
+          "preview": "The three numbers that matter for acquisition are CAC, gross profit, and payback period.",
+          "score": 14.88,
+          "subject": "unit-economics"
+        },
+        {
+          "id": "payback-period:2",
+          "preview": "Payback can be improved with better or new offers in the first 30 days, offered at the right moment.",
+          "score": 13.916,
+          "subject": "unit-economics"
+        }
+      ],
+      "queries": [
+        "upsell offers increase first-30-day gross profit payback period offer stack"
+      ],
+      "query": "upsell offers increase first-30-day gross profit payback period offer stack",
+      "retrieval_backend": "bm25",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "upsell offers increase first-30-day gross profit payback period offer stack",
+        "user_turn": "how should we increase first-30-day gross profit without changing the full-service offer?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_003",
+    "conversation_context": "The snapshot is recommendable and already identifies strong first-sale economics. The user asks for a concrete way to increase first-30-day gross profit without redesigning the core service.",
+    "scenario_id": "1584_design",
+    "user_turn": "how should we increase first-30-day gross profit without changing the full-service offer?"
+  }
+}

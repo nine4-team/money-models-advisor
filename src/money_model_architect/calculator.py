@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -63,3 +64,20 @@ def cfa_level(acquisition_cost: float, first_30_day_gp: float) -> int:
     if first_30_day_gp >= acquisition_cost:
         return 2
     return 1
+
+
+def calculate_metric(metric: str, inputs: dict[str, Any]) -> float | int:
+    """Run one supported metric from the same named inputs used by the CLI trace."""
+    if metric == "cac":
+        return cac(inputs["total_acquisition_cost"], inputs["new_customers"])
+    if metric == "gross-profit":
+        return gross_profit(inputs["price"], inputs["cogs"])
+    if metric == "gross-margin":
+        return gross_margin(inputs["price"], inputs["cogs"])
+    if metric == "ltgp":
+        return lifetime_gross_profit(inputs["monthly_price"], inputs["monthly_churn_rate"], inputs["gross_margin"])
+    if metric == "payback":
+        return payback_period_months(inputs["cac"], inputs["month_one_gp"], inputs["monthly_recurring_gp"])
+    if metric == "cfa-level":
+        return cfa_level(inputs["cac"], inputs["first_30_day_gp"])
+    raise ValueError(f"unsupported metric: {metric}")

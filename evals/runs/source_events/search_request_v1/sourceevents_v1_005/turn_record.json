@@ -1,0 +1,106 @@
+{
+  "user_message": "what is a front-end offer in plain English?",
+  "assistant_message": "A front-end offer is the first thing you sell or offer to turn a stranger or lead into a customer.\n\nIn Money Models language, this is usually called an attraction offer. Its job is not to maximize total profit by itself; its job is to get people in the door and ideally pay back, or liquidate, what it cost you to acquire that customer [offer-types:4]. It sits at the start of the offer stack, before upsells, downsells, or continuity offers [make-your-money-model:2].\n\nPlain English: it is the \"first yes\" offer. For your design business, the $597 STR Design Diagnostic is a front-end offer because it gives a qualified owner a lower-friction first purchase before the larger full-service design project.",
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer"
+  ],
+  "source_events": [
+    {
+      "search_request": {
+        "intent": "teaching_evidence",
+        "user_turn": "what is a front-end offer in plain English?",
+        "query": "Attraction offers front-end offer first-purchase customer acquisition offer start of offer stack liquidate CAC"
+      },
+      "queries": [
+        "Attraction offers front-end offer first-purchase customer acquisition offer start of offer stack liquidate CAC"
+      ],
+      "retrieval_backend": "bm25",
+      "chunks": [
+        {
+          "id": "offer-types:4",
+          "score": 17.862,
+          "subjects": [
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ]
+        },
+        {
+          "id": "free-with-consumption:0",
+          "score": 15.215,
+          "subjects": [
+            "offers"
+          ]
+        },
+        {
+          "id": "make-your-money-model:2",
+          "score": 14.629,
+          "subjects": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ]
+        },
+        {
+          "id": "money-models-offer-stacks:0",
+          "score": 14.224,
+          "subjects": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ]
+        },
+        {
+          "id": "upsell-offers:3",
+          "score": 14.106,
+          "subjects": [
+            "upsells"
+          ]
+        }
+      ]
+    }
+  ],
+  "cited_chunk_ids": [
+    "offer-types:4",
+    "make-your-money-model:2"
+  ],
+  "metadata": {
+    "case_id": "sourceevents_v1_005",
+    "notes": "blind Codex acting-agent run; hybrid search failed because query embedding required unavailable network, so the structured SearchRequest was executed with the local bm25 backend",
+    "action_details": [
+      {
+        "operation": "session_start",
+        "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_005/business",
+        "user_message": "what is a front-end offer in plain English?"
+      },
+      {
+        "operation": "search_source_material",
+        "status": "failed",
+        "retrieval_backend": "hybrid",
+        "search_request": {
+          "intent": "teaching_evidence",
+          "user_turn": "what is a front-end offer in plain English?",
+          "query": "Attraction offers front-end offer first-purchase customer acquisition offer start of offer stack liquidate CAC"
+        },
+        "error": "Embedding request failed because network access was unavailable for an uncached query embedding."
+      },
+      {
+        "operation": "search_source_material",
+        "status": "completed",
+        "retrieval_backend": "bm25",
+        "search_request": {
+          "intent": "teaching_evidence",
+          "user_turn": "what is a front-end offer in plain English?",
+          "query": "Attraction offers front-end offer first-purchase customer acquisition offer start of offer stack liquidate CAC"
+        }
+      }
+    ]
+  }
+}

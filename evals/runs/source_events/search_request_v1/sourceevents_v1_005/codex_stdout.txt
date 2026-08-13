@@ -1,0 +1,7 @@
+Recorded the source-event trace for `sourceevents_v1_005`.
+
+Created `run.json` with:
+- actions: `session_start`, `search_source_material`, `answer`
+- one `teaching_evidence` source event
+- query: `Attraction offers front-end offer first-purchase customer acquisition offer start of offer stack liquidate CAC`
+- cited chunks: `offer-types:4`, `make-your-money-model:2`

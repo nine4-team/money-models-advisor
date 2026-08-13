@@ -255,11 +255,10 @@ class CorpusIndex:
         )
         subject_filter = tuple(subjects or ((subject,) if subject else ()))
         filter_payload = {"subjects": {"$in": list(subject_filter)}} if subject_filter else None
-        requested_top_k = max(top_k * 10, top_k)
         matches = self._query_vector_namespaces(
             store,
             query_embedding,
-            top_k=requested_top_k,
+            top_k=top_k,
             namespaces=vector_namespaces,
             filter_payload=filter_payload,
         )
@@ -353,7 +352,11 @@ class CorpusIndex:
 
     def vector_records(self, embedding_client: EmbeddingClient) -> list[VectorRecord]:
         self._ensure_chunk_embeddings(embedding_client)
-        model = getattr(embedding_client, "model", "unknown-model")
+        model = getattr(
+            embedding_client,
+            "embedding_id",
+            getattr(embedding_client, "model", "unknown-model"),
+        )
         records = []
         for chunk in self.chunks:
             records.append(

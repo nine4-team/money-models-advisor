@@ -51,6 +51,25 @@ class EmbeddingClientStatsTest(unittest.TestCase):
             self.assertEqual(presence["misses"], 1)
             self.assertFalse(presence["complete"])
 
+    def test_dimensions_are_part_of_embedding_identity_and_cache_key(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cache_dir = Path(tmp)
+            first = OpenAIEmbeddingClient(
+                api_key="test-key",
+                cache_dir=cache_dir,
+                model="text-embedding-3-large",
+                dimensions=1536,
+            )
+            second = OpenAIEmbeddingClient(
+                api_key="test-key",
+                cache_dir=cache_dir,
+                model="text-embedding-3-large",
+                dimensions=3072,
+            )
+
+            self.assertEqual(first.embedding_id, "text-embedding-3-large-d1536")
+            self.assertNotEqual(first._cache_path("same text"), second._cache_path("same text"))
+
 
 if __name__ == "__main__":
     unittest.main()

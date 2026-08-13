@@ -1,5 +1,10 @@
 # Eval Methodology Plan
 
+> Historical retrieval-methodology plan. The current open remediation queue is
+> maintained in `REMEDIATION_PLAN.md`; use that document for work following the
+> completed 46-case query-generation, chunking, embedding-model, and Pinecone
+> revalidations.
+
 How we fix the weak spots in how we test retrieval. This is a plan, not a
 result. When work here lands, record the outcome in `DESIGN.md` and update the
 status boxes below.
@@ -123,10 +128,12 @@ If even the harder slice can't separate the two models, the honest result is
 "no measurable difference, keep the cheaper small model." On a small corpus with
 strong exact-match terms that's a defensible finding, not a failure.
 
-This step is the same "compare embedding models" item tracked in `OPEN_ITEMS.md`;
-its ordering lives here.
+The later comparison held the dimension at Pinecone's 1,536, audited every newly
+returned case-passage pair, and revalidated the selected model in an isolated hosted
+namespace.
 
-Status: not started.
+Status: completed; see `evals/reports/embedding_model_comparison.md` and
+`evals/reports/pinecone_large_embedding_revalidation.md`.
 
 ## The decision at the end
 

@@ -174,7 +174,31 @@ class CliTest(unittest.TestCase):
             self.assertEqual(updated["state"]["economics"]["cac"], 350)
             self.assertEqual(updated["state"]["business"]["business_type"], "coaching business")
             self.assertFalse(updated["state"]["money_model"]["upsell"]["exists"])
-            self.assertEqual(updated["state"]["field_sources"]["economics.cac"]["source_type"], "cli")
+            self.assertEqual(updated["state"]["field_sources"]["economics.cac"]["source_type"], "conversation")
+
+    def test_snapshot_set_records_inspected_file_provenance(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "metrics.txt"
+            source.write_text("CAC: 350\n", encoding="utf-8")
+
+            output = run_cli(
+                [
+                    "snapshot",
+                    "set",
+                    "--business-dir",
+                    tmp,
+                    "--source-type",
+                    "file",
+                    "--source",
+                    "metrics.txt",
+                    "economics.cac=350",
+                ]
+            )
+            record = json.loads(output)["state"]["field_sources"]["economics.cac"]
+
+            self.assertEqual(record["source_type"], "file")
+            self.assertEqual(record["source"], "metrics.txt")
+            self.assertRegex(record["source_hash"], r"^sha256:[0-9a-f]{64}$")
 
     def test_diagnose_accepts_business_dir_snapshot(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -315,6 +339,8 @@ class CliTest(unittest.TestCase):
             self.assertEqual(payload["advisor_state"]["known_facts"]["business.business_type"], "coaching business")
             self.assertEqual(payload["advisor_state"]["known_facts"]["economics.cac"], 350)
             self.assertIn("economics.first_30_day_gross_profit", payload["advisor_state"]["missing_fields"])
+            self.assertNotIn("likely_retrieval_subjects", payload["advisor_state"])
+            self.assertNotIn("retrieval_query_terms", payload["advisor_state"])
             self.assertEqual(payload["recent_turns"][0]["user_message"], "why do we need fulfillment cost?")
             self.assertIn("turn_record", payload["available_operations"])
             self.assertIn("agent_owns", payload["boundary"])
@@ -436,13 +462,13 @@ class CliTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             record_artifact = {
                 "user_message": "if CAC is 1000 and first month gross profit is 10000, what's payback?",
-                "assistant_message": "Payback is 0.1 months.",
+                "assistant_message": "CAC is recovered in the first month.",
                 "actions": ["session_start", "read_snapshot", "calculate", "answer"],
                 "calculation_events": [
                     {
                         "metric": "payback",
                         "inputs": {"cac": 1000, "month_one_gp": 10000, "monthly_recurring_gp": 0},
-                        "value": 0.1,
+                        "value": 1.0,
                     }
                 ],
             }
@@ -465,6 +491,56 @@ class CliTest(unittest.TestCase):
             self.assertEqual(payload["calculation_event_count"], 1)
             self.assertEqual(full_logs["logs"][0]["calculation_events"], record_artifact["calculation_events"])
             self.assertEqual(logs["logs"][0]["calculation_events"], record_artifact["calculation_events"])
+
+    def test_session_finish_rejects_incorrect_calculation_event_value(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "calculate payback",
+                "assistant_message": "Payback is 0.1 months.",
+                "actions": ["session_start", "calculate", "answer"],
+                "calculation_events": [
+                    {
+                        "metric": "payback",
+                        "inputs": {"cac": 1000, "month_one_gp": 10000, "monthly_recurring_gp": 0},
+                        "value": 0.1,
+                    }
+                ],
+            }
+
+            with self.assertRaisesRegex(SystemExit, "does not match deterministic payback result"):
+                run_cli(
+                    [
+                        "session",
+                        "finish",
+                        "--business-dir",
+                        tmp,
+                        "--record-json",
+                        json.dumps(record_artifact),
+                    ]
+                )
+
+    def test_session_finish_rejects_calculation_event_with_wrong_inputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            record_artifact = {
+                "user_message": "calculate CAC",
+                "assistant_message": "CAC is 500.",
+                "actions": ["session_start", "calculate", "answer"],
+                "calculation_events": [
+                    {"metric": "cac", "inputs": {"total_acquisition_cost": 1000}, "value": 500}
+                ],
+            }
+
+            with self.assertRaisesRegex(SystemExit, "invalid inputs for cac"):
+                run_cli(
+                    [
+                        "session",
+                        "finish",
+                        "--business-dir",
+                        tmp,
+                        "--record-json",
+                        json.dumps(record_artifact),
+                    ]
+                )
 
     def test_session_finish_rejects_missing_calculation_event_for_calculate_action(self):
         with tempfile.TemporaryDirectory() as tmp:

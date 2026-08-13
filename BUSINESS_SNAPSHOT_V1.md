@@ -7,13 +7,15 @@ V1 is intentionally lean. It stores only the information needed to:
 1. support the agent's decision about what the advisor should do next;
 2. run deterministic unit-economics calculations;
 3. diagnose money-model constraints;
-4. provide deterministic readiness and retrieval hints;
-5. help the agent form better source needs and retrieval queries;
+4. provide deterministic readiness and missing-field checks;
+5. provide the business facts needed for agent-written retrieval queries;
 6. explain what is missing before making a recommendation.
 
 It is not a CRM profile.
 
-`BusinessSnapshot` is not the semantic planner. It can compute readiness flags, numeric/accounting states, and candidate retrieval hints. The agent decides whether those hints matter for the current turn.
+`BusinessSnapshot` is not the semantic planner. It computes readiness flags and
+numeric/accounting state. The agent decides what those facts mean for the current
+turn and writes any retrieval query.
 
 ## Schema
 
@@ -69,9 +71,7 @@ It is not a CRM profile.
     "advisory_status": "insufficient_context",
     "missing_fields": [],
     "ready_for_payback_diagnosis": false,
-    "ready_for_offer_stack_diagnosis": false,
-    "likely_retrieval_layers": [],
-    "retrieval_query_terms": []
+    "ready_for_offer_stack_diagnosis": false
   },
   "field_sources": {}
 }
@@ -102,9 +102,7 @@ It is not a CRM profile.
 | `advisor_state.missing_fields` | Drives targeted clarification. |
 | `advisor_state.ready_for_payback_diagnosis` | Implementation helper for payback readiness. |
 | `advisor_state.ready_for_offer_stack_diagnosis` | Implementation helper for stack-readiness. |
-| `advisor_state.likely_retrieval_layers` | Candidate namespace hints for the agent or query builder; not a final planner decision. |
-| `advisor_state.retrieval_query_terms` | Candidate query hints for the agent or query builder; not a final source need. |
-| `field_sources` | Lets cached file-derived facts be invalidated by source hash. |
+| `field_sources` | Records where accepted facts came from. File records include a content hash for traceability. |
 
 ## Stack Position Shape
 
@@ -212,7 +210,7 @@ For a context directory at `/company`, store advisor state under:
 
 Recommended file roles:
 
-- `business_snapshot.json` — current merged snapshot.
+- `business_snapshot.json` — current accepted snapshot.
 - `sessions/*.json` — message history, tool calls, retrieved chunks, calculations, answer, and final snapshot.
 
 ## Cache Rules
@@ -223,7 +221,9 @@ The agent may inspect local business docs as needed before saving accepted facts
 
 Cache accepted facts in `BusinessSnapshot`; do not use a CLI file crawl as a substitute for agent judgment.
 
-Conversation-derived facts stay valid until overwritten by a later conversation turn or contradicted by higher-confidence inspected source evidence.
+Facts stay current until the agent explicitly accepts an update. A file hash records
+which file version supported a fact; V1 does not automatically reread files or change
+facts when a file changes.
 
 Calculated fields are recomputed whenever their inputs change.
 
@@ -255,6 +255,7 @@ Every non-null field can have a source record:
 
 Source types:
 
+- `setup`
 - `file`
 - `conversation`
 - `calculated`
@@ -265,15 +266,18 @@ Source confidence:
 - `medium` — inferred from nearby context.
 - `low` — weak inference that should be confirmed before important advice.
 
-## Merge Rules
+## Update Rules
 
-When multiple sources provide the same field:
+V1 uses explicit updates rather than an automatic merge engine:
 
-1. prefer explicit inspected source evidence over inferred source evidence;
-2. prefer direct user statements over weak source inferences;
-3. prefer newer direct user statements over older direct user statements;
-4. recompute calculated fields from the current merged inputs;
-5. preserve conflicts in the session trace instead of silently discarding them.
+1. the agent decides whether a statement or inspected file supports a fact;
+2. `snapshot set` writes the accepted value and replaces that field's source record;
+3. the agent asks for clarification instead of writing a value when sources conflict;
+4. calculated fields are recomputed from the current accepted inputs.
+
+The snapshot does not assign source priority, merge competing values, or preserve a
+separate conflict object. The session record preserves the conversation and actions
+that led to an accepted update.
 
 ## What v1 Excludes
 

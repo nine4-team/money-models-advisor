@@ -1,34 +1,24 @@
 #!/usr/bin/env python3
-"""Score completed source-event traces for multi-search advisor turns.
-
-This eval checks the recorded turn artifact after an acting agent has used the
-CLI. It is separate from source-need generation: source-need generation can say
-what the agent intended to search, while this eval verifies the completed trace
-contains the expected source events.
-"""
+"""Score completed source-event traces against the active SearchRequest contract."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
-
 INTENTS = {
     "teaching_evidence",
     "diagnostic_evidence",
     "comparison_evidence",
     "recommendation_evidence",
 }
-
-SUBJECTS = {"unit-economics", "offers", "upsells", "downsells", "continuity"}
-
 REQUIRED_CASE_FIELDS = {
     "case_id",
     "split",
@@ -45,22 +35,20 @@ REQUIRED_CASE_FIELDS = {
 
 
 @dataclass(frozen=True)
-class SourceNeed:
-    intent: str
-    subjects: tuple[str, ...]
-    focus_terms: tuple[str, ...]
+class ExpectedEvent:
+    job: str
+    required_query_concepts: tuple[tuple[str, ...], ...]
 
 
 @dataclass(frozen=True)
 class EventMatch:
-    expected: SourceNeed
-    actual: SourceNeed | None
-    intent_match: bool
-    subject_recall: float
-    focus_recall: float
+    expected: ExpectedEvent
+    query: str | None
+    concept_recall: float
+    current_contract: bool
+    user_turn_match: bool
+    query_executed: bool
     has_chunks: bool
-    query_variant_count: int
-    executed_query_variant_count: int
 
 
 @dataclass(frozen=True)
@@ -74,7 +62,6 @@ class CaseResult:
     extra_event_count: int | None
     status: str
     failure_reasons: tuple[str, ...]
-    warning_reasons: tuple[str, ...]
     event_matches: tuple[EventMatch, ...]
 
 
@@ -97,182 +84,139 @@ def rel_path(path: Path) -> str:
         return str(path)
 
 
-def validate_source_need(value: Any, case_ref: str, field_name: str) -> list[str]:
-    errors: list[str] = []
+def normalize_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
+def validate_expected_event(value: Any, case_ref: str, field_name: str) -> list[str]:
     if not isinstance(value, dict):
         return [f"{case_ref}: {field_name} must be an object"]
-
-    intent = value.get("intent")
-    if intent not in INTENTS:
-        errors.append(f"{case_ref}: {field_name}.intent is invalid: {intent}")
-
-    subjects = value.get("subjects")
-    if not isinstance(subjects, list) or not subjects:
-        errors.append(f"{case_ref}: {field_name}.subjects must be a non-empty list")
+    errors: list[str] = []
+    if not isinstance(value.get("job"), str) or not value["job"].strip():
+        errors.append(f"{case_ref}: {field_name}.job must be a non-empty string")
+    concepts = value.get("required_query_concepts")
+    if not isinstance(concepts, list) or not concepts:
+        errors.append(f"{case_ref}: {field_name}.required_query_concepts must be a non-empty list")
     else:
-        unknown_subjects = sorted(set(subjects) - SUBJECTS)
-        if unknown_subjects:
-            errors.append(f"{case_ref}: {field_name}.subjects unknown values: {', '.join(unknown_subjects)}")
-
-    focus_terms = value.get("focus_terms")
-    if not isinstance(focus_terms, list) or not focus_terms:
-        errors.append(f"{case_ref}: {field_name}.focus_terms must be a non-empty list")
-    elif not all(isinstance(term, str) and term.strip() for term in focus_terms):
-        errors.append(f"{case_ref}: {field_name}.focus_terms must contain non-empty strings")
-
+        for index, alternatives in enumerate(concepts, 1):
+            if (
+                not isinstance(alternatives, list)
+                or not alternatives
+                or not all(isinstance(term, str) and term.strip() for term in alternatives)
+            ):
+                errors.append(
+                    f"{case_ref}: {field_name}.required_query_concepts[{index}] must contain non-empty alternatives"
+                )
     return errors
 
 
 def validate_cases(cases: list[dict[str, Any]]) -> list[str]:
     errors: list[str] = []
     seen: set[str] = set()
-
     for case in cases:
         case_ref = f"{case.get('case_id', '<missing>')} line {case.get('_line_number', '?')}"
         missing = REQUIRED_CASE_FIELDS - set(case)
         if missing:
             errors.append(f"{case_ref}: missing fields: {', '.join(sorted(missing))}")
-
         case_id = case.get("case_id")
         if case_id in seen:
             errors.append(f"{case_ref}: duplicate case_id")
         seen.add(case_id)
-
-        expected_events = case.get("expected_source_events")
-        if not isinstance(expected_events, list):
+        expected = case.get("expected_source_events")
+        if not isinstance(expected, list):
             errors.append(f"{case_ref}: expected_source_events must be a list")
         else:
-            for index, event in enumerate(expected_events, 1):
-                errors.extend(validate_source_need(event, case_ref, f"expected_source_events[{index}]"))
-
+            for index, event in enumerate(expected, 1):
+                errors.extend(validate_expected_event(event, case_ref, f"expected_source_events[{index}]"))
         for field in ("snapshot_fixture_path", "prior_sessions_fixture_path"):
             value = case.get(field)
-            if value is None:
-                continue
-            if not isinstance(value, str):
-                errors.append(f"{case_ref}: {field} must be a string or null")
-                continue
-            if not (ROOT / value).exists():
-                errors.append(f"{case_ref}: fixture does not exist: {value}")
-
+            if value is not None and (not isinstance(value, str) or not (ROOT / value).exists()):
+                errors.append(f"{case_ref}: invalid fixture: {field}={value}")
     return errors
 
 
-def parse_source_need(value: Any) -> SourceNeed | None:
-    if not isinstance(value, dict):
-        return None
-    intent = value.get("intent")
-    raw_subjects = value.get("subjects")
-    raw_focus_terms = value.get("focus_terms")
-    if intent not in INTENTS:
-        return None
-    if not isinstance(raw_subjects, list) or not raw_subjects:
-        return None
-    if not isinstance(raw_focus_terms, list) or not raw_focus_terms:
-        return None
-    subjects = tuple(subject for subject in raw_subjects if isinstance(subject, str) and subject in SUBJECTS)
-    focus_terms = tuple(term.strip() for term in raw_focus_terms if isinstance(term, str) and term.strip())
-    if not subjects or not focus_terms:
-        return None
-    return SourceNeed(intent=intent, subjects=subjects, focus_terms=focus_terms)
-
-
-def expected_needs(case: dict[str, Any]) -> list[SourceNeed]:
-    needs = []
-    for event in case["expected_source_events"]:
-        need = parse_source_need(event)
-        if need is None:
-            raise ValueError(f"invalid expected_source_events for {case['case_id']}")
-        needs.append(need)
-    return needs
+def expected_events(case: dict[str, Any]) -> list[ExpectedEvent]:
+    return [
+        ExpectedEvent(
+            job=event["job"],
+            required_query_concepts=tuple(tuple(group) for group in event["required_query_concepts"]),
+        )
+        for event in case["expected_source_events"]
+    ]
 
 
 def actual_events(run: dict[str, Any]) -> list[dict[str, Any]]:
     if isinstance(run.get("source_events"), list):
         return run["source_events"]
-    if isinstance(run.get("turn_record"), dict) and isinstance(run["turn_record"].get("source_events"), list):
-        return run["turn_record"]["source_events"]
+    record = run.get("turn_record")
+    if isinstance(record, dict) and isinstance(record.get("source_events"), list):
+        return record["source_events"]
     return []
 
 
-def actual_need(event: dict[str, Any]) -> SourceNeed | None:
-    return parse_source_need(event.get("source_need"))
-
-
-def term_recall(expected_terms: tuple[str, ...], actual_terms: tuple[str, ...]) -> float:
-    if not expected_terms:
-        return 1.0
-    actual_text = normalize_text(" ".join(actual_terms))
-    hits = sum(1 for term in expected_terms if normalize_text(term) in actual_text)
-    return hits / len(expected_terms)
-
-
-def normalize_text(value: str) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
-
-
-def subject_recall(expected_subjects: tuple[str, ...], actual_subjects: tuple[str, ...]) -> float:
-    expected = set(expected_subjects)
-    actual = set(actual_subjects)
-    return len(expected & actual) / len(expected)
-
-
-def has_chunks(event: dict[str, Any]) -> bool:
-    chunks = event.get("chunks")
-    if not isinstance(chunks, list):
-        chunks = event.get("inspected_chunks")
-    return isinstance(chunks, list) and any(isinstance(chunk, dict) and chunk.get("id") for chunk in chunks)
-
-
-def query_variant_count(event: dict[str, Any]) -> int:
-    return len(query_variants(event))
-
-
-def query_variants(event: dict[str, Any]) -> list[str]:
-    source_need = event.get("source_need")
-    if not isinstance(source_need, dict):
-        return []
-    variants = source_need.get("query_variants")
-    if not isinstance(variants, list):
-        return []
-    return [variant.strip() for variant in variants if isinstance(variant, str) and variant.strip()]
-
-
-def executed_query_variant_count(event: dict[str, Any]) -> int:
+def event_match(expected: ExpectedEvent, event: dict[str, Any], user_turn: str) -> EventMatch:
+    request = event.get("search_request")
+    current_contract = isinstance(request, dict) and request.get("intent") in INTENTS
+    query = request.get("query") if isinstance(request, dict) else None
+    if not isinstance(query, str) or not query.strip():
+        query = None
+        current_contract = False
+    request_turn = request.get("user_turn") if isinstance(request, dict) else None
+    user_turn_match = isinstance(request_turn, str) and normalize_text(request_turn) == normalize_text(user_turn)
+    query_text = normalize_text(query or "")
+    hits = sum(
+        any(normalize_text(alternative) in query_text for alternative in alternatives)
+        for alternatives in expected.required_query_concepts
+    )
+    concept_recall = hits / len(expected.required_query_concepts)
     queries = event.get("queries")
     if queries is None and isinstance(event.get("query"), str):
         queries = [event["query"]]
-    if not isinstance(queries, list):
-        return 0
-    executed = {normalize_query_text(query) for query in queries if isinstance(query, str)}
-    return sum(1 for variant in query_variants(event) if normalize_query_text(variant) in executed)
+    query_executed = (
+        query is not None
+        and isinstance(queries, list)
+        and len(queries) == 1
+        and isinstance(queries[0], str)
+        and normalize_text(queries[0]) == normalize_text(query)
+    )
+    chunks = event.get("chunks")
+    has_chunks = isinstance(chunks, list) and any(isinstance(chunk, dict) and chunk.get("id") for chunk in chunks)
+    return EventMatch(expected, query, concept_recall, current_contract, user_turn_match, query_executed, has_chunks)
 
 
-def normalize_query_text(value: str) -> str:
-    return " ".join(value.split()).lower()
+def match_passes(match: EventMatch) -> bool:
+    return (
+        match.concept_recall == 1.0
+        and match.current_contract
+        and match.user_turn_match
+        and match.query_executed
+        and match.has_chunks
+    )
 
 
-def find_best_match(expected: SourceNeed, events: list[dict[str, Any]], used_indexes: set[int]) -> tuple[int | None, EventMatch]:
-    best_index = None
-    best_match = EventMatch(expected, None, False, 0.0, 0.0, False, 0, 0)
+def find_best_match(
+    expected: ExpectedEvent,
+    events: list[dict[str, Any]],
+    used_indexes: set[int],
+    user_turn: str,
+) -> tuple[int | None, EventMatch]:
+    empty = EventMatch(expected, None, 0.0, False, False, False, False)
+    best_index: int | None = None
+    best_match = empty
     best_score = -1.0
     for index, event in enumerate(events):
         if index in used_indexes:
             continue
-        need = actual_need(event)
-        if need is None:
-            continue
-        intent_match = need.intent == expected.intent
-        subjects = subject_recall(expected.subjects, need.subjects)
-        focus = term_recall(expected.focus_terms, need.focus_terms)
-        chunks = has_chunks(event)
-        variants = query_variant_count(event)
-        executed_variants = executed_query_variant_count(event)
-        score = (2.0 if intent_match else 0.0) + subjects + focus + (0.25 if chunks else 0.0)
+        match = event_match(expected, event, user_turn)
+        score = (
+            match.concept_recall * 4
+            + int(match.current_contract)
+            + int(match.user_turn_match)
+            + int(match.query_executed)
+            + int(match.has_chunks)
+        )
         if score > best_score:
-            best_index = index
-            best_score = score
-            best_match = EventMatch(expected, need, intent_match, subjects, focus, chunks, variants, executed_variants)
+            best_index, best_match, best_score = index, match, score
     return best_index, best_match
 
 
@@ -291,114 +235,53 @@ def find_run_artifacts(runs_dir: Path) -> dict[str, Path]:
     return artifacts
 
 
-def score_case(case: dict[str, Any], run_path: Path | None, *, require_query_variants: bool = False) -> CaseResult:
-    expected = expected_needs(case)
+def score_case(case: dict[str, Any], run_path: Path | None) -> CaseResult:
+    expected = expected_events(case)
     if run_path is None:
-        return CaseResult(
-            case_id=case["case_id"],
-            split=case["split"],
-            expected_event_count=len(expected),
-            actual_event_count=None,
-            matched_event_count=0,
-            all_expected_events_matched=None,
-            extra_event_count=None,
-            status="not_run",
-            failure_reasons=(),
-            warning_reasons=(),
-            event_matches=(),
-        )
-
+        return CaseResult(case["case_id"], case["split"], len(expected), None, 0, None, None, "not_run", (), ())
     run = json.loads(run_path.read_text(encoding="utf-8"))
     events = actual_events(run)
     if not expected:
-        failures = [f"unexpected_source_events:{len(events)}"] if events else []
+        failures = (f"unexpected_source_events:{len(events)}",) if events else ()
         return CaseResult(
-            case_id=case["case_id"],
-            split=case["split"],
-            expected_event_count=0,
-            actual_event_count=len(events),
-            matched_event_count=0,
-            all_expected_events_matched=not failures,
-            extra_event_count=len(events),
-            status="failed" if failures else "passed",
-            failure_reasons=tuple(failures),
-            warning_reasons=(),
-            event_matches=(),
+            case["case_id"], case["split"], 0, len(events), 0, not failures, len(events),
+            "failed" if failures else "passed", failures, (),
         )
 
-    used_indexes: set[int] = set()
+    used: set[int] = set()
     matches: list[EventMatch] = []
     failures: list[str] = []
-    for need in expected:
-        index, match = find_best_match(need, events, used_indexes)
+    for expected_event in expected:
+        index, match = find_best_match(expected_event, events, used, case["user_turn"])
         if index is not None:
-            used_indexes.add(index)
+            used.add(index)
         matches.append(match)
-        if not match.intent_match:
-            failures.append(f"missing_intent:{need.intent}")
-        if match.subject_recall < 1.0:
-            failures.append(f"subject_miss:{need.intent}")
-        if match.focus_recall < 0.5:
-            failures.append(f"focus_miss:{need.intent}")
+        if not match.current_contract:
+            failures.append(f"current_contract_missing:{expected_event.job}")
+        if not match.user_turn_match:
+            failures.append(f"user_turn_mismatch:{expected_event.job}")
+        if match.concept_recall < 1.0:
+            failures.append(f"query_concept_miss:{expected_event.job}:{match.concept_recall:.3f}")
+        if not match.query_executed:
+            failures.append(f"query_not_executed:{expected_event.job}")
         if not match.has_chunks:
-            failures.append(f"missing_chunks:{need.intent}")
-        if require_query_variants and not 2 <= match.query_variant_count <= 4:
-            failures.append(f"missing_query_variants:{need.intent}")
-        if require_query_variants and match.executed_query_variant_count != match.query_variant_count:
-            failures.append(f"unexecuted_query_variants:{need.intent}")
-
-    extra_events = max(0, len(events) - len(used_indexes))
-    matched = sum(
-        match.intent_match
-        and match.subject_recall >= 1.0
-        and match.focus_recall >= 0.5
-        and match.has_chunks
-        and (
-            not require_query_variants
-            or (2 <= match.query_variant_count <= 4 and match.executed_query_variant_count == match.query_variant_count)
-        )
-        for match in matches
-    )
-    all_matched = matched == len(expected)
-    if extra_events:
-        warnings = [f"extra_events:{extra_events}"]
-    else:
-        warnings = []
-    status = "passed" if all_matched else "failed"
+            failures.append(f"missing_chunks:{expected_event.job}")
+    extra = max(0, len(events) - len(used))
+    if extra:
+        failures.append(f"extra_events:{extra}")
+    matched = sum(match_passes(match) for match in matches)
+    passed = matched == len(expected) and extra == 0
     return CaseResult(
-        case_id=case["case_id"],
-        split=case["split"],
-        expected_event_count=len(expected),
-        actual_event_count=len(events),
-        matched_event_count=matched,
-        all_expected_events_matched=all_matched,
-        extra_event_count=extra_events,
-        status=status,
-        failure_reasons=tuple(failures),
-        warning_reasons=tuple(warnings),
-        event_matches=tuple(matches),
+        case["case_id"], case["split"], len(expected), len(events), matched, passed, extra,
+        "passed" if passed else "failed", tuple(failures), tuple(matches),
     )
 
 
 def pct(count: int, total: int) -> str:
-    if total == 0:
-        return "n/a"
-    return f"{(count / total) * 100:.1f}%"
+    return "n/a" if total == 0 else f"{count / total * 100:.1f}%"
 
 
-def fmt(value: float | None) -> str:
-    if value is None:
-        return "-"
-    return f"{value:.3f}"
-
-
-def render_report(
-    cases: list[dict[str, Any]],
-    results: list[CaseResult],
-    validation_errors: list[str],
-    *,
-    require_query_variants: bool = False,
-) -> str:
+def render_report(cases: list[dict[str, Any]], results: list[CaseResult], validation_errors: list[str]) -> str:
     scored = [result for result in results if result.status != "not_run"]
     passed = [result for result in scored if result.status == "passed"]
     lines = [
@@ -406,14 +289,9 @@ def render_report(
         "",
         "## Scope",
         "",
-        "This eval checks completed advisor-turn traces. It verifies that source-backed answers contain the expected source events, multi-job answers split retrieval into distinct SourceNeeds, and no-search turns do not fabricate source events.",
+        "This scorer checks completed turns against the active single-query `SearchRequest` contract. It verifies search/no-search restraint, one event per evidence job, required query concepts, exact query execution, and inspected chunk recording.",
         "",
-        "It does not run an agent and does not call external model services. Acting agents complete traces separately; this scorer validates the resulting `run.json` artifacts.",
-        "",
-        "## Trace Requirement",
-        "",
-        "- Query variants required: " + ("yes" if require_query_variants else "no"),
-        "- Query variants must be present in executed queries: " + ("yes" if require_query_variants else "no"),
+        "`intent` must be a valid trace label but is not compared with an answer key because it does not control retrieval.",
         "",
         "## Dataset",
         "",
@@ -422,107 +300,73 @@ def render_report(
         "",
         "## Validation",
         "",
+        "- Status: passed" if not validation_errors else f"- Status: failed ({len(validation_errors)} issues)",
     ]
-    if validation_errors:
-        lines.append(f"- Status: failed ({len(validation_errors)} issues)")
-        for error in validation_errors:
-            lines.append(f"- {error}")
-    else:
-        lines.append("- Status: passed")
-
-    lines.extend(
-        [
-            "",
-            "## Run Coverage",
-            "",
-            f"- Scored runs: {len(scored)} / {len(cases)}",
-            f"- Missing runs: {len(cases) - len(scored)}",
-            "",
-            "## Metrics",
-            "",
-        ]
-    )
+    lines.extend(f"- {error}" for error in validation_errors)
+    lines.extend([
+        "", "## Run Coverage", "",
+        f"- Scored runs: {len(scored)} / {len(cases)}",
+        f"- Missing runs: {len(cases) - len(scored)}",
+        "", "## Metrics", "",
+    ])
     if scored:
-        lines.extend(
-            [
-                f"- Case pass rate: {pct(len(passed), len(scored))}",
-                f"- Expected source events matched: {sum(result.matched_event_count for result in scored)} / {sum(result.expected_event_count for result in scored)}",
-                f"- Extra source-event warnings: {sum(1 for result in scored if result.extra_event_count)} cases / {sum(result.extra_event_count or 0 for result in scored)} events",
-            ]
-        )
+        lines.extend([
+            f"- Case pass rate: {pct(len(passed), len(scored))}",
+            f"- Expected source events matched: {sum(r.matched_event_count for r in scored)} / {sum(r.expected_event_count for r in scored)}",
+            f"- Extra source events: {sum(r.extra_event_count or 0 for r in scored)}",
+        ])
     else:
-        lines.append("- Status: inventory only; no source-event run artifacts found yet.")
-
-    lines.extend(
-        [
-            "",
-            "## Case Table",
-            "",
-            "| Case | Split | Expected Events | Actual Events | Matched Events | Status | Findings |",
-            "|---|---|---:|---:|---:|---|---|",
-        ]
-    )
+        lines.append("- No current-contract run artifacts found.")
+    lines.extend([
+        "", "## Case Table", "",
+        "| Case | Expected | Actual | Matched | Status | Findings |",
+        "|---|---:|---:|---:|---|---|",
+    ])
     for result in results:
         lines.append(
-            "| "
-            f"`{result.case_id}` | `{result.split}` | {result.expected_event_count} | "
+            f"| `{result.case_id}` | {result.expected_event_count} | "
             f"{'-' if result.actual_event_count is None else result.actual_event_count} | "
-            f"{result.matched_event_count} | `{result.status}` | "
-            f"{', '.join([*result.failure_reasons, *result.warning_reasons]) or '-'} |"
+            f"{result.matched_event_count} | `{result.status}` | {', '.join(result.failure_reasons) or '-'} |"
         )
-
-    lines.extend(
-        [
+    audited_cases = [case for case in cases if isinstance(case.get("label_audit"), dict)]
+    if audited_cases:
+        lines.extend([
             "",
-            "## Decision",
+            "## Answer-Key Audit",
             "",
-            "Use this eval to validate post-hardening acting-agent traces before claiming that the advisor reliably decides when to search, when not to search, and when to split one answer into multiple source-material searches.",
+            "The run artifacts were frozen before these label corrections; queries and retrieval were not rerun.",
             "",
-        ]
-    )
+        ])
+        for case in audited_cases:
+            audit = case["label_audit"]
+            lines.append(
+                f"- `{case['case_id']}`: {audit.get('correction', 'label corrected')}. "
+                f"{audit.get('reason', '')}".rstrip()
+            )
+    lines.append("")
     return "\n".join(lines)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_source_event_cases.jsonl")
-    parser.add_argument(
-        "--runs-dir",
-        type=Path,
-        default=ROOT / "evals" / "runs" / "source_events" / "post_hardening_expanded_v2",
-    )
+    parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "source_events" / "search_request_v1")
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "advisor_source_event_traces.md")
-    parser.add_argument(
-        "--require-query-variants",
-        action="store_true",
-        help="Fail matched source events unless source_need.query_variants contains at least two agent-written variants.",
-    )
     args = parser.parse_args()
-
     cases = load_jsonl(args.cases)
-    validation_errors = validate_cases(cases)
+    errors = validate_cases(cases)
     artifacts = find_run_artifacts(args.runs_dir)
-    results = [] if validation_errors else [
-        score_case(case, artifacts.get(case["case_id"]), require_query_variants=args.require_query_variants) for case in cases
-    ]
-
+    results = [] if errors else [score_case(case, artifacts.get(case["case_id"])) for case in cases]
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(
-        render_report(cases, results, validation_errors, require_query_variants=args.require_query_variants),
-        encoding="utf-8",
-    )
-    print(
-        json.dumps(
-            {
-                "cases": len(cases),
-                "validation_errors": len(validation_errors),
-                "scored_runs": sum(result.status != "not_run" for result in results),
-                "report": rel_path(args.report),
-            },
-            indent=2,
-        )
-    )
-    return 1 if validation_errors else 0
+    args.report.write_text(render_report(cases, results, errors), encoding="utf-8")
+    print(json.dumps({
+        "cases": len(cases),
+        "validation_errors": len(errors),
+        "scored_runs": sum(result.status != "not_run" for result in results),
+        "passed_runs": sum(result.status == "passed" for result in results),
+        "report": rel_path(args.report),
+    }, indent=2))
+    return 1 if errors else 0
 
 
 if __name__ == "__main__":

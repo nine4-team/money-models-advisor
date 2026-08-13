@@ -5,7 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from money_model_architect.retrieval import Chunk, CorpusIndex, tokenize
-from money_model_architect.vector_store import subject_namespace
+from money_model_architect.vector_store import VectorMatch, subject_namespace
 
 
 class FakeEmbeddingClient:
@@ -22,6 +22,23 @@ class FakeEmbeddingClient:
             float("payback" in lowered),
             float("upsell" in lowered),
             float("continuity" in lowered or "recurring" in lowered),
+        ]
+
+
+class CapturingVectorStore:
+    name = "capture"
+
+    def __init__(self):
+        self.requested_top_k = None
+
+    def query(self, vector, *, top_k, namespace=None, filter=None):
+        self.requested_top_k = top_k
+        return [
+            VectorMatch(
+                id="payback-period:0",
+                score=0.9,
+                metadata={"chunk_id": "payback-period:0", "subjects": ["unit-economics"]},
+            )
         ]
 
 
@@ -92,6 +109,19 @@ class RetrievalBackendTest(unittest.TestCase):
         )
 
         self.assertEqual([result.chunk.id for result in results], ["payback-period:0"])
+
+    def test_vector_search_does_not_overfetch_beyond_candidate_depth(self):
+        index = test_index()
+        store = CapturingVectorStore()
+
+        index.vector_search(
+            "customer acquisition payback",
+            top_k=7,
+            embedding_client=FakeEmbeddingClient(),
+            vector_store=store,
+        )
+
+        self.assertEqual(store.requested_top_k, 7)
 
     def test_hybrid_search_fuses_unique_results(self):
         index = test_index()

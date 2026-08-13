@@ -1,5 +1,9 @@
 # Narrative Clarity Pass
 
+> **Historical record:** This document records an earlier sentence-level clarity pass.
+> It is not the current narrative checklist. `REMEDIATION_PLAN.md` is the canonical
+> tracker, including the deletion-first content audit completed on 2026-08-13.
+
 A section-by-section clarity pass over `narrative.html`. Goal: plain language, no
 jargon-without-introduction, no metaphors, no unnamed referents, no filler —
 readable cold by someone who hasn't been living in the project.

@@ -1,0 +1,45 @@
+{"case_id":"searchq_v1_001","chunk_id":"how-businesses-make-money:1","useful":true,"rationale":"Direct cautionary example showing why revenue without fulfillment-adjusted gross profit can misstate ad viability."}
+{"case_id":"searchq_v1_002","chunk_id":"how-businesses-make-money:2","useful":true,"rationale":"Defines the CAC, gross-profit, and payback frame underlying client-financed acquisition."}
+{"case_id":"searchq_v1_003","chunk_id":"cac:0","useful":true,"rationale":"Defines fully loaded CAC and paid-media CAC, directly informing ad-spend economics."}
+{"case_id":"searchq_v1_004","chunk_id":"make-your-money-model:2","useful":true,"rationale":"Directly distinguishes the attraction step from the following upsell step."}
+{"case_id":"searchq_v1_005","chunk_id":"make-your-money-model:2","useful":true,"rationale":"Directly says the next step after attraction is an upsell."}
+{"case_id":"searchq_v1_005","chunk_id":"ten-years-ten-minutes:1","useful":true,"rationale":"Defines an upsell as what is offered next and explains its profit role."}
+{"case_id":"searchq_v1_006","chunk_id":"continuity-offers:3","useful":true,"rationale":"Explains how continuity affects lifetime revenue and gross profit."}
+{"case_id":"searchq_v1_006","chunk_id":"continuity-bonus:3","useful":true,"rationale":"Explains first-month continuity cash and prepayment effects on 30-day profit."}
+{"case_id":"searchq_v1_007","chunk_id":"payment-plans:3","useful":true,"rationale":"Gives concrete payment-plan pricing and risk guidance."}
+{"case_id":"searchq_v1_008","chunk_id":"free-trials:3","useful":true,"rationale":"Provides the trial-with-penalty process the question asks about."}
+{"case_id":"searchq_v1_009","chunk_id":"gross-profit:2","useful":true,"rationale":"Defines gross profit for services and makes delivery cost explicit."}
+{"case_id":"searchq_v1_010","chunk_id":"decoy-offers:3","useful":true,"rationale":"Provides a concrete front-end attraction pattern for engaging prospects."}
+{"case_id":"searchq_v1_011","chunk_id":"gross-profit:0","useful":true,"rationale":"Directly defines gross profit as price less delivery cost and explains its acquisition role."}
+{"case_id":"searchq_v1_011","chunk_id":"gross-profit:3","useful":true,"rationale":"Distinguishes fulfillment-variable costs from overhead when calculating gross profit."}
+{"case_id":"searchq_v1_011","chunk_id":"how-businesses-make-money:0","useful":true,"rationale":"States the LTGP-over-CAC viability relationship."}
+{"case_id":"searchq_v1_013","chunk_id":"waived-fee:4","useful":true,"rationale":"Explains setup fees and their effect on upfront cash."}
+{"case_id":"searchq_v1_015","chunk_id":"menu-upsell:2","useful":true,"rationale":"Shows the assumed-choice mechanic used by a menu upsell."}
+{"case_id":"searchq_v1_015","chunk_id":"menu-upsell:3","useful":true,"rationale":"Explains personalized prescription, a defining menu-upsell behavior."}
+{"case_id":"searchq_v1_018","chunk_id":"offer-types:4","useful":false,"rationale":"Defines attraction's objective but does not help choose free versus discounted."}
+{"case_id":"searchq_v1_018","chunk_id":"ten-years-ten-minutes:1","useful":true,"rationale":"Discusses free value and discounted payment structures for front-end offers."}
+{"case_id":"searchq_v1_019","chunk_id":"free-giveaways:9","useful":true,"rationale":"Gives giveaway referral, scarcity, and compliance guidance applicable to the proposed prize."}
+{"case_id":"searchq_v1_021","chunk_id":"gross-profit:3","useful":true,"rationale":"Makes the fulfillment-variable-cost risk in a free-item structure explicit."}
+{"case_id":"searchq_v1_022","chunk_id":"ten-years-ten-minutes:1","useful":true,"rationale":"Directly states that more free value can prepare buyers for a more expensive offer."}
+{"case_id":"searchq_v1_024","chunk_id":"payment-plans:10","useful":true,"rationale":"Summarizes payment plans and the ordered downsell path after a rejection."}
+{"case_id":"searchq_v1_025","chunk_id":"feature-downsells:7","useful":true,"rationale":"Provides feature-downsell guidance for reducing scope while preserving the sale."}
+{"case_id":"searchq_v1_027","chunk_id":"continuity-offers:6","useful":true,"rationale":"Supports the recurring-value side of a waived-fee continuity structure."}
+{"case_id":"searchq_v1_029","chunk_id":"continuity-bonus:10","useful":true,"rationale":"Directly explains using a valuable bonus to increase continuity commitment."}
+{"case_id":"searchq_v1_030","chunk_id":"make-your-money-model:0","useful":true,"rationale":"Names all four stack roles and explains combining them to improve 30-day economics."}
+{"case_id":"searchq_v1_030","chunk_id":"make-your-money-model:1","useful":true,"rationale":"Provides worked examples of the offer roles fitting together."}
+{"case_id":"querygen_holdout_v1_003","chunk_id":"continuity-bonus:3","useful":true,"rationale":"Shows bonuses supporting a continuity pitch and the resulting recurring cash."}
+{"case_id":"querygen_holdout_v1_006","chunk_id":"free-trials:5","useful":true,"rationale":"Directly explains how to frame a trial for skeptical buyers who need experience before commitment."}
+{"case_id":"querygen_holdout_v1_007","chunk_id":"payment-plans:8","useful":true,"rationale":"Changes payment timing and down payment without reducing the product."}
+{"case_id":"querygen_holdout_v1_008","chunk_id":"menu-upsell:0","useful":true,"rationale":"Defines the menu-upsell prescription pattern for a next need."}
+{"case_id":"querygen_holdout_v1_008","chunk_id":"upsell-offers:2","useful":true,"rationale":"Explains complementary next-problem upsells and appropriate timing."}
+{"case_id":"querygen_holdout_v1_015","chunk_id":"free-with-consumption:0","useful":false,"rationale":"Names a possible attraction mechanic but does not identify which offer-stack function is failing."}
+{"case_id":"querygen_holdout_v1_015","chunk_id":"free-with-consumption:4","useful":false,"rationale":"Describes a free-consumption sales flow but does not establish that attraction is the failed stack function."}
+{"case_id":"querygen_holdout_v1_016","chunk_id":"make-your-money-model:0","useful":true,"rationale":"Advises starting with one model and combining only as maturity increases."}
+{"case_id":"querygen_holdout_v1_016","chunk_id":"make-your-money-model:1","useful":true,"rationale":"Provides a worked stack example relevant to sequencing rather than launching everything blindly."}
+{"case_id":"searchq_v1_007","chunk_id":"payment-plans:12","useful":true,"rationale":"Provides concrete payment-splitting and recurring-service payment-plan guidance."}
+{"case_id":"searchq_v1_024","chunk_id":"feature-downsells:7","useful":true,"rationale":"Explains how feature and payment-plan downsells fit into the post-rejection path."}
+{"case_id":"querygen_holdout_v1_007","chunk_id":"payment-plans:12","useful":true,"rationale":"Changes payment timing without removing what the customer receives."}
+{"case_id":"querygen_holdout_v1_008","chunk_id":"upsell-offers:3","useful":true,"rationale":"Identifies upsells as the profit-maximizing ascension mechanism for the natural next offer."}
+{"case_id":"querygen_holdout_v1_012","chunk_id":"feature-downsells:1","useful":true,"rationale":"Directly defines lowering price by removing a feature instead of discounting the whole offer."}
+{"case_id":"querygen_holdout_v1_015","chunk_id":"cac:5","useful":true,"rationale":"Shows that a stronger free attraction offer can increase sales by lowering lead cost without changing close rate."}
+{"case_id":"searchq_v1_022","chunk_id":"attraction-offers:0","useful":false,"rationale":"Explains attraction demand generally but not when free education has built enough trust for a paid offer."}

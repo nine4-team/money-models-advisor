@@ -22,6 +22,23 @@ class BusinessSnapshotTest(unittest.TestCase):
         self.assertEqual(payload["advisor_state"]["advisory_status"], "insufficient_context")
         self.assertFalse(payload["advisor_state"]["ready_for_payback_diagnosis"])
         self.assertIn("economics.cac", payload["advisor_state"]["missing_fields"])
+        self.assertNotIn("likely_retrieval_subjects", payload["advisor_state"])
+        self.assertNotIn("retrieval_query_terms", payload["advisor_state"])
+
+    def test_legacy_retrieval_hints_load_but_are_not_exposed(self):
+        snapshot = BusinessSnapshot.from_dict(
+            {
+                "advisor_state": {
+                    "likely_retrieval_subjects": ["unit-economics"],
+                    "retrieval_query_terms": ["CAC", "payback period"],
+                }
+            }
+        )
+
+        payload = snapshot.to_dict()
+
+        self.assertNotIn("likely_retrieval_subjects", payload["advisor_state"])
+        self.assertNotIn("retrieval_query_terms", payload["advisor_state"])
 
     def test_payback_readiness_and_derived_payback(self):
         snapshot = BusinessSnapshot()

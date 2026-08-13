@@ -59,6 +59,8 @@ class AdvisorState:
     missing_fields: list[str] = field(default_factory=list)
     ready_for_payback_diagnosis: bool = False
     ready_for_offer_stack_diagnosis: bool = False
+    # Accepted only so older saved snapshots still load. These deterministic
+    # retrieval hints are no longer emitted to the operating agent.
     likely_retrieval_subjects: list[str] = field(default_factory=list)
     retrieval_query_terms: list[str] = field(default_factory=list)
 
@@ -74,7 +76,7 @@ class BusinessSnapshot:
     field_sources: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     def refresh(self) -> None:
-        """Recompute derived fields, readiness flags, missing fields, and retrieval hints."""
+        """Recompute derived fields, readiness flags, and missing fields."""
         self._refresh_calculated_fields()
         missing = self._missing_fields()
         self.advisor_state.missing_fields = missing
@@ -102,12 +104,13 @@ class BusinessSnapshot:
             )
         )
         self.advisor_state.advisory_status = self._advisory_status()
-        self.advisor_state.likely_retrieval_subjects = self._likely_subjects()
-        self.advisor_state.retrieval_query_terms = self._query_terms()
 
     def to_dict(self) -> dict[str, Any]:
         self.refresh()
-        return asdict(self)
+        payload = asdict(self)
+        payload["advisor_state"].pop("likely_retrieval_subjects", None)
+        payload["advisor_state"].pop("retrieval_query_terms", None)
+        return payload
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "BusinessSnapshot":
@@ -183,41 +186,6 @@ class BusinessSnapshot:
             return "diagnosable"
         return "insufficient_context"
 
-    def _likely_subjects(self) -> list[str]:
-        subjects: list[str] = []
-        text = " ".join([self.problem.user_goal or "", *self.problem.reported_symptoms]).lower()
-        if any(term in text for term in ("cac", "payback", "cash", "margin", "gross profit", "ltv", "economics")):
-            subjects.append("unit-economics")
-        if any(term in text for term in ("lead", "ad", "attraction", "free", "trial", "front end")):
-            subjects.append("offers")
-        if any(term in text for term in ("upsell", "backend", "after first sale")):
-            subjects.append("upsells")
-        if any(term in text for term in ("downsell", "refund", "payment plan", "financing")):
-            subjects.append("downsells")
-        if any(term in text for term in ("continuity", "recurring", "churn", "retention", "subscription")):
-            subjects.append("continuity")
-        return _dedupe(subjects)
-
-    def _query_terms(self) -> list[str]:
-        terms: list[str] = []
-        for value in (
-            self.business.business_type,
-            self.business.icp,
-            self.money_model.core_offer.description,
-            self.problem.user_goal,
-            *self.problem.reported_symptoms,
-            *self.problem.diagnosed_constraints,
-        ):
-            if value:
-                terms.append(value)
-        if self.economics.cac is not None:
-            terms.append("CAC")
-        if self.economics.first_30_day_gross_profit is not None:
-            terms.append("first 30 day gross profit")
-        if self.economics.payback_period_months is not None:
-            terms.append("payback period")
-        return _dedupe(terms)
-
 
 def _money_model_from_dict(payload: dict[str, Any]) -> MoneyModel:
     kwargs = {}
@@ -225,15 +193,3 @@ def _money_model_from_dict(payload: dict[str, Any]) -> MoneyModel:
         value = payload.get(position, {})
         kwargs[position] = StackPosition(**value) if isinstance(value, dict) else StackPosition()
     return MoneyModel(**kwargs)
-
-
-def _dedupe(values: list[str]) -> list[str]:
-    seen = set()
-    deduped = []
-    for value in values:
-        key = value.lower()
-        if key in seen:
-            continue
-        seen.add(key)
-        deduped.append(value)
-    return deduped

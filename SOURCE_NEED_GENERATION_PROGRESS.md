@@ -1,5 +1,10 @@
 # Source-Need Generation Progress
 
+> Historical record. `SourceNeed` and its multi-query fields are retired from the
+> active product path. Current query and trace evidence is mapped in
+> `GOLDEN_DATASET.md`; the active request rules are in
+> `.codex/skills/money-model-advisor/search_request_rules.md`.
+
 This tracker is for one problem only: when source-material search may be needed, whether the acting agent generates the right structured source need before query construction.
 
 It is separate from:

@@ -12,247 +12,82 @@ def write_run(tmpdir: str, payload: dict) -> Path:
     return path
 
 
+def expected(job: str, *concepts: list[str]) -> dict:
+    return {"job": job, "required_query_concepts": list(concepts)}
+
+
+def event(user_turn: str, query: str, *, intent: str = "diagnostic_evidence") -> dict:
+    return {
+        "search_request": {"intent": intent, "user_turn": user_turn, "query": query},
+        "queries": [query],
+        "chunks": [{"id": "chunk:0"}],
+    }
+
+
 class SourceEventTraceEvalTest(unittest.TestCase):
-    def test_multi_source_trace_passes_when_events_are_split(self):
+    def test_current_contract_multi_job_trace_passes(self):
         case = {
             "case_id": "case",
             "split": "dev",
+            "user_turn": "what should we fix?",
             "expected_source_events": [
-                {
-                    "intent": "diagnostic_evidence",
-                    "subjects": ["unit-economics"],
-                    "focus_terms": ["CAC", "payback period"],
-                },
-                {
-                    "intent": "recommendation_evidence",
-                    "subjects": ["upsells"],
-                    "focus_terms": ["upsell", "first 30 day gross profit"],
-                },
+                expected("economics", ["CAC", "customer acquisition cost"], ["payback"]),
+                expected("offer", ["front-end offer", "attraction offer"], ["paid acquisition"]),
             ],
         }
-        run = {
-            "source_events": [
-                {
-                    "source_need": {
-                        "intent": "diagnostic_evidence",
-                        "subjects": ["unit-economics"],
-                        "focus_terms": ["CAC", "payback period", "gross margin"],
-                    },
-                    "chunks": [{"id": "payback-period:0"}],
-                },
-                {
-                    "source_need": {
-                        "intent": "recommendation_evidence",
-                        "subjects": ["upsells"],
-                        "focus_terms": ["upsell", "first 30 day gross profit"],
-                    },
-                    "chunks": [{"id": "upsells:0"}],
-                },
-            ]
-        }
-
+        run = {"source_events": [
+            event(case["user_turn"], "customer acquisition cost gross profit payback"),
+            event(case["user_turn"], "front-end offer paid acquisition", intent="recommendation_evidence"),
+        ]}
         with TemporaryDirectory() as tmpdir:
             result = source_event_eval.score_case(case, write_run(tmpdir, run))
-
         self.assertEqual(result.status, "passed")
-        self.assertTrue(result.all_expected_events_matched)
         self.assertEqual(result.matched_event_count, 2)
 
-    def test_single_broad_source_event_fails_multi_source_trace(self):
-        case = {
-            "case_id": "case",
-            "split": "dev",
-            "expected_source_events": [
-                {
-                    "intent": "diagnostic_evidence",
-                    "subjects": ["unit-economics"],
-                    "focus_terms": ["CAC", "payback period"],
-                },
-                {
-                    "intent": "recommendation_evidence",
-                    "subjects": ["upsells"],
-                    "focus_terms": ["upsell", "first 30 day gross profit"],
-                },
-            ],
-        }
-        run = {
-            "source_events": [
-                {
-                    "source_need": {
-                        "intent": "recommendation_evidence",
-                        "subjects": ["unit-economics", "offers", "upsells"],
-                        "focus_terms": ["CAC", "payback period", "upsell", "first 30 day gross profit"],
-                    },
-                    "chunks": [{"id": "payback-period:0"}],
-                }
-            ]
-        }
-
+    def test_legacy_source_need_trace_fails(self):
+        case = {"case_id": "case", "split": "dev", "user_turn": "teach me", "expected_source_events": [expected("teach", ["offer"])]}
+        run = {"source_events": [{"source_need": {"intent": "teaching_evidence", "subjects": ["offers"], "focus_terms": ["offer"]}, "chunks": [{"id": "x"}]}]}
         with TemporaryDirectory() as tmpdir:
             result = source_event_eval.score_case(case, write_run(tmpdir, run))
-
         self.assertEqual(result.status, "failed")
-        self.assertFalse(result.all_expected_events_matched)
-        self.assertIn("missing_intent:diagnostic_evidence", result.failure_reasons)
+        self.assertIn("current_contract_missing:teach", result.failure_reasons)
 
-    def test_inspected_chunks_count_as_chunk_evidence(self):
-        case = {
-            "case_id": "case",
-            "split": "dev",
-            "expected_source_events": [
-                {
-                    "intent": "diagnostic_evidence",
-                    "subjects": ["unit-economics"],
-                    "focus_terms": ["CAC", "payback period"],
-                }
-            ],
-        }
-        run = {
-            "source_events": [
-                {
-                    "source_need": {
-                        "intent": "diagnostic_evidence",
-                        "subjects": ["unit-economics"],
-                        "focus_terms": ["CAC", "payback period"],
-                    },
-                    "inspected_chunks": [{"id": "payback-period:0"}],
-                }
-            ]
-        }
-
+    def test_query_must_preserve_all_required_concepts(self):
+        case = {"case_id": "case", "split": "dev", "user_turn": "question", "expected_source_events": [expected("job", ["upsell"], ["gross profit"])]}
+        run = {"source_events": [event("question", "upsell offers")]}
         with TemporaryDirectory() as tmpdir:
             result = source_event_eval.score_case(case, write_run(tmpdir, run))
-
-        self.assertEqual(result.status, "passed")
-
-    def test_focus_matching_normalizes_punctuation(self):
-        case = {
-            "case_id": "case",
-            "split": "dev",
-            "expected_source_events": [
-                {
-                    "intent": "recommendation_evidence",
-                    "subjects": ["offers"],
-                    "focus_terms": ["front-end offer", "paid acquisition"],
-                }
-            ],
-        }
-        run = {
-            "source_events": [
-                {
-                    "source_need": {
-                        "intent": "recommendation_evidence",
-                        "subjects": ["offers"],
-                        "focus_terms": ["front end offer", "paid acquisition test"],
-                    },
-                    "chunks": [{"id": "make-your-money-model:0"}],
-                }
-            ]
-        }
-
-        with TemporaryDirectory() as tmpdir:
-            result = source_event_eval.score_case(case, write_run(tmpdir, run))
-
-        self.assertEqual(result.status, "passed")
-
-    def test_extra_source_events_are_warnings_not_failures(self):
-        case = {
-            "case_id": "case",
-            "split": "dev",
-            "expected_source_events": [
-                {
-                    "intent": "diagnostic_evidence",
-                    "subjects": ["unit-economics"],
-                    "focus_terms": ["CAC", "payback period"],
-                }
-            ],
-        }
-        run = {
-            "source_events": [
-                {
-                    "source_need": {
-                        "intent": "diagnostic_evidence",
-                        "subjects": ["unit-economics"],
-                        "focus_terms": ["CAC", "payback period"],
-                    },
-                    "chunks": [{"id": "payback-period:0"}],
-                },
-                {
-                    "source_need": {
-                        "intent": "recommendation_evidence",
-                        "subjects": ["offers"],
-                        "focus_terms": ["front end offer"],
-                    },
-                    "chunks": [{"id": "make-your-money-model:0"}],
-                },
-            ]
-        }
-
-        with TemporaryDirectory() as tmpdir:
-            result = source_event_eval.score_case(case, write_run(tmpdir, run))
-
-        self.assertEqual(result.status, "passed")
-        self.assertEqual(result.warning_reasons, ("extra_events:1",))
-
-    def test_no_search_case_passes_with_no_source_events(self):
-        case = {
-            "case_id": "case",
-            "split": "dev",
-            "expected_source_events": [],
-        }
-        run = {"source_events": []}
-
-        with TemporaryDirectory() as tmpdir:
-            result = source_event_eval.score_case(case, write_run(tmpdir, run))
-
-        self.assertEqual(result.status, "passed")
-        self.assertTrue(result.all_expected_events_matched)
-
-    def test_no_search_case_fails_with_any_source_event(self):
-        case = {
-            "case_id": "case",
-            "split": "dev",
-            "expected_source_events": [],
-        }
-        run = {
-            "source_events": [
-                {
-                    "source_need": {
-                        "intent": "teaching_evidence",
-                        "subjects": ["offers"],
-                        "focus_terms": ["front end offer"],
-                    },
-                    "chunks": [{"id": "make-your-money-model:0"}],
-                }
-            ]
-        }
-
-        with TemporaryDirectory() as tmpdir:
-            result = source_event_eval.score_case(case, write_run(tmpdir, run))
-
         self.assertEqual(result.status, "failed")
-        self.assertEqual(result.failure_reasons, ("unexpected_source_events:1",))
+        self.assertIn("query_concept_miss:job:0.500", result.failure_reasons)
 
-    def test_validate_cases_allows_empty_expected_source_events(self):
-        errors = source_event_eval.validate_cases(
-            [
-                {
-                    "case_id": "case",
-                    "split": "dev",
-                    "scenario_id": "scenario",
-                    "conversation_context": "context",
-                    "snapshot_fixture_path": "evals/fixtures/snapshots/1584_empty.json",
-                    "prior_sessions_fixture_path": None,
-                    "user_turn": "turn",
-                    "expected_source_events": [],
-                    "label_rationale": "rationale",
-                    "ambiguity": "medium",
-                    "severity_if_wrong": "medium",
-                }
-            ]
-        )
+    def test_executed_query_must_equal_search_request_query(self):
+        case = {"case_id": "case", "split": "dev", "user_turn": "question", "expected_source_events": [expected("job", ["payback"])]}
+        bad = event("question", "payback")
+        bad["queries"] = ["different query"]
+        with TemporaryDirectory() as tmpdir:
+            result = source_event_eval.score_case(case, write_run(tmpdir, {"source_events": [bad]}))
+        self.assertEqual(result.status, "failed")
+        self.assertIn("query_not_executed:job", result.failure_reasons)
 
-        self.assertEqual(errors, [])
+    def test_extra_event_is_a_failure(self):
+        case = {"case_id": "case", "split": "dev", "user_turn": "question", "expected_source_events": [expected("job", ["payback"])]}
+        run = {"source_events": [event("question", "payback"), event("question", "continuity recurring")]}
+        with TemporaryDirectory() as tmpdir:
+            result = source_event_eval.score_case(case, write_run(tmpdir, run))
+        self.assertEqual(result.status, "failed")
+        self.assertIn("extra_events:1", result.failure_reasons)
+
+    def test_no_search_case_requires_no_events(self):
+        case = {"case_id": "case", "split": "dev", "user_turn": "question", "expected_source_events": []}
+        with TemporaryDirectory() as tmpdir:
+            passed = source_event_eval.score_case(case, write_run(tmpdir, {"source_events": []}))
+            failed = source_event_eval.score_case(case, write_run(tmpdir, {"source_events": [event("question", "payback")]}))
+        self.assertEqual(passed.status, "passed")
+        self.assertEqual(failed.failure_reasons, ("unexpected_source_events:1",))
+
+    def test_dataset_validates(self):
+        cases = source_event_eval.load_jsonl(Path("evals/advisor_source_event_cases.jsonl"))
+        self.assertEqual(source_event_eval.validate_cases(cases), [])
 
 
 if __name__ == "__main__":

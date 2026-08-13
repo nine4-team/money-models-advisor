@@ -4,6 +4,10 @@ This project should be built experiment-first.
 
 The target job description is recorded in `JOB_DESCRIPTION.md`, the requirement-by-requirement audit is recorded in `JD_REQUIREMENTS_AUDIT.md`, repo-wide Codex guidance is recorded in `AGENTS.md`, and the golden-dataset suite is mapped in `GOLDEN_DATASET.md`. Implementation priorities should stay aligned with that hiring target: production-grade agent workflows, golden datasets, RAG tuning, cached embeddings, cost-aware design, observability, and regression detection.
 
+The current implementation/evidence/narrative reconciliation queue is maintained in
+`REMEDIATION_PLAN.md`. When this older implementation plan conflicts with that queue,
+the remediation plan is current.
+
 The architecture docs describe the intended system. The implementation plan keeps the work honest: every major RAG or agent choice should either be part of the minimal runnable slice or justified by an evaluation report.
 
 ## Principle
@@ -18,7 +22,7 @@ Treat RAG architecture like ML model selection:
 
 The goal is not to build every sophisticated component immediately. The goal is to make each added component earn its place.
 
-For this agent-operated product, semantic judgment belongs to the agent and deterministic bookkeeping belongs to the CLI. The CLI should persist state, run calculations, execute search, capture traces, validate artifact shape, and produce reports. The agent should decide tool use, generate source needs, inspect retrieved chunks, adjudicate semantic coverage, and judge answer quality. When the project needs semantic evals, record agent judgments with rationale and let the CLI score those recorded artifacts.
+For this agent-operated product, semantic judgment belongs to the agent and deterministic bookkeeping belongs to the CLI. The CLI should persist state, run calculations, execute search, capture traces, validate artifact shape, and produce reports. The agent should decide tool use, write one corpus-guided search query, inspect retrieved chunks, adjudicate semantic coverage, and judge answer quality. When the project needs semantic evals, record agent judgments with rationale and let the CLI score those recorded artifacts.
 
 Refinement: deterministic code may classify numeric/accounting states after the agent has chosen the task. For example, it can compute whether CAC is recovered by first-30-day gross profit. It should not decide broad conversational intent or whether the current user turn is a teaching, diagnosis, recommendation, or source-search turn.
 
@@ -69,7 +73,12 @@ The agent owns semantic namespace selection. The CLI must not infer namespaces f
 
 The experiment should record namespace names, embedding model, vector counts, upsert behavior, agent-selected namespace behavior, quality, latency, and failure modes. The decision should avoid namespace theater: use multiple namespaces because the job names that operating mode and because it tests index management, not because this tiny corpus inherently needs it. Single namespace may still win if it has comparable quality with lower operational complexity.
 
-Status: namespace support is implemented and measured. The corrected runtime contract uses `SourceNeed.target_namespaces`; the CLI validates logical namespace names and mechanically maps them to physical Pinecone namespaces. Pinecone indexing has populated the five layer namespaces with 339 records total across 202 unique chunks. The hosted benchmark now completes after adding bounded per-case parallel retrieval (`--max-workers 8`). Full 30-case Pinecone single/default and five-layer oracle namespace runs both preserve hybrid quality at 100.0% Hit@3/Hit@5 and mean rank 1.17. The namespace condition does not improve quality; it increases vector search count from 120 to 140 and worsens p95 hybrid retrieval from about 1.76s to 3.01s. Decision: keep namespace support for JD-relevant index management and future product use, but keep single namespace plus metadata filters as the v1 default unless agent-selected namespaces show a measured win.
+Status: namespace support is implemented and measured. The active 46-case,
+single-query experiment compared one unfiltered namespace with five subject
+namespaces using the matching subject for each case. Both reached 93.5% Hit@1,
+100% Hit@5, and 78.7% Useful@5. The split improved p50 but worsened p95 and added
+a semantic routing dependency without a quality gain. Decision: keep one unfiltered
+namespace; retain the split only as recorded infrastructure evidence.
 
 ## Current product direction
 
@@ -93,37 +102,12 @@ The v1 snapshot contract is defined in `BUSINESS_SNAPSHOT_V1.md`.
 
 Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.
 
-Retrieval handoff notes are recorded in `ADVISOR_RETRIEVAL_HANDOFF.md`. That document captures the 1584 Design trace review, the critique of the current next-action classification and query-generation behavior, and the next planner-eval work.
-
-Current dev requirement:
-
-1. Treat the current next-action classification eval as the local baseline for tool-use judgment: for each realistic turn, should the next action be source-material search, snapshot/log read, local-doc inspection, calculation, diagnosis, clarification, saved-context update, compose-from-state, or answer-without-tool?
-2. Use the source-query quality eval next: only on turns where source-material search is the right action, did the generated query retrieve useful Money Models chunks?
-
-This keeps retrieval evaluation from punishing or rewarding queries that should never have been generated.
-
-Progress trackers:
-
-- `TOOL_USE_JUDGMENT_PROGRESS.md`
-- `TOOL_USE_EVAL_IMPLEMENTATION_PLAN.md`
-- `SOURCE_NEED_GENERATION_PROGRESS.md`
-- `SEARCH_QUERY_QUALITY_PROGRESS.md`
-
-Improvement strategy:
-
-- Next-action classification improves through iterative skill and tool-surface testing: run realistic conversations, inspect traces, identify wrong action labels, and revise the skill instructions or CLI affordances.
-- Query generation improves through a search-only eval loop: label search-appropriate turns by retrieval purpose, expected layer, and focus terms; generate compact source-seeking queries; inspect returned chunks; then compare BM25, vector, and hybrid retrieval only after query construction is sane.
-- Semantic evals should use agent or human adjudication artifacts rather than hidden keyword proxies. For example, focus-term concept coverage should be judged by an agent and recorded with rationale, while exact substring recall can remain a debugging metric.
-
-The first next-action classification pass has been captured and scored. The first source-query quality eval now has two modes: reference mode for reviewer-authored source-specific queries, and generated mode for the current runtime query builder with an explicit `SourceNeed`. The current result shows the corpus can retrieve useful chunks when the source need is explicit, and generated queries no longer reuse broad diagnostic language on the eval slice. The source-need generation eval has now been rerun with blind acting-agent traces after taxonomy guidance and focus-alias cleanup. Search/no-search decisions remain clean, intent match is 100.0%, layer exact match is 90.0%, and focus-term concept recall is 0.750. Future next-action work should revise the eval only when new behavior classes appear; the immediate active implementation work can now move toward retrieval-backend comparison, while carrying the known free-trial `offers`/`downsells` residual as a caveat.
-
-Current boundary debt to resolve:
-
-1. Make `SourceNeed` required for production source search; remove or archive status-driven query generation.
-2. Replace deterministic product-facing `chat` with `turn_record`, so the CLI persists turns and records artifacts while the agent decides whether to calculate, search, clarify, or answer.
-3. Add an eval artifact for agent-adjudicated focus-term concept coverage and retrieved-chunk usefulness.
-
-Detailed plan: `AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md`.
+The active path is now one agent-authored, corpus-guided `SearchRequest.query` through
+unfiltered hybrid retrieval over framework-aware chunks. The 46-case retrieval suite,
+six-case source-event suite, calculation checks, and six-answer semantic audit cover
+the current contract. The retired `SourceNeed` and multi-query experiments remain as
+history only. Open work is tracked in `REMEDIATION_PLAN.md`; historical boundary work
+is recorded in `AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md`.
 
 **CLI setup and advisor loop:**
 
@@ -346,7 +330,7 @@ Use the smallest chunking strategy that preserves framework completeness and doe
 Current result:
 
 - The original 32-case BM25 screen left heading-aware and framework-aware effectively tied.
-- On the active 46-case hybrid path, both reach 93.5% Hit@1 and 100% Hit@5. Framework-aware raises Useful@5 from 73.0% to 78.3% and caps the largest chunk at 922 words instead of 2,471.
+- On the active 46-case hybrid path, both reach 93.5% Hit@1 and 100% Hit@5. Framework-aware raises Useful@5 from 73.0% to 78.7% and caps the largest chunk at 922 words instead of 2,471.
 - Fixed-800 reaches 95.7% Hit@1 but returns 51% more text across the top five.
 - Adopted default is `framework-aware`.
 
@@ -542,7 +526,7 @@ Build:
 - Agent-facing end-of-turn recording. **Done: `session finish --record-json` validates trace shape and keeps `turn record` as the lower-level primitive.**
 - Acting-agent CLI behavior pass. **Retested after path hardening: a realistic 1584 offer-sequencing turn completed through `session start` -> source searches -> `session finish`, with the correct `business_dir` and three recorded source events. The run exposed two follow-up fixes: require agent-generated query variants in source searches, and make `diagnose --business-dir` read saved advisor state directly. Both are now implemented. Next pass should check whether multiple acting agents use the hardened flow correctly without intervention.**
 - Acting-agent test-fix loop. **Active. Latest pass hardened calculation traceability: `session finish` requires `calculation_events` when `actions` includes `calculate`, unit coverage verifies valid/missing calculation events, and five blind subagent runs passed through `evals/runs/calculation_trace/subagent_v1/` with `scripts/eval_calculation_trace_events.py`.**
-- Post-hardening acting-agent regression for source-event behavior. **Expanded to six blind cases covering multi-search, pure diagnosis, pure recommendation, missing-context no-search, teaching-only, and continuity recommendation turns. Current strict report: 100.0% case pass rate, 6 / 6 expected source events matched, 0 extra-event warnings, and required agent-written `query_variants` under `evals/runs/source_events/query_variants_v1/`.**
+- Post-hardening acting-agent regression for source-event behavior. **Migrated to the current one-query `SearchRequest` contract. Six blind cases cover multi-search, single-search, and no-search turns; all 6/6 pass, with 7/7 expected events matched and no extras. Two post-run answer-key corrections are disclosed in `evals/reports/advisor_source_event_traces.md`.**
 - Product-smoke multi-turn testing. **Run v1 complete: three realistic advisor sessions are recorded under `evals/runs/product_smoke/v1/` and summarized in `evals/reports/advisor_product_smoke_v1.md`. The advisor was directionally useful, but the top modeling correction is restraint: do not add a bespoke data structure for 1584's proposed STR Design Diagnostic. Treat it as a business-specific candidate `attraction_offer` / front-end offer. The stale payback fixture is corrected; next inspect recommendation retrieval before considering any generic offer-slot economics fields.**
 
 Metrics:

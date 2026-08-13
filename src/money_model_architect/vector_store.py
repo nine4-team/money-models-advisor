@@ -98,7 +98,11 @@ class PineconeVectorStore:
         load_env_file(repo_root() / ".env")
         self.api_key = api_key or os.getenv("PINECONE_API_KEY")
         self.index_host = (index_host or os.getenv("PINECONE_INDEX_HOST") or "").rstrip("/")
-        self.default_namespace = namespace or os.getenv("MMA_PINECONE_NAMESPACE") or "money-models-framework"
+        self.default_namespace = (
+            namespace
+            or os.getenv("MMA_PINECONE_NAMESPACE")
+            or "money-models-framework-large-d1536"
+        )
         if self.index_host and not self.index_host.startswith(("http://", "https://")):
             self.index_host = f"https://{self.index_host}"
 

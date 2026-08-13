@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from money_model_architect.calculator import (
     cac,
+    calculate_metric,
     cfa_level,
     gross_margin,
     gross_profit,
@@ -20,6 +21,14 @@ class CalculatorTest(unittest.TestCase):
         self.assertEqual(gross_margin(100, 20), 0.8)
         self.assertEqual(payback_period_months(160, 80, 80), 2)
         self.assertEqual(cfa_level(100, 250), 3)
+
+    def test_calculate_metric_uses_cli_input_contract(self):
+        self.assertEqual(
+            calculate_metric("payback", {"cac": 160, "month_one_gp": 80, "monthly_recurring_gp": 80}),
+            2,
+        )
+        with self.assertRaises(ValueError):
+            calculate_metric("unknown", {})
 
 
 if __name__ == "__main__":

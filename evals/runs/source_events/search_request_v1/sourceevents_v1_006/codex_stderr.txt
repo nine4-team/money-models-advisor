@@ -1,0 +1,2109 @@
+2026-08-13T16:19:32.416518Z ERROR codex_models_manager::cache: failed to load models cache: missing field `supports_reasoning_summaries` at line 93 column 5
+2026-08-13T16:19:34.272523Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.9.7/.codex-plugin/plugin.json
+2026-08-13T16:19:34.298349Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt: maximum of 3 prompts is supported path=file:///Users/benjaminmackenzie/.codex/plugins/cache/claude-plugins-official/expo/1.9.7/.codex-plugin/plugin.json
+2026-08-13T16:19:34.327350Z  WARN codex_core_skills::loader: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-13T16:19:34.327363Z  WARN codex_core_skills::loader: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.144.6
+--------
+workdir: /Users/benjaminmackenzie/Dev/money-model-architect
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019ffbeb-faeb-7530-b412-67acddaf4696
+--------
+user
+# Source-Event Trace Acting Prompt
+
+You are the acting agent for a Money Model Advisor source-event trace eval case.
+
+Consult the money-model-advisor skill before you act, then use the local CLI to carry out the workflow. The skill and search-request rules are the authoritative runtime instructions. Expected source events are intentionally hidden.
+
+Task: answer the user's turn using the active agent-operated workflow. If the answer needs source-material support, write one corpus-guided `SearchRequest.query` per evidence job, run `search --search-request-json`, inspect chunks, answer with citations, and record the completed turn with `session finish`.
+
+If one answer needs multiple evidence jobs, run multiple searches and record one `source_events` entry per search. Do not use the legacy `SourceNeed`, subject-filter, or query-variant fields.
+
+Use `intent` only as the closest trace label. Preserve the complete evidence need in `query`; intent does not control scoring or retrieval.
+
+Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business`
+
+Visible case context:
+
+```json
+{
+  "case_id": "sourceevents_v1_006",
+  "conversation_context": "The snapshot is recommendable and shows no continuity offer. The user asks whether a recurring post-install service would improve the money model.",
+  "scenario_id": "1584_design",
+  "user_turn": "should we add a recurring owner maintenance offer after installs?"
+}
+```
+
+After acting, complete the trace with `scripts/capture_source_event_trace.py complete ...`. Do not look up expected labels.
+
+## Noninteractive completion requirement
+
+Do not edit project source files. Work only inside the prepared business and run directories.
+After `session finish`, use the returned `session_path` to create the eval artifact:
+
+```bash
+PYTHONPATH=src python3 scripts/capture_source_event_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006 --session-path <session_path> --notes 'blind Codex acting-agent run'
+```
+
+You must create `run.json` before returning. Your final response should only summarize the recorded action.
+
+2026-08-13T16:19:35.886544Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer error=\"invalid_token\", error_description=\"Missing Authorization header\"" })
+2026-08-13T16:19:37.351708Z  WARN rmcp::transport::auth: Token refresh not possible, re-authorization required. error=OAuth token refresh failed: Failed to parse server response
+2026-08-13T16:19:37.351838Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Auth(AuthorizationRequired)
+2026-08-13T16:19:38.502286Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+I’ll use the `money-model-advisor` skill and keep all writes inside the prepared eval run/business directories. After the advisor turn is recorded, I’ll complete the eval artifact from the saved session path.
+exec
+/bin/zsh -lc "pwd && sed -n '1,240p' .codex/skills/money-model-advisor/SKILL.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+/Users/benjaminmackenzie/Dev/money-model-architect
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Pass
+   `--source-type file --source <relative-path>` for facts taken from an inspected
+   file. Conversation facts use the default `conversation` source. Save only facts
+   that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /Users/benjaminmackenzie/Dev/money-model-architect
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --search-request-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Record a fact accepted from an inspected business file:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
+  --business-dir "$CONTEXT_DIR" \
+  --source-type file \
+  --source metrics/q1-unit-economics.csv \
+  economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /Users/benjaminmackenzie/Dev/money-model-architect
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit, corpus-guided search request.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Before recording, audit each source-backed sentence against the exact cited chunk:
+   do not rely on the chunk title or a nearby passage, do not make a stronger claim
+   than the text supports, and remove or qualify any unsupported wording. Business-
+   specific recommendations may be reasoned from accepted facts; cite the source only
+   for the framework principle it actually establishes.
+9. Record the final turn with `session finish`.
+10. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so `session finish` can recompute the result from the recorded inputs
+and reject an incorrect value.
+
+## When To Search
+
+Follow the runtime search-request rules in `search_request_rules.md` (same directory).
+That file is the single source of truth for when to search, when to split searches,
+how to use the versioned corpus guide, how to write the single query, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should
+include the `search_request`, the executed query, and inspected chunks with IDs and
+scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not cite a chunk for a claim stronger than its text supports.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+exec
+/bin/zsh -lc "sed -n '1,220p' JOB_DESCRIPTION.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Target Job Description
+
+This project is being built as a portfolio artifact for the Acquisition.com Senior AI Engineer role.
+
+Source:
+
+- Original posting: https://jobs.ashbyhq.com/acquisition/9789dd49-c6bd-4672-8cd3-9f67f2dea7c1
+- Verbatim posting text below, pulled from the Ashby posting API on 2026-06-11. The Role Summary section further down is an earlier paraphrase; where wording matters (e.g. mapping deliverables to JD phrases), use the verbatim text.
+- Requirement-by-requirement project audit: `JD_REQUIREMENTS_AUDIT.md`
+
+## Verbatim Posting (Ashby, 2026-06-11)
+
+### Role
+
+The Senior AI Engineer builds and deploys production-grade AI agents that power ACQ Vantage. This role exists to turn AI capability into real, usable systems that drive business outcomes, not experiments or prototypes.
+
+You will work inside a lean Technology team to design, build, and ship agentic workflows that interact with internal tools, data systems, and user-facing products. You are responsible for taking ideas from concept to production, with a focus on reliability, speed, and practical value.
+
+This is a hands-on engineering role. You are writing code daily, iterating quickly, and working directly with modern AI tooling. You are expected to understand how LLMs behave in production, not just how they work in theory.
+
+### Responsibilities
+
+- Design, build, and deploy production-grade AI agents and end-to-end agentic workflows that solve real business problems across ACQ Vantage
+- Integrate LLMs with internal systems, APIs, and data sources, ensuring reliability, performance, and clean abstractions
+- Collaborate with product and engineering teams to prioritize, ship, and iterate on AI features quickly
+- Own and improve RAG pipelines across multiple Pinecone namespaces, including chunking strategy, embedding model selection, hybrid retrieval, and reranking
+- Build and maintain an evaluation framework, including golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, and regression detection
+- Optimize model routing and tiering to improve unit economics while maintaining output quality
+- Instrument the AI layer for observability, including cost-per-request, token usage, quality signals, and anomaly detection
+
+### Requirements
+
+- 7+ years shipping production software systems (distributed backends, APIs, deployment pipelines, monitoring)
+- 2+ years building production RAG systems using vector databases (Pinecone, Qdrant, FAISS, or Weaviate), including embedding strategies, index management, and retrieval tuning
+- Built and deployed AI agents or multi-step LLM workflows in production, including tool use, orchestration, and system integrations
+- Built or contributed to an evaluation framework for an LLM-based product (retrieval quality measurement, regression detection, model-switching decisions based on data)
+- Reduced LLM API costs in production through model routing, caching, token management, or architectural improvements
+- Worked across multiple LLM providers (OpenAI, Anthropic, or equivalent) and understands tradeoffs in prompt behavior, token economics, and failure modes
+- Comfortable in both TypeScript and Python (our stack uses both)
+
+### Results
+
+- Production AI agents are deployed and actively used within ACQ Vantage
+- New AI-driven features move from concept to production in weeks, not months
+- Agent performance improves over time through structured testing and iteration
+- AI systems operate reliably with minimal failure or manual intervention
+- Engineering output translates directly into measurable business impact
+
+## Role Summary
+
+The role is a hands-on senior AI engineering role focused on building production-grade AI agents for ACQ Vantage. The job description emphasizes practical systems that drive business outcomes, not isolated demos or prototypes.
+
+Core responsibilities and requirements include:
+
+- design, build, and deploy production-grade AI agents and end-to-end agentic workflows
+- integrate LLMs with internal tools, APIs, data systems, and user-facing products
+- own and improve RAG pipelines, including chunking strategy, embedding model selection, hybrid retrieval, and reranking
+- build and maintain evaluation frameworks with golden datasets, automated quality scoring, retrieval metrics, latency benchmarks, and regression detection
+- optimize model routing and tiering to improve unit economics while maintaining quality
+- instrument the AI layer for observability, including cost per request, token usage, quality signals, and anomaly detection
+- reduce LLM API costs with model routing, caching, token management, or architectural improvements
+- understand tradeoffs across multiple LLM providers
+- work comfortably in Python and TypeScript
+
+## Project North Star
+
+The project should demonstrate senior-level AI engineering judgment for this JD. The goal is not to build the largest possible demo. The goal is to show that we can:
+
+1. Build an agent-operated product loop with clear tool boundaries.
+2. Use retrieval and source grounding in a measurable way.
+3. Build and use golden datasets to drive architecture decisions.
+4. Compare retrieval strategies with explicit metrics and failure analysis.
+5. Cache embeddings and business context to control cost.
+6. Record traces and reports that support regression detection.
+7. Explain why each architectural choice was adopted, rejected, or deferred.
+
+## Current Fit
+
+Strong alignment:
+
+- The advisor is agent-operated and CLI-backed: the agent plans; deterministic tools persist state, calculate, search, and record traces.
+- The project has explicit eval assets for next-action classification, source-need generation, source-event logging, query quality, chunking, and retrieval backend comparison.
+- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; one corpus-guided, unfiltered query through hybrid retrieval is the selected path after leading an audited 30-case development comparison and a 16-case reserved comparison.
+- Embeddings are cached under `.cache/embeddings/` so repeated vector runs reuse corpus and query vectors.
+- The narrative records decisions, metrics, misses, and non-adoptions rather than treating every sophisticated technique as automatically better.
+
+Weak alignment / gaps to close:
+
+- The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
+- The vector backend now has a storage boundary with local and Pinecone implementations. The local backend remains the fast eval baseline; the Pinecone path is indexed and parity-tested on the 30-case generated-variants slice.
+- Query generation is implemented as one `SearchRequest.query` written by the operating agent from the current question, saved snapshot, and the same versioned corpus guide used by the winning experiment. The CLI applies no request-time filter and defaults that structured request to hybrid; the old variants/fallback path is compatibility-only.
+- Observability is now present through traces, Markdown reports, summary JSON, case-level JSONL, latency metrics, cache hit/miss accounting, and estimated embedding cost. Token/cost reporting is explicit for embeddings; agent work remains outside the API path.
+- The biggest remaining JD gap is model routing and tiering. The project has golden datasets and trace scorers, but it has not yet run the same agent tasks across multiple model/provider tiers to decide which tasks can use cheaper/faster models without losing output quality.
+- Multi-provider tradeoff evidence is also missing. The narrative should not merely say "understands OpenAI and Anthropic"; it should show comparable runs, observed failure modes, latency/cost notes, and a routing decision.
+
+## Next JD-Aligned Work
+
+The next highest-signal work is:
+
+1. Run model-routing and tiering evals over the existing golden suites: tool-use judgment, source-need generation, source-event/query-variant traces, and product-smoke turns. Compare at least a strong model tier and a cheaper/faster model tier, and record pass rate, failure modes, latency, and cost or cost proxy.
+2. Convert those results into a routing decision: which tasks require the strongest model, which can safely use a cheaper tier, and which should stay deterministic inside the CLI.
+3. Add multi-provider comparison evidence where available, especially prompt-following behavior, trace completeness, source-need quality, token economics, and failure modes.
+4. Independently review the frozen query-generation holdout, then keep or roll back the provisional single-query runtime based on that result.
+5. Optimize hosted-vector latency for the active single-query hybrid path and continue expanding golden-dataset breadth without overclaiming production finality.
+6. Keep Pinecone quality/latency/cache/cost reports beside local vector-store reports as the hosted retrieval guardrail.
+
+This keeps the work aligned with the JD: model routing must be data-backed, retrieval choices must be measured, and production-oriented infrastructure should support the eval story rather than distract from it.
+
+2026-08-13T16:19:43.736189Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+The skill requires the search-request rules as the runtime source of truth, so I’m reading those before deciding whether this turn needs retrieval and how many source events to record.
+exec
+/bin/zsh -lc "sed -n '1,260p' .codex/skills/money-model-advisor/search_request_rules.md" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+# Runtime Search-Request Rules
+
+These rules govern the active query-generation and retrieval path. The older
+`source_need_rules.md` remains frozen for the source-need planning eval and historical
+multi-query artifacts; it is not the runtime query contract.
+
+## When to search
+
+- Search when the answer needs Money Models support for a concept, comparison,
+  diagnosis, or recommendation and the snapshot already holds enough relevant facts.
+- Do not search instead of obtaining missing business facts or prior-session context.
+- Do not search for a simple vocabulary answer that does not need a citation.
+
+## One evidence job per search
+
+- Generate one search request per evidence job. If an answer needs two genuinely
+  different kinds of evidence, run two searches instead of mixing them into one query.
+- Do not rerun an economics search merely because known economics appear in the answer.
+
+## Generate the query
+
+- Before writing a query, read `../../../evals/query_generation/corpus_guide_v1.json`.
+  It is the same versioned guide used by the winning development experiment.
+- Use the current user question, the saved BusinessSnapshot, and that guide to write
+  one concise source-search query.
+- Treat the guide as a translation reference, not a checklist. Translate ordinary
+  language into canonical source terminology when that helps retrieval.
+- Preserve the full information need. Include every concept needed for the mechanism,
+  relationship, comparison, sequence, or combined system being asked about.
+- Use business context only when it changes or disambiguates the evidence needed. Do
+  not add related concepts simply because the guide lists them nearby.
+- Do not answer the question or speculate about the answer inside the query.
+- Do not generate variants, a deterministic fallback, a subject filter, or a namespace
+  filter. Those approaches were not part of the winning method.
+
+## Active request fields
+
+- `query`: the single corpus-guided query that the CLI executes.
+- `user_turn`: the current user message, retained for trace context.
+- `intent`: the closest audit label; it does not alter retrieval. Choose one of
+  `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, or
+  `recommendation_evidence`.
+
+2026-08-13T16:19:47.168021Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+I’m starting the advisor session in the eval business directory now. I’ll verify the CLI is reading that directory, then use the saved snapshot plus the corpus guide to form the evidence query.
+exec
+/bin/zsh -lc "sed -n '1,240p' evals/query_generation/corpus_guide_v1.json" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "version": "money-models-corpus-guide.v1",
+  "created_at": "2026-08-10",
+  "status": "candidate",
+  "derived_from": [
+    "corpus/coach/index.md",
+    "corpus/coach/decision-trees.md",
+    "corpus/money-models-frameworks.md"
+  ],
+  "generator_visible_fields": [
+    "name",
+    "aliases",
+    "use_when",
+    "relationships"
+  ],
+  "entries": [
+    {
+      "name": "Lifetime gross profit compared with customer acquisition cost",
+      "aliases": ["LTGP to CAC", "customer value versus acquisition cost", "3-to-1 viability"],
+      "use_when": "Assessing whether acquiring a customer is economically worthwhile rather than merely generating revenue.",
+      "relationships": "Lifetime gross profit should exceed CAC; roughly three times CAC is the source's basic viability threshold. Gross profit, not revenue, is the value side of the comparison."
+    },
+    {
+      "name": "Customer acquisition cost",
+      "aliases": ["CAC", "cost to acquire a customer", "media CAC", "fully loaded CAC", "ad acquisition cost"],
+      "use_when": "Understanding how much it costs to acquire a customer or why lead flow changes with free and discounted offers.",
+      "relationships": "CAC is evaluated alongside gross profit and payback period. Fully loaded CAC includes acquisition labor and overhead, while media CAC covers advertising spend."
+    },
+    {
+      "name": "Gross profit",
+      "aliases": ["GP", "price minus cost of goods sold", "profit after fulfillment", "delivery-adjusted value", "gross margin"],
+      "use_when": "Revenue looks healthy but fulfillment or delivery costs may make acquisition unattractive.",
+      "relationships": "Gross profit equals price minus cost of goods sold. It determines how much CAC can be recovered and how quickly payback occurs; revenue alone cannot answer either question."
+    },
+    {
+      "name": "Payback period",
+      "aliases": ["CAC recovery time", "time to break even on acquisition", "cash payback", "months to recover CAC"],
+      "use_when": "A business may be profitable over a customer's life but lacks enough cash to fund continued growth.",
+      "relationships": "Payback depends on CAC, first-30-day gross profit, and recurring gross profit. Front-loaded fees, earlier upsells, prepayment, and recurring profit can shorten it."
+    },
+    {
+      "name": "Client-financed acquisition",
+      "aliases": ["CFA", "customers fund growth", "self-funded acquisition", "first-30-day acquisition economics"],
+      "use_when": "Determining whether new-customer gross profit can fund continued customer acquisition.",
+      "relationships": "Level 1 has lifetime gross profit above CAC, Level 2 has first-30-day gross profit above CAC, and Level 3 has first-30-day gross profit above twice CAC."
+    },
+    {
+      "name": "Money model and offer stack",
+      "aliases": ["money model stack", "offer sequence", "customer journey of offers", "how the offers fit together"],
+      "use_when": "Combining acquisition and monetization offers into a coherent customer journey.",
+      "relationships": "A money model is a sequence of offers designed to minimize CAC and maximize early gross profit. Use as few offers as needed and make the sequence feel natural rather than like a sales gauntlet."
+    },
+    {
+      "name": "Four offer functions",
+      "aliases": ["attraction upsell downsell continuity", "four offer types", "offer stack roles"],
+      "use_when": "Classifying what each part of a money model is supposed to accomplish.",
+      "relationships": "Attraction offers liquidate CAC, upsells maximize profit, downsells maximize conversion after a no, and continuity stabilizes recurring cash flow."
+    },
+    {
+      "name": "Attraction offers",
+      "aliases": ["front-end offer", "first-purchase offer", "customer acquisition offer", "lead-to-customer offer"],
+      "use_when": "The constraint is getting enough prospects to engage or buy for the first time at a viable CAC.",
+      "relationships": "Attraction offers sit at the start of the stack and aim to liquidate or exceed CAC. The specific mechanic should match the barrier to first purchase."
+    },
+    {
+      "name": "Win Your Money Back",
+      "aliases": ["goal-based refund", "results-based refund", "earn the fee back", "refund for completing a transformation"],
+      "use_when": "A transformation has a measurable outcome and accountability, risk reversal, or before-and-after proof is valuable.",
+      "relationships": "The customer pays upfront and earns a refund or credit by achieving the defined result. The resulting proof can be worth more than the refund."
+    },
+    {
+      "name": "Free Giveaways",
+      "aliases": ["grand-prize giveaway", "contest offer", "participation prize", "scholarship giveaway"],
+      "use_when": "A business needs a large lead pool and has a compelling signature prize or offer to showcase.",
+      "relationships": "Advertise a grand prize, then make a relevant participation offer to non-winners. Application questions can also qualify and segment leads."
+    },
+    {
+      "name": "Decoy Offers",
+      "aliases": ["advertise the stripped-down option", "starter offer leading to premium", "cheap option versus premium"],
+      "use_when": "A premium offer is difficult to advertise directly but becomes compelling once prospects can compare it with a deliberately limited option.",
+      "relationships": "The decoy starts the conversation; the premium offer is then presented side by side so the contrast makes its additional value clear."
+    },
+    {
+      "name": "Buy X Get Y Free",
+      "aliases": ["buy one get more free", "prepay and receive bonus months", "quantity or duration bundle"],
+      "use_when": "A recurring product or service can exchange a longer commitment or prepayment for free quantity or duration.",
+      "relationships": "It can have the same economics as a percentage discount but stronger presentation. Fulfillment cost, cash obligations, and the share of customers prepaid constrain safe use."
+    },
+    {
+      "name": "Pay Less Now or Pay More Later",
+      "aliases": ["zero down versus discounted upfront", "pay later after delivery", "timing-based price choice"],
+      "use_when": "A physical product or one-time service buyer hesitates at paying full price before receiving value.",
+      "relationships": "The buyer chooses between paying less upfront now or paying the full amount later after delivery, creating agency and risk reversal rather than an unexplained discount."
+    },
+    {
+      "name": "Free with Consumption",
+      "aliases": ["free education before the sale", "experience value before buying", "content-led trust building", "challenge or webinar before offer"],
+      "use_when": "A higher-ticket buyer needs education, trust, or belief change before being ready for the paid offer.",
+      "relationships": "Useful free consumption builds trust and breaks limiting beliefs; the amount of consumption generally rises with the price and complexity of the paid offer."
+    },
+    {
+      "name": "Upsell offers",
+      "aliases": ["next offer after the sale", "add-on", "increase profit per customer", "post-purchase offer"],
+      "use_when": "Customers buy, but gross profit per customer or first-30-day profit is too low.",
+      "relationships": "Upsells occur after the initial sale and maximize profit per customer. Timing them when the next problem or need appears can also shorten payback."
+    },
+    {
+      "name": "Classic Upsell",
+      "aliases": ["you cannot have X without Y", "essential complement", "next natural thing", "required accessory"],
+      "use_when": "The first purchase naturally requires a complementary product or service to deliver the desired result.",
+      "relationships": "The accompaniment should feel necessary for success rather than arbitrary. It follows the initial product as the obvious next purchase."
+    },
+    {
+      "name": "Menu Upsell",
+      "aliases": ["prescribed add-on menu", "consultative add-ons", "unsell prescribe preference card on file"],
+      "use_when": "Several add-ons can be prescribed during a consultation or other high-trust sales interaction.",
+      "relationships": "The four steps are unsell irrelevant choices, prescribe what fits, ask a preference question, and use the card already on file to remove closing friction."
+    },
+    {
+      "name": "Anchor Upsell",
+      "aliases": ["premium option first", "high-price anchor", "make the standard option feel inexpensive"],
+      "use_when": "A legitimate premium tier can establish value before presenting the standard offer.",
+      "relationships": "Present a premium option around five to ten times the normal price, then show the standard option with the important core value preserved."
+    },
+    {
+      "name": "Rollover Upsell",
+      "aliases": ["credit the prior purchase", "apply the first fee to a larger package", "trade up", "I owe you money offer"],
+      "use_when": "Moving a current, former, upset, or competitor's customer into a larger offer by crediting an earlier purchase.",
+      "relationships": "The prior payment becomes credit toward the next offer. The larger offer generally needs to be several times the credited amount for the economics to work."
+    },
+    {
+      "name": "Downsell offers",
+      "aliases": ["offer after a no", "lower-friction alternative", "save the sale", "conversion offer"],
+      "use_when": "A prospect rejects the main offer and a different structure could convert the no without destroying value.",
+      "relationships": "A downsell changes what the customer receives or when they pay; it should not simply reduce the price for the identical offer without receiving something in return."
+    },
+    {
+      "name": "Payment Plans",
+      "aliases": ["spread payments", "installments", "financing", "cannot afford it today"],
+      "use_when": "The buyer wants the full offer but cannot afford the entire price today.",
+      "relationships": "Payment plans spread the timing of the pain rather than reducing the offer's total value. They differ from feature downsells, which reduce what the buyer receives."
+    },
+    {
+      "name": "Free Trials or Trial with Penalty",
+      "aliases": ["free if requirements are met", "card-backed trial", "fees for non-use", "accountability trial"],
+      "use_when": "A recurring product requires customer participation and a structured last chance can overcome uncertainty after a no.",
+      "relationships": "The trial stays free when agreed consumption or action requirements are met; a card is collected upfront and fees apply to non-consumption."
+    },
+    {
+      "name": "Feature Downsells",
+      "aliases": ["reduced-scope offer", "remove features to lower price", "smaller package", "change quantity or service level"],
+      "use_when": "Price remains the objection and the business can legitimately remove quantity, quality, service, or guarantees.",
+      "relationships": "Lower price must be paired with lower value or a valuable barter such as advertising. Removing a valued feature can also cause the buyer to reselect the original offer."
+    },
+    {
+      "name": "Continuity offers",
+      "aliases": ["recurring revenue", "membership", "subscription", "maintenance plan", "retention offer"],
+      "use_when": "Customers buy once and leave, cash flow is unstable, or greater lifetime value and enterprise value are priorities.",
+      "relationships": "Continuity adds ongoing value and recurring gross profit. Lower churn raises lifetime value, and upfront value followed by a long tail can increase commitment."
+    },
+    {
+      "name": "Continuity Bonus Offers",
+      "aliases": ["subscription bonus", "join for the bonus", "membership gift", "bonus worth more than month one"],
+      "use_when": "A valuable bonus can make joining continuity feel more attractive than buying transactionally.",
+      "relationships": "Advertise the bonus rather than the subscription. The bonus should exceed the first month's perceived value and can be priced separately to clarify the continuity advantage."
+    },
+    {
+      "name": "Continuity Discount Offers",
+      "aliases": ["earn a lifetime discount", "retention milestone discount", "discount after the churn point", "commitment discount"],
+      "use_when": "Churn predictably rises at a particular time or the business wants to reward longer commitment.",
+      "relationships": "The discount can be front-loaded, back-loaded, spread, or delivered as credit. A promised lifetime discount after the usual churn point gives customers a reason to stay until then."
+    },
+    {
+      "name": "Waived Fee Offers",
+      "aliases": ["waived setup fee", "implementation fee waived for commitment", "cancellation activates the fee", "startup fee"],
+      "use_when": "A service or subscription needs stronger commitment without relying on a conventional long-term contract.",
+      "relationships": "A meaningful startup fee is waived while the customer remains committed but becomes due upon early cancellation, creating sunk-cost and commitment effects."
+    },
+    {
+      "name": "Build the money model one offer at a time",
+      "aliases": ["make your own money model", "what to add next", "simple scales fancy fails", "offer rollout order"],
+      "use_when": "Designing the whole stack or deciding which missing offer to implement next.",
+      "relationships": "Build attraction, upsell, downsell, and continuity deliberately, perfecting one before adding the next. Choose the next offer based on the observed constraint and use the fewest offers needed."
+    }
+  ]
+}
+
+exec
+/bin/zsh -lc 'find /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business -maxdepth 3 -type f | sort' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json
+
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business\"
+USER_REQUEST='should we add a recurring owner maintenance offer after installs?'
+PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir \""'$CONTEXT_DIR" --user-message "$USER_REQUEST"' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business",
+  "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor",
+  "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json",
+  "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions",
+  "user_message": "should we add a recurring owner maintenance offer after installs?",
+  "advisor_state": {
+    "advisory_status": "recommendable",
+    "ready_for_payback_diagnosis": true,
+    "ready_for_offer_stack_diagnosis": true,
+    "missing_fields": [],
+    "known_facts": {
+      "business.business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+      "business.icp": "STR and second-home owners with $80K-$200K+ project capacity",
+      "business.delivery_model": "Lisa-led full-service design planning, procurement, and installation",
+      "economics.cac": 1000,
+      "economics.first_30_day_gross_profit": 10000,
+      "economics.monthly_recurring_gross_profit": 0,
+      "economics.gross_margin": 0.769,
+      "economics.payback_period_months": 1.0,
+      "problem.user_goal": "diagnose cash payback",
+      "problem.reported_symptoms_count": 1,
+      "problem.recent_reported_symptoms": [
+        "wants to understand how much can be spent on acquisition"
+      ],
+      "problem.diagnosed_constraints": [
+        "high_first_sale_margin",
+        "can_test_paid_acquisition"
+      ],
+      "money_model.attraction_offer.exists": true,
+      "money_model.attraction_offer.description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "money_model.attraction_offer.price": 597,
+      "money_model.core_offer.exists": true,
+      "money_model.core_offer.description": "full-service STR and second-home design",
+      "money_model.core_offer.price": 15000,
+      "money_model.upsell.exists": true,
+      "money_model.upsell.description": "pre-designed room packages sold per room or bundle",
+      "money_model.upsell.price": 5000,
+      "money_model.downsell.exists": false,
+      "money_model.continuity.exists": false
+    }
+  },
+  "recent_turns": [],
+  "available_operations": [
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "search_source_material",
+    "logs",
+    "turn_record",
+    "session_finish"
+  ],
+  "trace_requirements": [
+    "Record the completed turn with session finish.",
+    "Include every CLI-backed action in the record actions list.",
+    "Include one source_events entry per source-material search.",
+    "Include cited chunk ids when source material supports the answer."
+  ],
+  "boundary": {
+    "agent_owns": [
+      "advisory judgment",
+      "local document inspection",
+      "corpus-guided search-request generation",
+      "answer synthesis"
+    ],
+    "cli_owns": [
+      "snapshot persistence",
+      "deterministic calculations",
+      "source-material retrieval",
+      "trace recording"
+    ]
+  }
+}
+
+2026-08-13T16:19:55.033147Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+The snapshot is already recommendable and specifically shows no continuity offer, so this is a recommendation that needs Money Models support. I’m using one evidence job focused on continuity/maintenance after the core install, not rerunning economics retrieval for facts already in the snapshot.
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business"
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir "$CONTEXT_DIR" --search-request-json '"'{\"intent\":\"recommendation_evidence\",\"user_turn\":\"should we add a recurring owner maintenance offer after installs?\",\"query\":\"continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service\"}' --top-k 5" in /Users/benjaminmackenzie/Dev/money-model-architect
+2026-08-13T16:20:02.560265Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+ exited 1 in 122ms:
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1321, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+              encode_chunked=req.has_header('Transfer-encoding'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1358, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1404, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1353, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1113, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1057, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1492, in connect
+    super().connect()
+    ~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1023, in connect
+    self.sock = self._create_connection(
+                ~~~~~~~~~~~~~~~~~~~~~~~^
+        (self.host,self.port), self.timeout, self.source_address)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 846, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/socket.py", line 983, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/embeddings.py", line 227, in _request_embeddings
+    with urllib.request.urlopen(request, timeout=60) as response:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 187, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 487, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 504, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 464, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1369, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        context=self._context)
+                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/urllib/request.py", line 1324, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/cli.py", line 1057, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/cli.py", line 178, in main
+    evidence = execute_advisor_queries(
+        queries,
+    ...<4 lines>...
+        namespace_prefix=args.namespace_prefix,
+    )
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/advisor_retrieval.py", line 60, in execute_advisor_queries
+    results = _search(
+        corpus_index,
+    ...<6 lines>...
+        target_namespaces=query.target_namespaces,
+    )
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/advisor_retrieval.py", line 124, in _search
+    return index.hybrid_search(
+           ~~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<4 lines>...
+        namespace_prefix=namespace_prefix,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/retrieval.py", line 297, in hybrid_search
+    vector_results = self.vector_search(
+        query,
+    ...<7 lines>...
+        subjects=subjects,
+    )
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/retrieval.py", line 250, in vector_search
+    query_embedding = client.embed_texts([query], purpose="query")[0]
+                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/embeddings.py", line 172, in embed_texts
+    batch_embeddings = self._request_embeddings([text for _index, text, _path in batch])
+  File "/Users/benjaminmackenzie/Dev/money-model-architect/src/money_model_architect/embeddings.py", line 233, in _request_embeddings
+    raise EmbeddingError(f"embedding request failed: {exc}") from exc
+money_model_architect.embeddings.EmbeddingError: embedding request failed: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+
+codex
+The active hybrid search tried to embed the query and failed because network access is unavailable in this sandbox. I’m checking the CLI flags and existing eval run setup for an offline-compatible retrieval backend or cache path, then I’ll record only the search that actually executes.
+exec
+/bin/zsh -lc 'find evals/runs/source_events/search_request_v1/sourceevents_v1_006 -maxdepth 4 -type f | sort' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+evals/runs/source_events/search_request_v1/sourceevents_v1_006/acting_prompt.md
+evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json
+evals/runs/source_events/search_request_v1/sourceevents_v1_006/run_draft.json
+
+exec
+/bin/zsh -lc 'rg -n "retrieval|backend|hybrid|bm25|embedding|search_request" src/money_model_architect/cli.py src/money_model_architect/*.py' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+src/money_model_architect/embeddings.py:17:    """Raised when embeddings cannot be created."""
+src/money_model_architect/embeddings.py:21:    "text-embedding-3-small": 0.02,
+src/money_model_architect/embeddings.py:22:    "text-embedding-3-large": 0.13,
+src/money_model_architect/embeddings.py:114:    """Minimal OpenAI embeddings client that caches by model and exact input text."""
+src/money_model_architect/embeddings.py:126:        self.model = model or os.getenv("MMA_EMBEDDING_MODEL") or "text-embedding-3-small"
+src/money_model_architect/embeddings.py:128:        self.cache_dir = cache_dir or repo_root() / ".cache" / "embeddings" / "openai" / self.model
+src/money_model_architect/embeddings.py:147:        embeddings: list[list[float] | None] = [None] * len(texts)
+src/money_model_architect/embeddings.py:154:                embeddings[index] = cached
+src/money_model_architect/embeddings.py:163:                    "OPENAI_API_KEY is required for uncached embeddings. "
+src/money_model_architect/embeddings.py:172:                batch_embeddings = self._request_embeddings([text for _index, text, _path in batch])
+src/money_model_architect/embeddings.py:173:                for (index, _text, cache_path), embedding in zip(batch, batch_embeddings, strict=True):
+src/money_model_architect/embeddings.py:174:                    embeddings[index] = embedding
+src/money_model_architect/embeddings.py:175:                    self._write_cache(cache_path, embedding)
+src/money_model_architect/embeddings.py:178:        return [embedding for embedding in embeddings if embedding is not None]
+src/money_model_architect/embeddings.py:205:        embedding = payload.get("embedding")
+src/money_model_architect/embeddings.py:206:        if not isinstance(embedding, list) or not all(isinstance(value, int | float) for value in embedding):
+src/money_model_architect/embeddings.py:208:        return [float(value) for value in embedding]
+src/money_model_architect/embeddings.py:210:    def _write_cache(self, path: Path, embedding: Sequence[float]) -> None:
+src/money_model_architect/embeddings.py:212:            json.dumps({"model": self.model, "embedding": list(embedding)}, separators=(",", ":")) + "\n",
+src/money_model_architect/embeddings.py:216:    def _request_embeddings(self, texts: Sequence[str]) -> list[list[float]]:
+src/money_model_architect/embeddings.py:218:            f"{self.base_url}/embeddings",
+src/money_model_architect/embeddings.py:231:            raise EmbeddingError(f"embedding request failed with HTTP {exc.code}: {detail}") from exc
+src/money_model_architect/embeddings.py:233:            raise EmbeddingError(f"embedding request failed: {exc}") from exc
+src/money_model_architect/embeddings.py:237:            raise EmbeddingError("embedding response did not contain one vector per input")
+src/money_model_architect/embeddings.py:239:        embeddings = [item.get("embedding") for item in ordered]
+src/money_model_architect/embeddings.py:240:        if not all(isinstance(embedding, list) for embedding in embeddings):
+src/money_model_architect/embeddings.py:241:            raise EmbeddingError("embedding response contained an invalid vector")
+src/money_model_architect/embeddings.py:242:        return [[float(value) for value in embedding] for embedding in embeddings]
+src/money_model_architect/cli.py:14:from .advisor_retrieval import RETRIEVAL_BACKENDS, VECTOR_STORES, execute_advisor_queries
+src/money_model_architect/cli.py:22:from .embeddings import OpenAIEmbeddingClient
+src/money_model_architect/cli.py:23:from .retrieval import CHUNKING_STRATEGIES, DEFAULT_CHUNKING_STRATEGY, CorpusIndex
+src/money_model_architect/cli.py:85:        "--backend",
+src/money_model_architect/cli.py:87:        help="Retrieval backend; defaults to hybrid for a search request and BM25 for a raw debug query",
+src/money_model_architect/cli.py:92:    index_cmd = subparsers.add_parser("index", help="Manage hosted retrieval indexes")
+src/money_model_architect/cli.py:166:        request_json = args.search_request_json or args.source_need_json
+src/money_model_architect/cli.py:173:            search_request = _parse_search_request(_read_json_value(request_json))
+src/money_model_architect/cli.py:174:            if search_request.query and args.subject:
+src/money_model_architect/cli.py:176:            queries = build_advisor_queries(snapshot, search_request)
+src/money_model_architect/cli.py:177:            retrieval_backend = args.backend or ("hybrid" if search_request.query else "bm25")
+src/money_model_architect/cli.py:182:                retrieval_backend=retrieval_backend,
+src/money_model_architect/cli.py:188:                "retrieval_backend": retrieval_backend,
+src/money_model_architect/cli.py:190:                "namespace_policy": "unfiltered" if search_request.query else "legacy_source_need_target_namespaces",
+src/money_model_architect/cli.py:191:                "namespace_prefix": args.namespace_prefix if retrieval_backend in {"vector", "hybrid"} else None,
+src/money_model_architect/cli.py:192:                "search_request": _search_request_to_dict(search_request),
+src/money_model_architect/cli.py:197:                payload["source_need"] = payload["search_request"]
+src/money_model_architect/cli.py:209:            backend=args.backend or "bm25",
+src/money_model_architect/cli.py:217:            "retrieval_backend": args.backend or "bm25",
+src/money_model_architect/cli.py:220:            "namespace_prefix": args.namespace_prefix if args.backend in {"vector", "hybrid"} else None,
+src/money_model_architect/cli.py:240:        embedding_client = OpenAIEmbeddingClient()
+src/money_model_architect/cli.py:241:        records = index.vector_records(embedding_client)
+src/money_model_architect/cli.py:270:            "embedding_model": embedding_client.model,
+src/money_model_architect/cli.py:272:            "embedding_cache": embedding_client.stats.to_dict(),
+src/money_model_architect/cli.py:378:                    "source-material retrieval",
+src/money_model_architect/cli.py:618:    uses_current_contract = "search_request" in event
+src/money_model_architect/cli.py:619:    search_request = event.get("search_request", event.get("source_need"))
+src/money_model_architect/cli.py:620:    if not isinstance(search_request, dict):
+src/money_model_architect/cli.py:621:        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+src/money_model_architect/cli.py:622:    request_label = f"record-json source_events[{index}].search_request"
+src/money_model_architect/cli.py:623:    _validate_search_request_payload(search_request, request_label)
+src/money_model_architect/cli.py:630:    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+src/money_model_architect/cli.py:644:        normalized["search_request"] = search_request
+src/money_model_architect/cli.py:686:def _validate_search_request_payload(search_request: dict[str, Any], label: str) -> None:
+src/money_model_architect/cli.py:687:    intent = search_request.get("intent")
+src/money_model_architect/cli.py:690:    query = search_request.get("query")
+src/money_model_architect/cli.py:694:        user_turn = search_request.get("user_turn")
+src/money_model_architect/cli.py:700:            if field in search_request
+src/money_model_architect/cli.py:707:    subjects = search_request.get("subjects")
+src/money_model_architect/cli.py:713:    target_namespaces = search_request.get("target_namespaces", [])
+src/money_model_architect/cli.py:722:    focus_terms = search_request.get("focus_terms")
+src/money_model_architect/cli.py:725:    query_variants = search_request.get("query_variants")
+src/money_model_architect/cli.py:734:def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
+src/money_model_architect/cli.py:735:    query = search_request.get("query")
+src/money_model_architect/cli.py:738:            raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
+src/money_model_architect/cli.py:740:    query_variants = search_request.get("query_variants")
+src/money_model_architect/cli.py:791:def _parse_search_request(value: Any) -> SearchRequest:
+src/money_model_architect/cli.py:853:    backend: str,
+src/money_model_architect/cli.py:857:    if backend == "bm25":
+src/money_model_architect/cli.py:859:    if backend == "vector":
+src/money_model_architect/cli.py:867:    if backend == "hybrid":
+src/money_model_architect/cli.py:868:        return index.hybrid_search(
+src/money_model_architect/cli.py:875:    raise SystemExit(f"unknown retrieval backend: {backend}")
+src/money_model_architect/cli.py:878:def _search_request_to_dict(search_request: SearchRequest) -> dict[str, Any]:
+src/money_model_architect/cli.py:880:        "intent": search_request.intent,
+src/money_model_architect/cli.py:881:        "user_turn": search_request.user_turn,
+src/money_model_architect/cli.py:883:    if search_request.query:
+src/money_model_architect/cli.py:884:        payload["query"] = search_request.query
+src/money_model_architect/cli.py:888:            "subjects": list(search_request.subjects),
+src/money_model_architect/cli.py:889:            "focus_terms": list(search_request.focus_terms),
+src/money_model_architect/cli.py:890:            "query_variants": list(search_request.query_variants),
+src/money_model_architect/cli.py:891:            "target_namespaces": list(search_request.target_namespaces),
+src/money_model_architect/cli.py:1049:        "retrieval_queries": payload.get("retrieval_queries", []),
+src/money_model_architect/advisor_retrieval.py:9:from .retrieval import CorpusIndex
+src/money_model_architect/advisor_retrieval.py:13:RETRIEVAL_BACKENDS = ("bm25", "vector", "hybrid")
+src/money_model_architect/advisor_retrieval.py:53:    retrieval_backend: str = "bm25",
+src/money_model_architect/advisor_retrieval.py:65:            retrieval_backend=retrieval_backend,
+src/money_model_architect/advisor_retrieval.py:73:        ) if retrieval_backend in {"vector", "hybrid"} else []
+src/money_model_architect/advisor_retrieval.py:106:    retrieval_backend: str,
+src/money_model_architect/advisor_retrieval.py:111:    if retrieval_backend == "bm25":
+src/money_model_architect/advisor_retrieval.py:114:    if retrieval_backend == "vector":
+src/money_model_architect/advisor_retrieval.py:123:    if retrieval_backend == "hybrid":
+src/money_model_architect/advisor_retrieval.py:124:        return index.hybrid_search(
+src/money_model_architect/advisor_retrieval.py:133:    raise ValueError(f"unknown retrieval backend {retrieval_backend!r}; expected one of: {allowed}")
+src/money_model_architect/cli.py:14:from .advisor_retrieval import RETRIEVAL_BACKENDS, VECTOR_STORES, execute_advisor_queries
+src/money_model_architect/cli.py:22:from .embeddings import OpenAIEmbeddingClient
+src/money_model_architect/cli.py:23:from .retrieval import CHUNKING_STRATEGIES, DEFAULT_CHUNKING_STRATEGY, CorpusIndex
+src/money_model_architect/cli.py:85:        "--backend",
+src/money_model_architect/cli.py:87:        help="Retrieval backend; defaults to hybrid for a search request and BM25 for a raw debug query",
+src/money_model_architect/cli.py:92:    index_cmd = subparsers.add_parser("index", help="Manage hosted retrieval indexes")
+src/money_model_architect/cli.py:166:        request_json = args.search_request_json or args.source_need_json
+src/money_model_architect/cli.py:173:            search_request = _parse_search_request(_read_json_value(request_json))
+src/money_model_architect/cli.py:174:            if search_request.query and args.subject:
+src/money_model_architect/cli.py:176:            queries = build_advisor_queries(snapshot, search_request)
+src/money_model_architect/cli.py:177:            retrieval_backend = args.backend or ("hybrid" if search_request.query else "bm25")
+src/money_model_architect/cli.py:182:                retrieval_backend=retrieval_backend,
+src/money_model_architect/cli.py:188:                "retrieval_backend": retrieval_backend,
+src/money_model_architect/cli.py:190:                "namespace_policy": "unfiltered" if search_request.query else "legacy_source_need_target_namespaces",
+src/money_model_architect/cli.py:191:                "namespace_prefix": args.namespace_prefix if retrieval_backend in {"vector", "hybrid"} else None,
+src/money_model_architect/cli.py:192:                "search_request": _search_request_to_dict(search_request),
+src/money_model_architect/cli.py:197:                payload["source_need"] = payload["search_request"]
+src/money_model_architect/cli.py:209:            backend=args.backend or "bm25",
+src/money_model_architect/cli.py:217:            "retrieval_backend": args.backend or "bm25",
+src/money_model_architect/cli.py:220:            "namespace_prefix": args.namespace_prefix if args.backend in {"vector", "hybrid"} else None,
+src/money_model_architect/cli.py:240:        embedding_client = OpenAIEmbeddingClient()
+src/money_model_architect/cli.py:241:        records = index.vector_records(embedding_client)
+src/money_model_architect/cli.py:270:            "embedding_model": embedding_client.model,
+src/money_model_architect/cli.py:272:            "embedding_cache": embedding_client.stats.to_dict(),
+src/money_model_architect/cli.py:378:                    "source-material retrieval",
+src/money_model_architect/cli.py:618:    uses_current_contract = "search_request" in event
+src/money_model_architect/cli.py:619:    search_request = event.get("search_request", event.get("source_need"))
+src/money_model_architect/cli.py:620:    if not isinstance(search_request, dict):
+src/money_model_architect/cli.py:621:        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+src/money_model_architect/cli.py:622:    request_label = f"record-json source_events[{index}].search_request"
+src/money_model_architect/cli.py:623:    _validate_search_request_payload(search_request, request_label)
+src/money_model_architect/cli.py:630:    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+src/money_model_architect/cli.py:644:        normalized["search_request"] = search_request
+src/money_model_architect/cli.py:686:def _validate_search_request_payload(search_request: dict[str, Any], label: str) -> None:
+src/money_model_architect/cli.py:687:    intent = search_request.get("intent")
+src/money_model_architect/cli.py:690:    query = search_request.get("query")
+src/money_model_architect/cli.py:694:        user_turn = search_request.get("user_turn")
+src/money_model_architect/cli.py:700:            if field in search_request
+src/money_model_architect/cli.py:707:    subjects = search_request.get("subjects")
+src/money_model_architect/cli.py:713:    target_namespaces = search_request.get("target_namespaces", [])
+src/money_model_architect/cli.py:722:    focus_terms = search_request.get("focus_terms")
+src/money_model_architect/cli.py:725:    query_variants = search_request.get("query_variants")
+src/money_model_architect/cli.py:734:def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
+src/money_model_architect/cli.py:735:    query = search_request.get("query")
+src/money_model_architect/cli.py:738:            raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
+src/money_model_architect/cli.py:740:    query_variants = search_request.get("query_variants")
+src/money_model_architect/cli.py:791:def _parse_search_request(value: Any) -> SearchRequest:
+src/money_model_architect/cli.py:853:    backend: str,
+src/money_model_architect/cli.py:857:    if backend == "bm25":
+src/money_model_architect/cli.py:859:    if backend == "vector":
+src/money_model_architect/cli.py:867:    if backend == "hybrid":
+src/money_model_architect/cli.py:868:        return index.hybrid_search(
+src/money_model_architect/cli.py:875:    raise SystemExit(f"unknown retrieval backend: {backend}")
+src/money_model_architect/cli.py:878:def _search_request_to_dict(search_request: SearchRequest) -> dict[str, Any]:
+src/money_model_architect/cli.py:880:        "intent": search_request.intent,
+src/money_model_architect/cli.py:881:        "user_turn": search_request.user_turn,
+src/money_model_architect/cli.py:883:    if search_request.query:
+src/money_model_architect/cli.py:884:        payload["query"] = search_request.query
+src/money_model_architect/cli.py:888:            "subjects": list(search_request.subjects),
+src/money_model_architect/cli.py:889:            "focus_terms": list(search_request.focus_terms),
+src/money_model_architect/cli.py:890:            "query_variants": list(search_request.query_variants),
+src/money_model_architect/cli.py:891:            "target_namespaces": list(search_request.target_namespaces),
+src/money_model_architect/cli.py:1049:        "retrieval_queries": payload.get("retrieval_queries", []),
+src/money_model_architect/retrieval.py:1:"""Small local retrieval engine over the transcript corpus."""
+src/money_model_architect/retrieval.py:13:from .embeddings import OpenAIEmbeddingClient, cosine_similarity
+src/money_model_architect/retrieval.py:179:        self._chunk_embeddings: dict[str, list[float]] = {}
+src/money_model_architect/retrieval.py:229:            score = self._bm25(query_counts, terms)
+src/money_model_architect/retrieval.py:240:        embedding_client: EmbeddingClient | None = None,
+src/money_model_architect/retrieval.py:249:        client = embedding_client or OpenAIEmbeddingClient()
+src/money_model_architect/retrieval.py:250:        query_embedding = client.embed_texts([query], purpose="query")[0]
+src/money_model_architect/retrieval.py:260:            query_embedding,
+src/money_model_architect/retrieval.py:283:    def hybrid_search(
+src/money_model_architect/retrieval.py:288:        embedding_client: EmbeddingClient | None = None,
+src/money_model_architect/retrieval.py:296:        bm25_results = self.search(query, subject=subject, top_k=max(top_k * 5, top_k), subjects=subjects)
+src/money_model_architect/retrieval.py:301:            embedding_client=embedding_client,
+src/money_model_architect/retrieval.py:309:        chunks_by_id = {result.chunk.id: result.chunk for result in [*bm25_results, *vector_results]}
+src/money_model_architect/retrieval.py:311:        for rank, result in enumerate(bm25_results, 1):
+src/money_model_architect/retrieval.py:323:    def _bm25(self, query_counts: Counter[str], terms: Counter[str]) -> float:
+src/money_model_architect/retrieval.py:339:    def _ensure_chunk_embeddings(self, embedding_client: EmbeddingClient) -> None:
+src/money_model_architect/retrieval.py:340:        missing_chunks = [chunk for chunk in self.chunks if chunk.id not in self._chunk_embeddings]
+src/money_model_architect/retrieval.py:343:        texts = [_embedding_text(chunk) for chunk in missing_chunks]
+src/money_model_architect/retrieval.py:344:        embeddings = embedding_client.embed_texts(texts, purpose="corpus")
+src/money_model_architect/retrieval.py:345:        if len(embeddings) != len(missing_chunks):
+src/money_model_architect/retrieval.py:346:            raise ValueError("embedding client returned the wrong number of chunk embeddings")
+src/money_model_architect/retrieval.py:347:        for chunk, embedding in zip(missing_chunks, embeddings, strict=True):
+src/money_model_architect/retrieval.py:348:            self._chunk_embeddings[chunk.id] = embedding
+src/money_model_architect/retrieval.py:350:    def corpus_embedding_texts(self) -> list[str]:
+src/money_model_architect/retrieval.py:351:        return [_embedding_text(chunk) for chunk in self.chunks]
+src/money_model_architect/retrieval.py:353:    def vector_records(self, embedding_client: EmbeddingClient) -> list[VectorRecord]:
+src/money_model_architect/retrieval.py:354:        self._ensure_chunk_embeddings(embedding_client)
+src/money_model_architect/retrieval.py:355:        model = getattr(embedding_client, "model", "unknown-model")
+src/money_model_architect/retrieval.py:362:                        embedding_model=str(model),
+src/money_model_architect/retrieval.py:365:                    values=self._chunk_embeddings[chunk.id],
+src/money_model_architect/retrieval.py:373:        embedding_client: EmbeddingClient,
+src/money_model_architect/retrieval.py:380:            records = self.vector_records(embedding_client)
+src/money_model_architect/retrieval.py:394:        query_embedding: list[float],
+src/money_model_architect/retrieval.py:406:                    query_embedding,
+src/money_model_architect/retrieval.py:416:def _embedding_text(chunk: Chunk) -> str:
+src/money_model_architect/retrieval.py:421:def chunk_metadata(chunk: Chunk, chunking_strategy: str, embedding_model: str) -> dict[str, object]:
+src/money_model_architect/retrieval.py:429:        "embedding_model": embedding_model,
+src/money_model_architect/__init__.py:3:__all__ = ["advisor", "business_context", "calculator", "diagnose", "namespaces", "retrieval", "snapshot"]
+src/money_model_architect/vector_store.py:1:"""Vector storage adapters for local and hosted retrieval."""
+src/money_model_architect/vector_store.py:13:from .embeddings import cosine_similarity, load_env_file, repo_root
+src/money_model_architect/vector_store.py:208:def vector_id(*, chunking_strategy: str, embedding_model: str, chunk_id: str) -> str:
+src/money_model_architect/vector_store.py:209:    safe_model = embedding_model.replace("/", "_")
+src/money_model_architect/snapshot.py:63:    # retrieval hints are no longer emitted to the operating agent.
+src/money_model_architect/snapshot.py:64:    likely_retrieval_subjects: list[str] = field(default_factory=list)
+src/money_model_architect/snapshot.py:65:    retrieval_query_terms: list[str] = field(default_factory=list)
+src/money_model_architect/snapshot.py:111:        payload["advisor_state"].pop("likely_retrieval_subjects", None)
+src/money_model_architect/snapshot.py:112:        payload["advisor_state"].pop("retrieval_query_terms", None)
+
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli search --help' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+usage: python3.14 -m money_model_architect.cli search [-h]
+                                                      [--business-dir BUSINESS_DIR]
+                                                      [--search-request-json SEARCH_REQUEST_JSON |
+                                                      --source-need-json SOURCE_NEED_JSON]
+                                                      [--subject {unit-economics,offers,upsells,downsells,continuity}]
+                                                      [--top-k TOP_K]
+                                                      [--backend {bm25,vector,hybrid}]
+                                                      [--vector-store {local,pinecone}]
+                                                      [--namespace-prefix NAMESPACE_PREFIX]
+                                                      [query]
+
+positional arguments:
+  query                 Raw debug/manual search query
+
+options:
+  -h, --help            show this help message and exit
+  --business-dir BUSINESS_DIR
+                        Directory containing advisor state for a structured
+                        search
+  --search-request-json SEARCH_REQUEST_JSON
+                        JSON object or path with one agent-authored corpus-
+                        guided query
+  --source-need-json SOURCE_NEED_JSON
+                        Legacy SourceNeed JSON for reproducibility and manual
+                        debugging
+  --subject {unit-economics,offers,upsells,downsells,continuity}
+  --top-k TOP_K
+  --backend {bm25,vector,hybrid}
+                        Retrieval backend; defaults to hybrid for a search
+                        request and BM25 for a raw debug query
+  --vector-store {local,pinecone}
+  --namespace-prefix NAMESPACE_PREFIX
+
+2026-08-13T16:20:10.609802Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+There is an explicit `--backend bm25` option that still accepts the current `SearchRequest` shape and avoids legacy fields. I’m using that as the offline execution path so the trace has a real source event instead of a failed embedding attempt.
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business"
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir "$CONTEXT_DIR" --search-request-json '"'{\"intent\":\"recommendation_evidence\",\"user_turn\":\"should we add a recurring owner maintenance offer after installs?\",\"query\":\"continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service\"}' --top-k 5 --backend bm25" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business",
+  "retrieval_backend": "bm25",
+  "vector_store": "local",
+  "namespace_policy": "unfiltered",
+  "namespace_prefix": null,
+  "search_request": {
+    "intent": "recommendation_evidence",
+    "user_turn": "should we add a recurring owner maintenance offer after installs?",
+    "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
+  },
+  "queries": [
+    {
+      "intent": "recommendation_evidence",
+      "subjects": [],
+      "target_namespaces": [],
+      "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "subject": null
+    }
+  ],
+  "source_material": [
+    {
+      "intent": "recommendation_evidence",
+      "subject": null,
+      "subjects": [],
+      "target_namespaces": [],
+      "queried_namespaces": [],
+      "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "chunks": [
+        {
+          "id": "continuity-offers:3",
+          "chapter": "continuity-offers",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 20.911,
+          "preview": ". So here's what we're gonna do. If you're in this with us for the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the ",
+          "text": ". So here's what we're gonna do. If you're in this with us for the long term, we wanna reward you with even more stuff and do it for less. You in? Great.\" That's the sale. It's very straightforward. So people think about monthly cash flow more than they think about duration. So we had three-year contracts, so the total contract value was way higher than the 16 weeks, but the monthly payment was significantly lower. And so this is the power of commitments and contracts. They can significantly increase LTV if you deliver value. So that's downsell the upsell. Now let's talk about calculating back of napkin LTV. So the simplest way to do this is look at your price, divide it by your monthly churn, and that gives you your lifetime revenue. Remember, we still have margin on this. We still have some cost of delivery. Now, the gross margin times lifetime revenue equals your lifetime gross profit. So for example, let's say our price minus our cost of goods times 100% equals our gross margins. So let's say we have a $100 price, $20 cost of goods, times 100 equals 80% gross margins. Okay. So now we take our 80% gross margins, we multiply it by our lifetime revenue, and we get $800 of lifetime gross profit. That's how much we make per customer. over lifetime. That is what you can calculate for yourself given whatever it is you have. So you divide your price by your churn, that gives you the revenue, then you basically just figure out what your gross margin is, multiply that by that, and there you go. So getting people into continuity automatically extends LTV. Even with a company that does one-time transactions, most recurring stuff that has basically no added value, I'm just being super real with you, the recurring is usually three months, which still 3X your new LTV. So if you sell physical products, which maybe have one-time use, if you just get someone into a subscription, it usually triples the value of the customer. So if half the people do that thing, then you've got half the people doing 3X and half of them doing 1X, which means you double the revenue of your business, not bad, just by making it available. So the valuable money lesson is people think more about price than they do about term. They think more about what they have to pay today, not what they're gonna have to pay tomorrow. To extend LTGP, just to give you an example, here, if you have that $100 per month thing and you have 10% churn, your lifetime, uh, revenue would be 1,000 bucks. If you go from $100 divided by 3% churn, so you go from 10% to 3%, you have a $3,000 lifetime revenue. Massive. So some people are like, \"Oh, it's only decreasing churn by s- you know, 7%.\" No, you decreased it by 70%, or 300, sorry, 300% in terms of what it is. All right? And so churn is how many customers, leave monthly from the ones who started the month by percentage. So if you' want big LTGP, conquer churn.... make this number, the people who cancel every month, go down. And the amount that you make from that is unbelievable. So that's back-of-napkin LTV. So now let's talk about big head, long tail. So John taught me this. He said, \"You can shear a sheep...\" I shou- I should say sheep. Uh, you can shear a sheep for a lifetime, but you can only skin it once. And so he explained this one thing to me that I have always remembered. He said, \"You know, I had this membership at a tanning salon that was $100 down and then 10 bucks a month.\" He said, \"Or you could just pay $19.99 a month.\" He said the, he said"
+        },
+        {
+          "id": "continuity-bonus:3",
+          "chapter": "continuity-bonus",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 17.991,
+          "preview": ". So first, I do all my big cash attraction, upsell and downsell offers, so I should already be profitable, I should already have cash from all those original offers. Then continuity offers get a little bit of cash from the first month's payments. Then I offer people who bought that one month a discount for pre-paying more months. This further boosts 30-day ",
+          "text": ". So first, I do all my big cash attraction, upsell and downsell offers, so I should already be profitable, I should already have cash from all those original offers. Then continuity offers get a little bit of cash from the first month's payments. Then I offer people who bought that one month a discount for pre-paying more months. This further boosts 30-day profits, giving me more cash to advertise and stacks recurring revenue. So think about how that goes.Big attraction offer, buy X, get Y' free, win your money back, whatever. Got it. Then we do our up-sells. Got it. Then we do our down-sells. Got it. Then we get them into continuity, really soft pitch. We got them on continuity, we gave them some bonuses in order to say yes. Now that they're on continuity, we already have the commitment, we then say, \"Hey, you're already committed. Let's just pre-pay and save some money.\" We stack even more cash forward. And that's how you just stack, stack, stack, stack, stack. You front-load the money so that you can scale your advertising and go to the moon. All right, let's do some examples. So physical products. Let's use pet food. All right, so one-time bonus, get every dog toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the other is to get them to stay. Now, service, short-term accelerator offer. So one-time bonus for the short-term accelerator, it costs $1,000 on its own. Get it free when you become a member for $100 a month. Same concept as the gym. The bonus package is the VIP community members enjoy first in line access to our events, longer support hours, as in longer, not longer time period, uh, better support reps, and faster response times. So if you become a VIP member, not only do you get this big benefit, you also get this recurring benefit of c- continuing to pay and stay. Digital product offer. So one-time bonus would be, uh, get all my past 40 newsletters, valued at 15,800 whatever, by becoming a member today for only $3.99 a month after a 30-day free trial. Lifetime discount plus lifetime bonuses if you pay today. You can lock in a lifetime discount for $299 a month, and you get early digital access and a physical copy every month. Now, important points. Focus on the bonus, not the membership. This is really important. Join my membership program isn't very compelling, not nearly as compelling as get this free valuable thing. So advertise the free valuable thing, then explain the rest of the offer once, they show interest. So if I'm talking about the $800 of dog toys, I advertise my free $800 of dog toys, not my dog food. If I'm talking about my six-week challenge, I'm talking about the six-week challenge. They come in, I explain the $1,000 thing. I say, \"Or you can get that whole thing and this other thing for less.\" That's the idea, is you advertise the thing you're gonna give away, not the thing you sell. Bonuses kind of work like, up-sells. More of the same. You get two years of past newsletters by becoming a member. So they're coming in for newsletters, so you get more of that thing. Complimentary. You get nutrition services for free when you sign up for one of our fitness memberships. Great, that's complimentary. It goes together. You could have an upgrade, which is better, right? You get a free gold membership when you buy a bonus membership."
+        },
+        {
+          "id": "offer-types:4",
+          "chapter": "offer-types",
+          "subject": "offers",
+          "subjects": [
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 16.171,
+          "preview": "## [\u00a72.2.e] The four offer types \u2014 Attraction, Upsell, Downsell, Continuity  So now let's talk about all the things that I just did, but we're gonna chunk up so that you can apply it to any business. All right? So there's attraction offers, upsell offers, downsell offers and continuity offers. The objective of each of these. Attraction offers is to liquidate",
+          "text": "## [\u00a72.2.e] The four offer types \u2014 Attraction, Upsell, Downsell, Continuity\n\nSo now let's talk about all the things that I just did, but we're gonna chunk up so that you can apply it to any business. All right? So there's attraction offers, upsell offers, downsell offers and continuity offers. The objective of each of these. Attraction offers is to liquidate how much it costs you to cus- get a customer. Upsell offers are to maximize profit. Downsell offers are to maximize conversion. Continuity offers are to stabilize cash flow in the business. There are many ways to accomplish CFA. Some businesses can do it with only one offer. Some businesses get funding so they don't need to break even to get customers 'cause they have outside money that's injected into their system. But for everyone else probably watching this, I will explain a model that I have seen emerge over and over and over again within the businesses that I built. So when I look at every single amazing business that I've built that's made a lot of money, they had these things pretty much in this sequence. And it doesn't happen all at once. It just often becomes something that you build towards. So to be very clear, I'm not saying you start with a fully fledged money model, 'cause it will break your b- whole business in half. You wanna start with one, you start adding in layers, like layers of paint. You just keep putting more and more layers on it. And so again, you can build an amazing business with just one or two of these things. And sometimes it's worth keeping it simple and just doing that. If you can scale with... I wanna scale with as few offers as humanly possible. But I still wanna maximize how much money I make in the shortest period of time. So if I have to add more, I will, to enable me scaling. But I wanna have as few as I can, 'cause I wanna have as little operational drag as possible. All right? And so it has four prongs or four different vectors and different offers that correspond to each objective. All right? So this beautiful little image took me a very long time to figure out. Right? And so we have attraction offers that bring people in the door. We have upsell offers that typically happen immediately after that get people to buy more stuff. We have downsell offers for people who, who don't say yes to either of these things, so we can still get conversions and then potentially upsell them later. And then we have continuity offers on the back, which get them into a recurring cash flow payment to the business. And so let's explain how they all work together to make a symphony of CFA. All right. So here, we turn strangers into customers, get, come spend more money. Lower CAC is to get people... Excuse me, is to get people to say yes when they would have said no, which is what you offer when they say no. And then with continuity, you keep people buying. All right? Which is meaning you get them to buy again. All right? So those are the four prongs."
+        },
+        {
+          "id": "continuity-offers:0",
+          "chapter": "continuity-offers",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 16.043,
+          "preview": "So we just finished the downsell offer section, and now we move on, to the magic of continuity offers. I've been a continuity guy my whole life, and so this is a section that I hold near and dear to my heart. It has made me a tremendous amount of money. It also stabilizes cash flow for the business. And so in our four money. models, we have attraction, upsel",
+          "text": "So we just finished the downsell offer section, and now we move on, to the magic of continuity offers. I've been a continuity guy my whole life, and so this is a section that I hold near and dear to my heart. It has made me a tremendous amount of money. It also stabilizes cash flow for the business. And so in our four money. models, we have attraction, upsells, down sells, and now, kaboom, continuity. So continuity. offers provide ongoing value that customers make ongoing payments for until they cancel. They boost the profit from every customer and give you one last thing to sell. Continuity offers are awesome because you sell. once and get paid again, and again, and again"
+        },
+        {
+          "id": "buy-x-get-y:4",
+          "chapter": "buy-x-get-y",
+          "subject": "offers",
+          "subjects": [
+            "offers",
+            "upsells",
+            "continuity"
+          ],
+          "score": 15.297,
+          "preview": "socks cost less than a shirt, it's still buy one, get three. And sometimes that converts better, so I test this. Rather than offer a 33% discount, try buy one, get two free. This here will convert more than this, but they're still one thirds off. All right? So I just like to... If you are gonna use a discount, this structure still makes a discount even more ",
+          "text": "socks cost less than a shirt, it's still buy one, get three. And sometimes that converts better, so I test this. Rather than offer a 33% discount, try buy one, get two free. This here will convert more than this, but they're still one thirds off. All right? So I just like to... If you are gonna use a discount, this structure still makes a discount even more compelling. Do not make offers like this if you cannot manage money, especially with service businesses. So if you say buy six months of service, get six months free, if you don't know how to manage money and you immediately blow the money that they prepaid, you are a bad business. owner. So you need to be able to consistently... Like if you have to have an accountant, you know, do this for you, put all the cash into one bank account and you can pay yourself out of that bank account every month as you deliver services. But the worst thing, you' can possibly do for your reputation is like pre-sell a year of service and then, you know, like do not do this play if you are trying to keep your business alive. If you need this cash in order to keep the business alive, I think you risk your reputation by doing it. I also cap this at 10% of a recurring customer base for those of you who have recurring revenue businesses. So if you wanna do a banger buy X, get Y free, which is a really great cash play, let's say you have 100 recurring customers, cap it at 10. Don't let more than 10 of your recurring customers prepay for the year 'cause you still like ha- I, this is a, not a math solution. This is a psychological solution. I've just seen way, more businesses succeed by keeping their recurring cash flow because most business owners honestly can't manage it. Now, mathematically it makes sense to get everybody on. annual, but a lot of people can't handle that responsibility. I'm just being really honest with you. Okay. So this is a great grand opening strategy. Uh, as I referenced earlier, um, this is also a great offer to give for fast cash. Now, if your business is healthy but you're like, \"You know. what? I wanna buy a bunch of equipment,\" great. Prepay 10 people, go buy your equipment. Or you need to go buy a, uh, another big oven, industrial oven for your baking business. Like, totally makes sense for you to do prepayments and things like that to cash flow or fund rather than take on credit lines. Super smart. Um, so, even if customers prepay, you can still upsell them different stuff now. So this is really important. So I made this mistake, which is why I share it with you. The people who prepay, especially for services, for durations of time, business owners have this fear of selling them or making offers for other stuff. But here's the craziest thing that we saw, is that the people who prepay for the year are the most likely people to buy more stuff afterwards. And so these are basically a way of identifying your hyper buyers. And so they self-select. They prepay for a year, and guess what happens after that? When I would have Big Booty Boot Camp and a deadlift seminar or, you know, uh, Make Your Sexy Back or I would do Buns & Guns or whatever else I would do, Lean by Halloween, they were the most likely people to pay, 'cause guess what? They weren't paying anything for being there as far as they felt. They, they had paid so long ago they forgot that they paid. So it felt like I was just a free gym. And you know what? The cool thing about wallets with"
+        }
+      ]
+    }
+  ]
+}
+
+2026-08-13T16:20:20.463075Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+The source search returned continuity-specific chunks that support the recommendation. I’m preparing the turn record with the executed SearchRequest, inspected chunk IDs/scores, citations, and the assistant message, then I’ll call `session finish`.
+exec
+/bin/zsh -lc "sed -n '560,680p' src/money_model_architect/cli.py && sed -n '1020,1060p' src/money_model_architect/cli.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+    if invalid_actions:
+        raise SystemExit(f"record-json actions contain unknown label(s): {', '.join(invalid_actions)}")
+
+    source_events = record.get("source_events", [])
+    if not isinstance(source_events, list):
+        raise SystemExit("record-json source_events must be a list when supplied")
+    normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
+
+    calculation_events = record.get("calculation_events", [])
+    if not isinstance(calculation_events, list):
+        raise SystemExit("record-json calculation_events must be a list when supplied")
+    normalized_calculation_events = [
+        _normalize_calculation_event(event, index) for index, event in enumerate(calculation_events, start=1)
+    ]
+    if "calculate" in actions and not normalized_calculation_events:
+        raise SystemExit("record-json actions include calculate, so calculation_events must contain at least one event")
+
+    cited_chunk_ids = record.get("cited_chunk_ids", [])
+    if not isinstance(cited_chunk_ids, list) or not all(isinstance(chunk_id, str) for chunk_id in cited_chunk_ids):
+        raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
+    cited_chunk_ids = _dedupe_strings(cited_chunk_ids)
+
+    metadata = record.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise SystemExit("record-json metadata must be an object when supplied")
+
+    warnings = _session_finish_warnings(normalized_events, cited_chunk_ids, metadata)
+    return (
+        {
+            "user_message": user_message,
+            "assistant_message": assistant_message,
+            "actions": actions,
+            "source_events": normalized_events,
+            "calculation_events": normalized_calculation_events,
+            "cited_chunk_ids": cited_chunk_ids,
+            "metadata": metadata,
+        },
+        warnings,
+    )
+
+
+def _required_string(record: dict[str, Any], field_name: str) -> str:
+    value = record.get(field_name)
+    if not isinstance(value, str) or not value.strip():
+        raise SystemExit(f"record-json requires non-empty string field: {field_name}")
+    return value
+
+
+def _required_string_list(record: dict[str, Any], field_name: str) -> list[str]:
+    value = record.get(field_name)
+    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item.strip() for item in value):
+        raise SystemExit(f"record-json requires non-empty string list field: {field_name}")
+    return value
+
+
+def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json source_events[{index}] must be an object")
+    uses_current_contract = "search_request" in event
+    search_request = event.get("search_request", event.get("source_need"))
+    if not isinstance(search_request, dict):
+        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+    request_label = f"record-json source_events[{index}].search_request"
+    _validate_search_request_payload(search_request, request_label)
+
+    queries = event.get("queries")
+    if queries is None and isinstance(event.get("query"), str):
+        queries = [event["query"]]
+    if not isinstance(queries, list) or not queries or not all(isinstance(query, str) and query.strip() for query in queries):
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+
+    chunks = event.get("chunks")
+    if not isinstance(chunks, list) or not chunks:
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+    for chunk_index, chunk in enumerate(chunks, start=1):
+        if not isinstance(chunk, dict):
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+        if not isinstance(chunk.get("id"), str) or not chunk["id"].strip():
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+
+    normalized = dict(event)
+    if uses_current_contract:
+        normalized.pop("source_need", None)
+        normalized["search_request"] = search_request
+    normalized["queries"] = queries
+    normalized["query"] = queries[0]
+    normalized["chunks"] = chunks
+    return normalized
+
+
+def _normalize_calculation_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json calculation_events[{index}] must be an object")
+    metric = event.get("metric")
+    valid_metrics = {"cac", "gross-profit", "gross-margin", "ltgp", "payback", "cfa-level"}
+    if not isinstance(metric, str) or metric not in valid_metrics:
+        raise SystemExit(
+            f"record-json calculation_events[{index}].metric must be one of: {', '.join(sorted(valid_metrics))}"
+        )
+    inputs = event.get("inputs")
+    if not isinstance(inputs, dict) or not inputs:
+        raise SystemExit(f"record-json calculation_events[{index}].inputs must be a non-empty object")
+    if not all(isinstance(key, str) and key.strip() for key in inputs):
+        raise SystemExit(f"record-json calculation_events[{index}].inputs keys must be non-empty strings")
+    value = event.get("value")
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        raise SystemExit(f"record-json calculation_events[{index}].value must be a number")
+    try:
+        expected = calculate_metric(metric, inputs)
+    except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+        raise SystemExit(f"record-json calculation_events[{index}] has invalid inputs for {metric}: {exc}") from exc
+    if not math.isfinite(float(expected)):
+        raise SystemExit(f"record-json calculation_events[{index}] result for {metric} is not finite")
+    if not math.isclose(float(value), float(expected), rel_tol=1e-9, abs_tol=1e-9):
+        raise SystemExit(
+            f"record-json calculation_events[{index}].value does not match deterministic {metric} result: "
+            f"expected {expected}, got {value}"
+        )
+    normalized = dict(event)
+    normalized["metric"] = metric
+        parser.error("--source must name a file")
+    record["source"] = relative.as_posix()
+    record["source_hash"] = f"sha256:{hashlib.sha256(resolved.read_bytes()).hexdigest()}"
+    return record
+
+
+def _summarize_log(path: Path, payload: dict[str, Any]) -> dict[str, Any]:
+    evidence = payload.get("evidence", [])
+    source_events = payload.get("source_events", [])
+    source_ids = []
+    for item in evidence:
+        for chunk in item.get("chunks", []):
+            chunk_id = chunk.get("id")
+            if chunk_id and chunk_id not in source_ids:
+                source_ids.append(chunk_id)
+    for chunk_id in payload.get("cited_chunk_ids", []):
+        if chunk_id and chunk_id not in source_ids:
+            source_ids.append(chunk_id)
+    for item in source_events:
+        for chunk in item.get("chunks", []):
+            chunk_id = chunk.get("id")
+            if chunk_id and chunk_id not in source_ids:
+                source_ids.append(chunk_id)
+    return {
+        "path": str(path),
+        "created_at": payload.get("created_at"),
+        "user_message": payload.get("user_message"),
+        "assistant_message": payload.get("assistant_message"),
+        "actions": payload.get("actions", []),
+        "retrieval_queries": payload.get("retrieval_queries", []),
+        "source_events": source_events,
+        "calculation_events": payload.get("calculation_events", []),
+        "source_chunk_ids": source_ids,
+    }
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+2026-08-13T16:20:28.587407Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+The CLI validator accepts a compact source event as long as it includes the current `search_request`, the exact executed query, and inspected chunk IDs. I’m keeping the answer cited only to the chunks that directly support continuity purpose and rollout sequencing.
+exec
+/bin/zsh -lc "sed -n '520,560p' src/money_model_architect/cli.py && sed -n '680,750p' src/money_model_architect/cli.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+    else:
+        economics = payload
+        service_business = bool(economics.get("service_business", False))
+
+    cac_value = economics.get("cac")
+    if cac_value is None:
+        raise SystemExit("diagnose requires economics.cac")
+
+    return UnitEconomics(
+        cac=cac_value,
+        first_30_day_gross_profit=economics.get("first_30_day_gross_profit") or 0.0,
+        monthly_recurring_gross_profit=economics.get("monthly_recurring_gross_profit") or 0.0,
+        lifetime_gross_profit=economics.get("lifetime_gross_profit"),
+        gross_margin=economics.get("gross_margin"),
+        service_business=service_business,
+    )
+
+
+def _snapshot_payload_looks_service_based(business: Any, money_model: Any) -> bool:
+    text_parts: list[str] = []
+    if isinstance(business, dict):
+        for field_name in ("business_type", "delivery_model"):
+            value = business.get(field_name)
+            if isinstance(value, str):
+                text_parts.append(value)
+    if isinstance(money_model, dict):
+        core_offer = money_model.get("core_offer", {})
+        if isinstance(core_offer, dict):
+            description = core_offer.get("description")
+            if isinstance(description, str):
+                text_parts.append(description)
+    text = " ".join(text_parts).lower()
+    return any(term in text for term in ("service", "services", "consulting", "agency", "design", "implementation"))
+
+
+def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    user_message = _required_string(record, "user_message")
+    assistant_message = _required_string(record, "assistant_message")
+    actions = _required_string_list(record, "actions")
+    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+    if invalid_actions:
+    normalized["metric"] = metric
+    normalized["inputs"] = inputs
+    normalized["value"] = value
+    return normalized
+
+
+def _validate_search_request_payload(search_request: dict[str, Any], label: str) -> None:
+    intent = search_request.get("intent")
+    if intent not in SOURCE_NEED_INTENTS:
+        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
+    query = search_request.get("query")
+    if query is not None:
+        if not isinstance(query, str) or not query.strip() or "\n" in query or "\r" in query or len(query.strip()) > 400:
+            raise SystemExit(f"{label}.query must be one non-empty line of at most 400 characters")
+        user_turn = search_request.get("user_turn")
+        if not isinstance(user_turn, str) or not user_turn.strip():
+            raise SystemExit(f"{label}.user_turn must be a non-empty string")
+        legacy_fields = [
+            field
+            for field in ("subjects", "focus_terms", "query_variants", "target_namespaces")
+            if field in search_request
+        ]
+        if legacy_fields:
+            raise SystemExit(f"{label} active query cannot include legacy fields: {', '.join(legacy_fields)}")
+        return
+
+    # Compatibility validation for preserved source-need traces and evals.
+    subjects = search_request.get("subjects")
+    if not isinstance(subjects, list) or not subjects or not all(isinstance(subject, str) for subject in subjects):
+        raise SystemExit(f"{label}.subjects must be a non-empty list of strings")
+    invalid_subjects = [subject for subject in subjects if subject not in SUBJECTS]
+    if invalid_subjects:
+        raise SystemExit(f"{label}.subjects contain unknown subject(s): {', '.join(invalid_subjects)}")
+    target_namespaces = search_request.get("target_namespaces", [])
+    if (
+        not isinstance(target_namespaces, list)
+        or not all(isinstance(namespace, str) and namespace.strip() for namespace in target_namespaces)
+    ):
+        raise SystemExit(f"{label}.target_namespaces must be a list of strings when supplied")
+    invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in SUBJECTS]
+    if invalid_namespaces:
+        raise SystemExit(f"{label}.target_namespaces contain unknown namespace(s): {', '.join(invalid_namespaces)}")
+    focus_terms = search_request.get("focus_terms")
+    if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
+        raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
+    query_variants = search_request.get("query_variants")
+    if (
+        not isinstance(query_variants, list)
+        or not 2 <= len(query_variants) <= 4
+        or not all(isinstance(query, str) and query.strip() for query in query_variants)
+    ):
+        raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
+
+
+def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
+    query = search_request.get("query")
+    if isinstance(query, str):
+        if len(queries) != 1 or _normalize_query_text(queries[0]) != _normalize_query_text(query):
+            raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
+        return
+    query_variants = search_request.get("query_variants")
+    if not isinstance(query_variants, list):
+        return
+    executed = {_normalize_query_text(query) for query in queries}
+    missing = [variant for variant in query_variants if _normalize_query_text(variant) not in executed]
+    if missing:
+        raise SystemExit(f"{label}.queries must include every source_need.query_variants entry")
+
+
+def _normalize_query_text(value: str) -> str:
+    return " ".join(value.split()).lower()
+
+2026-08-13T16:20:35.537692Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+I need the allowed action labels before writing the record, so I’m checking the constants instead of guessing and risking a rejected session finish.
+exec
+/bin/zsh -lc 'rg -n "ACTION_LABELS|SOURCE_NEED_INTENTS" src/money_model_architect/cli.py src/money_model_architect/*.py' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+src/money_model_architect/cli.py:29:ACTION_LABELS = {
+src/money_model_architect/cli.py:44:SOURCE_NEED_INTENTS = {
+src/money_model_architect/cli.py:559:    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+src/money_model_architect/cli.py:688:    if intent not in SOURCE_NEED_INTENTS:
+src/money_model_architect/cli.py:689:        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
+src/money_model_architect/cli.py:29:ACTION_LABELS = {
+src/money_model_architect/cli.py:44:SOURCE_NEED_INTENTS = {
+src/money_model_architect/cli.py:559:    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+src/money_model_architect/cli.py:688:    if intent not in SOURCE_NEED_INTENTS:
+src/money_model_architect/cli.py:689:        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
+
+2026-08-13T16:20:43.167093Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+exec
+/bin/zsh -lc "sed -n '24,52p' src/money_model_architect/cli.py" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+from .setup_intake import load_answers, run_setup
+from .snapshot import BusinessSnapshot
+from .vector_store import PineconeVectorStore, VectorStoreError, subject_namespaces
+
+SUBJECTS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
+ACTION_LABELS = {
+    "setup_state",
+    "session_start",
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "logs",
+    "answer",
+    "turn_record",
+    "session_finish",
+    "inspect_local_docs",
+    "clarify",
+}
+SOURCE_NEED_INTENTS = {
+    "teaching_evidence",
+    "diagnostic_evidence",
+    "comparison_evidence",
+    "recommendation_evidence",
+}
+
+
+def _repo_root() -> Path:
+
+2026-08-13T16:20:48.142130Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+I’m creating the turn-record artifact in the eval run directory. It will include the failed hybrid attempt only as metadata, while the source event itself reflects the completed BM25 execution using the current SearchRequest contract.
+exec
+/bin/zsh -lc "sed -n '1,220p' evals/runs/source_events/search_request_v1/sourceevents_v1_006/run_draft.json" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "case_id": "sourceevents_v1_006",
+  "created_at": "2026-08-13T16:19:32Z",
+  "paths": {
+    "business_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business",
+    "sessions_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "visible_context": {
+    "case_id": "sourceevents_v1_006",
+    "conversation_context": "The snapshot is recommendable and shows no continuity offer. The user asks whether a recurring post-install service would improve the money model.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we add a recurring owner maintenance offer after installs?"
+  }
+}
+
+2026-08-13T16:20:54.372017Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+Before finishing the session, I’m writing the advisor answer as a recommendation rather than a broad design essay: add continuity, but pilot it narrowly because the existing model already pays back quickly and extra offers add operational drag.
+apply patch
+patch: completed
+/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+diff --git a/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a96bea24024fdbdb5544c555fa72607b75b44bf9
+--- /dev/null
++++ b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+@@ -0,0 +1,60 @@
++{
++  "user_message": "should we add a recurring owner maintenance offer after installs?",
++  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "should we add a recurring owner maintenance offer after installs?",
++        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      },
++      "queries": [
++        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      ],
++      "retrieval_backend": "bm25",
++      "chunks": [
++        {
++          "id": "continuity-offers:3",
++          "score": 20.911,
++          "subject": "continuity"
++        },
++        {
++          "id": "continuity-bonus:3",
++          "score": 17.991,
++          "subject": "continuity"
++        },
++        {
++          "id": "offer-types:4",
++          "score": 16.171,
++          "subject": "offers"
++        },
++        {
++          "id": "continuity-offers:0",
++          "score": 16.043,
++          "subject": "continuity"
++        },
++        {
++          "id": "buy-x-get-y:4",
++          "score": 15.297,
++          "subject": "offers"
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-offers:0",
++    "offer-types:4",
++    "continuity-bonus:3"
++  ],
++  "metadata": {
++    "case_id": "sourceevents_v1_006",
++    "scenario_id": "1584_design",
++    "notes": "Hybrid default attempted first but could not execute because uncached query embedding required network access in the sandbox; completed the current SearchRequest contract with BM25 offline."
++  }
++}
+
+diff --git a/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a96bea24024fdbdb5544c555fa72607b75b44bf9
+--- /dev/null
++++ b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+@@ -0,0 +1,60 @@
++{
++  "user_message": "should we add a recurring owner maintenance offer after installs?",
++  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "should we add a recurring owner maintenance offer after installs?",
++        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      },
++      "queries": [
++        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      ],
++      "retrieval_backend": "bm25",
++      "chunks": [
++        {
++          "id": "continuity-offers:3",
++          "score": 20.911,
++          "subject": "continuity"
++        },
++        {
++          "id": "continuity-bonus:3",
++          "score": 17.991,
++          "subject": "continuity"
++        },
++        {
++          "id": "offer-types:4",
++          "score": 16.171,
++          "subject": "offers"
++        },
++        {
++          "id": "continuity-offers:0",
++          "score": 16.043,
++          "subject": "continuity"
++        },
++        {
++          "id": "buy-x-get-y:4",
++          "score": 15.297,
++          "subject": "offers"
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-offers:0",
++    "offer-types:4",
++    "continuity-bonus:3"
++  ],
++  "metadata": {
++    "case_id": "sourceevents_v1_006",
++    "scenario_id": "1584_design",
++    "notes": "Hybrid default attempted first but could not execute because uncached query embedding required network access in the sandbox; completed the current SearchRequest contract with BM25 offline."
++  }
++}
+
+2026-08-13T16:21:18.875360Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+The turn record is in place. I’m running `session finish` now and will use its returned `session_path` for the required `capture_source_event_trace.py complete` command.
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "recorded": true,
+  "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions/20260813T162130.json",
+  "created_at": "2026-08-13T16:21:30Z",
+  "warnings": [],
+  "source_event_count": 1,
+  "calculation_event_count": 0,
+  "cited_chunk_ids": [
+    "continuity-offers:0",
+    "offer-types:4",
+    "continuity-bonus:3"
+  ]
+}
+
+diff --git a/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a96bea24024fdbdb5544c555fa72607b75b44bf9
+--- /dev/null
++++ b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+@@ -0,0 +1,60 @@
++{
++  "user_message": "should we add a recurring owner maintenance offer after installs?",
++  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "should we add a recurring owner maintenance offer after installs?",
++        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      },
++      "queries": [
++        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      ],
++      "retrieval_backend": "bm25",
++      "chunks": [
++        {
++          "id": "continuity-offers:3",
++          "score": 20.911,
++          "subject": "continuity"
++        },
++        {
++          "id": "continuity-bonus:3",
++          "score": 17.991,
++          "subject": "continuity"
++        },
++        {
++          "id": "offer-types:4",
++          "score": 16.171,
++          "subject": "offers"
++        },
++        {
++          "id": "continuity-offers:0",
++          "score": 16.043,
++          "subject": "continuity"
++        },
++        {
++          "id": "buy-x-get-y:4",
++          "score": 15.297,
++          "subject": "offers"
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-offers:0",
++    "offer-types:4",
++    "continuity-bonus:3"
++  ],
++  "metadata": {
++    "case_id": "sourceevents_v1_006",
++    "scenario_id": "1584_design",
++    "notes": "Hybrid default attempted first but could not execute because uncached query embedding required network access in the sandbox; completed the current SearchRequest contract with BM25 offline."
++  }
++}
+
+2026-08-13T16:21:31.031266Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+`session finish` succeeded with one source event and no warnings. I’m completing the eval artifact now so `run.json` exists before I return.
+exec
+/bin/zsh -lc "PYTHONPATH=src python3 scripts/capture_source_event_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006 --session-path /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions/20260813T162130.json --notes 'blind Codex acting-agent run'" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "run": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/run.json"
+}
+
+diff --git a/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a96bea24024fdbdb5544c555fa72607b75b44bf9
+--- /dev/null
++++ b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+@@ -0,0 +1,60 @@
++{
++  "user_message": "should we add a recurring owner maintenance offer after installs?",
++  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "should we add a recurring owner maintenance offer after installs?",
++        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      },
++      "queries": [
++        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      ],
++      "retrieval_backend": "bm25",
++      "chunks": [
++        {
++          "id": "continuity-offers:3",
++          "score": 20.911,
++          "subject": "continuity"
++        },
++        {
++          "id": "continuity-bonus:3",
++          "score": 17.991,
++          "subject": "continuity"
++        },
++        {
++          "id": "offer-types:4",
++          "score": 16.171,
++          "subject": "offers"
++        },
++        {
++          "id": "continuity-offers:0",
++          "score": 16.043,
++          "subject": "continuity"
++        },
++        {
++          "id": "buy-x-get-y:4",
++          "score": 15.297,
++          "subject": "offers"
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-offers:0",
++    "offer-types:4",
++    "continuity-bonus:3"
++  ],
++  "metadata": {
++    "case_id": "sourceevents_v1_006",
++    "scenario_id": "1584_design",
++    "notes": "Hybrid default attempted first but could not execute because uncached query embedding required network access in the sandbox; completed the current SearchRequest contract with BM25 offline."
++  }
++}
+
+2026-08-13T16:21:36.395450Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+The completion script wrote `evals/runs/source_events/search_request_v1/sourceevents_v1_006/run.json`. I’m doing a quick file check so the final response can be limited to the recorded action.
+exec
+/bin/zsh -lc 'ls -l evals/runs/source_events/search_request_v1/sourceevents_v1_006/run.json' in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+-rw-r--r--@ 1 benjaminmackenzie  staff  4420 Aug 13 09:21 evals/runs/source_events/search_request_v1/sourceevents_v1_006/run.json
+
+exec
+/bin/zsh -lc "sed -n '1,220p' evals/runs/source_events/search_request_v1/sourceevents_v1_006/run.json" in /Users/benjaminmackenzie/Dev/money-model-architect
+ succeeded in 0ms:
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
+  "case_id": "sourceevents_v1_006",
+  "cited_chunk_ids": [
+    "continuity-offers:0",
+    "offer-types:4",
+    "continuity-bonus:3"
+  ],
+  "completed_at": "2026-08-13T16:21:36Z",
+  "created_at": "2026-08-13T16:19:32Z",
+  "notes": "blind Codex acting-agent run",
+  "paths": {
+    "business_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business",
+    "sessions_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "session_path": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions/20260813T162130.json",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "continuity-offers:3",
+          "score": 20.911,
+          "subject": "continuity"
+        },
+        {
+          "id": "continuity-bonus:3",
+          "score": 17.991,
+          "subject": "continuity"
+        },
+        {
+          "id": "offer-types:4",
+          "score": 16.171,
+          "subject": "offers"
+        },
+        {
+          "id": "continuity-offers:0",
+          "score": 16.043,
+          "subject": "continuity"
+        },
+        {
+          "id": "buy-x-get-y:4",
+          "score": 15.297,
+          "subject": "offers"
+        }
+      ],
+      "queries": [
+        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
+      ],
+      "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service",
+      "retrieval_backend": "bm25",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service",
+        "user_turn": "should we add a recurring owner maintenance offer after installs?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_006",
+    "conversation_context": "The snapshot is recommendable and shows no continuity offer. The user asks whether a recurring post-install service would improve the money model.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we add a recurring owner maintenance offer after installs?"
+  }
+}
+
+diff --git a/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a96bea24024fdbdb5544c555fa72607b75b44bf9
+--- /dev/null
++++ b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+@@ -0,0 +1,60 @@
++{
++  "user_message": "should we add a recurring owner maintenance offer after installs?",
++  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "should we add a recurring owner maintenance offer after installs?",
++        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      },
++      "queries": [
++        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      ],
++      "retrieval_backend": "bm25",
++      "chunks": [
++        {
++          "id": "continuity-offers:3",
++          "score": 20.911,
++          "subject": "continuity"
++        },
++        {
++          "id": "continuity-bonus:3",
++          "score": 17.991,
++          "subject": "continuity"
++        },
++        {
++          "id": "offer-types:4",
++          "score": 16.171,
++          "subject": "offers"
++        },
++        {
++          "id": "continuity-offers:0",
++          "score": 16.043,
++          "subject": "continuity"
++        },
++        {
++          "id": "buy-x-get-y:4",
++          "score": 15.297,
++          "subject": "offers"
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-offers:0",
++    "offer-types:4",
++    "continuity-bonus:3"
++  ],
++  "metadata": {
++    "case_id": "sourceevents_v1_006",
++    "scenario_id": "1584_design",
++    "notes": "Hybrid default attempted first but could not execute because uncached query embedding required network access in the sandbox; completed the current SearchRequest contract with BM25 offline."
++  }
++}
+
+2026-08-13T16:21:42.209570Z ERROR codex_models_manager::manager: failed to renew cache TTL: missing field `supports_reasoning_summaries` at line 93 column 5
+codex
+Recorded the acting-agent run and completed the trace artifact.
+
+Created `run.json` at:
+`evals/runs/source_events/search_request_v1/sourceevents_v1_006/run.json`
+
+Recorded action summary: `session_start`, one current-contract `search_source_material` event, cited answer, and `session_finish`. The completed source event used the query:
+
+`continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service`
+diff --git a/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a96bea24024fdbdb5544c555fa72607b75b44bf9
+--- /dev/null
++++ b/evals/runs/source_events/search_request_v1/sourceevents_v1_006/turn_record.json
+@@ -0,0 +1,60 @@
++{
++  "user_message": "should we add a recurring owner maintenance offer after installs?",
++  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "should we add a recurring owner maintenance offer after installs?",
++        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      },
++      "queries": [
++        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
++      ],
++      "retrieval_backend": "bm25",
++      "chunks": [
++        {
++          "id": "continuity-offers:3",
++          "score": 20.911,
++          "subject": "continuity"
++        },
++        {
++          "id": "continuity-bonus:3",
++          "score": 17.991,
++          "subject": "continuity"
++        },
++        {
++          "id": "offer-types:4",
++          "score": 16.171,
++          "subject": "offers"
++        },
++        {
++          "id": "continuity-offers:0",
++          "score": 16.043,
++          "subject": "continuity"
++        },
++        {
++          "id": "buy-x-get-y:4",
++          "score": 15.297,
++          "subject": "offers"
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-offers:0",
++    "offer-types:4",
++    "continuity-bonus:3"
++  ],
++  "metadata": {
++    "case_id": "sourceevents_v1_006",
++    "scenario_id": "1584_design",
++    "notes": "Hybrid default attempted first but could not execute because uncached query embedding required network access in the sandbox; completed the current SearchRequest contract with BM25 offline."
++  }
++}
+
+2026-08-13T16:21:47.318107Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>] error: Auth required, when send initialize request
+2026-08-13T16:21:47.318122Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: handshaking with MCP server failed: Send message error Transport [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth authorization required, when send initialize request
+tokens used
+56,041

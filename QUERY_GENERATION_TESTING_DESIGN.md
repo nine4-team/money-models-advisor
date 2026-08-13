@@ -124,27 +124,30 @@ A passage is relevant only when it directly supports a substantial part of the r
 explanation, comparison, mechanism, or recommendation. Topic overlap alone is not enough.
 Every correction is applied to the shared labels and every saved method is rescored.
 The initial adjudication is recorded in `evals/reports/query_generation_label_audit.md`;
-the completed approach × model × retriever pool is recorded in
-`evals/reports/query_generation_full_matrix_audit.md`.
+the completed active-chunk approach × model × retriever pool is recorded in
+`evals/reports/active_framework_retrieval_matrix.md`.
 
 ## Audited 46-Case Result
 
+The table below is the final replay over the framework-aware chunks used by the
+product, not the earlier heading-aware experiment.
+
 | Query approach | Model | Retriever | Hit@1 | Hit@3 | Hit@5 | Useful@5 | Noise@5 |
 |---|---|---|---:|---:|---:|---:|---:|
-| Raw question | none | BM25 | 54.3% | 69.6% | 84.8% | 40.0% | 60.0% |
-| Raw question | none | Hybrid | 65.2% | 82.6% | 84.8% | 44.3% | 55.7% |
-| Unguided | `gpt-5.5` | BM25 | 60.9% | 87.0% | 93.5% | 50.0% | 50.0% |
-| Unguided | `gpt-5.5` | Hybrid | 67.4% | 93.5% | 95.7% | 54.3% | 45.7% |
-| Unguided | `gpt-5.4-mini` | BM25 | 56.5% | 80.4% | 89.1% | 50.4% | 49.6% |
-| Unguided | `gpt-5.4-mini` | Hybrid | 67.4% | 91.3% | 95.7% | 55.2% | 44.8% |
-| Corpus-guided | `gpt-5.5` | BM25 | 84.8% | 93.5% | 97.8% | **74.3%** | **25.7%** |
-| Corpus-guided | `gpt-5.5` | Hybrid | **93.5%** | 97.8% | **100.0%** | 71.7% | 28.3% |
-| Corpus-guided | `gpt-5.4-mini` | BM25 | 84.8% | 95.7% | **100.0%** | 71.7% | 28.3% |
-| Corpus-guided | `gpt-5.4-mini` | Hybrid | 89.1% | **100.0%** | **100.0%** | 71.7% | 28.3% |
+| Raw question | none | BM25 | 56.5% | 76.1% | 87.0% | 41.7% | 58.3% |
+| Raw question | none | Hybrid | 63.0% | 80.4% | 87.0% | 50.9% | 49.1% |
+| Unguided | `gpt-5.5` | BM25 | 73.9% | 91.3% | 95.7% | 55.7% | 44.3% |
+| Unguided | `gpt-5.5` | Hybrid | 80.4% | 91.3% | 93.5% | 62.6% | 37.4% |
+| Unguided | `gpt-5.4-mini` | BM25 | 67.4% | 80.4% | 91.3% | 55.2% | 44.8% |
+| Unguided | `gpt-5.4-mini` | Hybrid | 76.1% | 87.0% | 91.3% | 62.6% | 37.4% |
+| Corpus-guided | `gpt-5.5` | BM25 | 89.1% | 95.7% | 95.7% | 76.1% | 23.9% |
+| Corpus-guided | `gpt-5.5` | Hybrid | **93.5%** | 97.8% | **100.0%** | 78.7% | 21.3% |
+| Corpus-guided | `gpt-5.4-mini` | BM25 | 89.1% | 95.7% | **100.0%** | 74.8% | 25.2% |
+| Corpus-guided | `gpt-5.4-mini` | Hybrid | 91.3% | **100.0%** | **100.0%** | **80.4%** | **19.6%** |
 
 All generated queries were valid. The corpus-guided method leads at every reported
 coverage metric under hybrid and remains the strongest approach under BM25. It reduces
-top-five hybrid noise by 17.4 points relative to the unguided `gpt-5.5` rewrite.
+top-five hybrid noise by 16.1 points relative to the unguided `gpt-5.5` rewrite.
 
 ## Current Decision
 
@@ -158,9 +161,10 @@ debugging.
 
 After fixing the corpus-guided method, the same prompt and guide were run with
 `gpt-5.4-mini`, the smaller model already used elsewhere in the project. Across 46
-cases, Mini scored 89.1%/100.0%/100.0% Hit@1/Hit@3/Hit@5 versus
-`gpt-5.5` at 93.5%/97.8%/100.0%. Both returned 165 useful passages in 230 slots:
-71.7% Useful@5 and 28.3% Noise@5. Mini was slower and used more Codex-reported tokens
+cases, Mini scored 91.3%/100.0%/100.0% Hit@1/Hit@3/Hit@5 versus
+`gpt-5.5` at 93.5%/97.8%/100.0%. Mini returned 185 useful passages
+(80.4% Useful@5) and `gpt-5.5` returned 181
+(78.7% Useful@5). Mini was slower and used more Codex-reported tokens
 in this harness, although those token counts are not API billing.
 
 These retrieval metrics do not settle the runtime model because the answering agent
@@ -171,9 +175,9 @@ correctness, unsupported claims, and answer usefulness. Precision@5 measures noi
 not whether the useful passages cover distinct required claims.
 
 The unguided rewrite was also run with Mini to check for a model-by-approach
-interaction. Across all 46 cases, unguided Mini scored 67.4%/91.3%/95.7%
-Hit@1/Hit@3/Hit@5 with 55.2% Useful@5, while guided Mini scored
-89.1%/100.0%/100.0% with 71.7% Useful@5. Corpus guidance therefore improves both
+interaction. Across all 46 cases, unguided Mini scored 76.1%/87.0%/91.3%
+Hit@1/Hit@3/Hit@5 with 62.6% Useful@5, while guided Mini scored
+91.3%/100.0%/100.0% with 80.4% Useful@5. Corpus guidance therefore improves both
 tested models and both retrievers.
 
 Multi-query generation or filtering should be introduced only if a specific remaining

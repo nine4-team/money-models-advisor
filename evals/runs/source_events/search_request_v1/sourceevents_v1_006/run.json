@@ -1,0 +1,71 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "assistant_message": "Yes, I would add it, but I would treat it as a simple continuity pilot after install, not as a big new service line yet.\n\nYour current model already has strong front-end economics: $1,000 CAC, about $10,000 first-30-day gross profit, and 1.0-month payback, so the maintenance offer is not needed to fix acquisition. Its job is to improve the back end: continuity offers are for ongoing value with ongoing payments, and they stabilize cash flow while increasing profit per customer [continuity-offers:0]. In the four-offer stack, continuity is specifically the back-end recurring cash-flow layer, while the framework also warns to add layers deliberately and keep as few offers as possible to avoid operational drag [offer-types:4].\n\nFor this design business, I would test a post-install Owner Care plan for STR and second-home owners: seasonal refresh guidance, vendor coordination, replacement sourcing, listing/photo review, and priority access before peak season. Price it monthly or quarterly, keep fulfillment lightweight, and make the first version available only to completed install clients.\n\nI would not sell it as \"maintenance for maintenance's sake.\" The better pitch is the valuable bonus or outcome: keeping the property guest-ready, photo-ready, and protected from design decay. That matches the continuity-bonus idea: get customers into continuity with a soft pitch after the main cash offers, then optional prepayment can add more first-30-day cash once the offer proves retention [continuity-bonus:3].\n\nMy next move would be a capped pilot: offer it to the next 5 to 10 install clients, track attach rate, monthly gross profit, hours required, and cancellations after 90 days. If it stays high-margin and low-touch, then it improves the money model by adding recurring gross profit without weakening the already-good install economics.",
+  "case_id": "sourceevents_v1_006",
+  "cited_chunk_ids": [
+    "continuity-offers:0",
+    "offer-types:4",
+    "continuity-bonus:3"
+  ],
+  "completed_at": "2026-08-13T16:21:36Z",
+  "created_at": "2026-08-13T16:19:32Z",
+  "notes": "blind Codex acting-agent run",
+  "paths": {
+    "business_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business",
+    "sessions_dir": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions",
+    "snapshot": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/business_snapshot.json"
+  },
+  "session_path": "evals/runs/source_events/search_request_v1/sourceevents_v1_006/business/.money-model-advisor/sessions/20260813T162130.json",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "continuity-offers:3",
+          "score": 20.911,
+          "subject": "continuity"
+        },
+        {
+          "id": "continuity-bonus:3",
+          "score": 17.991,
+          "subject": "continuity"
+        },
+        {
+          "id": "offer-types:4",
+          "score": 16.171,
+          "subject": "offers"
+        },
+        {
+          "id": "continuity-offers:0",
+          "score": 16.043,
+          "subject": "continuity"
+        },
+        {
+          "id": "buy-x-get-y:4",
+          "score": 15.297,
+          "subject": "offers"
+        }
+      ],
+      "queries": [
+        "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service"
+      ],
+      "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service",
+      "retrieval_backend": "bm25",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service",
+        "user_turn": "should we add a recurring owner maintenance offer after installs?"
+      }
+    }
+  ],
+  "visible_context": {
+    "case_id": "sourceevents_v1_006",
+    "conversation_context": "The snapshot is recommendable and shows no continuity offer. The user asks whether a recurring post-install service would improve the money model.",
+    "scenario_id": "1584_design",
+    "user_turn": "should we add a recurring owner maintenance offer after installs?"
+  }
+}
