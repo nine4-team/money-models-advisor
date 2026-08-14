@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "This is a payback/scale-affordability question, and the snapshot explicitly lacks the key inputs needed to judge it: CAC and first-30-day gross profit. The right next step is to obtain those business facts, not search the Money Models source material."
+}

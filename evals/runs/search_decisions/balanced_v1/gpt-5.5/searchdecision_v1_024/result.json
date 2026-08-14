@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_024",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:44Z",
+  "expected": "no_search",
+  "latency_ms": 11361.1,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The request is about scaling paid acquisition, but the snapshot is explicitly not ready for payback diagnosis because CAC and first-30-day gross profit are missing. Runtime rules say not to search instead of obtaining missing business facts. The advisor should first ask for the missing economics rather than search Money Models source material."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

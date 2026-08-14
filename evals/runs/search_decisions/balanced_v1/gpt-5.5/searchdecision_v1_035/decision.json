@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The user is asking for a Money Models diagnostic concept and recommendation: whether revenue alone determines ad affordability when product and shipping costs are high. The snapshot has enough relevant business facts, including revenue prices, gross margin, first-30-day gross profit, CAC, LGP, MRR gross profit, and payback, so this should be supported by source material rather than answered from generic reasoning."
+}

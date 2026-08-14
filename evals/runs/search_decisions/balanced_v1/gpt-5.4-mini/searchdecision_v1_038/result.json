@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_038",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:23Z",
+  "expected": "no_search",
+  "latency_ms": 8931.4,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The current advisor state already contains the saved skincare economics, including `economics.payback_period_months = 1.5714285714285714`, so the acquisition payback period can be answered directly from snapshot data without searching the Money Models corpus."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

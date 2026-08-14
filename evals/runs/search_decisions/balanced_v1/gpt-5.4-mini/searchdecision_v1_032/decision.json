@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "This is a spend-scaling recommendation that depends on missing business facts, especially CAC and first-30-day gross profit. The snapshot has enough context to know the offer and symptom, but not enough economics to justify searching source material yet. The next step is to obtain the missing financial inputs rather than search."
+}

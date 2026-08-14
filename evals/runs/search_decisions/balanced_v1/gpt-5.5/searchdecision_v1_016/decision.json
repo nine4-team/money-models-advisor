@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The request asks for a recommendation about starting ads, but the current advisor state is missing key payback facts: CAC and first 30-day gross profit. The rules say not to search the Money Models source material instead of obtaining missing business facts, so the advisor should gather those facts first rather than search."
+}

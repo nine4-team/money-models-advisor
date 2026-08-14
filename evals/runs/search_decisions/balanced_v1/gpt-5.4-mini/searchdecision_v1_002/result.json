@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_002",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:52Z",
+  "expected": "search_source_material",
+  "latency_ms": 12010.6,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "This is a recommendation/diagnosis question about acquisition financing, not a simple vocabulary lookup. The snapshot already has enough relevant business facts and economics to support a Money Models-backed answer, so the gate should allow a source-material search rather than treating it as missing-context gathering."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

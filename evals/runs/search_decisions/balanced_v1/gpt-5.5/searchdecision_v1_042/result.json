@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_042",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:30Z",
+  "expected": "search_source_material",
+  "latency_ms": 9727.0,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The user is asking for a Money Models recommendation about offer sequencing and price perception. The snapshot has enough relevant business and offer-stack facts to diagnose, and the answer would benefit from source-backed guidance rather than a simple vocabulary response."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

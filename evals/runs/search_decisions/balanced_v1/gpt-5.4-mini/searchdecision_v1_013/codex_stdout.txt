@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The snapshot already contains the relevant advisor state, offer stack, unit economics, and stated goal. The user is asking for a short status summary, not a concept that needs Money Models source support or any missing business facts."}

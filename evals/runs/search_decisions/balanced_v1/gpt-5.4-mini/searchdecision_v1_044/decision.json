@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The question asks for Money Models guidance on rollout strategy for multiple offers. The snapshot already contains enough business facts to make this diagnosable, so the next step is to search the Money Models source material for the framework or recommendation rather than asking for more facts."
+}

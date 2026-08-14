@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The business snapshot already contains the needed inputs and the payback period is a straightforward calculation from those numbers. This does not require Money Models source material or additional citation support."
+}

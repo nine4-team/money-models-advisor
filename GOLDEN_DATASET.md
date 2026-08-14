@@ -27,7 +27,8 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 
 | Dataset | Units | Primary Use | Status |
 |---|---:|---|---|
-| `evals/advisor_tool_use_cases.jsonl` | 24 turns | Next-action behavior and the orchestration-model comparison | Active. Reference traces pass 24/24; model sweeps replay the same cases rather than creating a new dataset. |
+| `evals/advisor_tool_use_cases.jsonl` | 24 turns | General next-action behavior | Active component suite. |
+| `evals/advisor_search_decision_cases.jsonl` | 48 turns | Search/no-search model comparison | Active. Balanced across 24 search-required and 24 search-prohibited cases in five business contexts. |
 | `evals/golden.jsonl` | 32 queries | Initial local BM25 smoke test and chunking comparison | Pilot. Uses known-subject filters and chapter-level labels. Keep as a smoke baseline, not the current retrieval decision set. |
 | `evals/obligations.jsonl` | 65 claim labels on the same 32 queries | Required-claim coverage for the pilot BM25 path | Historical guardrail, not 65 additional user cases. |
 | `evals/advisor_search_query_cases_enriched_labels.jsonl` plus `evals/query_generation/query_generation_holdout_v1.jsonl` | 46 turns: 30 base + 16 expansion | Query approach, query-writing model, and BM25-vs-hybrid comparison | Active retrieval suite. Uses saved snapshot context, one unfiltered query, and audited passage-level usefulness labels. Canonical report: `evals/reports/query_generation_current.md`. |
@@ -39,7 +40,7 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 ### Experiments That Reuse Those Datasets
 
 - The full query approach × query model × retriever matrix reuses the same 46 retrieval cases for every condition.
-- The orchestration-model comparison reuses the same 24 tool-use cases for every model and repetition.
+- The agent search-decision comparison uses the same frozen 48 cases for both OpenAI models. Report: `evals/reports/search_decision_model_comparison.md`.
 - Chunking and Pinecone infrastructure revalidation reuse the 46 active cases and the frozen winning queries. Reports: `evals/reports/active_query_chunking_revalidation.md`, `evals/reports/active_query_pinecone_revalidation.md`, and `evals/reports/pinecone_candidate_depth_optimization.md`.
 - Embedding selection also reuses those 46 frozen queries. Large at 1,536 dimensions
   raises local Useful@5 from 78.7% to 86.5%; the isolated Pinecone replay reaches
@@ -57,6 +58,24 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 5. Trace and answer quality: are calculations, searches, citations, and recommendations complete and supported?
 
 Agent behavior, source-event traces, and the 46-case retrieval matrix are the strongest component results. Chunking and Pinecone latency/namespaces have now been replayed on that single-query path. The six-case current-path answer audit is a useful seed regression; broader end-to-end coverage remains open.
+
+## Agent Search-Decision Evidence
+
+`gpt-5.5` and `gpt-5.4-mini` each completed one blind pass over a frozen 48-case
+suite: 24 cases require source search and 24 prohibit it. Five business contexts
+each contain both labels. The deterministic harness loaded current advisor state,
+recent turns, and local documents; the model made only the semantic search decision.
+Retrieval, answer generation, shell use, evaluator labels, and prior trials were
+excluded.
+
+`gpt-5.5` scored 48/48 overall, finding all 24 required searches and avoiding all
+24 prohibited searches. Mini scored 47/48, finding 23/24 required searches and
+avoiding all 24 prohibited searches. Mini's one false negative was audited against
+the current rule and business context; the answer key did not require correction.
+This supports `gpt-5.5` as the operating agent. Mini remains supported for bounded
+query writing by the separate 46-case retrieval experiment.
+
+Current report: `evals/reports/search_decision_model_comparison.md`.
 
 ## Label Strength
 

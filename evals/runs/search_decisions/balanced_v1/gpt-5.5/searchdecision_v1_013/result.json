@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_013",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:09Z",
+  "expected": "no_search",
+  "latency_ms": 8809.7,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The user asks for a brief status summary, and the snapshot already contains sufficient authoritative business/advisor state. This does not require Money Models source support for a new concept, comparison, diagnosis, or recommendation."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

@@ -1,0 +1,1 @@
+{"context_used":["snapshot","prior_sessions"],"decision":"no_search","rationale":"The reason for the $1k CAC is already present in the loaded context: a prior turn set referral partner acquisition at roughly $1,000 CAC, and the current snapshot records CAC = 1000. This is a simple reminder/recall question, not one that needs Money Models source-material support."}

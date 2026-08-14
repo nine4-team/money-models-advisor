@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "This is a diagnosis/recommendation about offer-stack structure, and the snapshot already contains enough business facts and symptoms to support a Money Models-backed answer. That means the next step is to search the Money Models source material for support rather than ask for more context or answer from memory."
+}

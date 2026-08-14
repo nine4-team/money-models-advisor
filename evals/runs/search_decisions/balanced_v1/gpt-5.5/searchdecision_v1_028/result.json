@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_028",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:55Z",
+  "expected": "search_source_material",
+  "latency_ms": 10480.7,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The user is asking for a Money Models concept/recommendation about a next-offer pattern after core coaching purchase. The snapshot has enough relevant facts about the offer stack, ICP, continuity, lack of upsell, and reported symptoms, so this should be supported by Money Models source material rather than answered from general intuition."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

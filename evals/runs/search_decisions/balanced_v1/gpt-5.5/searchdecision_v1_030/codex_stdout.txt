@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The request asks for a simple calculation from facts already present in the advisor snapshot: CAC is 320 and first-30-day gross profit is 900, and the snapshot already records payback_period_months as 1.0. This does not need Money Models source support, prior-session context, or corpus search."}

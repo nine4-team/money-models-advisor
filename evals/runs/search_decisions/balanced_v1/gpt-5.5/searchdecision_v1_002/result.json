@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_002",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:00:39Z",
+  "expected": "search_source_material",
+  "latency_ms": 12639.8,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The request asks for advisory framing on client-financed acquisition in the context of a diagnosable business with complete payback and offer-stack facts. This is a Money Models concept/recommendation, not a simple vocabulary question, and the snapshot already contains enough relevant facts to support a source-backed answer."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

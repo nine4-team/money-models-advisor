@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_036",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:19Z",
+  "expected": "search_source_material",
+  "latency_ms": 12314.3,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The request asks for a Money Models recommendation about handling a price objection by changing the offer stack versus discounting. The snapshot has enough relevant business facts, including current offers, prices, margins, CAC, continuity, and the goal to improve conversion without inventory cash strain, so source material should be searched to support the diagnosis and recommendation."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

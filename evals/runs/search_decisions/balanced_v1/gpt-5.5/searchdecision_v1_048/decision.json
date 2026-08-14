@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The request is about whether to increase acquisition spend, which requires payback/economics facts. The snapshot is explicitly missing CAC and first-30-day gross profit and is not ready for payback diagnosis. Per the gate rules, do not search instead of obtaining missing business facts."
+}

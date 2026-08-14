@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_043",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:33Z",
+  "expected": "search_source_material",
+  "latency_ms": 12036.8,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The snapshot is diagnosable and includes the relevant offer stack, economics, ICP, and reported symptom. The user is asking for a Money Models diagnosis of which offer-stack component is failing, which needs source-material support rather than more fact gathering or a simple vocabulary answer."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The user is asking for saved factual values already present in the current business snapshot: CAC is 48 and gross margin is 0.62. This is a simple state lookup, not a Money Models concept, diagnosis, comparison, or recommendation requiring source-material support."
+}

@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The user asks for a quick recap of already-known economics. The snapshot contains all relevant economic facts, and this is a factual summary of current state rather than a Money Models concept, comparison, diagnosis, or recommendation requiring source support."}

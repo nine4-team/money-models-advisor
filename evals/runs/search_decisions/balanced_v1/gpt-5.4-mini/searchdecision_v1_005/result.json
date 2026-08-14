@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_005",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:00Z",
+  "expected": "search_source_material",
+  "latency_ms": 9696.2,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "This is an offer-stack recommendation inside the Money Models advisory flow, and the snapshot already has enough relevant business facts to support a sourced diagnosis. The user is not missing business facts; they are asking for the next offer to improve first-month profit, so the next step should be to search the Money Models source material rather than answer from memory."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

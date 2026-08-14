@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The user is asking for a Money Models-supported recommendation about whether adding/value-positioning an onboarding package would make the subscription easier to sell. The snapshot already has enough relevant facts: B2B SaaS, guided onboarding/customer success, paid cleanup pilot, $1,200 subscription, $4,000 implementation upsell, acquisition payback pressure, and month-four churn. This requires source-backed guidance on offer structure and sales friction rather than a simple vocabulary answer or missing-facts collection."
+}

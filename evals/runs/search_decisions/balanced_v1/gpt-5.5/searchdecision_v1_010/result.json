@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_010",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:01Z",
+  "expected": "no_search",
+  "latency_ms": 10018.4,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "local_docs"
+    ],
+    "decision": "no_search",
+    "rationale": "The user asks for identification of the business, and local documents already provide sufficient business facts: 1584 Design is a premium full-service interior design firm for STR and second-home projects. This does not require Money Models conceptual support, comparison, diagnosis, or recommendation."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

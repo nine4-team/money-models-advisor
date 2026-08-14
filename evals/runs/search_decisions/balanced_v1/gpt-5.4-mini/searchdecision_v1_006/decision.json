@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The question is a Money Models concept/recommendation about whether adding recurring revenue improves payback, and the snapshot already contains the relevant economics and offer structure needed to evaluate it. There are no missing business facts or prior-session details blocking the analysis, so this should be handled by searching the Money Models source material rather than treating it as a simple vocabulary answer."
+}

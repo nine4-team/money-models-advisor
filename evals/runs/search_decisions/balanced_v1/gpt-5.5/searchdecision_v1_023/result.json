@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_023",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:34Z",
+  "expected": "no_search",
+  "latency_ms": 9710.7,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The user is asking to recall current saved business facts: pilot, core subscription, and upsell. The snapshot contains those exact offer descriptions and prices, so no Money Models source search is needed."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

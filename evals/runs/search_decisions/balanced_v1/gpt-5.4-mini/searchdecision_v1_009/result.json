@@ -1,0 +1,22 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_009",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:08Z",
+  "expected": "no_search",
+  "latency_ms": 8660.4,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot",
+      "prior_sessions"
+    ],
+    "decision": "no_search",
+    "rationale": "The $1k referral-partner payment is already captured in the loaded advisor state as CAC, and the recent turn explicitly states it should be treated as roughly $1,000 CAC. This is a clarification of existing business facts, not a case that requires searching source material."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

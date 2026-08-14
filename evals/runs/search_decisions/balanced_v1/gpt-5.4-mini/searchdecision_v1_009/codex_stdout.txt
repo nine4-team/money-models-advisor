@@ -1,0 +1,1 @@
+{"context_used":["snapshot","prior_sessions"],"decision":"no_search","rationale":"The $1k referral-partner payment is already captured in the loaded advisor state as CAC, and the recent turn explicitly states it should be treated as roughly $1,000 CAC. This is a clarification of existing business facts, not a case that requires searching source material."}

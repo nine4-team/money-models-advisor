@@ -1,0 +1,8 @@
+{
+  "context_used": [
+    "snapshot",
+    "prior_sessions"
+  ],
+  "decision": "no_search",
+  "rationale": "The user is asking about a concrete saved business fact from the snapshot/recent turns: $1,000 CAC attributed to referral partner acquisition. This can be answered from current state and prior-session context, without Money Models conceptual support or source-material citation."
+}

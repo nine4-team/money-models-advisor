@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_026",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:52Z",
+  "expected": "search_source_material",
+  "latency_ms": 10236.1,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "This is a Money Models diagnosis/recommendation question, and the snapshot already contains enough facts about the business, offer stack, symptoms, and goal to justify searching the source material for the fitting framework or recommendation."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_029",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:54Z",
+  "expected": "no_search",
+  "latency_ms": 8833.7,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The user is asking for saved prices already present in the business snapshot: core offer price for the 12-week coached transformation program and continuity price for the ongoing training membership. This is a direct state lookup, not a Money Models concept, comparison, diagnosis, or recommendation requiring source support."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

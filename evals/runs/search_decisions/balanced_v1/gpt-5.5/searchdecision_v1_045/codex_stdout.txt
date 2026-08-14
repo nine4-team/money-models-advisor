@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The request asks for saved prices already present in the advisor snapshot: readiness audit, implementation engagement, and ongoing monitoring. This is direct state lookup, not a Money Models concept, comparison, diagnosis, or recommendation requiring source support."}

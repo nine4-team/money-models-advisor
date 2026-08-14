@@ -17,6 +17,11 @@ the current implementation and tests prove.
 - The saved queries were compared through both BM25 and hybrid retrieval on the
   46-case suite.
 - Returned passages were checked for missing useful labels and overly broad labels.
+- The search gate was tested once per model on 48 balanced cases across five
+  business contexts. The isolated harness supplied current business context and
+  excluded retrieval, answer generation, shell use, labels, and prior trials. The
+  result and label audit are recorded in
+  `evals/reports/search_decision_model_comparison.md`.
 - All five chunking strategies were replayed on the active single-query hybrid path;
   framework-aware chunking became the runtime default.
 - Framework-aware chunks were indexed in Pinecone and replayed across all 46 cases.
@@ -327,7 +332,13 @@ An item is complete only when:
 
 ### Product decisions and implementation work
 
-5. **Query-writer model routing — Complete by design decision (2026-08-13)**
+5. **Agent and query-writer model routing — Complete by design decision (2026-08-13)**
+   - On the balanced 48-case search-gate suite, `gpt-5.5` scored 48/48: all 24
+     required searches found and all 24 prohibited searches avoided. Mini scored
+     47/48: 23/24 required searches found and all 24 prohibited searches avoided.
+     Mini's one false negative was audited; no gold-label correction was warranted.
+   - Keep `gpt-5.5` as the operating agent. The comparison used the current skill,
+     CLI, and `SearchRequest` contract rather than the retired SourceNeed interface.
    - Query writing remains part of the operating agent turn. A separate Mini call
      would add latency, another failure boundary, and an API dependency without a
      measured end-to-end benefit.

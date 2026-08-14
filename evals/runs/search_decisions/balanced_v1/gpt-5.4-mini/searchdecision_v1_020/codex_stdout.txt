@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"search_source_material","rationale":"The question is a Money Models diagnosis, and the snapshot already contains enough facts to support it (CAC, first-30-day gross profit, payback period, churn symptom). That makes it appropriate to search the source material rather than answer from memory."}

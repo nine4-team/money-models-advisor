@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_024",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:51Z",
+  "expected": "no_search",
+  "latency_ms": 11508.5,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "This is a payback-driven acquisition recommendation, but the snapshot is missing the key economics needed for that diagnosis (`cac` and `first_30_day_gross_profit`). Per the gate rules, we should not search the source material to replace missing business facts."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

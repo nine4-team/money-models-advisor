@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "This is a Money Models concept/recommendation question about next-offer structure, and the snapshot already contains enough business facts to evaluate it. It is not a missing-facts question, and it is not just vocabulary, so the gate should authorize searching the source material for a grounded recommendation."
+}

@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The current offer ladder is already fully present in the loaded business snapshot, so this is a straightforward recall task. No Money Models corpus search is needed because there are no missing facts, comparisons, or diagnoses to resolve."
+}

@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"search_source_material","rationale":"The user asks for a concept comparison applied to the current offer stack. The snapshot contains enough relevant facts about the attraction offer and upsell to support a Money Models-backed explanation, and this is not merely a vocabulary definition or a request for missing business facts."}

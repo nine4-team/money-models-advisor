@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "This is a Money Models recommendation question, not a missing-facts question. The snapshot already contains enough offer-stack and churn context to support a sourced diagnosis and recommendation, so the next step is to search the Money Models source material for the relevant framework rather than answer from memory."
+}

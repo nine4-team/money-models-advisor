@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "This is a Money Models diagnosis/recommendation question, and the snapshot already contains enough facts about the business, offer stack, symptoms, and goal to justify searching the source material for the fitting framework or recommendation."
+}

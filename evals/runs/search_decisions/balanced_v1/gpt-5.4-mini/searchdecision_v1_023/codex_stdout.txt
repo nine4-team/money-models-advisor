@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The current advisor snapshot already contains the pilot, core offer, and upsell descriptions and prices, so this is a straightforward recall question with no need to search the Money Models source material."}

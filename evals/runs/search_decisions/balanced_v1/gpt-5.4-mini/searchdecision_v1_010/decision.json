@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "local_docs"
+  ],
+  "decision": "no_search",
+  "rationale": "The current context already identifies the business as 1584 Design, a premium full-service interior design firm for short-term rental and second-home projects. This is a simple context lookup, not a concept/comparison/diagnosis that requires Money Models source-material search."
+}

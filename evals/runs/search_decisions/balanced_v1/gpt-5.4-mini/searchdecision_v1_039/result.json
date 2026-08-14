@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_039",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:24Z",
+  "expected": "no_search",
+  "latency_ms": 7425.0,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The current offer ladder is already fully present in the loaded business snapshot, so this is a straightforward recall task. No Money Models corpus search is needed because there are no missing facts, comparisons, or diagnoses to resolve."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

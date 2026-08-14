@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The user is asking for a Money Models concept/recommendation about a next-offer pattern after core coaching purchase. The snapshot has enough relevant facts about the offer stack, ICP, continuity, lack of upsell, and reported symptoms, so this should be supported by Money Models source material rather than answered from general intuition."
+}

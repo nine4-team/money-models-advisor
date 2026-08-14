@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The user is asking for an offer-stack diagnosis, not a definition. The snapshot already contains enough business facts to support a Money Models diagnosis, so this should be answered by searching the Money Models source material rather than by asking for more business context."
+}

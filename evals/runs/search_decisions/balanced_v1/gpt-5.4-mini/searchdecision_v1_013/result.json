@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_013",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:17Z",
+  "expected": "no_search",
+  "latency_ms": 8633.0,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The snapshot already contains the relevant advisor state, offer stack, unit economics, and stated goal. The user is asking for a short status summary, not a concept that needs Money Models source support or any missing business facts."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

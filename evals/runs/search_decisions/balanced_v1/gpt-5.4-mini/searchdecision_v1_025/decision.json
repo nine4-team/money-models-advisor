@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "This is a Money Models recommendation/structure question about whether a performance-backed guarantee or fee-back mechanism fits the offer. The snapshot already contains enough business facts and symptoms to diagnose it, so source material should be searched rather than guessing."
+}

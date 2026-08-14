@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The request asks for a straightforward calculation already present in the saved snapshot: CAC is 4500 and first-30-day gross profit is 9000, with payback_period_months already recorded as 1.0. This does not require Money Models source support for a concept, comparison, diagnosis, or recommendation."}

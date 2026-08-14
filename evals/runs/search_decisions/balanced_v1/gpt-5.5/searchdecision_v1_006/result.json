@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_006",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:00:51Z",
+  "expected": "search_source_material",
+  "latency_ms": 11573.4,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The request asks for a recommendation/comparison about whether adding a recurring maintenance or membership offer would improve payback. The snapshot has enough relevant economics and offer-stack facts, including no current continuity, CAC, first-30-day gross profit, margin, and payback, so source support is appropriate rather than asking for more facts."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

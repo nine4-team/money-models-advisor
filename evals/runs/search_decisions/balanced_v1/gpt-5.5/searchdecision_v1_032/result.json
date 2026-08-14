@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_032",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:06Z",
+  "expected": "no_search",
+  "latency_ms": 11732.5,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The request is a paid acquisition/payback recommendation. The snapshot has the business and offer stack context, but it explicitly lacks CAC and first-30-day gross profit, and payback diagnosis is not ready. Under the rules, this should not trigger Money Models source search as a substitute for missing business economics."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

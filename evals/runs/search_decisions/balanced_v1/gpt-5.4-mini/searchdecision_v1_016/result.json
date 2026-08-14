@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_016",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:29Z",
+  "expected": "no_search",
+  "latency_ms": 12656.8,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "This is a recommendation about whether to spend on ads, which depends on payback economics. The snapshot already shows the business model, but it is missing CAC and first-30-day gross profit, and the advisor state is not ready for payback diagnosis. Per the gate rules, we should not search the Money Models corpus to fill those gaps; we need missing business facts first."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

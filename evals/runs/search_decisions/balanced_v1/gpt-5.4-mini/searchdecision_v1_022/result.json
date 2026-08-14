@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_022",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:42Z",
+  "expected": "no_search",
+  "latency_ms": 8589.8,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The saved snapshot already includes CAC, first-30-day gross profit, monthly recurring gross profit, and a precomputed payback period, so this is a straightforward calculation from known facts and does not require Money Models source material."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

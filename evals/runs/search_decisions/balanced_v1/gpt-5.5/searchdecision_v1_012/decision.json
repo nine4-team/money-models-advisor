@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The snapshot contains all needed economics: CAC = 1000 and first-30-day gross profit = 10000, with no missing fields. The user asks for a straightforward payback-period calculation, not a Money Models concept, comparison, diagnosis, or source-backed recommendation, so corpus search is unnecessary."
+}

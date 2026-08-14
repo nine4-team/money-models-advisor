@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_005",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:00:54Z",
+  "expected": "search_source_material",
+  "latency_ms": 15506.7,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The user is asking for a Money Models recommendation about the next offer after a paid diagnostic to increase first-month profit. The snapshot has enough offer-stack context to support a diagnosis: attraction offer, core offer, upsell, ICP, pricing, and delivery model are known, and offer-stack diagnosis is marked ready. This should be grounded in Money Models source material rather than answered from general reasoning."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

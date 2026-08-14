@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_046",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:49Z",
+  "expected": "no_search",
+  "latency_ms": 14882.1,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The saved business context already contains the payback period (`economics.payback_period_months: 1.0`) and enough supporting economics to answer directly. This is a simple calculation/lookup, not a concept diagnosis that requires Money Models source material."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

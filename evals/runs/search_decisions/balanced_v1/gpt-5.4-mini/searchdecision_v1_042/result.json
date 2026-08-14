@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_042",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:34Z",
+  "expected": "search_source_material",
+  "latency_ms": 10460.5,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "This is a recommendation/comparison about offer sequencing, and the current snapshot already has enough business facts to support a Money Models diagnosis. Per the gate rules, that means the answer should be grounded by searching the Money Models source material rather than relying only on the snapshot."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

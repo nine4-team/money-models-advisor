@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"search_source_material","rationale":"This is a recommendation/diagnosis about cash flow and inventory timing in a Money Models context, and the snapshot already has enough facts about the offer stack, margins, payback, and the stated cash constraint to support a sourced answer from the Money Models material."}

@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_023",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:45Z",
+  "expected": "no_search",
+  "latency_ms": 8500.0,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The current advisor snapshot already contains the pilot, core offer, and upsell descriptions and prices, so this is a straightforward recall question with no need to search the Money Models source material."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

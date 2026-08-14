@@ -1020,7 +1020,7 @@
           <li><a href="#s3-1"><span class="sn-num">3.1</span><span class="sn-title">Evaluation framework</span></a></li>
           <li><a href="#s3-2"><span class="sn-num">3.2</span><span class="sn-title">Quality scoring</span></a></li>
           <li><a href="#s3-3"><span class="sn-num">3.3</span><span class="sn-title">Retrieval</span></a></li>
-          <li><a href="#s3-4"><span class="sn-num">3.4</span><span class="sn-title">Orchestration model</span></a></li>
+          <li><a href="#s3-4"><span class="sn-num">3.4</span><span class="sn-title">Search decisions</span></a></li>
           <li><a href="#s3-5"><span class="sn-num">3.5</span><span class="sn-title">Regression coverage</span></a></li>
         </ol>
       </div>
@@ -1168,8 +1168,9 @@
             <div class="an-grid cols2">
               <div class="acard">
                 <span class="k">Model</span>
-                <span class="d">The local agent supplies judgment; the core stays model-agnostic.
-                  Tests support gpt-5.5 for orchestration and Mini as a query-writing option.</span>
+                <span class="d">The operating agent supplies judgment; the core stays
+                  model-agnostic. Tests select gpt-5.5 for agent decisions and
+                  validate Mini for bounded query writing.</span>
                 <span class="r"><a href="#s2-3">§2.3</a></span>
               </div>
               <div class="acard">
@@ -1219,12 +1220,11 @@
 
         <h3 id="s2-3"><span class="sub">2.3</span>Model</h3>
         <p>
-          Codex or Claude Code supplies semantic judgment through the same
-          CLI, which makes no model calls. The model can therefore change
-          without changing tools, memory, or retrieval. Tests select
-          <code>gpt-5.5</code> for orchestration and show that
-          <code>gpt-5.4-mini</code> can handle query writing under the tested
-          46-case setup (§3.3, §3.4).
+          The operating agent supplies semantic judgment through a CLI that
+          makes no model calls. The model can therefore change without
+          changing tools, memory, or retrieval. Current tests select
+          <code>gpt-5.5</code> for agent decisions and validate
+          <code>gpt-5.4-mini</code> for bounded query writing (§3.3, §3.4).
         </p>
 
         <h3 id="s2-4"><span class="sub">2.4</span>Instructions</h3>
@@ -1609,8 +1609,7 @@
             <span class="s-term">Establish agent behavior</span>
             <span class="s-def">
               A 24-turn suite tests whether the agent chooses the right action
-              before retrieval is evaluated. The orchestration-model experiment
-              later reuses these same cases.
+              before retrieval is evaluated.
             </span>
           </li>
           <li>
@@ -1652,9 +1651,9 @@
         </ol>
         <h3 id="s3-2"><span class="sub">3.2</span>Scoring</h3>
         <p>
-          The reference traces for all 24 tool-use cases pass with full
-          required-action recall, zero false searches, and zero missed
-          searches. Acting-model results are reported separately in §3.4.
+          The reference traces for all 24 tool-use cases validate the action
+          scorer: full required-action recall, zero false searches, and zero
+          missed searches.
         </p>
         <dl class="rows">
           <div>
@@ -2075,71 +2074,56 @@
           </div>
         </div>
 
-        <h3 id="s3-4"><span class="sub">3.4</span>Orchestration model</h3>
+        <h3 id="s3-4"><span class="sub">3.4</span>Agent search decisions</h3>
         <p>
-          Five OpenAI and Anthropic models ran the same 24 tool-use cases to
-          test provider and model-tier choices for orchestration.
-        </p>
-        <p>
-          Each model operated the real CLI-backed advisor and produced the
-          same trace format for the same scorer. Every model ran the suite
-          three times (K=3). Cross-provider token and latency values are
-          harness proxies, not comparable billed costs.
+          Search selection is tested separately from query quality. Each model
+          completed one blind pass over 48 cases: 24 require source search and
+          24 prohibit it. The harness supplied current business context; the
+          model made only the search decision, without retrieval or answer writing.
+          To prevent context contamination, each trial used a fresh sanitized
+          runtime with answer labels, evaluation files, and prior outputs excluded.
         </p>
         <figure class="figure">
-          <figcaption>Tool-use strict case pass · mean with per-run scores · 24 cases · K=3</figcaption>
+          <figcaption>Search gate · 48 cases across five business contexts · one pass per model</figcaption>
           <div class="table-scroll">
             <table>
               <thead>
                 <tr>
                   <th>Model</th>
-                  <th>Provider</th>
-                  <th>Tool-use · strict pass</th>
-                  <th class="num">Runs</th>
+                  <th class="num">Required found</th>
+                  <th class="num">Prohibited avoided</th>
+                  <th class="num">Overall</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><code>claude-sonnet-5</code></td>
-                  <td class="wrap">Anthropic</td>
-                  <td class="score">77.8% <span class="runs">79.2 / 75.0 / 79.2</span></td>
-                  <td class="num">K=3</td>
+                  <td><code>gpt-5.5</code></td>
+                  <td class="num hit">24/24</td>
+                  <td class="num hit">24/24</td>
+                  <td class="num hit"><strong>48/48</strong></td>
                 </tr>
                 <tr>
                   <td><code>gpt-5.4-mini</code></td>
-                  <td class="wrap">OpenAI</td>
-                  <td class="score">75.0% <span class="runs">75.0 / 75.0 / 75.0</span></td>
-                  <td class="num">K=3</td>
-                </tr>
-                <tr>
-                  <td><code>claude-opus-4-8</code></td>
-                  <td class="wrap">Anthropic</td>
-                  <td class="score">84.7% <span class="runs">91.7 / 79.2 / 83.3</span></td>
-                  <td class="num">K=3</td>
-                </tr>
-                <tr>
-                  <td><code>gpt-5.5</code></td>
-                  <td class="wrap">OpenAI</td>
-                  <td class="score"><strong>91.7%</strong> <span class="runs">95.8 / 87.5 / 91.7</span></td>
-                  <td class="num">K=3</td>
-                </tr>
-                <tr>
-                  <td><code>claude-haiku-4-5</code></td>
-                  <td class="wrap">Anthropic</td>
-                  <td class="score">54.2% <span class="runs">58.3 / 50.0 / 54.2</span></td>
-                  <td class="num">K=3</td>
+                  <td class="num">23/24</td>
+                  <td class="num hit">24/24</td>
+                  <td class="num">47/48</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </figure>
+        <p>
+          Mini's one false negative was reviewed against the current rule and
+          business context; the answer key did not require correction. No false
+          positives remained for either model.
+        </p>
         <div class="decision">
           <span class="d-tag">Decision</span>
           <div>
             <p>
-              Use <code>gpt-5.5</code> for orchestration. Keep
-              <code>gpt-5.4-mini</code> as the tested option for query
-              generation.
+              Keep <code>gpt-5.5</code> as the operating agent. Mini remains a
+              viable bounded query writer; this comparison does not provide a
+              reason to replace <code>gpt-5.5</code> at the search gate.
             </p>
           </div>
         </div>

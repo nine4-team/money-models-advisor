@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_030",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:58Z",
+  "expected": "no_search",
+  "latency_ms": 11000.2,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The request asks for a simple calculation from facts already present in the advisor snapshot: CAC is 320 and first-30-day gross profit is 900, and the snapshot already records payback_period_months as 1.0. This does not need Money Models source support, prior-session context, or corpus search."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

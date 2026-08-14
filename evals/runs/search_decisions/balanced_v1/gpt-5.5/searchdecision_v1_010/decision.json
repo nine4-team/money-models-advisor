@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "local_docs"
+  ],
+  "decision": "no_search",
+  "rationale": "The user asks for identification of the business, and local documents already provide sufficient business facts: 1584 Design is a premium full-service interior design firm for STR and second-home projects. This does not require Money Models conceptual support, comparison, diagnosis, or recommendation."
+}

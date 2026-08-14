@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_039",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:20Z",
+  "expected": "no_search",
+  "latency_ms": 8661.6,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The request only asks to recall the existing products and prices already present in the current business snapshot. No Money Models source support, concept diagnosis, comparison, or recommendation is needed."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

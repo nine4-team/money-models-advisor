@@ -11,13 +11,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import signal
 import shutil
 import statistics
 import subprocess
 import sys
 import time
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -236,8 +239,8 @@ def append_noninteractive_requirements(suite: str, run_dir: Path, prompt: str) -
     return prompt.rstrip() + "\n" + completion + "\n"
 
 
-def codex_command(model: str, output_path: Path) -> list[str]:
-    return [
+def codex_command(model: str, output_path: Path, agent_root: Path, writable_dir: Path) -> list[str]:
+    command = [
         "codex",
         "--ask-for-approval",
         "never",
@@ -245,13 +248,18 @@ def codex_command(model: str, output_path: Path) -> list[str]:
         "--model",
         model,
         "--cd",
-        str(ROOT),
+        str(agent_root),
+        "--add-dir",
+        str(writable_dir),
         "--sandbox",
         "workspace-write",
         "--output-last-message",
         str(output_path),
         "-",
     ]
+    if not (agent_root / ".git").exists():
+        command.insert(-1, "--skip-git-repo-check")
+    return command
 
 
 def run_codex_case(
@@ -262,6 +270,7 @@ def run_codex_case(
     force: bool,
     timeout: int,
     resume_infra_failures: bool,
+    agent_root: Path,
 ) -> Path:
     existing_run_dir = runs_dir / model / suite / case["case_id"]
     rerun_infra_failure = (
@@ -281,22 +290,28 @@ def run_codex_case(
     output_path = run_dir / "codex_final.txt"
     started = time.perf_counter()
     timed_out = False
+    process = subprocess.Popen(
+        codex_command(model, output_path, agent_root, run_dir),
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        cwd=ROOT,
+        start_new_session=True,
+    )
     try:
-        completed = subprocess.run(
-            codex_command(model, output_path),
-            input=prompt,
-            text=True,
-            cwd=ROOT,
-            capture_output=True,
-            timeout=timeout,
-        )
-        stdout = completed.stdout
-        stderr = completed.stderr
-        returncode = completed.returncode
+        stdout, stderr = process.communicate(input=prompt, timeout=timeout)
+        returncode = process.returncode
     except subprocess.TimeoutExpired as exc:
         timed_out = True
-        stdout = decode_timeout_stream(exc.stdout)
-        stderr = decode_timeout_stream(exc.stderr)
+        os.killpg(process.pid, signal.SIGTERM)
+        try:
+            stdout, stderr = process.communicate(timeout=10)
+        except subprocess.TimeoutExpired:
+            os.killpg(process.pid, signal.SIGKILL)
+            stdout, stderr = process.communicate()
+        stdout = decode_timeout_stream(exc.stdout) + stdout
+        stderr = decode_timeout_stream(exc.stderr) + stderr
         returncode = 124
     latency_ms = round((time.perf_counter() - started) * 1000, 1)
     stdout_path.write_text(stdout, encoding="utf-8")
@@ -322,7 +337,7 @@ def run_codex_case(
         meta["timeout_seconds"] = timeout
     elif returncode != 0:
         meta["error"] = "codex_exec_failed"
-    infra_failure_reason = detect_infra_failure(returncode, stderr)
+    infra_failure_reason = None if timed_out else detect_infra_failure(returncode, stderr)
     if infra_failure_reason:
         meta["error"] = "codex_infra_failure"
         meta["infra_failure"] = True
@@ -398,9 +413,7 @@ def render_report(
         "",
         "## Scope",
         "",
-        "This report replaces the prior API-replay model-tiering result for advisor-agent planning tasks. The prior API harness inlined business state and asked hosted chat models for bounded JSON; that was useful as a provider experiment, but it was not the product harness. This run uses `codex exec`: the model acts as a Codex agent, can run the local Money Model Advisor CLI, and must write the same trace artifacts scored by the existing golden-dataset scorers.",
-        "",
-        "The current ChatGPT subscription exposes `gpt-5.5` as the supported OpenAI Codex model in this environment. Attempts to run `gpt-5-mini` through Codex failed because that model is not supported for Codex with this ChatGPT account. That means this report is a same-harness OpenAI Codex baseline, not a completed multi-tier downgrade decision.",
+        "This run uses `codex exec`: each model acts through the current Money Model Advisor skill and CLI, then writes the same trace artifact scored by the tool-use golden suite. Strict case pass includes the complete expected action sequence and trace completeness; it is broader than search/no-search accuracy.",
         "",
         "## Quality",
         "",
@@ -488,9 +501,7 @@ def render_report(
             "",
             "## Interpretation",
             "",
-            "The corrected conclusion is narrower and cleaner than the API replay: the project has a Codex-CLI baseline for OpenAI agent execution, and it should not claim that API-tier results decide product routing. Model routing remains a JD-aligned workstream, but future downgrade tests must use a supported Codex model/profile or a deliberately separate provider-API experiment labeled as such.",
-            "",
-            "The practical v1 routing policy remains: deterministic calculations, persistence, retrieval execution, and trace recording stay inside the CLI; semantic planning stays with the agent tier proven through the Codex harness; cheaper tiers are not promoted until they pass the same CLI-backed golden suite.",
+            "Use the strict score to diagnose the full acting workflow. For the narrower question of whether the model chose search correctly, use the focused search-decision report, which distinguishes required, prohibited, and optional-search cases.",
             "",
             "## Per-Case Failures",
             "",
@@ -517,10 +528,23 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--models", nargs="+", default=list(DEFAULT_MODELS))
     parser.add_argument("--suites", nargs="+", default=list(SUITES), choices=sorted(SUITES))
+    parser.add_argument(
+        "--tool-use-cases",
+        type=Path,
+        default=SUITES["tool_use"]["cases_path"],
+        help="Override the tool-use case file, for example with a focused search-decision suite.",
+    )
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "model_routing_codex")
+    parser.add_argument(
+        "--agent-root",
+        type=Path,
+        default=ROOT,
+        help="Sanitized advisor runtime visible to acting agents. Keep golden labels out of this directory.",
+    )
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "model_routing_tiering.md")
     parser.add_argument("--summary-json", type=Path, default=ROOT / "evals" / "reports" / "model_routing_tiering_summary.json")
     parser.add_argument("--timeout", type=int, default=600)
+    parser.add_argument("--max-workers", type=int, default=1)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--limit", type=int, help="Run only the first N cases per suite for smoke testing.")
     parser.add_argument("--case-ids", nargs="+", help="Run only these case IDs after suite filtering.")
@@ -531,7 +555,11 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    suite_cases = {suite: SUITES[suite]["loader"](SUITES[suite]["cases_path"]) for suite in args.suites}
+    suite_paths = {
+        suite: args.tool_use_cases if suite == "tool_use" else SUITES[suite]["cases_path"]
+        for suite in args.suites
+    }
+    suite_cases = {suite: SUITES[suite]["loader"](suite_paths[suite]) for suite in args.suites}
     if args.case_ids is not None:
         requested = set(args.case_ids)
         suite_cases = {
@@ -545,27 +573,42 @@ def main() -> int:
     if args.limit is not None:
         suite_cases = {suite: cases[: args.limit] for suite, cases in suite_cases.items()}
 
-    for model in args.models:
-        for suite in args.suites:
-            for case in suite_cases[suite]:
-                print(f"running {model} {suite} {case['case_id']}", file=sys.stderr)
-                try:
-                    run_codex_case(
-                        model,
-                        suite,
-                        case,
-                        args.runs_dir,
-                        force=args.force,
-                        timeout=args.timeout,
-                        resume_infra_failures=args.resume_infra_failures,
-                    )
-                except CodexInfraFailure as exc:
-                    print(
-                        "aborting after Codex infrastructure failure: "
-                        f"{json.dumps(exc.meta, sort_keys=True)}",
-                        file=sys.stderr,
-                    )
-                    return 2
+    tasks = [
+        (model, suite, case)
+        for model in args.models
+        for suite in args.suites
+        for case in suite_cases[suite]
+    ]
+    with ThreadPoolExecutor(max_workers=max(1, args.max_workers)) as executor:
+        futures = {}
+        for model, suite, case in tasks:
+            print(f"queued {model} {suite} {case['case_id']}", file=sys.stderr)
+            future = executor.submit(
+                run_codex_case,
+                model,
+                suite,
+                case,
+                args.runs_dir,
+                args.force,
+                args.timeout,
+                args.resume_infra_failures,
+                args.agent_root,
+            )
+            futures[future] = (model, suite, case["case_id"])
+        for future in as_completed(futures):
+            model, suite, case_id = futures[future]
+            try:
+                future.result()
+            except CodexInfraFailure as exc:
+                print(
+                    "aborting after Codex infrastructure failure: "
+                    f"{json.dumps(exc.meta, sort_keys=True)}",
+                    file=sys.stderr,
+                )
+                for pending in futures:
+                    pending.cancel()
+                return 2
+            print(f"completed {model} {suite} {case_id}", file=sys.stderr)
 
     quality: dict[str, dict[str, dict[str, Any]]] = {}
     perf: dict[str, dict[str, dict[str, Any]]] = {}

@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The payback period can be calculated directly from the provided advisor snapshot. No Money Models source material is needed because the relevant inputs are already present: CAC is $1,000 and first-30-day gross profit is $10,000, which is enough to diagnose payback without additional citation support."
+}

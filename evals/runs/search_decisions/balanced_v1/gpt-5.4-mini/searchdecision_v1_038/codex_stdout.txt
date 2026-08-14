@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The current advisor state already contains the saved skincare economics, including `economics.payback_period_months = 1.5714285714285714`, so the acquisition payback period can be answered directly from snapshot data without searching the Money Models corpus."}

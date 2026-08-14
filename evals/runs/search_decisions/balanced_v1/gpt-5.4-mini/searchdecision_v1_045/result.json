@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_045",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:41Z",
+  "expected": "no_search",
+  "latency_ms": 7991.2,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The current snapshot already contains the saved prices for the three offers, so this is a direct lookup rather than a diagnosis or recommendation that needs source-material support."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

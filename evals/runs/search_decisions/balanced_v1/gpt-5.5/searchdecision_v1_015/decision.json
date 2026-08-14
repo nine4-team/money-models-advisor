@@ -1,0 +1,8 @@
+{
+  "context_used": [
+    "snapshot",
+    "prior_sessions"
+  ],
+  "decision": "no_search",
+  "rationale": "The user asks why CAC is $1k in the current context. The provided prior session context directly explains it: referral partner acquisition was accepted as roughly $1,000 CAC after the user said that worked as an average. This is a factual recall from prior-session context, not a Money Models concept, comparison, diagnosis, or recommendation requiring source-material support."
+}

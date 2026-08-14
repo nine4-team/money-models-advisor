@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"This is a Money Models recommendation question, but the snapshot is still missing key economics needed to judge payment-plan structure safely, especially CAC and first-30-day gross profit. The right next step is to obtain those business facts or prior-session context rather than search the corpus."}

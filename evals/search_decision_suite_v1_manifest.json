@@ -1,0 +1,18 @@
+{
+  "dataset": "evals/advisor_search_decision_cases.jsonl",
+  "dataset_sha256": "dbeed4ec8fb20571ffab236239dd7cef7b234ecd8f13c0f0b1c6c686fa8ea765",
+  "frozen_at": "2026-08-13",
+  "total_cases": 48,
+  "required_search_cases": 24,
+  "prohibited_search_cases": 24,
+  "ambiguity_policy": "Only low-ambiguity required or prohibited cases are scored; optional cases are excluded.",
+  "scenario_distribution": {
+    "1584_design": {"required": 8, "prohibited": 8},
+    "saas_retention": {"required": 4, "prohibited": 4},
+    "fitness_coaching": {"required": 4, "prohibited": 4},
+    "ecommerce_skincare": {"required": 4, "prohibited": 4},
+    "b2b_consulting": {"required": 4, "prohibited": 4}
+  },
+  "acting_environment": "A deterministic harness loads current advisor state, recent turns, and local business documents through the CLI. Each model then makes only the semantic search/no-search decision in a fresh minimal runtime with no labels, reports, prior trials, retrieval, answer generation, or shell use.",
+  "planned_repetitions": 1
+}

@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_018",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:33Z",
+  "expected": "search_source_material",
+  "latency_ms": 10535.5,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The request is a pricing/commitment recommendation, and the current snapshot already contains enough relevant offer and churn/payback facts to support a Money Models-backed diagnosis. This is not missing-business-facts work and is not a simple vocabulary question, so it should be answered with source material search."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

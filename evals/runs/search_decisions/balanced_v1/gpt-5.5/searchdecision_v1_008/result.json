@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_008",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:00:54Z",
+  "expected": "search_source_material",
+  "latency_ms": 14005.0,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The user is asking for a recommendation/diagnosis of how their complete Money Model offer stack should fit together. The snapshot already contains enough relevant facts about the business type, ICP, attraction offer, core offer, upsell, and missing continuity/downsell pieces to ground a source-backed Money Models answer, so this should search the Money Models source material rather than ask for more facts first."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

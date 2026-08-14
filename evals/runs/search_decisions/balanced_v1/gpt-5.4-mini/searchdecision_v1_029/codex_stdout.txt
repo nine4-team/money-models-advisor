@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The current advisor state already contains the saved prices for both offers: the 12-week coached transformation program is $2,400 and the ongoing training membership is $249. This is a simple factual lookup from the snapshot, so no Money Models source search is needed."}

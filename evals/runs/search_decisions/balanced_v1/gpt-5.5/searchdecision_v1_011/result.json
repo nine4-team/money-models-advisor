@@ -1,0 +1,22 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_011",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:01:03Z",
+  "expected": "no_search",
+  "latency_ms": 9274.1,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot",
+      "local_docs"
+    ],
+    "decision": "no_search",
+    "rationale": "The user asks for current pricing already present in the loaded snapshot and local documents. This is a straightforward recall of business facts, not a Money Models concept, comparison, diagnosis, or recommendation requiring source-material support."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

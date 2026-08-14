@@ -1,0 +1,2035 @@
+{
+  "cases_path": "evals/advisor_search_decision_cases.jsonl",
+  "cases_sha256": "dbeed4ec8fb20571ffab236239dd7cef7b234ecd8f13c0f0b1c6c686fa8ea765",
+  "created_at": "2026-08-14T01:04:53Z",
+  "models": [
+    "gpt-5.5",
+    "gpt-5.4-mini"
+  ],
+  "results": [
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_001",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:39Z",
+      "expected": "search_source_material",
+      "latency_ms": 12530.1,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models concept explanation tied to ad viability and cash payback. The snapshot already contains enough relevant business economics, including CAC, gross profit, gross margin, and payback period, so source material should be searched to support the explanation rather than gathering more facts first."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_002",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:39Z",
+      "expected": "search_source_material",
+      "latency_ms": 12639.8,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request asks for advisory framing on client-financed acquisition in the context of a diagnosable business with complete payback and offer-stack facts. This is a Money Models concept/recommendation, not a simple vocabulary question, and the snapshot already contains enough relevant facts to support a source-backed answer."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_003",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:39Z",
+      "expected": "search_source_material",
+      "latency_ms": 12991.6,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "prior_sessions"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a recommendation on ad spend tolerance and paid acquisition economics. The snapshot already contains enough relevant facts for a payback diagnosis, including CAC, first-30-day gross profit, margin, payback period, offer prices, and diagnosed constraints, so source material should be searched to support the framework and recommendation rather than gathering more facts first."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_004",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:40Z",
+      "expected": "search_source_material",
+      "latency_ms": 13309.4,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user asks for a concept comparison applied to the current offer stack. The snapshot contains enough relevant facts about the attraction offer and upsell to support a Money Models-backed explanation, and this is not merely a vocabulary definition or a request for missing business facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_005",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:54Z",
+      "expected": "search_source_material",
+      "latency_ms": 15506.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models recommendation about the next offer after a paid diagnostic to increase first-month profit. The snapshot has enough offer-stack context to support a diagnosis: attraction offer, core offer, upsell, ICP, pricing, and delivery model are known, and offer-stack diagnosis is marked ready. This should be grounded in Money Models source material rather than answered from general reasoning."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_006",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:51Z",
+      "expected": "search_source_material",
+      "latency_ms": 11573.4,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request asks for a recommendation/comparison about whether adding a recurring maintenance or membership offer would improve payback. The snapshot has enough relevant economics and offer-stack facts, including no current continuity, CAC, first-30-day gross profit, margin, and payback, so source support is appropriate rather than asking for more facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_007",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:50Z",
+      "expected": "search_source_material",
+      "latency_ms": 10783.1,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models recommendation about structuring payment plans for a known offer stack and buyer constraint. The snapshot has enough relevant business facts to ground the recommendation, and the answer should use Money Models source support rather than relying on generic payment-plan advice."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_008",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:00:54Z",
+      "expected": "search_source_material",
+      "latency_ms": 14005.0,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a recommendation/diagnosis of how their complete Money Model offer stack should fit together. The snapshot already contains enough relevant facts about the business type, ICP, attraction offer, core offer, upsell, and missing continuity/downsell pieces to ground a source-backed Money Models answer, so this should search the Money Models source material rather than ask for more facts first."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_009",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:01Z",
+      "expected": "no_search",
+      "latency_ms": 10268.8,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "prior_sessions"
+        ],
+        "decision": "no_search",
+        "rationale": "The user is asking about a concrete saved business fact from the snapshot/recent turns: $1,000 CAC attributed to referral partner acquisition. This can be answered from current state and prior-session context, without Money Models conceptual support or source-material citation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_010",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:01Z",
+      "expected": "no_search",
+      "latency_ms": 10018.4,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "local_docs"
+        ],
+        "decision": "no_search",
+        "rationale": "The user asks for identification of the business, and local documents already provide sufficient business facts: 1584 Design is a premium full-service interior design firm for STR and second-home projects. This does not require Money Models conceptual support, comparison, diagnosis, or recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_011",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:03Z",
+      "expected": "no_search",
+      "latency_ms": 9274.1,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "local_docs"
+        ],
+        "decision": "no_search",
+        "rationale": "The user asks for current pricing already present in the loaded snapshot and local documents. This is a straightforward recall of business facts, not a Money Models concept, comparison, diagnosis, or recommendation requiring source-material support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_012",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:07Z",
+      "expected": "no_search",
+      "latency_ms": 12394.8,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The snapshot contains all needed economics: CAC = 1000 and first-30-day gross profit = 10000, with no missing fields. The user asks for a straightforward payback-period calculation, not a Money Models concept, comparison, diagnosis, or source-backed recommendation, so corpus search is unnecessary."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_013",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:09Z",
+      "expected": "no_search",
+      "latency_ms": 8809.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user asks for a brief status summary, and the snapshot already contains sufficient authoritative business/advisor state. This does not require Money Models source support for a new concept, comparison, diagnosis, or recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_014",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:11Z",
+      "expected": "no_search",
+      "latency_ms": 10073.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user asks for a simple vocabulary expansion of CAC. This does not need Money Models source support, and the snapshot lacks broader business context for any diagnosis or recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_015",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:12Z",
+      "expected": "no_search",
+      "latency_ms": 8694.5,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "prior_sessions"
+        ],
+        "decision": "no_search",
+        "rationale": "The user asks why CAC is $1k in the current context. The provided prior session context directly explains it: referral partner acquisition was accepted as roughly $1,000 CAC after the user said that worked as an average. This is a factual recall from prior-session context, not a Money Models concept, comparison, diagnosis, or recommendation requiring source-material support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_016",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:21Z",
+      "expected": "no_search",
+      "latency_ms": 13572.4,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request asks for a recommendation about starting ads, but the current advisor state is missing key payback facts: CAC and first 30-day gross profit. The rules say not to search the Money Models source material instead of obtaining missing business facts, so the advisor should gather those facts first rather than search."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_017",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:21Z",
+      "expected": "search_source_material",
+      "latency_ms": 11729.0,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models concept/recommendation to reduce month-four churn by giving customers a reason to stay. The snapshot already has enough relevant facts about the SaaS offer stack, continuity offer, churn timing, and payback economics, so source material should be searched to support the recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_018",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:24Z",
+      "expected": "search_source_material",
+      "latency_ms": 13121.9,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The snapshot has enough relevant facts to evaluate the offer-stack/payback question: B2B SaaS, no current implementation fee, annual commitment angle, onboarding/customer success model, churn at month four, and acquisition payback pressure. The user is asking for a Money Models-backed recommendation about pricing/offer structure and commitment, not a missing-facts question or simple vocabulary answer, so source material should be searched."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_019",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:24Z",
+      "expected": "search_source_material",
+      "latency_ms": 11898.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models-supported recommendation about whether adding/value-positioning an onboarding package would make the subscription easier to sell. The snapshot already has enough relevant facts: B2B SaaS, guided onboarding/customer success, paid cleanup pilot, $1,200 subscription, $4,000 implementation upsell, acquisition payback pressure, and month-four churn. This requires source-backed guidance on offer structure and sales friction rather than a simple vocabulary answer or missing-facts collection."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_020",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:36Z",
+      "expected": "search_source_material",
+      "latency_ms": 15520.3,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request asks for a Money Models diagnosis of a specific business situation: high lifetime value but upfront cash strain. The snapshot already contains enough relevant economics and offer-stack facts, so source material should be searched to support the diagnostic framing."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_021",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:33Z",
+      "expected": "no_search",
+      "latency_ms": 11386.8,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user asks for a saved factual value already present in the current business snapshot: economics.cac = 2800. This does not require Money Models source support, concept diagnosis, comparison, or recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_022",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:34Z",
+      "expected": "no_search",
+      "latency_ms": 9802.5,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request is a straightforward calculation from saved snapshot values: CAC is 2800 and monthly recurring gross profit is 900, with payback already stored as 2.8889 months. It does not need Money Models source support, a concept comparison, or recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_023",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:34Z",
+      "expected": "no_search",
+      "latency_ms": 9710.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user is asking to recall current saved business facts: pilot, core subscription, and upsell. The snapshot contains those exact offer descriptions and prices, so no Money Models source search is needed."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_024",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:44Z",
+      "expected": "no_search",
+      "latency_ms": 11361.1,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request is about scaling paid acquisition, but the snapshot is explicitly not ready for payback diagnosis because CAC and first-30-day gross profit are missing. Runtime rules say not to search instead of obtaining missing business facts. The advisor should first ask for the missing economics rather than search Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_025",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:45Z",
+      "expected": "search_source_material",
+      "latency_ms": 11517.5,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request is asking whether a specific offer-structure idea could work: letting clients earn back the program fee based on achieving results and completing check-ins. The snapshot has enough business facts to evaluate it, including ICP, offer stack, price, margins, symptoms, and goal. Because this is a Money Models recommendation/diagnosis rather than a simple vocabulary answer, it should be supported by Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_026",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:47Z",
+      "expected": "search_source_material",
+      "latency_ms": 12649.2,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request asks for a Money Models recommendation for a diagnosed offer-stack problem: skeptical qualified leads need to experience coaching before paying. The snapshot already contains enough business facts, symptoms, ICP, offers, pricing, and goal context to ground retrieval, so source material is needed rather than asking for more facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_027",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:48Z",
+      "expected": "search_source_material",
+      "latency_ms": 11966.6,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request asks for a Money Models recommendation about changing payment timing without reducing delivered value. The snapshot has enough relevant facts about the offer stack, economics, ICP, and symptom of qualified prospects being unable to pay immediately, so source support is appropriate rather than asking for more business facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_028",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:55Z",
+      "expected": "search_source_material",
+      "latency_ms": 10480.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models concept/recommendation about a next-offer pattern after core coaching purchase. The snapshot has enough relevant facts about the offer stack, ICP, continuity, lack of upsell, and reported symptoms, so this should be supported by Money Models source material rather than answered from general intuition."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_029",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:54Z",
+      "expected": "no_search",
+      "latency_ms": 8833.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user is asking for saved prices already present in the business snapshot: core offer price for the 12-week coached transformation program and continuity price for the ongoing training membership. This is a direct state lookup, not a Money Models concept, comparison, diagnosis, or recommendation requiring source support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_030",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:58Z",
+      "expected": "no_search",
+      "latency_ms": 11000.2,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request asks for a simple calculation from facts already present in the advisor snapshot: CAC is 320 and first-30-day gross profit is 900, and the snapshot already records payback_period_months as 1.0. This does not need Money Models source support, prior-session context, or corpus search."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_031",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:01:57Z",
+      "expected": "no_search",
+      "latency_ms": 8753.5,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user asks for a quick recap of already-known economics. The snapshot contains all relevant economic facts, and this is a factual summary of current state rather than a Money Models concept, comparison, diagnosis, or recommendation requiring source support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_032",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:06Z",
+      "expected": "no_search",
+      "latency_ms": 11732.5,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request is a paid acquisition/payback recommendation. The snapshot has the business and offer stack context, but it explicitly lacks CAC and first-30-day gross profit, and payback diagnosis is not ready. Under the rules, this should not trigger Money Models source search as a substitute for missing business economics."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_033",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:06Z",
+      "expected": "search_source_material",
+      "latency_ms": 11283.2,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a recommendation/diagnosis about a specific money-model change: pre-selling six months of continuity/refills with bonus months while managing early inventory cash demands. The snapshot already has enough relevant facts about the offer stack, continuity, margins, CAC, payback, fulfillment model, and stated goal, so this should be grounded in Money Models source material rather than answered from general reasoning or delayed for more facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_034",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:09Z",
+      "expected": "search_source_material",
+      "latency_ms": 11556.1,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models recommendation/comparison about using a stripped-down starter offer to make the premium routine easier to advertise. The snapshot already contains enough relevant facts about the DTC skincare business, current offer stack, economics, symptoms, and goal, so this should be supported by Money Models source material rather than answered from general intuition."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_035",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:12Z",
+      "expected": "search_source_material",
+      "latency_ms": 13732.3,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models diagnostic concept and recommendation: whether revenue alone determines ad affordability when product and shipping costs are high. The snapshot has enough relevant business facts, including revenue prices, gross margin, first-30-day gross profit, CAC, LGP, MRR gross profit, and payback, so this should be supported by source material rather than answered from generic reasoning."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_036",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:19Z",
+      "expected": "search_source_material",
+      "latency_ms": 12314.3,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request asks for a Money Models recommendation about handling a price objection by changing the offer stack versus discounting. The snapshot has enough relevant business facts, including current offers, prices, margins, CAC, continuity, and the goal to improve conversion without inventory cash strain, so source material should be searched to support the diagnosis and recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_037",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:16Z",
+      "expected": "no_search",
+      "latency_ms": 9338.9,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user is asking for saved factual values already present in the current business snapshot: CAC is 48 and gross margin is 0.62. This is a simple state lookup, not a Money Models concept, diagnosis, comparison, or recommendation requiring source-material support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_038",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:20Z",
+      "expected": "no_search",
+      "latency_ms": 10872.8,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The saved snapshot already contains CAC, monthly recurring gross profit, and the computed payback_period_months value. The user asks for a straightforward acquisition payback period calculation, not a Money Models concept, comparison, diagnosis, or recommendation needing source support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_039",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:20Z",
+      "expected": "no_search",
+      "latency_ms": 8661.6,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request only asks to recall the existing products and prices already present in the current business snapshot. No Money Models source support, concept diagnosis, comparison, or recommendation is needed."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_040",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:25Z",
+      "expected": "no_search",
+      "latency_ms": 9222.5,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request is a payback/affordability question about scaling ads. The snapshot explicitly lacks CAC and first-30-day gross profit and marks payback diagnosis as not ready, so the next step would be obtaining missing business economics rather than searching Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_041",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:29Z",
+      "expected": "search_source_material",
+      "latency_ms": 10088.3,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request asks for a recommendation about changing the attraction offer structure by crediting the readiness audit fee toward the core implementation offer. The snapshot has enough relevant facts about the offer stack, prices, margins, CAC/payback, and stated symptoms to diagnose the tradeoff, so Money Models source support should be searched rather than asking for more facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_042",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:30Z",
+      "expected": "search_source_material",
+      "latency_ms": 9727.0,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a Money Models recommendation about offer sequencing and price perception. The snapshot has enough relevant business and offer-stack facts to diagnose, and the answer would benefit from source-backed guidance rather than a simple vocabulary response."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_043",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:33Z",
+      "expected": "search_source_material",
+      "latency_ms": 12036.8,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The snapshot is diagnosable and includes the relevant offer stack, economics, ICP, and reported symptom. The user is asking for a Money Models diagnosis of which offer-stack component is failing, which needs source-material support rather than more fact gathering or a simple vocabulary answer."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_044",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:40Z",
+      "expected": "search_source_material",
+      "latency_ms": 14554.5,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user asks what the Money Models source says about rollout for multiple simultaneous offer changes. This is a concept/recommendation question requiring source-backed guidance, and the snapshot already has enough relevant facts about the business, offer stack, and current symptom of considering several changes at once. No missing business facts or prior-session context are needed before searching."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_045",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:37Z",
+      "expected": "no_search",
+      "latency_ms": 8306.3,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request asks for saved prices already present in the advisor snapshot: readiness audit, implementation engagement, and ongoing monitoring. This is direct state lookup, not a Money Models concept, comparison, diagnosis, or recommendation requiring source support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_046",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:38Z",
+      "expected": "no_search",
+      "latency_ms": 8660.1,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request asks for a straightforward calculation already present in the saved snapshot: CAC is 4500 and first-30-day gross profit is 9000, with payback_period_months already recorded as 1.0. This does not require Money Models source support for a concept, comparison, diagnosis, or recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_047",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:41Z",
+      "expected": "no_search",
+      "latency_ms": 8822.7,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The user is asking for saved numeric business facts already present in the advisor snapshot (CAC, first-30-day gross profit, and lifetime gross profit). This is fact retrieval from current state, not a Money Models concept, comparison, diagnosis, or recommendation requiring source support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_048",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:46Z",
+      "expected": "no_search",
+      "latency_ms": 9000.8,
+      "model": "gpt-5.5",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request is about whether to increase acquisition spend, which requires payback/economics facts. The snapshot is explicitly missing CAC and first-30-day gross profit and is not ready for payback diagnosis. Per the gate rules, do not search instead of obtaining missing business facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_001",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:50Z",
+      "expected": "search_source_material",
+      "latency_ms": 11242.3,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a Money Models concept/diagnosis question about ad viability, and the snapshot already has enough business facts to support a grounded source-backed explanation. That means the next step is to search the Money Models source material rather than answer from memory or ask for more business context."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_002",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:52Z",
+      "expected": "search_source_material",
+      "latency_ms": 12010.6,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a recommendation/diagnosis question about acquisition financing, not a simple vocabulary lookup. The snapshot already has enough relevant business facts and economics to support a Money Models-backed answer, so the gate should allow a source-material search rather than treating it as missing-context gathering."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_003",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:55Z",
+      "expected": "search_source_material",
+      "latency_ms": 13125.9,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "prior_sessions"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for a recommendation on ad spend, which is a Money Models diagnosis/recommendation task. The snapshot already contains the key facts needed for a payback-style answer (CAC, first-30-day gross profit, gross margin, offer prices, and the prior payback context), so this is the kind of request that should be grounded by searching the source material rather than treating it as missing-data gathering."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_004",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:02:57Z",
+      "expected": "search_source_material",
+      "latency_ms": 10462.4,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a Money Models concept/comparison question, and the snapshot already contains enough business facts to support a sourced answer. That fits the gate rule to search the source material rather than answer from general knowledge."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_005",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:00Z",
+      "expected": "search_source_material",
+      "latency_ms": 9696.2,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is an offer-stack recommendation inside the Money Models advisory flow, and the snapshot already has enough relevant business facts to support a sourced diagnosis. The user is not missing business facts; they are asking for the next offer to improve first-month profit, so the next step should be to search the Money Models source material rather than answer from memory."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_006",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:04Z",
+      "expected": "search_source_material",
+      "latency_ms": 12288.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The question is a Money Models concept/recommendation about whether adding recurring revenue improves payback, and the snapshot already contains the relevant economics and offer structure needed to evaluate it. There are no missing business facts or prior-session details blocking the analysis, so this should be handled by searching the Money Models source material rather than treating it as a simple vocabulary answer."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_007",
+      "contamination_flags": [],
+      "correct": false,
+      "created_at": "2026-08-14T01:03:06Z",
+      "expected": "search_source_material",
+      "latency_ms": 11078.7,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "This is a Money Models recommendation question, but the snapshot is still missing key economics needed to judge payment-plan structure safely, especially CAC and first-30-day gross profit. The right next step is to obtain those business facts or prior-session context rather than search the corpus."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_008",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:07Z",
+      "expected": "search_source_material",
+      "latency_ms": 10041.5,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request is asking for a recommendation on how the full money model stack should fit together, which is a Money Models diagnosis/recommendation task. The snapshot already contains enough offer-stack facts to support that work (core offer, attraction offer, upsell, pricing, ICP, delivery model), so the correct gate is to search the Money Models source material. The missing CAC and first-30-day gross profit only block payback analysis, not offer-stack diagnosis."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_009",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:08Z",
+      "expected": "no_search",
+      "latency_ms": 8660.4,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "prior_sessions"
+        ],
+        "decision": "no_search",
+        "rationale": "The $1k referral-partner payment is already captured in the loaded advisor state as CAC, and the recent turn explicitly states it should be treated as roughly $1,000 CAC. This is a clarification of existing business facts, not a case that requires searching source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_010",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:14Z",
+      "expected": "no_search",
+      "latency_ms": 9748.7,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "local_docs"
+        ],
+        "decision": "no_search",
+        "rationale": "The current context already identifies the business as 1584 Design, a premium full-service interior design firm for short-term rental and second-home projects. This is a simple context lookup, not a concept/comparison/diagnosis that requires Money Models source-material search."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_011",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:16Z",
+      "expected": "no_search",
+      "latency_ms": 10445.8,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "local_docs"
+        ],
+        "decision": "no_search",
+        "rationale": "The current advisor state and local documents already contain the pricing facts needed to answer this: attraction offer $597, core offer $15,000, upsell $5,000, and draft service pricing ranges. This is a simple pricing recall, not a concept/comparison/diagnosis that requires searching the Money Models corpus."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_012",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:16Z",
+      "expected": "no_search",
+      "latency_ms": 9212.3,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The payback period can be calculated directly from the provided advisor snapshot. No Money Models source material is needed because the relevant inputs are already present: CAC is $1,000 and first-30-day gross profit is $10,000, which is enough to diagnose payback without additional citation support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_013",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:17Z",
+      "expected": "no_search",
+      "latency_ms": 8633.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The snapshot already contains the relevant advisor state, offer stack, unit economics, and stated goal. The user is asking for a short status summary, not a concept that needs Money Models source support or any missing business facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_014",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:23Z",
+      "expected": "no_search",
+      "latency_ms": 8581.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "This is a simple vocabulary question and does not require Money Models source material or citation. The snapshot context is sufficient to see that no business facts are needed to decide the search gate."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_015",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:27Z",
+      "expected": "no_search",
+      "latency_ms": 10150.8,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot",
+          "prior_sessions"
+        ],
+        "decision": "no_search",
+        "rationale": "The reason for the $1k CAC is already present in the loaded context: a prior turn set referral partner acquisition at roughly $1,000 CAC, and the current snapshot records CAC = 1000. This is a simple reminder/recall question, not one that needs Money Models source-material support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_016",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:29Z",
+      "expected": "no_search",
+      "latency_ms": 12656.8,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "This is a recommendation about whether to spend on ads, which depends on payback economics. The snapshot already shows the business model, but it is missing CAC and first-30-day gross profit, and the advisor state is not ready for payback diagnosis. Per the gate rules, we should not search the Money Models corpus to fill those gaps; we need missing business facts first."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_017",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:27Z",
+      "expected": "search_source_material",
+      "latency_ms": 9920.7,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a Money Models recommendation question, not a missing-facts question. The snapshot already contains enough offer-stack and churn context to support a sourced diagnosis and recommendation, so the next step is to search the Money Models source material for the relevant framework rather than answer from memory."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_018",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:33Z",
+      "expected": "search_source_material",
+      "latency_ms": 10535.5,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request is a pricing/commitment recommendation, and the current snapshot already contains enough relevant offer and churn/payback facts to support a Money Models-backed diagnosis. This is not missing-business-facts work and is not a simple vocabulary question, so it should be answered with source material search."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_019",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:39Z",
+      "expected": "search_source_material",
+      "latency_ms": 12317.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a recommendation about offer-stack design and sales friction, not a simple vocabulary question. The snapshot already has enough relevant facts about the core offer, upsell, continuity, churn, and payback, so the correct next step is to search the Money Models source material for support before answering."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_020",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:39Z",
+      "expected": "search_source_material",
+      "latency_ms": 12204.3,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The question is a Money Models diagnosis, and the snapshot already contains enough facts to support it (CAC, first-30-day gross profit, payback period, churn symptom). That makes it appropriate to search the source material rather than answer from memory."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_021",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:36Z",
+      "expected": "no_search",
+      "latency_ms": 7170.5,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The current advisor snapshot already contains the saved CAC fact for the SaaS business (`economics.cac = 2800`), so no Money Models source search is needed for this simple factual lookup."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_022",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:42Z",
+      "expected": "no_search",
+      "latency_ms": 8589.8,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The saved snapshot already includes CAC, first-30-day gross profit, monthly recurring gross profit, and a precomputed payback period, so this is a straightforward calculation from known facts and does not require Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_023",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:45Z",
+      "expected": "no_search",
+      "latency_ms": 8500.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The current advisor snapshot already contains the pilot, core offer, and upsell descriptions and prices, so this is a straightforward recall question with no need to search the Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_024",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:51Z",
+      "expected": "no_search",
+      "latency_ms": 11508.5,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "This is a payback-driven acquisition recommendation, but the snapshot is missing the key economics needed for that diagnosis (`cac` and `first_30_day_gross_profit`). Per the gate rules, we should not search the source material to replace missing business facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_025",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:51Z",
+      "expected": "search_source_material",
+      "latency_ms": 11312.3,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a Money Models recommendation/structure question about whether a performance-backed guarantee or fee-back mechanism fits the offer. The snapshot already contains enough business facts and symptoms to diagnose it, so source material should be searched rather than guessing."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_026",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:52Z",
+      "expected": "search_source_material",
+      "latency_ms": 10236.1,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a Money Models diagnosis/recommendation question, and the snapshot already contains enough facts about the business, offer stack, symptoms, and goal to justify searching the source material for the fitting framework or recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_027",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:03:56Z",
+      "expected": "search_source_material",
+      "latency_ms": 10481.3,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The request is asking for a pricing/timing recommendation for an existing offer stack, and the snapshot already contains enough business facts to support a Money Models diagnosis. This is not a missing-facts issue, so the correct next step is to search the Money Models source material for the relevant framework or precedent before answering."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_028",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:02Z",
+      "expected": "search_source_material",
+      "latency_ms": 11058.7,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a Money Models concept/recommendation question about next-offer structure, and the snapshot already contains enough business facts to evaluate it. It is not a missing-facts question, and it is not just vocabulary, so the gate should authorize searching the source material for a grounded recommendation."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_029",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:01Z",
+      "expected": "no_search",
+      "latency_ms": 9852.2,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The current advisor state already contains the saved prices for both offers: the 12-week coached transformation program is $2,400 and the ongoing training membership is $249. This is a simple factual lookup from the snapshot, so no Money Models source search is needed."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_030",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:03Z",
+      "expected": "no_search",
+      "latency_ms": 10140.9,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The business snapshot already contains the needed inputs and the payback period is a straightforward calculation from those numbers. This does not require Money Models source material or additional citation support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_031",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:07Z",
+      "expected": "no_search",
+      "latency_ms": 11489.1,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The request is a simple recap of economics already present in the loaded advisor snapshot. No Money Models source material is needed because there is enough authoritative context to summarize the existing facts without additional citation or diagnosis."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_032",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:11Z",
+      "expected": "no_search",
+      "latency_ms": 9973.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "This is a spend-scaling recommendation that depends on missing business facts, especially CAC and first-30-day gross profit. The snapshot has enough context to know the offer and symptom, but not enough economics to justify searching source material yet. The next step is to obtain the missing financial inputs rather than search."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_033",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:13Z",
+      "expected": "search_source_material",
+      "latency_ms": 11477.9,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a recommendation/diagnosis about cash flow and inventory timing in a Money Models context, and the snapshot already has enough facts about the offer stack, margins, payback, and the stated cash constraint to support a sourced answer from the Money Models material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_034",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:13Z",
+      "expected": "search_source_material",
+      "latency_ms": 10676.6,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a diagnosis/recommendation about offer-stack structure, and the snapshot already contains enough business facts and symptoms to support a Money Models-backed answer. That means the next step is to search the Money Models source material for support rather than ask for more context or answer from memory."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_035",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:17Z",
+      "expected": "search_source_material",
+      "latency_ms": 9375.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a Money Models diagnosis question about ad spend capacity. The snapshot already has the relevant economics and offer stack facts, so the answer should be supported by the Money Models source material rather than treated as a missing-facts lookup."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_036",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:24Z",
+      "expected": "search_source_material",
+      "latency_ms": 12591.1,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is an offer-stack recommendation, not a missing-fact question. The snapshot already contains enough pricing, margin, CAC, payback, and product-stack context to support a Money Models diagnosis, so the next step should be to search the Money Models source material for the relevant framework before answering."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_037",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:21Z",
+      "expected": "no_search",
+      "latency_ms": 7387.5,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The saved business context already contains the needed facts: CAC is 48 and gross margin is 0.62. This is a simple retrieval question and does not require searching the Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_038",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:23Z",
+      "expected": "no_search",
+      "latency_ms": 8931.4,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The current advisor state already contains the saved skincare economics, including `economics.payback_period_months = 1.5714285714285714`, so the acquisition payback period can be answered directly from snapshot data without searching the Money Models corpus."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_039",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:24Z",
+      "expected": "no_search",
+      "latency_ms": 7425.0,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The current offer ladder is already fully present in the loaded business snapshot, so this is a straightforward recall task. No Money Models corpus search is needed because there are no missing facts, comparisons, or diagnoses to resolve."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_040",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:32Z",
+      "expected": "no_search",
+      "latency_ms": 10466.3,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "This is a payback/scale-affordability question, and the snapshot explicitly lacks the key inputs needed to judge it: CAC and first-30-day gross profit. The right next step is to obtain those business facts, not search the Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_041",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:44Z",
+      "expected": "search_source_material",
+      "latency_ms": 21314.4,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a pricing and funnel-structure recommendation, not a simple vocabulary question. The snapshot has enough business facts to evaluate whether the readiness audit should roll into the implementation fee, so Money Models source material should be searched for the best-supported guidance."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_042",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:34Z",
+      "expected": "search_source_material",
+      "latency_ms": 10460.5,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "This is a recommendation/comparison about offer sequencing, and the current snapshot already has enough business facts to support a Money Models diagnosis. Per the gate rules, that means the answer should be grounded by searching the Money Models source material rather than relying only on the snapshot."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_043",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:33Z",
+      "expected": "search_source_material",
+      "latency_ms": 8403.3,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The user is asking for an offer-stack diagnosis, not a definition. The snapshot already contains enough business facts to support a Money Models diagnosis, so this should be answered by searching the Money Models source material rather than by asking for more business context."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "search_source_material",
+      "case_id": "searchdecision_v1_044",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:40Z",
+      "expected": "search_source_material",
+      "latency_ms": 8546.6,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "search_source_material",
+        "rationale": "The question asks for Money Models guidance on rollout strategy for multiple offers. The snapshot already contains enough business facts to make this diagnosable, so the next step is to search the Money Models source material for the framework or recommendation rather than asking for more facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_045",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:41Z",
+      "expected": "no_search",
+      "latency_ms": 7991.2,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The current snapshot already contains the saved prices for the three offers, so this is a direct lookup rather than a diagnosis or recommendation that needs source-material support."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_046",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:49Z",
+      "expected": "no_search",
+      "latency_ms": 14882.1,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The saved business context already contains the payback period (`economics.payback_period_months: 1.0`) and enough supporting economics to answer directly. This is a simple calculation/lookup, not a concept diagnosis that requires Money Models source material."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_047",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:49Z",
+      "expected": "no_search",
+      "latency_ms": 8573.4,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "The requested CAC, first-month gross profit, and lifetime gross profit are already present in the current advisor snapshot as known facts, so no Money Models source-material search is needed."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    },
+    {
+      "actual": "no_search",
+      "case_id": "searchdecision_v1_048",
+      "contamination_flags": [],
+      "correct": true,
+      "created_at": "2026-08-14T01:04:53Z",
+      "expected": "no_search",
+      "latency_ms": 12252.8,
+      "model": "gpt-5.4-mini",
+      "parse_error": null,
+      "response": {
+        "context_used": [
+          "snapshot"
+        ],
+        "decision": "no_search",
+        "rationale": "This question is a spend-more / lead-acquisition recommendation that depends on payback economics, but the snapshot is missing the key facts needed for that diagnosis (`economics.cac` and `economics.first_30_day_gross_profit`). Per the gate rules, we should not search the Money Models corpus to substitute for missing business facts."
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "valid": true
+    }
+  ]
+}

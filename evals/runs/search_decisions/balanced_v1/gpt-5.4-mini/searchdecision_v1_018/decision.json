@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The request is a pricing/commitment recommendation, and the current snapshot already contains enough relevant offer and churn/payback facts to support a Money Models-backed diagnosis. This is not missing-business-facts work and is not a simple vocabulary question, so it should be answered with source material search."
+}

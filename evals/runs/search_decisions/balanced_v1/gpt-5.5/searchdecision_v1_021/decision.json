@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The user asks for a saved factual value already present in the current business snapshot: economics.cac = 2800. This does not require Money Models source support, concept diagnosis, comparison, or recommendation."
+}

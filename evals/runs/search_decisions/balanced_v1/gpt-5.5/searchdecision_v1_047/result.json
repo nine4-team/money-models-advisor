@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_047",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:41Z",
+  "expected": "no_search",
+  "latency_ms": 8822.7,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The user is asking for saved numeric business facts already present in the advisor snapshot (CAC, first-30-day gross profit, and lifetime gross profit). This is fact retrieval from current state, not a Money Models concept, comparison, diagnosis, or recommendation requiring source support."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

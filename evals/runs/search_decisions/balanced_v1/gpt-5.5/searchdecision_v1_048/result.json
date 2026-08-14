@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_048",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:46Z",
+  "expected": "no_search",
+  "latency_ms": 9000.8,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The request is about whether to increase acquisition spend, which requires payback/economics facts. The snapshot is explicitly missing CAC and first-30-day gross profit and is not ready for payback diagnosis. Per the gate rules, do not search instead of obtaining missing business facts."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

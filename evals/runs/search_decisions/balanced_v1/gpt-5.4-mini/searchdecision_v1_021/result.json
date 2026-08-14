@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_021",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:36Z",
+  "expected": "no_search",
+  "latency_ms": 7170.5,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The current advisor snapshot already contains the saved CAC fact for the SaaS business (`economics.cac = 2800`), so no Money Models source search is needed for this simple factual lookup."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

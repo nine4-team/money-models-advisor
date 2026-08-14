@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"This is a simple vocabulary question and does not require Money Models source material or citation. The snapshot context is sufficient to see that no business facts are needed to decide the search gate."}

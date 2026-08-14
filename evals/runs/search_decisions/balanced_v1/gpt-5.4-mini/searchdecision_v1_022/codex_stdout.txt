@@ -1,0 +1,1 @@
+{"context_used":["snapshot"],"decision":"no_search","rationale":"The saved snapshot already includes CAC, first-30-day gross profit, monthly recurring gross profit, and a precomputed payback period, so this is a straightforward calculation from known facts and does not require Money Models source material."}

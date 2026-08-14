@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_047",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:49Z",
+  "expected": "no_search",
+  "latency_ms": 8573.4,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The requested CAC, first-month gross profit, and lifetime gross profit are already present in the current advisor snapshot as known facts, so no Money Models source-material search is needed."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

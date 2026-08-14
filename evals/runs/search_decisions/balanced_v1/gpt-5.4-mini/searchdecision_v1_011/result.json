@@ -1,0 +1,22 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_011",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:16Z",
+  "expected": "no_search",
+  "latency_ms": 10445.8,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot",
+      "local_docs"
+    ],
+    "decision": "no_search",
+    "rationale": "The current advisor state and local documents already contain the pricing facts needed to answer this: attraction offer $597, core offer $15,000, upsell $5,000, and draft service pricing ranges. This is a simple pricing recall, not a concept/comparison/diagnosis that requires searching the Money Models corpus."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

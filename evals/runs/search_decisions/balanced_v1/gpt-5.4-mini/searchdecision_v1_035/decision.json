@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "This is a Money Models diagnosis question about ad spend capacity. The snapshot already has the relevant economics and offer stack facts, so the answer should be supported by the Money Models source material rather than treated as a missing-facts lookup."
+}

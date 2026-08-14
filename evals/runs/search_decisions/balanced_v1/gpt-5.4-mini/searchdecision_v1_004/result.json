@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_004",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:57Z",
+  "expected": "search_source_material",
+  "latency_ms": 10462.4,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "This is a Money Models concept/comparison question, and the snapshot already contains enough business facts to support a sourced answer. That fits the gate rule to search the source material rather than answer from general knowledge."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

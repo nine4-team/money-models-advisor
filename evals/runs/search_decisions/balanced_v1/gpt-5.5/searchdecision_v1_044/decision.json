@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The user asks what the Money Models source says about rollout for multiple simultaneous offer changes. This is a concept/recommendation question requiring source-backed guidance, and the snapshot already has enough relevant facts about the business, offer stack, and current symptom of considering several changes at once. No missing business facts or prior-session context are needed before searching."
+}

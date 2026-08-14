@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "search_source_material",
+  "rationale": "The user is asking for a Money Models recommendation about structuring payment plans for a known offer stack and buyer constraint. The snapshot has enough relevant business facts to ground the recommendation, and the answer should use Money Models source support rather than relying on generic payment-plan advice."
+}

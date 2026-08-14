@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_010",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:14Z",
+  "expected": "no_search",
+  "latency_ms": 9748.7,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "local_docs"
+    ],
+    "decision": "no_search",
+    "rationale": "The current context already identifies the business as 1584 Design, a premium full-service interior design firm for short-term rental and second-home projects. This is a simple context lookup, not a concept/comparison/diagnosis that requires Money Models source-material search."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

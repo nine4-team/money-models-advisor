@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_041",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:02:29Z",
+  "expected": "search_source_material",
+  "latency_ms": 10088.3,
+  "model": "gpt-5.5",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The request asks for a recommendation about changing the attraction offer structure by crediting the readiness audit fee toward the core implementation offer. The snapshot has enough relevant facts about the offer stack, prices, margins, CAC/payback, and stated symptoms to diagnose the tradeoff, so Money Models source support should be searched rather than asking for more facts."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

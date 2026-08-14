@@ -1,0 +1,7 @@
+{
+  "context_used": [
+    "snapshot"
+  ],
+  "decision": "no_search",
+  "rationale": "The current snapshot already contains the saved prices for the three offers, so this is a direct lookup rather than a diagnosis or recommendation that needs source-material support."
+}

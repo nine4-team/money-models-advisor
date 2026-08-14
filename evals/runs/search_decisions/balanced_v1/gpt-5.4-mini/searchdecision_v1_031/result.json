@@ -1,0 +1,21 @@
+{
+  "actual": "no_search",
+  "case_id": "searchdecision_v1_031",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:07Z",
+  "expected": "no_search",
+  "latency_ms": 11489.1,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "no_search",
+    "rationale": "The request is a simple recap of economics already present in the loaded advisor snapshot. No Money Models source material is needed because there is enough authoritative context to summarize the existing facts without additional citation or diagnosis."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

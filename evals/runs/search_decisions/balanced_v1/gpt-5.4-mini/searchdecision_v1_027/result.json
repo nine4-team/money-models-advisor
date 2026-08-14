@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_027",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:03:56Z",
+  "expected": "search_source_material",
+  "latency_ms": 10481.3,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "The request is asking for a pricing/timing recommendation for an existing offer stack, and the snapshot already contains enough business facts to support a Money Models diagnosis. This is not a missing-facts issue, so the correct next step is to search the Money Models source material for the relevant framework or precedent before answering."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}

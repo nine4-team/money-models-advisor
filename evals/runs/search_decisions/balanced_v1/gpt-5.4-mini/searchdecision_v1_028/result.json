@@ -1,0 +1,21 @@
+{
+  "actual": "search_source_material",
+  "case_id": "searchdecision_v1_028",
+  "contamination_flags": [],
+  "correct": true,
+  "created_at": "2026-08-14T01:04:02Z",
+  "expected": "search_source_material",
+  "latency_ms": 11058.7,
+  "model": "gpt-5.4-mini",
+  "parse_error": null,
+  "response": {
+    "context_used": [
+      "snapshot"
+    ],
+    "decision": "search_source_material",
+    "rationale": "This is a Money Models concept/recommendation question about next-offer structure, and the snapshot already contains enough business facts to evaluate it. It is not a missing-facts question, and it is not just vocabulary, so the gate should authorize searching the source material for a grounded recommendation."
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "valid": true
+}
