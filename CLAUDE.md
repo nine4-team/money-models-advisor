@@ -33,7 +33,8 @@ human talks to an agent
 -> agent writes the final answer
 ```
 
-The agent owns semantic judgment: next action, source need, query intent, chunk usefulness, safe memory updates, and answer quality.
+The agent owns semantic judgment: next action, whether source search is needed,
+single-query content, chunk usefulness, accepted memory updates, and answer quality.
 
 The CLI/core owns deterministic work: snapshot persistence, formulas, retrieval execution, embedding cache use, trace validation, report generation, and scorer execution.
 
@@ -41,7 +42,7 @@ The CLI/core owns deterministic work: snapshot persistence, formulas, retrieval 
 
 - `AGENTS.md`: repo-wide development instructions.
 - `.codex/skills/money-model-advisor/SKILL.md`: how an agent should operate the CLI during a Money Models conversation.
-- `DESIGN.md`: canonical narrative, written like an applied ML paper.
+- `DESIGN.md`: canonical current design and decision record.
 - `GOLDEN_DATASET.md`: map of golden datasets, product risks, scorers, and current results.
 - `README.md`: command map and project status.
 
@@ -65,7 +66,7 @@ Prefer focused checks first:
 ```bash
 python3 -m unittest discover -s tests -v
 PYTHONPATH=src python3 scripts/eval_smoke.py
-python3 scripts/eval_source_need_generation.py
+python3 scripts/eval_search_decision_models.py --limit 2
 python3 scripts/eval_source_event_traces.py
 git diff --check
 ```

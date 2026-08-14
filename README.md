@@ -5,7 +5,7 @@ A portfolio RAG and diagnostic advisor for Alex Hormozi's *$100M Money Models*.
 The target role is recorded in [JOB_DESCRIPTION.md](JOB_DESCRIPTION.md). That file is the project north star: the repo should demonstrate production-grade AI agent work, RAG judgment, golden datasets, cached embeddings, cost-aware architecture, observability, and regression-oriented evaluation for the Acquisition.com Senior AI Engineer role. Repo-wide Codex guidance lives in [AGENTS.md](AGENTS.md).
 
 The portfolio narrative is [narrative.html](narrative.html). [DESIGN.md](DESIGN.md)
-is the longer technical decision record, and [GOLDEN_DATASET.md](GOLDEN_DATASET.md)
+is the current decision record, and [GOLDEN_DATASET.md](GOLDEN_DATASET.md)
 maps each active evaluation to its data, scorer, and report. Runtime contracts live in
 [CLI_DESIGN.md](CLI_DESIGN.md), [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md),
 and the project advisor skill. Historical progress files remain in the repo for
@@ -13,9 +13,9 @@ reproducibility but do not define current behavior.
 
 This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
 
-The next product surface is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs CLI commands against saved state. Embedding API use is allowed for deterministic vectorization only. Retrieval now has a local/Pinecone vector-store boundary, so a future web-hosted version can reuse the same core.
+The product is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs CLI commands against saved state. Embedding API use is allowed for deterministic vectorization only. Retrieval has a local/Pinecone vector-store boundary, so another interface can reuse the same core.
 
-If the user provides missing information, the agent saves it back into the snapshot. The web app should be a second surface over the same advisor/retrieval core, not a separate implementation.
+If the user provides missing information, the agent saves the accepted fact into the snapshot.
 
 ## Advisor skill
 
@@ -160,8 +160,8 @@ used only for deterministic vectorization and cached under `.cache/embeddings/`.
 
 The current hosted benchmark uses the active 46-case, one-query path, framework-aware chunks, and `text-embedding-3-large` at 1,536 dimensions. The isolated unfiltered namespace reaches 93.5% Hit@1, 100% Hit@5, and 86.1% Useful@5 at 1.13s p50 / 1.43s p95. The earlier namespace experiment did not improve quality, and removing a redundant 10x vector over-fetch reduced latency without changing rankings. See `evals/reports/pinecone_large_embedding_revalidation.md` and `evals/reports/pinecone_candidate_depth_optimization.md`.
 
-The older orchestration model-routing harness remains available for historical
-replay. It uses `codex exec`, lets the model operate the CLI, and does not use
+The full-workflow orchestration harness remains available for trace-level
+regressions. It uses `codex exec`, lets the model operate the CLI, and does not use
 `OPENAI_API_KEY`:
 
 ```bash
@@ -170,8 +170,15 @@ python3 scripts/eval_codex_model_routing.py
 # traces are cached under evals/runs/model_routing_codex/; --force re-runs them
 ```
 
-The report lands at `evals/reports/model_routing_tiering.md`. It predates the current
-single-query contract and should not be used as query-writer evidence.
+The focused search-decision comparison uses 48 balanced cases and fresh sanitized
+runtimes. It is the current model-routing evidence for the search gate:
+
+```bash
+python3 scripts/eval_search_decision_models.py
+```
+
+The report lands at `evals/reports/search_decision_model_comparison.md`. Query-writer
+evidence comes from the separate 46-case retrieval matrix.
 
 Replay the retired source-need planning experiment:
 
@@ -240,10 +247,20 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
 - Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.
 - Core CLI commands implemented: `setup`, `session start`, `session finish`, `search`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record`.
 - Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
+- Framework-aware chunks, `text-embedding-3-large` at 1,536 dimensions, one
+  corpus-guided query, unfiltered hybrid retrieval, and the Pinecone storage path
+  are selected and implemented.
+- Search/no-search model routing is measured on 48 balanced cases: `gpt-5.5`
+  scores 48/48 and `gpt-5.4-mini` scores 47/48.
+- Calculation validation, current source-event traces, and the six-answer semantic
+  support audit cover the current turn contract.
 
 ## What remains planned
 
-- Agent-led local doc inspection before snapshot updates.
-- Continue monitoring hosted-vector tail latency as the corpus and traffic grow.
-- Optional LangGraph state graph once the CLI advisor loop is defined clearly enough to benefit from it.
-- Final hiring write-up assembled from the narrative, reports, and saved result tables.
+- Broaden end-to-end answer-quality coverage with genuinely different business
+  contexts and observed failures.
+- Add one repeatable regression command or CI job over the stable local suites.
+- Complete the final rendered narrative read-through and verify its tables against
+  the canonical reports.
+- Add comparable billed agent cost only if a metered deployment path becomes part
+  of the project.

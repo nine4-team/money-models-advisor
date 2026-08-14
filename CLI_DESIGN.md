@@ -333,12 +333,13 @@ The goal is not more automation for its own sake. The goal is a cleaner agent-op
 
 ## Current Gaps
 
-The next CLI gaps are behavior and demo quality, not missing command shape:
+The command and trace contracts are implemented. Current completion work is
+evaluation breadth and regression packaging rather than a missing CLI operation:
 
-- run realistic acting-agent turns through `session start` and `session finish`
-- inspect whether agents create complete source events without over-recording
-- tune the skill if agents omit actions, cite uninspected chunks, or over-search
-- consider a human-readable trace view only after the JSON trace contract is stable
+- expand current-path answer-quality cases beyond the six-case seed audit;
+- collect the stable local checks behind one repeatable regression command or CI job;
+- add new CLI behavior only when an observed failure shows that the current
+  operation shape makes correct agent behavior difficult.
 
 ## Acting-Agent Test-Fix Loop
 

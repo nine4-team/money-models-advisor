@@ -1,4 +1,10 @@
-# Implementation Plan
+# Historical Implementation Plan
+
+> **Status (2026-08-14):** This file preserves the sequence that built the
+> project. It is not a current to-do list or runtime specification. Use
+> `OPEN_ITEMS.md` for the short completion checklist, `REMEDIATION_PLAN.md` for
+> detailed open work, `DESIGN.md` for current decisions, and `GOLDEN_DATASET.md`
+> for current evaluation evidence.
 
 This project should be built experiment-first.
 

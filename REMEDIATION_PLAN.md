@@ -175,14 +175,14 @@ queries.
 4. The narrative contains one current retrieval table; heading-aware matrix results
    remain only as clearly labeled historical evidence if they are retained at all.
 
-## Priority 4 — Reconcile and simplify the narrative — Complete
+## Priority 4 — Reconcile and simplify the narrative — Rendered verification open
 
 **Status:** The factual reconciliation completed on 2026-08-12. A deletion-first
 content pass completed on 2026-08-13. It removed repeated conclusions, development-log
 material, the job-description appendix, and claims not established by the current
 implementation or evidence. The HTML structure, internal anchors, and whitespace pass
-validation. The in-app browser refused to reload the local `file://` page under its URL
-policy, so the freshly edited version still needs a manual rendered read-through.
+validation. The content pass is complete; the final rendered read-through is tracked
+as Priority 5 item 14.
 
 A second whole-document pass on 2026-08-13 removed vague maturity disclaimers and
 replaced abstract limitations with their concrete consequences. It also corrected two
@@ -383,22 +383,37 @@ An item is complete only when:
       contexts. Do not split the current 46 cases into artificial development and
       holdout subsets; use genuinely new cases when testing generalization.
 
-11. **Comparable cost reporting**
+11. **Stable regression gate**
+    - Add one top-level command or CI job that runs the stable local tests and
+      scorers and fails when an adopted quality contract regresses. Keep paid or
+      hosted replays outside the default gate.
+
+12. **Comparable cost reporting — Deferred**
     - If the agent moves from subscription harnesses to metered model calls, record
       billed cost per case alongside quality, latency, and failure mode.
 
 ### Cross-document reconciliation
 
-12. **Remove stale current-state claims outside the narrative — Complete (2026-08-13)**
+13. **Remove stale current-state claims outside the narrative — Complete (2026-08-14)**
    - `DESIGN.md`, `CLI_DESIGN.md`, `IMPLEMENTATION_PLAN.md`, `GOLDEN_DATASET.md`, the
      README, and the report index now point to the current source-event contract and
      current Pinecone result. Retired source-need material is labeled historical.
    - The retrieval revalidation harness pins its historical Small-embedding controls;
      changing the runtime embedding default cannot silently rewrite that evidence.
+   - A second reconciliation replaced stale Claude/model-routing, BM25-default,
+     embedding-selection, and unfinished-work claims in the current README,
+     architecture, design, JD audit, CLI design, and open-items tracker.
+
+14. **Rendered narrative read-through**
+   - Read the current HTML from beginning to end in a browser after document
+     reconciliation. Verify table labels and numbers against canonical reports and
+     remove any remaining stale or unnecessary prose found in the rendered page.
 
 ## Order of remaining work
 
-1. Expand golden breadth with genuinely new business contexts and report comparable
-   metered cost when the deployment path exposes it.
-2. After each item, run its focused regression and reconcile every affected document
+1. Expand golden breadth with genuinely new business contexts.
+2. Add the stable local regression gate.
+3. Complete the rendered narrative read-through.
+4. Report comparable metered cost only when the deployment path exposes it.
+5. After each item, run its focused regression and reconcile every affected document
    before adding the result to the narrative.

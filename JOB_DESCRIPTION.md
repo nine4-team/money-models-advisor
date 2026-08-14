@@ -79,12 +79,16 @@ The project should demonstrate senior-level AI engineering judgment for this JD.
 Strong alignment:
 
 - The advisor is agent-operated and CLI-backed: the agent plans; deterministic tools persist state, calculate, search, and record traces.
-- The project has explicit eval assets for next-action classification, source-need generation, source-event logging, query quality, chunking, and retrieval backend comparison.
-- Retrieval decisions are data-backed: heading-aware chunking remains the default; BM25 is the lexical baseline/control; one corpus-guided, unfiltered query through hybrid retrieval is the selected path after leading an audited 30-case development comparison and a 16-case reserved comparison.
+- The project has explicit eval assets for next-action classification, search
+  decisions, source-event logging, query quality, chunking, retrieval, and answer
+  support.
+- Retrieval decisions are data-backed: framework-aware chunking is the default;
+  BM25 is the lexical control; one corpus-guided, unfiltered query through hybrid
+  retrieval is the selected path after the full 46-case comparison.
 - Embeddings are cached under `.cache/embeddings/` so repeated vector runs reuse corpus and query vectors.
 - The narrative records decisions, metrics, misses, and non-adoptions rather than treating every sophisticated technique as automatically better.
 
-Weak alignment / gaps to close:
+Additional current evidence:
 
 - The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
 - The vector backend has local and Pinecone implementations. The selected Large,
@@ -92,9 +96,9 @@ Weak alignment / gaps to close:
   on the active 46-case one-query suite.
 - Query generation is implemented as one `SearchRequest.query` written by the operating agent from the current question, saved snapshot, and the same versioned corpus guide used by the winning experiment. The CLI applies no request-time filter and defaults that structured request to hybrid; the old variants/fallback path is compatibility-only.
 - Observability is now present through traces, Markdown reports, summary JSON, case-level JSONL, latency metrics, cache hit/miss accounting, and estimated embedding cost. Token/cost reporting is explicit for embeddings; agent work remains outside the API path.
-- Model-routing evidence now compares five OpenAI and Anthropic models on the same
-  24 tool-use cases with three runs per model. `gpt-5.5` remains the orchestration
-  choice; `gpt-5.4-mini` is retained as a tested bounded query-writer option.
+- Model-routing evidence compares `gpt-5.5` and `gpt-5.4-mini` on 48 balanced
+  search-decision cases. `gpt-5.5` scored 48/48 and remains the operating agent;
+  Mini scored 47/48 and remains a tested bounded query-writer option.
 
 ## Next JD-Aligned Work
 

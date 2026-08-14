@@ -1,191 +1,114 @@
 # Architecture
 
-This is the active technical reference for the local, agent-operated Money Model Advisor.
+**Updated:** 2026-08-14
 
-The v1 system is not an external model-service agent. A human talks to an agent; the agent follows the project skill's guidance; the agent runs local CLI commands against saved advisor state.
+This is the technical reference for the local Money Model Advisor. `DESIGN.md`
+explains why the choices were made; `GOLDEN_DATASET.md` maps the evidence.
 
-## CLI Operation Shape
+## Runtime
 
 ```text
-setup_state
-→ create .money-model-advisor/business_snapshot.json
-
-read_snapshot
-→ show saved BusinessSnapshot
-
-update_snapshot
-→ update accepted snapshot fields
-
-turn_record
-→ persist the completed agent turn, actions, source events, citations, and answer
-
-search_source_material
-→ return citation-ready Money Models source chunks
-
-logs
-→ show saved advisor session turns
+human talks to agent
+→ agent follows the Money Model Advisor skill
+→ agent starts a CLI-backed session and reads saved business context
+→ agent chooses whether to clarify, calculate, inspect, search, or answer
+→ CLI executes deterministic work and returns structured evidence
+→ agent writes the answer
+→ CLI validates and records the completed turn
 ```
 
-The advisor reasoning happens in the agent conversation. The repo supplies the skill instructions, durable state, and local CLI implementation. Humans can run the same CLI commands directly for development, debugging, or manual control.
+The agent owns semantic judgment. The CLI owns deterministic execution,
+persistence, and validation. Deterministic chat synthesis is not the advisor
+brain.
 
-## Core Components
+## Components
 
-| Component | File |
+| Responsibility | Implementation |
 |---|---|
-| Business snapshot schema | `src/money_model_architect/snapshot.py` |
-| Setup/intake state | `src/money_model_architect/setup_intake.py` |
-| Advisor state paths | `src/money_model_architect/business_context.py` |
+| Agent operating contract | `.codex/skills/money-model-advisor/SKILL.md` |
+| Business context and paths | `src/money_model_architect/business_context.py` |
+| Snapshot schema and persistence | `src/money_model_architect/snapshot.py` |
 | Deterministic formulas | `src/money_model_architect/calculator.py` |
-| Unit-economics diagnosis helpers | `src/money_model_architect/diagnose.py` |
-| Corpus layers | `src/money_model_architect/namespaces.py` |
-| Local chunking and BM25-style retrieval | `src/money_model_architect/retrieval.py` |
-| Advisor retrieval evidence capture | `src/money_model_architect/advisor_retrieval.py` |
-| Advisor query construction from snapshot state | `src/money_model_architect/advisor_queries.py` |
-| First stateful advisor skeleton | `src/money_model_architect/advisor.py` |
-| CLI commands | `src/money_model_architect/cli.py` |
-| Advisor operating instructions | `ADVISOR_OPERATING_GUIDE.md`, `.codex/skills/money-model-advisor/SKILL.md` |
+| Diagnostic helpers | `src/money_model_architect/diagnose.py` |
+| Query request validation | `src/money_model_architect/advisor_queries.py` |
+| Chunking and lexical retrieval | `src/money_model_architect/retrieval.py` |
+| Embeddings and cache | `src/money_model_architect/embeddings.py` |
+| Local and Pinecone vector stores | `src/money_model_architect/vector_store.py` |
+| Retrieval execution and evidence | `src/money_model_architect/advisor_retrieval.py` |
+| CLI surface and turn validation | `src/money_model_architect/cli.py` |
 
-## State Contract
+## State
 
-`BusinessSnapshot` is the cache for accepted business facts. It stores:
+`BusinessSnapshot` is the durable cache for accepted business facts. It stores
+the business and customer context, current money-model stack, unit economics,
+goals and symptoms, calculated fields, readiness, and provenance for accepted
+facts.
 
-- business type, ICP, and delivery model
-- current money-model stack
-- CAC, first-30-day gross profit, recurring gross profit, gross margin, LTGP, and payback
-- user goal, reported symptoms, and diagnosed constraints
-- missing fields and advisory status
-- field source metadata
+Updates are explicit. The agent resolves ambiguity before writing; `snapshot
+set` replaces the accepted value and provenance; calculated fields recompute.
+File paths and hashes record provenance but do not automatically invalidate
+facts.
 
-The agent can inspect local business docs as needed before updating the snapshot. Product-facing advisor flow should use the saved snapshot instead of rereading local files every turn. If the user provides a missing fact, the agent saves it to the snapshot.
+## Search request
 
-## Retrieval Contract
+When source evidence is needed, the agent writes one `SearchRequest`:
 
-Retrieval means local search over the Money Models source corpus. It returns cited chunks with IDs, chapters, layers, scores, and previews.
+```json
+{
+  "query": "source-specific query using the question, relevant saved facts, and corpus guide",
+  "retrieval_mode": "hybrid"
+}
+```
 
-Retrieval does not mean:
+The CLI validates the request, executes that exact query, and records the query
+and inspected chunks. It does not infer subjects, create query variants, or apply
+a request-time metadata filter. The older `SourceNeed` and multi-query formats
+remain compatibility paths for historical experiment replay only.
 
-- web search
-- external model-service calls
-- rereading local business files
-- intent routing
+## Retrieval
 
-The active retriever is a BM25-style local baseline over heading-aware transcript chunks. More complex retrieval is not active unless it can be evaluated locally and earns the added complexity.
+The active retrieval path is:
 
-The active architecture must evaluate two separate capabilities before retriever selection:
+```text
+one corpus-guided query
+→ BM25 candidates + vector candidates
+→ reciprocal-rank fusion
+→ top five framework-aware chunks
+```
 
-1. Tool-use judgment: whether the agent should search source material, read saved state, inspect business docs, calculate, clarify, update the snapshot, or answer directly.
-2. Search-query quality: when source-material search is appropriate, whether the query retrieves useful Money Models chunks.
+- Chunking: `framework-aware`.
+- Embeddings: `text-embedding-3-large`, 1,536 dimensions.
+- Storage: local in-memory vectors for fast evaluation; Pinecone behind the same
+  vector-store boundary for hosted replay.
+- Layout: one unfiltered namespace.
+- Control: BM25 remains available as the lexical baseline.
 
-Do not use corpus-search query metrics to judge turns where the correct action was not source-material search.
+Embeddings are deterministic infrastructure calls and are cached under
+`.cache/embeddings/`. Agent planning, relevance labeling, and answer synthesis do
+not use external model APIs.
 
-## Corpus Layers
+## Guardrails
 
-| Layer | Chapters |
-|---|---|
-| `unit-economics` | CAC, payback period, gross profit, CFA, money model context |
-| `offers` | attraction offers, offer types, decoy offers, free giveaways, free trials, free-with-consumption |
-| `upsells` | classic upsell, menu upsell, anchor upsell, rollover upsell, buy X get Y |
-| `downsells` | downsells, feature downsells, pay less now, payment plans, waived fee, win your money back |
-| `continuity` | continuity offers, continuity bonus, continuity discounts |
+`session finish` validates the recorded artifact before persistence:
 
-Some cross-cutting chapters are tagged across layers so they can surface when useful.
+- calculation events must use supported formulas and match recomputed results;
+- source events must contain the executed query and inspected chunks;
+- cited chunk IDs must appear in the recorded inspected set;
+- completed answers and semantic audits are bound by content hashes where used.
 
-## Deterministic Boundaries
+Citation validation proves provenance, not semantic support. Semantic support is
+checked separately by the answer-quality audit and remains an agent judgment.
 
-Design principle: the agent judges meaning; the CLI handles deterministic bookkeeping.
+## Observability
 
-Deterministic code is appropriate for:
+Saved turns and eval artifacts expose:
 
-- formulas
-- snapshot persistence
-- schema/readiness checks
-- numeric/accounting state classification after the agent has chosen the task
-- local retrieval execution
-- session trace writing
-- report generation over recorded artifacts
+- actions and calculation events;
+- search requests, retrieval mode, inspected chunks, and citations;
+- query/retrieval quality metrics;
+- p50 and p95 retrieval latency;
+- embedding cache hits, misses, and estimated embedding cost;
+- model-decision accuracy and latency in the focused routing evaluation.
 
-It is not appropriate as the production conversational brain. The advisor should not use regex or shallow keywords to decide whether the user wants teaching, diagnosis, comparison, or recommendation.
-
-Agent judgment is appropriate for semantic work:
-
-- next-action classification
-- source-need generation
-- deciding whether retrieved chunks actually support a claim
-- adjudicating ambiguous intent/layer cases
-- judging whether focus terms are conceptually covered when wording differs
-- evaluating whether the final answer is grounded, useful, and appropriate to the business context
-
-The CLI should make these judgments auditable by recording prompts, traces, decisions, cited chunks, and rationales. It should score recorded judgments, not replace the agent with hidden semantic heuristics.
-
-Current boundary status:
-
-- Deterministic `chat` orchestration has been removed from the active source tree.
-- `src/money_model_architect/advisor_queries.py` requires an explicit agent-selected `SourceNeed`; it no longer builds status-driven queries from snapshot state alone.
-- `search --source-need-json` executes source-material search from the agent's explicit source need.
-- `turn record` persists completed agent-operated turns with actions, source events, cited chunks, metadata, and the current snapshot.
-- `advisor_state.likely_retrieval_layers` and `advisor_state.retrieval_query_terms` are candidate hints, not final semantic decisions.
-- Exact focus-term recall in eval scripts is a debug proxy only; semantic focus coverage and chunk usefulness need recorded agent/human adjudication.
-
-## Evaluation
-
-Active local evals:
-
-| Check | Command |
-|---|---|
-| Unit tests | `python3 -m unittest discover -s tests -v` |
-| Smoke eval | `PYTHONPATH=src python3 scripts/eval_smoke.py` |
-| Local retrieval baseline | `PYTHONPATH=src python3 scripts/eval_retrieval.py` |
-| Chunking comparison | `PYTHONPATH=src python3 scripts/compare_chunking.py` |
-| Query realism audit | `PYTHONPATH=src python3 scripts/audit_query_realism.py` |
-| Required-claim support | `PYTHONPATH=src python3 scripts/score_obligation_support.py` |
-| Next-action trace capture | `python3 scripts/capture_tool_use_trace.py prepare <case_id>` |
-| Next-action judgment scorer | `python3 scripts/eval_tool_use_judgment.py` |
-| Source-need trace capture | `python3 scripts/capture_source_need_trace.py prepare <case_id>` |
-| Source-need generation scorer | `python3 scripts/eval_source_need_generation.py` |
-| Source-query quality scorer, reference queries | `python3 scripts/eval_search_query_quality.py --query-source reference --report evals/reports/advisor_search_query_quality.md` |
-| Source-query quality scorer, generated queries | `python3 scripts/eval_search_query_quality.py --query-source generated --report evals/reports/advisor_search_query_quality_generated.md` |
-
-Archived external-service experiments are not active architecture.
-
-Next-action classification eval:
-
-- cases live in `evals/advisor_tool_use_cases.jsonl`
-- isolated traces live under `evals/runs/next_action/{phase}/{case_id}/`
-- `prepare` writes `run_draft.json` and `acting_prompt.md`
-- `complete` validates recorded workflow evidence and writes `run.json`
-- the acting prompt excludes expected labels so the runner does not replace the agent's judgment
-- `scripts/eval_tool_use_judgment.py` scores only completed `run.json` artifacts
-
-Source-need generation is the bridge between next-action classification and query construction. It should be scored before retrieval-model comparisons because the agent can choose to search for the wrong kind of support even when the query builder itself works.
-
-Source-need generation eval:
-
-- cases live in `evals/advisor_source_need_cases.jsonl`
-- isolated traces live under `evals/runs/source_need/{phase}/{case_id}/`
-- `prepare` writes `run_draft.json` and `acting_prompt.md`
-- `complete` writes the acting agent's `source_search_decision` and `source_need` into `run.json`
-- `scripts/eval_source_need_generation.py` scores only completed `run.json` artifacts
-
-Source-search query quality remains a separate eval and should only be scored for turns where `search_source_material` was the correct next action. Reference mode is the seed baseline for source-specific query examples; generated mode is the product-behavior check for the runtime query builder after an advisor-selected source need is supplied.
-
-## JD Mapping
-
-| JD idea | Active local artifact |
-|---|---|
-| Chunking strategy | `src/money_model_architect/retrieval.py`, `evals/reports/chunking_comparison.md` |
-| Namespaces / corpus layering | `src/money_model_architect/namespaces.py` |
-| Golden datasets | `evals/golden.jsonl`, `evals/realistic_queries.jsonl`, `evals/obligations.jsonl`, `evals/advisor_source_need_cases.jsonl` |
-| Retrieval metrics | `scripts/eval_retrieval.py` |
-| Tool use / agentic workflow | CLI commands plus `BusinessSnapshot` state |
-| Deterministic calculations | `src/money_model_architect/calculator.py` |
-| Caching for token savings | `BusinessSnapshot` caches accepted business facts so the agent/CLI flow does not reread business files every turn |
-| Observability | `.money-model-advisor/sessions/` traces |
-| Hosted vector storage path | Planned Pinecone-backed `VectorStore` behind the same retrieval boundary as local vector search |
-
-## Deliberately Out Of Scope For V1
-
-- external model-service integration
-- external model-service key management
-- web UI before the shared advisor/retrieval core is clean
-- multi-agent orchestration
-- production auth, billing, or multi-tenancy
+The remaining operational step is to collect the stable checks behind one
+repeatable regression gate.
