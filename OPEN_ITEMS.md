@@ -19,20 +19,14 @@ detailed acceptance record; completed experiments should not be reopened here.
 - `python3 scripts/regression_gate.py` now runs the stable offline checks behind one
   fail-fast command. Strict scorer modes reject missing or failed saved results; the
   gate does not call acting models or hosted services.
+- The final source audit corrected the workflow's clarification boundary, completed
+  the evaluation/scoring explanation, added the embedding and latency decisions,
+  documented the regression gate, and reconciled the stale supporting documents.
+  The full eight-check gate passes, including 91 unit tests.
 
 ## Required for portfolio completion
 
-1. **Correct the workflow diagram.** Separate inspect-within-the-turn from
-   clarification, which ends the turn until the user supplies the missing context.
-2. **Complete the evaluation explanation.** Extend the framework and scoring text to
-   cover search decisions, calculation traces, answer quality, and the stable
-   regression gate.
-3. **Make the remaining retrieval decisions explicit.** State the selected embedding
-   setup and include the measured before/after Pinecone latency improvement.
-4. **Reconcile supporting documents.** Remove the false claim that intermediate
-   answer-quality scratch runs are preserved, close the stale query-model-selection
-   language, and replace the outdated six-answer description.
-5. **Complete the final visual review.** Quantitative claims match the canonical
+1. **Complete the final visual review.** Quantitative claims match the canonical
    reports. The remaining rendered-layout check is manual because automated
    inspection of this local `file://` page is blocked by browser security policy.
 

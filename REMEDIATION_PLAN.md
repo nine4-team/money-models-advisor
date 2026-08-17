@@ -428,31 +428,31 @@ An item is complete only when:
      embedding-selection, and unfinished-work claims in the current README,
      architecture, design, JD audit, CLI design, and open-items tracker.
 
-14. **Final narrative and document reconciliation — Open (audited 2026-08-17)**
-   - Correct the workflow diagram so inspection can loop within a turn while a
+14. **Final narrative and document reconciliation — Source work complete; manual visual pass open (2026-08-17)**
+   - Resolved: correct the workflow diagram so inspection can loop within a turn while a
      clarification ends the turn and resumes only after the user responds.
-   - Expand the evaluation-framework and scoring explanations to cover the later
+   - Resolved: expand the evaluation-framework and scoring explanations to cover the later
      search-decision, calculation-trace, and answer-quality evaluations—not only the
      action and retrieval suites.
-   - Add the stable eight-check offline regression gate to the regression-coverage
+   - Resolved: add the stable eight-check offline regression gate to the regression-coverage
      section.
-   - State the embedding decision explicitly: use `text-embedding-3-large` at 1,536
+   - Resolved: state the embedding decision explicitly: use `text-embedding-3-large` at 1,536
      dimensions.
-   - Add the measured Pinecone candidate-depth latency improvement: 4.07s / 7.64s
+   - Resolved: add the measured Pinecone candidate-depth latency improvement: 4.07s / 7.64s
      p50 / p95 before and 0.89s / 1.14s after, with all 46 top-five lists preserved.
-   - Correct the final answer-quality report and scorer template: the committed
+   - Resolved: correct the final answer-quality report and scorer template: the committed
      evidence preserves the failed baseline and final run, not the uncommitted
      intermediate scratch runs.
-   - Reconcile `QUERY_GENERATION_TESTING_DESIGN.md`, which still says model selection
-     is open, and `IMPLEMENTATION_PLAN.md`, which still describes a six-answer audit.
-   - Finish with a rendered visual pass. Automated inspection of the local
+   - Resolved: reconcile `QUERY_GENERATION_TESTING_DESIGN.md`, which said model selection
+     was open, and `IMPLEMENTATION_PLAN.md`, which described a six-answer audit.
+   - Open: finish with a rendered visual pass. Automated inspection of the local
      `file://` page is blocked by the in-app browser security policy, so this final
      layout check must be performed manually unless the page is served over HTTP.
 
 ## Order of remaining work
 
-1. Resolve the audited narrative and supporting-document issues in item 14, run the
-   regression gate, and complete the remaining manual visual check.
+1. Complete the remaining manual visual check in item 14. The source changes pass the
+   full regression gate.
 2. Report comparable metered cost only when the deployment path exposes it.
 3. After each item, run its focused regression and reconcile every affected document
    before adding the result to the narrative.

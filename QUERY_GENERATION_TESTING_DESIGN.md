@@ -157,7 +157,7 @@ without a subject/namespace filter through hybrid retrieval. The prior multi-que
 fallback path remains available only for historical eval reproducibility and manual
 debugging.
 
-## Model Selection Still Open
+## Model Decision
 
 After fixing the corpus-guided method, the same prompt and guide were run with
 `gpt-5.4-mini`, the smaller model already used elsewhere in the project. Across 46
@@ -167,12 +167,12 @@ cases, Mini scored 91.3%/100.0%/100.0% Hit@1/Hit@3/Hit@5 versus
 (78.7% Useful@5). Mini was slower and used more Codex-reported tokens
 in this harness, although those token counts are not API billing.
 
-These retrieval metrics do not settle the runtime model because the answering agent
-receives all five passages. Keep the existing `gpt-5.5` runtime unchanged while the
-choice remains open. The next experiment should hold the answering model fixed, give
-it each model's frozen top-five evidence, and score required-claim support, citation
-correctness, unsupported claims, and answer usefulness. Precision@5 measures noise,
-not whether the useful passages cover distinct required claims.
+These retrieval metrics establish Mini as a viable bounded query writer, but they do
+not justify adding a separate model call to the active path. Query writing remains part
+of the operating `gpt-5.5` agent turn. A separate Mini call would add latency and
+another failure boundary without measured end-to-end benefit. Reconsider that split
+only when a metered deployment can compare actual cost and latency against answer
+quality.
 
 The unguided rewrite was also run with Mini to check for a model-by-approach
 interaction. Across all 46 cases, unguided Mini scored 76.1%/87.0%/91.3%

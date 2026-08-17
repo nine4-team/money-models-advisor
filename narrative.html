@@ -1331,22 +1331,21 @@
           answer plus an auditable record of how the answer was produced.
         </p>
         <figure class="workflow-map" aria-labelledby="workflow-map-caption">
-          <figcaption id="workflow-map-caption">One advisory turn · one selected action per loop · agent judgment in purple</figcaption>
+          <figcaption id="workflow-map-caption">One advisory turn · one selected action per loop · clarification waits for the next user turn</figcaption>
           <div class="workflow-scroll">
             <!--
               Control-flow specification:
               1. Load context.
               2. If context is sufficient, compose; otherwise select exactly one next action.
-              3. Selected action = context gap -> clarify or inspect.
-                 Selected action = calculation needed -> calculate.
-                 Selected action = source evidence needed -> search source material.
-              4. After the selected action, reassess context and repeat if necessary.
-              5. Validate the composed answer. If valid, record and return; otherwise revise and revalidate.
+              3. If a material input is unavailable, ask the founder and end the turn.
+              4. Otherwise inspect available business context, calculate, or search source material.
+              5. After an in-turn action, reassess context and repeat if necessary.
+              6. Validate the composed answer. If valid, record and return; otherwise revise and revalidate.
             -->
             <svg class="wf-diagram" viewBox="0 0 1080 700" role="img" aria-labelledby="workflow-title workflow-desc"
               xmlns="http://www.w3.org/2000/svg">
               <title id="workflow-title">Money Model Advisor workflow</title>
-              <desc id="workflow-desc">A founder asks a question and the system loads saved context. If the agent has enough context, it composes an answer. Otherwise it chooses whether to clarify, calculate, or search source material, then reassesses. A composed answer is validated. Valid answers are recorded and returned; invalid answers return to the agent for revision.</desc>
+              <desc id="workflow-desc">A founder asks a question and the system loads saved context. If the agent has enough context, it composes an answer. Otherwise it chooses whether to inspect available business context, calculate, search source material, or ask the founder for a missing material input. Inspection, calculation, and search return to context assessment. Clarification ends the turn until the founder replies. A composed answer is validated. Valid answers are recorded and returned; invalid answers return to the agent for revision.</desc>
               <defs>
                 <marker id="flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
                   orient="auto-start-reverse">
@@ -1364,19 +1363,21 @@
               <path class="flow-line" data-from="enough-context" data-to="compose" data-condition="yes"
                 d="M 690 200 H 830" />
               <path class="flow-line" data-from="enough-context" data-to="choose-action" data-condition="no"
-                d="M 590 250 V 280 H 390 V 305" />
-              <path class="flow-line" data-from="choose-action" data-to="clarify" data-condition="context-gap"
-                d="M 270 355 H 130 V 520" />
+                d="M 590 250 V 280 H 450 V 305" />
+              <path class="flow-line" data-from="choose-action" data-to="clarify" data-condition="missing-material-input"
+                d="M 320 355 H 120 V 520" />
+              <path class="flow-line" data-from="choose-action" data-to="inspect" data-condition="context-available-locally"
+                d="M 390 385 V 450 H 340 V 520" />
               <path class="flow-line" data-from="choose-action" data-to="calculate" data-condition="calculation-needed"
-                d="M 390 405 V 520" />
+                d="M 510 385 V 450 H 560 V 520" />
               <path class="flow-line" data-from="choose-action" data-to="search" data-condition="source-evidence-needed"
-                d="M 510 355 H 650 V 520" />
-              <path class="flow-merge" data-from="clarify" data-to="action-complete" d="M 130 580 V 640 H 390" />
-              <path class="flow-merge" data-from="calculate" data-to="action-complete" d="M 390 580 V 640" />
-              <path class="flow-merge" data-from="search" data-to="action-complete" d="M 650 580 V 640 H 390" />
-              <circle data-node="action-complete" cx="390" cy="640" r="3.5" fill="var(--rule-strong)" />
+                d="M 580 355 H 780 V 520" />
+              <path class="flow-merge" data-from="inspect" data-to="action-complete" d="M 340 580 V 640 H 560" />
+              <path class="flow-merge" data-from="calculate" data-to="action-complete" d="M 560 580 V 640" />
+              <path class="flow-merge" data-from="search" data-to="action-complete" d="M 780 580 V 640 H 560" />
+              <circle data-node="action-complete" cx="560" cy="640" r="3.5" fill="var(--rule-strong)" />
               <path class="flow-line flow-loop" data-from="action-complete" data-to="enough-context"
-                d="M 390 640 H 16 V 120 H 590 V 150"
+                d="M 560 640 H 16 V 120 H 590 V 150"
                 style="marker-end:url(#flow-arrow-accent)" />
               <path class="flow-line" data-from="compose" data-to="validate" d="M 940 232 V 300" />
               <path class="flow-line" data-from="validate" data-to="valid" d="M 940 364 V 390" />
@@ -1387,9 +1388,10 @@
 
               <text class="flow-label" x="714" y="189">Yes · answer</text>
               <text class="flow-label" x="475" y="269">No · choose one action</text>
-              <text class="flow-label" x="145" y="343">Context gap</text>
-              <text class="flow-label" x="404" y="468">Calculation needed</text>
-              <text class="flow-label" x="525" y="343">Source evidence needed</text>
+              <text class="flow-label" x="160" y="343">Missing material input</text>
+              <text class="flow-label" x="320" y="438">Context available</text>
+              <text class="flow-label" x="530" y="438">Calculation needed</text>
+              <text class="flow-label" x="620" y="343">Source evidence needed</text>
               <text class="flow-label" x="460" y="108">Reassess after one action</text>
               <text class="flow-label" x="952" y="505">Yes</text>
               <text class="flow-label" x="1058" y="370" transform="rotate(-90 1058 370)">No · revise</text>
@@ -1406,21 +1408,26 @@
               <text class="flow-owner flow-agent-label" x="590" y="193">Agent judgment</text>
               <text class="flow-title" x="590" y="216">Enough context?</text>
 
-              <polygon class="flow-decision" data-node="choose-action" points="390,305 510,355 390,405 270,355" />
-              <text class="flow-owner flow-agent-label" x="390" y="348">Agent judgment</text>
-              <text class="flow-title" x="390" y="371">Choose next action</text>
+              <polygon class="flow-decision" data-node="choose-action" points="450,305 580,355 450,405 320,355" />
+              <text class="flow-owner flow-agent-label" x="450" y="348">Agent judgment</text>
+              <text class="flow-title" x="450" y="371">Choose next action</text>
 
-              <rect class="flow-process" data-node="clarify" x="30" y="520" width="200" height="60" rx="6" />
-              <text class="flow-owner" x="130" y="544">Agent + core</text>
-              <text class="flow-title" x="130" y="566">Clarify or inspect</text>
+              <rect class="flow-terminal flow-output" data-node="clarify" x="20" y="520" width="200" height="60" rx="30" />
+              <text class="flow-owner" x="120" y="544">Return to founder</text>
+              <text class="flow-title" x="120" y="566">Ask for missing input</text>
+              <text class="flow-label" x="120" y="606">Reply starts the next turn</text>
 
-              <rect class="flow-process" data-node="calculate" x="290" y="520" width="200" height="60" rx="6" />
-              <text class="flow-owner" x="390" y="544">Deterministic core</text>
-              <text class="flow-title" x="390" y="566">Calculate</text>
+              <rect class="flow-process" data-node="inspect" x="240" y="520" width="200" height="60" rx="6" />
+              <text class="flow-owner" x="340" y="544">Agent + core</text>
+              <text class="flow-title" x="340" y="566">Inspect business context</text>
 
-              <rect class="flow-process" data-node="search" x="550" y="520" width="200" height="60" rx="6" />
-              <text class="flow-owner" x="650" y="544">Agent + core</text>
-              <text class="flow-title" x="650" y="566">Search source material</text>
+              <rect class="flow-process" data-node="calculate" x="460" y="520" width="200" height="60" rx="6" />
+              <text class="flow-owner" x="560" y="544">Deterministic core</text>
+              <text class="flow-title" x="560" y="566">Calculate</text>
+
+              <rect class="flow-process" data-node="search" x="680" y="520" width="200" height="60" rx="6" />
+              <text class="flow-owner" x="780" y="544">Agent + core</text>
+              <text class="flow-title" x="780" y="566">Search source material</text>
 
               <rect class="flow-process flow-agent" data-node="compose" x="830" y="168" width="220" height="64" rx="6" />
               <text class="flow-owner flow-agent-label" x="940" y="193">Agent judgment</text>
@@ -1881,7 +1888,7 @@
 
         <h3 id="s3-1"><span class="sub">3.1</span>Evaluation framework</h3>
         <p class="lede">
-          The evaluation grew in five stages.
+          The evaluation grew in seven stages.
         </p>
         <ol class="steps">
           <li>
@@ -1925,6 +1932,22 @@
               queries to measure request latency and compare one namespace
               with five subject namespaces: Unit Economics, Offers, Upsells,
               Downsells, and Continuity.
+            </span>
+          </li>
+          <li>
+            <span class="s-term">Test the search gate</span>
+            <span class="s-def">
+              A balanced 48-turn suite isolates the decision to search or not
+              search. Both models receive the same business context, without
+              retrieval or answer writing.
+            </span>
+          </li>
+          <li>
+            <span class="s-term">Test traces and completed answers</span>
+            <span class="s-def">
+              Calculation cases verify recomputable trace events. Twenty
+              completed advisor turns then test source use, calculations,
+              clarification behavior, usefulness, and material-claim support.
             </span>
           </li>
         </ol>
@@ -2178,6 +2201,31 @@
               audited useful passage appears by that rank. Useful@5 is the
               share of the five results that directly help answer the turn;
               Noise@5 is the remainder.
+            </dd>
+          </div>
+          <div>
+            <dt>Search-decision scoring</dt>
+            <dd>
+              Each of 48 cases has one binary expectation: search or do not
+              search. Results report required searches found, prohibited
+              searches avoided, and total accuracy.
+            </dd>
+          </div>
+          <div>
+            <dt>Calculation-trace scoring</dt>
+            <dd>
+              Each calculation case defines the expected metric, inputs, and
+              result. The validator recomputes the event and rejects missing,
+              invalid, or mismatched values.
+            </dd>
+          </div>
+          <div>
+            <dt>Answer-quality scoring</dt>
+            <dd>
+              A frozen answer passes when it follows the expected answer,
+              calculation, or clarification path and its material claims are
+              supported by saved business facts, deterministic results, or
+              cited source passages. Codex performed the semantic review.
             </dd>
           </div>
         </dl>
@@ -10021,6 +10069,14 @@
             <!-- narrative-evidence:embedding:end -->
           </div>
         </details>
+        <div class="decision">
+          <span class="d-tag">Decision</span>
+          <div>
+            <p>
+              Use <code>text-embedding-3-large</code> at 1,536 dimensions.
+            </p>
+          </div>
+        </div>
 
         <h4 id="s3-3-latency" class="block">Latency benchmarks</h4>
         <p>
@@ -10028,10 +10084,11 @@
           tested with the same 46 saved queries. The first pass exposed a
           redundant vector over-fetch: hybrid needed 25 candidates, but the
           adapter requested 250. Removing that multiplier preserved all 46
-          top-five rankings. The selected Large embeddings were then indexed in
-          an isolated 1,536-dimension namespace and replayed end to end. That
-          hosted run reached 93.5% Hit@1, 100% Hit@5, and 86.1% Useful@5 at
-          1.13s p50 and 1.43s p95.
+          top-five rankings while reducing p50 latency from 4.07s to 0.89s and
+          p95 from 7.64s to 1.14s. The selected Large embeddings were then
+          indexed in an isolated 1,536-dimension namespace and replayed end to
+          end. That hosted run reached 93.5% Hit@1, 100% Hit@5, and 86.1%
+          Useful@5 at 1.13s p50 and 1.43s p95.
         </p>
         <details class="evidence-data">
           <summary>View underlying data · 46 hosted retrieval cases</summary>
@@ -12085,6 +12142,14 @@
         </div>
 
         <h3 id="s3-5"><span class="sub">3.5</span>Regression coverage</h3>
+        <p>
+          <code>python3 scripts/regression_gate.py</code> runs eight stable
+          offline checks together: unit tests, the local retrieval smoke test,
+          strict scorers for tool use, source events, calculation traces, and
+          answer quality, the narrative-evidence drift check, and
+          <code>git diff --check</code>. The gate scores frozen artifacts and
+          makes no external calls.
+        </p>
         <p>
           The five-case calculation-trace suite verifies that a claimed
           <code>calculate</code> action records its metric, inputs, and result.

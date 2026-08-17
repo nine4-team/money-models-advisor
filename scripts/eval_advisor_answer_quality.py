@@ -191,7 +191,7 @@ def render_report(rows: list[dict[str, Any]], audit_path: Path, runs_dir: Path) 
     interpretation = (
         "The baseline supports the source-grounded recommendation and deterministic-calculation paths, but it does not yet support claiming complete answer quality. The clarification failure is general rather than case-specific, so the next step is to correct the input-sufficiency rule and rerun the clarification cases plus countercases without overwriting this baseline."
         if failures
-        else "The final suite supports the current source-grounded, calculation, and clarification paths across all five represented business contexts. This closes the identified answer-quality remediation item while preserving the failed baseline and intermediate countercase runs for inspection."
+        else "The final suite supports the current source-grounded, calculation, and clarification paths across all five represented business contexts. This closes the identified answer-quality remediation item while preserving the failed 16/20 baseline and final 20/20 run for inspection."
     )
     lines.extend([
         "", "## Interpretation", "", interpretation,

@@ -54,7 +54,7 @@ No semantic failures remain in the final 20-case suite. The initial frozen basel
 
 ## Interpretation
 
-The final suite supports the current source-grounded, calculation, and clarification paths across all five represented business contexts. This closes the identified answer-quality remediation item while preserving the failed baseline and intermediate countercase runs for inspection.
+The final suite supports the current source-grounded, calculation, and clarification paths across all five represented business contexts. This closes the identified answer-quality remediation item while preserving the failed 16/20 baseline and final 20/20 run for inspection.
 
 ## Scope
 

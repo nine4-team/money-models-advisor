@@ -110,7 +110,7 @@ Tooling recommendations are recorded in `TOOLING_SHORTLIST.md`.
 
 The active path is now one agent-authored, corpus-guided `SearchRequest.query` through
 unfiltered hybrid retrieval over framework-aware chunks. The 46-case retrieval suite,
-six-case source-event suite, calculation checks, and six-answer semantic audit cover
+six-case source-event suite, calculation checks, and 20-answer semantic audit cover
 the current contract. The retired `SourceNeed` and multi-query experiments remain as
 history only. Open work is tracked in `REMEDIATION_PLAN.md`; historical boundary work
 is recorded in `AGENT_CLI_BOUNDARY_REFACTOR_PLAN.md`.
