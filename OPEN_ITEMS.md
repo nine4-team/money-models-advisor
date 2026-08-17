@@ -22,9 +22,19 @@ detailed acceptance record; completed experiments should not be reopened here.
 
 ## Required for portfolio completion
 
-1. **Final narrative review.** Read the rendered HTML from beginning to end,
-   verify its numbers against canonical reports, and remove remaining stale or
-   unnecessary language.
+1. **Correct the workflow diagram.** Separate inspect-within-the-turn from
+   clarification, which ends the turn until the user supplies the missing context.
+2. **Complete the evaluation explanation.** Extend the framework and scoring text to
+   cover search decisions, calculation traces, answer quality, and the stable
+   regression gate.
+3. **Make the remaining retrieval decisions explicit.** State the selected embedding
+   setup and include the measured before/after Pinecone latency improvement.
+4. **Reconcile supporting documents.** Remove the false claim that intermediate
+   answer-quality scratch runs are preserved, close the stale query-model-selection
+   language, and replace the outdated six-answer description.
+5. **Complete the final visual review.** Quantitative claims match the canonical
+   reports. The remaining rendered-layout check is manual because automated
+   inspection of this local `file://` page is blocked by browser security policy.
 
 ## Deferred until the runtime exposes the needed evidence
 
