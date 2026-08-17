@@ -34,13 +34,13 @@
   "split": "scenario_holdout",
   "workflow_steps": [
     {
-      "command": "sed -n '1,220p' /Users/benjaminmackenzie/Dev/money-model-architect/.codex/skills/money-model-advisor/SKILL.md",
+      "command": "sed -n '1,220p' <repo>/.codex/skills/money-model-advisor/SKILL.md",
       "index": 0,
       "kind": "actor_reported_command",
       "source": "actor_output.json"
     },
     {
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir --message 'what does gross profit mean in plain English?'",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli chat --business-dir <repo>/evals/runs/next_action/scenario_holdout/tooluse_v1_020/business_dir --message 'what does gross profit mean in plain English?'",
       "index": 1,
       "kind": "actor_reported_command",
       "source": "actor_output.json"

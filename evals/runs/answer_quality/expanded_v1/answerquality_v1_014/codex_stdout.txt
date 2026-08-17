@@ -1,9 +1,0 @@
-Yes. I would treat that as a feature downsell, not a discount.
-
-The rule is: if the price goes down, what they receive should also change. Money Models describes feature downsells as lowering price by changing what the customer gets, such as fewer products, less quantity, or removing optional components [feature-downsells:2]. A downsell works because the customer can see that value was removed, so the lower price feels justified instead of training people to wait for discounts [downsells:1].
-
-For your skincare stack, I would not discount the full five-product routine. I would say something like: “If the full five-product routine feels like too much to start, we can begin with the two-product essentials kit for $55. It gives you the core sensitive-skin routine, and you can add the rest once your skin is ready.”
-
-That protects the $160 premium routine, gives price-sensitive customers a cleaner entry point, and may even make some customers re-choose the full routine once they see what they give up by removing products. The source material notes that removing a valued feature while lowering price can cause buyers to reselect the original offer [feature-downsells:2].
-
-My recommendation: use the existing $55 two-product essentials kit as the downsell. Do not remove just any product. Remove the product that is most optional to the outcome, keep the core routine intact, and make the comparison explicit: “$160 full routine” versus “$55 essentials starter.”

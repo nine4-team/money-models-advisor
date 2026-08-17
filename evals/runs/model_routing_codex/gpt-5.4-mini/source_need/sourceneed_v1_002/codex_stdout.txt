@@ -1,9 +1,0 @@
-Recorded `source_search_decision=true`.
-
-Source need:
-- `intent`: `teaching_evidence`
-- `subjects`: `unit-economics`
-- `focus_terms`: `client-financed acquisition`, `payback period`, `CAC`, `cash flow`
-- `query_variants`: `client financed acquisition payback period`; `client financed acquisition unit economics cash flow`; `CAC payback client financed acquisition`
-
-Trace written to `evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_002/run.json`.

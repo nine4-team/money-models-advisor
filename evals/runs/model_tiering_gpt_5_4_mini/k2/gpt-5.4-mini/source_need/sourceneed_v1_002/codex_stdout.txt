@@ -1,8 +1,0 @@
-Recorded `source-search-decision: true`.
-
-Source need:
-- `intent`: `teaching_evidence`
-- `subjects`: `["unit-economics"]`
-- `focus_terms`: `["client-financed acquisition", "payback period", "CAC", "gross profit", "acquisition capacity"]`
-
-Rationale: the turn asks for a conceptual explanation of client-financed acquisition, and the snapshot is already payback-ready, so this is a source-backed unit-economics framing rather than a missing-facts step.

@@ -35,7 +35,7 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 | `evals/advisor_calculation_trace_cases.jsonl` | 5 turns | Calculation trace integrity | Active; 5/5 pass. |
 | `evals/advisor_source_event_cases.jsonl` | 6 turns | Search trace integrity and search/no-search sequencing | Active. Six blind runs pass 6/6 on the current one-query `SearchRequest` contract; two answer-key corrections are disclosed in the report. |
 | `evals/advisor_answer_quality_cases.jsonl` plus `evals/advisor_answer_quality_expanded_final_audit.jsonl` | 20 answers / 22 material claims | Business-fact accuracy, deterministic calculations, source application, usefulness, restraint, and claim support | Active. Balanced across five business contexts: 10 source-grounded, 5 calculation, and 5 clarification cases. Final result is 20/20 answers and 22/22 claims after blind regeneration. Codex is the single semantic reviewer. The failed 16/20 baseline remains frozen separately. |
-| `evals/advisor_product_smoke_scenarios.jsonl` | 3 multi-turn sessions | End-to-end product behavior | Historical exploratory evidence. One run was non-blind and all predate the current single-query path. |
+| `archive/source-need-experiment/evals/advisor_product_smoke_scenarios.jsonl` | 3 multi-turn sessions | End-to-end product behavior | Historical exploratory evidence. One run was non-blind and all predate the current single-query path. |
 
 ### Experiments That Reuse Those Datasets
 
@@ -47,7 +47,9 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
   86.1% at 1.13s p50 / 1.43s p95. Reports:
   `evals/reports/embedding_model_comparison.md` and
   `evals/reports/pinecone_large_embedding_revalidation.md`.
-- `evals/advisor_source_need_cases.jsonl`, `evals/advisor_query_variants_v2.jsonl`, and `evals/realistic_queries.jsonl` document earlier design stages. SourceNeed and multi-query filtering are retired product paths; the realism file is an audit draft, not a scored retrieval benchmark.
+- Earlier filtered and multi-query datasets, scripts, and tests are preserved under
+  `archive/source-need-experiment/`. They document an abandoned design and do not
+  define the current query contract.
 
 ## Evaluation Ladder
 
@@ -104,7 +106,8 @@ Current report: `evals/reports/search_decision_model_comparison.md`.
 Not every metric should be interpreted the same way.
 
 - Tool-use cases and source-event cases are strict behavioral tests.
-- The retired source-need labels are historical semantic expectations. They do not define the current query contract.
+- Labels in the retired query-planning archive are historical semantic expectations.
+  They do not define the current query contract.
 - Known-useful chunks in search-query cases are seed relevance labels, not exhaustive relevance judgments.
 - Required-claim labels are human or agent-adjudicated support labels for specific claims, not a complete map of every useful chunk in the corpus.
 - Exact focus-term recall is a debugging signal. Concept coverage with rationale is the stronger semantic signal.

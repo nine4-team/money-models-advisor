@@ -1,9 +1,0 @@
-My current pricing is:
-
-- STR Design Diagnostic: $597
-- Full-service STR and second-home design: $15,000 to $60,000 depending on scope
-- Pre-designed room packages: $1,200 to $1,800 per room, or $5,000 to $7,000 as a bundle
-- Typical project budget: $80,000 to $160,000
-- Ideal project budget: $150,000 to $200,000+
-
-The saved snapshot also stores the core offer at $15,000. Sources: [business_snapshot.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json), [services-and-pricing.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_006/business_dir/services-and-pricing.md), [product-ladder.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_006/business_dir/product-ladder.md)

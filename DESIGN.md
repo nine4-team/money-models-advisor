@@ -86,8 +86,7 @@ The runtime choices are:
 | Query-writer model | `gpt-5.5` in the operating turn | Mini is viable for bounded writing, but a separate call has no measured end-to-end benefit. |
 
 BM25 remains the lexical control. The local vector backend remains the fast
-evaluation baseline. The older `SourceNeed`, subject-filtering, and multi-query
-paths remain only for historical reproduction.
+evaluation baseline. Retired retrieval experiments are preserved under `archive/`.
 
 ## Model routing
 

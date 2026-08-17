@@ -44,9 +44,9 @@ class SourceEventTraceEvalTest(unittest.TestCase):
         self.assertEqual(result.status, "passed")
         self.assertEqual(result.matched_event_count, 2)
 
-    def test_legacy_source_need_trace_fails(self):
+    def test_non_current_search_contract_fails(self):
         case = {"case_id": "case", "split": "dev", "user_turn": "teach me", "expected_source_events": [expected("teach", ["offer"])]}
-        run = {"source_events": [{"source_need": {"intent": "teaching_evidence", "subjects": ["offers"], "focus_terms": ["offer"]}, "chunks": [{"id": "x"}]}]}
+        run = {"source_events": [{"legacy_request": {"intent": "teaching_evidence"}, "chunks": [{"id": "x"}]}]}
         with TemporaryDirectory() as tmpdir:
             result = source_event_eval.score_case(case, write_run(tmpdir, run))
         self.assertEqual(result.status, "failed")

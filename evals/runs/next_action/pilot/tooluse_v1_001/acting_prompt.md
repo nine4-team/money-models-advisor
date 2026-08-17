@@ -4,7 +4,7 @@ You are the acting agent for a Money Model Advisor next-action eval case.
 
 Use the money-model-advisor skill and local CLI. Choose the next action naturally from the case context. Do not ask for expected labels; they are intentionally hidden.
 
-Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/pilot/tooluse_v1_001/business_dir`
+Business dir: `<repo>/evals/runs/next_action/pilot/tooluse_v1_001/business_dir`
 
 Allowed CLI surface:
 

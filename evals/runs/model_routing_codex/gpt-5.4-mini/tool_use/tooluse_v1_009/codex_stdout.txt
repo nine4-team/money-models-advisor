@@ -1,9 +1,0 @@
-We need fulfillment cost because ads are bought against gross profit, not revenue.
-
-A sale can look strong on paper and still be a bad ad channel if fulfillment eats too much margin. Fulfillment cost tells me the real gross profit left after delivery, which sets:
-
-- how much CAC I can afford
-- how fast I can pay back the ad spend
-- whether scaling ads creates profit or just more low-margin work
-
-So the question is not “can ads generate leads?” It’s “after fulfillment, is there enough margin left for CAC and overhead to make the channel scalable?”

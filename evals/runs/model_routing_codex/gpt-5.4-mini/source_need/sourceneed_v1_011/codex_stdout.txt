@@ -1,1 +1,0 @@
-Recorded `source-search-decision: false` with `source_need: null` in `evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_011/run.json`. The rationale is that the snapshot already contains the $1k referral-partner CAC, and the prior-session notes confirm it, so no source-material retrieval was needed.

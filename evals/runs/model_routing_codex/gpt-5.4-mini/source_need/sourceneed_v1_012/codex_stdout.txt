@@ -1,1 +1,0 @@
-Recorded `source-search-decision: false`. No source need was generated because the snapshot already has CAC and first-30-day gross profit, and the user asked for deterministic payback math.

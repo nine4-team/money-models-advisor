@@ -1,3 +1,0 @@
-Recorded decision: source search is needed.
-
-Source need: `comparison_evidence` for `offers` and `upsells`, focused on attraction/front-end offer versus post-sale upsell in the STR design diagnostic and pre-designed room package context.

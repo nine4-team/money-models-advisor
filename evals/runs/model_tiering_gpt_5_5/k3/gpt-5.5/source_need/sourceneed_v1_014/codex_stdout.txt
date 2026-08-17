@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=false`.
-
-Rationale: the user asks whether to run ads next month, but the snapshot lacks CAC and first-30-day gross profit, so the correct next move is to collect economics/payback context rather than search Money Models source material.

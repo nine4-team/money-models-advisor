@@ -1,1 +1,0 @@
-I’m treating the $1k we pay referral partners as CAC. It’s already saved in the snapshot as `economics.cac = 1000`, so it counts as acquisition cost, not a separate expense bucket.

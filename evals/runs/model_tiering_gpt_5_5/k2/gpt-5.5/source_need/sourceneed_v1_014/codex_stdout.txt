@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=false`, `source_need=null`.
-
-Rationale: running ads requires economics context, and this case says the snapshot has no economics. The next move is to gather CAC, gross profit, fulfillment cost, or payback inputs before using Money Models source search.

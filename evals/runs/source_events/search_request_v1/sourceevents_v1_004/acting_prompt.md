@@ -10,7 +10,7 @@ If one answer needs multiple evidence jobs, run multiple searches and record one
 
 Use `intent` only as the closest trace label. Preserve the complete evidence need in `query`; intent does not control scoring or retrieval.
 
-Business dir: `/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_004/business`
+Business dir: `<repo>/evals/runs/source_events/search_request_v1/sourceevents_v1_004/business`
 
 Visible case context:
 
@@ -31,7 +31,7 @@ Do not edit project source files. Work only inside the prepared business and run
 After `session finish`, use the returned `session_path` to create the eval artifact:
 
 ```bash
-PYTHONPATH=src python3 scripts/capture_source_event_trace.py complete /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_004 --session-path <session_path> --notes 'blind Codex acting-agent run'
+PYTHONPATH=src python3 scripts/capture_source_event_trace.py complete <repo>/evals/runs/source_events/search_request_v1/sourceevents_v1_004 --session-path <session_path> --notes 'blind Codex acting-agent run'
 ```
 
 You must create `run.json` before returning. Your final response should only summarize the recorded action.

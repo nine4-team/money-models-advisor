@@ -1,3 +1,0 @@
-No. Based on the current numbers, I don’t think acquisition is the bottleneck on unit economics.
-
-CAC is about $1k, first-30-day gross profit is about $10k, and payback is about 1 month, so acquisition looks economically workable. If anything is constraining growth, I’d look next at lead flow, sales conversion, or delivery capacity rather than the payback math.

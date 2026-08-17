@@ -1,7 +1,0 @@
-Recorded `source_search_decision=true` for `evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/source_need/sourceneed_v1_010/run.json`.
-
-Source need:
-- `intent`: `recommendation_evidence`
-- `subjects`: `["offers"]`
-- `focus_terms`: `["front-end offer", "attraction offer", "STR owners", "engage", "free", "discount"]`
-- `query_variants`: `["front-end offer for STR owners engagement", "attraction offer to get STR owners to engage", "free or discount front-end offer for STR owners"]`

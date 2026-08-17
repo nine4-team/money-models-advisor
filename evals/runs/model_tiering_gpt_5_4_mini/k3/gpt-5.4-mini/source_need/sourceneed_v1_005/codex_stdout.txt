@@ -1,8 +1,0 @@
-Recorded decision: `true`.
-
-Source need saved with:
-- `intent`: `recommendation_evidence`
-- `subjects`: `["upsells"]`
-- `focus_terms`: `["post-sale upsell", "pre-designed room packages", "first-month profit", "diagnostic offer"]`
-
-

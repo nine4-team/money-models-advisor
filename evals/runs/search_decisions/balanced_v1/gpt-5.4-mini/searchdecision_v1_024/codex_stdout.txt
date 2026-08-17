@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"This is a payback-driven acquisition recommendation, but the snapshot is missing the key economics needed for that diagnosis (`cac` and `first_30_day_gross_profit`). Per the gate rules, we should not search the source material to replace missing business facts."}

@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"search_source_material","rationale":"The snapshot is diagnosable and includes the relevant offer stack, economics, ICP, and reported symptom. The user is asking for a Money Models diagnosis of which offer-stack component is failing, which needs source-material support rather than more fact gathering or a simple vocabulary answer."}

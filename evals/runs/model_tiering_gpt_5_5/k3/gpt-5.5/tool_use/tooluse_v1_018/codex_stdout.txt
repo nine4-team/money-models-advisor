@@ -1,3 +1,0 @@
-The design fee range is **$15,000 to $60,000**, depending on project scope.
-
-I also recorded the turn and created the required eval trace at `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_018/run.json`.

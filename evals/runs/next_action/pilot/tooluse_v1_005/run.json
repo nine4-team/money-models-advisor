@@ -72,7 +72,7 @@
       "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_005/stdout/002.txt"
     },
     {
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/pilot/tooluse_v1_005/business_dir business.business_type='Premium full-service interior design firm for STR and second-home projects' business.icp='Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity' money_model.core_offer.exists=true money_model.core_offer.description='Full-service STR and second-home design covering planning, procurement, and installation'",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <repo>/evals/runs/next_action/pilot/tooluse_v1_005/business_dir business.business_type='Premium full-service interior design firm for STR and second-home projects' business.icp='Owners of large STR properties and second homes, especially St. George/Zion corridor investors and out-of-state owners with $80K-$200K+ project capacity' money_model.core_offer.exists=true money_model.core_offer.description='Full-service STR and second-home design covering planning, procurement, and installation'",
       "exit_code": 0,
       "index": 3,
       "kind": "cli_command",

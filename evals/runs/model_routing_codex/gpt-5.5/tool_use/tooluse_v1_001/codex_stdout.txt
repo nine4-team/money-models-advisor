@@ -1,3 +1,0 @@
-It’s still saved. I found `economics.cac = 1000` in the snapshot, with field source context saying the referral partner cost averaged about `$1k` per client. Prior logs also show you accepted that as the working CAC.
-
-I recorded the advisor turn and created the required eval artifact at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_001/run.json`.

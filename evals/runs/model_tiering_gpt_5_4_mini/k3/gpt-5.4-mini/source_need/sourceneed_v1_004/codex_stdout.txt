@@ -1,9 +1,0 @@
-Recorded decision: `true` for source search needed.
-
-Source need saved with:
-- `intent`: `comparison_evidence`
-- `subjects`: `offers`, `upsells`
-- `focus_terms`: `front-end attraction offer`, `post-sale upsell`, `STR Design Diagnostic`, `pre-designed room packages`, `sequencing after first sale`
-- `query_variants`: 3 comparison queries centered on attraction offer vs upsell
-
-

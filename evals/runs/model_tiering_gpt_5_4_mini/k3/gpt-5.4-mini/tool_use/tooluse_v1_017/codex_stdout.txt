@@ -1,8 +1,0 @@
-I checked the snapshot and the local logs. There aren’t any prior turns in this business directory, so the current state is just the saved snapshot:
-
-- Business: premium full-service interior design for STR and second-home projects.
-- ICP: owners with about `$80K-$200K+` project capacity.
-- Offer stack: `$597` diagnostic, `$15K` core design, `$5K` room-package upsell.
-- Economics: CAC is about `$1K`, first-30-day gross profit is `$10K`, payback is `1.0` month, and gross margin is `76.9%`.
-
-My read is simple: acquisition payback is already healthy, so the main constraint is service gross margin, not CAC. The first thing I’d test is whatever improves margin toward `80%+` before adding more offer complexity.

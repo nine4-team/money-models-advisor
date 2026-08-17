@@ -1,7 +1,0 @@
-Here’s the situation before choosing a test:
-
-The business is diagnosable. CAC is `1000`, first-30-day gross profit is `10000`, and verified payback is `1.0` month, so acquisition payback is not the immediate constraint.
-
-The constraint is gross margin: current service gross margin is `76.9%`, below the `80%+` rule of thumb. Before testing more acquisition volume, I’d test pricing, scope control, delivery cost reduction, or package structure so the core offer reliably clears `80%` gross margin.
-
-Recorded and validated the eval trace at `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_017/run.json`.

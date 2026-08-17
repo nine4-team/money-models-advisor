@@ -1,142 +1,60 @@
 # Evaluation Reports
 
-This directory holds experiment reports that justify architecture choices with measured comparisons.
+This directory contains the reports that support the current architecture and
+portfolio narrative. Superseded, exploratory, incomplete, and rejected experiments
+are under `archive/`.
 
-Each report should use this structure:
+## Current report index
 
-```text
-# Experiment Name
+| Product question | Canonical report |
+|---|---|
+| Which query approach, query writer, and retriever should we use? | `active_framework_retrieval_matrix.md` |
+| Does the selected query approach survive infrastructure changes? | `query_generation_current.md` |
+| Which chunking strategy should we use? | `active_query_chunking_revalidation.md` |
+| Which embedding setup should we use? | `embedding_model_comparison.md` |
+| Does one namespace or subject partitioning work better on Pinecone? | `active_query_pinecone_revalidation.md` |
+| What Pinecone candidate depth is sufficient? | `pinecone_candidate_depth_optimization.md` |
+| Does the selected embedding preserve quality on Pinecone? | `pinecone_large_embedding_revalidation.md` |
+| How well do the tested models decide whether search is needed? | `search_decision_model_comparison.md` |
+| Does the agent choose the correct next action? | `advisor_tool_use_judgment.md` |
+| Are search events valid and auditable? | `advisor_source_event_traces.md` |
+| Are calculation events recomputable? | `advisor_calculation_trace_events.md` |
+| Are full answers useful and supported? | `advisor_answer_quality_expanded.md` |
 
-## Hypothesis
+Machine-readable summaries and case-level files sit beside the relevant Markdown
+report. `GOLDEN_DATASET.md` maps each report to its cases, risk, scorer, and current
+decision.
 
-## Variants
-
-## Dataset Slice
-
-## Metrics
-
-## Results
-
-## Decision
-
-## Failure Analysis
-
-## Next Experiment
-```
-
-Recommended metrics:
-
-- `router_accuracy`
-- `hit@1`
-- `hit@5`
-- `mrr`
-- `ndcg@10`
-- `faithfulness`
-- `structured_output_validity`
-- `p50_latency_ms`
-- `p95_latency_ms`
-- `required_claim_support_coverage`
-- `next_action_correctness`
-- `answer_usefulness`
-
-The goal is to make RAG architecture decisions the way an ML workflow makes model or hyperparameter decisions: by comparing variants under the same dataset, metrics, and adoption threshold.
-
-## Current Query-Generation Evidence
-
-Use `query_generation_current.md` and `active_framework_retrieval_matrix.md` as the
-canonical current result. The method-specific reports and run directories remain as
-raw reproducibility artifacts; older heading-aware aggregate interpretations are
-historical and should not be copied into the narrative.
-
-Replay the frozen current matrix with:
+## Stable offline gate
 
 ```bash
-PYTHONPATH=src python3 scripts/revalidate_retrieval_choices.py matrix
+python3 scripts/regression_gate.py
 ```
 
-The active retrieval-support guardrail is required-claim support coverage. Required supported claims live in `evals/obligations.jsonl`; review them with `PYTHONPATH=src python3 scripts/review_obligations.py`, then score accepted labels with `PYTHONPATH=src python3 scripts/score_obligation_support.py`. Use `--include-proposed` only when a future label batch has unreviewed proposed rows.
+The gate scores saved artifacts. It does not regenerate acting-agent runs or call an
+embedding API or hosted vector store.
 
-For active local retrieval checks, use:
+## Retrieval revalidation
 
 ```bash
-PYTHONPATH=src python3 scripts/audit_query_realism.py
-PYTHONPATH=src python3 scripts/eval_retrieval.py
-PYTHONPATH=src python3 scripts/score_obligation_support.py
+python3 scripts/revalidate_retrieval_choices.py chunking
+python3 scripts/revalidate_retrieval_choices.py matrix
 ```
 
-For active next-action classification checks, use:
+The matrix holds the 46 cases and saved queries fixed while comparing the raw
+question, unguided rewrite, and corpus-guided rewrite through BM25 and hybrid
+retrieval. The chunking command replays all five strategies on the selected guided
+query path.
+
+## Agent behavior and answer quality
 
 ```bash
-python3 scripts/capture_tool_use_trace.py prepare tooluse_v1_001
-python3 scripts/eval_tool_use_judgment.py
+python3 scripts/eval_tool_use_judgment.py --require-all-pass
+python3 scripts/eval_source_event_traces.py --require-all-pass
+python3 scripts/eval_calculation_trace_events.py
+python3 scripts/eval_advisor_answer_quality.py --require-all-pass
 ```
 
-`capture_tool_use_trace.py prepare` creates an isolated eval directory plus an acting prompt that hides expected labels. After the acting agent records workflow evidence, use `capture_tool_use_trace.py complete <run_dir> ...` to validate and write `run.json`.
-
-`eval_tool_use_judgment.py` validates `evals/advisor_tool_use_cases.jsonl` and scores any saved `run.json` traces under `evals/runs/next_action/`. If no traces exist yet, the report is case inventory only, not behavior results.
-
-The commands below reproduce earlier source-need and heading-aware experiments. They
-are retained for historical comparison, not as the active product benchmark:
-
-```bash
-python3 scripts/eval_search_query_quality.py --query-source reference \
-  --report evals/reports/advisor_search_query_quality.md
-
-python3 scripts/eval_search_query_quality.py --query-source generated \
-  --retrieval-backend bm25 \
-  --report evals/reports/advisor_search_query_quality_generated_bm25.md
-
-python3 scripts/compare_retrieval_backends.py --query-source generated \
-  --report evals/reports/retrieval_backend_comparison.md
-```
-
-`eval_search_query_quality.py` validates `evals/advisor_search_query_cases.jsonl` and runs a selected backend over heading-aware chunks. Reference mode asks whether reviewer-authored, source-specific queries can retrieve useful chunks. Generated mode asks whether the current runtime query builder can do the same from snapshot fixtures plus advisor-selected source needs. Known-useful chunk labels are seed labels for query development, not exhaustive relevance judgments.
-
-`compare_retrieval_backends.py` compares BM25, vector, and hybrid retrieval after source-need generation has passed its seed gate. Vector search uses OpenAI embeddings only for deterministic vectorization and caches embeddings under `.cache/embeddings/` for cost savings. The command now writes Markdown plus machine-readable artifacts beside the report: `<report-stem>_summary.json` and `<report-stem>_cases.jsonl`. These artifacts include quality, p50/p95 latency, query/variant counts, vector-search counts, corpus/query embedding cache behavior, and estimated embedding cost.
-
-Use `--vector-store local` for the default local eval path. After running `PYTHONPATH=src python3 -m money_model_architect.cli index pinecone`, use `--vector-store pinecone` to run the same golden search-query evals against Pinecone-backed vector storage. Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`.
-
-The active Pinecone infrastructure reports are
-`active_query_pinecone_revalidation.md` for namespace layout and
-`pinecone_candidate_depth_optimization.md` for the 250-to-25 candidate correction.
-The selected embedding comparison is `embedding_model_comparison.md`; its isolated
-Large/1,536 Pinecone replay is `pinecone_large_embedding_revalidation.md`.
-
-For active source-need generation checks, use:
-
-```bash
-python3 scripts/capture_source_need_trace.py prepare sourceneed_v1_001
-python3 scripts/capture_source_need_trace.py complete \
-  evals/runs/source_need/taxonomy_v2/sourceneed_v1_001 \
-  --source-search-decision true \
-  --source-need '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["gross profit","fulfillment cost","CAC","payback period"]}'
-python3 scripts/eval_source_need_generation.py
-```
-
-`capture_source_need_trace.py prepare` creates an isolated eval directory plus an acting prompt that hides expected labels. `complete` records the acting agent's source-search decision and generated source need. `eval_source_need_generation.py` validates `evals/advisor_source_need_cases.jsonl` and scores saved acting-agent `run.json` artifacts under `evals/runs/source_need/taxonomy_v2/` by default. It tests whether the acting agent decides if source search is needed and, when it is, generates intent, layer, and focus-term structure before query construction.
-
-## Source-Event Trace Eval
-
-```bash
-python3 scripts/run_source_event_codex_eval.py --max-workers 2
-python3 scripts/eval_source_event_traces.py
-```
-
-`run_source_event_codex_eval.py` prepares isolated case directories, hides the expected
-labels, runs the acting agents, and captures their completed session artifacts.
-`eval_source_event_traces.py` scores the saved runs under
-`evals/runs/source_events/search_request_v1/` against the active single-query
-`SearchRequest` contract.
-
-The same current-path answers have a hash-bound semantic audit:
-
-```bash
-python3 scripts/eval_advisor_answer_quality.py
-```
-
-It reports recommendation correctness/usefulness and claim-level citation support in
-`evals/reports/advisor_answer_quality.md`. Codex is the disclosed semantic reviewer;
-this is separate from the deterministic citation-provenance validator.
-
-Old keyword evidence-term experiments are archived under `archive/keyword-evidence-proxy/` and are not part of the active design.
-Old provider-backed experiments are archived under `archive/provider-backed-experiments/` and are not part of the active design.
+The semantic relevance and answer-quality audits were performed by Codex rather than
+an independent human reviewer. The reports disclose that limitation where it affects
+interpretation.

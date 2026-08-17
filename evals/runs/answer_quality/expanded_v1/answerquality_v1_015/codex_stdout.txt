@@ -1,3 +1,0 @@
-Using the saved skincare numbers, acquisition payback is about **1.6 months**.
-
-That uses CAC of **$48**, first 30-day gross profit of **$32**, and monthly recurring gross profit of **$28**. After the first 30 days, **$16** of CAC remains unrecovered; at **$28/month**, that takes another **0.57 months**, for total payback of **1.57 months**.

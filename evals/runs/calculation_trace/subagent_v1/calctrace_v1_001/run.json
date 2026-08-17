@@ -10,17 +10,17 @@
   "workflow_steps": [
     {
       "action": "install_snapshot_fixture",
-      "command": "cp evals/fixtures/snapshots/1584_diagnosed.json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/business_snapshot.json",
+      "command": "cp evals/fixtures/snapshots/1584_diagnosed.json <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/business_snapshot.json",
       "exit_code": 0
     },
     {
       "action": "session_start",
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business --user-message <user_turn>",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business --user-message <user_turn>",
       "exit_code": 0
     },
     {
       "action": "read_snapshot",
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business",
       "exit_code": 0
     },
     {
@@ -34,7 +34,7 @@
     },
     {
       "action": "session_finish",
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/turn_record.json",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business --record-json <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/turn_record.json",
       "exit_code": 0
     }
   ],
@@ -57,10 +57,10 @@
     }
   ],
   "session_paths": {
-    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business",
-    "state_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor",
-    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/sessions",
-    "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/sessions/20260611T203648.json"
+    "business_dir": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business",
+    "state_dir": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor",
+    "sessions_dir": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/sessions",
+    "session_path": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/sessions/20260611T203648.json"
   },
   "final_answer": "With CAC at about $1,000 and first-month gross profit at about $10,000, the calculator reports a payback period of 1.0 month. In plain English: the first month of gross profit more than covers CAC, so acquisition cost is recovered inside the first month.",
   "notes": [
@@ -68,8 +68,8 @@
     "The payback calculation event preserves the actual CLI output from calculate payback for the supplied inputs."
   ],
   "paths": {
-    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/run.json",
-    "turn_record_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/turn_record.json",
-    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/business_snapshot.json"
+    "run_json": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/run.json",
+    "turn_record_json": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/turn_record.json",
+    "snapshot": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_001/business/.money-model-advisor/business_snapshot.json"
   }
 }

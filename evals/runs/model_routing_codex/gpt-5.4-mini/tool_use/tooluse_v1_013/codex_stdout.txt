@@ -1,3 +1,0 @@
-I decided it on June 5, 2026 at 22:48:51Z in [1584_referral_partner_context_01.json](file:///Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_013/business_dir/.money-model-advisor/sessions/1584_referral_partner_context_01.json), when I said, “That works as an average. I will treat referral partner acquisition as roughly $1,000 CAC for now.”
-
-It was restated two minutes later in [1584_referral_partner_context_02.json](file:///Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_routing_codex/gpt-5.4-mini/tool_use/tooluse_v1_013/business_dir/.money-model-advisor/sessions/1584_referral_partner_context_02.json).

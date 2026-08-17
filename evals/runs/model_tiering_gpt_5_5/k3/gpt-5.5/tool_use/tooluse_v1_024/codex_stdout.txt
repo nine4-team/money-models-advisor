@@ -1,7 +1,0 @@
-Completed the eval action and wrote the required trace:
-
-`evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_024/run.json`
-
-Action taken: read the snapshot, confirmed CAC and first-30-day gross profit are missing, did not search or calculate, and recorded a clarification-style advisor turn.
-
-Final advisor answer recorded: don’t start ads yet; first get expected CAC and first-30-day gross profit.

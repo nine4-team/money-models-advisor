@@ -1,5 +1,0 @@
-Yes. I would make the $1,500 readiness audit fee credit toward the $30,000 implementation if they continue, with a clear expiration window and only after the audit is paid and completed.
-
-This is a strong fit for a Rollover Upsell: the prior purchase becomes credit toward the next, larger offer [rollover-upsell:1]. The economics are also safe here: a $1,500 credit against a $30,000 implementation is only 5% of the core offer, well inside the framework’s caution that the next offer should usually be at least 4x the credit so the discount does not erase profit [rollover-upsell:6].
-
-I would frame it as: “If you move forward with implementation within 14 days of the audit debrief, we apply your full readiness audit fee toward the project.” That keeps the audit paid, reduces buyer hesitation, and creates urgency without cheapening the implementation. I would not sell the audit as “free” upfront; position it as a paid diagnostic that becomes credit only when they take the natural next step.

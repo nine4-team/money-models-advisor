@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The user is asking for saved numeric business facts already present in the advisor snapshot (CAC, first-30-day gross profit, and lifetime gross profit). This is fact retrieval from current state, not a Money Models concept, comparison, diagnosis, or recommendation requiring source support."}

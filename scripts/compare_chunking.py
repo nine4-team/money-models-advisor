@@ -166,7 +166,7 @@ def main() -> int:
     parser.add_argument("--golden", type=Path, default=ROOT / "evals" / "golden.jsonl")
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs")
-    parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "chunking_comparison.md")
+    parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "archive" / "chunking_comparison.md")
     parser.add_argument("--strategies", nargs="*", default=list(CHUNKING_STRATEGIES))
     args = parser.parse_args()
 

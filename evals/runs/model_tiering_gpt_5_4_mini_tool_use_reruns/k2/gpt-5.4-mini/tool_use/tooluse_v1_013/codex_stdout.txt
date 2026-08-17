@@ -1,5 +1,0 @@
-I decided it on `2026-06-05T22:48:51Z` in [1584_referral_partner_context_01.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_013/business_dir/.money-model-advisor/sessions/1584_referral_partner_context_01.json). That’s the turn where I said “That works as an average” and treated referral partner acquisition as roughly `$1,000 CAC`.
-
-The snapshot was then updated at `2026-06-05T22:51:02Z` in [1584_referral_partner_context_02.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_013/business_dir/.money-model-advisor/sessions/1584_referral_partner_context_02.json).
-
-I also captured the completed trace in [run.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_013/run.json).

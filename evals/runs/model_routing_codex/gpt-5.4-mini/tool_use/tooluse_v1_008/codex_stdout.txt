@@ -1,5 +1,0 @@
-Economically, you’re in good payback shape: $1k CAC against $10k of first-30-day gross profit gives a 1.0-month payback.
-
-The constraint is not cash recovery; it’s margin quality. Gross margin is 77%, which is below the 80% rule of thumb, so I’d treat margin improvement as the next lever before scaling acquisition harder.
-
-I recorded the turn and the payback calculation in the eval trace.

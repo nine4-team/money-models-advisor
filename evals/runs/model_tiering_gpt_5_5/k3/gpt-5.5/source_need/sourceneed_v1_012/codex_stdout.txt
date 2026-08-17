@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=false`.
-
-Rationale: the user asked for deterministic payback math, and the snapshot already has CAC and first-30-day gross profit. No Money Models source-material search was needed, so `source_need` is `null`.

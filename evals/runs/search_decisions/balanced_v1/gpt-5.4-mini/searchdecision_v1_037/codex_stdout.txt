@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The saved business context already contains the needed facts: CAC is 48 and gross margin is 0.62. This is a simple retrieval question and does not require searching the Money Models source material."}

@@ -1,159 +1,106 @@
 # Money Model Architect
 
-A portfolio RAG and diagnostic advisor for Alex Hormozi's *$100M Money Models*.
+An agent-operated, CLI-backed advisor for applying the frameworks in Alex Hormozi's
+*$100M Money Models*. This repository is a portfolio artifact for the Acquisition.com
+Senior AI Engineer role described in [JOB_DESCRIPTION.md](JOB_DESCRIPTION.md).
 
-The target role is recorded in [JOB_DESCRIPTION.md](JOB_DESCRIPTION.md). That file is the project north star: the repo should demonstrate production-grade AI agent work, RAG judgment, golden datasets, cached embeddings, cost-aware architecture, observability, and regression-oriented evaluation for the Acquisition.com Senior AI Engineer role. Repo-wide Codex guidance lives in [AGENTS.md](AGENTS.md).
+The fastest way to review the project is:
 
-The portfolio narrative is [narrative.html](narrative.html). [DESIGN.md](DESIGN.md)
-is the current decision record, and [GOLDEN_DATASET.md](GOLDEN_DATASET.md)
-maps each active evaluation to its data, scorer, and report. Runtime contracts live in
-[CLI_DESIGN.md](CLI_DESIGN.md), [BUSINESS_SNAPSHOT_V1.md](BUSINESS_SNAPSHOT_V1.md),
-and the project advisor skill. Historical progress files remain in the repo for
-reproducibility but do not define current behavior.
+1. Open [narrative.html](narrative.html) for the design story and measured decisions.
+2. Read [DESIGN.md](DESIGN.md) for the current architecture.
+3. Read [GOLDEN_DATASET.md](GOLDEN_DATASET.md) for the dataset-to-risk map.
+4. Run `python3 scripts/regression_gate.py` for the stable offline checks.
 
-This repo also includes a small local proof harness so the core modeling decisions can be run with local commands and no external model-service keys.
+## Architecture
 
-The product is agent-first and CLI-backed: a human talks to an agent, the agent follows the project skill's guidance, and the agent runs CLI commands against saved state. Embedding API use is allowed for deterministic vectorization only. Retrieval has a local/Pinecone vector-store boundary, so another interface can reuse the same core.
-
-If the user provides missing information, the agent saves the accepted fact into the snapshot.
-
-## Advisor skill
-
-Advisor operation instructions live in the project skill at `.codex/skills/money-model-advisor/SKILL.md`. `AGENTS.md` is for repo-wide development guidance; the skill is for the runtime workflow where an agent uses the CLI to advise a human. Invoke that skill from the folder where advisor context should be saved, then ask the agent naturally. The skill tells the agent how to handle the CLI path plumbing.
-
-## Local proof harness
-
-These commands are for development, verification, debugging, and manual control. During normal use, the human talks to an agent and the skill tells the agent how to run CLI operations such as `read_snapshot`, `update_snapshot`, `calculate`, `search_source_material`, `turn_record`, and `logs`.
-
-Current retrieval uses one corpus-guided query through unfiltered hybrid search over
-framework-aware chunks. The 46-case suite tests the raw question and unguided and
-guided rewrites through both BM25 and hybrid retrieval; BM25 remains the lexical
-control. The selected embedding is `text-embedding-3-large` at 1,536 dimensions,
-isolated in its own Pinecone namespace. Local and Pinecone vector stores share the same boundary. The current
-remediation work is tracked in [REMEDIATION_PLAN.md](REMEDIATION_PLAN.md).
-
-Set up advisor state for a context directory:
-
-```bash
-PYTHONPATH=src python3 -m money_model_architect.cli setup \
-  --business-dir /path/to/company \
-  --interactive
+```text
+human talks to agent
+-> agent decides the next action and writes any search request
+-> CLI persists state, calculates, retrieves, and records traces
+-> agent inspects the evidence and answers
 ```
 
-For proof-harness tests, setup can accept repeatable answers as JSON. In normal use, the agent should save accepted facts with `update_snapshot` after inspecting docs or talking with the human:
+The agent owns semantic judgment: next action, query content, passage usefulness,
+accepted memory updates, and final-answer quality. The CLI owns deterministic work:
+state persistence, formulas, retrieval execution, embedding-cache use, trace
+validation, and report generation.
+
+The selected retrieval path is one corpus-guided, unfiltered query through hybrid
+retrieval over framework-aware chunks. It uses cached `text-embedding-3-large`
+vectors at 1,536 dimensions. Pinecone sits behind the same retrieval boundary as the
+local evaluation backend. BM25 remains a lexical control, not the product default.
+
+## Setup
+
+Python 3.11 or newer is required. The offline tests have no third-party package
+dependencies.
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli setup \
-  --business-dir /path/to/company \
-  --answers '{"business":{"business_type":"coaching business","icp":"gym owners"},"money_model":{"core_offer":{"description":"implementation program","price":5000},"attraction_offer":{"exists":true},"upsell":{"exists":false},"downsell":{"exists":true},"continuity":{"exists":false}},"economics":{"cac":350,"first_30_day_gross_profit":120},"problem":{"user_goal":"diagnose cash payback"}}'
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -e .
 ```
 
-Start an agent-operated advisor turn:
+The installed command is `mma` (also available as `money-model-advisor`). Commands
+below use `mma`; `PYTHONPATH=src python3 -m money_model_architect.cli` is equivalent.
+
+Initialize a business context:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli session start \
+mma setup --business-dir /path/to/company --interactive
+```
+
+Start an agent-operated turn:
+
+```bash
+mma session start \
   --business-dir /path/to/company \
   --user-message "what should we do next?"
 ```
 
-Search source material from one explicit corpus-guided request:
+Run a structured search:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli search \
+mma search \
   --business-dir /path/to/company \
-  --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}'
+  --search-request-json \
+  '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}'
 ```
 
-Record a completed agent-operated turn:
+Run deterministic math:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli session finish \
-  --business-dir /path/to/company \
-  --record-json /path/to/turn-record.json
+mma calculate payback \
+  --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
 ```
 
-The CLI writes local state under `/path/to/company/.money-model-advisor/`.
+State and traces are written under
+`/path/to/company/.money-model-advisor/`, which is ignored by Git.
 
-Run deterministic calculations:
+## Verification
 
-```bash
-PYTHONPATH=src python3 -m money_model_architect.cli calculate gross-margin \
-  --inputs '{"price":100,"cogs":20}'
-```
-
-Diagnose saved advisor state:
-
-```bash
-PYTHONPATH=src python3 -m money_model_architect.cli diagnose \
-  --business-dir /path/to/company
-```
-
-Search the transcript corpus through the five-layer local taxonomy:
-
-```bash
-PYTHONPATH=src python3 -m money_model_architect.cli search \
-  "When should I use a rollover upsell?" --layer upsells
-```
-
-Show or update the saved business snapshot:
-
-```bash
-PYTHONPATH=src python3 -m money_model_architect.cli snapshot \
-  --business-dir /path/to/company
-
-PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
-  --business-dir /path/to/company \
-  economics.cac=350 \
-  money_model.upsell.exists=false
-```
-
-Inspect saved advisor logs:
-
-```bash
-PYTHONPATH=src python3 -m money_model_architect.cli logs \
-  --business-dir /path/to/company
-```
-
-Run the smoke eval:
-
-```bash
-PYTHONPATH=src python3 scripts/eval_smoke.py
-python3 -m unittest discover -s tests -v
-```
-
-Run the complete stable offline regression gate:
+Run the stable offline gate:
 
 ```bash
 python3 scripts/regression_gate.py
 ```
 
-The gate runs the unit suite, local retrieval smoke test, strict saved-artifact
-scorers for tool use, source events, calculations, and answer quality, the narrative
-evidence drift check, and patch-whitespace validation. It does not call an acting
-model, an embedding API, or a hosted vector store.
+It runs unit tests, the local retrieval smoke test, strict saved-artifact scorers for
+tool use, source events, calculations, and answer quality, the narrative evidence
+drift check, and patch hygiene. It does not call an acting model, embedding API, or
+hosted vector store.
 
-Generate the local retrieval baseline report:
-
-```bash
-PYTHONPATH=src python3 scripts/eval_retrieval.py
-```
-
-Revalidate chunking and the complete frozen query/model/retriever matrix on the
-active 46-case suite:
+Reproduce the active retrieval matrix from frozen queries and cached embeddings:
 
 ```bash
 python3 scripts/revalidate_retrieval_choices.py chunking
 python3 scripts/revalidate_retrieval_choices.py matrix
 ```
 
-The matrix report compares the raw question, unguided rewrite, and corpus-guided
-rewrite conditions through BM25 and hybrid retrieval over the final framework-aware
-chunks. See `evals/reports/active_framework_retrieval_matrix.md`.
-
-Index and benchmark the active Pinecone path:
+Hosted Pinecone replay requires `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`:
 
 ```bash
-PYTHONPATH=src python3 -m money_model_architect.cli index pinecone \
+mma index pinecone \
   --chunking framework-aware \
   --namespace money-models-framework-large-d1536
 
@@ -161,123 +108,45 @@ python3 scripts/revalidate_retrieval_choices.py pinecone \
   --chunking framework-aware \
   --policy single \
   --single-namespace money-models-framework-large-d1536 \
-  --max-workers 1 \
-  --summary evals/reports/pinecone_large_embedding_revalidation_summary.json \
-  --cases-output evals/reports/pinecone_large_embedding_revalidation_cases.jsonl
+  --max-workers 1
 ```
 
-Pinecone runs require `PINECONE_API_KEY` and `PINECONE_INDEX_HOST`. Embeddings are
-used only for deterministic vectorization and cached under `.cache/embeddings/`.
+## Current evidence
 
-The current hosted benchmark uses the active 46-case, one-query path, framework-aware chunks, and `text-embedding-3-large` at 1,536 dimensions. The isolated unfiltered namespace reaches 93.5% Hit@1, 100% Hit@5, and 86.1% Useful@5 at 1.13s p50 / 1.43s p95. The earlier namespace experiment did not improve quality, and removing a redundant 10x vector over-fetch reduced latency without changing rankings. See `evals/reports/pinecone_large_embedding_revalidation.md` and `evals/reports/pinecone_candidate_depth_optimization.md`.
+- Query/retrieval matrix: [active_framework_retrieval_matrix.md](evals/reports/active_framework_retrieval_matrix.md)
+- Chunking revalidation: [active_query_chunking_revalidation.md](evals/reports/active_query_chunking_revalidation.md)
+- Embedding comparison: [embedding_model_comparison.md](evals/reports/embedding_model_comparison.md)
+- Pinecone replay: [pinecone_large_embedding_revalidation.md](evals/reports/pinecone_large_embedding_revalidation.md)
+- Search-decision models: [search_decision_model_comparison.md](evals/reports/search_decision_model_comparison.md)
+- Source-event traces: [advisor_source_event_traces.md](evals/reports/advisor_source_event_traces.md)
+- Answer quality: [advisor_answer_quality_expanded.md](evals/reports/advisor_answer_quality_expanded.md)
 
-The full-workflow orchestration harness remains available for trace-level
-regressions. It uses `codex exec`, lets the model operate the CLI, and does not use
-`OPENAI_API_KEY`:
+Current reports live directly under `evals/reports/`. Superseded experiments are
+labeled and retained under `evals/reports/archive/`; completed planning records live
+under `docs/history/`.
 
-```bash
-python3 scripts/eval_codex_model_routing.py
-# subset/smoke: --suites source_need --limit 2
-# traces are cached under evals/runs/model_routing_codex/; --force re-runs them
-```
+## Repository map
 
-The focused search-decision comparison uses 48 balanced cases and fresh sanitized
-runtimes. It is the current model-routing evidence for the search gate:
+| Path | Purpose |
+|---|---|
+| `.codex/skills/money-model-advisor/` | Agent operating instructions |
+| `src/money_model_architect/` | CLI, state, calculations, retrieval, and trace validation |
+| `corpus/` | Source material and corpus guide inputs |
+| `evals/` | Golden cases, saved runs, and reports |
+| `scripts/` | Active evaluation and reproducibility commands |
+| `tests/` | Offline unit and regression tests |
+| `docs/history/` | Completed plans and progress records |
+| `archive/` | Retired experimental implementations |
 
-```bash
-python3 scripts/eval_search_decision_models.py
-```
+## Content and licensing
 
-The report lands at `evals/reports/search_decision_model_comparison.md`. Query-writer
-evidence comes from the separate 46-case retrieval matrix.
+The MIT license covers original code and documentation only. The book-derived corpus
+and any business-context fixtures are not relicensed. Review
+[DATA_AND_CONTENT_NOTICE.md](DATA_AND_CONTENT_NOTICE.md) before redistributing this
+repository.
 
-Replay the retired source-need planning experiment:
+## Remaining work
 
-```bash
-python3 scripts/capture_source_need_trace.py prepare sourceneed_v1_001
-python3 scripts/capture_source_need_trace.py complete \
-  evals/runs/source_need/taxonomy_v2/sourceneed_v1_001 \
-  --source-search-decision true \
-  --source-need '{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["gross profit","fulfillment cost","CAC","payback period"]}'
-python3 scripts/eval_source_need_generation.py
-```
-
-Run and score the current source-event regression for search/no-search and
-multi-search advisor turns:
-
-```bash
-python3 scripts/run_source_event_codex_eval.py --max-workers 2
-python3 scripts/eval_source_event_traces.py
-python3 scripts/eval_advisor_answer_quality.py
-```
-
-The runner gives each isolated acting agent the case context but hides the expected
-labels. The scorer checks the active single-query `SearchRequest` contract and writes
-`evals/reports/advisor_source_event_traces.md`.
-
-Regenerate the narrative's expandable case tables from the saved evaluation artifacts,
-or verify that the checked-in tables still match those artifacts:
-
-```bash
-python3 scripts/render_narrative_evidence.py
-python3 scripts/render_narrative_evidence.py --check
-```
-
-Review human-auditable required-claim labels:
-
-```bash
-PYTHONPATH=src python3 scripts/review_obligations.py
-```
-
-Score required-claim support coverage:
-
-```bash
-PYTHONPATH=src python3 scripts/score_obligation_support.py --include-proposed
-PYTHONPATH=src python3 scripts/score_obligation_support.py
-```
-
-## What is implemented now
-
-- Five-layer namespace taxonomy with primary and secondary chapter roles.
-- Standard-library local retrieval over transcript chunks.
-- Deterministic CAC, gross profit, gross margin, LTGP, CFA level, and payback formulas.
-- Constraint diagnosis that follows the coach diagnostic flow.
-- A 32-query pilot retrieval set.
-- A draft realistic user-intent query set in `evals/realistic_queries.jsonl`, documented in `evals/reports/query_realism.md`.
-- A local retrieval baseline report in `evals/reports/local_retrieval_baseline.md`.
-- Chunking comparison and active-path revalidation reports; `framework-aware` is the runtime default after preserving 100% Hit@5 while eliminating multi-thousand-word heading chunks.
-- A 65-label reviewed required-claim support set in `evals/obligations.jsonl`, plus a local review UI in `scripts/review_obligations.py`.
-- A required-claim support scorer in `scripts/score_obligation_support.py`; accepted-label BM25 heading-aware coverage is currently 87.69%.
-- A corrected architecture direction for setup/intake plus snapshot-backed agent operation.
-- `BusinessSnapshot v1` implemented in `src/money_model_architect/snapshot.py`.
-- Setup/intake state directory implemented in `src/money_model_architect/business_context.py`.
-- Setup/intake answer collection implemented in `src/money_model_architect/setup_intake.py`.
-- Advisor runtime single-query policy implemented in `src/money_model_architect/advisor_queries.py`.
-- Advisor query execution and local evidence capture implemented in `src/money_model_architect/advisor_retrieval.py`.
-- Source-search query quality eval implemented in `evals/advisor_search_query_cases.jsonl`, with reference-query and generated-query reports in `evals/reports/`.
-- The retired source-need eval remains reproducible from
-  `evals/advisor_source_need_cases.jsonl` and
-  `scripts/eval_source_need_generation.py`; it is not the active query contract.
-- Source-event trace eval implemented in `evals/advisor_source_event_cases.jsonl`, with report generation in `scripts/eval_source_event_traces.py`.
-- Cached embedding-backed vector retrieval and BM25/vector/hybrid comparison implemented. BM25 is the lexical control. The active path uses one corpus-guided query with unfiltered hybrid retrieval; the approach leads the 46-case audited regression suite, and the hybrid-backend decision holds under both tested query writers.
-- Agent-facing single-query search implemented in `search --search-request-json`; the older `--source-need-json` remains only for reproducing historical evals and manual debugging.
-- Agent-facing session workbench implemented in `session start`; it loads state, recent traces, known/missing facts, operation names, and trace requirements without synthesizing an answer.
-- Agent-facing completed turn persistence implemented in `session finish`; lower-level `turn record` remains available for tests and scripts.
-- Deterministic `chat` orchestration removed from the active product path; the agent owns planning and answer synthesis.
-- Core CLI commands implemented: `setup`, `session start`, `session finish`, `search`, `snapshot`, `calculate`, `diagnose`, `logs`, and `turn record`.
-- Advisor operating guide implemented in `ADVISOR_OPERATING_GUIDE.md`, with a project-local skill file in `.codex/skills/money-model-advisor/SKILL.md`.
-- Framework-aware chunks, `text-embedding-3-large` at 1,536 dimensions, one
-  corpus-guided query, unfiltered hybrid retrieval, and the Pinecone storage path
-  are selected and implemented.
-- Search/no-search model routing is measured on 48 balanced cases: `gpt-5.5`
-  scores 48/48 and `gpt-5.4-mini` scores 47/48.
-- Calculation validation, current source-event traces, and a balanced 20-answer
-  semantic audit across five business contexts cover the current turn contract. The
-  final blind runs pass 20/20 with 22/22 audited material claims supported.
-
-## What remains planned
-
-- Complete the final rendered narrative read-through and verify its tables against
-  the canonical reports.
-- Add comparable billed agent cost only if a metered deployment path becomes part
-  of the project.
+The implementation and narrative evidence pass the automated gate. The remaining
+portfolio-completion item is a final manual visual review of the rendered local HTML;
+see [OPEN_ITEMS.md](OPEN_ITEMS.md).

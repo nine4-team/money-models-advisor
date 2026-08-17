@@ -1,6 +1,0 @@
-Recorded source search decision: `true`.
-
-Source need:
-```json
-{"intent":"recommendation_evidence","layers":["continuity"],"focus_terms":["recurring maintenance","membership offer","payback"]}
-```

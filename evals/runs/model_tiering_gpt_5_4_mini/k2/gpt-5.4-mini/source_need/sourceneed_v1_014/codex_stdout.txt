@@ -1,3 +1,0 @@
-Recorded `source-search-decision=false` in `evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_014/run.json`.
-
-Reason: the turn asks whether to run ads next month, but the snapshot/context does not include the unit-economics facts needed for a source-backed recommendation, such as CAC, gross profit, payback, or acquisition capacity.

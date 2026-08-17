@@ -1,7 +1,0 @@
-Recorded decision: `source_search_decision = true`.
-
-Source need:
-- `intent`: `comparison_evidence`
-- `subjects`: `["offers", "upsells"]`
-- `focus_terms`: `["front-end attraction offer", "post-sale add-on", "premium next offer", "after first sale", "front-end offer vs upsell"]`
-- `query_variants`: `["attraction offer vs upsell front-end post-sale", "front-end offer and post-sale add-on difference", "attraction offer upsell after first sale"]`

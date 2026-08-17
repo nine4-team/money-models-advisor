@@ -1,7 +1,0 @@
-Saved `economics.cac=1000` in the business snapshot and recorded the turn.
-
-Created the required eval artifact at:
-
-`evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_003/run.json`
-
-Final advisor response recorded: CAC is saved as about `$1,000`, including referral partner payments; first-30-day gross profit is still needed for payback diagnosis.

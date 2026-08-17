@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The saved business context already contains the payback period (`economics.payback_period_months: 1.0`) and enough supporting economics to answer directly. This is a simple calculation/lookup, not a concept diagnosis that requires Money Models source material."}

@@ -80,14 +80,10 @@ The extractor should mark weak evidence as `inferred` or `missing` instead of pr
 
 ## Fanout
 
-Fanout is the number of retrieval calls created from one user-facing source search.
-
-In this project, fanout can come from two places:
-
-- query variants: one `SourceNeed` may use 2-4 query strings instead of one
-- namespaces: one query may search one or more selected vector namespaces
-
-Example: a source need with 4 query variants and 2 target namespaces creates 8 vector searches. Fanout is not automatically bad: it can improve recall because the system asks the corpus from several angles. It becomes a problem when extra searches add latency, cost, or noisy candidates without improving quality. For hosted Pinecone runs, fanout should be measured and usually bounded or parallelized.
+Fanout is the number of retrieval calls created from one user-facing turn. The active
+path issues one search for one evidence job. A turn may issue another search only when
+the answer has a genuinely different evidence job. The agent records each search
+separately rather than creating hidden query or namespace fanout.
 
 ## Scorer
 
@@ -95,25 +91,11 @@ The scorer compares the extracted `actual_actions[]` against the case labels.
 
 In this repo, that is `scripts/eval_tool_use_judgment.py`.
 
-## Source Need
+## Search Request
 
-The source need is the specific kind of Money Models source support the advisor needs for one source-material search call.
-
-It is narrower than the user's whole business situation and narrower than the full answer plan. For example, if the user asks, "why do we need fulfillment cost to know whether ads can work?", the source need is not "1584 Design, STR owners, diagnostics, pricing, and ads." The source need is "explain gross profit, CAC, and payback period."
-
-The source need is used only after the advisor has already decided that source-material search is the right tool.
-
-One advisor turn may need more than one source need. In that case, the planner should issue multiple source-material searches, each with its own source need, instead of putting multiple intents into one source need.
-
-## Acceptable Intents
-
-Acceptable intents are eval-only labels for source-need generation cases where more than one primary retrieval objective is defensible.
-
-They do not change the runtime contract. A runtime source need still emits one `intent` for one search call. Acceptable intents only prevent the scorer from marking a reasonable primary intent wrong when the user turn naturally straddles two purposes, such as teaching a concept and recommending whether it applies.
-
-## Source-Specific Query
-
-A source-specific query is a local corpus-search query centered on the current source need.
+A `SearchRequest` is the agent-authored contract for one source-material search. It
+contains the user turn, a trace intent, and one corpus-guided query. The query captures
+the complete evidence job without copying irrelevant business details into the search.
 
 Good example:
 
@@ -127,13 +109,9 @@ Bad example:
 premium interior design STR owner diagnostic CAC payback attraction offer upsell
 ```
 
-The bad example is too broad because it stuffs business context and unrelated Money Models concepts into one search. That can retrieve plausible chunks while missing the material the advisor actually needs to cite.
-
-## Focus Terms
-
-Focus terms are the few concepts that should be preserved in a source-specific query.
-
-They are not exact keyword labels that the final answer must contain. They are a lightweight way to check whether the query is aimed at the right source need.
+The bad example is too broad because it stuffs unrelated business context and Money
+Models concepts into one query. That can retrieve plausible chunks while missing the
+material the advisor actually needs to cite.
 
 ## Trace Confidence
 

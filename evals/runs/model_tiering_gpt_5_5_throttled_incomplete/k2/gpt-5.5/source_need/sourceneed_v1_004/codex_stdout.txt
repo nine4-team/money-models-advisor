@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=true`.
-
-Source need saved to `run.json` with `comparison_evidence`, subjects `offers` and `upsells`, focused on attraction offer vs upsell in the known offer-stack context.

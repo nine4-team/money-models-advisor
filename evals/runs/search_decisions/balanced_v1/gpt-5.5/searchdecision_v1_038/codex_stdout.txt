@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The saved snapshot already contains CAC, monthly recurring gross profit, and the computed payback_period_months value. The user asks for a straightforward acquisition payback period calculation, not a Money Models concept, comparison, diagnosis, or recommendation needing source support."}

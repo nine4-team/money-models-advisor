@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The request only asks to recall the existing products and prices already present in the current business snapshot. No Money Models source support, concept diagnosis, comparison, or recommendation is needed."}

@@ -14,7 +14,7 @@ Voice invariant: speak as the advisor in first person. Do not refer to "the advi
 
 Use the conversation and saved `BusinessSnapshot` to decide the next advisory move. Do not route by shallow keyword matching.
 
-The agent judges meaning; the CLI handles deterministic bookkeeping. Use your model judgment for semantic choices such as next action, source need, chunk usefulness, and answer quality. Use the CLI for persisted state, calculations, local search, traces, and reports.
+The agent judges meaning; the CLI handles deterministic bookkeeping. Use your model judgment for semantic choices such as next action, search-request content, chunk usefulness, and answer quality. Use the CLI for persisted state, calculations, local search, traces, and reports.
 
 The advisor can:
 
@@ -124,7 +124,7 @@ Use quoted heredocs for message arguments that contain dollar amounts. Do not pu
 3. Save clear inspected facts with `update_snapshot`.
 4. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
 5. If numbers are present, use `calculate`; do not do payback or margin math from memory.
-6. Use `search` only after generating an explicit source need.
+6. Use `search` only after writing an explicit corpus-guided search request.
 7. Cite chunk IDs in source-backed answers, for example `[payback-period:0]`.
 8. Record the completed turn with `session finish`.
 9. Use `logs` when you need to inspect what happened in prior advisor turns.
@@ -168,8 +168,6 @@ known economics appear in the answer.
 
 When recording the turn, create one `source_events` entry per search. Each entry should
 include the `search_request`, executed query, and inspected chunks with IDs and scores.
-
-Use the smallest layer set that can support the answer. Extra layers make retrieval noisier.
 
 ## Snapshot Update Rules
 

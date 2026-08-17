@@ -1,5 +1,0 @@
-Gross profit is what’s left after you subtract the direct costs of making or delivering the product or service from revenue.
-
-In plain English: `sales - the costs tied to those sales`.
-
-It does not include overhead like rent, admin, or marketing.

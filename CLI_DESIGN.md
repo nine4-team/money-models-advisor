@@ -121,12 +121,9 @@ The active query is unfiltered and runs through hybrid retrieval. If one answer 
 two genuinely different support jobs, the agent may run two searches and record two
 source events. The CLI does not infer the query from shallow keywords.
 
-`--source-need-json` and the older subjects/focus-terms/query-variants schema remain
-available only to replay preserved experiments and traces.
-
 Manual/debug search remains available:
 
-`search <raw query> [--layer ...]`
+`search <raw query> [--subject ...]`
 
 This is for development and debugging, not the preferred product path.
 

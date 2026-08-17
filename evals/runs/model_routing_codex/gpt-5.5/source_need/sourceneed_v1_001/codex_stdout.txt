@@ -1,6 +1,0 @@
-Recorded decision: `source_search_decision=true`.
-
-Source need:
-```json
-{"intent":"teaching_evidence","layers":["unit-economics"],"focus_terms":["fulfillment cost","gross profit","CAC","payback"]}
-```

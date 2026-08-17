@@ -1,9 +1,0 @@
-Because ads are paid for with gross profit, not revenue.
-
-If you know CAC but not fulfillment cost, you only know what it costs to get a customer. You do not know how much cash that customer actually creates after you deliver the work. Money Models frames acquisition around three numbers: CAC, gross profit, and payback period [how-businesses-make-money:2]. Gross profit is the money left after fulfillment, and payback period is how long it takes gross profit to become greater than CAC [payback-period:0].
-
-So the ad question is not just, “Can we sell a $15K design project from ads?” It is, “After paying for design time, procurement labor, install coordination, vendor costs, and any other delivery costs, does the customer generate enough gross profit quickly enough to repay the ad spend?”
-
-In your saved numbers, CAC is $1,000 and first-30-day gross profit is $10,000, so the current model looks very workable: you are recovering CAC about 10x in the first 30 days. That is the kind of relationship the framework calls client-financed acquisition: first-30-day gross profit greater than CAC lets the customer fund the acquisition cost instead of requiring you to keep fronting cash [cfa:0].
-
-Fulfillment cost matters because it tells us whether ads are creating profitable customers or just expensive activity. Revenue says whether people buy. Gross profit says whether the purchase can pay for growth.

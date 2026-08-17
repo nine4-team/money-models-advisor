@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision = false`, `source_need = null`.
-
-Rationale: the context does not yet include the economics needed to justify an ads recommendation, especially CAC and gross profit, so the next move is to collect missing business facts rather than search source material.

@@ -1,5 +1,5 @@
 {
-  "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json",
+  "snapshot": "<repo>/evals/runs/next_action/baseline/tooluse_v1_006/business_dir/.money-model-advisor/business_snapshot.json",
   "updated": [
     {
       "field": "money_model.core_offer.price",

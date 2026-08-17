@@ -1,5 +1,0 @@
-Not yet. I would not increase paid acquisition next month until we know current CAC and first-30-day gross profit.
-
-For this decision, the first test is simple: does a new paid customer generate enough gross profit in the first 30 days to cover CAC? If yes, increasing spend can be considered, subject to capacity and lead quality. If no, then we need monthly recurring gross profit to calculate payback before deciding whether more spend is acceptable.
-
-My next question is: what is your current paid CAC and the gross profit you earn from a new customer in their first 30 days?

@@ -1,7 +1,0 @@
-I’d frame it as a CAC ceiling, not a fixed ad budget.
-
-- With `$10,000` first-30-day gross profit and `$1,000` current CAC, the model is CFA level 3.
-- That means I can afford roughly up to `$10,000` CAC per closed client and still recover the spend in month one.
-- I would not start near that ceiling. I’d test paid ads much lower first, then scale only if paid leads close about as well as the referral channel.
-
-If you want, I can turn that into a practical starter budget once I know your expected leads per month and close rate.

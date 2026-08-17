@@ -1,9 +1,0 @@
-Recorded `source-search-decision: true`.
-
-Source need:
-- `intent`: `diagnostic_evidence`
-- `subjects`: `["unit-economics"]`
-- `focus_terms`: `["CAC", "gross profit per client", "acquisition capacity", "payback"]`
-- `query_variants`: `["CAC vs gross profit per client", "acquisition capacity bottleneck gross profit per client", "payback-ready CAC or gross profit per client"]`
-
-Trace written to `evals/runs/model_tiering_gpt_5_4_mini/k2/gpt-5.4-mini/source_need/sourceneed_v1_009/run.json`.

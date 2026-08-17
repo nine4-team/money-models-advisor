@@ -131,15 +131,15 @@ def main() -> int:
     parser.add_argument("--chunking", default="heading-aware")
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs")
-    parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "obligation_support_coverage.md")
+    parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "archive" / "obligation_support_coverage.md")
     args = parser.parse_args()
 
     golden = golden_by_id(args.golden)
     obligations = load_obligations(args.obligations, include_proposed=args.include_proposed)
     report_path = args.report
-    default_report = ROOT / "evals" / "reports" / "obligation_support_coverage.md"
+    default_report = ROOT / "evals" / "reports" / "archive" / "obligation_support_coverage.md"
     if args.include_proposed and args.report == default_report:
-        report_path = ROOT / "evals" / "reports" / "obligation_support_coverage_proposed.md"
+        report_path = ROOT / "evals" / "reports" / "archive" / "obligation_support_coverage_proposed.md"
 
     run = {
         "run_id": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ"),

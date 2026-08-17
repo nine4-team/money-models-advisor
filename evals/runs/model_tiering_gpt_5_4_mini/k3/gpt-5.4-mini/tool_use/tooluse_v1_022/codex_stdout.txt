@@ -1,8 +1,0 @@
-I’d frame it like this for this business:
-
-- `Attraction offer`: the `$597 STR Design Diagnostic`. Its job is to get the prospect in the door, lower friction, and qualify the project.
-- `Upsell`: the `$5,000 pre-designed room package`. Its job is to increase average order value after someone is already engaged and buying.
-
-So the distinction is: attraction offer acquires and qualifies; upsell monetizes the same customer further after the first purchase.
-
-I recorded the trace artifact here: [run.json](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini/k3/gpt-5.4-mini/tool_use/tooluse_v1_022/run.json)

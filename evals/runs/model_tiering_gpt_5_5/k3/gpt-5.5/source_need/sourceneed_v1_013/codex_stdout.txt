@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=false`.
-
-`source_need` is `null` because this is a simple vocabulary question that can be answered without Money Models source-material search or citation.

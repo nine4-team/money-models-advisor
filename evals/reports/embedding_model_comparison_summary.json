@@ -29,7 +29,7 @@
             "input_chars": 6497
           }
         },
-        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-large-d1536",
+        "cache_dir": "<repo>/.cache/embeddings/openai/text-embedding-3-large-d1536",
         "cache_namespace": "openai/text-embedding-3-large-d1536",
         "dimensions": 1536,
         "model": "text-embedding-3-large"
@@ -73,7 +73,7 @@
             "input_chars": 6497
           }
         },
-        "cache_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/.cache/embeddings/openai/text-embedding-3-small",
+        "cache_dir": "<repo>/.cache/embeddings/openai/text-embedding-3-small",
         "cache_namespace": "openai/text-embedding-3-small",
         "dimensions": null,
         "model": "text-embedding-3-small"

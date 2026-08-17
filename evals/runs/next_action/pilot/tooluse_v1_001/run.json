@@ -48,7 +48,7 @@
   "split": "dev",
   "workflow_steps": [
     {
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/pilot/tooluse_v1_001/business_dir",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <repo>/evals/runs/next_action/pilot/tooluse_v1_001/business_dir",
       "exit_code": 0,
       "index": 0,
       "kind": "cli_command",
@@ -56,7 +56,7 @@
       "stdout_path": "evals/runs/next_action/pilot/tooluse_v1_001/stdout/000.txt"
     },
     {
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/pilot/tooluse_v1_001/business_dir --full",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <repo>/evals/runs/next_action/pilot/tooluse_v1_001/business_dir --full",
       "exit_code": 0,
       "index": 1,
       "kind": "cli_command",

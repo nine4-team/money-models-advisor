@@ -1,8 +1,0 @@
-Recorded `source_search_decision: true` in `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/source_need/sourceneed_v1_009/run.json`.
-
-Source need recorded:
-- `intent`: `diagnostic_evidence`
-- `subjects`: `["unit-economics"]`
-- `focus_terms`: `CAC`, `gross profit per client`, `payback period`, `acquisition capacity`
-
-Rationale: the snapshot is payback-ready, and the user is asking for source-backed interpretation of CAC versus gross profit as the bottleneck.

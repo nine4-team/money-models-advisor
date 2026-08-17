@@ -1,5 +1,0 @@
-It’s still saved as `economics.cac = 1000`. The prior-session logs support it: you accepted referral partner acquisition as roughly `$1,000` per client, so I’m treating that as CAC in the payback math.
-
-With the saved `$10,000` first-30-day gross profit, that keeps payback at `1.0` month.
-
-Recorded the eval trace at `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/tool_use/tooluse_v1_001/run.json`.

@@ -1,6 +1,0 @@
-Recorded `source_search_decision=true` in `evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_008/run.json`.
-
-Source need:
-- `intent`: `recommendation_evidence`
-- `subjects`: `offers`
-- `focus_terms`: `free trial`, `required actions`, `front-end offer`, `activation criteria`

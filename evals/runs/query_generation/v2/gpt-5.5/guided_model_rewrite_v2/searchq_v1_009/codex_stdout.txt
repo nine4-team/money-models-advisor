@@ -1,1 +1,0 @@
-{"query":"compare customer acquisition cost against gross profit per client first 30 day gross profit payback lifetime gross profit viability"}

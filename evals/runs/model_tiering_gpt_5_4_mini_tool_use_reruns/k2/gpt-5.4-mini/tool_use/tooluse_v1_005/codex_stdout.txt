@@ -1,3 +1,0 @@
-Yes. We’re working on **1584 Design**: a premium full-service interior design firm for owners of large short-term rental properties or second homes. I saved that context to the snapshot.
-
-Sources: [business-profile.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/business-profile.md), [services-and-pricing.md](/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/model_tiering_gpt_5_4_mini_tool_use_reruns/k2/gpt-5.4-mini/tool_use/tooluse_v1_005/business_dir/services-and-pricing.md)

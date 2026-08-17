@@ -1,9 +1,0 @@
-Because ads are not paid back by revenue. They are paid back by gross profit.
-
-Fulfillment cost tells us how much it costs to deliver the thing you sold. Price minus that delivery cost is gross profit, and gross profit is the money available to recover CAC [gross-profit:0]. CAC alone tells us what it costs to acquire a customer; fulfillment cost tells us whether that customer creates enough usable cash after delivery.
-
-That is why ads can look good on revenue and still fail in cash. If you sell a $15,000 project and it costs $5,000 to fulfill, you have $10,000 of gross profit to recover a $1,000 CAC. That can work. If the same $15,000 project costs $14,500 to fulfill, you only have $500 of gross profit, so the exact same $1,000 CAC does not pay back.
-
-The core ad question is: how long until gross profit is greater than CAC? That is payback period, and shorter payback makes ads easier to scale because the cash comes back faster [payback-period:0]. For self-funded growth, the stronger test is whether first-30-day gross profit is greater than CAC [cfa:0].
-
-So fulfillment cost matters because it converts the question from “can we sell this from ads?” to “can we profitably and quickly fund the next customer from ads?” For your saved numbers, $1,000 CAC against $10,000 first-30-day gross profit says ads can work on payback math. The next risk to validate is operational: whether that fulfillment cost estimate stays true as volume increases.

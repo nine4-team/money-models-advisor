@@ -29,12 +29,14 @@ Do not call external model services.
 
 ## Path Resolution
 
-The user should not have to understand path plumbing. Resolve paths this way:
+The user should not have to understand path plumbing. The context directory is the
+current working directory when the skill is invoked; advisor state is read and written
+there. The project should be installed once with `python3 -m pip install -e .` from
+the repository root, after which the `mma` command works from any context directory.
 
-- `advisor_repo`: `/Users/benjaminmackenzie/Dev/money-model-architect`
-- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
-
-The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+Before operating, verify that `command -v mma` succeeds. If it does not, locate the
+repository containing this project-local skill, install it in editable mode, and
+retry. Do not hardcode a developer-specific repository or business path.
 
 The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
 
@@ -43,10 +45,9 @@ Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CL
 Safe pattern:
 
 ```bash
-CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+CONTEXT_DIR="$PWD"
 USER_REQUEST='what should we do next?'
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli session start \
+mma session start \
   --business-dir "$CONTEXT_DIR" \
   --user-message "$USER_REQUEST"
 ```
@@ -71,10 +72,9 @@ The folder where the skill is invoked is the context directory. It is where advi
 2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
 
    ```bash
-   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   CONTEXT_DIR="$PWD"
    USER_REQUEST='...'
-   cd /Users/benjaminmackenzie/Dev/money-model-architect
-   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+   mma session start \
      --business-dir "$CONTEXT_DIR" \
      --user-message "$USER_REQUEST"
    ```
@@ -88,8 +88,7 @@ The folder where the skill is invoked is the context directory. It is where advi
 6. After composing the final answer, record the completed turn with one JSON artifact:
 
    ```bash
-   cd /Users/benjaminmackenzie/Dev/money-model-architect
-   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+   mma session finish \
      --business-dir "$CONTEXT_DIR" \
      --record-json /path/to/turn-record.json
    ```
@@ -120,15 +119,13 @@ These are the operations the agent should use through the CLI. Humans may also r
 Show saved state:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+mma snapshot --business-dir "$CONTEXT_DIR"
 ```
 
 Start an advisor turn:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli session start \
+mma session start \
   --business-dir "$CONTEXT_DIR" \
   --user-message "$USER_REQUEST"
 ```
@@ -136,15 +133,13 @@ PYTHONPATH=src python3 -m money_model_architect.cli session start \
 Update accepted facts:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+mma snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
 ```
 
 Record a fact accepted from an inspected business file:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
+mma snapshot set \
   --business-dir "$CONTEXT_DIR" \
   --source-type file \
   --source metrics/q1-unit-economics.csv \
@@ -154,15 +149,13 @@ PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
 Run deterministic math:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+mma calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
 ```
 
 Search local source material:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli search \
+mma search \
   --business-dir "$CONTEXT_DIR" \
   --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}' \
   --top-k 5
@@ -171,15 +164,13 @@ PYTHONPATH=src python3 -m money_model_architect.cli search \
 Inspect saved turns:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+mma logs --business-dir "$CONTEXT_DIR"
 ```
 
 Finish and record a turn:
 
 ```bash
-cd /Users/benjaminmackenzie/Dev/money-model-architect
-PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+mma session finish \
   --business-dir "$CONTEXT_DIR" \
   --record-json /path/to/turn-record.json
 ```

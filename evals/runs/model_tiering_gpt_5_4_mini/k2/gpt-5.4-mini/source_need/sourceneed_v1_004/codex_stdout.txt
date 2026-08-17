@@ -1,7 +1,0 @@
-Recorded `source_search_decision: true`.
-
-Source need:
-- `intent`: `comparison_evidence`
-- `subjects`: `["offers", "upsells"]`
-- `focus_terms`: `["attraction offer", "upsell", "front-end offer", "after first sale", "STR Design Diagnostic", "pre-designed room packages"]`
-- `query_variants`: `["attraction offer vs upsell in Money Models", "front-end offer after first sale upsell", "STR Design Diagnostic pre-designed room packages"]`

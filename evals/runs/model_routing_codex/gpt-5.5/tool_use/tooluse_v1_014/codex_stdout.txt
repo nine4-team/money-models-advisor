@@ -1,3 +1,0 @@
-I can help, but I need the basics first: what business are we improving, who do you sell to, and what outcome do you want from the money model?
-
-Recorded and validated the eval trace at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_014/run.json`.

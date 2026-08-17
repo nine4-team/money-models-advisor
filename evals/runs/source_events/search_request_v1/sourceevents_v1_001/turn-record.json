@@ -126,7 +126,7 @@
     "action_details": [
       {
         "operation": "session_start",
-        "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/source_events/search_request_v1/sourceevents_v1_001/business",
+        "business_dir": "<repo>/evals/runs/source_events/search_request_v1/sourceevents_v1_001/business",
         "user_message": "what should we fix first?"
       },
       {

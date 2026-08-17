@@ -5,3 +5,6 @@
 __pycache__/
 *.pyc
 .claude/
+evals/runs/**/codex_stdout.txt
+evals/runs/**/codex_stderr.txt
+evals/runs/answer_quality/expanded_v1_regression*/

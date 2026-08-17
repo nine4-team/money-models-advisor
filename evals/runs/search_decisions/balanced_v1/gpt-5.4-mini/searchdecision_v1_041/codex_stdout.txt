@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"search_source_material","rationale":"This is a pricing and funnel-structure recommendation, not a simple vocabulary question. The snapshot has enough business facts to evaluate whether the readiness audit should roll into the implementation fee, so Money Models source material should be searched for the best-supported guidance."}

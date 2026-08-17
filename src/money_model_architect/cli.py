@@ -41,7 +41,7 @@ ACTION_LABELS = {
     "inspect_local_docs",
     "clarify",
 }
-SOURCE_NEED_INTENTS = {
+SEARCH_REQUEST_INTENTS = {
     "teaching_evidence",
     "diagnostic_evidence",
     "comparison_evidence",
@@ -70,14 +70,9 @@ def _build_parser() -> argparse.ArgumentParser:
     source_material = subparsers.add_parser("search", help="Get citation-ready Money Models source chunks")
     source_material.add_argument("query", nargs="?", help="Raw debug/manual search query")
     source_material.add_argument("--business-dir", help="Directory containing advisor state for a structured search")
-    request_group = source_material.add_mutually_exclusive_group()
-    request_group.add_argument(
+    source_material.add_argument(
         "--search-request-json",
         help="JSON object or path with one agent-authored corpus-guided query",
-    )
-    request_group.add_argument(
-        "--source-need-json",
-        help="Legacy SourceNeed JSON for reproducibility and manual debugging",
     )
     source_material.add_argument("--subject", choices=SUBJECTS)
     source_material.add_argument("--top-k", type=int, default=5)
@@ -163,18 +158,17 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "search":
-        request_json = args.search_request_json or args.source_need_json
+        request_json = args.search_request_json
         if request_json:
             if not args.business_dir:
                 parser.error("search with a structured request requires --business-dir")
             paths = advisor_paths(Path(args.business_dir))
             ensure_advisor_state(paths)
-            snapshot = BusinessSnapshot.load(paths.snapshot)
             search_request = _parse_search_request(_read_json_value(request_json))
             if search_request.query and args.subject:
                 parser.error("--subject cannot be combined with --search-request-json; the active path is unfiltered")
-            queries = build_advisor_queries(snapshot, search_request)
-            retrieval_backend = args.backend or ("hybrid" if search_request.query else "bm25")
+            queries = build_advisor_queries(search_request)
+            retrieval_backend = args.backend or "hybrid"
             evidence = execute_advisor_queries(
                 queries,
                 _repo_root() / "corpus" / "transcripts",
@@ -187,14 +181,12 @@ def main(argv: list[str] | None = None) -> int:
                 "business_dir": str(paths.business_dir),
                 "retrieval_backend": retrieval_backend,
                 "vector_store": args.vector_store,
-                "namespace_policy": "unfiltered" if search_request.query else "legacy_source_need_target_namespaces",
+                "namespace_policy": "unfiltered",
                 "namespace_prefix": args.namespace_prefix if retrieval_backend in {"vector", "hybrid"} else None,
                 "search_request": _search_request_to_dict(search_request),
                 "queries": [query.to_dict() for query in queries],
                 "source_material": [item.to_dict() for item in evidence],
             }
-            if args.source_need_json:
-                payload["source_need"] = payload["search_request"]
             print(json.dumps(payload, indent=2))
             return 0
 
@@ -616,8 +608,7 @@ def _required_string_list(record: dict[str, Any], field_name: str) -> list[str]:
 def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
     if not isinstance(event, dict):
         raise SystemExit(f"record-json source_events[{index}] must be an object")
-    uses_current_contract = "search_request" in event
-    search_request = event.get("search_request", event.get("source_need"))
+    search_request = event.get("search_request")
     if not isinstance(search_request, dict):
         raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
     request_label = f"record-json source_events[{index}].search_request"
@@ -640,9 +631,7 @@ def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
             raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
 
     normalized = dict(event)
-    if uses_current_contract:
-        normalized.pop("source_need", None)
-        normalized["search_request"] = search_request
+    normalized["search_request"] = search_request
     normalized["queries"] = queries
     normalized["query"] = queries[0]
     normalized["chunks"] = chunks
@@ -686,65 +675,23 @@ def _normalize_calculation_event(event: Any, index: int) -> dict[str, Any]:
 
 def _validate_search_request_payload(search_request: dict[str, Any], label: str) -> None:
     intent = search_request.get("intent")
-    if intent not in SOURCE_NEED_INTENTS:
-        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
+    if intent not in SEARCH_REQUEST_INTENTS:
+        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SEARCH_REQUEST_INTENTS))}")
     query = search_request.get("query")
-    if query is not None:
-        if not isinstance(query, str) or not query.strip() or "\n" in query or "\r" in query or len(query.strip()) > 400:
-            raise SystemExit(f"{label}.query must be one non-empty line of at most 400 characters")
-        user_turn = search_request.get("user_turn")
-        if not isinstance(user_turn, str) or not user_turn.strip():
-            raise SystemExit(f"{label}.user_turn must be a non-empty string")
-        legacy_fields = [
-            field
-            for field in ("subjects", "focus_terms", "query_variants", "target_namespaces")
-            if field in search_request
-        ]
-        if legacy_fields:
-            raise SystemExit(f"{label} active query cannot include legacy fields: {', '.join(legacy_fields)}")
-        return
-
-    # Compatibility validation for preserved source-need traces and evals.
-    subjects = search_request.get("subjects")
-    if not isinstance(subjects, list) or not subjects or not all(isinstance(subject, str) for subject in subjects):
-        raise SystemExit(f"{label}.subjects must be a non-empty list of strings")
-    invalid_subjects = [subject for subject in subjects if subject not in SUBJECTS]
-    if invalid_subjects:
-        raise SystemExit(f"{label}.subjects contain unknown subject(s): {', '.join(invalid_subjects)}")
-    target_namespaces = search_request.get("target_namespaces", [])
-    if (
-        not isinstance(target_namespaces, list)
-        or not all(isinstance(namespace, str) and namespace.strip() for namespace in target_namespaces)
-    ):
-        raise SystemExit(f"{label}.target_namespaces must be a list of strings when supplied")
-    invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in SUBJECTS]
-    if invalid_namespaces:
-        raise SystemExit(f"{label}.target_namespaces contain unknown namespace(s): {', '.join(invalid_namespaces)}")
-    focus_terms = search_request.get("focus_terms")
-    if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
-        raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
-    query_variants = search_request.get("query_variants")
-    if (
-        not isinstance(query_variants, list)
-        or not 2 <= len(query_variants) <= 4
-        or not all(isinstance(query, str) and query.strip() for query in query_variants)
-    ):
-        raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
+    if not isinstance(query, str) or not query.strip() or "\n" in query or "\r" in query or len(query.strip()) > 400:
+        raise SystemExit(f"{label}.query must be one non-empty line of at most 400 characters")
+    user_turn = search_request.get("user_turn")
+    if not isinstance(user_turn, str) or not user_turn.strip():
+        raise SystemExit(f"{label}.user_turn must be a non-empty string")
+    extra_fields = sorted(set(search_request) - {"intent", "user_turn", "query"})
+    if extra_fields:
+        raise SystemExit(f"{label} contains unsupported fields: {', '.join(extra_fields)}")
 
 
 def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
-    query = search_request.get("query")
-    if isinstance(query, str):
-        if len(queries) != 1 or _normalize_query_text(queries[0]) != _normalize_query_text(query):
-            raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
-        return
-    query_variants = search_request.get("query_variants")
-    if not isinstance(query_variants, list):
-        return
-    executed = {_normalize_query_text(query) for query in queries}
-    missing = [variant for variant in query_variants if _normalize_query_text(variant) not in executed]
-    if missing:
-        raise SystemExit(f"{label}.queries must include every source_need.query_variants entry")
+    query = search_request["query"]
+    if len(queries) != 1 or _normalize_query_text(queries[0]) != _normalize_query_text(query):
+        raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
 
 
 def _normalize_query_text(value: str) -> str:
@@ -793,12 +740,8 @@ def _parse_search_request(value: Any) -> SearchRequest:
     if not isinstance(value, dict):
         raise SystemExit("search-request-json must decode to an object")
     intent = value.get("intent")
-    subjects = value.get("subjects", [])
-    focus_terms = value.get("focus_terms", [])
     user_turn = value.get("user_turn", "")
     query = value.get("query", "")
-    query_variants = value.get("query_variants", [])
-    target_namespaces = value.get("target_namespaces", [])
     if not isinstance(intent, str) or not intent:
         raise SystemExit("search request requires non-empty string field: intent")
     if not isinstance(query, str):
@@ -808,40 +751,18 @@ def _parse_search_request(value: Any) -> SearchRequest:
     query = query.strip()
     if query and ("\n" in query or "\r" in query or len(query) > 400):
         raise SystemExit("search request field query must be one line of at most 400 characters")
-    if query:
-        if not user_turn.strip():
-            raise SystemExit("search request field user_turn must be non-empty")
-        legacy_fields = [
-            field
-            for field in ("subjects", "focus_terms", "query_variants", "target_namespaces")
-            if field in value
-        ]
-        if legacy_fields:
-            raise SystemExit("active search request cannot include legacy fields: " + ", ".join(legacy_fields))
-    if not isinstance(subjects, list) or not all(isinstance(subject, str) for subject in subjects):
-        raise SystemExit("source need field subjects must be a list of strings")
-    if not isinstance(focus_terms, list) or not all(isinstance(term, str) for term in focus_terms):
-        raise SystemExit("source need field focus_terms must be a list of strings")
-    if not isinstance(query_variants, list) or not all(isinstance(query, str) for query in query_variants):
-        raise SystemExit("source need field query_variants must be a list of strings when supplied")
-    if not isinstance(target_namespaces, list) or not all(isinstance(namespace, str) for namespace in target_namespaces):
-        raise SystemExit("source need field target_namespaces must be a list of strings when supplied")
-    invalid_subjects = [subject for subject in subjects if subject not in SUBJECTS]
-    if invalid_subjects:
-        raise SystemExit(f"unknown source need subject(s): {', '.join(invalid_subjects)}")
-    invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in SUBJECTS]
-    if invalid_namespaces:
-        raise SystemExit(f"unknown source need target namespace(s): {', '.join(invalid_namespaces)}")
-    if not query and not query_variants and not focus_terms:
+    if not user_turn.strip():
+        raise SystemExit("search request field user_turn must be non-empty")
+    if not query:
         raise SystemExit("search request requires query")
+    allowed_fields = {"intent", "user_turn", "query"}
+    extra_fields = sorted(set(value) - allowed_fields)
+    if extra_fields:
+        raise SystemExit("search request contains unsupported fields: " + ", ".join(extra_fields))
     return SearchRequest(
         intent=intent,
-        subjects=tuple(subjects),
-        focus_terms=tuple(focus_terms),
         user_turn=user_turn,
         query=query,
-        query_variants=tuple(query_variants),
-        target_namespaces=tuple(target_namespaces),
     )
 
 
@@ -877,22 +798,11 @@ def _search_index(
 
 
 def _search_request_to_dict(search_request: SearchRequest) -> dict[str, Any]:
-    payload: dict[str, Any] = {
+    return {
         "intent": search_request.intent,
         "user_turn": search_request.user_turn,
+        "query": search_request.query,
     }
-    if search_request.query:
-        payload["query"] = search_request.query
-        return payload
-    payload.update(
-        {
-            "subjects": list(search_request.subjects),
-            "focus_terms": list(search_request.focus_terms),
-            "query_variants": list(search_request.query_variants),
-            "target_namespaces": list(search_request.target_namespaces),
-        }
-    )
-    return payload
 
 
 def _write_turn_record(sessions_dir: Path, payload: dict[str, Any]) -> Path:

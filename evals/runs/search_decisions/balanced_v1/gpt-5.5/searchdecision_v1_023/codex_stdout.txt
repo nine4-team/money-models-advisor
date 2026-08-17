@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The user is asking to recall current saved business facts: pilot, core subscription, and upsell. The snapshot contains those exact offer descriptions and prices, so no Money Models source search is needed."}

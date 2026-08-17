@@ -1,7 +1,0 @@
-The source is pretty direct: do not launch all four at once.
-
-It gives a logical build order: start with the attraction offer, then add an upsell, then a downsell, then continuity, and finally connect the stack [make-your-money-model:2]. In your case that maps to: audit first, then add-on, then smaller package after a no, then monitoring.
-
-The stronger rollout rule is to perfect one at a time. The source warns that trying to do all four or six new offer pieces at once can break the business, and recommends starting with one because each new offer adds operational complexity [make-your-money-model:3]. It also says the goal is to use as few offers as possible because fewer pieces means fewer things can break, and because the real objective is to offset CAC, recycle cash within 30 days, and remove acquisition as the bottleneck [make-your-money-model:3].
-
-So my recommendation is: launch the compliance readiness audit first as the attraction offer, prove it reliably creates qualified implementation conversations and recovers CAC, then add the next layer only when the observed constraint demands it. If qualified prospects say yes to the audit but implementation gross profit or first-30-day cash is not high enough, add the upsell. If too many qualified prospects say no to implementation because of scope or price, add the smaller package. If clients complete implementation and need ongoing assurance, add monitoring. The source allows stacking, but it treats stacking as something you build toward, not something you start with [offer-types:4].

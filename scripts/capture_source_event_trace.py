@@ -127,7 +127,7 @@ def render_acting_prompt(case: dict[str, Any], business_dir: Path) -> str:
             "",
             "Task: answer the user's turn using the active agent-operated workflow. If the answer needs source-material support, write one corpus-guided `SearchRequest.query` per evidence job, run `search --search-request-json`, inspect chunks, answer with citations, and record the completed turn with `session finish`.",
             "",
-            "If one answer needs multiple evidence jobs, run multiple searches and record one `source_events` entry per search. Do not use the legacy `SourceNeed`, subject-filter, or query-variant fields.",
+            "If one answer needs multiple evidence jobs, run multiple searches and record one `source_events` entry per search. Use only the active three-field `SearchRequest` contract.",
             "",
             "Use `intent` only as the closest trace label. Preserve the complete evidence need in `query`; intent does not control scoring or retrieval.",
             "",

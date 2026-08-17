@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"search_source_material","rationale":"The user is asking for a Money Models recommendation about offer sequencing and price perception. The snapshot has enough relevant business and offer-stack facts to diagnose, and the answer would benefit from source-backed guidance rather than a simple vocabulary response."}

@@ -1,7 +1,0 @@
-Not yet. I would not increase spend for more readiness-audit leads until we know whether a lead reliably pays back.
-
-For this decision, I need two numbers first: current CAC for a paid readiness-audit customer, and first-30-day gross profit from the readiness audit. The audit price is saved as $1,500, but price is not gross profit, and I do not yet know delivery cost or ad/sales cost.
-
-If first-30-day gross profit is greater than CAC, then increasing spend is likely reasonable, assuming lead quality stays similar. If it is below CAC, we need either monthly recurring gross profit from monitoring or the conversion rate and gross profit from the $30,000 implementation engagement before deciding whether more lead spend is justified.
-
-Send me the last 30-90 days of readiness-audit ad spend, number of paid audits acquired, and estimated delivery cost per audit. I can turn that into the first spend/no-spend gate.

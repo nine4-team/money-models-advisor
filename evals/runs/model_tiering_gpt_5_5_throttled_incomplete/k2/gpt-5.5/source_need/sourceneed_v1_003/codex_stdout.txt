@@ -1,5 +1,0 @@
-Recorded the source-need decision in `run.json`.
-
-Decision: `source_search_decision=true`
-
-Source need: `diagnostic_evidence` for `unit-economics`, focused on ad spend, CAC, first 30 day gross profit, payback period, and client financed acquisition.

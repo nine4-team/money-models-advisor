@@ -46,7 +46,7 @@ def main() -> int:
             lines.append(f"- `{row['id']}` ({row.get('status', 'missing')}): {row['claim']}")
             if row.get("notes"):
                 lines.append(f"  Notes: {row['notes']}")
-    report_path = ROOT / "evals" / "reports" / "required_claim_review_status.md"
+    report_path = ROOT / "evals" / "reports" / "archive" / "required_claim_review_status.md"
     report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps({"report_path": str(report_path.relative_to(ROOT)), "total": len(rows), "status_counts": dict(status_counts)}, indent=2))
     return 0

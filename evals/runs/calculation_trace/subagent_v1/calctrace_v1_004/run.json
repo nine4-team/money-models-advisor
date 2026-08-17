@@ -25,7 +25,7 @@
     },
     {
       "step": "session_start",
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business --user-message 'what does CAC mean in plain English?'",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business --user-message 'what does CAC mean in plain English?'",
       "exit_code": 0
     },
     {
@@ -35,11 +35,11 @@
     },
     {
       "step": "session_finish",
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business --record-json /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/turn-record.json",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business --record-json <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/turn-record.json",
       "exit_code": 0,
       "output": {
         "recorded": true,
-        "session_path": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/sessions/20260611T203703.json",
+        "session_path": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/sessions/20260611T203703.json",
         "created_at": "2026-06-11T20:37:03Z",
         "warnings": [],
         "source_event_count": 0,
@@ -49,7 +49,7 @@
     },
     {
       "step": "verify_logs",
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business --full",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir <repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business --full",
       "exit_code": 0
     }
   ],
@@ -60,8 +60,8 @@
   ],
   "calculation_events": [],
   "session_paths": {
-    "sessions_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/sessions",
-    "final_session": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/sessions/20260611T203703.json"
+    "sessions_dir": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/sessions",
+    "final_session": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/sessions/20260611T203703.json"
   },
   "final_answer": "CAC means customer acquisition cost. In plain English, it is what you spend to get one new client or customer. If you spend $1,000 on ads, referrals, sales time, or other acquisition work and that produces one new client, your CAC is $1,000. The reason I care about it is simple: your first-sale gross profit needs to be high enough to pay that CAC back quickly.",
   "notes": [
@@ -70,10 +70,10 @@
     "No source search was run because a plain-English CAC definition did not require citation-backed Money Models evidence."
   ],
   "paths": {
-    "run_folder": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004",
-    "business_dir": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business",
-    "snapshot": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/business_snapshot.json",
-    "turn_record": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/turn-record.json",
-    "run_json": "/Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/run.json"
+    "run_folder": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004",
+    "business_dir": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business",
+    "snapshot": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/business/.money-model-advisor/business_snapshot.json",
+    "turn_record": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/turn-record.json",
+    "run_json": "<repo>/evals/runs/calculation_trace/subagent_v1/calctrace_v1_004/run.json"
   }
 }

@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The request is a straightforward calculation from saved snapshot values: CAC is 2800 and monthly recurring gross profit is 900, with payback already stored as 2.8889 months. It does not need Money Models source support, a concept comparison, or recommendation."}

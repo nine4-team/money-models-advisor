@@ -1,8 +1,0 @@
-Recorded the acting-agent run and completed the trace artifact.
-
-Created `run.json` at:
-`evals/runs/source_events/search_request_v1/sourceevents_v1_006/run.json`
-
-Recorded action summary: `session_start`, one current-contract `search_source_material` event, cited answer, and `session_finish`. The completed source event used the query:
-
-`continuity offers maintenance plan recurring gross profit lifetime value cash flow retention offer after core service`

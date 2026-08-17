@@ -62,8 +62,7 @@ When source evidence is needed, the agent writes one `SearchRequest`:
 
 The CLI validates the request, executes that exact query, and records the query
 and inspected chunks. It does not infer subjects, create query variants, or apply
-a request-time metadata filter. The older `SourceNeed` and multi-query formats
-remain compatibility paths for historical experiment replay only.
+a request-time metadata filter.
 
 ## Retrieval
 

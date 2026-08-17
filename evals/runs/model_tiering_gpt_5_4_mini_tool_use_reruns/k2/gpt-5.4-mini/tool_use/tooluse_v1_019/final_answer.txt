@@ -1,5 +1,0 @@
-Think of client-financed acquisition as a cash-timing test, not just a CAC test. You want the client’s first 30 days of gross profit to cover CAC quickly enough that client cash, not your own capital, funds growth. On your numbers, CAC is $1k, first-30-day gross profit is $10k, payback is inside month one, and the CLI classifies that as CFA level 3 [context:1] [how-businesses-make-money:2] [payback-period:0] [cfa:0].
-
-Practically, that means you can usually spend into acquisition aggressively if deposits or retainers come in before heavy procurement, install, or labor outflows. If cash goes out first, the business can still be economically strong, but you are financing float, so the real cap is working capital, not just CAC.
-
-If you want, I can turn this into a hard acquisition-spend ceiling from your deposit schedule and delivery cash outflow.

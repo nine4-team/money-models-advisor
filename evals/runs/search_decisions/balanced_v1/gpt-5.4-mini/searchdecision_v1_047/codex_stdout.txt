@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The requested CAC, first-month gross profit, and lifetime gross profit are already present in the current advisor snapshot as known facts, so no Money Models source-material search is needed."}

@@ -1,8 +1,0 @@
-Recorded decision: source search needed.
-
-Source need:
-`intent`: `diagnostic_evidence`  
-`subjects`: `["unit-economics"]`  
-`focus_terms`: fulfillment cost, gross profit, CAC, payback period, paid acquisition
-
-Created `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/run.json`.

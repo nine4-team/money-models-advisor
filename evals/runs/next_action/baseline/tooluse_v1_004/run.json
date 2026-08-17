@@ -48,7 +48,7 @@
   "split": "dev",
   "workflow_steps": [
     {
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_004/business_dir economics.first_30_day_gross_profit=10000",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir <repo>/evals/runs/next_action/baseline/tooluse_v1_004/business_dir economics.first_30_day_gross_profit=10000",
       "exit_code": 0,
       "index": 0,
       "kind": "cli_command",

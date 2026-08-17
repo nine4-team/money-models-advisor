@@ -1,9 +1,0 @@
-Economically, this is a strong cash-payback model.
-
-- CAC: about `$1,000`
-- First 30-day gross profit: about `$10,000`
-- Payback: `1.0 month`
-
-So the business is recovering acquisition cost very quickly, with roughly `10x` gross-profit coverage in the first 30 days. The main caveat is that there’s no continuity layer here yet, so this is being carried by upfront project gross profit rather than lifetime value.
-
-If you want, I can turn that into a practical acquisition budget next.

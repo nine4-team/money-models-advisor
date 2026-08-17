@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The request is a payback/affordability question about scaling ads. The snapshot explicitly lacks CAC and first-30-day gross profit and marks payback diagnosis as not ready, so the next step would be obtaining missing business economics rather than searching Money Models source material."}

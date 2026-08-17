@@ -1,3 +1,0 @@
-With CAC at `$1,000` and first-month gross profit at `$10,000`, you have `$9,000` of room before first-month break-even.
-
-I recorded the advisor turn and created the required eval artifact at `evals/runs/model_tiering_gpt_5_5/k3/gpt-5.5/tool_use/tooluse_v1_016/run.json`.

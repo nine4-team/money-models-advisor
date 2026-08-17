@@ -1,5 +1,0 @@
-Completed the eval case and wrote:
-
-`evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_006/run.json`
-
-Final advisor answer recorded: current draft pricing is `$597-$997` for the STR Design Diagnostic, `$1,200-$1,800` per room or `$5,000-$7,000` bundle for pre-designed room packages, and `$15,000-$60,000` for full-service STR/second-home design, with typical project budgets of `$80,000-$160,000` and ideal budgets of `$150,000-$200,000+`.

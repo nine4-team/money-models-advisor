@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The request is a simple recap of economics already present in the loaded advisor snapshot. No Money Models source material is needed because there is enough authoritative context to summarize the existing facts without additional citation or diagnosis."}

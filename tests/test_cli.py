@@ -112,45 +112,6 @@ class CliTest(unittest.TestCase):
                     ]
                 )
 
-    def test_search_accepts_agent_selected_target_namespaces(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            run_cli(
-                [
-                    "snapshot",
-                    "set",
-                    "--business-dir",
-                    tmp,
-                    "business.business_type=coaching business",
-                    "money_model.core_offer.description=implementation program",
-                ]
-            )
-            source_need = {
-                "intent": "teaching_evidence",
-                "subjects": ["unit-economics"],
-                "target_namespaces": ["unit-economics"],
-                "focus_terms": ["CAC", "payback period", "gross profit"],
-                "query_variants": ["CAC first 30 day gross profit payback period"],
-            }
-            output = run_cli(
-                [
-                    "search",
-                    "--business-dir",
-                    tmp,
-                    "--source-need-json",
-                    json.dumps(source_need),
-                    "--backend",
-                    "vector",
-                    "--top-k",
-                    "1",
-                ]
-            )
-            payload = json.loads(output)
-
-            self.assertEqual(payload["source_need"]["target_namespaces"], ["unit-economics"])
-            self.assertEqual(payload["queries"][0]["target_namespaces"], ["unit-economics"])
-            self.assertEqual(payload["source_material"][0]["target_namespaces"], ["unit-economics"])
-            self.assertEqual(payload["source_material"][0]["queried_namespaces"], ["money-models-unit-economics"])
-
     def test_snapshot_show_and_set(self):
         with tempfile.TemporaryDirectory() as tmp:
             show_output = run_cli(["snapshot", "--business-dir", tmp])
@@ -246,21 +207,21 @@ class CliTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             source_events = [
                 {
-                    "source_need": {
+                    "search_request": {
                         "intent": "diagnostic_evidence",
-                        "subjects": ["unit-economics"],
-                        "focus_terms": ["CAC", "payback period"],
+                        "user_turn": "does this mean acquisition is probably not the bottleneck?",
+                        "query": "CAC payback period coaching business",
                     },
-                    "query": "CAC payback period coaching business",
+                    "queries": ["CAC payback period coaching business"],
                     "chunks": [{"id": "payback-period:0", "score": 2.3}],
                 },
                 {
-                    "source_need": {
+                    "search_request": {
                         "intent": "recommendation_evidence",
-                        "subjects": ["upsells"],
-                        "focus_terms": ["upsell", "first 30 day gross profit"],
+                        "user_turn": "what should I improve next?",
+                        "query": "upsell first 30 day gross profit coaching business",
                     },
-                    "query": "upsell first 30 day gross profit coaching business",
+                    "queries": ["upsell first 30 day gross profit coaching business"],
                     "chunks": [{"id": "upsells:0", "score": 1.7}],
                 }
             ]

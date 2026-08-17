@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=false`.
-
-Rationale: the turn asks for deterministic payback math, and the snapshot already has CAC and first-30-day gross profit, so no Money Models source-material search is needed.

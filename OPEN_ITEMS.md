@@ -2,8 +2,9 @@
 
 **Updated:** 2026-08-17
 
-This is the short completion checklist. `REMEDIATION_PLAN.md` contains the
-detailed acceptance record; completed experiments should not be reopened here.
+This is the short completion checklist. The completed remediation record is archived
+at `docs/history/REMEDIATION_PLAN.md`; completed experiments should not be reopened
+here.
 
 ## Most recently completed
 
@@ -22,7 +23,11 @@ detailed acceptance record; completed experiments should not be reopened here.
 - The final source audit corrected the workflow's clarification boundary, completed
   the evaluation/scoring explanation, added the embedding and latency decisions,
   documented the regression gate, and reconciled the stale supporting documents.
-  The full eight-check gate passes, including 91 unit tests.
+  The full eight-check gate passes.
+- Reviewer-readiness cleanup removed the HTML backup and generated transport logs,
+  moved completed plans and superseded reports/runs into labeled archives, removed
+  the retired query-planning contract from the active CLI, made the advisor skill
+  portable, and added CI plus code/data licensing notices.
 
 ## Required for portfolio completion
 
@@ -35,6 +40,11 @@ detailed acceptance record; completed experiments should not be reopened here.
 - **Comparable billed agent cost.** The current agent runs through a subscription
   harness. Add per-case billed cost only when the deployment path uses metered
   model calls.
+
+## Required before public redistribution
+
+- Confirm that the book-derived corpus and business-context fixtures may be shared
+  with the intended audience, or remove them. See `DATA_AND_CONTENT_NOTICE.md`.
 
 ## Optional extensions, not completion blockers
 

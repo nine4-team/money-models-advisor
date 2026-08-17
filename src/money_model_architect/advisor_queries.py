@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-from .snapshot import BusinessSnapshot
-
 
 @dataclass(frozen=True)
 class AdvisorQuery:
@@ -27,130 +25,22 @@ class AdvisorQuery:
 
 @dataclass(frozen=True)
 class SearchRequest:
-    """Agent-authored request for one source-material search call.
-
-    ``query`` is the current product path: one corpus-guided, unfiltered query.
-    The remaining fields preserve compatibility with older eval artifacts and
-    manual debugging; they do not alter a search when ``query`` is supplied.
-    """
+    """Agent-authored request for one corpus-guided, unfiltered search."""
 
     intent: str
-    subjects: tuple[str, ...] = ()
-    focus_terms: tuple[str, ...] = ()
-    user_turn: str = ""
-    query: str = ""
-    query_variants: tuple[str, ...] = ()
-    target_namespaces: tuple[str, ...] = ()
+    user_turn: str
+    query: str
 
 
-# Historical eval code imports this name. Keep the alias while the recorded
-# source-need datasets remain useful for search/no-search planning tests.
-SourceNeed = SearchRequest
+def build_advisor_queries(search_request: SearchRequest) -> list[AdvisorQuery]:
+    """Convert the active search contract into its single executable query."""
 
-
-def build_advisor_queries(snapshot: BusinessSnapshot, source_need: SearchRequest) -> list[AdvisorQuery]:
-    """Build executable queries from an explicit agent-authored search request."""
-
-    query_text = _join_terms([source_need.query])
-    if query_text:
-        return [
-            AdvisorQuery(
-                intent=source_need.intent,
-                subjects=(),
-                target_namespaces=(),
-                query=query_text,
-                reason="Corpus-guided query authored by the agent for the current question.",
-            )
-        ]
-
-    return _source_need_queries(snapshot, source_need)
-
-
-def _source_need_queries(snapshot: BusinessSnapshot, source_need: SourceNeed) -> list[AdvisorQuery]:
-    terms = [*source_need.focus_terms, *_compact_context_terms(snapshot)]
-    target_namespaces = source_need.target_namespaces
-
-    queries: list[AdvisorQuery] = []
-    for variant in source_need.query_variants:
-        variant_text = _join_terms([variant])
-        if not variant_text:
-            continue
-        queries.append(
-            AdvisorQuery(
-                intent=source_need.intent,
-                subjects=source_need.subjects,
-                target_namespaces=target_namespaces,
-                query=variant_text,
-                reason="Agent-generated query variant for the selected source need.",
-            )
-        )
-
-    fallback_text = _join_terms(terms)
-    if not fallback_text:
-        return queries
-    queries.append(
+    return [
         AdvisorQuery(
-            intent=source_need.intent,
-            subjects=source_need.subjects,
-            target_namespaces=target_namespaces,
-            query=fallback_text,
-            reason="Deterministic fallback query from source-need focus terms and compact business context.",
+            intent=search_request.intent,
+            subjects=(),
+            target_namespaces=(),
+            query=search_request.query,
+            reason="Corpus-guided query authored by the agent for the current question.",
         )
-    )
-    return _dedupe_queries(queries)
-
-
-def _compact_context_terms(snapshot: BusinessSnapshot) -> list[str]:
-    terms: list[str] = []
-    business_type = snapshot.business.business_type or ""
-    core_offer = snapshot.money_model.core_offer.description or ""
-    for phrase in (
-        _shorten_business_context(business_type),
-        _shorten_business_context(core_offer),
-    ):
-        if phrase:
-            terms.append(phrase)
-    return terms
-
-
-def _shorten_business_context(value: str) -> str | None:
-    lowered = value.lower()
-    if "interior design" in lowered:
-        return "interior design"
-    if "short-term rental" in lowered or "str" in lowered:
-        return "STR"
-    if "coaching" in lowered:
-        return "coaching"
-    words = [word.strip(" ,.;:()[]") for word in value.split()]
-    words = [word for word in words if word]
-    if not words:
-        return None
-    return " ".join(words[:3])
-
-
-def _join_terms(terms: list[str | None]) -> str:
-    return " ".join(_dedupe([term.strip() for term in terms if term and term.strip()]))
-
-
-def _dedupe(values: list[str]) -> list[str]:
-    seen = set()
-    deduped = []
-    for value in values:
-        key = value.lower()
-        if key in seen:
-            continue
-        seen.add(key)
-        deduped.append(value)
-    return deduped
-
-
-def _dedupe_queries(queries: list[AdvisorQuery]) -> list[AdvisorQuery]:
-    seen = set()
-    deduped = []
-    for query in queries:
-        key = (query.subjects, query.target_namespaces, query.query.lower())
-        if key in seen:
-            continue
-        seen.add(key)
-        deduped.append(query)
-    return deduped
+    ]

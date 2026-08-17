@@ -1,3 +1,0 @@
-I’d cap paid ads by CAC, not by revenue.
-
-At the current numbers, you’re at about $1,000 CAC, 1-month payback, and CFA level 3, so paid acquisition is testable now. My guardrail would be to keep CAC at or below about $1,000 per customer and only scale if the ads keep that payback intact. I’d still start cautiously because service gross margin is 77%, below the 80% rule of thumb, so I wouldn’t blast spend until the funnel and margins prove out. If you want a budget formula, multiply your target CAC by the number of customers you want to buy.

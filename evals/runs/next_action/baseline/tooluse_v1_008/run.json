@@ -55,7 +55,7 @@
   "split": "dev",
   "workflow_steps": [
     {
-      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir /Users/benjaminmackenzie/Dev/money-model-architect/evals/runs/next_action/baseline/tooluse_v1_008/business_dir",
+      "command": "PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir <repo>/evals/runs/next_action/baseline/tooluse_v1_008/business_dir",
       "exit_code": 0,
       "index": 0,
       "kind": "cli_command",

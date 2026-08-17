@@ -1,3 +1,0 @@
-Recorded the trace for `sourceevents_v1_002`.
-
-Created `run.json` with one diagnostic `SearchRequest` source event, cited chunks `how-businesses-make-money:2`, `cfa:0`, and `payback-period:0`, plus one `cfa-level` calculation event. `session finish` succeeded with no warnings.

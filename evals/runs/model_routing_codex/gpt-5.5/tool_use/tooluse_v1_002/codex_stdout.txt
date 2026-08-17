@@ -1,7 +1,0 @@
-Completed the eval case.
-
-I read the snapshot, checked logs, recorded the advisor turn, and created the required trace artifact at:
-
-`evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_002/run.json`
-
-Next action chosen: ask for the missing CAC and first-30-day gross profit before calculation, diagnosis, or source search.

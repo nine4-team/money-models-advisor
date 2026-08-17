@@ -1,1 +1,0 @@
-{"query":"client-financed acquisition CFA levels first-30-day gross profit above CAC first-30-day gross profit above twice CAC payback period"}

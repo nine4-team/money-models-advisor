@@ -196,7 +196,7 @@ def tool_use() -> str:
 
 
 def chunking_pilot() -> str:
-    run = read_json("evals/runs/20260604T220451Z-chunking-comparison.json")
+    run = read_json("evals/runs/archive/20260604T220451Z-chunking-comparison.json")
     rows = []
     groups = []
     for variant in run["variants"]:

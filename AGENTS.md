@@ -46,10 +46,10 @@ Treat the eval cases as a golden-dataset suite, not ad hoc tests. `GOLDEN_DATASE
 Important eval assets include:
 
 - `evals/advisor_tool_use_cases.jsonl`
-- `evals/advisor_source_need_cases.jsonl`
+- `evals/advisor_search_decision_cases.jsonl`
 - `evals/advisor_source_event_cases.jsonl`
-- `evals/advisor_search_query_cases.jsonl`
-- `evals/obligations.jsonl`
+- `evals/advisor_search_query_cases_enriched_labels.jsonl`
+- `evals/advisor_answer_quality_cases.jsonl`
 - `evals/reports/`
 
 When adding or changing behavior:
@@ -65,7 +65,7 @@ Do not tune only for one visible miss unless the fix is framed as a general beha
 
 BM25 is the lexical baseline/control for citation-oriented source lookup, not the intended product architecture. The current product path is one corpus-guided, unfiltered query through hybrid retrieval over framework-aware chunks, with cached `text-embedding-3-large` vectors at 1,536 dimensions and a Pinecone-backed vector store behind a retrieval storage boundary. Across 46 audited regression cases, the corpus-guided method leads the raw-question and unguided controls under both tested query writers. With each saved query held fixed on the final chunk boundaries, hybrid preserves 100% Hit@5 and improves Useful@5 over BM25 under both `gpt-5.5` and `gpt-5.4-mini`. The selected embedding model raises local Useful@5 from 78.7% to 86.5%; its isolated Pinecone replay reaches 86.1% Useful@5 at 1.13s p50 / 1.43s p95. The relevance labels were audited by Codex rather than an independent human reviewer, so keep that limitation explicit. The local backend remains the fast eval baseline, and the older multi-query/filtering path remains only for historical reproducibility and separate future experiments.
 
-Embedding API use is allowed for deterministic vectorization and cached retrieval experiments. Do not use external model APIs for agent planning, labeling, answer synthesis, or acting-agent eval work. Product model-routing evidence for agent behavior should use the Codex/CLI harness in `scripts/eval_codex_model_routing.py`. A separate explicit model/provider comparison experiment (such as `scripts/eval_model_routing.py`) may replay golden cases against external chat models only if every prompt and raw response is recorded and the report is clearly labeled as API replay, not the product harness.
+Embedding API use is allowed for deterministic vectorization and cached retrieval experiments. Do not use external model APIs for agent planning, labeling, answer synthesis, or acting-agent eval work. Product model-routing evidence for search behavior uses the sanitized Codex harness in `scripts/eval_search_decision_models.py`. Retired multi-suite and provider-replay harnesses are preserved under `archive/source-need-experiment/` and are not part of the supported runtime or regression gate.
 
 Never commit `.env`, API keys, or `.cache/embeddings/`.
 
@@ -89,8 +89,8 @@ python3 scripts/regression_gate.py
 Run additional focused or hosted experiments when touching the relevant behavior:
 
 ```bash
-python3 scripts/eval_source_need_generation.py
-python3 scripts/compare_retrieval_backends.py --query-source generated --report evals/reports/retrieval_backend_comparison.md
+python3 scripts/revalidate_retrieval_choices.py matrix
+python3 scripts/eval_search_decision_models.py
 ```
 
 Use additional eval commands when touching the relevant behavior.

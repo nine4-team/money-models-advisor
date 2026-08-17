@@ -1,3 +1,0 @@
-With CAC at `$1,000` and first-month gross profit at `$10,000`, you have `$9,000` of CAC headroom before first-month break-even.
-
-Put another way: CAC could rise to `$10,000` before the first 30 days stop covering acquisition cost. I also recorded the eval trace at `evals/runs/model_routing_codex/gpt-5.5/tool_use/tooluse_v1_016/run.json`.

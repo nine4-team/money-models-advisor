@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=false`, `source_need=null`.
-
-`run.json` was written to `evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_013/run.json`.

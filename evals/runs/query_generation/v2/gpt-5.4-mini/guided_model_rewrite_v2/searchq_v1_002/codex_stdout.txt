@@ -1,1 +1,0 @@
-{"query":"client-financed acquisition first-30-day gross profit above CAC payback"}

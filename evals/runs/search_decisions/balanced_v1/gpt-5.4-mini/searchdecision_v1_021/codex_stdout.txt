@@ -1,1 +1,0 @@
-{"context_used":["snapshot"],"decision":"no_search","rationale":"The current advisor snapshot already contains the saved CAC fact for the SaaS business (`economics.cac = 2800`), so no Money Models source search is needed for this simple factual lookup."}

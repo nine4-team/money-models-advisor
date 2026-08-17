@@ -1,5 +1,0 @@
-Recorded `source_search_decision: true`.
-
-Source need: `teaching_evidence` on `unit-economics`, focused on `gross profit`, `fulfillment cost`, `CAC`, `payback period`, and `first 30 days`.
-
-Created: `evals/runs/model_tiering_gpt_5_5/k2/gpt-5.5/source_need/sourceneed_v1_001/run.json`

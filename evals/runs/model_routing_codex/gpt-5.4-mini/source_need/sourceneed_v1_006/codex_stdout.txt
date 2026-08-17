@@ -1,6 +1,0 @@
-Recorded `source_search_decision=true` in `evals/runs/model_routing_codex/gpt-5.4-mini/source_need/sourceneed_v1_006/run.json`.
-
-Source need:
-- `intent`: `diagnostic_evidence`
-- `subjects`: `["continuity"]`
-- `focus_terms`: recurring maintenance, membership offer, payback period, recurring gross profit

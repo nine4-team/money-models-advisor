@@ -1,3 +1,0 @@
-Recorded decision: `source_search_decision=false`.
-
-Rationale: the `$1k` referral partner payment is already in prior-session context and the snapshot as CAC, so this turn is a state/context lookup rather than a Money Models source-material search need.

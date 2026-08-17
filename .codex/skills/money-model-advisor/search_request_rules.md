@@ -1,8 +1,8 @@
 # Runtime Search-Request Rules
 
-These rules govern the active query-generation and retrieval path. The older
-`source_need_rules.md` remains frozen for the source-need planning eval and historical
-multi-query artifacts; it is not the runtime query contract.
+These rules govern the active query-generation and retrieval path. The retired
+filtered and multi-query rulebook is preserved under
+`archive/source-need-experiment/`; it is not the runtime query contract.
 
 ## When to search
 

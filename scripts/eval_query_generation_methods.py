@@ -31,9 +31,9 @@ from money_model_architect.snapshot import BusinessSnapshot  # noqa: E402
 DEFAULT_CASES = ROOT / "evals" / "advisor_search_query_cases_enriched_labels.jsonl"
 DEFAULT_GUIDE = ROOT / "evals" / "query_generation" / "corpus_guide_v1.json"
 DEFAULT_RUNS_DIR = ROOT / "evals" / "runs" / "query_generation" / "v1"
-DEFAULT_REPORT = ROOT / "evals" / "reports" / "query_generation_methods_dev.md"
-DEFAULT_SUMMARY = ROOT / "evals" / "reports" / "query_generation_methods_dev_summary.json"
-DEFAULT_CASE_RESULTS = ROOT / "evals" / "reports" / "query_generation_methods_dev_cases.jsonl"
+DEFAULT_REPORT = ROOT / "evals" / "reports" / "archive" / "query_generation_methods_dev.md"
+DEFAULT_SUMMARY = ROOT / "evals" / "reports" / "archive" / "query_generation_methods_dev_summary.json"
+DEFAULT_CASE_RESULTS = ROOT / "evals" / "reports" / "archive" / "query_generation_methods_dev_cases.jsonl"
 
 METHODS = (
     "raw_question",

@@ -1,5 +1,0 @@
-Not yet. I would not increase paid acquisition next month until we know CAC and first-30-day gross profit, because the current saved context is missing both numbers.
-
-The business already has an attraction offer, core subscription, upsell, and continuity offer, which is good. But you also have a known month-four churn issue, so scaling paid traffic before confirming payback could amplify a leaky acquisition system.
-
-My decision rule would be: increase only if CAC is paid back quickly from gross profit, and if the month-four churn issue is stable or improving. To make the call, I need two numbers from the most recent paid cohort: average CAC per customer and gross profit collected in the first 30 days. If you give me those, I can calculate payback and tell you whether to increase, hold, or redirect spend into retention/onboarding first.

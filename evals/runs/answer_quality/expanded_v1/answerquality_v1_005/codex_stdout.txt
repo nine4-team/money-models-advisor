@@ -1,7 +1,0 @@
-Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.
-
-For your SaaS, I’d frame it as: “Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.” The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer `[continuity-discounts:6]` `[continuity-discounts:7]`.
-
-I would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not “month four is cheaper”; it is “month four is when you graduate into the long-term operating plan.”
-
-One caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.

@@ -1,5 +1,0 @@
-Not yet. I would not double ad spend until we know whether the coaching program can absorb more paid demand profitably.
-
-The two missing numbers are CAC and first-30-day gross profit. For this offer, I would make the decision from payback: if current CAC is comfortably below first-30-day gross profit, then increasing spend can make sense. If CAC is close to or above first-30-day gross profit, doubling spend is likely to amplify a weak acquisition loop.
-
-Send me three numbers and I can give you a yes/no scale recommendation: current monthly ad spend, number of new 12-week clients from those ads, and gross profit collected in the first 30 days per new client.
