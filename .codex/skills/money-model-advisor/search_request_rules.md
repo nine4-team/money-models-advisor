@@ -9,6 +9,10 @@ multi-query artifacts; it is not the runtime query contract.
 - Search when the answer needs Money Models support for a concept, comparison,
   diagnosis, or recommendation and the snapshot already holds enough relevant facts.
 - Do not search instead of obtaining missing business facts or prior-session context.
+- For a yes/no acquisition-scale question with missing CAC or gross-profit inputs,
+  clarify without searching. The corpus cannot supply the business's numbers. Search
+  only if the human separately asks for a Money Models explanation of why those inputs
+  matter or if enough business facts exist to make a source-backed recommendation.
 - Do not search for a simple vocabulary answer that does not need a citation.
 
 ## One evidence job per search

@@ -1,0 +1,219 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material"
+  ],
+  "answer_category": "source_grounded",
+  "answer_sha256": "205a3d6db17f3bdf9dd40aaacb59d8e3140ed3136123ea26afb00f811513c5d5",
+  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_010",
+  "cited_chunk_ids": [
+    "classic-upsell:5",
+    "classic-upsell:4",
+    "menu-upsell:0"
+  ],
+  "evidence_passages": [
+    {
+      "chapter": "classic-upsell",
+      "id": "classic-upsell:5",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "## [\u00a74.2.e] Important points + 80% close rate benchmark\n\nSo important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly encourage the thing, but that's fundamentally how it works. All right? So make sure that it doesn't cost you a lot or anything at all, uh, like, that thumb drive that we gave, like, you can y- you want it to be something that's cheap, uh, but still valuable. The next thing is make the upsells the next natural thing that they would need to buy. That's the boxes, the large units, the locks, the, the insurance, things like, that. The weight loss clinic, continuity of service, continuity of supplements, done-for-you meals, hormone treatments, et cetera, all of those things were all part of classic upsells that' went through. You can't have X without Y. You can't have this weight loss service without these supplements. Just think, \"You can't have X without Y,\" as your, as your mental framework for what the next thing I'm gonna offer is. All right, this play works so, well because the perception of how essential or required the next thing is. All right? So, this is the key point. If supplements is core to how someone's gonna get results with the main thing, the likelihood they buy is very high. So, if you, remember the, uh, minimum package for the rental car story I gave you, you want this to, feel as required as possible. Again, you don't wanna make it' required, because then it's, it's, it gets shady, but you want to strongly encourage people to take these things to get the best results, which ethically, they should be able to get better results with whatever your upsell is. All right? And so, how seamless the upsell process is for the prospect, if you make it frictionless, you can get sometimes 80% plus the people to take these upsells. I personally prefer to have upsells that have very little operational drag so, that I can' immediately offset cost to get it, getting a customer, or it becomes that's my major profit stream. It depends on' what the objective is for your business. Boom. Summary, works on' the front end as a back end, works as an internal play, meaning you can just upsell your existing customers. That's basically what the storage thing with, with the fur coats was. Many of those people were existing customers, so you can just upsell those people. Um, if you suck at sales, this is not a hard sale to make. Uh, there's a lot of goodwill in this play, because you just make sure that you close the upsell. Like, it's like, \"Hey, let me give you this thing. I'm giving you this free earmuffs. Why not take it? But, of course, you gotta take this other thing, too.\" Um, and if you aren't getting 80% plus close rates, you're doing it wrong. So that's my big benchmark for you. If you're getting 30% to take it, you're not, you're not making it assumed enough. You're not, it's, it's not clear enough to them that this goes with. So think about it like that. It has to go with. If you go to a McDonald's, I would bet you that 80% of people are getting fries and a Coke. You want, you want a very high uptake rate on' the people who buy the next natural thing. Think of this as the thing that goes with the thing, uh, and give the thing away for free to make sure that all the thing that goes with the thing you can make the money on. All right? And so, the nice thing with this is that it gives you a lot of upfront customers. And that is the classic upsell."
+    },
+    {
+      "chapter": "classic-upsell",
+      "id": "classic-upsell:4",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "## [\u00a74.2.d] Applied examples \u2014 weight loss, physical therapy, education\n\nSo weight loss. So for us, upsell number one was at the nutrition orientation. We would sell them supplements. We would then sell them nutrition plans. That was an immediate version for me was I wanted to sell supplements because I had no more delivery. I could immediately hand it to them, make the profit back, and usually what I made on the supplements covered the cost to a car customer. So just that sale covered my, my cashflow, and I hadn't even started servicing them yet. And so a lot of you guys have these little things that are available. Like if I was a physical therapist, maybe you give four free treatments as your offer. That's a banger offer. A lot of people might consider that. But upsell one is you're gonna need these orthotics, these bands, these braces, these oils, this kinesio tape, all to maximize the effectiveness of the four treatments. And so they come in for the free month of storage, but they need their lock, they need their insurance, they need their boxes. Just think about those things for yourself. If you're in education, it's like I offer, uh, group coaching, provide information in a community for free indefinitely as long as you keep using my software. By the way, this is basically, I mean, fundamentally what we do with the school. We do all this stuff for free and then just use school to he- to help monetize. Okay, uh, free versus discount note is that with the classic upsell, it works either way, same as normal. So a friend of mine had a very successful weight loss chain, and they offered services for $5 a month for their weight loss. And they had doctors and nurses and all this stuff there, and I was like, \"That's insane.\" And she was like, \"Yeah, 'cause we don't make money on the weight loss services.\" And I was like, \"What do you mean?\" She was like, \"Oh, we sell like five grand in supplements on the second day.\" I was like, \"Oh.\" So that's where I learned, that's where I really learned a lot of the really Jedi stuff that I know from, um, supplement sales. Uh, I learned from her, and I paid, her top salesperson, uh, $500 an hour for two hours to tell me everything she did to sell supplements. And you know what's crazy? When I told her top salesperson that I would pay her $500, she was like, \"$500?\" She's like, \"Just to talk to you?\" And I was like, \"Yeah.\" She thought I was an idiot. I'm, I'm dead serious. She, she looked at me like I had three eyes in my head, and she was like, \"It's your money.\" And so she just walked me through every single detail of what she did to sell supplements, and that $1,000 two hours that I paid for made me millions. And so I highly encourage you, sometimes the best people to learn from are people who aren't even selling information. Just offer to pay them- ... to learn what they do in their particular niche or. skill. And, because people are not used to doing that, and you can char- you know, you can offer way more what the val- you know, what the, what the money's worth to you, you can make way more money that' way. So, uh, I learned from her that she had service that she basically gave for a nominal amount of money 'cause she didn't even care about it, just because that drew people in, and then they'd sell the supplements and the food and the bars and the shakes. Um, and yeah, they were, they, you know, they had doctors and nurses working there. That's how they made the money."
+    },
+    {
+      "chapter": "decoy-offers",
+      "id": "decoy-offers:1",
+      "subjects": [
+        "offers"
+      ],
+      "text": "don't we try this one out too?\" And so they tried this out in five different mini beta groups, and the winner was this free 21-day transformation, but here's how it worked. And so when someone would come in, the decoy offer, this is the $5 VIP, this is the they think they can get tanned in one session, but they can't really. And so we'd say, \"Cool.\" So we just said, \"Free 21-day transformation.\" When they come in, we'd say, \"Cool. The free version of this is you get one workout per week, and you get at-home nutrition course. We'll give you this course. You can take it at home, and you work out once a week for the next 21 days, which is three workouts, okay? Or we'll give you the unlimited version, so you work out as many times as you want over the next 21 days. We'll personalize your nutrition. We'll give you, uh, you know, grocery store instructions, exactly what you need to buy. We'll guarantee that you'll lose at least 10 pounds or 15 pounds in the next 21 days, or we'll give you another 21 days free on the back.\" And when presented those two offers, they came in for the free 21-day transformation. But when they were presented the premium version, they said, \"You know what? I'd rather do that.\" Upselling is as American as apple pie. There is nothing wrong with having an upsell as long as you still offer something that is free that complies with what your original promise was in the advertisement. So if someone comes in... And the key point of making this work is that you can advertise the free 21-day transformation, not also you get all this stuff. If you say you get this other stuff too, then you have to deliver on it. And so the key is, and this is one of the benefits of advertising results rather than the, the vehicle, because then you can choose the vehicle and associate price however you want in the sales presentation. All right? And so this offer structure, right, this money model is 100% based on the upsell. This is how all of the money of this works. And the key, if you have the structure properly, is 70 to 80% of people should take the premium version"
+    },
+    {
+      "chapter": "upsell-offers",
+      "id": "upsell-offers:3",
+      "subjects": [
+        "upsells"
+      ],
+      "text": ". So the objective of the upsell is to maximize profit per customer and to send clients into backends. Note, these structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end offer. Upsell offers, you can use a front-end offer. I just place them in the places that I use them most commonly. And I think that they work, at least they have worked the best for me. So this is our lineup. We're gonna start with the classic upsell. We'll do the menu upsell, the anchor upsell, and the rollover upsell. I use all of these. I have made so much money on these upsells. And if you follow what I lay out, you probably will too. And I will probably get more animated in these, because I just love these so much. All right, with that being said, the classic upsell."
+    },
+    {
+      "chapter": "menu-upsell",
+      "id": "menu-upsell:0",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "All right. So we just covered the classic upsell. I think this next one is my favorite one in this whole training, which is the menu upsell. Let's dive in. So how I learned it, description, examples, important points, and summary. So there are four steps to the menu upsell. We unsell what they don't need, prescribe what they do need, ask if they prefer A or B, and then make it easy to pay. So this is me getting super tactical with you in terms of how to upsell. stuff like a pro. I have done so many upsell. consultations in. my life and this works. I have used this sales process in many businesses. Like, this slays. All right"
+    }
+  ],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "fitness_coaching",
+  "source_case_id": "searchdecision_v1_028",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "classic-upsell:5",
+          "score": 0.033
+        },
+        {
+          "id": "classic-upsell:4",
+          "score": 0.032
+        },
+        {
+          "id": "decoy-offers:1",
+          "score": 0.03
+        },
+        {
+          "id": "upsell-offers:3",
+          "score": 0.03
+        },
+        {
+          "id": "menu-upsell:0",
+          "score": 0.029
+        }
+      ],
+      "queries": [
+        "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
+      ],
+      "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
+        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?"
+      }
+    }
+  ],
+  "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?"
+}

@@ -1,0 +1,10 @@
+Not enough to say yes yet. I would not scale ads now until we know the current CAC for the skincare kit and the first-30-day gross profit from a new kit buyer.
+
+Those two numbers answer the first gate: does acquisition pay back inside the first month? If first-30-day gross profit is equal to or greater than CAC, scaling can be considered. If it is below CAC, then we need the refill/subscription gross profit per month, or downstream conversion rate plus gross profit, before deciding whether the delayed payback is affordable.
+
+Send me:
+
+1. Current CAC for the skincare kit
+2. First-30-day gross profit per new kit buyer
+
+With just those two, I can tell you whether the front-end clears the first-month scale gate.

@@ -1,0 +1,132 @@
+{
+  "actions": [
+    "session_start",
+    "inspect_local_docs",
+    "clarify",
+    "session_finish"
+  ],
+  "answer_category": "clarification",
+  "answer_sha256": "c421f9fddfa8dca59ef8272cba9caa5644b3e297993e27a1be515ce2baaba4ef",
+  "assistant_message": "Not yet as an open-ended increase. I would only spend more if the readiness-audit funnel clears a simple payback test: the cost to acquire an audit customer should be covered by the gross profit from the audit itself, or by a clearly measurable downstream conversion into the $30,000 implementation offer.\n\nRight now I have the offer ladder saved: a $1,500 readiness audit, a $30,000 implementation engagement, an $8,000 upsell, a $5,000 downsell, and $2,500/month monitoring. What I do not have is the economics of the lead source. Without CAC, audit delivery cost, and audit-to-implementation close rate, increasing spend could either be the right growth move or just a faster way to buy unprofitable conversations.\n\nMy recommendation: do not broadly raise the budget yet. Run a capped test only if you can track cost per readiness-audit lead, lead-to-audit close rate, audit gross profit, and audit-to-implementation close rate by source. Send me those four numbers and I can calculate whether more leads are worth buying.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "insufficient_context",
+      "missing_fields": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit"
+      ],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": false
+    },
+    "business": {
+      "business_type": "B2B cybersecurity compliance consultancy",
+      "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring",
+      "icp": "regional healthcare and financial-services firms preparing for audits"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "compliance readiness audit",
+        "exists": true,
+        "price": 1500
+      },
+      "continuity": {
+        "description": "ongoing compliance monitoring",
+        "exists": true,
+        "price": 2500
+      },
+      "core_offer": {
+        "description": "compliance implementation engagement",
+        "exists": true,
+        "price": 30000
+      },
+      "downsell": {
+        "description": "self-directed remediation plan",
+        "exists": true,
+        "price": 5000
+      },
+      "upsell": {
+        "description": "tabletop exercise and policy package",
+        "exists": true,
+        "price": 8000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "not enough qualified prospects enter sales conversations"
+      ],
+      "user_goal": "turn more qualified conversations into profitable long-term clients"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_020",
+  "cited_chunk_ids": [],
+  "evidence_passages": [],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "B2B cybersecurity compliance consultancy",
+      "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring",
+      "icp": "regional healthcare and financial-services firms preparing for audits"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "compliance readiness audit",
+        "exists": true,
+        "price": 1500
+      },
+      "continuity": {
+        "description": "ongoing compliance monitoring",
+        "exists": true,
+        "price": 2500
+      },
+      "core_offer": {
+        "description": "compliance implementation engagement",
+        "exists": true,
+        "price": 30000
+      },
+      "downsell": {
+        "description": "self-directed remediation plan",
+        "exists": true,
+        "price": 5000
+      },
+      "upsell": {
+        "description": "tabletop exercise and policy package",
+        "exists": true,
+        "price": 8000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "not enough qualified prospects enter sales conversations"
+      ],
+      "user_goal": "turn more qualified conversations into profitable long-term clients"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "b2b_consulting",
+  "source_case_id": "searchdecision_v1_048",
+  "source_events": [],
+  "user_turn": "should we spend more to get additional readiness-audit leads?"
+}

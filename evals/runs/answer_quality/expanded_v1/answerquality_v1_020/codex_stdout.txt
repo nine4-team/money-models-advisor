@@ -1,0 +1,5 @@
+Not yet as an open-ended increase. I would only spend more if the readiness-audit funnel clears a simple payback test: the cost to acquire an audit customer should be covered by the gross profit from the audit itself, or by a clearly measurable downstream conversion into the $30,000 implementation offer.
+
+Right now I have the offer ladder saved: a $1,500 readiness audit, a $30,000 implementation engagement, an $8,000 upsell, a $5,000 downsell, and $2,500/month monitoring. What I do not have is the economics of the lead source. Without CAC, audit delivery cost, and audit-to-implementation close rate, increasing spend could either be the right growth move or just a faster way to buy unprofitable conversations.
+
+My recommendation: do not broadly raise the budget yet. Run a capped test only if you can track cost per readiness-audit lead, lead-to-audit close rate, audit gross profit, and audit-to-implementation close rate by source. Send me those four numbers and I can calculate whether more leads are worth buying.

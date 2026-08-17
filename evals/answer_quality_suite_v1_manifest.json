@@ -1,0 +1,31 @@
+{
+  "created_at": "2026-08-16",
+  "purpose": "Current-path semantic answer-quality evaluation",
+  "source_dataset": "evals/advisor_search_decision_cases.jsonl",
+  "source_dataset_sha256": "dbeed4ec8fb20571ffab236239dd7cef7b234ecd8f13c0f0b1c6c686fa8ea765",
+  "selected_case_ids": [
+    "searchdecision_v1_001",
+    "searchdecision_v1_005",
+    "searchdecision_v1_012",
+    "searchdecision_v1_016",
+    "searchdecision_v1_017",
+    "searchdecision_v1_020",
+    "searchdecision_v1_022",
+    "searchdecision_v1_024",
+    "searchdecision_v1_025",
+    "searchdecision_v1_028",
+    "searchdecision_v1_030",
+    "searchdecision_v1_032",
+    "searchdecision_v1_033",
+    "searchdecision_v1_036",
+    "searchdecision_v1_038",
+    "searchdecision_v1_040",
+    "searchdecision_v1_041",
+    "searchdecision_v1_044",
+    "searchdecision_v1_046",
+    "searchdecision_v1_048"
+  ],
+  "selection_rule": "Four cases per business context: two source-grounded answers, one deterministic calculation, and one clarification or restraint answer.",
+  "gold_answers": false,
+  "semantic_review": "Answers are generated and frozen before Codex reviews business-fact accuracy, calculation accuracy, reasonable application of the book, material-claim support, usefulness, and appropriate restraint."
+}

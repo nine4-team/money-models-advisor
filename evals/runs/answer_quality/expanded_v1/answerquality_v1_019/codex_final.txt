@@ -1,0 +1,3 @@
+With the saved consulting numbers, CAC payback is 1.0 month.
+
+That uses CAC of $4,500 and first-30-day gross profit of $9,000. Since the first month already produces more gross profit than the CAC, you earn back CAC within the first month.

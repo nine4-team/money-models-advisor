@@ -1,0 +1,132 @@
+{
+  "actions": [
+    "session_start",
+    "inspect_local_docs",
+    "clarify",
+    "session_finish"
+  ],
+  "answer_category": "clarification",
+  "answer_sha256": "9fac184709f8b90bfdbca526b6997773d9bcb53cc082407faaa81dad1c006e6c",
+  "assistant_message": "Not enough to green-light scaling yet. I know the skincare funnel has a $10 sample kit, $90 starter routine, $160 premium routine, $55 downsell, and $55 refill subscription, but I do not have the two numbers that decide whether ad scaling is affordable: current CAC for the kit funnel and first-30-day gross profit per new customer.\n\nMy recommendation: do not materially scale spend yet. Keep ads at a capped testing level until CAC is below the first-30-day gross profit you can reliably collect, or until you know the payback window is acceptable for your cash position. For a physical product brand with fulfillment and inventory cash tied up, scaling before that check can create a cash crunch even if orders look strong.\n\nSend me current CAC and first-30-day gross profit per acquired customer for the skincare kits, and I can calculate the payback and tell you whether to hold, test, or scale.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "insufficient_context",
+      "missing_fields": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit"
+      ],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": false
+    },
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_016",
+  "cited_chunk_ids": [],
+  "evidence_passages": [],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "ecommerce_skincare",
+  "source_case_id": "searchdecision_v1_040",
+  "source_events": [],
+  "user_turn": "can we afford to scale ads for the skincare kits now?"
+}

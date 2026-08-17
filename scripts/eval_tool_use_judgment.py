@@ -331,6 +331,14 @@ def split_counts(cases: list[dict[str, Any]], results: list[CaseResult]) -> dict
     return counts
 
 
+def all_cases_pass(cases: list[dict[str, Any]], results: list[CaseResult]) -> bool:
+    """Return whether every defined case has a complete passing score."""
+    return len(results) == len(cases) and all(
+        result.status == "scored" and result.full_sequence_pass is True
+        for result in results
+    )
+
+
 def dev_regression_complete(cases: list[dict[str, Any]], results: list[CaseResult]) -> bool:
     counts = split_counts(cases, results)
     for split in ("dev", "regression"):
@@ -504,6 +512,11 @@ def main() -> int:
         default=ROOT / "evals" / "reports" / "advisor_tool_use_judgment.md",
         help="Markdown report output path.",
     )
+    parser.add_argument(
+        "--require-all-pass",
+        action="store_true",
+        help="Fail unless every case has a complete, passing scored trace.",
+    )
     args = parser.parse_args()
 
     cases = load_jsonl(args.cases)
@@ -514,19 +527,27 @@ def main() -> int:
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(render_report(cases, results, validation_errors), encoding="utf-8")
 
+    scored_results = [result for result in results if result.status == "scored"]
+    passed_results = [result for result in scored_results if result.full_sequence_pass is True]
+
     print(
         json.dumps(
             {
                 "cases": len(cases),
                 "validation_errors": len(validation_errors),
                 "run_artifacts": len(run_artifacts),
-                "scored_cases": sum(1 for result in results if result.status == "scored"),
+                "scored_cases": len(scored_results),
+                "passed_cases": len(passed_results),
                 "report": rel_path(args.report),
             },
             indent=2,
         )
     )
-    return 1 if validation_errors else 0
+    if validation_errors:
+        return 1
+    if args.require_all_pass and not all_cases_pass(cases, results):
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

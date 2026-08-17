@@ -34,7 +34,7 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 | `evals/advisor_search_query_cases_enriched_labels.jsonl` plus `evals/query_generation/query_generation_holdout_v1.jsonl` | 46 turns: 30 base + 16 expansion | Query approach, query-writing model, and BM25-vs-hybrid comparison | Active retrieval suite. Uses saved snapshot context, one unfiltered query, and audited passage-level usefulness labels. Canonical report: `evals/reports/query_generation_current.md`. |
 | `evals/advisor_calculation_trace_cases.jsonl` | 5 turns | Calculation trace integrity | Active; 5/5 pass. |
 | `evals/advisor_source_event_cases.jsonl` | 6 turns | Search trace integrity and search/no-search sequencing | Active. Six blind runs pass 6/6 on the current one-query `SearchRequest` contract; two answer-key corrections are disclosed in the report. |
-| `evals/advisor_answer_quality_audit.jsonl` | 6 audited answers / 14 source-backed claims | Recommendation usefulness and semantic citation support | Active seed regression. Current answers pass 6/6 for correctness/usefulness and 14/14 audited claims are supported. Codex is the single semantic reviewer. |
+| `evals/advisor_answer_quality_cases.jsonl` plus `evals/advisor_answer_quality_expanded_final_audit.jsonl` | 20 answers / 22 material claims | Business-fact accuracy, deterministic calculations, source application, usefulness, restraint, and claim support | Active. Balanced across five business contexts: 10 source-grounded, 5 calculation, and 5 clarification cases. Final result is 20/20 answers and 22/22 claims after blind regeneration. Codex is the single semantic reviewer. The failed 16/20 baseline remains frozen separately. |
 | `evals/advisor_product_smoke_scenarios.jsonl` | 3 multi-turn sessions | End-to-end product behavior | Historical exploratory evidence. One run was non-blind and all predate the current single-query path. |
 
 ### Experiments That Reuse Those Datasets
@@ -57,7 +57,29 @@ Datasets, labels, and experiments are different units. An experiment may reuse o
 4. Model routing: which model tier can perform orchestration or bounded query writing without unacceptable quality loss?
 5. Trace and answer quality: are calculations, searches, citations, and recommendations complete and supported?
 
-Agent behavior, source-event traces, and the 46-case retrieval matrix are the strongest component results. Chunking and Pinecone latency/namespaces have now been replayed on that single-query path. The six-case current-path answer audit is a useful seed regression; broader end-to-end coverage remains open.
+Agent behavior, source-event traces, the 46-case retrieval matrix, and the balanced
+20-case answer audit cover the current component and end-to-end paths. Chunking and
+Pinecone latency/namespaces have also been replayed on the selected single-query path.
+
+## Answer-Quality Evidence
+
+Twenty blind `gpt-5.5` advisor turns were generated in fresh sanitized runtimes across
+five business contexts. The acting model could access the current skill, business
+snapshot, corpus guide, corpus, CLI, and embedding cache, but not evaluator labels,
+prior trials, global skills, or project evaluation artifacts. Source cases had to use
+the current hybrid path and cite retrieved passages; calculation cases had to record a
+recomputable CLI event; clarification cases had to ask for missing facts without
+retrieval.
+
+The frozen baseline passed 16/20. All source-grounded and calculation answers passed;
+four clarification answers requested too few inputs for the calculation they promised.
+The runtime now conditionally requires recurring gross profit when month-one gross
+profit does not recover CAC. The skill separately distinguishes first-month break-even,
+recurring payback, and downstream expected value, and prohibits arbitrary spend
+increases when no baseline economics exist. After blind reruns and countercase checks,
+the final suite passes 20/20 with 22/22 audited material claims supported. Reports:
+`evals/reports/advisor_answer_quality_expanded_baseline.md` and
+`evals/reports/advisor_answer_quality_expanded.md`.
 
 ## Agent Search-Decision Evidence
 
@@ -114,6 +136,10 @@ When adding a new case:
 6. Record the design interpretation in `DESIGN.md` or the relevant progress doc.
 
 Do not tune for one visible miss unless the fix is a general rule and counter-cases still pass.
+
+Run `python3 scripts/regression_gate.py` before commit to check the stable offline
+contracts together. The gate scores saved artifacts strictly; it does not regenerate
+acting-agent runs or call embedding and hosted retrieval services.
 
 ## Query Generation Evidence
 

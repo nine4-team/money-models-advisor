@@ -1,0 +1,1907 @@
+OpenAI Codex v0.144.6
+--------
+workdir: /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a00bc1-c4d2-76b0-be12-b28ed8b08f0e
+--------
+user
+# Money Model Advisor Turn
+
+Act as the Money Model Advisor and answer the user's request through the normal
+skill-guided workflow.
+
+1. Read and follow the local `money-model-advisor` skill and its search-request rules.
+2. Use the CLI from `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime` with `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business` as the business directory.
+3. Start the turn with `session start`. Decide naturally whether to calculate,
+   search the local Money Models corpus, clarify, or answer from saved context.
+4. If you search, use the current single-query `SearchRequest` and the default
+   hybrid retriever. Inspect the returned passages, cite only supported claims, and
+   preserve the CLI's `retrieval_backend` field in the recorded source event.
+5. Record the complete turn with `session finish` before returning.
+6. Work only inside `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime`. Do not inspect `.env`, `.cache`, or any path
+   outside this runtime. No evaluation labels or previous trials are available.
+7. Return only the user-facing answer recorded in the completed session.
+
+User request:
+
+People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?
+
+codex
+I’ll use the local `money-model-advisor` skill and run the required CLI session flow from the runtime directory.
+exec
+/bin/zsh -lc "sed -n '1,240p' /private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/.codex/skills/money-model-advisor/SKILL.md" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Pass
+   `--source-type file --source <relative-path>` for facts taken from an inspected
+   file. Conversation facts use the default `conversation` source. Save only facts
+   that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --search-request-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Record a fact accepted from an inspected business file:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
+  --business-dir "$CONTEXT_DIR" \
+  --source-type file \
+  --source metrics/q1-unit-economics.csv \
+  economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit, corpus-guided search request.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Before recording, audit each source-backed sentence against the exact cited chunk:
+   do not rely on the chunk title or a nearby passage, do not make a stronger claim
+   than the text supports, and remove or qualify any unsupported wording. Business-
+   specific recommendations may be reasoned from accepted facts; cite the source only
+   for the framework principle it actually establishes.
+9. Record the final turn with `session finish`.
+10. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so `session finish` can recompute the result from the recorded inputs
+and reject an incorrect value.
+
+## When To Search
+
+Follow the runtime search-request rules in `search_request_rules.md` (same directory).
+That file is the single source of truth for when to search, when to split searches,
+how to use the versioned corpus guide, how to write the single query, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should
+include the `retrieval_backend` returned by the CLI, the `search_request`, the executed
+query, and inspected chunks with IDs and scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not cite a chunk for a claim stronger than its text supports.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+codex
+I’ve loaded the skill. Next I’m checking the search rules, then I’ll start the advisor session and use the local corpus only if the rules call for it.
+exec
+/bin/zsh -lc "sed -n '1,240p' .codex/skills/money-model-advisor/search_request_rules.md" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+# Runtime Search-Request Rules
+
+These rules govern the active query-generation and retrieval path. The older
+`source_need_rules.md` remains frozen for the source-need planning eval and historical
+multi-query artifacts; it is not the runtime query contract.
+
+## When to search
+
+- Search when the answer needs Money Models support for a concept, comparison,
+  diagnosis, or recommendation and the snapshot already holds enough relevant facts.
+- Do not search instead of obtaining missing business facts or prior-session context.
+- Do not search for a simple vocabulary answer that does not need a citation.
+
+## One evidence job per search
+
+- Generate one search request per evidence job. If an answer needs two genuinely
+  different kinds of evidence, run two searches instead of mixing them into one query.
+- Do not rerun an economics search merely because known economics appear in the answer.
+
+## Generate the query
+
+- Before writing a query, read `../../../reference/corpus_guide_v1.json`.
+  It is the same versioned guide used by the winning development experiment.
+- Use the current user question, the saved BusinessSnapshot, and that guide to write
+  one concise source-search query.
+- Treat the guide as a translation reference, not a checklist. Translate ordinary
+  language into canonical source terminology when that helps retrieval.
+- Preserve the full information need. Include every concept needed for the mechanism,
+  relationship, comparison, sequence, or combined system being asked about.
+- Use business context only when it changes or disambiguates the evidence needed. Do
+  not add related concepts simply because the guide lists them nearby.
+- Do not answer the question or speculate about the answer inside the query.
+- Do not generate variants, a deterministic fallback, a subject filter, or a namespace
+  filter. Those approaches were not part of the winning method.
+
+## Active request fields
+
+- `query`: the single corpus-guided query that the CLI executes.
+- `user_turn`: the current user message, retained for trace context.
+- `intent`: the closest audit label; it does not alter retrieval. Choose one of
+  `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, or
+  `recommendation_evidence`.
+
+codex
+The request asks for a recommendation pattern, so I’m going to search the local Money Models material for the relevant offer-sequence principle after starting the session.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business\"
+USER_REQUEST='People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?'
+PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir \""'$CONTEXT_DIR" --user-message "$USER_REQUEST"' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+{
+  "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business",
+  "state_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business/.money-model-advisor",
+  "snapshot": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business/.money-model-advisor/business_snapshot.json",
+  "sessions_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business/.money-model-advisor/sessions",
+  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
+  "advisor_state": {
+    "advisory_status": "diagnosable",
+    "ready_for_payback_diagnosis": true,
+    "ready_for_offer_stack_diagnosis": true,
+    "missing_fields": [],
+    "known_facts": {
+      "business.business_type": "boutique strength and nutrition coaching business",
+      "business.icp": "busy professional women seeking measurable strength and body-composition results",
+      "business.delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "economics.cac": 320,
+      "economics.first_30_day_gross_profit": 900,
+      "economics.monthly_recurring_gross_profit": 150,
+      "economics.gross_margin": 0.72,
+      "economics.lifetime_gross_profit": 4200,
+      "economics.payback_period_months": 1.0,
+      "problem.user_goal": "improve conversion and early customer value without making coaching feel cheaper",
+      "problem.reported_symptoms_count": 2,
+      "problem.recent_reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "money_model.attraction_offer.exists": true,
+      "money_model.attraction_offer.description": "free strength and nutrition assessment",
+      "money_model.attraction_offer.price": 0,
+      "money_model.core_offer.exists": true,
+      "money_model.core_offer.description": "12-week coached transformation program",
+      "money_model.core_offer.price": 2400,
+      "money_model.upsell.exists": false,
+      "money_model.downsell.exists": false,
+      "money_model.continuity.exists": true,
+      "money_model.continuity.description": "ongoing training membership",
+      "money_model.continuity.price": 249
+    }
+  },
+  "recent_turns": [],
+  "available_operations": [
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "search_source_material",
+    "logs",
+    "turn_record",
+    "session_finish"
+  ],
+  "trace_requirements": [
+    "Record the completed turn with session finish.",
+    "Include every CLI-backed action in the record actions list.",
+    "Include one source_events entry per source-material search.",
+    "Include cited chunk ids when source material supports the answer."
+  ],
+  "boundary": {
+    "agent_owns": [
+      "advisory judgment",
+      "local document inspection",
+      "corpus-guided search-request generation",
+      "answer synthesis"
+    ],
+    "cli_owns": [
+      "snapshot persistence",
+      "deterministic calculations",
+      "source-material retrieval",
+      "trace recording"
+    ]
+  }
+}
+
+exec
+/bin/zsh -lc "sed -n '1,240p' reference/corpus_guide_v1.json" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+{
+  "version": "money-models-corpus-guide.v1",
+  "created_at": "2026-08-10",
+  "status": "candidate",
+  "derived_from": [
+    "corpus/coach/index.md",
+    "corpus/coach/decision-trees.md",
+    "corpus/money-models-frameworks.md"
+  ],
+  "generator_visible_fields": [
+    "name",
+    "aliases",
+    "use_when",
+    "relationships"
+  ],
+  "entries": [
+    {
+      "name": "Lifetime gross profit compared with customer acquisition cost",
+      "aliases": ["LTGP to CAC", "customer value versus acquisition cost", "3-to-1 viability"],
+      "use_when": "Assessing whether acquiring a customer is economically worthwhile rather than merely generating revenue.",
+      "relationships": "Lifetime gross profit should exceed CAC; roughly three times CAC is the source's basic viability threshold. Gross profit, not revenue, is the value side of the comparison."
+    },
+    {
+      "name": "Customer acquisition cost",
+      "aliases": ["CAC", "cost to acquire a customer", "media CAC", "fully loaded CAC", "ad acquisition cost"],
+      "use_when": "Understanding how much it costs to acquire a customer or why lead flow changes with free and discounted offers.",
+      "relationships": "CAC is evaluated alongside gross profit and payback period. Fully loaded CAC includes acquisition labor and overhead, while media CAC covers advertising spend."
+    },
+    {
+      "name": "Gross profit",
+      "aliases": ["GP", "price minus cost of goods sold", "profit after fulfillment", "delivery-adjusted value", "gross margin"],
+      "use_when": "Revenue looks healthy but fulfillment or delivery costs may make acquisition unattractive.",
+      "relationships": "Gross profit equals price minus cost of goods sold. It determines how much CAC can be recovered and how quickly payback occurs; revenue alone cannot answer either question."
+    },
+    {
+      "name": "Payback period",
+      "aliases": ["CAC recovery time", "time to break even on acquisition", "cash payback", "months to recover CAC"],
+      "use_when": "A business may be profitable over a customer's life but lacks enough cash to fund continued growth.",
+      "relationships": "Payback depends on CAC, first-30-day gross profit, and recurring gross profit. Front-loaded fees, earlier upsells, prepayment, and recurring profit can shorten it."
+    },
+    {
+      "name": "Client-financed acquisition",
+      "aliases": ["CFA", "customers fund growth", "self-funded acquisition", "first-30-day acquisition economics"],
+      "use_when": "Determining whether new-customer gross profit can fund continued customer acquisition.",
+      "relationships": "Level 1 has lifetime gross profit above CAC, Level 2 has first-30-day gross profit above CAC, and Level 3 has first-30-day gross profit above twice CAC."
+    },
+    {
+      "name": "Money model and offer stack",
+      "aliases": ["money model stack", "offer sequence", "customer journey of offers", "how the offers fit together"],
+      "use_when": "Combining acquisition and monetization offers into a coherent customer journey.",
+      "relationships": "A money model is a sequence of offers designed to minimize CAC and maximize early gross profit. Use as few offers as needed and make the sequence feel natural rather than like a sales gauntlet."
+    },
+    {
+      "name": "Four offer functions",
+      "aliases": ["attraction upsell downsell continuity", "four offer types", "offer stack roles"],
+      "use_when": "Classifying what each part of a money model is supposed to accomplish.",
+      "relationships": "Attraction offers liquidate CAC, upsells maximize profit, downsells maximize conversion after a no, and continuity stabilizes recurring cash flow."
+    },
+    {
+      "name": "Attraction offers",
+      "aliases": ["front-end offer", "first-purchase offer", "customer acquisition offer", "lead-to-customer offer"],
+      "use_when": "The constraint is getting enough prospects to engage or buy for the first time at a viable CAC.",
+      "relationships": "Attraction offers sit at the start of the stack and aim to liquidate or exceed CAC. The specific mechanic should match the barrier to first purchase."
+    },
+    {
+      "name": "Win Your Money Back",
+      "aliases": ["goal-based refund", "results-based refund", "earn the fee back", "refund for completing a transformation"],
+      "use_when": "A transformation has a measurable outcome and accountability, risk reversal, or before-and-after proof is valuable.",
+      "relationships": "The customer pays upfront and earns a refund or credit by achieving the defined result. The resulting proof can be worth more than the refund."
+    },
+    {
+      "name": "Free Giveaways",
+      "aliases": ["grand-prize giveaway", "contest offer", "participation prize", "scholarship giveaway"],
+      "use_when": "A business needs a large lead pool and has a compelling signature prize or offer to showcase.",
+      "relationships": "Advertise a grand prize, then make a relevant participation offer to non-winners. Application questions can also qualify and segment leads."
+    },
+    {
+      "name": "Decoy Offers",
+      "aliases": ["advertise the stripped-down option", "starter offer leading to premium", "cheap option versus premium"],
+      "use_when": "A premium offer is difficult to advertise directly but becomes compelling once prospects can compare it with a deliberately limited option.",
+      "relationships": "The decoy starts the conversation; the premium offer is then presented side by side so the contrast makes its additional value clear."
+    },
+    {
+      "name": "Buy X Get Y Free",
+      "aliases": ["buy one get more free", "prepay and receive bonus months", "quantity or duration bundle"],
+      "use_when": "A recurring product or service can exchange a longer commitment or prepayment for free quantity or duration.",
+      "relationships": "It can have the same economics as a percentage discount but stronger presentation. Fulfillment cost, cash obligations, and the share of customers prepaid constrain safe use."
+    },
+    {
+      "name": "Pay Less Now or Pay More Later",
+      "aliases": ["zero down versus discounted upfront", "pay later after delivery", "timing-based price choice"],
+      "use_when": "A physical product or one-time service buyer hesitates at paying full price before receiving value.",
+      "relationships": "The buyer chooses between paying less upfront now or paying the full amount later after delivery, creating agency and risk reversal rather than an unexplained discount."
+    },
+    {
+      "name": "Free with Consumption",
+      "aliases": ["free education before the sale", "experience value before buying", "content-led trust building", "challenge or webinar before offer"],
+      "use_when": "A higher-ticket buyer needs education, trust, or belief change before being ready for the paid offer.",
+      "relationships": "Useful free consumption builds trust and breaks limiting beliefs; the amount of consumption generally rises with the price and complexity of the paid offer."
+    },
+    {
+      "name": "Upsell offers",
+      "aliases": ["next offer after the sale", "add-on", "increase profit per customer", "post-purchase offer"],
+      "use_when": "Customers buy, but gross profit per customer or first-30-day profit is too low.",
+      "relationships": "Upsells occur after the initial sale and maximize profit per customer. Timing them when the next problem or need appears can also shorten payback."
+    },
+    {
+      "name": "Classic Upsell",
+      "aliases": ["you cannot have X without Y", "essential complement", "next natural thing", "required accessory"],
+      "use_when": "The first purchase naturally requires a complementary product or service to deliver the desired result.",
+      "relationships": "The accompaniment should feel necessary for success rather than arbitrary. It follows the initial product as the obvious next purchase."
+    },
+    {
+      "name": "Menu Upsell",
+      "aliases": ["prescribed add-on menu", "consultative add-ons", "unsell prescribe preference card on file"],
+      "use_when": "Several add-ons can be prescribed during a consultation or other high-trust sales interaction.",
+      "relationships": "The four steps are unsell irrelevant choices, prescribe what fits, ask a preference question, and use the card already on file to remove closing friction."
+    },
+    {
+      "name": "Anchor Upsell",
+      "aliases": ["premium option first", "high-price anchor", "make the standard option feel inexpensive"],
+      "use_when": "A legitimate premium tier can establish value before presenting the standard offer.",
+      "relationships": "Present a premium option around five to ten times the normal price, then show the standard option with the important core value preserved."
+    },
+    {
+      "name": "Rollover Upsell",
+      "aliases": ["credit the prior purchase", "apply the first fee to a larger package", "trade up", "I owe you money offer"],
+      "use_when": "Moving a current, former, upset, or competitor's customer into a larger offer by crediting an earlier purchase.",
+      "relationships": "The prior payment becomes credit toward the next offer. The larger offer generally needs to be several times the credited amount for the economics to work."
+    },
+    {
+      "name": "Downsell offers",
+      "aliases": ["offer after a no", "lower-friction alternative", "save the sale", "conversion offer"],
+      "use_when": "A prospect rejects the main offer and a different structure could convert the no without destroying value.",
+      "relationships": "A downsell changes what the customer receives or when they pay; it should not simply reduce the price for the identical offer without receiving something in return."
+    },
+    {
+      "name": "Payment Plans",
+      "aliases": ["spread payments", "installments", "financing", "cannot afford it today"],
+      "use_when": "The buyer wants the full offer but cannot afford the entire price today.",
+      "relationships": "Payment plans spread the timing of the pain rather than reducing the offer's total value. They differ from feature downsells, which reduce what the buyer receives."
+    },
+    {
+      "name": "Free Trials or Trial with Penalty",
+      "aliases": ["free if requirements are met", "card-backed trial", "fees for non-use", "accountability trial"],
+      "use_when": "A recurring product requires customer participation and a structured last chance can overcome uncertainty after a no.",
+      "relationships": "The trial stays free when agreed consumption or action requirements are met; a card is collected upfront and fees apply to non-consumption."
+    },
+    {
+      "name": "Feature Downsells",
+      "aliases": ["reduced-scope offer", "remove features to lower price", "smaller package", "change quantity or service level"],
+      "use_when": "Price remains the objection and the business can legitimately remove quantity, quality, service, or guarantees.",
+      "relationships": "Lower price must be paired with lower value or a valuable barter such as advertising. Removing a valued feature can also cause the buyer to reselect the original offer."
+    },
+    {
+      "name": "Continuity offers",
+      "aliases": ["recurring revenue", "membership", "subscription", "maintenance plan", "retention offer"],
+      "use_when": "Customers buy once and leave, cash flow is unstable, or greater lifetime value and enterprise value are priorities.",
+      "relationships": "Continuity adds ongoing value and recurring gross profit. Lower churn raises lifetime value, and upfront value followed by a long tail can increase commitment."
+    },
+    {
+      "name": "Continuity Bonus Offers",
+      "aliases": ["subscription bonus", "join for the bonus", "membership gift", "bonus worth more than month one"],
+      "use_when": "A valuable bonus can make joining continuity feel more attractive than buying transactionally.",
+      "relationships": "Advertise the bonus rather than the subscription. The bonus should exceed the first month's perceived value and can be priced separately to clarify the continuity advantage."
+    },
+    {
+      "name": "Continuity Discount Offers",
+      "aliases": ["earn a lifetime discount", "retention milestone discount", "discount after the churn point", "commitment discount"],
+      "use_when": "Churn predictably rises at a particular time or the business wants to reward longer commitment.",
+      "relationships": "The discount can be front-loaded, back-loaded, spread, or delivered as credit. A promised lifetime discount after the usual churn point gives customers a reason to stay until then."
+    },
+    {
+      "name": "Waived Fee Offers",
+      "aliases": ["waived setup fee", "implementation fee waived for commitment", "cancellation activates the fee", "startup fee"],
+      "use_when": "A service or subscription needs stronger commitment without relying on a conventional long-term contract.",
+      "relationships": "A meaningful startup fee is waived while the customer remains committed but becomes due upon early cancellation, creating sunk-cost and commitment effects."
+    },
+    {
+      "name": "Build the money model one offer at a time",
+      "aliases": ["make your own money model", "what to add next", "simple scales fancy fails", "offer rollout order"],
+      "use_when": "Designing the whole stack or deciding which missing offer to implement next.",
+      "relationships": "Build attraction, upsell, downsell, and continuity deliberately, perfecting one before adding the next. Choose the next offer based on the observed constraint and use the fewest offers needed."
+    }
+  ]
+}
+
+codex
+The saved context already says this is a strength and nutrition coaching business with a core 12-week program and no upsell yet. I’m searching for the specific “next natural thing” / complementary upsell pattern rather than general offer-stack material.
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir "$CONTEXT_DIR" --search-request-json '"'{\"intent\":\"recommendation_evidence\",\"user_turn\":\"People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?\",\"query\":\"Classic Upsell next natural thing essential complement coaching nutrition support after core offer\"}' --top-k 5" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 768ms:
+{
+  "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business",
+  "retrieval_backend": "hybrid",
+  "vector_store": "local",
+  "namespace_policy": "unfiltered",
+  "namespace_prefix": "money-models",
+  "search_request": {
+    "intent": "recommendation_evidence",
+    "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
+    "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
+  },
+  "queries": [
+    {
+      "intent": "recommendation_evidence",
+      "subjects": [],
+      "target_namespaces": [],
+      "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "subject": null
+    }
+  ],
+  "source_material": [
+    {
+      "intent": "recommendation_evidence",
+      "subject": null,
+      "subjects": [],
+      "target_namespaces": [],
+      "queried_namespaces": [
+        null
+      ],
+      "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "chunks": [
+        {
+          "id": "classic-upsell:5",
+          "chapter": "classic-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.033,
+          "preview": "## [\u00a74.2.e] Important points + 80% close rate benchmark  So important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly enco",
+          "text": "## [\u00a74.2.e] Important points + 80% close rate benchmark\n\nSo important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly encourage the thing, but that's fundamentally how it works. All right? So make sure that it doesn't cost you a lot or anything at all, uh, like, that thumb drive that we gave, like, you can y- you want it to be something that's cheap, uh, but still valuable. The next thing is make the upsells the next natural thing that they would need to buy. That's the boxes, the large units, the locks, the, the insurance, things like, that. The weight loss clinic, continuity of service, continuity of supplements, done-for-you meals, hormone treatments, et cetera, all of those things were all part of classic upsells that' went through. You can't have X without Y. You can't have this weight loss service without these supplements. Just think, \"You can't have X without Y,\" as your, as your mental framework for what the next thing I'm gonna offer is. All right, this play works so, well because the perception of how essential or required the next thing is. All right? So, this is the key point. If supplements is core to how someone's gonna get results with the main thing, the likelihood they buy is very high. So, if you, remember the, uh, minimum package for the rental car story I gave you, you want this to, feel as required as possible. Again, you don't wanna make it' required, because then it's, it's, it gets shady, but you want to strongly encourage people to take these things to get the best results, which ethically, they should be able to get better results with whatever your upsell is. All right? And so, how seamless the upsell process is for the prospect, if you make it frictionless, you can get sometimes 80% plus the people to take these upsells. I personally prefer to have upsells that have very little operational drag so, that I can' immediately offset cost to get it, getting a customer, or it becomes that's my major profit stream. It depends on' what the objective is for your business. Boom. Summary, works on' the front end as a back end, works as an internal play, meaning you can just upsell your existing customers. That's basically what the storage thing with, with the fur coats was. Many of those people were existing customers, so you can just upsell those people. Um, if you suck at sales, this is not a hard sale to make. Uh, there's a lot of goodwill in this play, because you just make sure that you close the upsell. Like, it's like, \"Hey, let me give you this thing. I'm giving you this free earmuffs. Why not take it? But, of course, you gotta take this other thing, too.\" Um, and if you aren't getting 80% plus close rates, you're doing it wrong. So that's my big benchmark for you. If you're getting 30% to take it, you're not, you're not making it assumed enough. You're not, it's, it's not clear enough to them that this goes with. So think about it like that. It has to go with. If you go to a McDonald's, I would bet you that 80% of people are getting fries and a Coke. You want, you want a very high uptake rate on' the people who buy the next natural thing. Think of this as the thing that goes with the thing, uh, and give the thing away for free to make sure that all the thing that goes with the thing you can make the money on. All right? And so, the nice thing with this is that it gives you a lot of upfront customers. And that is the classic upsell."
+        },
+        {
+          "id": "classic-upsell:4",
+          "chapter": "classic-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.032,
+          "preview": "## [\u00a74.2.d] Applied examples \u2014 weight loss, physical therapy, education  So weight loss. So for us, upsell number one was at the nutrition orientation. We would sell them supplements. We would then sell them nutrition plans. That was an immediate version for me was I wanted to sell supplements because I had no more delivery. I could immediately hand it to th",
+          "text": "## [\u00a74.2.d] Applied examples \u2014 weight loss, physical therapy, education\n\nSo weight loss. So for us, upsell number one was at the nutrition orientation. We would sell them supplements. We would then sell them nutrition plans. That was an immediate version for me was I wanted to sell supplements because I had no more delivery. I could immediately hand it to them, make the profit back, and usually what I made on the supplements covered the cost to a car customer. So just that sale covered my, my cashflow, and I hadn't even started servicing them yet. And so a lot of you guys have these little things that are available. Like if I was a physical therapist, maybe you give four free treatments as your offer. That's a banger offer. A lot of people might consider that. But upsell one is you're gonna need these orthotics, these bands, these braces, these oils, this kinesio tape, all to maximize the effectiveness of the four treatments. And so they come in for the free month of storage, but they need their lock, they need their insurance, they need their boxes. Just think about those things for yourself. If you're in education, it's like I offer, uh, group coaching, provide information in a community for free indefinitely as long as you keep using my software. By the way, this is basically, I mean, fundamentally what we do with the school. We do all this stuff for free and then just use school to he- to help monetize. Okay, uh, free versus discount note is that with the classic upsell, it works either way, same as normal. So a friend of mine had a very successful weight loss chain, and they offered services for $5 a month for their weight loss. And they had doctors and nurses and all this stuff there, and I was like, \"That's insane.\" And she was like, \"Yeah, 'cause we don't make money on the weight loss services.\" And I was like, \"What do you mean?\" She was like, \"Oh, we sell like five grand in supplements on the second day.\" I was like, \"Oh.\" So that's where I learned, that's where I really learned a lot of the really Jedi stuff that I know from, um, supplement sales. Uh, I learned from her, and I paid, her top salesperson, uh, $500 an hour for two hours to tell me everything she did to sell supplements. And you know what's crazy? When I told her top salesperson that I would pay her $500, she was like, \"$500?\" She's like, \"Just to talk to you?\" And I was like, \"Yeah.\" She thought I was an idiot. I'm, I'm dead serious. She, she looked at me like I had three eyes in my head, and she was like, \"It's your money.\" And so she just walked me through every single detail of what she did to sell supplements, and that $1,000 two hours that I paid for made me millions. And so I highly encourage you, sometimes the best people to learn from are people who aren't even selling information. Just offer to pay them- ... to learn what they do in their particular niche or. skill. And, because people are not used to doing that, and you can char- you know, you can offer way more what the val- you know, what the, what the money's worth to you, you can make way more money that' way. So, uh, I learned from her that she had service that she basically gave for a nominal amount of money 'cause she didn't even care about it, just because that drew people in, and then they'd sell the supplements and the food and the bars and the shakes. Um, and yeah, they were, they, you know, they had doctors and nurses working there. That's how they made the money."
+        },
+        {
+          "id": "decoy-offers:1",
+          "chapter": "decoy-offers",
+          "subject": "offers",
+          "subjects": [
+            "offers"
+          ],
+          "score": 0.03,
+          "preview": "don't we try this one out too?\" And so they tried this out in five different mini beta groups, and the winner was this free 21-day transformation, but here's how it worked. And so when someone would come in, the decoy offer, this is the $5 VIP, this is the they think they can get tanned in one session, but they can't really. And so we'd say, \"Cool.\" So we ju",
+          "text": "don't we try this one out too?\" And so they tried this out in five different mini beta groups, and the winner was this free 21-day transformation, but here's how it worked. And so when someone would come in, the decoy offer, this is the $5 VIP, this is the they think they can get tanned in one session, but they can't really. And so we'd say, \"Cool.\" So we just said, \"Free 21-day transformation.\" When they come in, we'd say, \"Cool. The free version of this is you get one workout per week, and you get at-home nutrition course. We'll give you this course. You can take it at home, and you work out once a week for the next 21 days, which is three workouts, okay? Or we'll give you the unlimited version, so you work out as many times as you want over the next 21 days. We'll personalize your nutrition. We'll give you, uh, you know, grocery store instructions, exactly what you need to buy. We'll guarantee that you'll lose at least 10 pounds or 15 pounds in the next 21 days, or we'll give you another 21 days free on the back.\" And when presented those two offers, they came in for the free 21-day transformation. But when they were presented the premium version, they said, \"You know what? I'd rather do that.\" Upselling is as American as apple pie. There is nothing wrong with having an upsell as long as you still offer something that is free that complies with what your original promise was in the advertisement. So if someone comes in... And the key point of making this work is that you can advertise the free 21-day transformation, not also you get all this stuff. If you say you get this other stuff too, then you have to deliver on it. And so the key is, and this is one of the benefits of advertising results rather than the, the vehicle, because then you can choose the vehicle and associate price however you want in the sales presentation. All right? And so this offer structure, right, this money model is 100% based on the upsell. This is how all of the money of this works. And the key, if you have the structure properly, is 70 to 80% of people should take the premium version"
+        },
+        {
+          "id": "upsell-offers:3",
+          "chapter": "upsell-offers",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.03,
+          "preview": ". So the objective of the upsell is to maximize profit per customer and to send clients into backends. Note, these structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the mo",
+          "text": ". So the objective of the upsell is to maximize profit per customer and to send clients into backends. Note, these structures that I talk about with the upsells work anywhere. I just prefer them as ascension tools. A lot of these things could also be front-ends. Each of the offers that I explain in money models when putting them together, which again, the money model is putting them all together, some of the stuff that I'll give you in continuity, you can use a front-end offer. Upsell offers, you can use a front-end offer. I just place them in the places that I use them most commonly. And I think that they work, at least they have worked the best for me. So this is our lineup. We're gonna start with the classic upsell. We'll do the menu upsell, the anchor upsell, and the rollover upsell. I use all of these. I have made so much money on these upsells. And if you follow what I lay out, you probably will too. And I will probably get more animated in these, because I just love these so much. All right, with that being said, the classic upsell."
+        },
+        {
+          "id": "menu-upsell:0",
+          "chapter": "menu-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.029,
+          "preview": "All right. So we just covered the classic upsell. I think this next one is my favorite one in this whole training, which is the menu upsell. Let's dive in. So how I learned it, description, examples, important points, and summary. So there are four steps to the menu upsell. We unsell what they don't need, prescribe what they do need, ask if they prefer A or ",
+          "text": "All right. So we just covered the classic upsell. I think this next one is my favorite one in this whole training, which is the menu upsell. Let's dive in. So how I learned it, description, examples, important points, and summary. So there are four steps to the menu upsell. We unsell what they don't need, prescribe what they do need, ask if they prefer A or B, and then make it easy to pay. So this is me getting super tactical with you in terms of how to upsell. stuff like a pro. I have done so many upsell. consultations in. my life and this works. I have used this sales process in many businesses. Like, this slays. All right"
+        }
+      ]
+    }
+  ]
+}
+
+codex
+I found the relevant pattern: this maps cleanly to a classic upsell, and possibly a menu upsell if nutrition support has multiple tiers. I’m recording the completed turn now with the searched chunks and retrieval backend.
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/tmp-turn-record.json
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..2fa5ef265267a1853a37c5535b646cbbabff19d2
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    {
++      "type": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
++    },
++    {
++      "type": "search_source_material",
++      "intent": "recommendation_evidence",
++      "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..2fa5ef265267a1853a37c5535b646cbbabff19d2
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    {
++      "type": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
++    },
++    {
++      "type": "search_source_material",
++      "intent": "recommendation_evidence",
++      "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json tmp-turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ exited 1 in 0ms:
+record-json requires non-empty string list field: actions
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..2fa5ef265267a1853a37c5535b646cbbabff19d2
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    {
++      "type": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
++    },
++    {
++      "type": "search_source_material",
++      "intent": "recommendation_evidence",
++      "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+codex
+The finish command rejected my first record shape because this CLI expects `actions` as a non-empty string list. I’m adjusting only the trace artifact and retrying.
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli session finish --help' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+usage: python3.14 -m money_model_architect.cli session finish
+       [-h] --business-dir BUSINESS_DIR --record-json RECORD_JSON
+
+options:
+  -h, --help            show this help message and exit
+  --business-dir BUSINESS_DIR
+                        Directory containing advisor state
+  --record-json RECORD_JSON
+                        JSON object or path to a completed turn record
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..2fa5ef265267a1853a37c5535b646cbbabff19d2
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    {
++      "type": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
++    },
++    {
++      "type": "search_source_material",
++      "intent": "recommendation_evidence",
++      "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/tmp-turn-record.json
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b542398d6b1f161a8039372f3f9cfc9154891dd5
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,49 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b542398d6b1f161a8039372f3f9cfc9154891dd5
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,49 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json tmp-turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ exited 1 in 0ms:
+record-json source_events[1] requires non-empty queries list
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b542398d6b1f161a8039372f3f9cfc9154891dd5
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,49 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+codex
+There’s one more schema mismatch in `source_events`: this build wants each source event to include a `queries` list mirroring the search output. I’m checking the local validator so the final record matches exactly.
+exec
+/bin/zsh -lc 'rg "source_events" -n src' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+src/money_model_architect/cli.py:366:                "Include one source_events entry per source-material search.",
+src/money_model_architect/cli.py:402:                "source_events": normalized["source_events"],
+src/money_model_architect/cli.py:416:                    "source_event_count": len(normalized["source_events"]),
+src/money_model_architect/cli.py:430:        source_events = _expect_json_type(_read_json_value(args.source_events_json), list, "source-events-json")
+src/money_model_architect/cli.py:441:                "source_events": source_events,
+src/money_model_architect/cli.py:453:                    "source_event_count": len(source_events),
+src/money_model_architect/cli.py:564:    source_events = record.get("source_events", [])
+src/money_model_architect/cli.py:565:    if not isinstance(source_events, list):
+src/money_model_architect/cli.py:566:        raise SystemExit("record-json source_events must be a list when supplied")
+src/money_model_architect/cli.py:567:    normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
+src/money_model_architect/cli.py:593:            "source_events": normalized_events,
+src/money_model_architect/cli.py:618:        raise SystemExit(f"record-json source_events[{index}] must be an object")
+src/money_model_architect/cli.py:622:        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+src/money_model_architect/cli.py:623:    request_label = f"record-json source_events[{index}].search_request"
+src/money_model_architect/cli.py:630:        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+src/money_model_architect/cli.py:631:    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+src/money_model_architect/cli.py:635:        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+src/money_model_architect/cli.py:638:            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+src/money_model_architect/cli.py:640:            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+src/money_model_architect/cli.py:754:def _session_finish_warnings(source_events: list[dict[str, Any]], cited_chunk_ids: list[str], metadata: dict[str, Any]) -> list[str]:
+src/money_model_architect/cli.py:756:    event_chunk_ids = _source_event_chunk_ids(source_events)
+src/money_model_architect/cli.py:765:        raise SystemExit("record-json cited_chunk_ids not found in source_events chunks: " + ", ".join(missing))
+src/money_model_architect/cli.py:767:        warnings.append("source_events include inspected chunks but cited_chunk_ids is empty")
+src/money_model_architect/cli.py:771:def _source_event_chunk_ids(source_events: list[dict[str, Any]]) -> set[str]:
+src/money_model_architect/cli.py:773:    for event in source_events:
+src/money_model_architect/cli.py:963:        "source_event_count": len(summary["source_events"]),
+src/money_model_architect/cli.py:1029:    source_events = payload.get("source_events", [])
+src/money_model_architect/cli.py:1039:    for item in source_events:
+src/money_model_architect/cli.py:1051:        "source_events": source_events,
+
+exec
+/bin/zsh -lc 'rg "requires non-empty queries" -n src' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+src/money_model_architect/cli.py:630:        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b542398d6b1f161a8039372f3f9cfc9154891dd5
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,49 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+exec
+/bin/zsh -lc "sed -n '540,660p' src/money_model_architect/cli.py" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+    text_parts: list[str] = []
+    if isinstance(business, dict):
+        for field_name in ("business_type", "delivery_model"):
+            value = business.get(field_name)
+            if isinstance(value, str):
+                text_parts.append(value)
+    if isinstance(money_model, dict):
+        core_offer = money_model.get("core_offer", {})
+        if isinstance(core_offer, dict):
+            description = core_offer.get("description")
+            if isinstance(description, str):
+                text_parts.append(description)
+    text = " ".join(text_parts).lower()
+    return any(term in text for term in ("service", "services", "consulting", "agency", "design", "implementation"))
+
+
+def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    user_message = _required_string(record, "user_message")
+    assistant_message = _required_string(record, "assistant_message")
+    actions = _required_string_list(record, "actions")
+    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+    if invalid_actions:
+        raise SystemExit(f"record-json actions contain unknown label(s): {', '.join(invalid_actions)}")
+
+    source_events = record.get("source_events", [])
+    if not isinstance(source_events, list):
+        raise SystemExit("record-json source_events must be a list when supplied")
+    normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
+
+    calculation_events = record.get("calculation_events", [])
+    if not isinstance(calculation_events, list):
+        raise SystemExit("record-json calculation_events must be a list when supplied")
+    normalized_calculation_events = [
+        _normalize_calculation_event(event, index) for index, event in enumerate(calculation_events, start=1)
+    ]
+    if "calculate" in actions and not normalized_calculation_events:
+        raise SystemExit("record-json actions include calculate, so calculation_events must contain at least one event")
+
+    cited_chunk_ids = record.get("cited_chunk_ids", [])
+    if not isinstance(cited_chunk_ids, list) or not all(isinstance(chunk_id, str) for chunk_id in cited_chunk_ids):
+        raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
+    cited_chunk_ids = _dedupe_strings(cited_chunk_ids)
+
+    metadata = record.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise SystemExit("record-json metadata must be an object when supplied")
+
+    warnings = _session_finish_warnings(normalized_events, cited_chunk_ids, metadata)
+    return (
+        {
+            "user_message": user_message,
+            "assistant_message": assistant_message,
+            "actions": actions,
+            "source_events": normalized_events,
+            "calculation_events": normalized_calculation_events,
+            "cited_chunk_ids": cited_chunk_ids,
+            "metadata": metadata,
+        },
+        warnings,
+    )
+
+
+def _required_string(record: dict[str, Any], field_name: str) -> str:
+    value = record.get(field_name)
+    if not isinstance(value, str) or not value.strip():
+        raise SystemExit(f"record-json requires non-empty string field: {field_name}")
+    return value
+
+
+def _required_string_list(record: dict[str, Any], field_name: str) -> list[str]:
+    value = record.get(field_name)
+    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item.strip() for item in value):
+        raise SystemExit(f"record-json requires non-empty string list field: {field_name}")
+    return value
+
+
+def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json source_events[{index}] must be an object")
+    uses_current_contract = "search_request" in event
+    search_request = event.get("search_request", event.get("source_need"))
+    if not isinstance(search_request, dict):
+        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+    request_label = f"record-json source_events[{index}].search_request"
+    _validate_search_request_payload(search_request, request_label)
+
+    queries = event.get("queries")
+    if queries is None and isinstance(event.get("query"), str):
+        queries = [event["query"]]
+    if not isinstance(queries, list) or not queries or not all(isinstance(query, str) and query.strip() for query in queries):
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+
+    chunks = event.get("chunks")
+    if not isinstance(chunks, list) or not chunks:
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+    for chunk_index, chunk in enumerate(chunks, start=1):
+        if not isinstance(chunk, dict):
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+        if not isinstance(chunk.get("id"), str) or not chunk["id"].strip():
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+
+    normalized = dict(event)
+    if uses_current_contract:
+        normalized.pop("source_need", None)
+        normalized["search_request"] = search_request
+    normalized["queries"] = queries
+    normalized["query"] = queries[0]
+    normalized["chunks"] = chunks
+    return normalized
+
+
+def _normalize_calculation_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json calculation_events[{index}] must be an object")
+    metric = event.get("metric")
+    valid_metrics = {"cac", "gross-profit", "gross-margin", "ltgp", "payback", "cfa-level"}
+    if not isinstance(metric, str) or metric not in valid_metrics:
+        raise SystemExit(
+            f"record-json calculation_events[{index}].metric must be one of: {', '.join(sorted(valid_metrics))}"
+        )
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b542398d6b1f161a8039372f3f9cfc9154891dd5
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,49 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+exec
+/bin/zsh -lc "sed -n '660,735p' src/money_model_architect/cli.py" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+        )
+    inputs = event.get("inputs")
+    if not isinstance(inputs, dict) or not inputs:
+        raise SystemExit(f"record-json calculation_events[{index}].inputs must be a non-empty object")
+    if not all(isinstance(key, str) and key.strip() for key in inputs):
+        raise SystemExit(f"record-json calculation_events[{index}].inputs keys must be non-empty strings")
+    value = event.get("value")
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        raise SystemExit(f"record-json calculation_events[{index}].value must be a number")
+    try:
+        expected = calculate_metric(metric, inputs)
+    except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+        raise SystemExit(f"record-json calculation_events[{index}] has invalid inputs for {metric}: {exc}") from exc
+    if not math.isfinite(float(expected)):
+        raise SystemExit(f"record-json calculation_events[{index}] result for {metric} is not finite")
+    if not math.isclose(float(value), float(expected), rel_tol=1e-9, abs_tol=1e-9):
+        raise SystemExit(
+            f"record-json calculation_events[{index}].value does not match deterministic {metric} result: "
+            f"expected {expected}, got {value}"
+        )
+    normalized = dict(event)
+    normalized["metric"] = metric
+    normalized["inputs"] = inputs
+    normalized["value"] = value
+    return normalized
+
+
+def _validate_search_request_payload(search_request: dict[str, Any], label: str) -> None:
+    intent = search_request.get("intent")
+    if intent not in SOURCE_NEED_INTENTS:
+        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
+    query = search_request.get("query")
+    if query is not None:
+        if not isinstance(query, str) or not query.strip() or "\n" in query or "\r" in query or len(query.strip()) > 400:
+            raise SystemExit(f"{label}.query must be one non-empty line of at most 400 characters")
+        user_turn = search_request.get("user_turn")
+        if not isinstance(user_turn, str) or not user_turn.strip():
+            raise SystemExit(f"{label}.user_turn must be a non-empty string")
+        legacy_fields = [
+            field
+            for field in ("subjects", "focus_terms", "query_variants", "target_namespaces")
+            if field in search_request
+        ]
+        if legacy_fields:
+            raise SystemExit(f"{label} active query cannot include legacy fields: {', '.join(legacy_fields)}")
+        return
+
+    # Compatibility validation for preserved source-need traces and evals.
+    subjects = search_request.get("subjects")
+    if not isinstance(subjects, list) or not subjects or not all(isinstance(subject, str) for subject in subjects):
+        raise SystemExit(f"{label}.subjects must be a non-empty list of strings")
+    invalid_subjects = [subject for subject in subjects if subject not in SUBJECTS]
+    if invalid_subjects:
+        raise SystemExit(f"{label}.subjects contain unknown subject(s): {', '.join(invalid_subjects)}")
+    target_namespaces = search_request.get("target_namespaces", [])
+    if (
+        not isinstance(target_namespaces, list)
+        or not all(isinstance(namespace, str) and namespace.strip() for namespace in target_namespaces)
+    ):
+        raise SystemExit(f"{label}.target_namespaces must be a list of strings when supplied")
+    invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in SUBJECTS]
+    if invalid_namespaces:
+        raise SystemExit(f"{label}.target_namespaces contain unknown namespace(s): {', '.join(invalid_namespaces)}")
+    focus_terms = search_request.get("focus_terms")
+    if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
+        raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
+    query_variants = search_request.get("query_variants")
+    if (
+        not isinstance(query_variants, list)
+        or not 2 <= len(query_variants) <= 4
+        or not all(isinstance(query, str) and query.strip() for query in query_variants)
+    ):
+        raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
+
+
+def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b542398d6b1f161a8039372f3f9cfc9154891dd5
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,49 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+exec
+/bin/zsh -lc "sed -n '735,755p' src/money_model_architect/cli.py" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
+    query = search_request.get("query")
+    if isinstance(query, str):
+        if len(queries) != 1 or _normalize_query_text(queries[0]) != _normalize_query_text(query):
+            raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
+        return
+    query_variants = search_request.get("query_variants")
+    if not isinstance(query_variants, list):
+        return
+    executed = {_normalize_query_text(query) for query in queries}
+    missing = [variant for variant in query_variants if _normalize_query_text(variant) not in executed]
+    if missing:
+        raise SystemExit(f"{label}.queries must include every source_need.query_variants entry")
+
+
+def _normalize_query_text(value: str) -> str:
+    return " ".join(value.split()).lower()
+
+
+def _session_finish_warnings(source_events: list[dict[str, Any]], cited_chunk_ids: list[str], metadata: dict[str, Any]) -> list[str]:
+    warnings = []
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b542398d6b1f161a8039372f3f9cfc9154891dd5
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,49 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "executed_query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer",
++      "inspected_chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+codex
+I found the validator. The trace needs `queries` and `chunks` as top-level fields on the source event; I’m patching that format now.
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/tmp-turn-record.json
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..d9f8f5b901416bdd210ea32b703c4eab03afcc86
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "queries": [
++        "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      ],
++      "chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..d9f8f5b901416bdd210ea32b703c4eab03afcc86
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "queries": [
++        "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      ],
++      "chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json tmp-turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime
+ succeeded in 0ms:
+{
+  "recorded": true,
+  "session_path": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-022zcicl/runtime/business/.money-model-advisor/sessions/20260816T180853.json",
+  "created_at": "2026-08-16T18:08:53Z",
+  "warnings": [],
+  "source_event_count": 1,
+  "calculation_event_count": 0,
+  "cited_chunk_ids": [
+    "classic-upsell:5",
+    "classic-upsell:4",
+    "menu-upsell:0"
+  ]
+}
+
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..d9f8f5b901416bdd210ea32b703c4eab03afcc86
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "queries": [
++        "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      ],
++      "chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+codex
+Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, “Can they get the result they bought coaching for without this?” If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].
+
+The clean pattern is:
+
+1. Sell the 12-week coached transformation as the core offer.
+2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.
+3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.
+4. Make it easy to say yes while keeping the core coaching complete on its own.
+
+This should not feel like, “You bought coaching, now I am surprising you with what you actually need.” It should feel like, “Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.” The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].
+
+If you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a “Nutrition Accelerator” added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.
+diff --git a/tmp-turn-record.json b/tmp-turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..d9f8f5b901416bdd210ea32b703c4eab03afcc86
+--- /dev/null
++++ b/tmp-turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++  "assistant_message": "Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, \"Can they get the result they bought coaching for without this?\" If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].\n\nThe clean pattern is:\n\n1. Sell the 12-week coached transformation as the core offer.\n2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.\n3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.\n4. Make it easy to say yes while keeping the core coaching complete on its own.\n\nThis should not feel like, \"You bought coaching, now I am surprising you with what you actually need.\" It should feel like, \"Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.\" The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].\n\nIf you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a \"Nutrition Accelerator\" added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.",
++  "actions": [
++    "session_start",
++    "search_source_material"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?",
++        "query": "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      },
++      "queries": [
++        "Classic Upsell next natural thing essential complement coaching nutrition support after core offer"
++      ],
++      "chunks": [
++        {
++          "id": "classic-upsell:5",
++          "score": 0.033
++        },
++        {
++          "id": "classic-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "decoy-offers:1",
++          "score": 0.03
++        },
++        {
++          "id": "upsell-offers:3",
++          "score": 0.03
++        },
++        {
++          "id": "menu-upsell:0",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "classic-upsell:5",
++    "classic-upsell:4",
++    "menu-upsell:0"
++  ],
++  "metadata": {
++    "turn_type": "recommendation"
++  }
++}
+
+tokens used
+33,334

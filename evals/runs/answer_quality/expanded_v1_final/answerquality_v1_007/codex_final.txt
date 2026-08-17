@@ -1,0 +1,5 @@
+Using the saved numbers, CAC payback is about **2.9 months**.
+
+The math is: **$2,800 CAC** minus **$1,100 first-30-day gross profit** leaves **$1,700** still to recover. At **$900 in monthly recurring gross profit** after that, the remaining CAC is recovered in **1.89 more months**.
+
+So total payback is **1 + 1.89 = 2.89 months**.

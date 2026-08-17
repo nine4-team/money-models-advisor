@@ -1,0 +1,52 @@
+{
+  "advisor_state": {},
+  "business": {
+    "business_type": "boutique strength and nutrition coaching business",
+    "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+    "icp": "busy professional women seeking measurable strength and body-composition results"
+  },
+  "economics": {
+    "cac": null,
+    "first_30_day_gross_profit": null,
+    "gross_margin": null,
+    "lifetime_gross_profit": null,
+    "monthly_recurring_gross_profit": null,
+    "payback_period_months": null
+  },
+  "field_sources": {},
+  "money_model": {
+    "attraction_offer": {
+      "description": "free strength and nutrition assessment",
+      "exists": true,
+      "price": 0
+    },
+    "continuity": {
+      "description": "ongoing training membership",
+      "exists": true,
+      "price": 249
+    },
+    "core_offer": {
+      "description": "12-week coached transformation program",
+      "exists": true,
+      "price": 2400
+    },
+    "downsell": {
+      "description": null,
+      "exists": false,
+      "price": null
+    },
+    "upsell": {
+      "description": null,
+      "exists": false,
+      "price": null
+    }
+  },
+  "problem": {
+    "diagnosed_constraints": [],
+    "reported_symptoms": [
+      "prospects are skeptical before experiencing the coaching"
+    ],
+    "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+  },
+  "schema_version": "business_snapshot.v1"
+}

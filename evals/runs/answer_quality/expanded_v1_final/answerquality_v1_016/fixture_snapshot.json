@@ -1,0 +1,52 @@
+{
+  "advisor_state": {},
+  "business": {
+    "business_type": "direct-to-consumer natural skincare brand",
+    "delivery_model": "physical products shipped from third-party fulfillment",
+    "icp": "adults with sensitive skin who want a simple recurring routine"
+  },
+  "economics": {
+    "cac": null,
+    "first_30_day_gross_profit": null,
+    "gross_margin": null,
+    "lifetime_gross_profit": null,
+    "monthly_recurring_gross_profit": null,
+    "payback_period_months": null
+  },
+  "field_sources": {},
+  "money_model": {
+    "attraction_offer": {
+      "description": "low-cost sensitive-skin sample kit",
+      "exists": true,
+      "price": 10
+    },
+    "continuity": {
+      "description": "automatic refill subscription",
+      "exists": true,
+      "price": 55
+    },
+    "core_offer": {
+      "description": "three-product starter routine",
+      "exists": true,
+      "price": 90
+    },
+    "downsell": {
+      "description": "two-product essentials kit",
+      "exists": true,
+      "price": 55
+    },
+    "upsell": {
+      "description": "premium five-product routine",
+      "exists": true,
+      "price": 160
+    }
+  },
+  "problem": {
+    "diagnosed_constraints": [],
+    "reported_symptoms": [
+      "premium routine is difficult to advertise directly"
+    ],
+    "user_goal": "improve front-end conversion without creating an inventory cash problem"
+  },
+  "schema_version": "business_snapshot.v1"
+}

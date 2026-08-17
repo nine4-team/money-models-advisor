@@ -1,0 +1,132 @@
+{
+  "actions": [
+    "session_start",
+    "inspect_local_docs",
+    "clarify",
+    "session_finish"
+  ],
+  "answer_category": "clarification",
+  "answer_sha256": "89f8472bc62596931aeafd319dc6e0874cfd0e675a9b3196e0df4b1a8e1aa94c",
+  "assistant_message": "Not yet. I would not increase paid acquisition next month until we know current CAC and first-30-day gross profit.\n\nFor this decision, the first test is simple: does a new paid customer generate enough gross profit in the first 30 days to cover CAC? If yes, increasing spend can be considered, subject to capacity and lead quality. If no, then we need monthly recurring gross profit to calculate payback before deciding whether more spend is acceptable.\n\nMy next question is: what is your current paid CAC and the gross profit you earn from a new customer in their first 30 days?",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "insufficient_context",
+      "missing_fields": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit"
+      ],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": false
+    },
+    "business": {
+      "business_type": "B2B inventory-planning SaaS",
+      "delivery_model": "cloud software with guided onboarding and customer success",
+      "icp": "multi-location specialty retailers with small operations teams"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "paid inventory cleanup pilot",
+        "exists": true,
+        "price": 500
+      },
+      "continuity": {
+        "description": "monthly software and customer-success subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "core_offer": {
+        "description": "inventory planning software subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "implementation and analytics package",
+        "exists": true,
+        "price": 4000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "many customers cancel during the fourth month"
+      ],
+      "user_goal": "reduce month-four churn and improve acquisition payback"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_008",
+  "cited_chunk_ids": [],
+  "evidence_passages": [],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "B2B inventory-planning SaaS",
+      "delivery_model": "cloud software with guided onboarding and customer success",
+      "icp": "multi-location specialty retailers with small operations teams"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "paid inventory cleanup pilot",
+        "exists": true,
+        "price": 500
+      },
+      "continuity": {
+        "description": "monthly software and customer-success subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "core_offer": {
+        "description": "inventory planning software subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "implementation and analytics package",
+        "exists": true,
+        "price": 4000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "many customers cancel during the fourth month"
+      ],
+      "user_goal": "reduce month-four churn and improve acquisition payback"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "saas_retention",
+  "source_case_id": "searchdecision_v1_024",
+  "source_events": [],
+  "user_turn": "should we increase paid acquisition next month?"
+}

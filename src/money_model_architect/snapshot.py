@@ -88,6 +88,7 @@ class BusinessSnapshot:
                 "money_model.core_offer.description",
                 "economics.cac",
                 "economics.first_30_day_gross_profit",
+                "economics.monthly_recurring_gross_profit",
             )
         )
         self.advisor_state.ready_for_offer_stack_diagnosis = not any(
@@ -141,6 +142,12 @@ class BusinessSnapshot:
     def _refresh_calculated_fields(self) -> None:
         econ = self.economics
         if econ.cac is None or econ.first_30_day_gross_profit is None:
+            econ.payback_period_months = None
+            self.field_sources.pop("economics.payback_period_months", None)
+            return
+        if econ.first_30_day_gross_profit < econ.cac and econ.monthly_recurring_gross_profit is None:
+            econ.payback_period_months = None
+            self.field_sources.pop("economics.payback_period_months", None)
             return
         monthly_gp = econ.monthly_recurring_gross_profit or 0.0
         payback = payback_period_months(econ.cac, econ.first_30_day_gross_profit, monthly_gp)
@@ -175,6 +182,13 @@ class BusinessSnapshot:
             missing.append("economics.cac")
         if self.economics.first_30_day_gross_profit is None:
             missing.append("economics.first_30_day_gross_profit")
+        if (
+            self.economics.cac is not None
+            and self.economics.first_30_day_gross_profit is not None
+            and self.economics.first_30_day_gross_profit < self.economics.cac
+            and self.economics.monthly_recurring_gross_profit is None
+        ):
+            missing.append("economics.monthly_recurring_gross_profit")
         return missing
 
     def _advisory_status(self) -> str:

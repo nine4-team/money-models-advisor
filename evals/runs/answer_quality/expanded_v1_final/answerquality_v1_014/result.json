@@ -1,0 +1,14 @@
+{
+  "answer_category": "source_grounded",
+  "case_id": "answerquality_v1_014",
+  "contamination_flags": [],
+  "created_at": "2026-08-16T18:41:10Z",
+  "latency_ms": 78428.1,
+  "model": "gpt-5.5",
+  "returncode": 0,
+  "scenario_id": "ecommerce_skincare",
+  "session_error": null,
+  "source_case_id": "searchdecision_v1_036",
+  "timed_out": false,
+  "valid": true
+}

@@ -1,0 +1,226 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "answer_category": "source_grounded",
+  "answer_sha256": "bcb6d41dead77f470bb645bb80c9bb9d926c5f20a8032f8fd6f254f41e47b44d",
+  "assistant_message": "Yes, I would use this as a conditional \"win your program fee back\" offer, but I would strongly prefer earning it back as credit rather than a cash refund.\n\nThe clean version is: clients pay the $2,400 program fee upfront. If they hit a specific, objective 12-week result and complete the required check-ins, they earn up to $2,400 back as credit toward ongoing training or a renewal. That matches the Money Models pattern: set a goal, show the client how to reach it, and let them qualify for money back or store credit when they hit it [win-your-money-back:0].\n\nThe check-ins should be qualification requirements, not administrative chores. For example: baseline assessment, weekly progress check-ins, nutrition compliance review, midpoint adjustment, final measurement, photos/testimonial if they succeed. The source material supports tying refund eligibility to the actions required to get the result, like attendance, showing up, and turning in data [pay-less-now:5]. It also supports requiring check-ins because they are what make the result more likely [free-trials:6].\n\nI would avoid a broad cash-back promise at first. Your first-30-day gross profit is already $900 against a $320 CAC, so acquisition economics are strong, but a full $2,400 cash refund creates real delivery and cash-flow exposure. Credit is better because it preserves the risk reversal, pushes the client into continuity, and keeps the money inside the business.\n\nMy recommended offer language would be: \"Complete the 12-week transformation, attend every required check-in, submit your weekly nutrition/training data, and hit your agreed strength/body-composition target. When you do, we credit your full $2,400 program fee toward your next phase of coaching.\"\n\nI would pilot it with tight rules: one measurable result per client, objective before/after measurement, no partial subjective disputes, and credit issued only after all check-ins and final proof are complete. If you want a cash version later, cap it or test it with a small cohort first.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_009",
+  "cited_chunk_ids": [
+    "win-your-money-back:0",
+    "pay-less-now:5",
+    "free-trials:6"
+  ],
+  "evidence_passages": [
+    {
+      "chapter": "win-your-money-back",
+      "id": "win-your-money-back:0",
+      "subjects": [
+        "offers"
+      ],
+      "text": "So we start with our very first money model in the book, which is an attraction offer, win your money back. So win your money back. is one of these incredibly sexy offers that I start with because it's made me more money than any other offer that I'm going to show you. Let's dive in. We're gonna go through how I learned it, the description, the examples, important points, and summary. All right, so this is my beautiful doodle that exemplifies what this is. So I was in this gym mastermind where I signed up before I had a gym because I wanted to learn about the gym business. And this guy, Danny, uh, he said he had a client, uh, say no, and then said, \"Well, I'll pay you 500 bucks, and you can train me one-on-one. And if I lose 20 pounds in eight weeks, um, you give me the money back, but I'll let' you use my, you know, my pictures.\" And so, you know, Danny was like, \"Well, I'd rather take the money than not take the money.\" And so he did the deal. The dude got amazing results. And the thing is, is that once the guy got amazing results, he advertised the before and after of this dude, and he got like 13 more customers from advertising this guy's results. And so he started talking about that at this mastermind. We' then took it, at the gym that I was at with Sam, and we tried a six-week version of it to shorten it. It was still one-on-one PT, personal training. And so then I had the idea of, \"Hey, one, let's see if we run ads for this instead of just being, like, a thing that we tell our customers. And two, what if we made it large group instead of personal training?\" And so those two changes took this from this is a profitable thing to this being a money nuclear bomb. And so we then switched it to, uh, free and non-free versions with credit back and money back guarantees, which I'll explain in more detail. All right? So that's how I learned it. And it was an iteration. I mean, this was, like, a year, two years before we learned every single thing that I'm gonna share with you in, like, eight or 10 minutes. So now that's how I learned it. Let's go into the description. All right? What does this thing even mean? So a win your money back offer works like this. So you set a goal for your customer and then you tell them how to reach it, and if they reach it, then they qualify to get their money back or get it back as store credit. [CONTENT TRUNCATED FOR BREVITY - this would include the entire transcript]"
+    },
+    {
+      "chapter": "free-trials",
+      "id": "free-trials:6",
+      "subjects": [
+        "downsells",
+        "offers"
+      ],
+      "text": "results and still keep it free. It's the best of both worlds. I'd say that a lot of times. It works. Note, if you explain the fees before you get the card, you'll get way more resistance and way more like, \"What about this?\" And \"Why is this, this?\" If you explain it afterwards with the same, like, \"This is just how we've always done it,\" attitude, people will agree or they'll tend to agree at far higher likelihood. And the last point that I'll make is that I always have them initial next to each fee they're agreeing to. And so, again, you don't wanna have like 19 sets of fees. You wanna have it as few things as that are, that are important to you. So it'll usually be the sales consults they have to attend, whatever the key metric for them getting results are, and maybe them doing some advertising for you. Because remember, you're doing this for free, so they might as well do some advertising for you. They gotta post, they gotta, you know, give you a testimonial at the end, whatever. So they have to agree to doing those things. If you're gonna give a free trial, get some stuff for it. That's the whole point of this. If you're gonna give, you should get. So that's step four, is that we get the card, then we explain the terms, then we have them initial next to all the fees that are associated, and we explain why we have the fees, which is for their benefit. It's the only way we could still ethically tell you that we could help you get results and keep it free. That way, you get the best of both worlds. Done. Great. So now, uh, I like making the check-ins required. That's basically just an explanation of the fees. So I would say, \"All right, uh, yep, and you agree to attend each of these three check-ins. The first time we do X so that you can. The second time we do Y, so that you can. The third time we do Z so that you can. Obviously, we charge if you miss these three, 'cause it's the only way we can get you results.\" So this is me explaining how I would explain each of the kind of clauses that I'm init- having them initial next to. So this would be like the sales consults. Now again, I'm not gonna call them sales consults. I'd say, \"Hey, you gotta attend nutrition so that we can fix your food. You gotta attend the, the progress meeting so that we can adjust the nutrition to keep the results coming. And you gotta attend the transformation meeting at the end so we can get your after pictures. That should make sense, right?\" \"Yes.\" \"Okay, cool.\" Done. Right, this is... Like, there's not a lot to object to there. The question is, okay, well, how do trials make me money? So this is how I upsell from a trial. But everything I just now went through is how my step-by-step process for selling a trial with penalty, which will get you far more customers and long-term commitment than just telling someone to put a card and wish for the best."
+    },
+    {
+      "chapter": "pay-less-now",
+      "id": "pay-less-now:5",
+      "subjects": [
+        "offers",
+        "downsells"
+      ],
+      "text": ". So here's the key part. Promise a clear yes/no result. So first, you make a promise yes/no. Second, make sure you can deliver on it within your timeframe. If you don't, they will ask to not be billed. And so you wanna make this as objective as possible for people so they can say, \"Yes, I found my first deal. Yes, I got my first reply from an email. Yes, my reading speed doubled because I got to here.\" Like, and you wanna have some sort of measurement before, and some sort of measurement during so you can see the progress. So for example, if you promised a decrease in shoulder pain, have them rate their pain before you do your magic trick, and then ask them to rate it after. If it went down, you succeeded, and you can sell them something else. Keep the promise simple, clear, and measurable. This avoids unnecessary cancellations. Now, make a conditional satisfaction guarantee so people can only cancel the billing if they qualify. For example, they had to show up to the reading training to qualify. All right? It's a key point. And so if you don't show up to the workshop, then you can't ask for the refund. So think attendance, showing up for an appointment, turning in data. Make the criteria what people do to get the value out of the product. All right? Which should make you feel good, too, 'cause then you can explain it. It's like, listen, I have this as the criteria because you said you want. a double your readings meeting. You're not gonna double your readings meeting if you don't, unless you show up. You're not gonna find your dis- distressed op- property unless you come to the workshop. Have bonuses for your, uh, pay now offers to get even more buyers. All right? So if you want more people to take that' pay now option, just stack the bonuses, decrease the price. Um, optimizing your pay now and pay later offers. If too many people. take your pay later option, discount the pay now option more, add better bonuses or both. And if too many people take your pay now option, go the other direction. If more than 10% of pay later people cancel their payment, you promised too much, uh, the guarantee conditions are too low or the price is. too high. And so the last one's the one that can be kind of tricky, is if you have a massive discrepancy between pay now and pay later, then sometimes people will get the value and just be cheapskates. That's why having the objective measure of whether they' got the thing is so important for this. Now, again, I would explain that 10% is what you should target, or what you should expect. So 10% of people who have pay later, are going to just say, \"Don't bill me.\" So just factor it in the cost of doing business. So if you have 100 people that do pay later, expect 10 to say that. Now, if, like, 20 say that, more than, then it's like, okay, we need to change one of these other things. I would say the fourth thing is that you're selling people who can't afford it. No- no matter how well you deliver, some people will cancel their payment, and that's okay. Just cost of doing business. Now, uh, this works for recurring revenue businesses, too. Because you're like, \"How does this work for those businesses?\" Let me explain. So you just give them the option to pay a higher ongoing rate 30 days later, or they pay less today and they keep the better rate for good. All right? Really sexy. So plus, you can add in some bonuses. So I'll, I'll, I'm gonna just give you one line now and we'll talk more about it"
+    },
+    {
+      "chapter": "payback-period",
+      "id": "payback-period:5",
+      "subjects": [
+        "unit-economics",
+        "upsells",
+        "continuity"
+      ],
+      "text": ". First big win. This means you focus on getting the fast wins so that you then create new problems that you can then solve. Halfway point. Um, this is just... I just, I'm telling you, it just, it's- this has worked, so I'll just throw it out there. I can give you some scientific whatever thing, but I just know it works. And then last chance is the exit interview, right? And, uh, this is only useful for payback periods if it's within the first 30 days, but pretty much all of these ones, uh, apply most of the times within the first 30 days of the customer coming in. These are some easy ways to do this. You can have somebody pay first and last month today, or you can add an initiation fee, an onboarding fee, or an enrollment fee, or an activation fee, or make up whatever fee you want. You too can have this power. Uh, you just, you just add that on. So if I wanted to improve that one I had earlier, if I didn't want to wait two months, I would say, \"Great, we pay first and last. That's how we've always done it.\" And then I could offset... Now notice, the fee is all gross profit. So now I'm actually up 80 on my first transaction, and now I've got half the cost to get a new customer already back in my pocket before I even? have the next payment 30 days later. So every two customers buys me another one before even having to wait for the recurring to hit. All right? And this is, how you really scale. This is just one structure. There's a gazillion that I'm gonna show you. All right. So we went from two months to one and a half, right? Within 30 days. All right? So that's how you improve it, and that is about shortening payback period, making money faster."
+    },
+    {
+      "chapter": "free-trials",
+      "id": "free-trials:2",
+      "subjects": [
+        "downsells",
+        "offers"
+      ],
+      "text": "## [\u00a75.3.c] Examples \u2014 B2C, B2B, therapy, fee weighting\n\nSo let's walk through some examples. So I'll do a B2C version, so a business to consumer, and then I'll do a B2B. So let's say you do a business to consumer offer, 28-day kick-that-habit blueprint, whatever, right? So you get the trial for free and avoid the penalty fee. You must... Or to get the trial for free and avoid the penalty fee, you must attend all your consulting calls, post your progress in the group once a week, journal daily in our app, and attend feedback sessions and transformation sessions, AKA the upsell opportunities. Business to business offer: five-day get your first five clients challenge. All right? To get the trial for free and avoid the penalty fee, you must send 100 outbound messages per day, report stats on the outbound messages, attend the daily training, post in the group daily once you've done the homework, attend your graduation call, which is the upsell opportunity. And so these look really similar to what the win-your-money-back ones were, because they are the same thing. Now, let's say you had a therapy business. So offer a free 28-day breakthrough therapy, free trial plus penalty. You're gonna need, uh, to do the homework before each session and show up. If you don't do the homework, you're not going to get the results that you want. And if you don't show up, obviously you're not gonna get better. This will give you an added incentive to get better faster. So we charge a $50 non-compliance fee for not doing the homework or not doing the session. If you don't do the homework, then we can't help you in the session. Fair enough? You just explain it, how it works. Now, in this 28-day thing, you can have all the fees add up to the exact same amount of money that you would have charged in a win-your-money-back. So if they have, call it 10 things they have to do over X period of time, and it's a $500 thing, then you charge $50 per thing. Now, if some things are more important than others, let's say sales consultations, then you can make those ones $100 or $150 and the other things 25. You wanna weight the prices based on the importance for you as a business and for them getting results."
+    }
+  ],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "fitness_coaching",
+  "source_case_id": "searchdecision_v1_025",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "win-your-money-back:0",
+          "score": 0.032
+        },
+        {
+          "id": "free-trials:6",
+          "score": 0.031
+        },
+        {
+          "id": "pay-less-now:5",
+          "score": 0.03
+        },
+        {
+          "id": "payback-period:5",
+          "score": 0.03
+        },
+        {
+          "id": "free-trials:2",
+          "score": 0.03
+        }
+      ],
+      "queries": [
+        "Win Your Money Back goal-based refund results-based refund measurable transformation accountability check-ins earn the fee back"
+      ],
+      "query": "Win Your Money Back goal-based refund results-based refund measurable transformation accountability check-ins earn the fee back",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "Win Your Money Back goal-based refund results-based refund measurable transformation accountability check-ins earn the fee back",
+        "user_turn": "Could clients earn their program fee back by hitting the result and completing their check-ins?"
+      }
+    }
+  ],
+  "user_turn": "Could clients earn their program fee back by hitting the result and completing their check-ins?"
+}

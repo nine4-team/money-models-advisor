@@ -1,0 +1,14 @@
+{
+  "answer_category": "source_grounded",
+  "case_id": "answerquality_v1_010",
+  "contamination_flags": [],
+  "created_at": "2026-08-16T18:38:51Z",
+  "latency_ms": 86535.9,
+  "model": "gpt-5.5",
+  "returncode": 0,
+  "scenario_id": "fitness_coaching",
+  "session_error": null,
+  "source_case_id": "searchdecision_v1_028",
+  "timed_out": false,
+  "valid": true
+}

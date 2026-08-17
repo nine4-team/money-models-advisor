@@ -1,0 +1,1765 @@
+OpenAI Codex v0.144.6
+--------
+workdir: /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a00bbe-c27f-7d72-9954-06d4b58bed47
+--------
+user
+# Money Model Advisor Turn
+
+Act as the Money Model Advisor and answer the user's request through the normal
+skill-guided workflow.
+
+1. Read and follow the local `money-model-advisor` skill and its search-request rules.
+2. Use the CLI from `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime` with `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business` as the business directory.
+3. Start the turn with `session start`. Decide naturally whether to calculate,
+   search the local Money Models corpus, clarify, or answer from saved context.
+4. If you search, use the current single-query `SearchRequest` and the default
+   hybrid retriever. Inspect the returned passages, cite only supported claims, and
+   preserve the CLI's `retrieval_backend` field in the recorded source event.
+5. Record the complete turn with `session finish` before returning.
+6. Work only inside `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime`. Do not inspect `.env`, `.cache`, or any path
+   outside this runtime. No evaluation labels or previous trials are available.
+7. Return only the user-facing answer recorded in the completed session.
+
+User request:
+
+Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?
+
+codex
+I’m going to use the local `money-model-advisor` skill and route this through its CLI so the answer is grounded in the saved business context and recorded properly.
+exec
+/bin/zsh -lc "sed -n '1,240p' /private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/.codex/skills/money-model-advisor/SKILL.md" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Pass
+   `--source-type file --source <relative-path>` for facts taken from an inspected
+   file. Conversation facts use the default `conversation` source. Save only facts
+   that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --search-request-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Record a fact accepted from an inspected business file:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
+  --business-dir "$CONTEXT_DIR" \
+  --source-type file \
+  --source metrics/q1-unit-economics.csv \
+  economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit, corpus-guided search request.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Before recording, audit each source-backed sentence against the exact cited chunk:
+   do not rely on the chunk title or a nearby passage, do not make a stronger claim
+   than the text supports, and remove or qualify any unsupported wording. Business-
+   specific recommendations may be reasoned from accepted facts; cite the source only
+   for the framework principle it actually establishes.
+9. Record the final turn with `session finish`.
+10. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so `session finish` can recompute the result from the recorded inputs
+and reject an incorrect value.
+
+## When To Search
+
+Follow the runtime search-request rules in `search_request_rules.md` (same directory).
+That file is the single source of truth for when to search, when to split searches,
+how to use the versioned corpus guide, how to write the single query, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should
+include the `retrieval_backend` returned by the CLI, the `search_request`, the executed
+query, and inspected chunks with IDs and scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not cite a chunk for a claim stronger than its text supports.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+codex
+I’ve loaded the workflow. Next I’m starting the recorded session and checking what context is already saved for this business before deciding whether this needs corpus support or a clarifying question.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business\"
+USER_REQUEST='Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?'
+PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir \""'$CONTEXT_DIR" --user-message "$USER_REQUEST"' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+{
+  "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
+  "state_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business/.money-model-advisor",
+  "snapshot": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business/.money-model-advisor/business_snapshot.json",
+  "sessions_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business/.money-model-advisor/sessions",
+  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
+  "advisor_state": {
+    "advisory_status": "diagnosable",
+    "ready_for_payback_diagnosis": true,
+    "ready_for_offer_stack_diagnosis": true,
+    "missing_fields": [],
+    "known_facts": {
+      "business.business_type": "B2B inventory-planning SaaS",
+      "business.icp": "multi-location specialty retailers with small operations teams",
+      "business.delivery_model": "cloud software with guided onboarding and customer success",
+      "economics.cac": 2800,
+      "economics.first_30_day_gross_profit": 1100,
+      "economics.monthly_recurring_gross_profit": 900,
+      "economics.gross_margin": 0.75,
+      "economics.lifetime_gross_profit": 18000,
+      "economics.payback_period_months": 2.888888888888889,
+      "problem.user_goal": "reduce month-four churn and improve acquisition payback",
+      "problem.reported_symptoms_count": 2,
+      "problem.recent_reported_symptoms": [
+        "many customers cancel during the fourth month",
+        "new-customer acquisition requires more cash than month-one gross profit"
+      ],
+      "money_model.attraction_offer.exists": true,
+      "money_model.attraction_offer.description": "paid inventory cleanup pilot",
+      "money_model.attraction_offer.price": 500,
+      "money_model.core_offer.exists": true,
+      "money_model.core_offer.description": "inventory planning software subscription",
+      "money_model.core_offer.price": 1200,
+      "money_model.upsell.exists": true,
+      "money_model.upsell.description": "implementation and analytics package",
+      "money_model.upsell.price": 4000,
+      "money_model.downsell.exists": false,
+      "money_model.continuity.exists": true,
+      "money_model.continuity.description": "monthly software and customer-success subscription",
+      "money_model.continuity.price": 1200
+    }
+  },
+  "recent_turns": [],
+  "available_operations": [
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "search_source_material",
+    "logs",
+    "turn_record",
+    "session_finish"
+  ],
+  "trace_requirements": [
+    "Record the completed turn with session finish.",
+    "Include every CLI-backed action in the record actions list.",
+    "Include one source_events entry per source-material search.",
+    "Include cited chunk ids when source material supports the answer."
+  ],
+  "boundary": {
+    "agent_owns": [
+      "advisory judgment",
+      "local document inspection",
+      "corpus-guided search-request generation",
+      "answer synthesis"
+    ],
+    "cli_owns": [
+      "snapshot persistence",
+      "deterministic calculations",
+      "source-material retrieval",
+      "trace recording"
+    ]
+  }
+}
+
+exec
+/bin/zsh -lc "sed -n '1,260p' /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/.codex/skills/money-model-advisor/search_request_rules.md" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+# Runtime Search-Request Rules
+
+These rules govern the active query-generation and retrieval path. The older
+`source_need_rules.md` remains frozen for the source-need planning eval and historical
+multi-query artifacts; it is not the runtime query contract.
+
+## When to search
+
+- Search when the answer needs Money Models support for a concept, comparison,
+  diagnosis, or recommendation and the snapshot already holds enough relevant facts.
+- Do not search instead of obtaining missing business facts or prior-session context.
+- Do not search for a simple vocabulary answer that does not need a citation.
+
+## One evidence job per search
+
+- Generate one search request per evidence job. If an answer needs two genuinely
+  different kinds of evidence, run two searches instead of mixing them into one query.
+- Do not rerun an economics search merely because known economics appear in the answer.
+
+## Generate the query
+
+- Before writing a query, read `../../../reference/corpus_guide_v1.json`.
+  It is the same versioned guide used by the winning development experiment.
+- Use the current user question, the saved BusinessSnapshot, and that guide to write
+  one concise source-search query.
+- Treat the guide as a translation reference, not a checklist. Translate ordinary
+  language into canonical source terminology when that helps retrieval.
+- Preserve the full information need. Include every concept needed for the mechanism,
+  relationship, comparison, sequence, or combined system being asked about.
+- Use business context only when it changes or disambiguates the evidence needed. Do
+  not add related concepts simply because the guide lists them nearby.
+- Do not answer the question or speculate about the answer inside the query.
+- Do not generate variants, a deterministic fallback, a subject filter, or a namespace
+  filter. Those approaches were not part of the winning method.
+
+## Active request fields
+
+- `query`: the single corpus-guided query that the CLI executes.
+- `user_turn`: the current user message, retained for trace context.
+- `intent`: the closest audit label; it does not alter retrieval. Choose one of
+  `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, or
+  `recommendation_evidence`.
+
+codex
+The saved context is sufficient: B2B inventory-planning SaaS, month-four churn, existing continuity subscription, and a paid pilot/core/upsell structure. Because the answer is a Money Models recommendation, I’m going to retrieve one supporting framework passage before answering.
+exec
+/bin/zsh -lc "sed -n '1,260p' /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/reference/corpus_guide_v1.json" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+{
+  "version": "money-models-corpus-guide.v1",
+  "created_at": "2026-08-10",
+  "status": "candidate",
+  "derived_from": [
+    "corpus/coach/index.md",
+    "corpus/coach/decision-trees.md",
+    "corpus/money-models-frameworks.md"
+  ],
+  "generator_visible_fields": [
+    "name",
+    "aliases",
+    "use_when",
+    "relationships"
+  ],
+  "entries": [
+    {
+      "name": "Lifetime gross profit compared with customer acquisition cost",
+      "aliases": ["LTGP to CAC", "customer value versus acquisition cost", "3-to-1 viability"],
+      "use_when": "Assessing whether acquiring a customer is economically worthwhile rather than merely generating revenue.",
+      "relationships": "Lifetime gross profit should exceed CAC; roughly three times CAC is the source's basic viability threshold. Gross profit, not revenue, is the value side of the comparison."
+    },
+    {
+      "name": "Customer acquisition cost",
+      "aliases": ["CAC", "cost to acquire a customer", "media CAC", "fully loaded CAC", "ad acquisition cost"],
+      "use_when": "Understanding how much it costs to acquire a customer or why lead flow changes with free and discounted offers.",
+      "relationships": "CAC is evaluated alongside gross profit and payback period. Fully loaded CAC includes acquisition labor and overhead, while media CAC covers advertising spend."
+    },
+    {
+      "name": "Gross profit",
+      "aliases": ["GP", "price minus cost of goods sold", "profit after fulfillment", "delivery-adjusted value", "gross margin"],
+      "use_when": "Revenue looks healthy but fulfillment or delivery costs may make acquisition unattractive.",
+      "relationships": "Gross profit equals price minus cost of goods sold. It determines how much CAC can be recovered and how quickly payback occurs; revenue alone cannot answer either question."
+    },
+    {
+      "name": "Payback period",
+      "aliases": ["CAC recovery time", "time to break even on acquisition", "cash payback", "months to recover CAC"],
+      "use_when": "A business may be profitable over a customer's life but lacks enough cash to fund continued growth.",
+      "relationships": "Payback depends on CAC, first-30-day gross profit, and recurring gross profit. Front-loaded fees, earlier upsells, prepayment, and recurring profit can shorten it."
+    },
+    {
+      "name": "Client-financed acquisition",
+      "aliases": ["CFA", "customers fund growth", "self-funded acquisition", "first-30-day acquisition economics"],
+      "use_when": "Determining whether new-customer gross profit can fund continued customer acquisition.",
+      "relationships": "Level 1 has lifetime gross profit above CAC, Level 2 has first-30-day gross profit above CAC, and Level 3 has first-30-day gross profit above twice CAC."
+    },
+    {
+      "name": "Money model and offer stack",
+      "aliases": ["money model stack", "offer sequence", "customer journey of offers", "how the offers fit together"],
+      "use_when": "Combining acquisition and monetization offers into a coherent customer journey.",
+      "relationships": "A money model is a sequence of offers designed to minimize CAC and maximize early gross profit. Use as few offers as needed and make the sequence feel natural rather than like a sales gauntlet."
+    },
+    {
+      "name": "Four offer functions",
+      "aliases": ["attraction upsell downsell continuity", "four offer types", "offer stack roles"],
+      "use_when": "Classifying what each part of a money model is supposed to accomplish.",
+      "relationships": "Attraction offers liquidate CAC, upsells maximize profit, downsells maximize conversion after a no, and continuity stabilizes recurring cash flow."
+    },
+    {
+      "name": "Attraction offers",
+      "aliases": ["front-end offer", "first-purchase offer", "customer acquisition offer", "lead-to-customer offer"],
+      "use_when": "The constraint is getting enough prospects to engage or buy for the first time at a viable CAC.",
+      "relationships": "Attraction offers sit at the start of the stack and aim to liquidate or exceed CAC. The specific mechanic should match the barrier to first purchase."
+    },
+    {
+      "name": "Win Your Money Back",
+      "aliases": ["goal-based refund", "results-based refund", "earn the fee back", "refund for completing a transformation"],
+      "use_when": "A transformation has a measurable outcome and accountability, risk reversal, or before-and-after proof is valuable.",
+      "relationships": "The customer pays upfront and earns a refund or credit by achieving the defined result. The resulting proof can be worth more than the refund."
+    },
+    {
+      "name": "Free Giveaways",
+      "aliases": ["grand-prize giveaway", "contest offer", "participation prize", "scholarship giveaway"],
+      "use_when": "A business needs a large lead pool and has a compelling signature prize or offer to showcase.",
+      "relationships": "Advertise a grand prize, then make a relevant participation offer to non-winners. Application questions can also qualify and segment leads."
+    },
+    {
+      "name": "Decoy Offers",
+      "aliases": ["advertise the stripped-down option", "starter offer leading to premium", "cheap option versus premium"],
+      "use_when": "A premium offer is difficult to advertise directly but becomes compelling once prospects can compare it with a deliberately limited option.",
+      "relationships": "The decoy starts the conversation; the premium offer is then presented side by side so the contrast makes its additional value clear."
+    },
+    {
+      "name": "Buy X Get Y Free",
+      "aliases": ["buy one get more free", "prepay and receive bonus months", "quantity or duration bundle"],
+      "use_when": "A recurring product or service can exchange a longer commitment or prepayment for free quantity or duration.",
+      "relationships": "It can have the same economics as a percentage discount but stronger presentation. Fulfillment cost, cash obligations, and the share of customers prepaid constrain safe use."
+    },
+    {
+      "name": "Pay Less Now or Pay More Later",
+      "aliases": ["zero down versus discounted upfront", "pay later after delivery", "timing-based price choice"],
+      "use_when": "A physical product or one-time service buyer hesitates at paying full price before receiving value.",
+      "relationships": "The buyer chooses between paying less upfront now or paying the full amount later after delivery, creating agency and risk reversal rather than an unexplained discount."
+    },
+    {
+      "name": "Free with Consumption",
+      "aliases": ["free education before the sale", "experience value before buying", "content-led trust building", "challenge or webinar before offer"],
+      "use_when": "A higher-ticket buyer needs education, trust, or belief change before being ready for the paid offer.",
+      "relationships": "Useful free consumption builds trust and breaks limiting beliefs; the amount of consumption generally rises with the price and complexity of the paid offer."
+    },
+    {
+      "name": "Upsell offers",
+      "aliases": ["next offer after the sale", "add-on", "increase profit per customer", "post-purchase offer"],
+      "use_when": "Customers buy, but gross profit per customer or first-30-day profit is too low.",
+      "relationships": "Upsells occur after the initial sale and maximize profit per customer. Timing them when the next problem or need appears can also shorten payback."
+    },
+    {
+      "name": "Classic Upsell",
+      "aliases": ["you cannot have X without Y", "essential complement", "next natural thing", "required accessory"],
+      "use_when": "The first purchase naturally requires a complementary product or service to deliver the desired result.",
+      "relationships": "The accompaniment should feel necessary for success rather than arbitrary. It follows the initial product as the obvious next purchase."
+    },
+    {
+      "name": "Menu Upsell",
+      "aliases": ["prescribed add-on menu", "consultative add-ons", "unsell prescribe preference card on file"],
+      "use_when": "Several add-ons can be prescribed during a consultation or other high-trust sales interaction.",
+      "relationships": "The four steps are unsell irrelevant choices, prescribe what fits, ask a preference question, and use the card already on file to remove closing friction."
+    },
+    {
+      "name": "Anchor Upsell",
+      "aliases": ["premium option first", "high-price anchor", "make the standard option feel inexpensive"],
+      "use_when": "A legitimate premium tier can establish value before presenting the standard offer.",
+      "relationships": "Present a premium option around five to ten times the normal price, then show the standard option with the important core value preserved."
+    },
+    {
+      "name": "Rollover Upsell",
+      "aliases": ["credit the prior purchase", "apply the first fee to a larger package", "trade up", "I owe you money offer"],
+      "use_when": "Moving a current, former, upset, or competitor's customer into a larger offer by crediting an earlier purchase.",
+      "relationships": "The prior payment becomes credit toward the next offer. The larger offer generally needs to be several times the credited amount for the economics to work."
+    },
+    {
+      "name": "Downsell offers",
+      "aliases": ["offer after a no", "lower-friction alternative", "save the sale", "conversion offer"],
+      "use_when": "A prospect rejects the main offer and a different structure could convert the no without destroying value.",
+      "relationships": "A downsell changes what the customer receives or when they pay; it should not simply reduce the price for the identical offer without receiving something in return."
+    },
+    {
+      "name": "Payment Plans",
+      "aliases": ["spread payments", "installments", "financing", "cannot afford it today"],
+      "use_when": "The buyer wants the full offer but cannot afford the entire price today.",
+      "relationships": "Payment plans spread the timing of the pain rather than reducing the offer's total value. They differ from feature downsells, which reduce what the buyer receives."
+    },
+    {
+      "name": "Free Trials or Trial with Penalty",
+      "aliases": ["free if requirements are met", "card-backed trial", "fees for non-use", "accountability trial"],
+      "use_when": "A recurring product requires customer participation and a structured last chance can overcome uncertainty after a no.",
+      "relationships": "The trial stays free when agreed consumption or action requirements are met; a card is collected upfront and fees apply to non-consumption."
+    },
+    {
+      "name": "Feature Downsells",
+      "aliases": ["reduced-scope offer", "remove features to lower price", "smaller package", "change quantity or service level"],
+      "use_when": "Price remains the objection and the business can legitimately remove quantity, quality, service, or guarantees.",
+      "relationships": "Lower price must be paired with lower value or a valuable barter such as advertising. Removing a valued feature can also cause the buyer to reselect the original offer."
+    },
+    {
+      "name": "Continuity offers",
+      "aliases": ["recurring revenue", "membership", "subscription", "maintenance plan", "retention offer"],
+      "use_when": "Customers buy once and leave, cash flow is unstable, or greater lifetime value and enterprise value are priorities.",
+      "relationships": "Continuity adds ongoing value and recurring gross profit. Lower churn raises lifetime value, and upfront value followed by a long tail can increase commitment."
+    },
+    {
+      "name": "Continuity Bonus Offers",
+      "aliases": ["subscription bonus", "join for the bonus", "membership gift", "bonus worth more than month one"],
+      "use_when": "A valuable bonus can make joining continuity feel more attractive than buying transactionally.",
+      "relationships": "Advertise the bonus rather than the subscription. The bonus should exceed the first month's perceived value and can be priced separately to clarify the continuity advantage."
+    },
+    {
+      "name": "Continuity Discount Offers",
+      "aliases": ["earn a lifetime discount", "retention milestone discount", "discount after the churn point", "commitment discount"],
+      "use_when": "Churn predictably rises at a particular time or the business wants to reward longer commitment.",
+      "relationships": "The discount can be front-loaded, back-loaded, spread, or delivered as credit. A promised lifetime discount after the usual churn point gives customers a reason to stay until then."
+    },
+    {
+      "name": "Waived Fee Offers",
+      "aliases": ["waived setup fee", "implementation fee waived for commitment", "cancellation activates the fee", "startup fee"],
+      "use_when": "A service or subscription needs stronger commitment without relying on a conventional long-term contract.",
+      "relationships": "A meaningful startup fee is waived while the customer remains committed but becomes due upon early cancellation, creating sunk-cost and commitment effects."
+    },
+    {
+      "name": "Build the money model one offer at a time",
+      "aliases": ["make your own money model", "what to add next", "simple scales fancy fails", "offer rollout order"],
+      "use_when": "Designing the whole stack or deciding which missing offer to implement next.",
+      "relationships": "Build attraction, upsell, downsell, and continuity deliberately, perfecting one before adding the next. Choose the next offer based on the observed constraint and use the fewest offers needed."
+    }
+  ]
+}
+
+codex
+The relevant corpus concept is a continuity incentive timed around the predictable churn point, not another acquisition offer. I’m searching that specific mechanism now and will cite only passages that directly support it.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business\"
+SEARCH_REQUEST='{\"intent\":\"recommendation_evidence\",\"user_turn\":\"Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?\",\"query\":\"Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay\"}'
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir \""'$CONTEXT_DIR" --search-request-json "$SEARCH_REQUEST" --top-k 5' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 869ms:
+{
+  "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
+  "retrieval_backend": "hybrid",
+  "vector_store": "local",
+  "namespace_policy": "unfiltered",
+  "namespace_prefix": "money-models",
+  "search_request": {
+    "intent": "recommendation_evidence",
+    "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
+    "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
+  },
+  "queries": [
+    {
+      "intent": "recommendation_evidence",
+      "subjects": [],
+      "target_namespaces": [],
+      "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "subject": null
+    }
+  ],
+  "source_material": [
+    {
+      "intent": "recommendation_evidence",
+      "subject": null,
+      "subjects": [],
+      "target_namespaces": [],
+      "queried_namespaces": [
+        null
+      ],
+      "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "chunks": [
+        {
+          "id": "continuity-discounts:10",
+          "chapter": "continuity-discounts",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 0.033,
+          "preview": ". Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot",
+          "text": ". Summary. So continuity discounts give continuity time for free if customers sign up today. Front-loaded discounts convert more customers, but they have higher churn. Back-loading discounts convert fewer customers, but they have lower churn. Spreading the discount keeps cash flow while providing the full discount, which is one of the reasons I like it a lot. Use gift cards to give the discount to new customers and allow them to gift it to a friend or use it on themselves at a later date. You get the full price sign-up and you get a referral or you get somebody that's gonna use it later. Both of those things are good. Allow customers to earn a lifetime discount on your month of greatest churn and let them know throughout the time as they get closer to it that that discount is around the corner. Light cancellation terms get more people to sign up, but more people leave. Higher cancellation terms get fewer sign-ups, but more people stay. I prefer to let people cancel and have to pay the difference between what they saved and what they would have paid. if they didn't get the discount if they cancel early. Make sure customers understand how to cancel and understand how to contact you. If a customer wants to cancel, ask for an exit interview. Incentivize them by saying that you will waive the cancellation fee, which gives them a real reason to do it, so that they can either choose fee or feedback. And the goal is to make more money, not give more stuff away. And that is how we structure this stuff. Kaboom. Continuity discount."
+        },
+        {
+          "id": "continuity-discounts:6",
+          "chapter": "continuity-discounts",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 0.033,
+          "preview": "and redeem it.\" Now you might be like, \"Alex.\" Well, deal with it. You can do whatever we want. Okay? And so the ne- that way they can also, if you wanna position to make it sound good, uh, they can gift it to a friend if they want. All right? That way it's like, \"Hey, gift it to a friend.\" And beyond that, many people simply forget to use it, and in that in",
+          "text": "and redeem it.\" Now you might be like, \"Alex.\" Well, deal with it. You can do whatever we want. Okay? And so the ne- that way they can also, if you wanna position to make it sound good, uh, they can gift it to a friend if they want. All right? That way it's like, \"Hey, gift it to a friend.\" And beyond that, many people simply forget to use it, and in that instance, you just get the full price sign-up. All right? So in the, quote, \"worst case scenario\" for the business owner, they get it, and then they redeem it after a certain period of time. So you still got payments and you made sure the card worked and they're a legit person. The second condition is they give it to somebody else, which is awesome. I'll absolutely accept their friend, which is now a free customer that I don't have to pay for, and I will give them that three months in some sort of aggressive way. I might spread it over, the term. I might use one of the other ways. Or they just don't use it, in which case we got the full, the full price sign-up. So you can use the discount that you want in the form of a gift card, which is basically the same as a rebate. So this is a fun one. So try lifetime discounts at your most common churn point. So you advertise a lifetime discount, but you make customers earn it. So they get a lower rate if they stay past Y or X period, and you make the Y or X period the month that the average customer drops off"
+        },
+        {
+          "id": "continuity-discounts:7",
+          "chapter": "continuity-discounts",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 0.031,
+          "preview": ". So first time I saw this was on Amazon. Um, they had a continuity for rice packets. I buy rice. And, uh, they had 5% off if you go on continuity, and 15% off if you stay past five months. And so this is the idea is that you want to... And it was five months to the same address. Like they were pretty particular about it. But you can get a lifetime discount,",
+          "text": ". So first time I saw this was on Amazon. Um, they had a continuity for rice packets. I buy rice. And, uh, they had 5% off if you go on continuity, and 15% off if you stay past five months. And so this is the idea is that you want to... And it was five months to the same address. Like they were pretty particular about it. But you can get a lifetime discount, and if they know, and I'm sure they did the math that they knew that people would stop paying at, call it the four-month point. And so they say, \"Okay, well, let's put a big nugget after the four-month point where they get a lifetime lower rate after that point.\" And so you can think through your own business the same way and hang the carrot, and you can also use this in the advertising. So let's say you know every customer stays four months on average. You tell everyone up front they get a lifetime discount after month four. So a lot of times people are willing to pay more up front if they know it's eventually going to go down. But this does two things. One is it gets people to buy at higher rates than they otherwise would, because they know it's gonna go down. And two, it gets them to stay longer because they know when it's going to go down. So as the time approaches, tell them the newer lower rate is right around the corner. This is key. So if you do know that it's at month four, month five or whatever that they're gonna start getting a lower rate, at month two, at month three, be like, \"Hey, two months left. Hey, one month left.\" Remind them the fact that they're earning that discount soon, and it, it'll basically continue to incentivize them to stay and pay. Okay. So I said you have to have two things. One is knowing how you're going to apply the free time or the discount, and the second was cancellations. So there's four ways that I like to approach cancellations. So if someone cancels during a trial, so you can say you're allowed to cancel during the trial. Now if you do that, it'll increase sales, 'cause then people will be like, \"Okay, well, this is easy. This is no risk.\" But, uh, you'll decrease stick rate, meaning the number of people who will stay on the back end. The other version of this is that you can have zero cancellations and say there are no cancellations allowed, which works with good customers, but it will decrease sales and increase stick. Sometimes though, I mean, for example, Netflix and some of these other massive companies, they don't even try that, because they have customers that are unenforceable. And so if you're gonna have zero cancellations, make sure it's with good customers. If you do zero cancellation policy on bad customers, you will decrease sales, but you will not increase stick. So you'll just get the cost but not the benefit. Another way of doing this is a prorated fee based on savings accrued. That just sounds like fancy terms, but basically if they cancel, uh, you know, at month six and got two months free, you just bill them the difference of what they saved over that six months. And this one is probably the simplest way of doing it, which is you just have a one-time breakup fee. So you have an outlaw- out clause. It increases stick, it increases sales, and you get money on the way out, and you can also use it as a negotiating chip to figure out something else. I like this one because it's the easiest to explain. It's very simple. And I like the negotiating chip personally. So the way this would look would"
+        },
+        {
+          "id": "continuity-discounts:2",
+          "chapter": "continuity-discounts",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 0.03,
+          "preview": ". Second, your cancellation policy, because a lot of people don't always keep their commitments. So let me give you some examples. So this is the first way that you can do a continuity discount. So upfront, you can apply the discount upfront and push out the term, as in the official time starts after the free time ends. So in the story that I gave, he gave a",
+          "text": ". Second, your cancellation policy, because a lot of people don't always keep their commitments. So let me give you some examples. So this is the first way that you can do a continuity discount. So upfront, you can apply the discount upfront and push out the term, as in the official time starts after the free time ends. So in the story that I gave, he gave a year for free and then he had five years on the back. So he basically gave 20% away. Here, three months free, 12 months on the back. Now, this works best in industries that have successful histories of reinforcing contracts. So cell phone carriers can do that because they'll cut off your cell phone stuff. Storage works well with this because they'll... they have your stuff. Real estate works well because they'll kick you out. Cars work well 'cause they can take your car back, right? Anything that has collateral tends to work really well with this type of model, which is why a lot of them do it. All right? Now, if you have historically high churn, then skip this one 'cause it means that you don't have a lot of enforcement and this is probably not the best way to do it. Now, this does not get customers profitably, all right? So he lost a bunch of money for the first year, and then he made a bunch afterwards, but it does get customers, it delays cash. So if you want more profitable options, continue on down our list. A fun note here is that instead of giving time away for free, you can also give it away at a discount, right? So that you can protect the upfront cash flow. So that same concept of I'll give you one year free, he could then say, \"I will spread it over five years and decrease it,\" the same way as we did with the rollover credit, just applied as a front-end offer. Also, I'll give you a pro tip on this, this guy. So if you are gonna do an upfront deal, let's say that you say, \"When you sign up for a year-long commitment, I'll give you three months free,\" make sure that you get 12 months on the back, you don't make this three plus nine. So I see that a lot of times people mess that up. So you're gonna massively decrease your contract by basically... You're saying you're, you're, you're overcoming the hardness of a one-year sale, but you're not getting the full one-year sale in the back. So you wanna get the three, so this is technically a 15-month agreement. The first month, first three are free, next 12 are paid. What people mess up is they do three months and then nine, so they have a one-year agreement. So little pro tip. So the second one is at the end. I love this one. So you can apply the entire discount at the end and you push out the term, so long as they make the payments on time. And I love this 'cause it also encourages adherence to payment schedules, and they get a bonus time equal to the value of the discount. So here we say, \"Great, I'll give you three months free after you sign up for the year and you pay for the whole year.\" So I'll give you your three months for free, but you have to pay all 12 on time. So I can still attract customers saying, \"Three free months when you sign up for a year,\" and I just say, \"Great, you get it at the end.\" I explain the terms. They earn their free time, which is why I like this so much and it encourages good behavior. The third way you can do this is you can spread it over time. All right?"
+        },
+        {
+          "id": "continuity-offers:5",
+          "chapter": "continuity-offers",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 0.029,
+          "preview": "releases that were released every single month. That's something that's consumed every single month 'cause it's new. If we had new ads that we were going to test and run to make sure they were winners, then every month you're like, \"Well, I want the new ads.\" So those are things that are consumable. So it makes sense to price the payment plan or the continui",
+          "text": "releases that were released every single month. That's something that's consumed every single month 'cause it's new. If we had new ads that we were going to test and run to make sure they were winners, then every month you're like, \"Well, I want the new ads.\" So those are things that are consumable. So it makes sense to price the payment plan or the continuity based on the value of those consumables, not the blended value of the one-time thing and the consumable, because that blended value would be much higher and would have a much higher likelihood of churn. And so this is how I would prefer to fix most education businesses. There's nothing wrong, like they often have high churn simply 'cause they're mispriced. They kind of try to price in the middle when really you should price way high upfront and lower over time, or alternatively just charge annual. And then that way you're just basically looking back into the future and saying, \"Hey, if a year from now you can do all these things, would that be valuable?\" Yes. And then you have a whole year to figure out what the next big thing you're gonna have. It basically buys you more time to figure out what the next offer you're gonna have. that the first offer you did solved. So if I taught you how to sell, well, then maybe you wanna have, learn how to market. If I taught you how to sell, maybe you wanna learn how to onboard. There's gonna still be the same offer solution cycle that exists, and you can still include that within the continuity that you have. So real world offer. So let's say you have $5,000 down, 200 bucks a month. This also, the big head, long tail, helps with client find us acquisition. Because you have this big upfront payment, you can offset the cost to acquire customers, offset your sales commissions, and then you get the continuity. And the nice thing here is the cancellation rate is very, very low because of sunk cost fallacy. People don't wanna lose money they put down. So it's very unlikely someone puts $5,000 down and then cancels month two. Enterprise value is based on a discount applied to future cash flows, which really comes down to how much money and how likely is it to occur. And so for you to have a very big business, you want lots of money that's gonna have in the future that's very likely. That gives you a big multiple on the value of your business. If you have very little money and it's very unlikely to occur, then it's a small multiple or none at all. So this features into how likely will we retain customer, retain customers, retain revenue, and have that increase over time? This is where continuity becomes more valuable. This is, again, this is not in the book. So this is me giving you bonus stuff. Um, there's a difference. between recurring and reoccurring revenue. So Netflix is recurring. Think memberships. Coca-Cola is reoccurring. I am a Coca-Cola product buyer. I buy lots of their drinks and I do that on a regular basis, but I don't have a fixed membership, but I reoccur. Both are great"
+        }
+      ]
+    }
+  ]
+}
+
+codex
+I found direct support for the mechanism: make the customer earn a better ongoing continuity deal at the month where churn normally happens, then remind them as they approach it. I’m recording the turn now with the search backend and cited chunks preserved.
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/turn-record.json
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e9ac4dd82e8ae78cd2ed5ae7c1531bed0720f14
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
++    },
++    {
++      "operation": "search_source_material",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "top_k": 5
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "executed_query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
++      "inspected_chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e9ac4dd82e8ae78cd2ed5ae7c1531bed0720f14
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
++    },
++    {
++      "operation": "search_source_material",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "top_k": 5
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "executed_query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
++      "inspected_chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ exited 1 in 0ms:
+record-json requires non-empty string list field: actions
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e9ac4dd82e8ae78cd2ed5ae7c1531bed0720f14
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
++    },
++    {
++      "operation": "search_source_material",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "top_k": 5
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "executed_query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
++      "inspected_chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+codex
+The first record failed validation because this CLI expects a narrower trace shape for `actions`. I’m checking the local schema/tests and will re-record in the accepted format without changing the substance of the answer.
+exec
+/bin/zsh -lc "rg -n '\"actions\"|source_events|cited_chunk_ids' -g '*.json' -g '*.md' ." in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+exec
+/bin/zsh -lc "rg -n \"record-json|source_events|cited_chunk_ids|requires non-empty string list field|actions\" src tests -g '*.py'" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+./turn-record.json:4:  "actions": [
+./turn-record.json:16:  "source_events": [
+./turn-record.json:49:  "cited_chunk_ids": [
+
+ exited 2 in 0ms:
+rg: tests: No such file or directory (os error 2)
+src/money_model_architect/cli.py:145:    session_finish.add_argument("--record-json", required=True, help="JSON object or path to a completed turn record")
+src/money_model_architect/cli.py:153:    record.add_argument("--actions-json", default="[]", help="JSON array or path to JSON file")
+src/money_model_architect/cli.py:365:                "Include every CLI-backed action in the record actions list.",
+src/money_model_architect/cli.py:366:                "Include one source_events entry per source-material search.",
+src/money_model_architect/cli.py:392:        record = _expect_json_type(_read_json_value(args.record_json), dict, "record-json")
+src/money_model_architect/cli.py:401:                "actions": normalized["actions"],
+src/money_model_architect/cli.py:402:                "source_events": normalized["source_events"],
+src/money_model_architect/cli.py:404:                "cited_chunk_ids": normalized["cited_chunk_ids"],
+src/money_model_architect/cli.py:416:                    "source_event_count": len(normalized["source_events"]),
+src/money_model_architect/cli.py:418:                    "cited_chunk_ids": normalized["cited_chunk_ids"],
+src/money_model_architect/cli.py:429:        actions = _expect_json_type(_read_json_value(args.actions_json), list, "actions-json")
+src/money_model_architect/cli.py:430:        source_events = _expect_json_type(_read_json_value(args.source_events_json), list, "source-events-json")
+src/money_model_architect/cli.py:431:        cited_chunk_ids = _expect_json_type(_read_json_value(args.cited_chunk_ids_json), list, "cited-chunk-ids-json")
+src/money_model_architect/cli.py:440:                "actions": actions,
+src/money_model_architect/cli.py:441:                "source_events": source_events,
+src/money_model_architect/cli.py:442:                "cited_chunk_ids": cited_chunk_ids,
+src/money_model_architect/cli.py:453:                    "source_event_count": len(source_events),
+src/money_model_architect/cli.py:454:                    "cited_chunk_ids": cited_chunk_ids,
+src/money_model_architect/cli.py:559:    actions = _required_string_list(record, "actions")
+src/money_model_architect/cli.py:560:    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+src/money_model_architect/cli.py:561:    if invalid_actions:
+src/money_model_architect/cli.py:562:        raise SystemExit(f"record-json actions contain unknown label(s): {', '.join(invalid_actions)}")
+src/money_model_architect/cli.py:564:    source_events = record.get("source_events", [])
+src/money_model_architect/cli.py:565:    if not isinstance(source_events, list):
+src/money_model_architect/cli.py:566:        raise SystemExit("record-json source_events must be a list when supplied")
+src/money_model_architect/cli.py:567:    normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
+src/money_model_architect/cli.py:571:        raise SystemExit("record-json calculation_events must be a list when supplied")
+src/money_model_architect/cli.py:575:    if "calculate" in actions and not normalized_calculation_events:
+src/money_model_architect/cli.py:576:        raise SystemExit("record-json actions include calculate, so calculation_events must contain at least one event")
+src/money_model_architect/cli.py:578:    cited_chunk_ids = record.get("cited_chunk_ids", [])
+src/money_model_architect/cli.py:579:    if not isinstance(cited_chunk_ids, list) or not all(isinstance(chunk_id, str) for chunk_id in cited_chunk_ids):
+src/money_model_architect/cli.py:580:        raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
+src/money_model_architect/cli.py:581:    cited_chunk_ids = _dedupe_strings(cited_chunk_ids)
+src/money_model_architect/cli.py:585:        raise SystemExit("record-json metadata must be an object when supplied")
+src/money_model_architect/cli.py:587:    warnings = _session_finish_warnings(normalized_events, cited_chunk_ids, metadata)
+src/money_model_architect/cli.py:592:            "actions": actions,
+src/money_model_architect/cli.py:593:            "source_events": normalized_events,
+src/money_model_architect/cli.py:595:            "cited_chunk_ids": cited_chunk_ids,
+src/money_model_architect/cli.py:605:        raise SystemExit(f"record-json requires non-empty string field: {field_name}")
+src/money_model_architect/cli.py:612:        raise SystemExit(f"record-json requires non-empty string list field: {field_name}")
+src/money_model_architect/cli.py:618:        raise SystemExit(f"record-json source_events[{index}] must be an object")
+src/money_model_architect/cli.py:622:        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+src/money_model_architect/cli.py:623:    request_label = f"record-json source_events[{index}].search_request"
+src/money_model_architect/cli.py:630:        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+src/money_model_architect/cli.py:631:    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+src/money_model_architect/cli.py:635:        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+src/money_model_architect/cli.py:638:            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+src/money_model_architect/cli.py:640:            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+src/money_model_architect/cli.py:654:        raise SystemExit(f"record-json calculation_events[{index}] must be an object")
+src/money_model_architect/cli.py:659:            f"record-json calculation_events[{index}].metric must be one of: {', '.join(sorted(valid_metrics))}"
+src/money_model_architect/cli.py:663:        raise SystemExit(f"record-json calculation_events[{index}].inputs must be a non-empty object")
+src/money_model_architect/cli.py:665:        raise SystemExit(f"record-json calculation_events[{index}].inputs keys must be non-empty strings")
+src/money_model_architect/cli.py:668:        raise SystemExit(f"record-json calculation_events[{index}].value must be a number")
+src/money_model_architect/cli.py:672:        raise SystemExit(f"record-json calculation_events[{index}] has invalid inputs for {metric}: {exc}") from exc
+src/money_model_architect/cli.py:674:        raise SystemExit(f"record-json calculation_events[{index}] result for {metric} is not finite")
+src/money_model_architect/cli.py:677:            f"record-json calculation_events[{index}].value does not match deterministic {metric} result: "
+src/money_model_architect/cli.py:754:def _session_finish_warnings(source_events: list[dict[str, Any]], cited_chunk_ids: list[str], metadata: dict[str, Any]) -> list[str]:
+src/money_model_architect/cli.py:756:    event_chunk_ids = _source_event_chunk_ids(source_events)
+src/money_model_architect/cli.py:757:    external_citations = metadata.get("external_cited_chunk_ids", [])
+src/money_model_architect/cli.py:761:        raise SystemExit("record-json metadata.external_cited_chunk_ids must be a list of strings when supplied")
+src/money_model_architect/cli.py:763:    missing = [chunk_id for chunk_id in cited_chunk_ids if chunk_id not in event_chunk_ids and chunk_id not in allowed_external]
+src/money_model_architect/cli.py:765:        raise SystemExit("record-json cited_chunk_ids not found in source_events chunks: " + ", ".join(missing))
+src/money_model_architect/cli.py:766:    if event_chunk_ids and not cited_chunk_ids:
+src/money_model_architect/cli.py:767:        warnings.append("source_events include inspected chunks but cited_chunk_ids is empty")
+src/money_model_architect/cli.py:771:def _source_event_chunk_ids(source_events: list[dict[str, Any]]) -> set[str]:
+src/money_model_architect/cli.py:773:    for event in source_events:
+src/money_model_architect/cli.py:962:        "actions": summary["actions"],
+src/money_model_architect/cli.py:963:        "source_event_count": len(summary["source_events"]),
+src/money_model_architect/cli.py:1029:    source_events = payload.get("source_events", [])
+src/money_model_architect/cli.py:1036:    for chunk_id in payload.get("cited_chunk_ids", []):
+src/money_model_architect/cli.py:1039:    for item in source_events:
+src/money_model_architect/cli.py:1049:        "actions": payload.get("actions", []),
+src/money_model_architect/cli.py:1051:        "source_events": source_events,
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e9ac4dd82e8ae78cd2ed5ae7c1531bed0720f14
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
++    },
++    {
++      "operation": "search_source_material",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "top_k": 5
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "executed_query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
++      "inspected_chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+exec
+/bin/zsh -lc "sed -n '520,650p' src/money_model_architect/cli.py
+sed -n '650,790p' src/money_model_architect/cli.py
+rg -n \"ACTION_LABELS\" src/money_model_architect/cli.py" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+        service_business = _snapshot_payload_looks_service_based(business, money_model)
+    else:
+        economics = payload
+        service_business = bool(economics.get("service_business", False))
+
+    cac_value = economics.get("cac")
+    if cac_value is None:
+        raise SystemExit("diagnose requires economics.cac")
+
+    return UnitEconomics(
+        cac=cac_value,
+        first_30_day_gross_profit=economics.get("first_30_day_gross_profit") or 0.0,
+        monthly_recurring_gross_profit=economics.get("monthly_recurring_gross_profit") or 0.0,
+        lifetime_gross_profit=economics.get("lifetime_gross_profit"),
+        gross_margin=economics.get("gross_margin"),
+        service_business=service_business,
+    )
+
+
+def _snapshot_payload_looks_service_based(business: Any, money_model: Any) -> bool:
+    text_parts: list[str] = []
+    if isinstance(business, dict):
+        for field_name in ("business_type", "delivery_model"):
+            value = business.get(field_name)
+            if isinstance(value, str):
+                text_parts.append(value)
+    if isinstance(money_model, dict):
+        core_offer = money_model.get("core_offer", {})
+        if isinstance(core_offer, dict):
+            description = core_offer.get("description")
+            if isinstance(description, str):
+                text_parts.append(description)
+    text = " ".join(text_parts).lower()
+    return any(term in text for term in ("service", "services", "consulting", "agency", "design", "implementation"))
+
+
+def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    user_message = _required_string(record, "user_message")
+    assistant_message = _required_string(record, "assistant_message")
+    actions = _required_string_list(record, "actions")
+    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+    if invalid_actions:
+        raise SystemExit(f"record-json actions contain unknown label(s): {', '.join(invalid_actions)}")
+
+    source_events = record.get("source_events", [])
+    if not isinstance(source_events, list):
+        raise SystemExit("record-json source_events must be a list when supplied")
+    normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
+
+    calculation_events = record.get("calculation_events", [])
+    if not isinstance(calculation_events, list):
+        raise SystemExit("record-json calculation_events must be a list when supplied")
+    normalized_calculation_events = [
+        _normalize_calculation_event(event, index) for index, event in enumerate(calculation_events, start=1)
+    ]
+    if "calculate" in actions and not normalized_calculation_events:
+        raise SystemExit("record-json actions include calculate, so calculation_events must contain at least one event")
+
+    cited_chunk_ids = record.get("cited_chunk_ids", [])
+    if not isinstance(cited_chunk_ids, list) or not all(isinstance(chunk_id, str) for chunk_id in cited_chunk_ids):
+        raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
+    cited_chunk_ids = _dedupe_strings(cited_chunk_ids)
+
+    metadata = record.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise SystemExit("record-json metadata must be an object when supplied")
+
+    warnings = _session_finish_warnings(normalized_events, cited_chunk_ids, metadata)
+    return (
+        {
+            "user_message": user_message,
+            "assistant_message": assistant_message,
+            "actions": actions,
+            "source_events": normalized_events,
+            "calculation_events": normalized_calculation_events,
+            "cited_chunk_ids": cited_chunk_ids,
+            "metadata": metadata,
+        },
+        warnings,
+    )
+
+
+def _required_string(record: dict[str, Any], field_name: str) -> str:
+    value = record.get(field_name)
+    if not isinstance(value, str) or not value.strip():
+        raise SystemExit(f"record-json requires non-empty string field: {field_name}")
+    return value
+
+
+def _required_string_list(record: dict[str, Any], field_name: str) -> list[str]:
+    value = record.get(field_name)
+    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item.strip() for item in value):
+        raise SystemExit(f"record-json requires non-empty string list field: {field_name}")
+    return value
+
+
+def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json source_events[{index}] must be an object")
+    uses_current_contract = "search_request" in event
+    search_request = event.get("search_request", event.get("source_need"))
+    if not isinstance(search_request, dict):
+        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+    request_label = f"record-json source_events[{index}].search_request"
+    _validate_search_request_payload(search_request, request_label)
+
+    queries = event.get("queries")
+    if queries is None and isinstance(event.get("query"), str):
+        queries = [event["query"]]
+    if not isinstance(queries, list) or not queries or not all(isinstance(query, str) and query.strip() for query in queries):
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+
+    chunks = event.get("chunks")
+    if not isinstance(chunks, list) or not chunks:
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+    for chunk_index, chunk in enumerate(chunks, start=1):
+        if not isinstance(chunk, dict):
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+        if not isinstance(chunk.get("id"), str) or not chunk["id"].strip():
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+
+    normalized = dict(event)
+    if uses_current_contract:
+        normalized.pop("source_need", None)
+        normalized["search_request"] = search_request
+    normalized["queries"] = queries
+    normalized["query"] = queries[0]
+    normalized["chunks"] = chunks
+    return normalized
+
+
+
+def _normalize_calculation_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json calculation_events[{index}] must be an object")
+    metric = event.get("metric")
+    valid_metrics = {"cac", "gross-profit", "gross-margin", "ltgp", "payback", "cfa-level"}
+    if not isinstance(metric, str) or metric not in valid_metrics:
+        raise SystemExit(
+            f"record-json calculation_events[{index}].metric must be one of: {', '.join(sorted(valid_metrics))}"
+        )
+    inputs = event.get("inputs")
+    if not isinstance(inputs, dict) or not inputs:
+        raise SystemExit(f"record-json calculation_events[{index}].inputs must be a non-empty object")
+    if not all(isinstance(key, str) and key.strip() for key in inputs):
+        raise SystemExit(f"record-json calculation_events[{index}].inputs keys must be non-empty strings")
+    value = event.get("value")
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        raise SystemExit(f"record-json calculation_events[{index}].value must be a number")
+    try:
+        expected = calculate_metric(metric, inputs)
+    except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+        raise SystemExit(f"record-json calculation_events[{index}] has invalid inputs for {metric}: {exc}") from exc
+    if not math.isfinite(float(expected)):
+        raise SystemExit(f"record-json calculation_events[{index}] result for {metric} is not finite")
+    if not math.isclose(float(value), float(expected), rel_tol=1e-9, abs_tol=1e-9):
+        raise SystemExit(
+            f"record-json calculation_events[{index}].value does not match deterministic {metric} result: "
+            f"expected {expected}, got {value}"
+        )
+    normalized = dict(event)
+    normalized["metric"] = metric
+    normalized["inputs"] = inputs
+    normalized["value"] = value
+    return normalized
+
+
+def _validate_search_request_payload(search_request: dict[str, Any], label: str) -> None:
+    intent = search_request.get("intent")
+    if intent not in SOURCE_NEED_INTENTS:
+        raise SystemExit(f"{label}.intent must be one of: {', '.join(sorted(SOURCE_NEED_INTENTS))}")
+    query = search_request.get("query")
+    if query is not None:
+        if not isinstance(query, str) or not query.strip() or "\n" in query or "\r" in query or len(query.strip()) > 400:
+            raise SystemExit(f"{label}.query must be one non-empty line of at most 400 characters")
+        user_turn = search_request.get("user_turn")
+        if not isinstance(user_turn, str) or not user_turn.strip():
+            raise SystemExit(f"{label}.user_turn must be a non-empty string")
+        legacy_fields = [
+            field
+            for field in ("subjects", "focus_terms", "query_variants", "target_namespaces")
+            if field in search_request
+        ]
+        if legacy_fields:
+            raise SystemExit(f"{label} active query cannot include legacy fields: {', '.join(legacy_fields)}")
+        return
+
+    # Compatibility validation for preserved source-need traces and evals.
+    subjects = search_request.get("subjects")
+    if not isinstance(subjects, list) or not subjects or not all(isinstance(subject, str) for subject in subjects):
+        raise SystemExit(f"{label}.subjects must be a non-empty list of strings")
+    invalid_subjects = [subject for subject in subjects if subject not in SUBJECTS]
+    if invalid_subjects:
+        raise SystemExit(f"{label}.subjects contain unknown subject(s): {', '.join(invalid_subjects)}")
+    target_namespaces = search_request.get("target_namespaces", [])
+    if (
+        not isinstance(target_namespaces, list)
+        or not all(isinstance(namespace, str) and namespace.strip() for namespace in target_namespaces)
+    ):
+        raise SystemExit(f"{label}.target_namespaces must be a list of strings when supplied")
+    invalid_namespaces = [namespace for namespace in target_namespaces if namespace not in SUBJECTS]
+    if invalid_namespaces:
+        raise SystemExit(f"{label}.target_namespaces contain unknown namespace(s): {', '.join(invalid_namespaces)}")
+    focus_terms = search_request.get("focus_terms")
+    if not isinstance(focus_terms, list) or not focus_terms or not all(isinstance(term, str) and term.strip() for term in focus_terms):
+        raise SystemExit(f"{label}.focus_terms must be a non-empty list of strings")
+    query_variants = search_request.get("query_variants")
+    if (
+        not isinstance(query_variants, list)
+        or not 2 <= len(query_variants) <= 4
+        or not all(isinstance(query, str) and query.strip() for query in query_variants)
+    ):
+        raise SystemExit(f"{label}.query_variants must contain 2-4 non-empty agent-generated query strings")
+
+
+def _validate_requested_queries_executed(search_request: dict[str, Any], queries: list[str], label: str) -> None:
+    query = search_request.get("query")
+    if isinstance(query, str):
+        if len(queries) != 1 or _normalize_query_text(queries[0]) != _normalize_query_text(query):
+            raise SystemExit(f"{label}.queries must contain exactly the search_request.query")
+        return
+    query_variants = search_request.get("query_variants")
+    if not isinstance(query_variants, list):
+        return
+    executed = {_normalize_query_text(query) for query in queries}
+    missing = [variant for variant in query_variants if _normalize_query_text(variant) not in executed]
+    if missing:
+        raise SystemExit(f"{label}.queries must include every source_need.query_variants entry")
+
+
+def _normalize_query_text(value: str) -> str:
+    return " ".join(value.split()).lower()
+
+
+def _session_finish_warnings(source_events: list[dict[str, Any]], cited_chunk_ids: list[str], metadata: dict[str, Any]) -> list[str]:
+    warnings = []
+    event_chunk_ids = _source_event_chunk_ids(source_events)
+    external_citations = metadata.get("external_cited_chunk_ids", [])
+    if external_citations is None:
+        external_citations = []
+    if not isinstance(external_citations, list) or not all(isinstance(chunk_id, str) for chunk_id in external_citations):
+        raise SystemExit("record-json metadata.external_cited_chunk_ids must be a list of strings when supplied")
+    allowed_external = set(external_citations)
+    missing = [chunk_id for chunk_id in cited_chunk_ids if chunk_id not in event_chunk_ids and chunk_id not in allowed_external]
+    if missing:
+        raise SystemExit("record-json cited_chunk_ids not found in source_events chunks: " + ", ".join(missing))
+    if event_chunk_ids and not cited_chunk_ids:
+        warnings.append("source_events include inspected chunks but cited_chunk_ids is empty")
+    return warnings
+
+
+def _source_event_chunk_ids(source_events: list[dict[str, Any]]) -> set[str]:
+    chunk_ids: set[str] = set()
+    for event in source_events:
+        for chunk in event.get("chunks", []):
+            chunk_id = chunk.get("id")
+            if isinstance(chunk_id, str):
+                chunk_ids.add(chunk_id)
+    return chunk_ids
+
+
+def _dedupe_strings(values: list[str]) -> list[str]:
+    deduped = []
+    seen = set()
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        deduped.append(value)
+    return deduped
+
+29:ACTION_LABELS = {
+560:    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e9ac4dd82e8ae78cd2ed5ae7c1531bed0720f14
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
++    },
++    {
++      "operation": "search_source_material",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "top_k": 5
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "executed_query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
++      "inspected_chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+exec
+/bin/zsh -lc "sed -n '1,50p' src/money_model_architect/cli.py" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+"""Command-line entry point for the local proof harness."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+from typing import Any
+
+from .advisor_queries import SearchRequest, build_advisor_queries
+from .advisor_retrieval import RETRIEVAL_BACKENDS, VECTOR_STORES, execute_advisor_queries
+from .business_context import advisor_paths, ensure_advisor_state, utc_now
+from .calculator import (
+    UnitEconomics,
+    calculate_metric,
+    gross_margin,
+)
+from .diagnose import diagnose
+from .embeddings import OpenAIEmbeddingClient
+from .retrieval import CHUNKING_STRATEGIES, DEFAULT_CHUNKING_STRATEGY, CorpusIndex
+from .setup_intake import load_answers, run_setup
+from .snapshot import BusinessSnapshot
+from .vector_store import PineconeVectorStore, VectorStoreError, subject_namespaces
+
+SUBJECTS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
+ACTION_LABELS = {
+    "setup_state",
+    "session_start",
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "logs",
+    "answer",
+    "turn_record",
+    "session_finish",
+    "inspect_local_docs",
+    "clarify",
+}
+SOURCE_NEED_INTENTS = {
+    "teaching_evidence",
+    "diagnostic_evidence",
+    "comparison_evidence",
+    "recommendation_evidence",
+}
+
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e9ac4dd82e8ae78cd2ed5ae7c1531bed0720f14
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,56 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
++    },
++    {
++      "operation": "search_source_material",
++      "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business",
++      "top_k": 5
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "executed_query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay",
++      "inspected_chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+codex
+The schema is clear now: `actions` must be action labels, and source events need `queries` plus `chunks`. I’m updating only the trace JSON and then finishing the session.
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/turn-record.json
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..35bb93d979c62cda65ba7a1944c75484f5ba673b
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "queries": [
++        "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      ],
++      "chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..35bb93d979c62cda65ba7a1944c75484f5ba673b
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "queries": [
++        "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      ],
++      "chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime
+ succeeded in 0ms:
+{
+  "recorded": true,
+  "session_path": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-gcqrgxvh/runtime/business/.money-model-advisor/sessions/20260816T180535.json",
+  "created_at": "2026-08-16T18:05:35Z",
+  "warnings": [],
+  "source_event_count": 1,
+  "calculation_event_count": 0,
+  "cited_chunk_ids": [
+    "continuity-discounts:6",
+    "continuity-discounts:7"
+  ]
+}
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..35bb93d979c62cda65ba7a1944c75484f5ba673b
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "queries": [
++        "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      ],
++      "chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+codex
+Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.
+
+For your SaaS, I’d frame it as: “Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.” The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer `[continuity-discounts:6]` `[continuity-discounts:7]`.
+
+I would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not “month four is cheaper”; it is “month four is when you graduate into the long-term operating plan.”
+
+One caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..35bb93d979c62cda65ba7a1944c75484f5ba673b
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,51 @@
++{
++  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++  "assistant_message": "Yes. I’d use a Continuity Discount Offer: make month four the point where they earn a better ongoing deal, rather than trying to rescue them after they already want to cancel.\n\nFor your SaaS, I’d frame it as: \"Stay through your fourth paid month and unlock your preferred-retailer rate for as long as your account remains active.\" The Money Models point is to put the reward just after the known churn point and tell customers up front that it is coming; the source specifically describes using a lifetime discount at the most common churn point and reminding customers as they get closer [continuity-discounts:6] [continuity-discounts:7].\n\nI would keep it tied to behavior, not just time. For example: complete onboarding, connect all locations, attend the month-three planning review, and stay active through month four. Then they unlock a lower monthly rate, monthly account credit, or added success/analytics support. The clean version is probably not \"month four is cheaper\"; it is \"month four is when you graduate into the long-term operating plan.\"\n\nOne caution: do not use this to hide a value problem. If customers leave because they still have not seen inventory improvements by month three, pair the discount with a month-three success milestone and review. The discount gives them a reason to stay; the milestone gives them a reason to believe staying is rational.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?",
++        "query": "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      },
++      "queries": [
++        "Continuity Discount Offers predictable churn point promised lifetime discount after usual churn point reason to stay"
++      ],
++      "chunks": [
++        {
++          "id": "continuity-discounts:10",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:6",
++          "score": 0.033
++        },
++        {
++          "id": "continuity-discounts:7",
++          "score": 0.031
++        },
++        {
++          "id": "continuity-discounts:2",
++          "score": 0.03
++        },
++        {
++          "id": "continuity-offers:5",
++          "score": 0.029
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "continuity-discounts:6",
++    "continuity-discounts:7"
++  ],
++  "metadata": {
++    "corpus_guide_version": "money-models-corpus-guide.v1"
++  }
++}
+
+tokens used
+33,278

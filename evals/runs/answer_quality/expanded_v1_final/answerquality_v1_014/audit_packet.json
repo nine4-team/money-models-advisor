@@ -1,0 +1,220 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "session_finish"
+  ],
+  "answer_category": "source_grounded",
+  "answer_sha256": "e306f9437600eb9655b10f543f5f2e1c9dbd1d23a55dc429aa55a59841f93598",
+  "assistant_message": "Yes. I would treat that as a downsell, not a discount.\n\nThe clean move is: keep the full routine at $160, then offer the existing two-product essentials kit at $55 as the lower-scope option. That fits the Money Models rule for a feature downsell: lower the price by changing what the customer gets, not by giving the same offer for less [feature-downsells:2]. A downsell works because the customer can see value was removed, so the lower price feels logical instead of training them to wait for discounts [downsells:1].\n\nI would script it like this: \"Totally fair. The full five-product routine is the complete version. If you want to start smaller, we can remove the optional products and begin with the two-product essentials kit for $55. You can always add the rest once your skin has adjusted.\"\n\nDo not frame it as \"I can take money off.\" Frame it as \"we can start with less.\" If they still want every product but only object to paying today, that is a payment-timing problem, not a scope problem; then I would test a payment plan or subscription path instead [feature-downsells:10].",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": 48,
+      "first_30_day_gross_profit": 32,
+      "gross_margin": 0.62,
+      "lifetime_gross_profit": 210,
+      "monthly_recurring_gross_profit": 28,
+      "payback_period_months": 1.5714285714285714
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly",
+        "shipping and product costs consume a meaningful share of revenue"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_014",
+  "cited_chunk_ids": [
+    "feature-downsells:2",
+    "downsells:1",
+    "feature-downsells:10"
+  ],
+  "evidence_passages": [
+    {
+      "chapter": "feature-downsells",
+      "id": "feature-downsells:2",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "## [\u00a75.4.b] Description \u2014 lower price by changing what the customer gets\n\nSo here's the 00:01:16.019 --> 00:01:22.019 description. So feature downsells lower prices by changing what the customers get. So here, we're actually lowering prices. The, all 00:01:22.079 --> 00:01:24.099 the other examples were changing terms. Here, we 00:01:24.119 --> 00:01:26.019 lower prices. And I do them by 00:01:26.099 --> 00:01:28.019 offering less quantity, less 00:01:28.079 --> 00:01:31.139 quality, lower price alternatives, or cutting optional 00:01:31.179 --> 00:01:36.159 components. So all features have a price and a value. This is where it gets really, really slick. 00:01:36.719 --> 00:01:39.099 If you remove something, the price goes down, 00:01:39.339 --> 00:01:45.159 sure, but the value goes down too. So what features you remove and how much you lower the price affects 00:01:45.179 --> 00:01:51.739 how good of a deal the person gets. So this changes in your offer's price to value affects how people 00:01:51.779 --> 00:01:54.219 buy. So people wanna get the best deal 00:01:54.239 --> 00:01:58.779 for them. And so if you remove stuff they hate and then lower the price a lot, they get a 00:01:58.779 --> 00:02:03.199 great deal. If you remove stuff they love and then lower the price a little, they get a worse deal. 00:02:03.319 --> 00:02:07.199 And this is where the science of feature downselling becomes really, 00:02:07.219 --> 00:02:07.899 really sexy. 00:02:08.378 --> 00:02:08.739 All right. 00:02:09.199 --> 00:02:11.999 So, people will see the value in the thing you 00:02:12.039 --> 00:02:15.039 removed after they see the difference in price, as 00:02:15.079 --> 00:02:19.499 in people will weigh how much money they save against how much value they lose. 00:02:19.819 --> 00:02:24.339 So feature downselling gets customers to re-up sell themselves on the more expensive offers. 00:02:24.639 --> 00:02:29.979 So this means that you wanna remove features from highest to lowest value. Since people want more value 00:02:30.039 --> 00:02:36.139 for their money, this incentivizes customers to get the highest value purchase for them. Feature downsells have a simple formula. 00:02:36.559 --> 00:02:37.079 Take something 00:02:37.099 --> 00:02:40.219 away, lower the price, and then in so many words ask, \"How 00:02:40.239 --> 00:02:45.439 about now?\" So let's do some examples. So let's say we're downselling product and service quality. So for services, 00:02:45.459 --> 00:02:45.979 this might mean 00:02:46.019 --> 00:02:50.579 a lower amount, fewer sessions, less time, shorter duration. 00:02:50.999 --> 00:02:56.139 For products, it might mean fewer of them. All right, so a product quantity downsell would be, \"Hey, 00:02:56.159 --> 00:03:01.659 instead of a three-month supply, how about we start with the just one-month supply?\" A service quality downsell might be 00:03:01.859 --> 00:03:05.039 s- saying, \"Instead of four sessions a month, why don't we start you at two sessions 00:03:05.039 --> 00:03:06.239 a month?\" So this is service 00:03:06.259 --> 00:03:06.859 and quantity. 00:03:07.379 --> 00:03:07.699 All right? 00:03:08.019 --> 00:03:09.319 So let's talk about product 00:03:09.379 --> 00:03:15.199 quality. So here's how we would downsell. You think about older versions, less reliable materials, materials of lower social 00:03:15.299 --> 00:03:15.859 status, 00:03:16.199 --> 00:03:16.679 et cetera. 00:03:17.079 --> 00:03:22.319 All right? So product quality. Say, instead of, instead of leather seats, how do vinyl seats work? How's that sound? 00:03:22.379 --> 00:03:26.079"
+    },
+    {
+      "chapter": "feature-downsells",
+      "id": "feature-downsells:9",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "## [\u00a75.4.e] Barter-for-advertising \u2014 the only way to actually lower price And this is the last one that I love. This is the only 00:14:49.231 --> 00:14:53.051 way that you can lower your price, all right? So you could, you can quote me 00:14:53.071 --> 00:14:54.091 here. This is the, th- the big 00:14:54.131 --> 00:14:56.031 exception, that you can lower your 00:14:56.051 --> 00:14:58.111 price without changing what you give them. 00:14:58.911 --> 00:15:01.051 And that's because you change what they give 00:15:01.071 --> 00:15:04.251 you. So let's say I have a $500 thing. 00:15:04.911 --> 00:15:09.411 And they say, \"I just absolutely cannot afford anything less than $400.\" And I say, \"Totally 00:15:09.451 --> 00:15:12.531 understand. But for $400, you would do it?\" \"Yes.\" 00:15:12.531 --> 00:15:16.231 \"Okay. I will accept that under these terms.\" So now I've changed 00:15:16.251 --> 00:15:19.071 the offer. I say, \"I'll do that 00:15:19.431 --> 00:15:19.671 if 00:15:19.671 --> 00:15:22.051 you leave me reviews on all these sites, 00:15:22.511 --> 00:15:23.831 you leave me testimonials, 00:15:24.211 --> 00:15:25.971 you post every day, and you send me 00:15:26.031 --> 00:15:26.711 two referrals 00:15:27.271 --> 00:15:29.911 right now. Introduce me to two people.\" By 00:15:30.011 --> 00:15:34.111 doing this, I then trade $100 00:15:34.451 --> 00:15:36.111 for what is hopefully more 00:15:36.231 --> 00:15:38.011 valuable to me than $100 00:15:38.031 --> 00:15:43.031 of advertising. And so every person can do other stuff. And so fundamentally, this is price plus 00:15:43.131 --> 00:15:45.071 barter. So if somebody comes to me, and I 00:15:45.091 --> 00:15:47.191 did this, if somebody comes to me and says, 00:15:47.191 --> 00:15:51.051 \"Hey, Susan signed up for $400 and I signed up for $600.\" 00:15:51.091 --> 00:15:54.191 I'm like, \"Oh, do you wanna do what Susan did? 'Cause I would love that. 00:15:54.771 --> 00:15:58.011 Because Susan cleans my gym for me every day, and she also introduced me 00:15:58.011 --> 00:16:00.891 to three of her friends and she posts on Facebook every day. Do you wanna do that? We can get 00:16:00.891 --> 00:16:02.171 you set up right now.\" And they're like, \"Oh, 00:16:03.331 --> 00:16:05.371 I'll keep the 600.\" I'm like, \"Got it. No worries.\" 00:16:05.831 --> 00:16:06.051 So 00:16:06.491 --> 00:16:11.211 you absolutely have your ass covered, because these are the terms under which Susan did pay less. 00:16:11.871 --> 00:16:15.071 And so if someone absolutely no way can pay less, 00:16:15.211 --> 00:16:19.151 barter, because there's always some things that they can do for you. And most of the time, that's 00:16:19.171 --> 00:16:22.551 gonna be in the form of advertising. They can leave you reviews, they can leave you testimonials, and they can 00:16:22.591 --> 00:16:23.171 send you friends. 00:16:23.471 --> 00:16:23.671 So 00:16:24.131 --> 00:16:30.011 summary. So feature downsells lower prices by removing stuff. You take something away, lower the price, can ask, \"How 00:16:30.031 --> 00:16:35.051 about now?\" Typical feature downsells offer' less quantity, less quality, cheaper alternatives, or remove 00:16:35.071 --> 00:16:38.991 features altogether. People tend to see the value in what you removed after they 00:16:39.011 --> 00:16:44.031 see the price difference. You may get more people to take the more expensive up by doing it this 00:16:44.091 --> 00:16:49.011 way. If you remove stuff they hate and lower the price a lot, people, more people will 00:16:49.011 --> 00:16:52.811 take the downsell. If you remove stuff they love and lower the price a little, more people will take the 00:16:52.831 --> 00:16:58.591 original offer. So the first downsell gets them. to reconsider my first offer. The rest of my downsells get them 00:16:58.611 --> 00:17:00.011 to consider the best deal. for them. 00:17:00.331 --> 00:17:05.050 If a prospect rejects multiple downsells, see if they still want your thing before continuing. This 00:17:05.070 --> 00:17:06.171 is the eight to 10 thing. 00:17:06.511 --> 00:17:11.371 If a prospect likes a combination of"
+    },
+    {
+      "chapter": "feature-downsells",
+      "id": "feature-downsells:10",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "the downsell. If you remove stuff they love and lower the price a little, more people will take the 00:16:52.831 --> 00:16:58.591 original offer. So the first downsell gets them. to reconsider my first offer. The rest of my downsells get them 00:16:58.611 --> 00:17:00.011 to consider the best deal. for them. 00:17:00.331 --> 00:17:05.050 If a prospect rejects multiple downsells, see if they still want your thing before continuing. This 00:17:05.070 --> 00:17:06.171 is the eight to 10 thing. 00:17:06.511 --> 00:17:11.371 If a prospect likes a combination of features but still doesn't like the price, start payment plan downselling, 00:17:11.631 --> 00:17:15.111 which is very effective at this point, 'cause now you've really, got this thing right. for them. It's like, \"Okay, 00:17:15.391 --> 00:17:18.671 this is the suite of features. This is the price.\" They're like, \"No, this is everything I want, I just 00:17:18.671 --> 00:17:22.271 can't afford it.\" And you're like, \"Can you afford it in general or not afford it today?\" And they're like, 00:17:22.271 --> 00:17:25.991 \"Today.\" \"Cool, then let's break this out. How can you do half now, half when you get paid?\" And then 00:17:25.991 --> 00:17:26.050 you 00:17:26.070 --> 00:17:31.231 go down that path. Now, you can feature downsell existing customers before they cancel, which actually extends 00:17:31.251 --> 00:17:37.371 the LTV. And you can discount customers in exchange for them advertising your business. Those are feature downsells. 00:17:37.511 --> 00:17:39.391 And finishes or concludes 00:17:39.751 --> 00:17:42.011 our downsell offer section, and in the next 00:17:42.031 --> 00:17:45.351 and final of the four f- four prongs, we talk about continuity offers."
+    },
+    {
+      "chapter": "downsells",
+      "id": "downsells:1",
+      "subjects": [
+        "downsells"
+      ],
+      "text": ". Here's what a downsell is. A downsell is when you take out one or more features from a product and you reduce the price proportionally. So if you go from a five-module product to a three-module product, you might go from $97 to $57. So the customer sees that you actually removed value. They understand the price reduction. Okay, so let's talk about some really good downsell examples. The first example is payment plans. So a customer comes to your funnel and you say, \"Okay, here's the price. It's $297.\" And they say, \"Nope. I don't have that right now.\" So what you could do is you could say, \"Okay, how about instead of paying 297 dollars all upfront, you pay three payments of $99?\" Now, you could do four payments of $80 each. You could do two payments of $160 each. Whatever you want. But the key is you're giving them an alternative that's more affordable right now, but they still get the full product. And that's a downsell. Another type of downsell is a feature downsell. So let's say you have a course that comes with personalized coaching. And you say, \"Okay, it's $297, and that includes five coaching calls with me.\" They say, \"Nope, that's too expensive.\" So you say, \"Okay, how about I remove the coaching and you just get the course for $97?\" Now they get less features, but the product is more affordable. That's a downsell. Another one is a trial with a penalty. So you might say, \"Okay, you can use this for 30 days risk-free. But in order to qualify for this trial, you have to give me your credit card.\" So you're reducing the risk for the customer by letting them try it, but you're adding a small commitment hurdle to qualify for that trial. So those are a few different types of downsells that actually work. Let me give you a rule for downsells that will help you make better downsells in your own funnel"
+    },
+    {
+      "chapter": "feature-downsells",
+      "id": "feature-downsells:6",
+      "subjects": [
+        "downsells"
+      ],
+      "text": "## [\u00a75.4.d] Process \u2014 valuable-feature / small-price-drop, then invert So here's how I standardize my downsell process. So first, I cut something valuable 00:08:47.083 --> 00:08:48.043 and lower the price a little 00:08:48.143 --> 00:08:52.063 bit, all right? So that's exactly what he did. So he had his guarantee. thing, he lowered the price. 00:08:52.063 --> 00:08:55.063 Now, I said 2,000. I don't remember what he lowered his price as. But if, let's say, it was four 00:08:55.103 --> 00:08:59.043 grand, and he says, \"Okay, well, I'll remove the guarantee and offer. it for 3,500,\" 00:08:59.783 --> 00:09:04.103 because it's a tiny amount different, and I took something really valuable away, they're like, \"Oh, no, 00:09:04.103 --> 00:09:09.023 I'd rather have this.\" So they re-upsell themselves, because I took something really valuable and decreased the 00:09:09.043 --> 00:09:09.583 price a little. 00:09:10.063 --> 00:09:12.063 Now, at' this point, if they say 00:09:12.103 --> 00:09:15.723 no to that, I do this to get... Well, I do that to get. them to reconsider the, original price. 00:09:15.903 --> 00:09:22.143 If that fails, I continue removing features and lowering prices. until they buy. So I'd rather have people get something 00:09:22.203 --> 00:09:26.663 rather than getting nothing. Now, at this point, the next feature I would typically remove, I would have a big 00:09:26.683 --> 00:09:31.003 decrease in price, because now I'm saying, \"Okay, this might be a price issue.\" So now I'm gonna try and 00:09:31.023 --> 00:09:32.003 take away things that they 00:09:32.023 --> 00:09:36.803 don't care about with a big decrease in price, and now I'm increasing the value. So basically, the first one 00:09:36.823 --> 00:09:37.083 is, like, 00:09:37.083 --> 00:09:37.783 a hip check 00:09:38.203 --> 00:09:43.943 of, like, big valuable thing, like a guarantee, tiny decrease in price. They re-upsell. If they don't re-upsell, then we 00:09:43.943 --> 00:09:45.923 say, \"Hey, let's put the guarantee back in, 00:09:46.063 --> 00:09:50.023 and let's take this other feature away and take a massive amount off the 00:09:50.043 --> 00:09:53.783 price.\" And then at that point, they're like, \"Oh, wow, less of this thing I don't care about 00:09:54.083 --> 00:09:56.143 and way lower price? Sounds good to me.\" 00:09:56.563 --> 00:09:56.863 All right? 00:09:57.103 --> 00:10:02.063 Now, if you want, you can start naming your feature combination first class, business class, economy 00:10:02.383 --> 00:10:04.203 as you remove features and change prices. 00:10:04.623 --> 00:10:08.243 Now, I prefer to name my cheapest combination, remember the rental car story, 00:10:08.563 --> 00:10:09.083 the minimum. 00:10:09.443 --> 00:10:13.003 So I like it because it implies that they have to get at least that thing. And 00:10:13.023 --> 00:10:17.043 if someone rejects all of the packages, I just say, \"So nothing more than the minimum package 00:10:17.083 --> 00:10:18.083 then?\" Same 00:10:18.083 --> 00:10:21.063 as they told me. And we do that because it always 00:10:21.223 --> 00:10:21.883 only works. 00:10:22.383 --> 00:10:26.383 Uh, doesn't always work, but it's, uh, it's very effective. 00:10:26.603 --> 00:10:26.903 Okay, 00:10:27.303 --> 00:10:29.043 so just like we have our 00:10:29.383 --> 00:10:33.103 temperature check during the payment plan downsell process, we also have a temperature check 00:10:33.403 --> 00:10:37.243 during the feature downsell process. So if you make two changes in a row and they still refuse, 00:10:37.543 --> 00:10:41.103 make sure they still want the thing. You still say the same, \"Hey,\" real quick, just to make 00:10:41.103 --> 00:10:42.103 sure that we're on the same, 00:10:42.423 --> 00:10:43.063 same scale here, 00:10:43.463 --> 00:10:47.243 uh, \"one to 10, how bad do you want this thing?\" Now, again, if they say, \"Eight to 10,\" \"Cool, 00:10:47.243 --> 00:10:50.003 we're gonna figure out something that'll work for you.\" They say less than 10, it's like, \"Hey, 00:10:50.243 --> 00:10:53.263 maybe I need to reconfigure this thing,\" or, \"Let's just figure out different terms of payment.\" 00:10:53.303"
+    }
+  ],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": 48,
+      "first_30_day_gross_profit": 32,
+      "gross_margin": 0.62,
+      "lifetime_gross_profit": 210,
+      "monthly_recurring_gross_profit": 28,
+      "payback_period_months": 1.5714285714285714
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly",
+        "shipping and product costs consume a meaningful share of revenue"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "ecommerce_skincare",
+  "source_case_id": "searchdecision_v1_036",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "feature-downsells:2",
+          "score": 0.033
+        },
+        {
+          "id": "feature-downsells:9",
+          "score": 0.032
+        },
+        {
+          "id": "feature-downsells:10",
+          "score": 0.031
+        },
+        {
+          "id": "downsells:1",
+          "score": 0.031
+        },
+        {
+          "id": "feature-downsells:6",
+          "score": 0.03
+        }
+      ],
+      "queries": [
+        "Feature Downsells reduced-scope offer remove features to lower price price objection lower price paired with lower value not discount identical offer"
+      ],
+      "query": "Feature Downsells reduced-scope offer remove features to lower price price objection lower price paired with lower value not discount identical offer",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "Feature Downsells reduced-scope offer remove features to lower price price objection lower price paired with lower value not discount identical offer",
+        "user_turn": "A customer says the full routine costs too much. Could we remove one product and lower the price instead of discounting everything?"
+      }
+    }
+  ],
+  "user_turn": "A customer says the full routine costs too much. Could we remove one product and lower the price instead of discounting everything?"
+}

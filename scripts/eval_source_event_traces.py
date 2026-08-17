@@ -347,11 +347,21 @@ def render_report(cases: list[dict[str, Any]], results: list[CaseResult], valida
     return "\n".join(lines)
 
 
+def all_cases_pass(cases: list[dict[str, Any]], results: list[CaseResult]) -> bool:
+    """Return whether every defined case has a passing scored trace."""
+    return len(results) == len(cases) and all(result.status == "passed" for result in results)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, default=ROOT / "evals" / "advisor_source_event_cases.jsonl")
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "evals" / "runs" / "source_events" / "search_request_v1")
     parser.add_argument("--report", type=Path, default=ROOT / "evals" / "reports" / "advisor_source_event_traces.md")
+    parser.add_argument(
+        "--require-all-pass",
+        action="store_true",
+        help="Fail unless every case has a passing scored trace.",
+    )
     args = parser.parse_args()
     cases = load_jsonl(args.cases)
     errors = validate_cases(cases)
@@ -366,7 +376,11 @@ def main() -> int:
         "passed_runs": sum(result.status == "passed" for result in results),
         "report": rel_path(args.report),
     }, indent=2))
-    return 1 if errors else 0
+    if errors:
+        return 1
+    if args.require_all_pass and not all_cases_pass(cases, results):
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

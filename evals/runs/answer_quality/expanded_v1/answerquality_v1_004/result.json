@@ -1,0 +1,14 @@
+{
+  "answer_category": "clarification",
+  "case_id": "answerquality_v1_004",
+  "contamination_flags": [],
+  "created_at": "2026-08-16T18:04:15Z",
+  "latency_ms": 68953.4,
+  "model": "gpt-5.5",
+  "returncode": 0,
+  "scenario_id": "1584_design",
+  "session_error": null,
+  "source_case_id": "searchdecision_v1_016",
+  "timed_out": false,
+  "valid": true
+}

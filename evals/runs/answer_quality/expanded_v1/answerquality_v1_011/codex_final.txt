@@ -1,0 +1,3 @@
+Your payback period is 1.0 month.
+
+Using the numbers we already have: CAC is $320, first-30-day gross profit is $900, and monthly recurring gross profit is $150. Since the first 30 days of gross profit already exceed CAC, you recover acquisition cost inside month one. For practical decision-making, I would treat this as a very strong payback position.

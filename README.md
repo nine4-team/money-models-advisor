@@ -121,6 +121,17 @@ PYTHONPATH=src python3 scripts/eval_smoke.py
 python3 -m unittest discover -s tests -v
 ```
 
+Run the complete stable offline regression gate:
+
+```bash
+python3 scripts/regression_gate.py
+```
+
+The gate runs the unit suite, local retrieval smoke test, strict saved-artifact
+scorers for tool use, source events, calculations, and answer quality, the narrative
+evidence drift check, and patch-whitespace validation. It does not call an acting
+model, an embedding API, or a hosted vector store.
+
 Generate the local retrieval baseline report:
 
 ```bash
@@ -204,6 +215,14 @@ The runner gives each isolated acting agent the case context but hides the expec
 labels. The scorer checks the active single-query `SearchRequest` contract and writes
 `evals/reports/advisor_source_event_traces.md`.
 
+Regenerate the narrative's expandable case tables from the saved evaluation artifacts,
+or verify that the checked-in tables still match those artifacts:
+
+```bash
+python3 scripts/render_narrative_evidence.py
+python3 scripts/render_narrative_evidence.py --check
+```
+
 Review human-auditable required-claim labels:
 
 ```bash
@@ -252,14 +271,12 @@ PYTHONPATH=src python3 scripts/score_obligation_support.py
   are selected and implemented.
 - Search/no-search model routing is measured on 48 balanced cases: `gpt-5.5`
   scores 48/48 and `gpt-5.4-mini` scores 47/48.
-- Calculation validation, current source-event traces, and the six-answer semantic
-  support audit cover the current turn contract.
+- Calculation validation, current source-event traces, and a balanced 20-answer
+  semantic audit across five business contexts cover the current turn contract. The
+  final blind runs pass 20/20 with 22/22 audited material claims supported.
 
 ## What remains planned
 
-- Broaden end-to-end answer-quality coverage with genuinely different business
-  contexts and observed failures.
-- Add one repeatable regression command or CI job over the stable local suites.
 - Complete the final rendered narrative read-through and verify its tables against
   the canonical reports.
 - Add comparable billed agent cost only if a metered deployment path becomes part

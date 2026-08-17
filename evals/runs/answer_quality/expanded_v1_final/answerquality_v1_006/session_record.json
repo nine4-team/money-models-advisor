@@ -1,0 +1,143 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "calculate",
+    "session_finish"
+  ],
+  "assistant_message": "We are diagnosing a payback-period problem inside an otherwise viable lifetime-value business.\n\nThe software appears valuable over the customer life: lifetime gross profit is $18,000 against $2,800 CAC. That is not the immediate issue. The issue is timing: each new customer costs $2,800 to acquire, but only returns $1,100 of gross profit in the first 30 days, so acquisition consumes cash before it becomes profitable.\n\nUsing the current numbers, payback is about 2.9 months. In Money Models terms, payback period is how long it takes gross profit to exceed CAC, and shorter payback makes advertising easier to scale because cash comes back faster [payback-period:0]. This also means you are below client-financed acquisition level 2, because first-30-day gross profit is not greater than CAC [cfa:0].\n\nSo the diagnosis is: strong LTGP-to-CAC, weak first-30-day gross-profit-to-CAC. The business may be worth acquiring customers for, but the current offer stack does not finance growth at the front end. The next design problem is how to pull more gross profit into the first 30 days without damaging activation or retention.",
+  "calculation_events": [
+    {
+      "inputs": {
+        "cac": 2800,
+        "month_one_gp": 1100,
+        "monthly_recurring_gp": 900
+      },
+      "metric": "payback",
+      "value": 2.888888888888889
+    }
+  ],
+  "cited_chunk_ids": [
+    "payback-period:0",
+    "cfa:0"
+  ],
+  "created_at": "2026-08-16T18:36:12Z",
+  "metadata": {
+    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-7dwf15yt/runtime/business"
+  },
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "B2B inventory-planning SaaS",
+      "delivery_model": "cloud software with guided onboarding and customer success",
+      "icp": "multi-location specialty retailers with small operations teams"
+    },
+    "economics": {
+      "cac": 2800,
+      "first_30_day_gross_profit": 1100,
+      "gross_margin": 0.75,
+      "lifetime_gross_profit": 18000,
+      "monthly_recurring_gross_profit": 900,
+      "payback_period_months": 2.888888888888889
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "paid inventory cleanup pilot",
+        "exists": true,
+        "price": 500
+      },
+      "continuity": {
+        "description": "monthly software and customer-success subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "core_offer": {
+        "description": "inventory planning software subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "implementation and analytics package",
+        "exists": true,
+        "price": 4000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "many customers cancel during the fourth month",
+        "new-customer acquisition requires more cash than month-one gross profit"
+      ],
+      "user_goal": "reduce month-four churn and improve acquisition payback"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "chapter": "payback-period",
+          "id": "payback-period:0",
+          "score": 0.033,
+          "subject": "unit-economics"
+        },
+        {
+          "chapter": "context",
+          "id": "context:2",
+          "score": 0.032,
+          "subject": "unit-economics"
+        },
+        {
+          "chapter": "cfa",
+          "id": "cfa:0",
+          "score": 0.032,
+          "subject": "unit-economics"
+        },
+        {
+          "chapter": "how-businesses-make-money",
+          "id": "how-businesses-make-money:2",
+          "score": 0.031,
+          "subject": "unit-economics"
+        },
+        {
+          "chapter": "cfa",
+          "id": "cfa:1",
+          "score": 0.03,
+          "subject": "unit-economics"
+        }
+      ],
+      "queries": [
+        "payback period client-financed acquisition lifetime gross profit CAC first-30-day gross profit cash to fund growth"
+      ],
+      "query": "payback period client-financed acquisition lifetime gross profit CAC first-30-day gross profit cash to fund growth",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "diagnostic_evidence",
+        "query": "payback period client-financed acquisition lifetime gross profit CAC first-30-day gross profit cash to fund growth",
+        "user_turn": "The software is valuable over several years, but each new customer ties up cash at the beginning. What are we actually diagnosing?"
+      }
+    }
+  ],
+  "user_message": "The software is valuable over several years, but each new customer ties up cash at the beginning. What are we actually diagnosing?"
+}

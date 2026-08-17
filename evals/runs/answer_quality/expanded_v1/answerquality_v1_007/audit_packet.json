@@ -1,0 +1,151 @@
+{
+  "actions": [
+    "session_start",
+    "calculate",
+    "answer",
+    "session_finish"
+  ],
+  "answer_category": "calculation",
+  "answer_sha256": "409ce4dc32c156290a8960051b4520afd959974cecc3ac28d0e8ca00c9b24e9e",
+  "assistant_message": "Using the saved numbers, CAC payback is about 2.9 months.\n\nMath: $2,800 CAC minus $1,100 first-30-day gross profit leaves $1,700 still to recover. At $900/month in recurring gross profit after that, the remaining CAC is earned back in 1.89 more months, so total payback is 2.89 months.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "B2B inventory-planning SaaS",
+      "delivery_model": "cloud software with guided onboarding and customer success",
+      "icp": "multi-location specialty retailers with small operations teams"
+    },
+    "economics": {
+      "cac": 2800,
+      "first_30_day_gross_profit": 1100,
+      "gross_margin": 0.75,
+      "lifetime_gross_profit": 18000,
+      "monthly_recurring_gross_profit": 900,
+      "payback_period_months": 2.888888888888889
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "paid inventory cleanup pilot",
+        "exists": true,
+        "price": 500
+      },
+      "continuity": {
+        "description": "monthly software and customer-success subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "core_offer": {
+        "description": "inventory planning software subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "implementation and analytics package",
+        "exists": true,
+        "price": 4000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "many customers cancel during the fourth month",
+        "new-customer acquisition requires more cash than month-one gross profit"
+      ],
+      "user_goal": "reduce month-four churn and improve acquisition payback"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [
+    {
+      "inputs": {
+        "cac": 2800,
+        "month_one_gp": 1100,
+        "monthly_recurring_gp": 900
+      },
+      "metric": "payback",
+      "value": 2.888888888888889
+    }
+  ],
+  "case_id": "answerquality_v1_007",
+  "cited_chunk_ids": [],
+  "evidence_passages": [],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "B2B inventory-planning SaaS",
+      "delivery_model": "cloud software with guided onboarding and customer success",
+      "icp": "multi-location specialty retailers with small operations teams"
+    },
+    "economics": {
+      "cac": 2800,
+      "first_30_day_gross_profit": 1100,
+      "gross_margin": 0.75,
+      "lifetime_gross_profit": 18000,
+      "monthly_recurring_gross_profit": 900,
+      "payback_period_months": 2.888888888888889
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "paid inventory cleanup pilot",
+        "exists": true,
+        "price": 500
+      },
+      "continuity": {
+        "description": "monthly software and customer-success subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "core_offer": {
+        "description": "inventory planning software subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "implementation and analytics package",
+        "exists": true,
+        "price": 4000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "many customers cancel during the fourth month",
+        "new-customer acquisition requires more cash than month-one gross profit"
+      ],
+      "user_goal": "reduce month-four churn and improve acquisition payback"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "saas_retention",
+  "source_case_id": "searchdecision_v1_022",
+  "source_events": [],
+  "user_turn": "using the saved numbers, how long does it take us to earn back CAC?"
+}

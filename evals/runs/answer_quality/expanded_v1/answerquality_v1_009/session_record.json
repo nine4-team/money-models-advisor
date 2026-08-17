@@ -1,0 +1,129 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer",
+    "session_finish"
+  ],
+  "assistant_message": "Yes, I would use this as a conditional \"win your program fee back\" offer, but I would strongly prefer earning it back as credit rather than a cash refund.\n\nThe clean version is: clients pay the $2,400 program fee upfront. If they hit a specific, objective 12-week result and complete the required check-ins, they earn up to $2,400 back as credit toward ongoing training or a renewal. That matches the Money Models pattern: set a goal, show the client how to reach it, and let them qualify for money back or store credit when they hit it [win-your-money-back:0].\n\nThe check-ins should be qualification requirements, not administrative chores. For example: baseline assessment, weekly progress check-ins, nutrition compliance review, midpoint adjustment, final measurement, photos/testimonial if they succeed. The source material supports tying refund eligibility to the actions required to get the result, like attendance, showing up, and turning in data [pay-less-now:5]. It also supports requiring check-ins because they are what make the result more likely [free-trials:6].\n\nI would avoid a broad cash-back promise at first. Your first-30-day gross profit is already $900 against a $320 CAC, so acquisition economics are strong, but a full $2,400 cash refund creates real delivery and cash-flow exposure. Credit is better because it preserves the risk reversal, pushes the client into continuity, and keeps the money inside the business.\n\nMy recommended offer language would be: \"Complete the 12-week transformation, attend every required check-in, submit your weekly nutrition/training data, and hit your agreed strength/body-composition target. When you do, we credit your full $2,400 program fee toward your next phase of coaching.\"\n\nI would pilot it with tight rules: one measurable result per client, objective before/after measurement, no partial subjective disputes, and credit issued only after all check-ins and final proof are complete. If you want a cash version later, cap it or test it with a small cohort first.",
+  "calculation_events": [],
+  "cited_chunk_ids": [
+    "win-your-money-back:0",
+    "pay-less-now:5",
+    "free-trials:6"
+  ],
+  "created_at": "2026-08-16T18:08:09Z",
+  "metadata": {
+    "business_context_used": {
+      "cac": 320,
+      "continuity_price": 249,
+      "core_offer_price": 2400,
+      "first_30_day_gross_profit": 900
+    }
+  },
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "win-your-money-back:0",
+          "score": 0.032
+        },
+        {
+          "id": "free-trials:6",
+          "score": 0.031
+        },
+        {
+          "id": "pay-less-now:5",
+          "score": 0.03
+        },
+        {
+          "id": "payback-period:5",
+          "score": 0.03
+        },
+        {
+          "id": "free-trials:2",
+          "score": 0.03
+        }
+      ],
+      "queries": [
+        "Win Your Money Back goal-based refund results-based refund measurable transformation accountability check-ins earn the fee back"
+      ],
+      "query": "Win Your Money Back goal-based refund results-based refund measurable transformation accountability check-ins earn the fee back",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "Win Your Money Back goal-based refund results-based refund measurable transformation accountability check-ins earn the fee back",
+        "user_turn": "Could clients earn their program fee back by hitting the result and completing their check-ins?"
+      }
+    }
+  ],
+  "user_message": "Could clients earn their program fee back by hitting the result and completing their check-ins?"
+}

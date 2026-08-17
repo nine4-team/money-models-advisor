@@ -1,0 +1,123 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "session_finish"
+  ],
+  "assistant_message": "Yes. I would treat that as a downsell, not a discount.\n\nThe clean move is: keep the full routine at $160, then offer the existing two-product essentials kit at $55 as the lower-scope option. That fits the Money Models rule for a feature downsell: lower the price by changing what the customer gets, not by giving the same offer for less [feature-downsells:2]. A downsell works because the customer can see value was removed, so the lower price feels logical instead of training them to wait for discounts [downsells:1].\n\nI would script it like this: \"Totally fair. The full five-product routine is the complete version. If you want to start smaller, we can remove the optional products and begin with the two-product essentials kit for $55. You can always add the rest once your skin has adjusted.\"\n\nDo not frame it as \"I can take money off.\" Frame it as \"we can start with less.\" If they still want every product but only object to paying today, that is a payment-timing problem, not a scope problem; then I would test a payment plan or subscription path instead [feature-downsells:10].",
+  "calculation_events": [],
+  "cited_chunk_ids": [
+    "feature-downsells:2",
+    "downsells:1",
+    "feature-downsells:10"
+  ],
+  "created_at": "2026-08-16T18:41:04Z",
+  "metadata": {
+    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-hl0fvsk6/runtime/business"
+  },
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": 48,
+      "first_30_day_gross_profit": 32,
+      "gross_margin": 0.62,
+      "lifetime_gross_profit": 210,
+      "monthly_recurring_gross_profit": 28,
+      "payback_period_months": 1.5714285714285714
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly",
+        "shipping and product costs consume a meaningful share of revenue"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "feature-downsells:2",
+          "score": 0.033
+        },
+        {
+          "id": "feature-downsells:9",
+          "score": 0.032
+        },
+        {
+          "id": "feature-downsells:10",
+          "score": 0.031
+        },
+        {
+          "id": "downsells:1",
+          "score": 0.031
+        },
+        {
+          "id": "feature-downsells:6",
+          "score": 0.03
+        }
+      ],
+      "queries": [
+        "Feature Downsells reduced-scope offer remove features to lower price price objection lower price paired with lower value not discount identical offer"
+      ],
+      "query": "Feature Downsells reduced-scope offer remove features to lower price price objection lower price paired with lower value not discount identical offer",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "Feature Downsells reduced-scope offer remove features to lower price price objection lower price paired with lower value not discount identical offer",
+        "user_turn": "A customer says the full routine costs too much. Could we remove one product and lower the price instead of discounting everything?"
+      }
+    }
+  ],
+  "user_message": "A customer says the full routine costs too much. Could we remove one product and lower the price instead of discounting everything?"
+}

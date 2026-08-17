@@ -1,0 +1,9 @@
+I would not double ad spend yet. The saved context has the coaching offer, audience, and price, but it does not have the two numbers needed to decide whether more acquisition is financially safe: CAC and first-30-day gross profit.
+
+For this decision, use a simple gate:
+
+1. If CAC is less than or equal to first-30-day gross profit, doubling can be considered, assuming lead quality and close rate hold at the higher spend level.
+2. If CAC is higher than first-30-day gross profit, we need monthly recurring gross profit from the ongoing training membership before calculating payback.
+3. If you do not have reliable CAC yet, do not call it scaling. Run a capped test instead and measure booked assessments, show rate, close rate, CAC, and first-30-day gross profit.
+
+My next question is: what are your current monthly ad spend, number of new coaching clients from ads, and estimated gross profit collected in the first 30 days per new client?

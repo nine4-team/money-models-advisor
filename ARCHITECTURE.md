@@ -110,5 +110,5 @@ Saved turns and eval artifacts expose:
 - embedding cache hits, misses, and estimated embedding cost;
 - model-decision accuracy and latency in the focused routing evaluation.
 
-The remaining operational step is to collect the stable checks behind one
-repeatable regression gate.
+`python3 scripts/regression_gate.py` collects the stable offline tests, trace
+scorers, answer audit, and narrative evidence check behind one fail-fast command.

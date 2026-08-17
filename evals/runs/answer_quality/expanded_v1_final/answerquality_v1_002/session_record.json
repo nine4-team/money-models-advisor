@@ -1,0 +1,145 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "clarify",
+    "session_finish"
+  ],
+  "assistant_message": "Offer a rollover upsell from the $597 STR Design Diagnostic into the $5,000 pre-designed room package.\n\nThe clean version is: \"If you book your Priority Room Package within 7 days of the diagnostic review, we credit your full $597 diagnostic fee toward implementation.\" That makes the diagnostic feel like paid discovery, not a dead-end purchase, and it turns the next step into the obvious fix for whatever the audit reveals.\n\nI would not lead with a generic discount or a broad full-service pitch first. Use the diagnostic to identify the highest-ROI room or listing weakness, then prescribe the matching room package. The Money Models principle is that after an attraction offer creates customers and cash, the upsell should maximize 30-day profit and solve the next problem revealed by the first offer [upsell-offers:1]. The build sequence is attraction offer, then upsell, then downsell and continuity as needed [make-your-money-model:2]. A rollover structure is especially natural here because the prior purchase can be credited toward the next larger offer, as long as the larger offer still has profit after the credit [rollover-upsell:6].\n\nMy recommended next offer:\n\n$5,000 Priority Room Implementation Package\n- Credit the $597 diagnostic toward it.\n- Make the credit expire in 7 days to create a real decision point.\n- Position it as implementation of the top diagnostic finding, not as \"more design services.\"\n- If they are clearly a full-project buyer, present the $15,000 full-service design as the anchor, then let the $5,000 room package be the smaller immediate implementation option.\n\nTo know how much this increases first-month profit, I still need the gross profit on the $597 diagnostic and the $5,000 room package, plus the expected diagnostic-to-package conversion rate. Price alone is not enough because fulfillment cost determines the actual first-month profit.",
+  "calculation_events": [],
+  "cited_chunk_ids": [
+    "upsell-offers:1",
+    "make-your-money-model:2",
+    "rollover-upsell:6"
+  ],
+  "created_at": "2026-08-16T18:33:33Z",
+  "metadata": {
+    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-2nhkwt73/runtime/business",
+    "known_offer_prices": {
+      "diagnostic": 597,
+      "full_service": 15000,
+      "room_package": 5000
+    }
+  },
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "insufficient_context",
+      "missing_fields": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit"
+      ],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": false
+    },
+    "business": {
+      "business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+      "delivery_model": "Lisa-led full-service design planning, procurement, and installation",
+      "icp": "STR and second-home owners with $80K-$200K+ project capacity"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {
+      "business.business_type": {
+        "confidence": "high",
+        "source_type": "local_docs"
+      },
+      "business.icp": {
+        "confidence": "high",
+        "source_type": "local_docs"
+      },
+      "money_model.core_offer.description": {
+        "confidence": "high",
+        "source_type": "local_docs"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "STR Design Diagnostic with listing/photo audit and priority summary",
+        "exists": true,
+        "price": 597
+      },
+      "continuity": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "core_offer": {
+        "description": "full-service STR and second-home design",
+        "exists": true,
+        "price": 15000
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "pre-designed room packages sold per room or bundle",
+        "exists": true,
+        "price": 5000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [],
+      "user_goal": "talk through the money model"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "chapter": "upsell-offers",
+          "id": "upsell-offers:1",
+          "score": 0.032,
+          "subject": "upsells"
+        },
+        {
+          "chapter": "make-your-money-model",
+          "id": "make-your-money-model:2",
+          "score": 0.031,
+          "subject": "offers"
+        },
+        {
+          "chapter": "rollover-upsell",
+          "id": "rollover-upsell:6",
+          "score": 0.031,
+          "subject": "upsells"
+        },
+        {
+          "chapter": "upsell-offers",
+          "id": "upsell-offers:3",
+          "score": 0.03,
+          "subject": "upsells"
+        },
+        {
+          "chapter": "rollover-upsell",
+          "id": "rollover-upsell:0",
+          "score": 0.029,
+          "subject": "upsells"
+        }
+      ],
+      "namespace_policy": "unfiltered",
+      "namespace_prefix": "money-models",
+      "queries": [
+        "offer stack next offer after attraction offer upsell maximize first 30 day gross profit rollover upsell"
+      ],
+      "query": "offer stack next offer after attraction offer upsell maximize first 30 day gross profit rollover upsell",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "offer stack next offer after attraction offer upsell maximize first 30 day gross profit rollover upsell",
+        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+      },
+      "vector_store": "local"
+    }
+  ],
+  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?"
+}

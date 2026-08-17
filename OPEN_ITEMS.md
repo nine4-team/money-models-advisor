@@ -1,18 +1,28 @@
 # Open Items
 
-**Updated:** 2026-08-14
+**Updated:** 2026-08-17
 
 This is the short completion checklist. `REMEDIATION_PLAN.md` contains the
 detailed acceptance record; completed experiments should not be reopened here.
 
+## Most recently completed
+
+- Expanded semantic answer quality from six source-event cases to 20 balanced
+  full-answer cases across five business contexts.
+- The 16/20 frozen baseline exposed a shared input-sufficiency failure in
+  clarification answers. A general runtime and advisor-rule correction—not
+  case-specific answer patches—brought fresh runs to 20/20 with 22/22 material
+  claims supported. The full unit suite and relevant evaluations pass.
+- Every quantitative evidence block in the narrative now has a default-closed,
+  human-readable case table with filtering, sorting, and expandable row details.
+  Canonical raw files and reports remain directly linked.
+- `python3 scripts/regression_gate.py` now runs the stable offline checks behind one
+  fail-fast command. Strict scorer modes reject missing or failed saved results; the
+  gate does not call acting models or hosted services.
+
 ## Required for portfolio completion
 
-1. **Broaden end-to-end answer quality.** Add genuinely different business
-   contexts or observed failures to the six-case seed answer audit. Do not create
-   more cases by lightly paraphrasing the existing ones.
-2. **Add one regression gate.** Provide one command or CI job that runs the stable
-   local tests and scorers and fails on a real regression.
-3. **Final narrative review.** Read the rendered HTML from beginning to end,
+1. **Final narrative review.** Read the rendered HTML from beginning to end,
    verify its numbers against canonical reports, and remove remaining stale or
    unnecessary language.
 

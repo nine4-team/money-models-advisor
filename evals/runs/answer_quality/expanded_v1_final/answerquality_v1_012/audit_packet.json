@@ -1,0 +1,133 @@
+{
+  "actions": [
+    "session_start",
+    "inspect_local_docs",
+    "answer",
+    "clarify",
+    "session_finish"
+  ],
+  "answer_category": "clarification",
+  "answer_sha256": "198fcd3c79a1fe862851e5b3ae2daa2a3906b2113eda7108527742f380427146",
+  "assistant_message": "I would not double ad spend yet. The saved context has the coaching offer, audience, and price, but it does not have the two numbers needed to decide whether more acquisition is financially safe: CAC and first-30-day gross profit.\n\nFor this decision, use a simple gate:\n\n1. If CAC is less than or equal to first-30-day gross profit, doubling can be considered, assuming lead quality and close rate hold at the higher spend level.\n2. If CAC is higher than first-30-day gross profit, we need monthly recurring gross profit from the ongoing training membership before calculating payback.\n3. If you do not have reliable CAC yet, do not call it scaling. Run a capped test instead and measure booked assessments, show rate, close rate, CAC, and first-30-day gross profit.\n\nMy next question is: what are your current monthly ad spend, number of new coaching clients from ads, and estimated gross profit collected in the first 30 days per new client?",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "insufficient_context",
+      "missing_fields": [
+        "economics.cac",
+        "economics.first_30_day_gross_profit"
+      ],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": false
+    },
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_012",
+  "cited_chunk_ids": [],
+  "evidence_passages": [],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": null,
+      "first_30_day_gross_profit": null,
+      "gross_margin": null,
+      "lifetime_gross_profit": null,
+      "monthly_recurring_gross_profit": null,
+      "payback_period_months": null
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "fitness_coaching",
+  "source_case_id": "searchdecision_v1_032",
+  "source_events": [],
+  "user_turn": "should we double our ad spend for the coaching program?"
+}

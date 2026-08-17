@@ -111,8 +111,8 @@ The CLI validates evidence that can be checked deterministically:
 - completed artifacts must satisfy the trace schema.
 
 These checks prove calculation integrity and citation provenance. The agent remains
-responsible for whether a passage actually supports a claim. A separate six-answer
-semantic audit currently verifies 14 material source-backed claims.
+responsible for whether a passage actually supports a claim. A separate 20-answer
+semantic audit across five business contexts currently verifies 22 material claims.
 
 ## Evaluation strategy
 
@@ -122,7 +122,7 @@ Each dataset isolates a product risk:
 - 46 cases test query generation and retrieval;
 - 6 cases test current source-event behavior;
 - 5 cases test calculation traces;
-- 6 current-path answers test usefulness, correctness, and semantic support.
+- 20 current-path answers test usefulness, correctness, restraint, and semantic support.
 
 Returned retrieval passages were reviewed for missed useful results and overly
 broad labels before final scoring. Codex performed the semantic passage and answer
@@ -130,8 +130,7 @@ audits; no independent human-review claim is made.
 
 ## Remaining work
 
-The core design decisions are settled. Completion work is limited to broader
-end-to-end answer cases, one repeatable regression gate, and a final rendered
-narrative review. New infrastructure should be
-added only when new evidence exposes a product risk that the current design does
-not handle.
+The core design decisions are settled, and the stable offline checks run through
+`python3 scripts/regression_gate.py`. Completion work is limited to a final rendered
+narrative review. New infrastructure should be added only when new evidence exposes
+a product risk that the current design does not handle.

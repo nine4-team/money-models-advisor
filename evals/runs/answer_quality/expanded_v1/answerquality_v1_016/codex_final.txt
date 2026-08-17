@@ -1,0 +1,5 @@
+Not enough to green-light scaling yet. I know the skincare funnel has a $10 sample kit, $90 starter routine, $160 premium routine, $55 downsell, and $55 refill subscription, but I do not have the two numbers that decide whether ad scaling is affordable: current CAC for the kit funnel and first-30-day gross profit per new customer.
+
+My recommendation: do not materially scale spend yet. Keep ads at a capped testing level until CAC is below the first-30-day gross profit you can reliably collect, or until you know the payback window is acceptable for your cash position. For a physical product brand with fulfillment and inventory cash tied up, scaling before that check can create a cash crunch even if orders look strong.
+
+Send me current CAC and first-30-day gross profit per acquired customer for the skincare kits, and I can calculate the payback and tell you whether to hold, test, or scale.

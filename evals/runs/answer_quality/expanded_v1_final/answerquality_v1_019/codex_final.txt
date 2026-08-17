@@ -1,0 +1,3 @@
+With the saved consulting numbers, CAC payback is **1.0 month**.
+
+That is based on **$4,500 CAC** and **$9,000 first-30-day gross profit**. Since first-30-day gross profit is already greater than CAC, the acquisition earns back CAC inside the first month.

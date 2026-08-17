@@ -1,0 +1,219 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "answer"
+  ],
+  "answer_category": "source_grounded",
+  "answer_sha256": "24079b6483f41f33ae28e04b49619ac2e5fddbadea7ecd646d11da056499b69a",
+  "assistant_message": "Yes. I would make the $1,500 readiness audit fee credit toward the $30,000 implementation if they continue, with a clear expiration window and only after the audit is paid and completed.\n\nThis is a strong fit for a Rollover Upsell: the prior purchase becomes credit toward the next, larger offer [rollover-upsell:1]. The economics are also safe here: a $1,500 credit against a $30,000 implementation is only 5% of the core offer, well inside the framework's caution that the next offer should usually be at least 4x the credit so the discount does not erase profit [rollover-upsell:6].\n\nI would frame it as: \"If you move forward with implementation within 14 days of the audit debrief, we apply your full readiness audit fee toward the project.\" That keeps the audit paid, reduces buyer hesitation, and creates urgency without cheapening the implementation. I would not sell the audit as \"free\" upfront; position it as a paid diagnostic that becomes credit only when they take the natural next step.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "B2B cybersecurity compliance consultancy",
+      "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring",
+      "icp": "regional healthcare and financial-services firms preparing for audits"
+    },
+    "economics": {
+      "cac": 4500,
+      "first_30_day_gross_profit": 9000,
+      "gross_margin": 0.68,
+      "lifetime_gross_profit": 42000,
+      "monthly_recurring_gross_profit": 1800,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "compliance readiness audit",
+        "exists": true,
+        "price": 1500
+      },
+      "continuity": {
+        "description": "ongoing compliance monitoring",
+        "exists": true,
+        "price": 2500
+      },
+      "core_offer": {
+        "description": "compliance implementation engagement",
+        "exists": true,
+        "price": 30000
+      },
+      "downsell": {
+        "description": "self-directed remediation plan",
+        "exists": true,
+        "price": 5000
+      },
+      "upsell": {
+        "description": "tabletop exercise and policy package",
+        "exists": true,
+        "price": 8000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "not enough qualified prospects enter sales conversations",
+        "the team is considering several offer changes at the same time"
+      ],
+      "user_goal": "turn more qualified conversations into profitable long-term clients"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_017",
+  "cited_chunk_ids": [
+    "rollover-upsell:1",
+    "rollover-upsell:6"
+  ],
+  "evidence_passages": [
+    {
+      "chapter": "rollover-upsell",
+      "id": "rollover-upsell:1",
+      "subjects": [
+        "upsells"
+      ],
+      "text": ". Here's how it works. So rollover upsells credit some or all of a customer's previous purchase towards your next offer. And this, in my experience, gets way more people to take it. So once I know how much credit to give, I figure out three things. One, who to upsell, two, what to upsell, and three, how to roll over the credit. So for the who, I use rollover upsells in four situations"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "id": "rollover-upsell:6",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "introduce comes in, you roll their gift card over into the main offer. And so some people see this and they're like, \"You want me to give 90% off my main stuff?\" It's like, \"No, bro, I want you to sell a $2,000 thing and give $200 gift cards away for 20 bucks.\" So what's really happening here, you're gonna get paid $20 to get a lead that's a hot referral that you're then gonna take the $200 and roll it into a $2,000 product, which you may have marked up by $200, or you add something to it that's high margin that you can justify adding the $200 for that then you can take the deduction off of. All right? So you make the value of the g- gift card 20% of the price of whatever you wanna sell next. So if it's a $200 gift card, you make that one-fifth of the price of $200. If I had a $2,000 offer, that'd be one-tenth. But minimum should be five X, would be a $1,000 offer. Obviously, you can make it more expensive than that. You just want it to be enough that it drives a purchase. All right? In our example, we sell a $200 gift card for 20 bucks, then apply that $200 offer with at least a $1,000 price tag. People pay you to refer their friends, plus you get cash from unused gift cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. What to upsell, more of something, better of something, new something new. Just make sure that you make a profit after applying your discount. How to rollover the credit. You can do full or partial purchase, uh, give it upfront, or you can spread it out. We went through examples of all those. You can price your next offer for at least four times higher than the credit. So this makes it a 25% discount. Everything above that is gravy. I wouldn't do less than that. And to get more takers, add urgency. Make your rollover credit a one-time-only offer. And boom, that is the rollover upsell."
+    },
+    {
+      "chapter": "rollover-upsell",
+      "id": "rollover-upsell:4",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "like, \"Ah, you know, I would, but I've got three months left in this service agreement.\" You say, \"No worries.Whatever you have, the three months, I'll credit it towards mine and I'll just make mine a two-year agreement. So you'd say like, \"Hey, John, saw your negative review on, uh, their product and it really upset me. To make it up to you, I'll credit whatever payments you have left with them to switch to ours. This way you don't lose a thing and you start getting the benefits now. Fair enough?\" 'Cause that way you don't have to wait for that thing to expire and pay and then wait to get the benefits. You can start getting the benefits now, and you don't lose anything, and I get the customer. Membership. So this is where you spread the first purchase over time. So who? Current customers. What? 12-month membership. How? Spread over the first purchase. So if somebody comes in, buys a block of service, uh, or, or of membership time, as- soon as they do, you can then offer to apply the entire amount towards more time, like 12 months. I can do rollover upsells anytime, I just prefer to do, to do them, right then. All right, so this is the important points. Uh, use rollover, uh, offers to attract new customers. For example, you roll over some or all of the customers paid. somebody else towards your thing, and you can find leads by scraping contact information from negative product reviews wherever available. You can do rollover upsells before refunding. This has solved me tons of cus- saved me tons of customers and cash. If you did a bad job, hey, it happens, rollover for a do-over. And if they want something different, you can rollover the purchase toward that thing in- instead. Previous customer, uh, are still customers, upsell them. These are win-backs, so reach out to old customers, six plus, plus months, uh, from their last purchase. Look at how much they paid, decide how much you wanna give them, offer it"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "id": "rollover-upsell:5",
+      "subjects": [
+        "upsells"
+      ],
+      "text": ". Example, I made personalized videos. This is me personally. I made personalized videos for 200 past customers. This is before AI and all that stuff. It took me like two days, um, offering them $4,000 of credit to return. Add urgency to rollover upsells, so make them one-time only. So this is a key point. So this is optional. It's up to you, but this is how I prefer to do it. Make the moment you present the offer the only time to take the offer so they don't get to sleep on it. So you wanna surprise and delight them with this credit or this discount. So if they want the credit, they gotta take it now. If not, no big deal. They can always pay full price later. How to price a rollover upsell. So to make money on a discounted offer, you have to have profit leftover in order to discount it, right? So I try to make the upsell at least four times more than the rollover credit. So that gives me a 25% discount at most if it's four times more expensive. Remember, the rules of discounting apply. Bigger discounts make you less profit but... per sale, but they get you more sales. Now, you don't need to credit the entire amount. I just like to highlight this again because people do this and then they ruin their businesses, so I'm telling you, don't do that. Like, you can just take as much or as little as you want. The goal is to simply get as much of a discount that you get responses. So if you find out that $200 is enough to move the needle and the average person spend $2,000 a year, then you can say, \"Hey, your last purchase with me, uh, the 2,000 you spent last year was this thing.\" And that's what you choose to credit. You don't have to credit everything. If you have small, if, if the person's spent a very small time with you and you have really big packages, credit the whole thing. If they spend a really long time with you and you have small tickets, credit the last one. So I rollover whatever I think would incentivize to buy the next thing. And you can just test to find the sweet spot. From the beginning it's $500. You can test 300, whatever. This is my famous gift card play. The way that this works, and this is a savage play, and it basically is a rollover just, like, packaged differently, is that you say, \"Hey, this works great for, like, holiday seasons, things like that.\" You say, \"Hey,\" this also crushes for Black Friday, \"I'm giving $200 gift cards away for 90% off.\" Limit two per person, and you can only use them on someone else 'cause it's the holiday season. So you can do this for Christmas and you can do this for Black Friday. So you can use it twice if you want. Now, the key here... You can also do for, uh, birthdays. Uh, sorry, not birthdays. Sorry. They give it to other people as birthday gifts. Anyways, when customers buy the gift card, ask them who they want to make it out to and if they'll make an introduction. Then when that person comes in, the person they introduce comes in, you roll their gift card over into the main offer. And so some people see this and they're like, \"You want me to give 90% off my main stuff?\" It's like, \"No, bro, I want you to sell a $2,000 thing and give $200 gift cards away for 20 bucks.\" So what's really happening here, you're gonna get paid $20 to get a lead that's a hot referral that you're then gonna take the $200 and roll it into a $2,000 product, which you may have marked"
+    },
+    {
+      "chapter": "rollover-upsell",
+      "id": "rollover-upsell:3",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "or part of it is, like, let's say somebody was with you for three years and they spent five grand with you. You might not credit five grand towards something else if your services, you know, aren't that much, maybe it's $2,000 a year, $5,000, three years of service. Well, you'd certainly want to get that customer back. But if you give them another three years, it doesn't make sense. So you could say, \"Hey, I'm gonna give you the last, you know, the last three things you bought from me. Let me credit those instead,\" right? You wouldn't say instead, you'd just say, \"I'll credit those for you,\" right? All of those things you could say, \"Listen, I'm gonna assume that we did something to mess up because you didn't come back. And so I'm gonna assume that the last six months of service that we did was not up to snuff. So let me make it up to you.\" So examples. So chiropractor, reengage old, old patients with a win back campaign. So we say who's the who, six months since their last purchase. What? New plan. How? Upfront. So that's our who, our what, and our how. So reach out to your old patients, you look at their purchase history, you offer. to apply some or all of their past purchase towards something more expensive than what they bought. So I would say, \"Hey, Mrs. Banks, I wanted to give your money back. Do you have a minute?\" \"Great. Yeah, I wanted to see how your back pain's going.\" \"Oh, I'm so sorry to hear that. Uh, well, I've got some good news. As, a way of saying thank you, I wanna give you $500 of your money back as credit towards staying pain-free for good. Is that of any interest? Great, let's get you in.\" Let's say a dentist. \"Hey, save your own upset customer with a rollover upsell.\" So who? Upset customer. What? Teeth whitening. How? Front load $200 credit. So we say, \"Hey, the person pays 200 bucks for teeth cleaning, but doesn't think their teeth got whiter. We explain they need m- t- you know, to get more and upsell into a teeth whitening package, which includes multiple sessions, an at-home kit, and multiple teeth cleanings.\" Then, you offer to credit the $200 they just paid for the cleaning towards the whitening package. This just really works when people are like, \"Well, this isn't what I thought it was gonna be.\" And you're like, \"Oh, that's on me. I thought you wanted this. Miscommunication. I'll make it up to you. Let me, take everything you paid so you didn't lose anything. Everything got- was for free now. And let's put it towards the thing you ultimately wanted.\" Because the thing is, is they still want the thing they, they spent money on. And so if what they really wanted was higher expectations, then sell them the higher package. Rescue, COF, steal other people's upset customers. So who? Competitor's customers. What? Service. agreement. How? Rollover cost to break old agreement. So, let's say you find a competitor's upset customers and credit their old purchase with them towards a new purchase with you. Then, you roll over the amount they owe them as a credit towards a longer agreement with you. So let's say they're like, \"Ah, you know, I would, but I've got three months left in this service agreement.\" You say, \"No worries.Whatever you have, the three months, I'll credit it towards mine and I'll just make mine a two-year agreement. So you'd say like, \"Hey, John, saw your negative review on, uh, their product and it really upset me. To make it up to you, I'll credit whatever payments you have left with them to switch to ours. This way you don't lose a thing and you start getting the benefits now."
+    }
+  ],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "B2B cybersecurity compliance consultancy",
+      "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring",
+      "icp": "regional healthcare and financial-services firms preparing for audits"
+    },
+    "economics": {
+      "cac": 4500,
+      "first_30_day_gross_profit": 9000,
+      "gross_margin": 0.68,
+      "lifetime_gross_profit": 42000,
+      "monthly_recurring_gross_profit": 1800,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "compliance readiness audit",
+        "exists": true,
+        "price": 1500
+      },
+      "continuity": {
+        "description": "ongoing compliance monitoring",
+        "exists": true,
+        "price": 2500
+      },
+      "core_offer": {
+        "description": "compliance implementation engagement",
+        "exists": true,
+        "price": 30000
+      },
+      "downsell": {
+        "description": "self-directed remediation plan",
+        "exists": true,
+        "price": 5000
+      },
+      "upsell": {
+        "description": "tabletop exercise and policy package",
+        "exists": true,
+        "price": 8000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "not enough qualified prospects enter sales conversations",
+        "the team is considering several offer changes at the same time"
+      ],
+      "user_goal": "turn more qualified conversations into profitable long-term clients"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "b2b_consulting",
+  "source_case_id": "searchdecision_v1_041",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "rollover-upsell:1",
+          "score": 0.032
+        },
+        {
+          "id": "rollover-upsell:6",
+          "score": 0.032
+        },
+        {
+          "id": "rollover-upsell:4",
+          "score": 0.032
+        },
+        {
+          "id": "rollover-upsell:5",
+          "score": 0.031
+        },
+        {
+          "id": "rollover-upsell:3",
+          "score": 0.031
+        }
+      ],
+      "queries": [
+        "Rollover Upsell credit prior purchase apply first fee toward larger offer implementation"
+      ],
+      "query": "Rollover Upsell credit prior purchase apply first fee toward larger offer implementation",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "Rollover Upsell credit prior purchase apply first fee toward larger offer implementation",
+        "user_turn": "Can the readiness audit fee become credit toward implementation if they continue?"
+      }
+    }
+  ],
+  "user_turn": "Can the readiness audit fee become credit toward implementation if they continue?"
+}

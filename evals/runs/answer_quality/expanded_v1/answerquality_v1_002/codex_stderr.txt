@@ -1,0 +1,2494 @@
+OpenAI Codex v0.144.6
+--------
+workdir: /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a00bbc-fe91-7522-99d4-dce5971044e8
+--------
+user
+# Money Model Advisor Turn
+
+Act as the Money Model Advisor and answer the user's request through the normal
+skill-guided workflow.
+
+1. Read and follow the local `money-model-advisor` skill and its search-request rules.
+2. Use the CLI from `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime` with `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business` as the business directory.
+3. Start the turn with `session start`. Decide naturally whether to calculate,
+   search the local Money Models corpus, clarify, or answer from saved context.
+4. If you search, use the current single-query `SearchRequest` and the default
+   hybrid retriever. Inspect the returned passages, cite only supported claims, and
+   preserve the CLI's `retrieval_backend` field in the recorded source event.
+5. Record the complete turn with `session finish` before returning.
+6. Work only inside `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime`. Do not inspect `.env`, `.cache`, or any path
+   outside this runtime. No evaluation labels or previous trials are available.
+7. Return only the user-facing answer recorded in the completed session.
+
+User request:
+
+if the diagnostic sells, what should we offer next to increase first-month profit?
+
+codex
+I’ll use the local `money-model-advisor` skill and route the answer through its CLI session workflow.
+exec
+/bin/zsh -lc "sed -n '1,240p' /private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/.codex/skills/money-model-advisor/SKILL.md" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+---
+name: money-model-advisor
+description: Help a human with Money Models by using this skill's guidance to run the Money Model Advisor CLI. Use when advising on Money Models, updating saved BusinessSnapshot facts, searching local Money Models source material, inspecting advisor logs, or producing cited recommendations without external model-service calls.
+---
+
+# Money Model Advisor
+
+You are the Money Model Advisor: a first-person business advisor helping the human apply Money Models to their business. Use the CLI as private working memory, deterministic calculation support, local source-material search, and trace logging. Do not describe the advisor as a separate system.
+
+Use this skill when a human asks an agent for Money Models advice. The agent talks with the human, follows this skill's guidance to run the CLI, and the CLI reads from and writes to local advisor state.
+
+The human should experience this as a normal conversation, not as a CLI workflow.
+
+## Project Objective
+
+This repo is also a portfolio artifact for the Acquisition.com Senior AI Engineer role. Repo-wide development guidance lives in `AGENTS.md`; the target role is summarized in `JOB_DESCRIPTION.md`. The core task is to demonstrate production-grade agent engineering judgment: tool use, RAG architecture, golden datasets, retrieval metrics, cached embeddings, cost-aware design, traceability, and regression-oriented evaluation.
+
+When improving the system, prefer changes that make those JD-aligned capabilities clearer and more measurable. Do not optimize only for a local toy metric if the change weakens the hiring narrative or hides the reasoning behind an architectural decision.
+
+## Core Rule
+
+Reason conversationally first. Do not route by shallow keywords.
+
+Use CLI commands for deterministic support: persisted state, calculations, local source-material search, logs, and final turn recording. Do not use deterministic `chat` synthesis as the advisor brain.
+
+Speak as the advisor in first person. Do not refer to "the advisor" as a separate third-person entity in the human-facing answer. For example, say "My next question is CAC" or "I need CAC next," not "The advisor's first question is CAC."
+
+Do not call external model services.
+
+## Path Resolution
+
+The user should not have to understand path plumbing. Resolve paths this way:
+
+- `advisor_repo`: `/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime`
+- `context_dir`: the current working directory when the skill is invoked; this is where advisor state is read and written
+
+The advisor operations are implemented as CLI commands. Run CLI commands from `advisor_repo` and pass `context_dir` to the CLI's `--business-dir` flag.
+
+The CLI flag is an implementation detail. Do not ask the human to reason about `--business-dir`.
+
+Shell safety rule: assign `CONTEXT_DIR` and `USER_REQUEST` before running the CLI command. Do not use inline assignment like `CONTEXT_DIR=/path USER_REQUEST=... python ... --business-dir "$CONTEXT_DIR"` because shell expansion can happen before the inline assignment is available to the arguments, producing an empty or wrong `--business-dir`.
+
+Safe pattern:
+
+```bash
+CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+USER_REQUEST='what should we do next?'
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+After `session start`, verify that the returned `business_dir` matches the intended context directory. If it points to the advisor repo, stop and fix the path before continuing.
+
+## Mental Model
+
+```text
+human asks agent for advice
+-> agent follows this skill's guidance
+-> agent runs local CLI commands
+-> CLI reads/writes .money-model-advisor/ in context_dir
+-> agent answers the human in first person, in plain English
+```
+
+The folder where the skill is invoked is the context directory. It is where advisor state is saved. It is not automatically something to analyze.
+
+## Operating Flow
+
+1. Resolve `context_dir`.
+2. Use `session_start` to initialize/load local advisor state, recent traces, and turn guidance:
+
+   ```bash
+   CONTEXT_DIR="/Users/benjaminmackenzie/1584_design"
+   USER_REQUEST='...'
+   cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+   PYTHONPATH=src python3 -m money_model_architect.cli session start \
+     --business-dir "$CONTEXT_DIR" \
+     --user-message "$USER_REQUEST"
+   ```
+
+3. If the snapshot is missing business context and the human appears to expect the agent to know the business, inspect local docs in `context_dir` with normal file tools before asking the human. Use the docs to identify clear business facts, not to answer directly.
+4. Use `update_snapshot` to save accepted facts discovered from local docs. Pass
+   `--source-type file --source <relative-path>` for facts taken from an inspected
+   file. Conversation facts use the default `conversation` source. Save only facts
+   that are clear from inspected files or the human's message. Do not guess.
+5. Decide the next advisory move yourself: clarify, calculate, search source material, inspect logs, update snapshot, or answer.
+6. After composing the final answer, record the completed turn with one JSON artifact:
+
+   ```bash
+   cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+   PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+     --business-dir "$CONTEXT_DIR" \
+     --record-json /path/to/turn-record.json
+   ```
+
+   The record artifact should include `user_message`, `assistant_message`, `actions`, `source_events`, `cited_chunk_ids`, and optional `metadata`. Use a temporary JSON file for complex records so shell quoting cannot corrupt dollar amounts or multiline answers.
+
+7. Return the answer in first person, in plain English. Mention saved state or logs only when useful.
+8. If the human provides a clear fact, save it with `update_snapshot` before answering when it affects the advice.
+
+## Advisor Operations
+
+These are the operations the agent should use through the CLI. Humans may also run the same commands directly for development, debugging, or manual control.
+
+| Operation | Current CLI implementation |
+|---|---|
+| `session_start` | `session start --business-dir "$CONTEXT_DIR" --user-message "$USER_REQUEST"` |
+| `setup_state` | `setup --business-dir "$CONTEXT_DIR"` |
+| `read_snapshot` | `snapshot --business-dir "$CONTEXT_DIR"` |
+| `update_snapshot` | `snapshot set --business-dir "$CONTEXT_DIR" field=value` |
+| `calculate` | `calculate ...` |
+| `search_source_material` | `search --business-dir "$CONTEXT_DIR" --search-request-json ...` |
+| `session_finish` | `session finish --business-dir "$CONTEXT_DIR" --record-json <json-or-path>` |
+| `turn_record` | low-level primitive: `turn record --business-dir "$CONTEXT_DIR" ...` |
+| `logs` | `logs --business-dir "$CONTEXT_DIR"` |
+
+## Command Implementations
+
+Show saved state:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot --business-dir "$CONTEXT_DIR"
+```
+
+Start an advisor turn:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session start \
+  --business-dir "$CONTEXT_DIR" \
+  --user-message "$USER_REQUEST"
+```
+
+Update accepted facts:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set --business-dir "$CONTEXT_DIR" economics.cac=350
+```
+
+Record a fact accepted from an inspected business file:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli snapshot set \
+  --business-dir "$CONTEXT_DIR" \
+  --source-type file \
+  --source metrics/q1-unit-economics.csv \
+  economics.cac=350
+```
+
+Run deterministic math:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli calculate payback --inputs '{"cac":350,"month_one_gp":120,"monthly_recurring_gp":40}'
+```
+
+Search local source material:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli search \
+  --business-dir "$CONTEXT_DIR" \
+  --search-request-json '{"intent":"teaching_evidence","user_turn":"why do we need fulfillment cost?","query":"fulfillment cost gross profit customer acquisition cost payback period"}' \
+  --top-k 5
+```
+
+Inspect saved turns:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli logs --business-dir "$CONTEXT_DIR"
+```
+
+Finish and record a turn:
+
+```bash
+cd /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+PYTHONPATH=src python3 -m money_model_architect.cli session finish \
+  --business-dir "$CONTEXT_DIR" \
+  --record-json /path/to/turn-record.json
+```
+
+## Workflow
+
+1. Run `session start` before business-specific advice.
+2. If the snapshot is missing facts the local docs likely contain, inspect local docs yourself before asking the human.
+3. Save clear inspected facts with `update_snapshot`.
+4. Decide the next advisory move yourself.
+5. Use `calculate` for payback, CAC, gross profit, gross margin, LTGP, and CFA level.
+6. Use `search` only after generating an explicit, corpus-guided search request.
+7. Cite inspected chunks inline, such as `[payback-period:0]`.
+8. Before recording, audit each source-backed sentence against the exact cited chunk:
+   do not rely on the chunk title or a nearby passage, do not make a stronger claim
+   than the text supports, and remove or qualify any unsupported wording. Business-
+   specific recommendations may be reasoned from accepted facts; cite the source only
+   for the framework principle it actually establishes.
+9. Record the final turn with `session finish`.
+10. Use `logs` to inspect prior session turns.
+
+When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
+
+- `metric`: one of `cac`, `gross-profit`, `gross-margin`, `ltgp`, `payback`, or `cfa-level`
+- `inputs`: the exact numeric inputs passed to the CLI
+- `value`: the numeric result returned by the CLI
+
+This is required so `session finish` can recompute the result from the recorded inputs
+and reject an incorrect value.
+
+## When To Search
+
+Follow the runtime search-request rules in `search_request_rules.md` (same directory).
+That file is the single source of truth for when to search, when to split searches,
+how to use the versioned corpus guide, how to write the single query, and how to record
+`intent`. Do not restate those rules here — read that file and apply it exactly.
+
+When recording the turn, create one `source_events` entry per search. Each entry should
+include the `retrieval_backend` returned by the CLI, the `search_request`, the executed
+query, and inspected chunks with IDs and scores.
+
+## Guardrails
+
+- Do not save guesses as snapshot facts.
+- Do not let the CLI crawl local business files as a substitute for agent judgment.
+- Do not use deterministic `chat` synthesis as the advisor brain.
+- Do not cite chunks you did not inspect.
+- Do not cite a chunk for a claim stronger than its text supports.
+- Do not turn every user message into retrieval.
+- Do not use source search to avoid asking for missing numbers or missing business context.
+- Prefer one clear clarifying question over premature recommendation.
+
+codex
+I’ve loaded the skill. Next I’m starting the advisor session against the provided business directory, then I’ll check saved context before deciding whether this needs retrieval or calculation.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business\"
+USER_REQUEST='if the diagnostic sells, what should we offer next to increase first-month profit?'
+PYTHONPATH=src python3 -m money_model_architect.cli session start --business-dir \""'$CONTEXT_DIR" --user-message "$USER_REQUEST"' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+{
+  "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business",
+  "state_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business/.money-model-advisor",
+  "snapshot": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business/.money-model-advisor/business_snapshot.json",
+  "sessions_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business/.money-model-advisor/sessions",
+  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
+  "advisor_state": {
+    "advisory_status": "insufficient_context",
+    "ready_for_payback_diagnosis": false,
+    "ready_for_offer_stack_diagnosis": true,
+    "missing_fields": [
+      "economics.cac",
+      "economics.first_30_day_gross_profit"
+    ],
+    "known_facts": {
+      "business.business_type": "premium full-service interior design firm for short-term rental and second-home projects",
+      "business.icp": "STR and second-home owners with $80K-$200K+ project capacity",
+      "business.delivery_model": "Lisa-led full-service design planning, procurement, and installation",
+      "problem.user_goal": "talk through the money model",
+      "money_model.attraction_offer.exists": true,
+      "money_model.attraction_offer.description": "STR Design Diagnostic with listing/photo audit and priority summary",
+      "money_model.attraction_offer.price": 597,
+      "money_model.core_offer.exists": true,
+      "money_model.core_offer.description": "full-service STR and second-home design",
+      "money_model.core_offer.price": 15000,
+      "money_model.upsell.exists": true,
+      "money_model.upsell.description": "pre-designed room packages sold per room or bundle",
+      "money_model.upsell.price": 5000,
+      "money_model.downsell.exists": false,
+      "money_model.continuity.exists": false
+    }
+  },
+  "recent_turns": [],
+  "available_operations": [
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "search_source_material",
+    "logs",
+    "turn_record",
+    "session_finish"
+  ],
+  "trace_requirements": [
+    "Record the completed turn with session finish.",
+    "Include every CLI-backed action in the record actions list.",
+    "Include one source_events entry per source-material search.",
+    "Include cited chunk ids when source material supports the answer."
+  ],
+  "boundary": {
+    "agent_owns": [
+      "advisory judgment",
+      "local document inspection",
+      "corpus-guided search-request generation",
+      "answer synthesis"
+    ],
+    "cli_owns": [
+      "snapshot persistence",
+      "deterministic calculations",
+      "source-material retrieval",
+      "trace recording"
+    ]
+  }
+}
+
+codex
+The saved context already has the offer ladder: $597 diagnostic, $15k full-service core offer, and $5k pre-designed room packages. I’m checking the local search rules now because the answer should likely cite the Money Models framework, not just rely on memory.
+exec
+/bin/zsh -lc "sed -n '1,260p' /private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/.codex/skills/money-model-advisor/search_request_rules.md" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+# Runtime Search-Request Rules
+
+These rules govern the active query-generation and retrieval path. The older
+`source_need_rules.md` remains frozen for the source-need planning eval and historical
+multi-query artifacts; it is not the runtime query contract.
+
+## When to search
+
+- Search when the answer needs Money Models support for a concept, comparison,
+  diagnosis, or recommendation and the snapshot already holds enough relevant facts.
+- Do not search instead of obtaining missing business facts or prior-session context.
+- Do not search for a simple vocabulary answer that does not need a citation.
+
+## One evidence job per search
+
+- Generate one search request per evidence job. If an answer needs two genuinely
+  different kinds of evidence, run two searches instead of mixing them into one query.
+- Do not rerun an economics search merely because known economics appear in the answer.
+
+## Generate the query
+
+- Before writing a query, read `../../../reference/corpus_guide_v1.json`.
+  It is the same versioned guide used by the winning development experiment.
+- Use the current user question, the saved BusinessSnapshot, and that guide to write
+  one concise source-search query.
+- Treat the guide as a translation reference, not a checklist. Translate ordinary
+  language into canonical source terminology when that helps retrieval.
+- Preserve the full information need. Include every concept needed for the mechanism,
+  relationship, comparison, sequence, or combined system being asked about.
+- Use business context only when it changes or disambiguates the evidence needed. Do
+  not add related concepts simply because the guide lists them nearby.
+- Do not answer the question or speculate about the answer inside the query.
+- Do not generate variants, a deterministic fallback, a subject filter, or a namespace
+  filter. Those approaches were not part of the winning method.
+
+## Active request fields
+
+- `query`: the single corpus-guided query that the CLI executes.
+- `user_turn`: the current user message, retained for trace context.
+- `intent`: the closest audit label; it does not alter retrieval. Choose one of
+  `teaching_evidence`, `diagnostic_evidence`, `comparison_evidence`, or
+  `recommendation_evidence`.
+
+codex
+I need one framework evidence search for the offer sequence: what to sell after an attraction/diagnostic offer to raise first-month profit. I’m reading the corpus guide before forming the query, as required.
+exec
+/bin/zsh -lc "sed -n '1,260p' reference/corpus_guide_v1.json" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+{
+  "version": "money-models-corpus-guide.v1",
+  "created_at": "2026-08-10",
+  "status": "candidate",
+  "derived_from": [
+    "corpus/coach/index.md",
+    "corpus/coach/decision-trees.md",
+    "corpus/money-models-frameworks.md"
+  ],
+  "generator_visible_fields": [
+    "name",
+    "aliases",
+    "use_when",
+    "relationships"
+  ],
+  "entries": [
+    {
+      "name": "Lifetime gross profit compared with customer acquisition cost",
+      "aliases": ["LTGP to CAC", "customer value versus acquisition cost", "3-to-1 viability"],
+      "use_when": "Assessing whether acquiring a customer is economically worthwhile rather than merely generating revenue.",
+      "relationships": "Lifetime gross profit should exceed CAC; roughly three times CAC is the source's basic viability threshold. Gross profit, not revenue, is the value side of the comparison."
+    },
+    {
+      "name": "Customer acquisition cost",
+      "aliases": ["CAC", "cost to acquire a customer", "media CAC", "fully loaded CAC", "ad acquisition cost"],
+      "use_when": "Understanding how much it costs to acquire a customer or why lead flow changes with free and discounted offers.",
+      "relationships": "CAC is evaluated alongside gross profit and payback period. Fully loaded CAC includes acquisition labor and overhead, while media CAC covers advertising spend."
+    },
+    {
+      "name": "Gross profit",
+      "aliases": ["GP", "price minus cost of goods sold", "profit after fulfillment", "delivery-adjusted value", "gross margin"],
+      "use_when": "Revenue looks healthy but fulfillment or delivery costs may make acquisition unattractive.",
+      "relationships": "Gross profit equals price minus cost of goods sold. It determines how much CAC can be recovered and how quickly payback occurs; revenue alone cannot answer either question."
+    },
+    {
+      "name": "Payback period",
+      "aliases": ["CAC recovery time", "time to break even on acquisition", "cash payback", "months to recover CAC"],
+      "use_when": "A business may be profitable over a customer's life but lacks enough cash to fund continued growth.",
+      "relationships": "Payback depends on CAC, first-30-day gross profit, and recurring gross profit. Front-loaded fees, earlier upsells, prepayment, and recurring profit can shorten it."
+    },
+    {
+      "name": "Client-financed acquisition",
+      "aliases": ["CFA", "customers fund growth", "self-funded acquisition", "first-30-day acquisition economics"],
+      "use_when": "Determining whether new-customer gross profit can fund continued customer acquisition.",
+      "relationships": "Level 1 has lifetime gross profit above CAC, Level 2 has first-30-day gross profit above CAC, and Level 3 has first-30-day gross profit above twice CAC."
+    },
+    {
+      "name": "Money model and offer stack",
+      "aliases": ["money model stack", "offer sequence", "customer journey of offers", "how the offers fit together"],
+      "use_when": "Combining acquisition and monetization offers into a coherent customer journey.",
+      "relationships": "A money model is a sequence of offers designed to minimize CAC and maximize early gross profit. Use as few offers as needed and make the sequence feel natural rather than like a sales gauntlet."
+    },
+    {
+      "name": "Four offer functions",
+      "aliases": ["attraction upsell downsell continuity", "four offer types", "offer stack roles"],
+      "use_when": "Classifying what each part of a money model is supposed to accomplish.",
+      "relationships": "Attraction offers liquidate CAC, upsells maximize profit, downsells maximize conversion after a no, and continuity stabilizes recurring cash flow."
+    },
+    {
+      "name": "Attraction offers",
+      "aliases": ["front-end offer", "first-purchase offer", "customer acquisition offer", "lead-to-customer offer"],
+      "use_when": "The constraint is getting enough prospects to engage or buy for the first time at a viable CAC.",
+      "relationships": "Attraction offers sit at the start of the stack and aim to liquidate or exceed CAC. The specific mechanic should match the barrier to first purchase."
+    },
+    {
+      "name": "Win Your Money Back",
+      "aliases": ["goal-based refund", "results-based refund", "earn the fee back", "refund for completing a transformation"],
+      "use_when": "A transformation has a measurable outcome and accountability, risk reversal, or before-and-after proof is valuable.",
+      "relationships": "The customer pays upfront and earns a refund or credit by achieving the defined result. The resulting proof can be worth more than the refund."
+    },
+    {
+      "name": "Free Giveaways",
+      "aliases": ["grand-prize giveaway", "contest offer", "participation prize", "scholarship giveaway"],
+      "use_when": "A business needs a large lead pool and has a compelling signature prize or offer to showcase.",
+      "relationships": "Advertise a grand prize, then make a relevant participation offer to non-winners. Application questions can also qualify and segment leads."
+    },
+    {
+      "name": "Decoy Offers",
+      "aliases": ["advertise the stripped-down option", "starter offer leading to premium", "cheap option versus premium"],
+      "use_when": "A premium offer is difficult to advertise directly but becomes compelling once prospects can compare it with a deliberately limited option.",
+      "relationships": "The decoy starts the conversation; the premium offer is then presented side by side so the contrast makes its additional value clear."
+    },
+    {
+      "name": "Buy X Get Y Free",
+      "aliases": ["buy one get more free", "prepay and receive bonus months", "quantity or duration bundle"],
+      "use_when": "A recurring product or service can exchange a longer commitment or prepayment for free quantity or duration.",
+      "relationships": "It can have the same economics as a percentage discount but stronger presentation. Fulfillment cost, cash obligations, and the share of customers prepaid constrain safe use."
+    },
+    {
+      "name": "Pay Less Now or Pay More Later",
+      "aliases": ["zero down versus discounted upfront", "pay later after delivery", "timing-based price choice"],
+      "use_when": "A physical product or one-time service buyer hesitates at paying full price before receiving value.",
+      "relationships": "The buyer chooses between paying less upfront now or paying the full amount later after delivery, creating agency and risk reversal rather than an unexplained discount."
+    },
+    {
+      "name": "Free with Consumption",
+      "aliases": ["free education before the sale", "experience value before buying", "content-led trust building", "challenge or webinar before offer"],
+      "use_when": "A higher-ticket buyer needs education, trust, or belief change before being ready for the paid offer.",
+      "relationships": "Useful free consumption builds trust and breaks limiting beliefs; the amount of consumption generally rises with the price and complexity of the paid offer."
+    },
+    {
+      "name": "Upsell offers",
+      "aliases": ["next offer after the sale", "add-on", "increase profit per customer", "post-purchase offer"],
+      "use_when": "Customers buy, but gross profit per customer or first-30-day profit is too low.",
+      "relationships": "Upsells occur after the initial sale and maximize profit per customer. Timing them when the next problem or need appears can also shorten payback."
+    },
+    {
+      "name": "Classic Upsell",
+      "aliases": ["you cannot have X without Y", "essential complement", "next natural thing", "required accessory"],
+      "use_when": "The first purchase naturally requires a complementary product or service to deliver the desired result.",
+      "relationships": "The accompaniment should feel necessary for success rather than arbitrary. It follows the initial product as the obvious next purchase."
+    },
+    {
+      "name": "Menu Upsell",
+      "aliases": ["prescribed add-on menu", "consultative add-ons", "unsell prescribe preference card on file"],
+      "use_when": "Several add-ons can be prescribed during a consultation or other high-trust sales interaction.",
+      "relationships": "The four steps are unsell irrelevant choices, prescribe what fits, ask a preference question, and use the card already on file to remove closing friction."
+    },
+    {
+      "name": "Anchor Upsell",
+      "aliases": ["premium option first", "high-price anchor", "make the standard option feel inexpensive"],
+      "use_when": "A legitimate premium tier can establish value before presenting the standard offer.",
+      "relationships": "Present a premium option around five to ten times the normal price, then show the standard option with the important core value preserved."
+    },
+    {
+      "name": "Rollover Upsell",
+      "aliases": ["credit the prior purchase", "apply the first fee to a larger package", "trade up", "I owe you money offer"],
+      "use_when": "Moving a current, former, upset, or competitor's customer into a larger offer by crediting an earlier purchase.",
+      "relationships": "The prior payment becomes credit toward the next offer. The larger offer generally needs to be several times the credited amount for the economics to work."
+    },
+    {
+      "name": "Downsell offers",
+      "aliases": ["offer after a no", "lower-friction alternative", "save the sale", "conversion offer"],
+      "use_when": "A prospect rejects the main offer and a different structure could convert the no without destroying value.",
+      "relationships": "A downsell changes what the customer receives or when they pay; it should not simply reduce the price for the identical offer without receiving something in return."
+    },
+    {
+      "name": "Payment Plans",
+      "aliases": ["spread payments", "installments", "financing", "cannot afford it today"],
+      "use_when": "The buyer wants the full offer but cannot afford the entire price today.",
+      "relationships": "Payment plans spread the timing of the pain rather than reducing the offer's total value. They differ from feature downsells, which reduce what the buyer receives."
+    },
+    {
+      "name": "Free Trials or Trial with Penalty",
+      "aliases": ["free if requirements are met", "card-backed trial", "fees for non-use", "accountability trial"],
+      "use_when": "A recurring product requires customer participation and a structured last chance can overcome uncertainty after a no.",
+      "relationships": "The trial stays free when agreed consumption or action requirements are met; a card is collected upfront and fees apply to non-consumption."
+    },
+    {
+      "name": "Feature Downsells",
+      "aliases": ["reduced-scope offer", "remove features to lower price", "smaller package", "change quantity or service level"],
+      "use_when": "Price remains the objection and the business can legitimately remove quantity, quality, service, or guarantees.",
+      "relationships": "Lower price must be paired with lower value or a valuable barter such as advertising. Removing a valued feature can also cause the buyer to reselect the original offer."
+    },
+    {
+      "name": "Continuity offers",
+      "aliases": ["recurring revenue", "membership", "subscription", "maintenance plan", "retention offer"],
+      "use_when": "Customers buy once and leave, cash flow is unstable, or greater lifetime value and enterprise value are priorities.",
+      "relationships": "Continuity adds ongoing value and recurring gross profit. Lower churn raises lifetime value, and upfront value followed by a long tail can increase commitment."
+    },
+    {
+      "name": "Continuity Bonus Offers",
+      "aliases": ["subscription bonus", "join for the bonus", "membership gift", "bonus worth more than month one"],
+      "use_when": "A valuable bonus can make joining continuity feel more attractive than buying transactionally.",
+      "relationships": "Advertise the bonus rather than the subscription. The bonus should exceed the first month's perceived value and can be priced separately to clarify the continuity advantage."
+    },
+    {
+      "name": "Continuity Discount Offers",
+      "aliases": ["earn a lifetime discount", "retention milestone discount", "discount after the churn point", "commitment discount"],
+      "use_when": "Churn predictably rises at a particular time or the business wants to reward longer commitment.",
+      "relationships": "The discount can be front-loaded, back-loaded, spread, or delivered as credit. A promised lifetime discount after the usual churn point gives customers a reason to stay until then."
+    },
+    {
+      "name": "Waived Fee Offers",
+      "aliases": ["waived setup fee", "implementation fee waived for commitment", "cancellation activates the fee", "startup fee"],
+      "use_when": "A service or subscription needs stronger commitment without relying on a conventional long-term contract.",
+      "relationships": "A meaningful startup fee is waived while the customer remains committed but becomes due upon early cancellation, creating sunk-cost and commitment effects."
+    },
+    {
+      "name": "Build the money model one offer at a time",
+      "aliases": ["make your own money model", "what to add next", "simple scales fancy fails", "offer rollout order"],
+      "use_when": "Designing the whole stack or deciding which missing offer to implement next.",
+      "relationships": "Build attraction, upsell, downsell, and continuity deliberately, perfecting one before adding the next. Choose the next offer based on the observed constraint and use the fewest offers needed."
+    }
+  ]
+}
+
+codex
+The query should target the “offer stack” and “upsell after initial sale” mechanism. I’m running a single hybrid retrieval search for recommendation evidence and will only cite passages I inspect.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business\"
+SEARCH_REQUEST='{\"intent\":\"recommendation_evidence\",\"user_turn\":\"if the diagnostic sells, what should we offer next to increase first-month profit?\",\"query\":\"offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic\"}'
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir \""'$CONTEXT_DIR" --search-request-json "$SEARCH_REQUEST" --top-k 5' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 1340ms:
+{
+  "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business",
+  "retrieval_backend": "hybrid",
+  "vector_store": "local",
+  "namespace_policy": "unfiltered",
+  "namespace_prefix": "money-models",
+  "search_request": {
+    "intent": "recommendation_evidence",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
+    "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
+  },
+  "queries": [
+    {
+      "intent": "recommendation_evidence",
+      "subjects": [],
+      "target_namespaces": [],
+      "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "subject": null
+    }
+  ],
+  "source_material": [
+    {
+      "intent": "recommendation_evidence",
+      "subject": null,
+      "subjects": [],
+      "target_namespaces": [],
+      "queried_namespaces": [
+        null
+      ],
+      "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "chunks": [
+        {
+          "id": "upsell-offers:1",
+          "chapter": "upsell-offers",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.032,
+          "preview": ". So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a ",
+          "text": ". So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a problem, another appears. You upsell the solution to the problem that your first offer reveals. So every offer opens the door to an upsell. Even upsells o- open the door to more upsells. And often, upsells make up the majority of the profits. This is what people don't understand. If the objective is that we can break even, obviously, we wanna make as much money as we want, but you don't wanna make more money on a few customers when you can get 10 times the customers and then make way, more on the second sale, right? And so often, upsells. make up the majority of the profit, even if that's not the thing you' sell the most of. Think about it in terms of volume, I might sell 10 times more of my front-end offer, but 10X of my profit comes from my second sale. They can make or break a money. model. And so let me show you how much"
+        },
+        {
+          "id": "make-your-money-model:2",
+          "chapter": "make-your-money-model",
+          "subject": "offers",
+          "subjects": [
+            "offers",
+            "unit-economics",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 0.031,
+          "preview": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)  So let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in.",
+          "text": "## [\u00a77.1.b] The 5-step build process (attraction \u2192 upsell \u2192 downsell \u2192 continuity \u2192 stack)\n\nSo let's go through steps for making your own. So step one is you start with an attraction offer. It al- always starts with getting people to engage, getting leads to engage with you. Step two is you pick an upsell offer. You figure out, okay, the people have come in. They're coming off win-your-money-back. They're coming on, uh, buy X get Y free. They're coming on, uh, decoy offer. Whatever it is, they're coming on the front end. You say, \"Great, now I'm either gonna do a menu upsell, I'm gonna do an anchor- anchor upsell, I'm gonna do a rollover upsell.\" All of those things you can use as your second, second piece. Then you can pick your downsell offer. So what if they say no to any of these other offers? Well, we have our. entire downsell flow, which is we start with payment plans, uh, then we do a free trial, or we do payment plan to feature downsell. Then we go to free trial. You just pick the ones that you know that you can execute on right? now. Step four, then you' pick a continuity offer. And the result is. that you get your cash back in 30 days, more customers, and make more money."
+        },
+        {
+          "id": "offer-types:4",
+          "chapter": "offer-types",
+          "subject": "offers",
+          "subjects": [
+            "offers",
+            "upsells",
+            "downsells",
+            "continuity"
+          ],
+          "score": 0.029,
+          "preview": "## [\u00a72.2.e] The four offer types \u2014 Attraction, Upsell, Downsell, Continuity  So now let's talk about all the things that I just did, but we're gonna chunk up so that you can apply it to any business. All right? So there's attraction offers, upsell offers, downsell offers and continuity offers. The objective of each of these. Attraction offers is to liquidate",
+          "text": "## [\u00a72.2.e] The four offer types \u2014 Attraction, Upsell, Downsell, Continuity\n\nSo now let's talk about all the things that I just did, but we're gonna chunk up so that you can apply it to any business. All right? So there's attraction offers, upsell offers, downsell offers and continuity offers. The objective of each of these. Attraction offers is to liquidate how much it costs you to cus- get a customer. Upsell offers are to maximize profit. Downsell offers are to maximize conversion. Continuity offers are to stabilize cash flow in the business. There are many ways to accomplish CFA. Some businesses can do it with only one offer. Some businesses get funding so they don't need to break even to get customers 'cause they have outside money that's injected into their system. But for everyone else probably watching this, I will explain a model that I have seen emerge over and over and over again within the businesses that I built. So when I look at every single amazing business that I've built that's made a lot of money, they had these things pretty much in this sequence. And it doesn't happen all at once. It just often becomes something that you build towards. So to be very clear, I'm not saying you start with a fully fledged money model, 'cause it will break your b- whole business in half. You wanna start with one, you start adding in layers, like layers of paint. You just keep putting more and more layers on it. And so again, you can build an amazing business with just one or two of these things. And sometimes it's worth keeping it simple and just doing that. If you can scale with... I wanna scale with as few offers as humanly possible. But I still wanna maximize how much money I make in the shortest period of time. So if I have to add more, I will, to enable me scaling. But I wanna have as few as I can, 'cause I wanna have as little operational drag as possible. All right? And so it has four prongs or four different vectors and different offers that correspond to each objective. All right? So this beautiful little image took me a very long time to figure out. Right? And so we have attraction offers that bring people in the door. We have upsell offers that typically happen immediately after that get people to buy more stuff. We have downsell offers for people who, who don't say yes to either of these things, so we can still get conversions and then potentially upsell them later. And then we have continuity offers on the back, which get them into a recurring cash flow payment to the business. And so let's explain how they all work together to make a symphony of CFA. All right. So here, we turn strangers into customers, get, come spend more money. Lower CAC is to get people... Excuse me, is to get people to say yes when they would have said no, which is what you offer when they say no. And then with continuity, you keep people buying. All right? Which is meaning you get them to buy again. All right? So those are the four prongs."
+        },
+        {
+          "id": "continuity-offers:2",
+          "chapter": "continuity-offers",
+          "subject": "continuity",
+          "subjects": [
+            "continuity"
+          ],
+          "score": 0.029,
+          "preview": ". So the objective here for continuity offers within the money models that I explain is to maximize lifetime value per customer. These have lower absolute gross profit, but higher gross margins oftentimes. There are three topics we will cover: downsell the upsell, calculating back of napkin LTV, and big head long tail. So let's rock through it. So downsell t",
+          "text": ". So the objective here for continuity offers within the money models that I explain is to maximize lifetime value per customer. These have lower absolute gross profit, but higher gross margins oftentimes. There are three topics we will cover: downsell the upsell, calculating back of napkin LTV, and big head long tail. So let's rock through it. So downsell the upsell. So this is my two cents. I found it works best to downsell your upsell. So get more cash upfront, sell shorter duration, and then add value, and then sell it for less. All right, so when I explained this, I had my $16,000, 16-week thing, $1,000 a week, and then I would say, \"Hey, let me give you five times the value, and then it's less.\" And people were like, \"Whoa.\" But I extended the term. So that's how I downselled my upsell. A lot of times people want to increase the price of the upsell. There's nothing wrong with that. This is just an alternative method that I found worked really well. My challenge is in the beginning was $600 for six weeks, and then back end, we'd sell $200 per month. So it's less, so one is $100 a week, one's $50 a week. It's half the price, and as a member, you get all these benefits, right? And so I like the downsell the upsell process because if they said yes to this thing, they're like, \"Oh, this is an even better deal,\" and then we convert even more of them. All right, so here's how it sounds. \"So have you enjoyed everything so far?\" They say yes. \"Mind if I tell you about a way to save a little bit and get a lot more?\" They say yes. You say, \"So given you've enjoyed X, Y, and Z, we want you here for the long term"
+        },
+        {
+          "id": "decoy-offers:6",
+          "chapter": "decoy-offers",
+          "subject": "offers",
+          "subjects": [
+            "offers"
+          ],
+          "score": 0.028,
+          "preview": "it's aligned with the scripting in the sale, right? So this builds goodwill, it over-delivers, and it increases the chance that they take your upsell offer later. Remember, they're still a lead and if they bought the decoy, if it's a free thing that they haven't bought yet, if it's not a free thing, they paid. They're still a customer. And if you've followed",
+          "text": "it's aligned with the scripting in the sale, right? So this builds goodwill, it over-delivers, and it increases the chance that they take your upsell offer later. Remember, they're still a lead and if they bought the decoy, if it's a free thing that they haven't bought yet, if it's not a free thing, they paid. They're still a customer. And if you've followed any of my stuff, you absolutely should still upsell them halfway through whatever this thing is, and if you give them some stuff now, that's good, they will probably increase the likelihood that they will take more of your stuff that's good later. So, in summary, decoy offers. Advertise something for free or discounted, then when the leads ask to learn more, you also present a more valuable premium offer. Make the premium offer far more valuable than the decoy option by adding more features, benefits, bonuses, and guarantees. Strip down your decoy- your main offer to your decoy offer as much as is reasonable. When leads ask about the decoy offer, present your premium offer right next to it. All right? Ask if they're here for free stuff or lasting results to get permission to put the premium offer first. If you still don't want that, then you put the decoy offer and then kind of like, like, \"I mean, you can do that, but this is what people get the best results on.\" And you can still make money from the leads who pick the decoy option. You'll just learn the best way to deliver your decoy product and maximize upsells from it. Expect to make money fast. If you're not, then make the contrast between the offers bigger. By the way, if you're a company doing over a million dollars or more in profit and want us to invest as a partner to help you scale, you can go to acquisition.com and hit the Sell button. If you just want help scaling, you can hit the Scale button. If you don't have a business, hit the Start a Business one, which I'll just tell you will route you to school.com. So, that concludes the decoy offers. Let's get to buy X get Y free."
+        }
+      ]
+    }
+  ]
+}
+
+codex
+The first search supports “upsell next” as the profit lever. Since the best practical structure here is probably crediting the diagnostic toward the next purchase, I’m running one separate search for that rollover mechanism before I finalize.
+exec
+/bin/zsh -lc "CONTEXT_DIR=\"/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business\"
+SEARCH_REQUEST='{\"intent\":\"recommendation_evidence\",\"user_turn\":\"if the diagnostic sells, what should we offer next to increase first-month profit?\",\"query\":\"rollover upsell credit prior purchase toward larger offer second sale economics\"}'
+PYTHONPATH=src python3 -m money_model_architect.cli search --business-dir \""'$CONTEXT_DIR" --search-request-json "$SEARCH_REQUEST" --top-k 5' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 1388ms:
+{
+  "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business",
+  "retrieval_backend": "hybrid",
+  "vector_store": "local",
+  "namespace_policy": "unfiltered",
+  "namespace_prefix": "money-models",
+  "search_request": {
+    "intent": "recommendation_evidence",
+    "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
+    "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
+  },
+  "queries": [
+    {
+      "intent": "recommendation_evidence",
+      "subjects": [],
+      "target_namespaces": [],
+      "query": "rollover upsell credit prior purchase toward larger offer second sale economics",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "subject": null
+    }
+  ],
+  "source_material": [
+    {
+      "intent": "recommendation_evidence",
+      "subject": null,
+      "subjects": [],
+      "target_namespaces": [],
+      "queried_namespaces": [
+        null
+      ],
+      "query": "rollover upsell credit prior purchase toward larger offer second sale economics",
+      "reason": "Corpus-guided query authored by the agent for the current question.",
+      "chunks": [
+        {
+          "id": "rollover-upsell:1",
+          "chapter": "rollover-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.033,
+          "preview": ". Here's how it works. So rollover upsells credit some or all of a customer's previous purchase towards your next offer. And this, in my experience, gets way more people to take it. So once I know how much credit to give, I figure out three things. One, who to upsell, two, what to upsell, and three, how to roll over the credit. So for the who, I use rollover",
+          "text": ". Here's how it works. So rollover upsells credit some or all of a customer's previous purchase towards your next offer. And this, in my experience, gets way more people to take it. So once I know how much credit to give, I figure out three things. One, who to upsell, two, what to upsell, and three, how to roll over the credit. So for the who, I use rollover upsells in four situations"
+        },
+        {
+          "id": "rollover-upsell:4",
+          "chapter": "rollover-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.032,
+          "preview": "like, \"Ah, you know, I would, but I've got three months left in this service agreement.\" You say, \"No worries.Whatever you have, the three months, I'll credit it towards mine and I'll just make mine a two-year agreement. So you'd say like, \"Hey, John, saw your negative review on, uh, their product and it really upset me. To make it up to you, I'll credit wha",
+          "text": "like, \"Ah, you know, I would, but I've got three months left in this service agreement.\" You say, \"No worries.Whatever you have, the three months, I'll credit it towards mine and I'll just make mine a two-year agreement. So you'd say like, \"Hey, John, saw your negative review on, uh, their product and it really upset me. To make it up to you, I'll credit whatever payments you have left with them to switch to ours. This way you don't lose a thing and you start getting the benefits now. Fair enough?\" 'Cause that way you don't have to wait for that thing to expire and pay and then wait to get the benefits. You can start getting the benefits now, and you don't lose anything, and I get the customer. Membership. So this is where you spread the first purchase over time. So who? Current customers. What? 12-month membership. How? Spread over the first purchase. So if somebody comes in, buys a block of service, uh, or, or of membership time, as- soon as they do, you can then offer to apply the entire amount towards more time, like 12 months. I can do rollover upsells anytime, I just prefer to do, to do them, right then. All right, so this is the important points. Uh, use rollover, uh, offers to attract new customers. For example, you roll over some or all of the customers paid. somebody else towards your thing, and you can find leads by scraping contact information from negative product reviews wherever available. You can do rollover upsells before refunding. This has solved me tons of cus- saved me tons of customers and cash. If you did a bad job, hey, it happens, rollover for a do-over. And if they want something different, you can rollover the purchase toward that thing in- instead. Previous customer, uh, are still customers, upsell them. These are win-backs, so reach out to old customers, six plus, plus months, uh, from their last purchase. Look at how much they paid, decide how much you wanna give them, offer it"
+        },
+        {
+          "id": "rollover-upsell:6",
+          "chapter": "rollover-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.032,
+          "preview": "introduce comes in, you roll their gift card over into the main offer. And so some people see this and they're like, \"You want me to give 90% off my main stuff?\" It's like, \"No, bro, I want you to sell a $2,000 thing and give $200 gift cards away for 20 bucks.\" So what's really happening here, you're gonna get paid $20 to get a lead that's a hot referral tha",
+          "text": "introduce comes in, you roll their gift card over into the main offer. And so some people see this and they're like, \"You want me to give 90% off my main stuff?\" It's like, \"No, bro, I want you to sell a $2,000 thing and give $200 gift cards away for 20 bucks.\" So what's really happening here, you're gonna get paid $20 to get a lead that's a hot referral that you're then gonna take the $200 and roll it into a $2,000 product, which you may have marked up by $200, or you add something to it that's high margin that you can justify adding the $200 for that then you can take the deduction off of. All right? So you make the value of the g- gift card 20% of the price of whatever you wanna sell next. So if it's a $200 gift card, you make that one-fifth of the price of $200. If I had a $2,000 offer, that'd be one-tenth. But minimum should be five X, would be a $1,000 offer. Obviously, you can make it more expensive than that. You just want it to be enough that it drives a purchase. All right? In our example, we sell a $200 gift card for 20 bucks, then apply that $200 offer with at least a $1,000 price tag. People pay you to refer their friends, plus you get cash from unused gift cards. Wins all around. That is the gift card play. Final points, rollover upsells, credit summer all of the customer's previous purchases towards your next offer. Do rollover upsellers figure out who to upsell, what to upsell, and how to credit the rollover? Who to upsell, old customers, upset customers, other people's upset customers, current customers. What to upsell, more of something, better of something, new something new. Just make sure that you make a profit after applying your discount. How to rollover the credit. You can do full or partial purchase, uh, give it upfront, or you can spread it out. We went through examples of all those. You can price your next offer for at least four times higher than the credit. So this makes it a 25% discount. Everything above that is gravy. I wouldn't do less than that. And to get more takers, add urgency. Make your rollover credit a one-time-only offer. And boom, that is the rollover upsell."
+        },
+        {
+          "id": "rollover-upsell:5",
+          "chapter": "rollover-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.031,
+          "preview": ". Example, I made personalized videos. This is me personally. I made personalized videos for 200 past customers. This is before AI and all that stuff. It took me like two days, um, offering them $4,000 of credit to return. Add urgency to rollover upsells, so make them one-time only. So this is a key point. So this is optional. It's up to you, but this is how",
+          "text": ". Example, I made personalized videos. This is me personally. I made personalized videos for 200 past customers. This is before AI and all that stuff. It took me like two days, um, offering them $4,000 of credit to return. Add urgency to rollover upsells, so make them one-time only. So this is a key point. So this is optional. It's up to you, but this is how I prefer to do it. Make the moment you present the offer the only time to take the offer so they don't get to sleep on it. So you wanna surprise and delight them with this credit or this discount. So if they want the credit, they gotta take it now. If not, no big deal. They can always pay full price later. How to price a rollover upsell. So to make money on a discounted offer, you have to have profit leftover in order to discount it, right? So I try to make the upsell at least four times more than the rollover credit. So that gives me a 25% discount at most if it's four times more expensive. Remember, the rules of discounting apply. Bigger discounts make you less profit but... per sale, but they get you more sales. Now, you don't need to credit the entire amount. I just like to highlight this again because people do this and then they ruin their businesses, so I'm telling you, don't do that. Like, you can just take as much or as little as you want. The goal is to simply get as much of a discount that you get responses. So if you find out that $200 is enough to move the needle and the average person spend $2,000 a year, then you can say, \"Hey, your last purchase with me, uh, the 2,000 you spent last year was this thing.\" And that's what you choose to credit. You don't have to credit everything. If you have small, if, if the person's spent a very small time with you and you have really big packages, credit the whole thing. If they spend a really long time with you and you have small tickets, credit the last one. So I rollover whatever I think would incentivize to buy the next thing. And you can just test to find the sweet spot. From the beginning it's $500. You can test 300, whatever. This is my famous gift card play. The way that this works, and this is a savage play, and it basically is a rollover just, like, packaged differently, is that you say, \"Hey, this works great for, like, holiday seasons, things like that.\" You say, \"Hey,\" this also crushes for Black Friday, \"I'm giving $200 gift cards away for 90% off.\" Limit two per person, and you can only use them on someone else 'cause it's the holiday season. So you can do this for Christmas and you can do this for Black Friday. So you can use it twice if you want. Now, the key here... You can also do for, uh, birthdays. Uh, sorry, not birthdays. Sorry. They give it to other people as birthday gifts. Anyways, when customers buy the gift card, ask them who they want to make it out to and if they'll make an introduction. Then when that person comes in, the person they introduce comes in, you roll their gift card over into the main offer. And so some people see this and they're like, \"You want me to give 90% off my main stuff?\" It's like, \"No, bro, I want you to sell a $2,000 thing and give $200 gift cards away for 20 bucks.\" So what's really happening here, you're gonna get paid $20 to get a lead that's a hot referral that you're then gonna take the $200 and roll it into a $2,000 product, which you may have marked"
+        },
+        {
+          "id": "rollover-upsell:3",
+          "chapter": "rollover-upsell",
+          "subject": "upsells",
+          "subjects": [
+            "upsells"
+          ],
+          "score": 0.03,
+          "preview": "or part of it is, like, let's say somebody was with you for three years and they spent five grand with you. You might not credit five grand towards something else if your services, you know, aren't that much, maybe it's $2,000 a year, $5,000, three years of service. Well, you'd certainly want to get that customer back. But if you give them another three year",
+          "text": "or part of it is, like, let's say somebody was with you for three years and they spent five grand with you. You might not credit five grand towards something else if your services, you know, aren't that much, maybe it's $2,000 a year, $5,000, three years of service. Well, you'd certainly want to get that customer back. But if you give them another three years, it doesn't make sense. So you could say, \"Hey, I'm gonna give you the last, you know, the last three things you bought from me. Let me credit those instead,\" right? You wouldn't say instead, you'd just say, \"I'll credit those for you,\" right? All of those things you could say, \"Listen, I'm gonna assume that we did something to mess up because you didn't come back. And so I'm gonna assume that the last six months of service that we did was not up to snuff. So let me make it up to you.\" So examples. So chiropractor, reengage old, old patients with a win back campaign. So we say who's the who, six months since their last purchase. What? New plan. How? Upfront. So that's our who, our what, and our how. So reach out to your old patients, you look at their purchase history, you offer. to apply some or all of their past purchase towards something more expensive than what they bought. So I would say, \"Hey, Mrs. Banks, I wanted to give your money back. Do you have a minute?\" \"Great. Yeah, I wanted to see how your back pain's going.\" \"Oh, I'm so sorry to hear that. Uh, well, I've got some good news. As, a way of saying thank you, I wanna give you $500 of your money back as credit towards staying pain-free for good. Is that of any interest? Great, let's get you in.\" Let's say a dentist. \"Hey, save your own upset customer with a rollover upsell.\" So who? Upset customer. What? Teeth whitening. How? Front load $200 credit. So we say, \"Hey, the person pays 200 bucks for teeth cleaning, but doesn't think their teeth got whiter. We explain they need m- t- you know, to get more and upsell into a teeth whitening package, which includes multiple sessions, an at-home kit, and multiple teeth cleanings.\" Then, you offer to credit the $200 they just paid for the cleaning towards the whitening package. This just really works when people are like, \"Well, this isn't what I thought it was gonna be.\" And you're like, \"Oh, that's on me. I thought you wanted this. Miscommunication. I'll make it up to you. Let me, take everything you paid so you didn't lose anything. Everything got- was for free now. And let's put it towards the thing you ultimately wanted.\" Because the thing is, is they still want the thing they, they spent money on. And so if what they really wanted was higher expectations, then sell them the higher package. Rescue, COF, steal other people's upset customers. So who? Competitor's customers. What? Service. agreement. How? Rollover cost to break old agreement. So, let's say you find a competitor's upset customers and credit their old purchase with them towards a new purchase with you. Then, you roll over the amount they owe them as a credit towards a longer agreement with you. So let's say they're like, \"Ah, you know, I would, but I've got three months left in this service agreement.\" You say, \"No worries.Whatever you have, the three months, I'll credit it towards mine and I'll just make mine a two-year agreement. So you'd say like, \"Hey, John, saw your negative review on, uh, their product and it really upset me. To make it up to you, I'll credit whatever payments you have left with them to switch to ours. This way you don't lose a thing and you start getting the benefits now."
+        }
+      ]
+    }
+  ]
+}
+
+codex
+The evidence supports a clear recommendation: make the next offer an immediate upsell, and structure it as diagnostic credit toward a higher-ticket implementation step. I’m recording the completed turn now before returning the advisor answer.
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/turn-record.json
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..c332965de9eb5ef7d9f0f252706c7e7aea36d0fb
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,91 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "summary": "Loaded business snapshot and turn guidance for the user request."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on what offer comes after an attraction offer to increase first-30-day profit."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on rollover upsell credit toward a larger next offer."
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..c332965de9eb5ef7d9f0f252706c7e7aea36d0fb
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,91 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "summary": "Loaded business snapshot and turn guidance for the user request."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on what offer comes after an attraction offer to increase first-30-day profit."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on rollover upsell credit toward a larger next offer."
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ exited 1 in 0ms:
+record-json requires non-empty string list field: actions
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..c332965de9eb5ef7d9f0f252706c7e7aea36d0fb
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,91 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "summary": "Loaded business snapshot and turn guidance for the user request."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on what offer comes after an attraction offer to increase first-30-day profit."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on rollover upsell credit toward a larger next offer."
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+codex
+The finish validator rejected the record shape because `actions` must be a non-empty list of strings in this CLI version. I’m adjusting only the trace artifact format, not the substance of the answer.
+exec
+/bin/zsh -lc 'PYTHONPATH=src python3 -m money_model_architect.cli session finish --help' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+usage: python3.14 -m money_model_architect.cli session finish
+       [-h] --business-dir BUSINESS_DIR --record-json RECORD_JSON
+
+options:
+  -h, --help            show this help message and exit
+  --business-dir BUSINESS_DIR
+                        Directory containing advisor state
+  --record-json RECORD_JSON
+                        JSON object or path to a completed turn record
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..c332965de9eb5ef7d9f0f252706c7e7aea36d0fb
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,91 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    {
++      "operation": "session_start",
++      "summary": "Loaded business snapshot and turn guidance for the user request."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on what offer comes after an attraction offer to increase first-30-day profit."
++    },
++    {
++      "operation": "search_source_material",
++      "summary": "Searched for framework support on rollover upsell credit toward a larger next offer."
++    }
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/turn-record.json
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..92b89eed8ef83be84a860d7dacf4dd2d935f9946
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,82 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start: loaded business snapshot and turn guidance for the user request",
++    "search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit",
++    "search_source_material: searched for framework support on rollover upsell credit toward a larger next offer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..92b89eed8ef83be84a860d7dacf4dd2d935f9946
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,82 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start: loaded business snapshot and turn guidance for the user request",
++    "search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit",
++    "search_source_material: searched for framework support on rollover upsell credit toward a larger next offer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ exited 1 in 0ms:
+record-json actions contain unknown label(s): session_start: loaded business snapshot and turn guidance for the user request, search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit, search_source_material: searched for framework support on rollover upsell credit toward a larger next offer
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..92b89eed8ef83be84a860d7dacf4dd2d935f9946
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,82 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start: loaded business snapshot and turn guidance for the user request",
++    "search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit",
++    "search_source_material: searched for framework support on rollover upsell credit toward a larger next offer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+codex
+The validator is stricter than the skill prose: it wants canonical action labels. I’m checking the local CLI validation code so the session record matches what it actually accepts.
+exec
+/bin/zsh -lc 'rg "unknown label|actions contain|record-json" -n src tests' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ exited 2 in 0ms:
+rg: tests: No such file or directory (os error 2)
+src/money_model_architect/cli.py:145:    session_finish.add_argument("--record-json", required=True, help="JSON object or path to a completed turn record")
+src/money_model_architect/cli.py:392:        record = _expect_json_type(_read_json_value(args.record_json), dict, "record-json")
+src/money_model_architect/cli.py:562:        raise SystemExit(f"record-json actions contain unknown label(s): {', '.join(invalid_actions)}")
+src/money_model_architect/cli.py:566:        raise SystemExit("record-json source_events must be a list when supplied")
+src/money_model_architect/cli.py:571:        raise SystemExit("record-json calculation_events must be a list when supplied")
+src/money_model_architect/cli.py:576:        raise SystemExit("record-json actions include calculate, so calculation_events must contain at least one event")
+src/money_model_architect/cli.py:580:        raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
+src/money_model_architect/cli.py:585:        raise SystemExit("record-json metadata must be an object when supplied")
+src/money_model_architect/cli.py:605:        raise SystemExit(f"record-json requires non-empty string field: {field_name}")
+src/money_model_architect/cli.py:612:        raise SystemExit(f"record-json requires non-empty string list field: {field_name}")
+src/money_model_architect/cli.py:618:        raise SystemExit(f"record-json source_events[{index}] must be an object")
+src/money_model_architect/cli.py:622:        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+src/money_model_architect/cli.py:623:    request_label = f"record-json source_events[{index}].search_request"
+src/money_model_architect/cli.py:630:        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+src/money_model_architect/cli.py:631:    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+src/money_model_architect/cli.py:635:        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+src/money_model_architect/cli.py:638:            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+src/money_model_architect/cli.py:640:            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+src/money_model_architect/cli.py:654:        raise SystemExit(f"record-json calculation_events[{index}] must be an object")
+src/money_model_architect/cli.py:659:            f"record-json calculation_events[{index}].metric must be one of: {', '.join(sorted(valid_metrics))}"
+src/money_model_architect/cli.py:663:        raise SystemExit(f"record-json calculation_events[{index}].inputs must be a non-empty object")
+src/money_model_architect/cli.py:665:        raise SystemExit(f"record-json calculation_events[{index}].inputs keys must be non-empty strings")
+src/money_model_architect/cli.py:668:        raise SystemExit(f"record-json calculation_events[{index}].value must be a number")
+src/money_model_architect/cli.py:672:        raise SystemExit(f"record-json calculation_events[{index}] has invalid inputs for {metric}: {exc}") from exc
+src/money_model_architect/cli.py:674:        raise SystemExit(f"record-json calculation_events[{index}] result for {metric} is not finite")
+src/money_model_architect/cli.py:677:            f"record-json calculation_events[{index}].value does not match deterministic {metric} result: "
+src/money_model_architect/cli.py:761:        raise SystemExit("record-json metadata.external_cited_chunk_ids must be a list of strings when supplied")
+src/money_model_architect/cli.py:765:        raise SystemExit("record-json cited_chunk_ids not found in source_events chunks: " + ", ".join(missing))
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..92b89eed8ef83be84a860d7dacf4dd2d935f9946
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,82 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start: loaded business snapshot and turn guidance for the user request",
++    "search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit",
++    "search_source_material: searched for framework support on rollover upsell credit toward a larger next offer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+exec
+/bin/zsh -lc "sed -n '520,650p' src/money_model_architect/cli.py" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+        service_business = _snapshot_payload_looks_service_based(business, money_model)
+    else:
+        economics = payload
+        service_business = bool(economics.get("service_business", False))
+
+    cac_value = economics.get("cac")
+    if cac_value is None:
+        raise SystemExit("diagnose requires economics.cac")
+
+    return UnitEconomics(
+        cac=cac_value,
+        first_30_day_gross_profit=economics.get("first_30_day_gross_profit") or 0.0,
+        monthly_recurring_gross_profit=economics.get("monthly_recurring_gross_profit") or 0.0,
+        lifetime_gross_profit=economics.get("lifetime_gross_profit"),
+        gross_margin=economics.get("gross_margin"),
+        service_business=service_business,
+    )
+
+
+def _snapshot_payload_looks_service_based(business: Any, money_model: Any) -> bool:
+    text_parts: list[str] = []
+    if isinstance(business, dict):
+        for field_name in ("business_type", "delivery_model"):
+            value = business.get(field_name)
+            if isinstance(value, str):
+                text_parts.append(value)
+    if isinstance(money_model, dict):
+        core_offer = money_model.get("core_offer", {})
+        if isinstance(core_offer, dict):
+            description = core_offer.get("description")
+            if isinstance(description, str):
+                text_parts.append(description)
+    text = " ".join(text_parts).lower()
+    return any(term in text for term in ("service", "services", "consulting", "agency", "design", "implementation"))
+
+
+def _normalize_session_finish_record(record: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    user_message = _required_string(record, "user_message")
+    assistant_message = _required_string(record, "assistant_message")
+    actions = _required_string_list(record, "actions")
+    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+    if invalid_actions:
+        raise SystemExit(f"record-json actions contain unknown label(s): {', '.join(invalid_actions)}")
+
+    source_events = record.get("source_events", [])
+    if not isinstance(source_events, list):
+        raise SystemExit("record-json source_events must be a list when supplied")
+    normalized_events = [_normalize_source_event(event, index) for index, event in enumerate(source_events, start=1)]
+
+    calculation_events = record.get("calculation_events", [])
+    if not isinstance(calculation_events, list):
+        raise SystemExit("record-json calculation_events must be a list when supplied")
+    normalized_calculation_events = [
+        _normalize_calculation_event(event, index) for index, event in enumerate(calculation_events, start=1)
+    ]
+    if "calculate" in actions and not normalized_calculation_events:
+        raise SystemExit("record-json actions include calculate, so calculation_events must contain at least one event")
+
+    cited_chunk_ids = record.get("cited_chunk_ids", [])
+    if not isinstance(cited_chunk_ids, list) or not all(isinstance(chunk_id, str) for chunk_id in cited_chunk_ids):
+        raise SystemExit("record-json cited_chunk_ids must be a list of strings when supplied")
+    cited_chunk_ids = _dedupe_strings(cited_chunk_ids)
+
+    metadata = record.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise SystemExit("record-json metadata must be an object when supplied")
+
+    warnings = _session_finish_warnings(normalized_events, cited_chunk_ids, metadata)
+    return (
+        {
+            "user_message": user_message,
+            "assistant_message": assistant_message,
+            "actions": actions,
+            "source_events": normalized_events,
+            "calculation_events": normalized_calculation_events,
+            "cited_chunk_ids": cited_chunk_ids,
+            "metadata": metadata,
+        },
+        warnings,
+    )
+
+
+def _required_string(record: dict[str, Any], field_name: str) -> str:
+    value = record.get(field_name)
+    if not isinstance(value, str) or not value.strip():
+        raise SystemExit(f"record-json requires non-empty string field: {field_name}")
+    return value
+
+
+def _required_string_list(record: dict[str, Any], field_name: str) -> list[str]:
+    value = record.get(field_name)
+    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item.strip() for item in value):
+        raise SystemExit(f"record-json requires non-empty string list field: {field_name}")
+    return value
+
+
+def _normalize_source_event(event: Any, index: int) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise SystemExit(f"record-json source_events[{index}] must be an object")
+    uses_current_contract = "search_request" in event
+    search_request = event.get("search_request", event.get("source_need"))
+    if not isinstance(search_request, dict):
+        raise SystemExit(f"record-json source_events[{index}].search_request must be an object")
+    request_label = f"record-json source_events[{index}].search_request"
+    _validate_search_request_payload(search_request, request_label)
+
+    queries = event.get("queries")
+    if queries is None and isinstance(event.get("query"), str):
+        queries = [event["query"]]
+    if not isinstance(queries, list) or not queries or not all(isinstance(query, str) and query.strip() for query in queries):
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty queries list")
+    _validate_requested_queries_executed(search_request, queries, f"record-json source_events[{index}]")
+
+    chunks = event.get("chunks")
+    if not isinstance(chunks, list) or not chunks:
+        raise SystemExit(f"record-json source_events[{index}] requires non-empty chunks list")
+    for chunk_index, chunk in enumerate(chunks, start=1):
+        if not isinstance(chunk, dict):
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] must be an object")
+        if not isinstance(chunk.get("id"), str) or not chunk["id"].strip():
+            raise SystemExit(f"record-json source_events[{index}].chunks[{chunk_index}] requires non-empty id")
+
+    normalized = dict(event)
+    if uses_current_contract:
+        normalized.pop("source_need", None)
+        normalized["search_request"] = search_request
+    normalized["queries"] = queries
+    normalized["query"] = queries[0]
+    normalized["chunks"] = chunks
+    return normalized
+
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..92b89eed8ef83be84a860d7dacf4dd2d935f9946
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,82 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start: loaded business snapshot and turn guidance for the user request",
++    "search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit",
++    "search_source_material: searched for framework support on rollover upsell credit toward a larger next offer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+exec
+/bin/zsh -lc 'rg "ACTION_LABELS" -n src/money_model_architect/cli.py src/money_model_architect' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+src/money_model_architect/cli.py:29:ACTION_LABELS = {
+src/money_model_architect/cli.py:560:    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+src/money_model_architect/cli.py:29:ACTION_LABELS = {
+src/money_model_architect/cli.py:560:    invalid_actions = [action for action in actions if action not in ACTION_LABELS]
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..92b89eed8ef83be84a860d7dacf4dd2d935f9946
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,82 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start: loaded business snapshot and turn guidance for the user request",
++    "search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit",
++    "search_source_material: searched for framework support on rollover upsell credit toward a larger next offer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+exec
+/bin/zsh -lc "sed -n '1,60p' src/money_model_architect/cli.py" in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+"""Command-line entry point for the local proof harness."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+from typing import Any
+
+from .advisor_queries import SearchRequest, build_advisor_queries
+from .advisor_retrieval import RETRIEVAL_BACKENDS, VECTOR_STORES, execute_advisor_queries
+from .business_context import advisor_paths, ensure_advisor_state, utc_now
+from .calculator import (
+    UnitEconomics,
+    calculate_metric,
+    gross_margin,
+)
+from .diagnose import diagnose
+from .embeddings import OpenAIEmbeddingClient
+from .retrieval import CHUNKING_STRATEGIES, DEFAULT_CHUNKING_STRATEGY, CorpusIndex
+from .setup_intake import load_answers, run_setup
+from .snapshot import BusinessSnapshot
+from .vector_store import PineconeVectorStore, VectorStoreError, subject_namespaces
+
+SUBJECTS = ("unit-economics", "offers", "upsells", "downsells", "continuity")
+ACTION_LABELS = {
+    "setup_state",
+    "session_start",
+    "read_snapshot",
+    "update_snapshot",
+    "calculate",
+    "diagnose",
+    "search_source_material",
+    "logs",
+    "answer",
+    "turn_record",
+    "session_finish",
+    "inspect_local_docs",
+    "clarify",
+}
+SOURCE_NEED_INTENTS = {
+    "teaching_evidence",
+    "diagnostic_evidence",
+    "comparison_evidence",
+    "recommendation_evidence",
+}
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[2]
+
+
+def _reject_repo_business_dir(business_dir: Path) -> None:
+    if os.getenv("MMA_ALLOW_REPO_BUSINESS_DIR") == "1":
+        return
+    if business_dir.resolve() == _repo_root().resolve():
+        raise SystemExit(
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..92b89eed8ef83be84a860d7dacf4dd2d935f9946
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,82 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start: loaded business snapshot and turn guidance for the user request",
++    "search_source_material: searched for framework support on what offer comes after an attraction offer to increase first-30-day profit",
++    "search_source_material: searched for framework support on rollover upsell credit toward a larger next offer"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "executed_query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic",
++      "inspected_chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "executed_query": "rollover upsell credit prior purchase toward larger offer second sale economics",
++      "inspected_chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+codex
+I found the accepted action labels and source event schema. I’m bringing the record into that schema and then finishing the session.
+apply patch
+patch: completed
+/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/turn-record.json
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b620a31fe6913b750137f70314948cfe0d06ddb3
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,87 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "queries": [
++        "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      ],
++      "chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "queries": [
++        "rollover upsell credit prior purchase toward larger offer second sale economics"
++      ],
++      "chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b620a31fe6913b750137f70314948cfe0d06ddb3
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,87 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "queries": [
++        "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      ],
++      "chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "queries": [
++        "rollover upsell credit prior purchase toward larger offer second sale economics"
++      ],
++      "chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+exec
+/bin/zsh -lc 'CONTEXT_DIR="/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
+PYTHONPATH=src python3 -m money_model_architect.cli session finish --business-dir "$CONTEXT_DIR" --record-json turn-record.json' in /var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime
+ succeeded in 0ms:
+{
+  "recorded": true,
+  "session_path": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business/.money-model-advisor/sessions/20260816T180356.json",
+  "created_at": "2026-08-16T18:03:56Z",
+  "warnings": [],
+  "source_event_count": 2,
+  "calculation_event_count": 0,
+  "cited_chunk_ids": [
+    "upsell-offers:1",
+    "make-your-money-model:2",
+    "rollover-upsell:1",
+    "rollover-upsell:6"
+  ]
+}
+
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b620a31fe6913b750137f70314948cfe0d06ddb3
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,87 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "queries": [
++        "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      ],
++      "chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "queries": [
++        "rollover upsell credit prior purchase toward larger offer second sale economics"
++      ],
++      "chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+codex
+If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.
+
+The Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].
+
+I would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: “Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.” That uses a rollover upsell: credit some or all of the customer’s prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.
+
+My exact next offer would be: “Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.”
+
+That should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.
+diff --git a/turn-record.json b/turn-record.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b620a31fe6913b750137f70314948cfe0d06ddb3
+--- /dev/null
++++ b/turn-record.json
+@@ -0,0 +1,87 @@
++{
++  "user_message": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++  "assistant_message": "If the $597 diagnostic sells, I would offer the $5,000 pre-designed room package next, positioned as the immediate implementation path for the biggest room or highest-ROI upgrade the diagnostic uncovers.\n\nThe Money Models reason is simple: once the attraction offer is working, the next lever for first-month profit is an upsell, because upsells are the offer that comes after the first sale and are specifically used to maximize 30-day profit [upsell-offers:1]. The build sequence is attraction offer first, then upsell, then downsell, then continuity [make-your-money-model:2].\n\nI would not jump straight to the full $15,000 design offer as the only next step. Offer it as the premium option, but make the main next offer: \"Apply your $597 diagnostic credit toward a $5,000 room plan if you choose your room within 7 days.\" That uses a rollover upsell: credit some or all of the customer's prior purchase toward the next offer [rollover-upsell:1]. The framework also says the next offer should generally be at least 4x the credit so there is still profit left after the discount [rollover-upsell:6]. Here, $5,000 is about 8.4x the $597 diagnostic, so the credit is economically reasonable before fulfillment costs.\n\nMy exact next offer would be: \"Your diagnostic found the fastest profit opportunity. We can turn that into a done-for-you room package. If you start this week, your $597 diagnostic applies toward the package. Most owners use this for the primary bedroom, living room, or the weakest photo-performing room.\"\n\nThat should increase first-month profit more cleanly than adding a new low-ticket product, because it monetizes the trust created by the diagnostic while the problem is fresh.",
++  "actions": [
++    "session_start",
++    "search_source_material",
++    "answer",
++    "session_finish"
++  ],
++  "source_events": [
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      },
++      "queries": [
++        "offer stack after attraction offer upsell maximize first-30-day gross profit next natural purchase diagnostic"
++      ],
++      "chunks": [
++        {
++          "id": "upsell-offers:1",
++          "score": 0.032
++        },
++        {
++          "id": "make-your-money-model:2",
++          "score": 0.031
++        },
++        {
++          "id": "offer-types:4",
++          "score": 0.029
++        },
++        {
++          "id": "continuity-offers:2",
++          "score": 0.029
++        },
++        {
++          "id": "decoy-offers:6",
++          "score": 0.028
++        }
++      ]
++    },
++    {
++      "retrieval_backend": "hybrid",
++      "search_request": {
++        "intent": "recommendation_evidence",
++        "user_turn": "if the diagnostic sells, what should we offer next to increase first-month profit?",
++        "query": "rollover upsell credit prior purchase toward larger offer second sale economics"
++      },
++      "queries": [
++        "rollover upsell credit prior purchase toward larger offer second sale economics"
++      ],
++      "chunks": [
++        {
++          "id": "rollover-upsell:1",
++          "score": 0.033
++        },
++        {
++          "id": "rollover-upsell:4",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:6",
++          "score": 0.032
++        },
++        {
++          "id": "rollover-upsell:5",
++          "score": 0.031
++        },
++        {
++          "id": "rollover-upsell:3",
++          "score": 0.03
++        }
++      ]
++    }
++  ],
++  "cited_chunk_ids": [
++    "upsell-offers:1",
++    "make-your-money-model:2",
++    "rollover-upsell:1",
++    "rollover-upsell:6"
++  ],
++  "metadata": {
++    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-3nt1e7da/runtime/business"
++  }
++}
+
+tokens used
+44,370

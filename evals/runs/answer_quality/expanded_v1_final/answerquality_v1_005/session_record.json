@@ -1,0 +1,124 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "update_snapshot",
+    "answer",
+    "session_finish"
+  ],
+  "assistant_message": "Yes. I would use a continuity discount or continuity credit that is earned after the normal churn point, not before it.\n\nFor your case, I would make the month-four cliff explicit in the offer: \"Stay through month four and your account earns a permanent preferred rate, implementation credit, or success package credit starting in month five.\" Money Models calls this a continuity discount: customers can earn a lower ongoing rate after the period when the average customer usually drops off, which gives them a concrete reason to keep paying until they reach it [continuity-discounts:6] [continuity-discounts:7].\n\nI would not lead with a generic discount in month one. The source distinguishes front-loaded discounts, which can create higher churn, from back-loaded discounts, which tend to convert fewer people but create better retention behavior [continuity-discounts:10]. Since your problem is month-four cancellation, the reward should sit just past month four.\n\nFor a B2B inventory-planning SaaS, I would test one of these:\n\n1. Month-five preferred rate: pay the normal $1,200/month for four months, then unlock a lower locked-in rate while active.\n2. Month-five success credit: stay through four paid months and earn a credit toward the $4,000 implementation and analytics package.\n3. Month-five performance review: stay through onboarding, then receive a quarterly inventory savings review or advanced forecasting setup that is only available to accounts that complete the first four months.\n\nThe important operating detail is the countdown. In month two and month three, remind them that the earned benefit is close; the source specifically recommends telling customers as they approach the lower-rate milestone so the incentive stays visible [continuity-discounts:7].\n\nMy first test would be the success credit, not a pure price cut. It fits your SaaS motion better because it rewards customers for reaching the point where they should start seeing inventory-planning value, and it nudges them toward the implementation/analytics upsell instead of training them to buy only on discount.",
+  "calculation_events": [],
+  "cited_chunk_ids": [
+    "continuity-discounts:6",
+    "continuity-discounts:7",
+    "continuity-discounts:10"
+  ],
+  "created_at": "2026-08-16T18:35:43Z",
+  "metadata": {
+    "business_dir": "/private/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-_wqmmfd2/runtime/business",
+    "snapshot_update_attempt": {
+      "field": "problem.churn_point_month",
+      "result": "failed_unknown_snapshot_field_path",
+      "value": 4
+    }
+  },
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "B2B inventory-planning SaaS",
+      "delivery_model": "cloud software with guided onboarding and customer success",
+      "icp": "multi-location specialty retailers with small operations teams"
+    },
+    "economics": {
+      "cac": 2800,
+      "first_30_day_gross_profit": 1100,
+      "gross_margin": 0.75,
+      "lifetime_gross_profit": 18000,
+      "monthly_recurring_gross_profit": 900,
+      "payback_period_months": 2.888888888888889
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "paid inventory cleanup pilot",
+        "exists": true,
+        "price": 500
+      },
+      "continuity": {
+        "description": "monthly software and customer-success subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "core_offer": {
+        "description": "inventory planning software subscription",
+        "exists": true,
+        "price": 1200
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": "implementation and analytics package",
+        "exists": true,
+        "price": 4000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "many customers cancel during the fourth month",
+        "new-customer acquisition requires more cash than month-one gross profit"
+      ],
+      "user_goal": "reduce month-four churn and improve acquisition payback"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "continuity-discounts:6"
+        },
+        {
+          "id": "continuity-discounts:7"
+        },
+        {
+          "id": "continuity-discounts:10"
+        }
+      ],
+      "cited_chunk_ids": [
+        "continuity-discounts:6",
+        "continuity-discounts:7",
+        "continuity-discounts:10"
+      ],
+      "queries": [
+        "continuity discount offer churn point promised lifetime discount credit after usual churn point reason to stay"
+      ],
+      "query": "continuity discount offer churn point promised lifetime discount credit after usual churn point reason to stay",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "continuity discount offer churn point promised lifetime discount credit after usual churn point reason to stay",
+        "user_turn": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
+      }
+    }
+  ],
+  "user_message": "Our customers usually cancel around month four. Is there a Money Models way to give them a reason to stay until then?"
+}

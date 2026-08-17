@@ -1,0 +1,9 @@
+Yes. I would make the `$1,500` readiness audit fee a credit toward the `$30,000` implementation if they continue.
+
+That is a clean Rollover Upsell: the customer pays for the first step, then some or all of that prior purchase is credited toward the next larger offer [rollover-upsell:1]. The economics are favorable here because the implementation is 20x the audit fee; the source guidance warns to keep the next offer several times larger than the credit and to preserve profit after applying it [rollover-upsell:6].
+
+I would frame it as:
+
+> “If you move forward with implementation within 14 days of receiving the readiness roadmap, we apply 100% of your readiness audit fee toward the implementation engagement.”
+
+Keep it as credit, not a refund. The audit still has a real price, prospects have skin in the game, and the credit makes continuing feel like the obvious next step. I would also make the credit time-boxed so it drives a decision rather than becoming a permanent discount.

@@ -1,0 +1,123 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "session_finish"
+  ],
+  "assistant_message": "The source says do not roll all four out at once. Build the money model in layers: start with the attraction offer, then add the upsell, then the downsell, then continuity, and finally refine the stack [make-your-money-model:2]. It is even more explicit in the implementation notes: perfect one at a time, because trying to do all four or six new pieces at once can break the business; start with one, keep it simple, and use as few offers as possible to accomplish the objective [make-your-money-model:3].\n\nFor your situation, I would not launch the audit, add-on, smaller package, and monitoring simultaneously. Your audit is the most logical first rollout because it is the attraction offer and your known economics already show first-30-day gross profit above CAC. Then add the next layer only when the prior layer is selling, fulfilled cleanly, and measured.\n\nA practical rollout order would be:\n\n1. Launch and tighten the compliance readiness audit.\n2. Add the implementation engagement path from the audit into the core offer.\n3. Add the tabletop/policy add-on only after the core path is working.\n4. Add the smaller remediation package as the downsell once you have enough lost-deal data to know which objection it solves.\n5. Add monitoring last, unless the implementation clients are already asking for ongoing support.\n\nThe principle is not that the full stack is wrong. The source says the stack can include attraction, upsell, downsell, and continuity, but it should be built toward over time, with as little operational drag as possible [offer-types:4].",
+  "calculation_events": [],
+  "cited_chunk_ids": [
+    "make-your-money-model:2",
+    "make-your-money-model:3",
+    "offer-types:4"
+  ],
+  "created_at": "2026-08-16T18:43:58Z",
+  "metadata": {
+    "business_dir": "/var/folders/f_/cy6jkz216svfdn9j375wx7rm0000gn/T/mma-answer-quality-awl01mjn/runtime/business"
+  },
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "B2B cybersecurity compliance consultancy",
+      "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring",
+      "icp": "regional healthcare and financial-services firms preparing for audits"
+    },
+    "economics": {
+      "cac": 4500,
+      "first_30_day_gross_profit": 9000,
+      "gross_margin": 0.68,
+      "lifetime_gross_profit": 42000,
+      "monthly_recurring_gross_profit": 1800,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "compliance readiness audit",
+        "exists": true,
+        "price": 1500
+      },
+      "continuity": {
+        "description": "ongoing compliance monitoring",
+        "exists": true,
+        "price": 2500
+      },
+      "core_offer": {
+        "description": "compliance implementation engagement",
+        "exists": true,
+        "price": 30000
+      },
+      "downsell": {
+        "description": "self-directed remediation plan",
+        "exists": true,
+        "price": 5000
+      },
+      "upsell": {
+        "description": "tabletop exercise and policy package",
+        "exists": true,
+        "price": 8000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "not enough qualified prospects enter sales conversations",
+        "the team is considering several offer changes at the same time"
+      ],
+      "user_goal": "turn more qualified conversations into profitable long-term clients"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "make-your-money-model:2",
+          "score": 0.032
+        },
+        {
+          "id": "make-your-money-model:3",
+          "score": 0.032
+        },
+        {
+          "id": "offer-types:4",
+          "score": 0.032
+        },
+        {
+          "id": "make-your-money-model:0",
+          "score": 0.031
+        },
+        {
+          "id": "make-your-money-model:1",
+          "score": 0.031
+        }
+      ],
+      "queries": [
+        "offer rollout order build money model one offer at a time attraction upsell downsell continuity perfect one before adding next"
+      ],
+      "query": "offer rollout order build money model one offer at a time attraction upsell downsell continuity perfect one before adding next",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "offer rollout order build money model one offer at a time attraction upsell downsell continuity perfect one before adding next",
+        "user_turn": "We are tempted to launch an audit, an add-on, a smaller package, and monitoring at the same time. What does the source say about rollout?"
+      }
+    }
+  ],
+  "user_message": "We are tempted to launch an audit, an add-on, a smaller package, and monitoring at the same time. What does the source say about rollout?"
+}

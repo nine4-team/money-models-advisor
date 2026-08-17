@@ -1,0 +1,95 @@
+{
+  "actions": [
+    "session_start",
+    "calculate",
+    "session_finish"
+  ],
+  "assistant_message": "Using the saved skincare numbers, your acquisition payback period is about 1.57 months, or roughly 47 days.\n\nThat comes from $48 CAC, $32 first-30-day gross profit, and $28 in monthly recurring gross profit after that. You recover $32 in month one, leaving $16 still to pay back; at $28/month recurring gross profit, that remaining $16 takes 0.57 more months.",
+  "calculation_events": [
+    {
+      "inputs": {
+        "cac": 48,
+        "month_one_gp": 32,
+        "monthly_recurring_gp": 28
+      },
+      "metric": "payback",
+      "value": 1.5714285714285714
+    }
+  ],
+  "cited_chunk_ids": [],
+  "created_at": "2026-08-16T18:41:45Z",
+  "metadata": {
+    "formula_note": "CAC less first-30-day gross profit, divided by monthly recurring gross profit, plus first month.",
+    "used_saved_snapshot": true
+  },
+  "snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": 48,
+      "first_30_day_gross_profit": 32,
+      "gross_margin": 0.62,
+      "lifetime_gross_profit": 210,
+      "monthly_recurring_gross_profit": 28,
+      "payback_period_months": 1.5714285714285714
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly",
+        "shipping and product costs consume a meaningful share of revenue"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "source_events": [],
+  "user_message": "using the saved skincare numbers, what's our acquisition payback period?"
+}

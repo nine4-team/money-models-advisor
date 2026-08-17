@@ -90,7 +90,9 @@ Strong alignment:
 
 Additional current evidence:
 
-- The golden dataset is now explicit in `GOLDEN_DATASET.md`; the next gap is breadth, not structure.
+- The golden dataset is explicit in `GOLDEN_DATASET.md`. Full-answer coverage now
+  includes 20 balanced cases across five business contexts; the expanded suite
+  exposed and drove a general input-sufficiency correction before passing 20/20.
 - The vector backend has local and Pinecone implementations. The selected Large,
   1,536-dimension vectors are indexed in an isolated Pinecone namespace and replayed
   on the active 46-case one-query suite.
@@ -104,9 +106,8 @@ Additional current evidence:
 
 The next highest-signal work is:
 
-1. Expand the golden suite with genuinely new business contexts and observed failures.
-2. Preserve the selected query, embedding, retrieval, latency, and answer-quality
-   results as regression gates.
+1. Complete the final rendered narrative review against the canonical reports.
+2. Add genuinely new cases when production-like use reveals new failure modes.
 3. Add comparable billed model cost only when the deployment path exposes metered
    calls; do not treat cross-harness token proxies as billed cost.
 

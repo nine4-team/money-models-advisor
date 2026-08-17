@@ -1,0 +1,230 @@
+{
+  "actions": [
+    "session_start",
+    "search_source_material",
+    "session_finish"
+  ],
+  "answer_category": "source_grounded",
+  "answer_sha256": "7189dd87c824da9fd1a702e4d3390b3ec2c1d3df6d4247888270388f66810773",
+  "assistant_message": "Yes. I would treat this as a Classic Upsell: \u201cyou can\u2019t have X without Y.\u201d They bought coaching, and the coaching reveals that training alone is not enough for the result they want. Nutrition support becomes the next natural thing that helps the core offer work better, not a random add-on [classic-upsell:5].\n\nThe clean version is: after they enroll, diagnose whether nutrition is the constraint, then prescribe the matching add-on. For example: \u201cBased on your goals and schedule, training will get you part of the way there, but your food structure is the limiter. I\u2019d add nutrition coaching so the 12 weeks produce the result we\u2019re aiming for.\u201d\n\nI would not position it as \u201cdo you want to buy more?\u201d I\u2019d position it as \u201cthis is the support that goes with the outcome.\u201d The source pattern says upsells work best when they solve the next problem the first offer reveals, and fail when they are offered too early, feel unrelated, or try to solve the same problem again [upsell-offers:1] [upsell-offers:2].\n\nFor your business, the likely next-offer pattern is:\n\n1. Core offer: 12-week coached transformation.\n2. Trigger: client enrolls and assessment shows food is the bottleneck.\n3. Upsell: nutrition support, meal planning, macro/accountability layer, or done-with-you food review.\n4. Framing: \u201cThis is what makes the coaching work faster and more predictably.\u201d\n\nI\u2019d make it modular but prescribed: not everyone needs the same nutrition depth, but when they do need it, it should feel like the obvious complement to training. That is the natural \u201cfries and Coke\u201d for this offer stack.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [],
+  "case_id": "answerquality_v1_010",
+  "cited_chunk_ids": [
+    "classic-upsell:5",
+    "upsell-offers:1",
+    "upsell-offers:2"
+  ],
+  "evidence_passages": [
+    {
+      "chapter": "classic-upsell",
+      "id": "classic-upsell:5",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "## [\u00a74.2.e] Important points + 80% close rate benchmark\n\nSo important points, so number one, if you make thing A free, then you gotta be able to give it away for free. If someone comes in and wants the free workouts, you have to deliver the free workouts. Now, you can't say, \"You have to buy this other thing, otherwise it's not free.\" You wanna strongly encourage the thing, but that's fundamentally how it works. All right? So make sure that it doesn't cost you a lot or anything at all, uh, like, that thumb drive that we gave, like, you can y- you want it to be something that's cheap, uh, but still valuable. The next thing is make the upsells the next natural thing that they would need to buy. That's the boxes, the large units, the locks, the, the insurance, things like, that. The weight loss clinic, continuity of service, continuity of supplements, done-for-you meals, hormone treatments, et cetera, all of those things were all part of classic upsells that' went through. You can't have X without Y. You can't have this weight loss service without these supplements. Just think, \"You can't have X without Y,\" as your, as your mental framework for what the next thing I'm gonna offer is. All right, this play works so, well because the perception of how essential or required the next thing is. All right? So, this is the key point. If supplements is core to how someone's gonna get results with the main thing, the likelihood they buy is very high. So, if you, remember the, uh, minimum package for the rental car story I gave you, you want this to, feel as required as possible. Again, you don't wanna make it' required, because then it's, it's, it gets shady, but you want to strongly encourage people to take these things to get the best results, which ethically, they should be able to get better results with whatever your upsell is. All right? And so, how seamless the upsell process is for the prospect, if you make it frictionless, you can get sometimes 80% plus the people to take these upsells. I personally prefer to have upsells that have very little operational drag so, that I can' immediately offset cost to get it, getting a customer, or it becomes that's my major profit stream. It depends on' what the objective is for your business. Boom. Summary, works on' the front end as a back end, works as an internal play, meaning you can just upsell your existing customers. That's basically what the storage thing with, with the fur coats was. Many of those people were existing customers, so you can just upsell those people. Um, if you suck at sales, this is not a hard sale to make. Uh, there's a lot of goodwill in this play, because you just make sure that you close the upsell. Like, it's like, \"Hey, let me give you this thing. I'm giving you this free earmuffs. Why not take it? But, of course, you gotta take this other thing, too.\" Um, and if you aren't getting 80% plus close rates, you're doing it wrong. So that's my big benchmark for you. If you're getting 30% to take it, you're not, you're not making it assumed enough. You're not, it's, it's not clear enough to them that this goes with. So think about it like that. It has to go with. If you go to a McDonald's, I would bet you that 80% of people are getting fries and a Coke. You want, you want a very high uptake rate on' the people who buy the next natural thing. Think of this as the thing that goes with the thing, uh, and give the thing away for free to make sure that all the thing that goes with the thing you can make the money on. All right? And so, the nice thing with this is that it gives you a lot of upfront customers. And that is the classic upsell."
+    },
+    {
+      "chapter": "classic-upsell",
+      "id": "classic-upsell:2",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "## [\u00a74.2.b] Description \u2014 \"you can't have X without Y\"\n\nSo, the description. So, what you do is you provide a service for free that you can monetize another way. So, this works for one-time services or even recurring services, provided the recurring stream is high enough margins to pay for both. Different way of saying it, essentially, I give you thing A for free in exchange for buying thing B. Or I give you thing A for free, and I will encourage you to buy thing B. Or I give you a thing for free, as long as you continue to use thing B. Any of those things. So, the earmuff thing, he says, \"I will give you these free earmuffs, and I will encourage you to store it.\" That's what that was, a classic upsell. So, if we have a lemonade stand with our classic upsell, we say we want to give you a free cup of lemonade. Upsell one might be, \"Do you want, uh, lemonade ice cubes to make it cold without diluting it?\" Now, of course, you could give cold lemonade, but then you wouldn't have an ice cube upsell. Upsell two would be, \"Do you want a stainless steel to-go container to keep it cold for you? And we'll donate $1 to help children's cancer to anyone who takes the mug. You also get 20% off refills.\" Upsell number two. Right? So, you don't want lemonade in a little paper cup. You want a nice steel mug. You don't want diluted-down lemonade. You want lemonade ice cubes, right? Each of these things are just natural upsells that could happen, and I prove this point because whatever it is you sell, there's an upsell that's available for you. All right?"
+    },
+    {
+      "chapter": "upsell-offers",
+      "id": "upsell-offers:2",
+      "subjects": [
+        "upsells"
+      ],
+      "text": ". So here's some examples. So this is. a classic burger, fries, and soda store, all right? So this is a, our very sad burger shop owner. He sells a burger for two bucks, his cost on the burger is $1.75. He makes 25 cents of profit. He cries himself to sleep every night. Very sad. Now, he has a happy tier, isn't that nice? Of going from 25 cents per sale to $1.75 per sale by adding in an upsell of fries, and then upsell of soda, and the upsell of quantity of, do you wanna supersize your whole thing? So it's like, do you wanna make that a meal? Do you wanna supersize that? Boom, upsell one, upsell two. And the thing is, is that when they make this upsell, look at how much more they make per sale, a lot more. And so the end result of this goes from 25 cents to 8X the gross profit per sale. They're making way more, two dol- $1.75 from 25 cents originally. And so the thing is, is that you may just be one upsell offer away from making yours into a dynasty like theirs. You just have to figure out what's your fries and a Coke. And if you don't, someone else will. Let me talk about when they fail. Upsell offers fail or feel cringy when you offer something that they don't want, so that's either too different or doesn't solve their existing problem. You offer it at the wrong time, so it's before they've experienced the problem. You say, \"Hey, you just had a steak. Do you want another steak?\" They're like, \"Well, I'm not really hungry anymore.\" You already solved that, you're trying to solve the same problem. You offer it the wrong way, which is they don't believe you. They're like, \"Sure, that would be nice, but I don't believe you specifically.\" Or it's a combination of the above. This is when it fails. Now, what to sell? Which becomes the next upsell offer question. More of what they just got, think quantity. So that's, uh, one burger to two burgers. Better versions of it, think quality. So this is why have a mystery meat burger, when you could have a sirloin meat burger, organic burger, or newer complimentary stuff? Think different. This is, do you want fries and a soda with that burger? Fundamentally, that's how this works"
+    },
+    {
+      "chapter": "upsell-offers",
+      "id": "upsell-offers:1",
+      "subjects": [
+        "upsells"
+      ],
+      "text": ". So here's where they are. Attraction offers or with an attraction offer in place, you've got customers and cash, now, we wanna maximize 30-day profits. So what do we do? Answer, we make more money. To do that, we make upsell offers. And when it comes down to it, upsells just mean whatever we offer next. It's all an upsell is. And so when an offer solves a problem, another appears. You upsell the solution to the problem that your first offer reveals. So every offer opens the door to an upsell. Even upsells o- open the door to more upsells. And often, upsells make up the majority of the profits. This is what people don't understand. If the objective is that we can break even, obviously, we wanna make as much money as we want, but you don't wanna make more money on a few customers when you can get 10 times the customers and then make way, more on the second sale, right? And so often, upsells. make up the majority of the profit, even if that's not the thing you' sell the most of. Think about it in terms of volume, I might sell 10 times more of my front-end offer, but 10X of my profit comes from my second sale. They can make or break a money. model. And so let me show you how much"
+    },
+    {
+      "chapter": "classic-upsell",
+      "id": "classic-upsell:0",
+      "subjects": [
+        "upsells"
+      ],
+      "text": "## [\u00a74.2.a] How I learned it \u2014 fur coat storage + the no-sell sale All right. The classic upsell. As ush, how I learned it, description, examples, important points. Here's my lovely visual thing for the classic upsell. How I learned it, here' we go. So, uh, I had a mentorship, whatever you wanna call it. It, wasn't really a mentorship. I was just getting paid, and I took him as a mentor. He didn't really care about me at all. Um, uh, at a fur coat dealer, and, uh, he was a fourth generation furrier. And I, uh, remember watching how his son, who was my friend, that's how I got the job, uh, I'd be brushing fur coats all summer in the heat in the warehouse. Uh, unbelievably mind-melting stuff, like, boring beyond belief. And the thing that I kept thinking was that every single one of these coats was $200, and he had 7,000 coats in his warehouse. And I was like, \"Holy cow.\" I was like, \"That's $1.4 million that he's making just for storing coats for the summer.\" I was like, \"This is pretty sweet.\" And I know what I was making, and it. was not $1.4 million for storing these coats. And so, the offer that they had to get people in was that they would get people to store their coats. And they said if they stored them, they would get free earmuffs, free fur earmuffs. So, people were like, \"Oh, that's cool.\" And so, people would come in for the free earmuffs. And then they would say, \"Uh, we'll store and condition the coat for you, and it costs 30 bucks to, uh, store the muffs.\" Now, they'd come in for free earmuffs, but it's the summer. So, then they would basically hand them the earmuffs and then take the earmuffs back, and then they'd say, \"You don't want anything else, do you?\" And so, by saying you don't want anything else, they would assume close the winter storage, the conditioning, and the earmuffs that went with the sale. And so, that is when I learned you can't have X without Y. And that is the fundamental basis of the classic upsell. You don't want burgers without fries. You don't want burgers without a Coke. You don't want a fur coat without storing it. You don't want a fur coat without conditioning it. It'd be like taking a car and not getting it serviced. Like, you don't want X without Y. And so, I learned a couple of things. One was the structure of a classic upsell, which is you don't want X without Y. But tactically, I learned the no-sell sale, all right? And so, the way that this works is basically people have been conditioned over the years to- to say no to salesmen. And so, when someone says you don't want anything else, most people just immediately say no. And so, what we wanna do is basically imply that the else means in addition to the thing we just offered you. And by doing that, you get people to say yes by saying no. And so, these people who came in to store their coats agreed to storage, conditioning, and the free earmuffs, which then got stored at a $30 fee for saying no, that you don't want anything else. So, the no-sell sale is what I ended up calling, uh, a different sale, which may sound confusing, but bear with me. So, if someone came into the gym and they said they... Ultimately, they declined every service offering we had, right? Which sucks. You would then try and salvage some sort of goodwill or rapport, 'cause this person walked in and is basically walking back out, which sucks. And so you say, \"Hey, listen, I will still wanna help you for six weeks. And so, why don't we"
+    }
+  ],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "fitness_coaching",
+  "source_case_id": "searchdecision_v1_028",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "chapter": "classic-upsell",
+          "id": "classic-upsell:5",
+          "score": 0.033,
+          "subject": "upsells"
+        },
+        {
+          "chapter": "classic-upsell",
+          "id": "classic-upsell:2",
+          "score": 0.031,
+          "subject": "upsells"
+        },
+        {
+          "chapter": "upsell-offers",
+          "id": "upsell-offers:2",
+          "score": 0.031,
+          "subject": "upsells"
+        },
+        {
+          "chapter": "upsell-offers",
+          "id": "upsell-offers:1",
+          "score": 0.029,
+          "subject": "upsells"
+        },
+        {
+          "chapter": "classic-upsell",
+          "id": "classic-upsell:0",
+          "score": 0.029,
+          "subject": "upsells"
+        }
+      ],
+      "queries": [
+        "upsell next offer after sale classic upsell essential complement first purchase naturally requires complementary product or service next natural thing"
+      ],
+      "query": "upsell next offer after sale classic upsell essential complement first purchase naturally requires complementary product or service next natural thing",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "upsell next offer after sale classic upsell essential complement first purchase naturally requires complementary product or service next natural thing",
+        "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?"
+      }
+    }
+  ],
+  "user_turn": "People buy the coaching and then realize they need nutrition support. Is there a natural next-offer pattern for that?"
+}

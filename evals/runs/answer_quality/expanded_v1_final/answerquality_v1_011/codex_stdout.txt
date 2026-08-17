@@ -1,0 +1,3 @@
+With the numbers we already have, your payback period is 1.0 month.
+
+CAC is $320 and first-30-day gross profit is $900, so the customer pays back inside the first month with $580 of gross profit left over. The saved monthly recurring gross profit is $150, but it does not change the payback answer because month-one gross profit already exceeds CAC.

@@ -83,12 +83,14 @@ The next JD-aligned work should emphasize:
 Prefer running focused checks first, then the broader suite before commit:
 
 ```bash
-python3 -m unittest discover -s tests -v
-PYTHONPATH=src python3 scripts/eval_smoke.py
+python3 scripts/regression_gate.py
+```
+
+Run additional focused or hosted experiments when touching the relevant behavior:
+
+```bash
 python3 scripts/eval_source_need_generation.py
-python3 scripts/eval_source_event_traces.py
 python3 scripts/compare_retrieval_backends.py --query-source generated --report evals/reports/retrieval_backend_comparison.md
-git diff --check
 ```
 
 Use additional eval commands when touching the relevant behavior.

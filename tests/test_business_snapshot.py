@@ -55,7 +55,7 @@ class BusinessSnapshotTest(unittest.TestCase):
         self.assertEqual(payload["advisor_state"]["advisory_status"], "diagnosable")
         self.assertEqual(payload["economics"]["payback_period_months"], 6.75)
 
-    def test_infinite_payback_is_json_null_without_refresh_side_effect_diagnosis(self):
+    def test_payback_is_not_ready_when_month_one_does_not_recover_cac_and_recurring_gp_is_missing(self):
         snapshot = BusinessSnapshot()
         snapshot.problem.user_goal = "diagnose cash payback"
         snapshot.business.business_type = "coaching business"
@@ -67,7 +67,23 @@ class BusinessSnapshotTest(unittest.TestCase):
 
         self.assertIsNone(payload["economics"]["payback_period_months"])
         self.assertNotIn("payback_not_recovered_without_recurring_gp", payload["problem"]["diagnosed_constraints"])
-        self.assertEqual(payload["advisor_state"]["advisory_status"], "diagnosable")
+        self.assertIn("economics.monthly_recurring_gross_profit", payload["advisor_state"]["missing_fields"])
+        self.assertFalse(payload["advisor_state"]["ready_for_payback_diagnosis"])
+        self.assertEqual(payload["advisor_state"]["advisory_status"], "insufficient_context")
+
+    def test_payback_is_ready_without_recurring_gp_when_cac_is_recovered_in_month_one(self):
+        snapshot = BusinessSnapshot()
+        snapshot.problem.user_goal = "diagnose cash payback"
+        snapshot.business.business_type = "coaching business"
+        snapshot.money_model.core_offer.description = "implementation program"
+        snapshot.economics.cac = 350
+        snapshot.economics.first_30_day_gross_profit = 500
+
+        payload = snapshot.to_dict()
+
+        self.assertNotIn("economics.monthly_recurring_gross_profit", payload["advisor_state"]["missing_fields"])
+        self.assertTrue(payload["advisor_state"]["ready_for_payback_diagnosis"])
+        self.assertEqual(payload["economics"]["payback_period_months"], 1.0)
 
     def test_snapshot_save_load_round_trip(self):
         with tempfile.TemporaryDirectory() as tmp:

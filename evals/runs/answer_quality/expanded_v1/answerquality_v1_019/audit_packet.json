@@ -1,0 +1,150 @@
+{
+  "actions": [
+    "session_start",
+    "calculate",
+    "answer"
+  ],
+  "answer_category": "calculation",
+  "answer_sha256": "1d0962f749151c38d9f3a59a167cb9e968ae6ae8a4a409d6a71ae1b3f5f46167",
+  "assistant_message": "With the saved consulting numbers, CAC payback is 1.0 month.\n\nThat uses CAC of $4,500 and first-30-day gross profit of $9,000. Since the first month already produces more gross profit than the CAC, you earn back CAC within the first month.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "B2B cybersecurity compliance consultancy",
+      "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring",
+      "icp": "regional healthcare and financial-services firms preparing for audits"
+    },
+    "economics": {
+      "cac": 4500,
+      "first_30_day_gross_profit": 9000,
+      "gross_margin": 0.68,
+      "lifetime_gross_profit": 42000,
+      "monthly_recurring_gross_profit": 1800,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "compliance readiness audit",
+        "exists": true,
+        "price": 1500
+      },
+      "continuity": {
+        "description": "ongoing compliance monitoring",
+        "exists": true,
+        "price": 2500
+      },
+      "core_offer": {
+        "description": "compliance implementation engagement",
+        "exists": true,
+        "price": 30000
+      },
+      "downsell": {
+        "description": "self-directed remediation plan",
+        "exists": true,
+        "price": 5000
+      },
+      "upsell": {
+        "description": "tabletop exercise and policy package",
+        "exists": true,
+        "price": 8000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "not enough qualified prospects enter sales conversations",
+        "the team is considering several offer changes at the same time"
+      ],
+      "user_goal": "turn more qualified conversations into profitable long-term clients"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [
+    {
+      "inputs": {
+        "cac": 4500,
+        "month_one_gp": 9000,
+        "monthly_recurring_gp": 1800
+      },
+      "metric": "payback",
+      "value": 1.0
+    }
+  ],
+  "case_id": "answerquality_v1_019",
+  "cited_chunk_ids": [],
+  "evidence_passages": [],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "B2B cybersecurity compliance consultancy",
+      "delivery_model": "expert-led readiness assessment, implementation project, and ongoing monitoring",
+      "icp": "regional healthcare and financial-services firms preparing for audits"
+    },
+    "economics": {
+      "cac": 4500,
+      "first_30_day_gross_profit": 9000,
+      "gross_margin": 0.68,
+      "lifetime_gross_profit": 42000,
+      "monthly_recurring_gross_profit": 1800,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "compliance readiness audit",
+        "exists": true,
+        "price": 1500
+      },
+      "continuity": {
+        "description": "ongoing compliance monitoring",
+        "exists": true,
+        "price": 2500
+      },
+      "core_offer": {
+        "description": "compliance implementation engagement",
+        "exists": true,
+        "price": 30000
+      },
+      "downsell": {
+        "description": "self-directed remediation plan",
+        "exists": true,
+        "price": 5000
+      },
+      "upsell": {
+        "description": "tabletop exercise and policy package",
+        "exists": true,
+        "price": 8000
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "not enough qualified prospects enter sales conversations",
+        "the team is considering several offer changes at the same time"
+      ],
+      "user_goal": "turn more qualified conversations into profitable long-term clients"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "b2b_consulting",
+  "source_case_id": "searchdecision_v1_046",
+  "source_events": [],
+  "user_turn": "with our saved consulting numbers, how long does it take to earn back CAC?"
+}

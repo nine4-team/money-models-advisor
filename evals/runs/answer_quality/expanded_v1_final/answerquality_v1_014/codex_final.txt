@@ -1,0 +1,7 @@
+Yes. I would treat that as a downsell, not a discount.
+
+The clean move is: keep the full routine at $160, then offer the existing two-product essentials kit at $55 as the lower-scope option. That fits the Money Models rule for a feature downsell: lower the price by changing what the customer gets, not by giving the same offer for less [feature-downsells:2]. A downsell works because the customer can see value was removed, so the lower price feels logical instead of training them to wait for discounts [downsells:1].
+
+I would script it like this: “Totally fair. The full five-product routine is the complete version. If you want to start smaller, we can remove the optional products and begin with the two-product essentials kit for $55. You can always add the rest once your skin has adjusted.”
+
+Do not frame it as “I can take money off.” Frame it as “we can start with less.” If they still want every product but only object to paying today, that is a payment-timing problem, not a scope problem; then I would test a payment plan or subscription path instead [feature-downsells:10].

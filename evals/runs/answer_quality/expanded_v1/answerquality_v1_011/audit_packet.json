@@ -1,0 +1,151 @@
+{
+  "actions": [
+    "session_start",
+    "calculate",
+    "answer",
+    "session_finish"
+  ],
+  "answer_category": "calculation",
+  "answer_sha256": "7436dc8b281ad84bb44725da13e33cdcceb21eeaf44f90047e7cfc8f70965bb8",
+  "assistant_message": "Your payback period is 1.0 month.\n\nUsing the numbers we already have: CAC is $320, first-30-day gross profit is $900, and monthly recurring gross profit is $150. Since the first 30 days of gross profit already exceed CAC, you recover acquisition cost inside month one. For practical decision-making, I would treat this as a very strong payback position.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [
+    {
+      "inputs": {
+        "cac": 320,
+        "month_one_gp": 900,
+        "monthly_recurring_gp": 150
+      },
+      "metric": "payback",
+      "value": 1.0
+    }
+  ],
+  "case_id": "answerquality_v1_011",
+  "cited_chunk_ids": [],
+  "evidence_passages": [],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "boutique strength and nutrition coaching business",
+      "delivery_model": "small-group training, nutrition coaching, and weekly accountability",
+      "icp": "busy professional women seeking measurable strength and body-composition results"
+    },
+    "economics": {
+      "cac": 320,
+      "first_30_day_gross_profit": 900,
+      "gross_margin": 0.72,
+      "lifetime_gross_profit": 4200,
+      "monthly_recurring_gross_profit": 150,
+      "payback_period_months": 1.0
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "free strength and nutrition assessment",
+        "exists": true,
+        "price": 0
+      },
+      "continuity": {
+        "description": "ongoing training membership",
+        "exists": true,
+        "price": 249
+      },
+      "core_offer": {
+        "description": "12-week coached transformation program",
+        "exists": true,
+        "price": 2400
+      },
+      "downsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      },
+      "upsell": {
+        "description": null,
+        "exists": false,
+        "price": null
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "prospects are skeptical before experiencing the coaching",
+        "some qualified prospects cannot pay the full program price immediately"
+      ],
+      "user_goal": "improve conversion and early customer value without making coaching feel cheaper"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "fitness_coaching",
+  "source_case_id": "searchdecision_v1_030",
+  "source_events": [],
+  "user_turn": "with the numbers we already have, what's our payback period?"
+}

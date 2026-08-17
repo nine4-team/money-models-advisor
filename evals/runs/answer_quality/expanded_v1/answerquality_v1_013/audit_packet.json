@@ -1,0 +1,250 @@
+{
+  "actions": [
+    "session_start",
+    "read_snapshot",
+    "search_source_material",
+    "calculate",
+    "answer"
+  ],
+  "answer_category": "source_grounded",
+  "answer_sha256": "714e1cd52e68b80f2f4ccbf5713508aba79023c7971beb1643c49d50385eda83",
+  "assistant_message": "I would treat this as a cash-flow offer, not just a conversion offer.\n\nThe good part: six months prepaid can pull cash forward and may improve 30-day economics. In your current snapshot, refills are $55/month with about $28 monthly gross profit, so implied fulfillment/product cost is about $27 per month. Six paid months brings in $330. Before any bonus months, that is roughly $168 gross profit. If you add one bonus month and must fund inventory early, gross profit drops to about $141. With two bonus months, it drops to about $114.\n\nThat still clears your $48 CAC on paper, but the constraint is timing: cash collected today becomes an obligation to ship future product. The Money Models warning on Buy X Get Y Free is that prepaid duration offers can work, but only if you can manage the cash and deliver on the promise; they should not be used as survival cash if fulfilling later would strain the business [buy-x-get-y:5]. The continuity material also frames bulk prepaid discounts as a way to boost 30-day profit, but that only helps if the upfront cash is not immediately consumed by early fulfillment obligations [continuity-bonus:9].\n\nBefore launching it, I would check five things:\n\n1. Inventory cash reserve: calculate the cash that must be held back for every prepaid customer. At your current numbers, reserve about $27 per refill month promised, including bonus months. Do not spend that reserve on ads or operating expenses.\n\n2. Maximum exposure: cap the test. The source material recommends capping prepaid offers for recurring customers rather than converting the whole base at once [buy-x-get-y:5]. I would start with existing subscribers or high-intent repeat buyers, not cold traffic.\n\n3. Bonus size: one bonus month is much safer than an aggressive \u201cbuy six, get six\u201d structure. The larger the bonus, the more it improves conversion but the more it converts cash into future inventory liability.\n\n4. Payback impact: compare the offer\u2019s immediate gross profit after reserved inventory against CAC. If you sell it to new customers, the offer needs to comfortably cover CAC and leave enough cash for fulfillment. If you sell it to existing customers, it is more of a retention and cash-smoothing move.\n\n5. Operational promise: confirm supplier lead times, fulfillment capacity, shelf life, and refund policy. A prepaid refill offer can damage trust if customers feel locked in while shipments slip.\n\nMy practical recommendation: run a small \u201cbuy six months, get one bonus month\u201d pilot to existing refill customers only. Put the inventory reserve in a separate account, cap the number sold, and judge it by cash left after reserved COGS, not by headline revenue.",
+  "business_context_snapshot": {
+    "advisor_state": {
+      "advisory_status": "diagnosable",
+      "missing_fields": [],
+      "ready_for_offer_stack_diagnosis": true,
+      "ready_for_payback_diagnosis": true
+    },
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": 48,
+      "first_30_day_gross_profit": 32,
+      "gross_margin": 0.62,
+      "lifetime_gross_profit": 210,
+      "monthly_recurring_gross_profit": 28,
+      "payback_period_months": 1.5714285714285714
+    },
+    "field_sources": {
+      "economics.payback_period_months": {
+        "confidence": "high",
+        "inputs": [
+          "economics.cac",
+          "economics.first_30_day_gross_profit",
+          "economics.monthly_recurring_gross_profit"
+        ],
+        "source_type": "calculated"
+      }
+    },
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly",
+        "shipping and product costs consume a meaningful share of revenue"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "calculation_events": [
+    {
+      "inputs": {
+        "cogs": 162,
+        "price": 330
+      },
+      "metric": "gross-profit",
+      "value": 168
+    },
+    {
+      "inputs": {
+        "cogs": 189,
+        "price": 330
+      },
+      "metric": "gross-profit",
+      "value": 141
+    },
+    {
+      "inputs": {
+        "cogs": 216,
+        "price": 330
+      },
+      "metric": "gross-profit",
+      "value": 114
+    }
+  ],
+  "case_id": "answerquality_v1_013",
+  "cited_chunk_ids": [
+    "buy-x-get-y:5",
+    "continuity-bonus:9"
+  ],
+  "evidence_passages": [
+    {
+      "chapter": "buy-x-get-y",
+      "id": "buy-x-get-y:4",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "socks cost less than a shirt, it's still buy one, get three. And sometimes that converts better, so I test this. Rather than offer a 33% discount, try buy one, get two free. This here will convert more than this, but they're still one thirds off. All right? So I just like to... If you are gonna use a discount, this structure still makes a discount even more compelling. Do not make offers like this if you cannot manage money, especially with service businesses. So if you say buy six months of service, get six months free, if you don't know how to manage money and you immediately blow the money that they prepaid, you are a bad business. owner. So you need to be able to consistently... Like if you have to have an accountant, you know, do this for you, put all the cash into one bank account and you can pay yourself out of that bank account every month as you deliver services. But the worst thing, you' can possibly do for your reputation is like pre-sell a year of service and then, you know, like do not do this play if you are trying to keep your business alive. If you need this cash in order to keep the business alive, I think you risk your reputation by doing it. I also cap this at 10% of a recurring customer base for those of you who have recurring revenue businesses. So if you wanna do a banger buy X, get Y free, which is a really great cash play, let's say you have 100 recurring customers, cap it at 10. Don't let more than 10 of your recurring customers prepay for the year 'cause you still like ha- I, this is a, not a math solution. This is a psychological solution. I've just seen way, more businesses succeed by keeping their recurring cash flow because most business owners honestly can't manage it. Now, mathematically it makes sense to get everybody on. annual, but a lot of people can't handle that responsibility. I'm just being really honest with you. Okay. So this is a great grand opening strategy. Uh, as I referenced earlier, um, this is also a great offer to give for fast cash. Now, if your business is healthy but you're like, \"You know. what? I wanna buy a bunch of equipment,\" great. Prepay 10 people, go buy your equipment. Or you need to go buy a, uh, another big oven, industrial oven for your baking business. Like, totally makes sense for you to do prepayments and things like that to cash flow or fund rather than take on credit lines. Super smart. Um, so, even if customers prepay, you can still upsell them different stuff now. So this is really important. So I made this mistake, which is why I share it with you. The people who prepay, especially for services, for durations of time, business owners have this fear of selling them or making offers for other stuff. But here's the craziest thing that we saw, is that the people who prepay for the year are the most likely people to buy more stuff afterwards. And so these are basically a way of identifying your hyper buyers. And so they self-select. They prepay for a year, and guess what happens after that? When I would have Big Booty Boot Camp and a deadlift seminar or, you know, uh, Make Your Sexy Back or I would do Buns & Guns or whatever else I would do, Lean by Halloween, they were the most likely people to pay, 'cause guess what? They weren't paying anything for being there as far as they felt. They, they had paid so long ago they forgot that they paid. So it felt like I was just a free gym. And you know what? The cool thing about wallets with"
+    },
+    {
+      "chapter": "buy-x-get-y",
+      "id": "buy-x-get-y:5",
+      "subjects": [
+        "offers",
+        "upsells",
+        "continuity"
+      ],
+      "text": "I would have Big Booty Boot Camp and a deadlift seminar or, you know, uh, Make Your Sexy Back or I would do Buns & Guns or whatever else I would do, Lean by Halloween, they were the most likely people to pay, 'cause guess what? They weren't paying anything for being there as far as they felt. They, they had paid so long ago they forgot that they paid. So it felt like I was just a free gym. And you know what? The cool thing about wallets with people who make money, they replenish and then you can ask again. So if customers only buy once, this is just a disclaimer for the, um, for the boot business. The reason they structured their deal that way was to maximize the transaction. So if you're in a business where people only buy once, then it makes sense to structure as much into that first sale as you can 'cause you're only gonna get one shot. Like the bachelorette parties are probably not coming back to Nashville. Now maybe they will, but for the most part, that's this... You wanna make the big, the ask as big as you can if you're only gonna get one shot. Summarizing buy X, get Y, free. In buy X, get Y free, customers buy something, they get other stuff for free. Buy X, get Y free. works, uh, for stuff that makes sense to buy more of or get longer access to. Basic buy X, get Y free, offers reframe pricing. Buy one, get two free, costs the same as buying three except customers see the free offer. as more valuable. Remember the 18-month service example I gave. So always try to give more free things than paid things and you can pair different free things with paid things as well, which you can just test. All right. So buy X, get Y free can lengthen the amount of time customers stay. If normal customers stay for three, months, then buy two, get two customers will keep them for four months. So whatever you sell, try and extend whatever the normal customer duration is by saying, saying like, \"If I know customers stay for three, I do buy two, get two and I price it' so that it's still four, I make more money. I make 33% more money.\" It's a great deal. Uh, if you use buy X, get Y to generate a lot of cash fast, make sure you manage it. and you can deliver on your promises. If you need fast cash and your business is healthy, make sure, make this offer to existing customers, uh, and just cap how many you sell it to. If you have recurring, I recommend 10% is the cap. Um, keep selling customers who prepay for long durations because they are the most likely people to buy again. With that being said, that is buy X, get Y free."
+    },
+    {
+      "chapter": "continuity-bonus",
+      "id": "continuity-bonus:3",
+      "subjects": [
+        "continuity"
+      ],
+      "text": ". So first, I do all my big cash attraction, upsell and downsell offers, so I should already be profitable, I should already have cash from all those original offers. Then continuity offers get a little bit of cash from the first month's payments. Then I offer people who bought that one month a discount for pre-paying more months. This further boosts 30-day profits, giving me more cash to advertise and stacks recurring revenue. So think about how that goes.Big attraction offer, buy X, get Y' free, win your money back, whatever. Got it. Then we do our up-sells. Got it. Then we do our down-sells. Got it. Then we get them into continuity, really soft pitch. We got them on continuity, we gave them some bonuses in order to say yes. Now that they're on continuity, we already have the commitment, we then say, \"Hey, you're already committed. Let's just pre-pay and save some money.\" We stack even more cash forward. And that's how you just stack, stack, stack, stack, stack. You front-load the money so that you can scale your advertising and go to the moon. All right, let's do some examples. So physical products. Let's use pet food. All right, so one-time bonus, get every dog toy we've ever made for free, an $800 value, when you sign up for our monthly food shipments for $59 a month. Now, monthly bonuses. You'll also get a new dog toy every month as a member. Also cool. Then it's something else that I can give. So those are two different kind of bonus continuity offers that you can have. One is upfront to get them to buy, the other is to get them to stay. Now, service, short-term accelerator offer. So one-time bonus for the short-term accelerator, it costs $1,000 on its own. Get it free when you become a member for $100 a month. Same concept as the gym. The bonus package is the VIP community members enjoy first in line access to our events, longer support hours, as in longer, not longer time period, uh, better support reps, and faster response times. So if you become a VIP member, not only do you get this big benefit, you also get this recurring benefit of c- continuing to pay and stay. Digital product offer. So one-time bonus would be, uh, get all my past 40 newsletters, valued at 15,800 whatever, by becoming a member today for only $3.99 a month after a 30-day free trial. Lifetime discount plus lifetime bonuses if you pay today. You can lock in a lifetime discount for $299 a month, and you get early digital access and a physical copy every month. Now, important points. Focus on the bonus, not the membership. This is really important. Join my membership program isn't very compelling, not nearly as compelling as get this free valuable thing. So advertise the free valuable thing, then explain the rest of the offer once, they show interest. So if I'm talking about the $800 of dog toys, I advertise my free $800 of dog toys, not my dog food. If I'm talking about my six-week challenge, I'm talking about the six-week challenge. They come in, I explain the $1,000 thing. I say, \"Or you can get that whole thing and this other thing for less.\" That's the idea, is you advertise the thing you're gonna give away, not the thing you sell. Bonuses kind of work like, up-sells. More of the same. You get two years of past newsletters by becoming a member. So they're coming in for newsletters, so you get more of that thing. Complimentary. You get nutrition services for free when you sign up for one of our fitness memberships. Great, that's complimentary. It goes together. You could have an upgrade, which is better, right? You get a free gold membership when you buy a bonus membership."
+    },
+    {
+      "chapter": "continuity-bonus",
+      "id": "continuity-bonus:9",
+      "subjects": [
+        "continuity"
+      ],
+      "text": "up front. And so you just need to play with, how much cash do I need so that I can offset my cost to acquire customers? And then I can stack as much recurring as I want. And this is the actual data that we have. The exact numbers for this matter less than the principle. The smaller the standalone price compared to the continuity price, the more people buy the standalone. The larger the standalone price, the bonus price compared to the continuity price, the more people choose continuity. So-If you want more cash up front, make bonuses and continuity plus bonuses separate offers. Make the bonus offer only a single payment. That's 33 to 266% more expensive than the first month continuity plus bonus. The bigger the price difference, the fewer standalone purchases you'll have, but the more money you'll make up front from each of them. And based on the data that I shared, people paid 33% more to avoid continuity. In other words, if you charge 33% more for the one-time bonus, half will buy it. If you want even more cash, offer bulk prepaid discounts. So bulk continuity upsells boost 30-day profits by a lot. All right? And I alluded to it earlier, but I'm saying it again 'cause it's so freaking important. So you offer buy five months, get one free. Only one out of every eight people have to take the upsell to raise 30-day profits by 50%. That can make or break your money model. So think about that. Only one out of eight people need to take your buy five get one free for you to raise by 50% the cash they make in the first 30 days. Make the damn offer. Note, the laws of discounting apply. The larger the discount, the more people will take it. So if I say, \"Buy five, get, uh, get one,\" I could also say, \"Buy six, get six,\" and I'll bet you I'd get a hell of a lot more people take it. And I might double or triple my up-front cash. So this actually takes continuity and turns it into yet another up-front cash play that you can do to offset acquisition costs and scale your advertising. If you want commitments, you can pair the bonus with a commitment"
+    },
+    {
+      "chapter": "continuity-bonus",
+      "id": "continuity-bonus:11",
+      "subjects": [
+        "continuity"
+      ],
+      "text": ". So here's some summary points. Uh, with continuity bonuses, you give the customer an awesome thing if they sign up today. Typically, the bonus itself has more value than the first continuity payment. If you use continuity as an attraction offer, advertise what you give away, not what you sell as continuity. Advertise the bonus, not the membership. Make your bonus related to your core offer so you engage the right leads. If I say, you know, \"I'm giving away dog toys,\" I wanna sell dog stuff. Eh, you don't wanna give away T-shirts to sell tech services. If possible, make your bonuses stuff you already have and do. This way, you don't need to change your business in order to accommodate the bonus. More people start continuity if you add more bonuses and take away, uh, more bad stuff. In other words, add more discounts. To add bonuses, add more good stuff only if they sign up. To discount, take away the cost of actual products, services, or features that you normally sell. Sell the value of the bonus before telling them how they can get it for free. This is super important. People mess this one up. You have to really, you have to, you have to sell it as though it's a standalone offer. It's just like the anchor. If you don't seriously sell it, people won't seriously consider it. They have to seriously consider it, and then they will be incentivized when you say, \"Now that you're sold on it, do you wanna know how you can get it for free?\" Now, they're gonna wanna take the continuity. Offer bonuses as a standalone option for more up-front cash. So you can sell them on the bonus and then just say, \"Cool, the only way to get that is if you sign up as a member.\" You can do that, totally up to you. Um, but if you wanna have some up-front cash, which a lot of people do, especially if you're advertising, this is especially important for small businesses and local, then allow, allow them to buy the standalone offer, and you just price it based on how much cash you need. If you want half the people to take the standalone offer, price it at 33% above. And to boost up-front cash even more, you can offer anybody who signs up for continuity to prepay for the next six months or the next year if they buy in bulk. You basically do a buy X get Y free as your upsell on the back of continuity. And you're like, \"Wait a second, yes.\" You can move the offers around in terms of your order. This is where it gets fun. And that, my friends, is how continuity bonuses work."
+    }
+  ],
+  "fixture_snapshot": {
+    "advisor_state": {},
+    "business": {
+      "business_type": "direct-to-consumer natural skincare brand",
+      "delivery_model": "physical products shipped from third-party fulfillment",
+      "icp": "adults with sensitive skin who want a simple recurring routine"
+    },
+    "economics": {
+      "cac": 48,
+      "first_30_day_gross_profit": 32,
+      "gross_margin": 0.62,
+      "lifetime_gross_profit": 210,
+      "monthly_recurring_gross_profit": 28,
+      "payback_period_months": 1.5714285714285714
+    },
+    "field_sources": {},
+    "money_model": {
+      "attraction_offer": {
+        "description": "low-cost sensitive-skin sample kit",
+        "exists": true,
+        "price": 10
+      },
+      "continuity": {
+        "description": "automatic refill subscription",
+        "exists": true,
+        "price": 55
+      },
+      "core_offer": {
+        "description": "three-product starter routine",
+        "exists": true,
+        "price": 90
+      },
+      "downsell": {
+        "description": "two-product essentials kit",
+        "exists": true,
+        "price": 55
+      },
+      "upsell": {
+        "description": "premium five-product routine",
+        "exists": true,
+        "price": 160
+      }
+    },
+    "problem": {
+      "diagnosed_constraints": [],
+      "reported_symptoms": [
+        "premium routine is difficult to advertise directly",
+        "shipping and product costs consume a meaningful share of revenue"
+      ],
+      "user_goal": "improve front-end conversion without creating an inventory cash problem"
+    },
+    "schema_version": "business_snapshot.v1"
+  },
+  "missing_evidence_chunk_ids": [],
+  "scenario_id": "ecommerce_skincare",
+  "source_case_id": "searchdecision_v1_033",
+  "source_events": [
+    {
+      "chunks": [
+        {
+          "id": "buy-x-get-y:4",
+          "score": 0.032
+        },
+        {
+          "id": "buy-x-get-y:5",
+          "score": 0.032
+        },
+        {
+          "id": "continuity-bonus:3",
+          "score": 0.031
+        },
+        {
+          "id": "continuity-bonus:9",
+          "score": 0.031
+        },
+        {
+          "id": "continuity-bonus:11",
+          "score": 0.03
+        }
+      ],
+      "queries": [
+        "prepay and receive bonus months Buy X Get Y Free fulfillment cost cash obligations continuity recurring gross profit payback period"
+      ],
+      "query": "prepay and receive bonus months Buy X Get Y Free fulfillment cost cash obligations continuity recurring gross profit payback period",
+      "retrieval_backend": "hybrid",
+      "search_request": {
+        "intent": "recommendation_evidence",
+        "query": "prepay and receive bonus months Buy X Get Y Free fulfillment cost cash obligations continuity recurring gross profit payback period",
+        "user_turn": "We could pre-sell six months of refills and add bonus months, but inventory costs arrive early. What should we consider before doing that?"
+      }
+    }
+  ],
+  "user_turn": "We could pre-sell six months of refills and add bonus months, but inventory costs arrive early. What should we consider before doing that?"
+}

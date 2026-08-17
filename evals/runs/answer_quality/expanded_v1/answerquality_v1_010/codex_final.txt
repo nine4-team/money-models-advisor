@@ -1,0 +1,12 @@
+Yes. I would treat nutrition support as a Classic Upsell: the next natural thing someone needs after buying the coaching, not a random add-on. The test is, “Can they get the result they bought coaching for without this?” If nutrition is materially tied to their strength and body-composition outcome, it should be presented as the support that makes the core program work better, not as a separate pitch [classic-upsell:5].
+
+The clean pattern is:
+
+1. Sell the 12-week coached transformation as the core offer.
+2. In onboarding or the first assessment, show the gap: training creates the stimulus, nutrition determines whether body composition changes.
+3. Offer nutrition support as the obvious companion: meal targets, grocery rules, check-ins, food review, or done-for-you plans.
+4. Make it easy to say yes while keeping the core coaching complete on its own.
+
+This should not feel like, “You bought coaching, now I am surprising you with what you actually need.” It should feel like, “Now that we know your goal and constraints, this is the nutrition layer I recommend so the training produces the result faster.” The source material uses weight-loss examples where supplements, nutrition plans, meals, and related support are sold around the core service because they are tightly connected to the result [classic-upsell:4].
+
+If you have several nutrition paths, use a Menu Upsell instead of one fixed upsell: unsell what they do not need, prescribe the right level, ask a preference question, and make payment frictionless [menu-upsell:0]. For your business, I would likely make the first version simple: a “Nutrition Accelerator” added during onboarding, positioned as the recommended companion for clients whose assessment shows body-composition goals, inconsistent meals, low protein, or poor weekend adherence.

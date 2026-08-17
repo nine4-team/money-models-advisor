@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Money Model Advisor semantic answer audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "answer_sha256",
+    "reviewer",
+    "reviewed_at",
+    "business_facts_accurate",
+    "calculations_accurate",
+    "book_application_reasonable",
+    "useful_and_responsive",
+    "appropriate_restraint",
+    "material_claims",
+    "overall_pass",
+    "failure_categories",
+    "rationale"
+  ],
+  "properties": {
+    "case_id": {"type": "string"},
+    "answer_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "reviewer": {"const": "codex_semantic_audit"},
+    "reviewed_at": {"type": "string"},
+    "business_facts_accurate": {"type": "boolean"},
+    "calculations_accurate": {"type": ["boolean", "null"]},
+    "book_application_reasonable": {"type": "boolean"},
+    "useful_and_responsive": {"type": "boolean"},
+    "appropriate_restraint": {"type": "boolean"},
+    "material_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "cited_chunk_ids", "supported", "rationale"],
+        "properties": {
+          "claim": {"type": "string"},
+          "cited_chunk_ids": {"type": "array", "items": {"type": "string"}},
+          "supported": {"type": "boolean"},
+          "rationale": {"type": "string"}
+        }
+      }
+    },
+    "overall_pass": {"type": "boolean"},
+    "failure_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "business_fact_error",
+          "calculation_error",
+          "unsupported_material_claim",
+          "unreasonable_book_application",
+          "not_useful_or_responsive",
+          "insufficient_restraint"
+        ]
+      }
+    },
+    "rationale": {"type": "string"}
+  }
+}

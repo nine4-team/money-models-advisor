@@ -1,6 +1,6 @@
 # Current Remediation Plan
 
-**Updated:** 2026-08-13
+**Updated:** 2026-08-17
 
 This is the canonical list of known gaps that could make the implementation,
 evaluation evidence, and `narrative.html` disagree. Older design and evaluation
@@ -291,6 +291,12 @@ The narrative now keeps the 32-case BM25 chunking screen as an early screen, use
 table results unless the prose adds a decision. The narrative pass is complete; the
 remaining implementation, evaluation, and cross-document work belongs in Priority 5.
 
+On 2026-08-17, each quantitative evidence block received a default-closed,
+human-readable case table with filtering, sorting, and expandable row details. The
+tables are generated from canonical artifacts by
+`scripts/render_narrative_evidence.py`; `--check` fails if they drift. Direct links to
+the machine-readable files and reports remain available in every panel.
+
 ## Priority 5 — Implementation and evidence parity backlog — Open
 
 This is the canonical to-do list for known incompleteness. Removing an unfinished
@@ -353,11 +359,10 @@ An item is complete only when:
      4.07s p50 / 7.64s p95 to 0.89s / 1.14s. Tail monitoring remains normal
      operational work, not an implementation mismatch.
 
-7. **Semantic citation support — Complete as seed regression (2026-08-13)**
-   - Audited the six current-path answers claim by claim against the exact cited
-     passages. The first pass found two unsupported/overstated formulations; the
-     operating skill now requires a pre-finish support check and affected cases were
-     rerun blind. Current result: 14/14 material source-backed claims supported.
+7. **Semantic citation support — Complete (expanded 2026-08-16)**
+   - Audited 20 current-path answers claim by claim against saved business facts,
+     deterministic events, and exact cited passages. Current result: 22/22 material
+     claims supported across five business contexts.
    - Answer hashes prevent changed text from inheriting a stale audit. Codex is the
      single semantic reviewer, which the report states explicitly.
 
@@ -373,20 +378,39 @@ An item is complete only when:
      indexed in an isolated Pinecone namespace. Hosted replay reached 86.1% Useful@5
      at 1.13s p50 / 1.43s p95.
 
-9. **End-to-end answer quality — Complete as seed regression (2026-08-13)**
-   - The same six current-path cases now score whether recommendations are correct,
-     useful, and supported. All six current answers pass. Broader business-context
-     coverage remains item 10 rather than being hidden inside this result.
+9. **End-to-end answer quality — Complete (expanded 2026-08-16)**
+   - Twenty blind current-path cases now score business-fact accuracy, calculations,
+     book application, usefulness, restraint, and claim support. The frozen baseline
+     passed 16/20 after the earlier six-case audit had passed 6/6. All source-grounded
+     and calculation cases passed; four clarification cases exposed one shared
+     input-sufficiency defect: the advisor withheld an immediate decision but promised
+     a later result without requesting every material economic input.
+   - The fix established a general rule: answer when missing information cannot
+     materially change the recommendation; clarify when it can. Domain rules now
+     distinguish required inputs from helpful context and conditionally request the
+     inputs needed by multi-month payback and downstream-value branches. This was a
+     runtime/runbook correction, not four case-specific answer patches.
+   - Fresh final runs pass 20/20 with 22/22 material claims supported. The full unit
+     suite and relevant evaluations pass, and the final audit is now covered by a
+     hash-bound regression test. Both baseline and final reports remain in
+     `evals/reports/`.
 
-10. **Golden-dataset breadth**
-    - Continue adding cases from observed failures and materially different business
-      contexts. Do not split the current 46 cases into artificial development and
-      holdout subsets; use genuinely new cases when testing generalization.
+10. **Golden-dataset breadth — Complete for portfolio scope (2026-08-16)**
+    - Expanded answer quality to four cases in each of five materially different
+      business contexts, reusing realistic turns from the balanced 48-case suite.
+      The 20 cases include 10 source-grounded answers, five calculations, and five
+      clarifications. Future observed failures should still become regressions.
 
-11. **Stable regression gate**
-    - Add one top-level command or CI job that runs the stable local tests and
-      scorers and fails when an adopted quality contract regresses. Keep paid or
-      hosted replays outside the default gate.
+11. **Stable regression gate — Complete (2026-08-17)**
+    - `python3 scripts/regression_gate.py` runs the unit suite, local retrieval
+      smoke test, strict saved-artifact scorers for tool use, source events,
+      calculations, and answer quality, the narrative evidence drift check, and
+      `git diff --check`.
+    - The tool-use, source-event, and answer-quality scorers expose an explicit
+      `--require-all-pass` mode so the gate fails on missing or failed results rather
+      than merely regenerating a report successfully.
+    - Acting-model runs, embedding calls, and hosted retrieval replays remain outside
+      the gate; it is deterministic and offline.
 
 12. **Comparable cost reporting — Deferred**
     - If the agent moves from subscription harnesses to metered model calls, record
@@ -411,9 +435,7 @@ An item is complete only when:
 
 ## Order of remaining work
 
-1. Expand golden breadth with genuinely new business contexts.
-2. Add the stable local regression gate.
-3. Complete the rendered narrative read-through.
-4. Report comparable metered cost only when the deployment path exposes it.
-5. After each item, run its focused regression and reconcile every affected document
+1. Complete the rendered narrative read-through.
+2. Report comparable metered cost only when the deployment path exposes it.
+3. After each item, run its focused regression and reconcile every affected document
    before adding the result to the narrative.

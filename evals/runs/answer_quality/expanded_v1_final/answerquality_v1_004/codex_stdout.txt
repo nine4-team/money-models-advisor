@@ -1,0 +1,10 @@
+I would not commit to ads as a real growth channel next month yet. The current missing gate is unit economics: I need your expected CAC and first-30-day gross profit before I can say whether paid acquisition should start.
+
+For this decision, send me two numbers:
+
+1. Expected CAC: what you think it will cost in ad spend to acquire one buyer of the STR Design Diagnostic or core offer.
+2. First-30-day gross profit: cash collected in the first 30 days from that buyer, minus the direct fulfillment cost.
+
+If first-30-day gross profit is greater than CAC, ads can make sense as a controlled launch. If it is below CAC, I would need the next value source before approving the move: either monthly recurring gross profit, or the conversion rate and gross profit from the downstream full-service design sale.
+
+Until we have those numbers, my answer is: do not scale ads next month. If you have no paid baseline, run only a deliberately capped discovery test with a loss limit you are comfortable with, and treat it as data collection, not growth.

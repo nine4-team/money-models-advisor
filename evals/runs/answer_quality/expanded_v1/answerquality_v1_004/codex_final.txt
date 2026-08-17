@@ -1,0 +1,7 @@
+Not as a real budget yet. I would not start running ads next month until we know two numbers: expected CAC and first-30-day gross profit.
+
+Right now the offer stack is promising: a $597 STR Design Diagnostic can be an ad-friendly front-end offer, and the $15,000 full-service design offer gives you room for acquisition if conversion is healthy. But paid ads can hide bad economics quickly. Before spending meaningful money, I want one small test budget only if we can define the pass/fail math in advance.
+
+My recommendation: next month, run a controlled validation test, not a scale campaign. Set a capped budget, send traffic only to the STR Design Diagnostic, and measure cost per booked diagnostic, diagnostic close rate, and how many diagnostics convert into full-service projects. If the test cannot plausibly pay back from first-30-day gross profit or downstream conversion to the core offer, pause ads and fix the offer/funnel first.
+
+The next number I need from you is either your expected CAC target or the gross profit you make in the first 30 days from a new full-service client. With that, I can tell you the maximum CAC you can afford and whether next month should be ads, organic/referral selling, or funnel cleanup.

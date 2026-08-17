@@ -197,9 +197,17 @@ PYTHONPATH=src python3 -m money_model_architect.cli session finish \
    do not rely on the chunk title or a nearby passage, do not make a stronger claim
    than the text supports, and remove or qualify any unsupported wording. Business-
    specific recommendations may be reasoned from accepted facts; cite the source only
-   for the framework principle it actually establishes.
+   for the framework principle it actually establishes. Also audit the final requested-
+   input list against the reasoning above it. Every input described as necessary must
+   appear in that list. If the list omits an input, either add it or remove the
+   unsupported decision branch; do not record a self-contradictory promise.
 9. Record the final turn with `session finish`.
 10. Use `logs` to inspect prior session turns.
+
+The recorded `actions` list must exhaustively describe the operations performed and
+the answer behavior. Include `clarify` whenever the final answer asks the human for
+missing information needed to make the requested decision, even if the answer also
+explains why that information matters or proposes a bounded next step.
 
 When you use `calculate`, record a `calculation_events` entry in the final turn artifact. Each calculation event must include:
 
@@ -210,6 +218,38 @@ When you use `calculate`, record a `calculation_events` entry in the final turn 
 This is required so `session finish` can recompute the result from the recorded inputs
 and reject an incorrect value.
 
+For acquisition decisions, keep two tests distinct:
+
+- `CAC` and `first_30_day_gross_profit` are enough to determine whether acquisition
+  pays back inside the first month.
+- If first-30-day gross profit is below CAC, exact payback also requires
+  `monthly_recurring_gross_profit`. Ask for it before promising a payback value.
+- If a recommendation relies on later conversion into another offer, expected-value
+  math requires that offer's gross profit as well as its conversion rate. Price alone
+  is not gross profit.
+
+Do not substitute recurring gross profit for a one-time downstream offer. When the
+front-end offer does not recover CAC, choose the branch that actually supplies the
+remaining value:
+
+- recurring revenue branch: ask for monthly recurring gross profit;
+- downstream offer branch: ask for conversion rate and gross profit per converted
+  downstream sale;
+- mixed branch: ask for both sets of inputs.
+
+After receiving only CAC and first-30-day gross profit, promise only to determine the
+first-month break-even gate. If that gate fails, identify the additional branch inputs;
+do not promise a final scale decision from the first two values alone.
+
+Do not claim that one known side of a comparison is enough to make an affordability
+decision. State which bounded decision the available inputs support and ask only for
+the additional inputs needed for the next calculation.
+
+When current acquisition economics are missing, do not invent a percentage spend
+increase. Measure the existing spend first. If there is no existing paid baseline,
+recommend only a deliberately capped discovery test whose possible loss the business
+can afford; do not describe that test as scaling.
+
 ## When To Search
 
 Follow the runtime search-request rules in `search_request_rules.md` (same directory).
@@ -218,8 +258,8 @@ how to use the versioned corpus guide, how to write the single query, and how to
 `intent`. Do not restate those rules here — read that file and apply it exactly.
 
 When recording the turn, create one `source_events` entry per search. Each entry should
-include the `search_request`, the executed query, and inspected chunks with IDs and
-scores.
+include the `retrieval_backend` returned by the CLI, the `search_request`, the executed
+query, and inspected chunks with IDs and scores.
 
 ## Guardrails
 

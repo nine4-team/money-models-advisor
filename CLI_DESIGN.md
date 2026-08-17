@@ -333,13 +333,11 @@ The goal is not more automation for its own sake. The goal is a cleaner agent-op
 
 ## Current Gaps
 
-The command and trace contracts are implemented. Current completion work is
-evaluation breadth and regression packaging rather than a missing CLI operation:
-
-- expand current-path answer-quality cases beyond the six-case seed audit;
-- collect the stable local checks behind one repeatable regression command or CI job;
-- add new CLI behavior only when an observed failure shows that the current
-  operation shape makes correct agent behavior difficult.
+The command and trace contracts are implemented. Twenty current-path answers across
+five business contexts now cover source-grounded, calculation, and clarification
+behavior, and `python3 scripts/regression_gate.py` packages the stable offline checks.
+Add new CLI behavior only when an observed failure shows that the current operation
+shape makes correct agent behavior difficult.
 
 ## Acting-Agent Test-Fix Loop
 

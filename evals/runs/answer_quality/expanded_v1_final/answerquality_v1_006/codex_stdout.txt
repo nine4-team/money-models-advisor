@@ -1,0 +1,7 @@
+We are diagnosing a **payback-period problem** inside an otherwise viable lifetime-value business.
+
+The software appears valuable over the customer life: lifetime gross profit is `$18,000` against `$2,800` CAC. That is not the immediate issue. The issue is timing: each new customer costs `$2,800` to acquire, but only returns `$1,100` of gross profit in the first 30 days, so acquisition consumes cash before it becomes profitable.
+
+Using the current numbers, payback is about **2.9 months**. In Money Models terms, payback period is how long it takes gross profit to exceed CAC, and shorter payback makes advertising easier to scale because cash comes back faster `[payback-period:0]`. This also means you are below client-financed acquisition level 2, because first-30-day gross profit is not greater than CAC `[cfa:0]`.
+
+So the diagnosis is: **strong LTGP-to-CAC, weak first-30-day gross-profit-to-CAC**. The business may be worth acquiring customers for, but the current offer stack does not finance growth at the front end. The next design problem is how to pull more gross profit into the first 30 days without damaging activation or retention.

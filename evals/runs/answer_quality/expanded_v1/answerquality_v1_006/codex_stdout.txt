@@ -1,0 +1,7 @@
+We are diagnosing payback period and client-financed acquisition, not whether the software has long-term value.
+
+Your lifetime economics look strong: $18,000 lifetime gross profit against $2,800 CAC. The issue is timing. Month-one gross profit is $1,100, so each new customer still leaves $1,700 unrecovered at the start, and the payback period is about 2.9 months.
+
+In Money Models terms, payback period asks how long it takes gross profit to exceed CAC, and shorter payback makes acquisition easier to scale [payback-period:0]. Client-financed acquisition asks whether first-30-day gross profit can cover CAC, so growth can recycle customer cash instead of tying up yours [cfa:0].
+
+So the diagnosis is: you have a cash-conversion gap in acquisition. The next work is to either lower CAC or pull more gross profit into the first 30 days through a setup/onboarding fee, prepayment, earlier upsell, or a stronger front-end offer.
