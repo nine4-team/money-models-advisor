@@ -1461,8 +1461,8 @@
               </div>
               <div class="acard">
                 <span class="k">Instructions</span>
-                <span class="d">Versioned operating rules, search-request rules, and a
-                  guide to the corpus.</span>
+                <span class="d">Two versioned rule sets define the turn lifecycle and
+                  source-search behavior.</span>
                 <span class="r"><a href="#s2-4">§2.4</a></span>
               </div>
             </div>
@@ -1484,8 +1484,8 @@
               </div>
               <div class="acard">
                 <span class="k">Knowledge</span>
-                <span class="d">The book, chunked and indexed in a vector store; hybrid
-                  BM25 + vector retrieval.</span>
+                <span class="d">The indexed book and a compact concept guide used to
+                  write corpus-specific queries.</span>
                 <span class="r"><a href="#s2-7">§2.7</a></span>
               </div>
               <div class="acard">
@@ -1514,11 +1514,49 @@
         </p>
 
         <h3 id="s2-4"><span class="sub">2.4</span>Instructions</h3>
-        <p>
-          The instruction stack includes the versioned operating skill,
-          search-request rules, and corpus guide: how to run a turn, when to
-          search versus ask, how to write one corpus-guided query (§2.7), and
-          what the final trace must contain.
+        <p class="lede">
+          The instruction layer is split into two versioned rule sets so that
+          general advisor behavior and retrieval-specific behavior can be
+          changed and evaluated independently.
+        </p>
+        <dl class="rows">
+          <div>
+            <dt>Operating skill</dt>
+            <dd>
+              Defines the turn lifecycle: load saved context, decide whether
+              the available inputs are sufficient, choose the next action,
+              use calculations and retrieved evidence appropriately, compose
+              the answer, and finish with a valid trace. It also defines the
+              advisor's domain guardrails, including when missing information
+              materially changes a recommendation and requires clarification.
+            </dd>
+          </div>
+          <div>
+            <dt>Search-request rules</dt>
+            <dd>
+              Define when Money Models evidence is needed, when search would
+              merely avoid asking for missing business facts, how to separate
+              distinct evidence jobs, and how to write the active three-field
+              <code>SearchRequest</code>. These rules require one unfiltered
+              query per evidence job; they do not choose the query's content
+              deterministically.
+            </dd>
+          </div>
+          <div>
+            <dt>Enforcement boundary</dt>
+            <dd>
+              The agent applies these rules to the current situation and
+              decides whether to clarify, inspect business context, calculate,
+              search, or answer. The CLI enforces only what can be checked
+              mechanically—for example, that the executed query matches the
+              recorded request, cited chunks were actually inspected, and
+              claimed calculations leave recomputable events.
+            </dd>
+          </div>
+        </dl>
+        <p class="quiet">
+          The corpus guide is not an instruction set. It is a knowledge aid
+          used under the search-request rules and is described in §2.7.
         </p>
 
         <h3 id="s2-5"><span class="sub">2.5</span>Tools</h3>
@@ -1703,6 +1741,21 @@
           one per lesson, about 88,000 words. Subject metadata exists for the
           namespace experiment (§3.3), but the active search does not filter
           on it.
+        </p>
+        <h4 class="block">The corpus guide: a query-writing aid</h4>
+        <p>
+          A versioned 28-entry guide summarizes the corpus's canonical concepts,
+          common aliases, appropriate use cases, and important relationships. It
+          was derived from the framework index, decision trees, and extracted
+          Money Models frameworks. Before writing a search query, the agent uses
+          this guide to translate the user's language into the book's language
+          without losing the relationships in the question.
+        </p>
+        <p>
+          The guide does not answer the question, select passages, filter the
+          corpus, or add every related concept. It is compact metadata about the
+          knowledge source, and the query-generation experiment (§3.3) tests
+          whether supplying it improves retrieval.
         </p>
         <h4 class="block">The request: one corpus-guided query</h4>
         <p>
