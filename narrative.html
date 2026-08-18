@@ -77,6 +77,19 @@
       color: var(--accent);
     }
 
+    .meta-row a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--muted) 45%, transparent);
+      transition: color 120ms ease, border-color 120ms ease;
+    }
+
+    .meta-row a:hover,
+    .meta-row a:focus-visible {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
     h1 {
       margin: 40px 0 0;
       font-family: var(--display);
@@ -1245,7 +1258,11 @@
     <header class="masthead">
       <div class="meta-row">
         <span>Portfolio write-up</span>
-        <span>Acquisition.com <span class="dot">·</span> Senior AI Engineer</span>
+        <span>
+          Acquisition.com <span class="dot">·</span> Senior AI Engineer
+          <span class="dot">·</span>
+          <a href="https://github.com/nine4-team/money-models-advisor" target="_blank" rel="noopener">GitHub repository ↗</a>
+        </span>
       </div>
       <h1>Building a <em>Money Model</em> Advisor</h1>
       <p class="deck">
